@@ -1,5 +1,21 @@
 import React, { useState } from 'react';
-import { Container, Typography, Button, Table, TableBody, TableRow, TableCell, IconButton, Card, Pagination } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  IconButton,
+  Card,
+  Pagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,6 +25,8 @@ const CompanyList = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(1);
+  const [deleteCompanyId, setDeleteCompanyId] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const companies = [
     {
@@ -31,20 +49,37 @@ const CompanyList = () => {
     }
   ];
 
-  const handleaddcompany = () => {
+  const handleAddCompany = () => {
     navigate('/addcompany');
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  const handleDeleteCompany = (companyId) => {
+    setDeleteCompanyId(companyId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    // Delete logic goes here
+    console.log('Deleting company with id:', deleteCompanyId);
+    setOpenDeleteDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteCompanyId(null);
+    setOpenDeleteDialog(false);
+  };
+
   return (
     <Container>
       <Card>
         <Typography variant="h4" align="center" style={{ margin: '20px' }}>
           Company List
         </Typography>
-        <Button variant="contained" color="primary" style={{ mb: 2, margin: '10px' }} onClick={handleaddcompany}>
+        <Button variant="contained" color="primary" style={{ mb: 2, margin: '10px' }} onClick={handleAddCompany}>
           Add Company
         </Button>
         <Table>
@@ -70,7 +105,7 @@ const CompanyList = () => {
                   <IconButton color="inherit">
                     <VisibilityIcon style={{ color: 'green' }} />
                     <EditIcon style={{ color: 'blue' }} />
-                    <DeleteIcon style={{ color: 'red' }} />
+                    <DeleteIcon style={{ color: 'red' }} onClick={() => handleDeleteCompany(company.id)} />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -84,6 +119,18 @@ const CompanyList = () => {
         onChange={handleChangePage}
         style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}
       />
+      <Dialog open={openDeleteDialog} onClose={handleCancelDelete}>
+        <DialogTitle>Delete Company</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this company?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete}>No</Button>
+          <Button onClick={handleConfirmDelete} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
