@@ -18,6 +18,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import PropaneTankIcon from '@mui/icons-material/PropaneTank';
 import HomeIcon from '@mui/icons-material/Home';
 import ScannerIcon from '@mui/icons-material/Scanner';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 // import { FaBeer } from 'react-icons/fa';
 // import { FaSalesforce } from 'react-icons/fa';
 
@@ -40,7 +41,8 @@ const icons = {
   PaymentsIcon: PaymentsIcon,
   PropaneTankIcon: PropaneTankIcon,
   HomeIcon: HomeIcon,
-  ScannerIcon: ScannerIcon
+  ScannerIcon: ScannerIcon,
+  BusinessCenterIcon: BusinessCenterIcon
 };
 
 // eslint-disable-next-line
@@ -80,20 +82,20 @@ export default {
           type: 'collapse',
           icon: icons['SecurityOutlinedIcon'],
           children: [
+            // {
+            //   id: 'login-1',
+            //   title: 'Login',
+            //   type: 'item',
+            //   url: '/application/login'
+            //   // target: true
+            // },
             {
-              id: 'login-1',
-              title: 'Login',
+              id: 'user',
+              title: 'user managenment',
               type: 'item',
-              url: '/application/login'
+              url: '/adduser'
               // target: true
             }
-            // {
-            //   id: 'register',
-            //   title: 'Register',
-            //   type: 'item',
-            //   url: '/application/register'
-            //   // target: true
-            // }
           ]
         }
       ]
@@ -103,7 +105,7 @@ export default {
       icon: icons[''],
       children: [
         {
-          id: 'auth',
+          id: 'Financial Management',
           title: 'Financial Management',
           type: 'collapse',
           icon: icons['AccountBalanceIcon'],
@@ -149,7 +151,7 @@ export default {
               ]
             },
             {
-              id: 'auth',
+              id: 'Purchase Management',
               title: 'Purchase Management',
               type: 'collapse',
               icon: icons['ShoppingBasketIcon'],
@@ -167,6 +169,12 @@ export default {
               title: 'Expense',
               type: 'item',
               url: '/expenselist'
+            },
+            {
+              id: 'general',
+              title: 'general',
+              type: 'item',
+              url: '/productionreport'
             }
           ]
         }
@@ -193,6 +201,12 @@ export default {
               title: 'Product',
               type: 'item',
               url: '/products'
+            },
+            {
+              id: 'Report',
+              title: 'Report',
+              type: 'item',
+              url: '/productionreport'
             }
           ]
         }
@@ -219,6 +233,12 @@ export default {
               title: 'Performance Management',
               type: 'item',
               url: '/performanceemployee'
+            },
+            {
+              id: 'Report',
+              title: 'Report',
+              type: 'item',
+              url: '/productionreport'
             }
           ]
         }
@@ -265,6 +285,12 @@ export default {
               title: 'Total Stoke',
               type: 'item',
               url: '/stock'
+            },
+            {
+              id: 'Report',
+              title: 'Report',
+              type: 'item',
+              url: '/productionreport'
             }
           ]
         }
@@ -285,35 +311,61 @@ export default {
               title: 'Machine Inventory',
               type: 'item',
               url: '/machineinventory'
+            },
+            {
+              id: 'Report',
+              title: 'Report',
+              type: 'item',
+              url: '/productionreport'
             }
           ]
         }
       ]
     },
     {
-      id: 'support',
-      title: 'Support',
       type: 'group',
-      icon: icons['ContactSupportOutlinedIcon'],
+      icon: icons['BusinessCenterIcon'],
       children: [
-        // {
-        //   id: 'disabled-menu',
-        //   title: 'Disabled Menu',
-        //   type: 'item',
-        //   url: '#',
-        //   icon: icons['BlockOutlinedIcon'],
-        //   disabled: true
-        // },
         {
-          id: 'Report',
-          title: 'Report',
-          type: 'item',
-          // url: 'https://codedthemes.gitbook.io/materially-react-material-documentation/',
-          icon: icons['HelpOutlineOutlinedIcon'],
-          external: true,
-          target: true
+          id: 'general Management',
+          title: 'general Management',
+          type: 'collapse',
+          icon: icons['BusinessCenterIcon'],
+          children: [
+            // {
+            //   id: 'Ganeral Management',
+            //   title: 'Ganeral Management',
+            //   type: 'item',
+            //   url: '/machineinventory'
+            // }
+          ]
         }
       ]
     }
+    // {
+    //   id: 'support',
+    //   title: 'Support',
+    //   type: 'group',
+    //   icon: icons['ContactSupportOutlinedIcon'],
+    //   children: [
+    //     // {
+    //     //   id: 'disabled-menu',
+    //     //   title: 'Disabled Menu',
+    //     //   type: 'item',
+    //     //   url: '#',
+    //     //   icon: icons['BlockOutlinedIcon'],
+    //     //   disabled: true
+    //     // },
+    //     {
+    //       id: 'Report',
+    //       title: 'Report',
+    //       type: 'item',
+    //       // url: 'https://codedthemes.gitbook.io/materially-react-material-documentation/',
+    //       icon: icons['HelpOutlineOutlinedIcon'],
+    //       external: true,
+    //       target: true
+    //     }
+    //   ]
+    // }
   ]
 };

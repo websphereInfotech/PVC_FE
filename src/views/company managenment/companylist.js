@@ -75,11 +75,11 @@ const CompanyList = () => {
 
   return (
     <Container>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Company List
         </Typography>
-        <Button variant="contained" color="primary" style={{ mb: 2, margin: '10px' }} onClick={handleAddCompany}>
+        <Button variant="contained" color="secondary" style={{ mb: 2, margin: '10px' }} onClick={handleAddCompany}>
           Add Company
         </Button>
         <Table>
@@ -103,9 +103,9 @@ const CompanyList = () => {
                 <TableCell>{company.website}</TableCell>
                 <TableCell>
                   <IconButton color="inherit">
-                    <VisibilityIcon style={{ color: 'green' }} />
-                    <EditIcon style={{ color: 'blue' }} />
-                    <DeleteIcon style={{ color: 'red' }} onClick={() => handleDeleteCompany(company.id)} />
+                    <VisibilityIcon />
+                    <EditIcon />
+                    <DeleteIcon onClick={() => handleDeleteCompany(company.id)} />
                   </IconButton>
                 </TableCell>
               </TableRow>

@@ -38,7 +38,7 @@ const SearchSection = () => {
                 }}
                 aria-haspopup="true"
                 {...bindToggle(popupState)}
-                color="inherit"
+                color="secondary"
               >
                 <SearchTwoToneIcon sx={{ fontSize: '1.5rem' }} />
               </Button>

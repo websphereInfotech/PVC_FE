@@ -18,8 +18,8 @@ const StockManagement = () => {
 
   return (
     <Container>
-      <Card style={{ padding: '10px' }}>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Stock Management
         </Typography>
         <Table>

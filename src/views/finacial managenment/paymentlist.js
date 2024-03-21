@@ -54,13 +54,13 @@ const PaymentListPage = () => {
 
   return (
     <Container>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '15px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Payment List
         </Typography>
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           onClick={handleMakePayment}
           style={{ margin: '10px', color: 'white', display: 'flex', justifyContent: 'end' }}
         >
@@ -92,7 +92,7 @@ const PaymentListPage = () => {
                 <TableCell>${payment.amount}</TableCell>
                 <TableCell>{payment.status}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary" onClick={() => handleViewPayment(payment.id)}>
+                  <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment.id)}>
                     View
                   </Button>
                 </TableCell>

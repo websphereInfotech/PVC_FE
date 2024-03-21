@@ -49,8 +49,8 @@ const Paymentrecieve = () => {
 
   return (
     <Container>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '15px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Payment Recieve List
         </Typography>
         <Table>
@@ -79,7 +79,7 @@ const Paymentrecieve = () => {
                 <TableCell>${payment.amount}</TableCell>
                 <TableCell>{payment.status}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary" onClick={() => handleViewPayment(payment.id)}>
+                  <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment.id)}>
                     View
                   </Button>
                 </TableCell>

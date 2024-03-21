@@ -41,7 +41,7 @@ const NavCollapse = ({ menu, level }) => {
   });
 
   const Icon = menu.icon;
-  const menuIcon = menu.icon ? <Icon /> : <ArrowForwardIcon fontSize={level > 0 ? 'inherit' : 'default'} />;
+  const menuIcon = menu.icon ? <Icon color="secondary" /> : <ArrowForwardIcon fontSize={level > 0 ? 'secondary' : 'secondary'} />;
 
   return (
     <>
@@ -58,13 +58,13 @@ const NavCollapse = ({ menu, level }) => {
         <ListItemIcon sx={{ minWidth: !menu.icon ? '25px' : 'unset' }}>{menuIcon}</ListItemIcon>
         <ListItemText
           primary={
-            <Typography variant={selected === menu.id ? 'subtitle1' : 'body1'} color="inherit" sx={{ pl: 1.9 }}>
+            <Typography variant={selected === menu.id ? 'subtitle1' : 'body1'} color="" sx={{ pl: 1.9 }}>
               {menu.title}
             </Typography>
           }
           secondary={
             menu.caption && (
-              <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption, pl: 2 }} display="block" gutterBottom>
+              <Typography variant="secondary" sx={{ ...theme.typography.subMenuCaption, pl: 2 }} display="block" gutterBottom>
                 {menu.caption}
               </Typography>
             )

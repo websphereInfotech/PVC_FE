@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 // third party
@@ -18,11 +18,15 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 // ==============================|| NAV ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
-  const theme = useTheme();
+  // const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const dispatch = useDispatch();
   const Icon = item.icon;
-  const itemIcon = item.icon ? <Icon color="inherit" /> : <ArrowForwardIcon color="inherit" fontSize={level > 0 ? 'inherit' : 'default'} />;
+  const itemIcon = item.icon ? (
+    <Icon color="secondary" />
+  ) : (
+    <ArrowForwardIcon color="secondary" fontSize={level > 0 ? 'secondary' : 'secondary'} />
+  );
 
   let itemTarget = '';
   if (item.target) {
@@ -52,13 +56,13 @@ const NavItem = ({ item, level }) => {
       <ListItemIcon sx={{ minWidth: 25 }}>{itemIcon}</ListItemIcon>
       <ListItemText
         primary={
-          <Typography sx={{ pl: 1.4 }} variant={customization.isOpen === item.id ? 'subtitle1' : 'body1'} color="inherit">
+          <Typography sx={{ pl: 1.4 }} variant={customization.isOpen === item.id ? 'subtitle2' : 'body1'} color="secondary">
             {item.title}
           </Typography>
         }
         secondary={
           item.caption && (
-            <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption, pl: 2 }} display="block" gutterBottom>
+            <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption, pl: 200 }} display="block" gutterBottom>
               {item.caption}
             </Typography>
           )

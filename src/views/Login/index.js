@@ -7,7 +7,9 @@ import { Card, CardContent, Typography, Grid } from '@mui/material';
 
 // project import
 import AuthLogin from './FirebaseLogin';
-
+// import backgroundImageUrl from '../../assets/images/pipe2.png';
+import backgroundImageUrl from '../../assets/images/thumbnail_PVC.jpeg';
+// import backgroundImageUrl from '../../assets/images/loginbackground.jpg';
 // assets
 // import Logo from 'assets/images/logo-dark.svg';
 
@@ -21,7 +23,13 @@ const Login = () => {
       container
       justifyContent="center"
       alignItems="center"
-      sx={{ backgroundColor: theme.palette.common, height: '100%', minHeight: '100vh' }}
+      sx={{
+        height: '100%',
+        minHeight: '100vh',
+        backgroundImage: `url(${backgroundImageUrl})`, // Corrected to use template literal with URL
+        backgroundSize: 'cover', // Optional: Adjust the background size as needed
+        backgroundRepeat: 'no-repeat' // Optional: Adjust the background repeat as needed
+      }}
     >
       <Grid item xs={11} sm={7} md={6} lg={4}>
         <Card
@@ -44,28 +52,28 @@ const Login = () => {
                 <Grid container justifyContent="space-between">
                   <Grid item>
                     <Typography color="textPrimary" gutterBottom variant="h2">
-                      Sign in
+                      Login in
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       To keep connected with us.
                     </Typography>
                   </Grid>
-                  <Grid item>
-                    {/* <RouterLink to="/">
+                  {/* <Grid item>
+                    <RouterLink to="/">
                       <img alt="Auth method" src={Logo} />
-                    </RouterLink> */}
-                  </Grid>
+                    </RouterLink>
+                  </Grid> */}
                 </Grid>
               </Grid>
               <Grid item xs={12}>
                 <AuthLogin />
               </Grid>
               <Grid container justifyContent="flex-start" sx={{ mt: theme.spacing(2), mb: theme.spacing(1) }}>
-                <Grid item>
+                {/* <Grid item>
                   <Typography variant="subtitle2" color="secondary" sx={{ textDecoration: 'none', pl: 2 }}>
                     Create new account
                   </Typography>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           </CardContent>

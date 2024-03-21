@@ -19,8 +19,8 @@ const StyledInput = withStyles((theme) => ({
     padding: '10px 12px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     '&:focus': {
-      boxShadow: `${theme.palette.primary.main} 0 0 0 0.2rem`,
-      borderColor: theme.palette.primary.main
+      boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
+      borderColor: theme.palette.secondary.main
     }
   }
 }))(InputBase);
@@ -41,8 +41,8 @@ const AddProductionPage = () => {
 
   return (
     <Container>
-      <Paper elevation={3} style={{ padding: '24px', marginTop: '24px' }}>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+      <Paper elevation={3} style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Add Production
         </Typography>
         <form onSubmit={handleSave}>
@@ -74,15 +74,15 @@ const AddProductionPage = () => {
                 fullWidth
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                style={{}}
+                // style={{}}
               />
             </Grid>
             <Grid item xs={6}>
               <Typography variant="subtitle1">Weight *</Typography>
               <StyledInput placeholder="Enter weight" fullWidth value={weight} onChange={(e) => setWeight(e.target.value)} />
             </Grid>
-            <Grid item xs={12} style={{ textAlign: 'center', marginTop: '20px' }}>
-              <Button style={{ color: 'white', width: '50px', backgroundColor: 'green' }} fullWidth type="submit">
+            <Grid item xs={12} style={{ textAlign: 'center', marginTop: '10px' }}>
+              <Button style={{ color: 'white', width: '80px', backgroundColor: '#425466', borderRadius: '5px' }} type="submit">
                 Save
               </Button>
             </Grid>

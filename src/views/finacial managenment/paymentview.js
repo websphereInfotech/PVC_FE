@@ -3,11 +3,11 @@ import { Container, Typography, Button, Grid, Paper } from '@mui/material';
 
 const PaymentViewPage = () => {
   return (
-    <Container style={{ padding: '24px' }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Payment Details
-      </Typography>
-      <Paper style={{ padding: '24px', marginBottom: '16px' }}>
+    <Container>
+      <Paper style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" gutterBottom id="mycss">
+          Payment Details
+        </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">ID: 1</Typography>
@@ -24,10 +24,10 @@ const PaymentViewPage = () => {
             <Typography variant="body1">Status: Paid</Typography>
           </Grid>
         </Grid>
+        <Button variant="contained" color="secondary" style={{ marginTop: '16px' }}>
+          Edit Payment
+        </Button>
       </Paper>
-      <Button variant="contained" color="primary" style={{ marginTop: '16px' }}>
-        Edit Payment
-      </Button>
     </Container>
   );
 };

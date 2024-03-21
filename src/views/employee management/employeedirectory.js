@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography, Card, CardContent, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Container, Typography, Card, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 const EmployeeDirectoryPage = () => {
   // Dummy employee data
@@ -13,32 +13,30 @@ const EmployeeDirectoryPage = () => {
 
   return (
     <Container>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Employee Directory
         </Typography>
-        <CardContent>
-          <TableContainer>
-            <Table>
-              <TableRow>
-                <TableCell variant="head">ID</TableCell>
-                <TableCell variant="head">Name</TableCell>
-                <TableCell variant="head">Position</TableCell>
-                <TableCell variant="head">Department</TableCell>
-              </TableRow>
-              <TableBody>
-                {employees.map((employee) => (
-                  <TableRow key={employee.id}>
-                    <TableCell>{employee.id}</TableCell>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.position}</TableCell>
-                    <TableCell>{employee.department}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
+        <TableContainer>
+          <Table>
+            <TableRow>
+              <TableCell variant="head">ID</TableCell>
+              <TableCell variant="head">Name</TableCell>
+              <TableCell variant="head">Position</TableCell>
+              <TableCell variant="head">Department</TableCell>
+            </TableRow>
+            <TableBody>
+              {employees.map((employee) => (
+                <TableRow key={employee.id}>
+                  <TableCell>{employee.id}</TableCell>
+                  <TableCell>{employee.name}</TableCell>
+                  <TableCell>{employee.position}</TableCell>
+                  <TableCell>{employee.department}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Card>
     </Container>
   );

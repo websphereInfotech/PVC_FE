@@ -42,7 +42,7 @@ const OrderProcessingPage = () => {
               </ul>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Button variant="contained" color="primary" onClick={() => handleProcessOrder(order.id)}>
+              <Button variant="contained" color="secondary" onClick={() => handleProcessOrder(order.id)}>
                 Process
               </Button>
               <Button variant="outlined" color="secondary" onClick={() => handleCancelOrder(order.id)} style={{ marginLeft: '8px' }}>

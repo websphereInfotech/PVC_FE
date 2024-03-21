@@ -64,10 +64,10 @@ const CompanyProfile = () => {
         <Typography variant="body1">Vision: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
         <Typography variant="body1">Values: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
         <Stack direction="row" spacing={2} mt={2}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="secondary">
             Edit Profile
           </Button>
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="secondary">
             View Team
           </Button>
         </Stack>

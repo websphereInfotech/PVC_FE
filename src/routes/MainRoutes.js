@@ -3,10 +3,9 @@ import React, { lazy } from 'react';
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
+// const UtilsTypography = Loadable(lazy(() => import('../views/Utils/Typography')));
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
-
-const UtilsTypography = Loadable(lazy(() => import('../views/Utils/Typography')));
 
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 
@@ -40,6 +39,8 @@ const ProductionListPage = Loadable(lazy(() => import('../views/production manag
 
 const AddProductionPage = Loadable(lazy(() => import('../views/production managenment/addproduction')));
 
+const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
+
 const Product = Loadable(lazy(() => import('../views/production managenment/product')));
 
 const StockManagement = Loadable(lazy(() => import('../views/stoke managenment/stoke')));
@@ -50,21 +51,24 @@ const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee mana
 
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
 
+const AddUserForm = Loadable(lazy(() => import('../views/usermanagenment')));
+
+// const AuthLogin = Loadable(lazy(() => import('../views/Login')));
 // ==============================|| MAIN ROUTES ||============================== //
 
 const MainRoutes = {
   path: '/',
   element: <MainLayout />,
   children: [
-    {
-      path: '/',
-      element: <DashboardDefault />
-    },
+    // {
+    //   path: '/',
+    //   element: <AuthLogin />
+    // },
     {
       path: '/dashboard/default',
       element: <DashboardDefault />
     },
-    { path: '/utils/util-typography', element: <UtilsTypography /> },
+    // { path: '/utils/util-typography', element: <UtilsTypography /> },
     // { path: '/sample-page', element: <SamplePage /> }
     { path: '/profile', element: <SamplePage /> },
     // { path: '/dashboard/salesdasboard', element: <Salesdashboard /> },
@@ -87,7 +91,9 @@ const MainRoutes = {
     { path: '/stock', element: <StockManagement /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
-    { path: '/performanceemployee', element: <PerformanceManagementPage /> }
+    { path: '/performanceemployee', element: <PerformanceManagementPage /> },
+    { path: '/adduser', element: <AddUserForm /> },
+    { path: '/productionreport', element: <ReportPage /> }
   ]
 };
 

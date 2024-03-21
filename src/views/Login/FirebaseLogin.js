@@ -5,7 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Button,
-  Divider,
   FormHelperText,
   Grid,
   TextField,
@@ -24,7 +23,8 @@ import { Formik } from 'formik';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Google from 'assets/images/social-google.svg';
+// import EmailIcon from '@mui/icons-material/Email';
+// import Google from 'assets/images/social-google.svg';
 
 // ==============================|| FIREBASE LOGIN ||============================== //
 
@@ -42,7 +42,7 @@ const FirebaseLogin = ({ ...rest }) => {
 
   return (
     <>
-      <Grid container justifyContent="center">
+      {/* <Grid container justifyContent="center">
         <Grid item xs={12}>
           <Button
             fullWidth={true}
@@ -73,15 +73,15 @@ const FirebaseLogin = ({ ...rest }) => {
             Sign in with Google
           </Button>
         </Grid>
-      </Grid>
+      </Grid> */}
 
-      <Box alignItems="center" display="flex" mt={2}>
+      {/* <Box alignItems="center" display="flex" mt={2}>
         <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
         <Typography color="textSecondary" variant="h5" sx={{ m: theme.spacing(2) }}>
           OR
         </Typography>
         <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-      </Box>
+      </Box> */}
 
       <Formik
         initialValues={{
@@ -108,10 +108,20 @@ const FirebaseLogin = ({ ...rest }) => {
               type="email"
               value={values.email}
               variant="outlined"
+              color="secondary"
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <EmailIcon color="action" />
+              //     </InputAdornment>
+              //   )
+              // }}
             />
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ mt: theme.spacing(3), mb: theme.spacing(1) }}>
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password" color="secondary">
+                Password
+              </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
@@ -120,6 +130,7 @@ const FirebaseLogin = ({ ...rest }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label="Password"
+                color="secondary"
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -143,7 +154,7 @@ const FirebaseLogin = ({ ...rest }) => {
             </FormControl>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Typography variant="subtitle2" color="primary" sx={{ textDecoration: 'none' }}>
+                <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none' }}>
                   Forgot Password?
                 </Typography>
               </Grid>
@@ -156,7 +167,7 @@ const FirebaseLogin = ({ ...rest }) => {
             )}
 
             <Box mt={2}>
-              <Button color="primary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
+              <Button color="secondary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
                 Log In
               </Button>
             </Box>

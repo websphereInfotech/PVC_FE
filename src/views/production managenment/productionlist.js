@@ -47,14 +47,14 @@ const ProductionListPage = () => {
   };
 
   return (
-    <Container style={{ padding: '10px' }}>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+    <Container>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Production List
         </Typography>
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           onClick={handleAddProduction}
           style={{ margin: '16px', alignSelf: 'flex-end', display: 'flex' }}
         >

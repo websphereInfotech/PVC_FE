@@ -230,7 +230,7 @@ const Default = () => {
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <LinearProgress variant="determinate" aria-label="Referral" value={20} color="warning" />
+                        <LinearProgress variant="determinate" aria-label="Referral" value={20} color="error" />
                       </Grid>
                     </Grid>
                   </Grid>

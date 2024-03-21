@@ -11,8 +11,8 @@ const MachineInventoryPage = () => {
   console.log(setMachines);
   return (
     <Container>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Machine Inventory
         </Typography>
         <TableContainer component={Paper}>

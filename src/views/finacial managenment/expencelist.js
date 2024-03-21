@@ -23,11 +23,11 @@ const ExpensePage = () => {
 
   return (
     <Container>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '20px' }}>
+      <Card style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Expense
         </Typography>
-        <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleAddExpense}>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddExpense}>
           Add Expense
         </Button>
         <Table>
@@ -44,7 +44,7 @@ const ExpensePage = () => {
                 <TableCell>${expense.amount}</TableCell>
                 <TableCell>{expense.status}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary" onClick={handleViewExpense}>
+                  <Button variant="outlined" color="secondary" onClick={handleViewExpense}>
                     View
                   </Button>
                 </TableCell>

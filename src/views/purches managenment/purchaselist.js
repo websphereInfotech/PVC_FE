@@ -34,12 +34,12 @@ const PurchaseOrderList = () => {
   };
 
   return (
-    <Container style={{ padding: '24px' }}>
-      <Card>
-        <Typography variant="h4" align="center" style={{ margin: '16px' }}>
+    <Container>
+      <Card style={{ padding: '24px' }}>
+        <Typography variant="h4" align="center" id="mycss">
           Purchase Order List
         </Typography>
-        <Button variant="contained" color="primary" style={{ margin: '16px' }} onClick={handleaddpurchse}>
+        <Button variant="contained" style={{ margin: '16px', backgroundColor: '#425466' }} onClick={handleaddpurchse}>
           Create New Purchase Order
         </Button>
         <Table>
@@ -64,7 +64,7 @@ const PurchaseOrderList = () => {
                 <TableCell>{order.billDate}</TableCell>
                 <TableCell>{order.status}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary">
+                  <Button variant="outlined" color="secondary">
                     View
                   </Button>
                 </TableCell>

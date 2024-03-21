@@ -14,10 +14,10 @@ const ExpenseDetailsPage = () => {
 
   return (
     <Container style={{ padding: '24px' }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Expense Details
-      </Typography>
-      <Paper elevation={3} style={{ padding: '24px', backgroundColor: '#f0f0f0' }}>
+      <Paper elevation={3} style={{ padding: '25px' }}>
+        <Typography variant="h4" align="center" gutterBottom id="mycss">
+          Expense Details
+        </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <Typography variant="subtitle1">ID: {expense.id}</Typography>
@@ -31,10 +31,10 @@ const ExpenseDetailsPage = () => {
             <Typography variant="subtitle1">Description: {expense.description}</Typography>
           </Grid>
         </Grid>
+        <Button variant="contained" color="secondary" style={{ marginTop: '24px' }}>
+          Edit Expense
+        </Button>
       </Paper>
-      <Button variant="contained" color="primary" style={{ marginTop: '24px' }}>
-        Edit Expense
-      </Button>
     </Container>
   );
 };
