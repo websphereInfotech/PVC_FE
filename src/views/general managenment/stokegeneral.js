@@ -27,53 +27,46 @@ const StyledInput = withStyles((theme) => ({
   }
 }))(InputBase);
 
-const StockManagement = () => {
+const Stokegeneral = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Add Stock Adjust
+          Create Stoke General
         </Typography>
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Doc No.</Typography>
-              <StyledInput placeholder="ADJ0102" fullWidth />
+              <Typography variant="subtitle1">SG Date</Typography>
+              <StyledInput type="date" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Entry Date</Typography>
-              <StyledInput type="date" fullWidth />
+              <Typography variant="subtitle1">SG No.</Typography>
+              <StyledInput placeholder="SG0102" fullWidth />
             </Grid>
           </Grid>
 
           <Grid item xs={12}>
-            <div style={{ overflowX: 'auto' }}>
+            <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
+              <h4 style={{ display: 'flex', justifyContent: 'center', fontWeight: '600' }}>Source/Consumption</h4>
               <Table>
                 <TableHead>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '200px' }}>ITEM NAME</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>UNIT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>COMPU. STK.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>BATCH NO.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>PHYSICAL STK.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>ADJ.QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>ADJUST COMMENT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>WASTAGE QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>WASTAGE COMMENT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CONSUME QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CONSUME COMMENT</TableCell>
-                  {/* <TableCell sx={{ fontSize: '12px', padding: '8px' }}>TAXABLE AMT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>GST RATE(%)</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CESS(%)</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>AMOUNT (₹)</TableCell> */}
-                  {/* <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell> */}
+                  <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
+                  <TableCell width={600} sx={{ fontSize: '12px' }}>
+                    ITEM
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
               </Table>
-              <p style={{ display: 'flex', justifyContent: 'center' }}>No item created yet</p>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>Stock item not found</p>
             </div>
           </Grid>
-          {/* <Grid item xs={12}>
+          <Grid item xs={12}>
             {isMobile ? (
               <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
                 <Typography variant="subtitle1">SUBTOTAL: ₹10.00</Typography>
@@ -85,63 +78,69 @@ const StockManagement = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '20%' }}>
                       <Typography variant="subtitle1">SUBTOTAL</Typography>
                       <Typography variant="subtitle1" style={{ paddingRight: '5px' }}>
-                        ₹0.00
-                      </Typography>
-                      <Typography variant="subtitle1" style={{ paddingRight: '5px' }}>
-                        ₹0.00
+                        ₹10.00
                       </Typography>
                     </div>
                   </div>
                 </TableHead>
               </Table>
             )}
-          </Grid> */}
-          {/* 
+          </Grid>
+          <Grid item xs={12}>
+            <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
+              <h4 style={{ display: 'flex', justifyContent: 'center', fontWeight: '600' }}>Destination/Production</h4>
+              <Table>
+                <TableHead>
+                  <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
+                  <TableCell width={600} sx={{ fontSize: '12px' }}>
+                    ITEM
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
+                </TableHead>
+              </Table>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>No item created yet</p>
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            {isMobile ? (
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+                <Typography variant="subtitle1">SUBTOTAL: ₹10.00</Typography>
+              </div>
+            ) : (
+              <Table>
+                <TableHead>
+                  <div style={{ display: 'flex', justifyContent: 'end' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '20%' }}>
+                      <Typography variant="subtitle1">SUBTOTAL</Typography>
+                      <Typography variant="subtitle1" style={{ paddingRight: '5px' }}>
+                        ₹10.00
+                      </Typography>
+                    </div>
+                  </div>
+                </TableHead>
+              </Table>
+            )}
+          </Grid>
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on sepadebit lines
               <>
                 <div
                   style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <p>Taxable Amt</p>
-                  <p>₹0.00</p>
-                </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <p>SGST</p>
-                  <p>₹0.00</p>
-                </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <p>CGST</p>
-                  <p>₹0.00</p>
-                </div>
-                <div
-                  style={{
                     borderBottom: '0.2px solid lightgrey',
                     borderTop: '0.2px solid lightgrey',
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    margin: '5px 0px'
                   }}
                 >
-                  <p>Sub Total</p>
-                  <p>₹0.00</p>
+                  <p>Total Amt.</p>
+                  <p>₹0</p>
+                  <p>₹0</p>
                 </div>
               </>
             ) : (
@@ -149,49 +148,21 @@ const StockManagement = () => {
               <div style={{ float: 'right', width: '30%' }}>
                 <div
                   style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <p>Taxable Amt</p>
-                  <p>₹0.00</p>
-                </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <p>SGST</p>
-                  <p>₹0.00</p>
-                </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <p>CGST</p>
-                  <p>₹0.00</p>
-                </div>
-                <div
-                  style={{
                     borderBottom: '0.2px solid lightgrey',
                     borderTop: '0.2px solid lightgrey',
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    margin: '10px'
                   }}
                 >
-                  <p>Sub Total</p>
-                  <p>₹0.00</p>
+                  <p>Total Amt.</p>
+                  <p>₹0</p>
+                  <p>₹0</p>
                 </div>
               </div>
             )}
-          </Grid> */}
+          </Grid>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -243,7 +214,7 @@ const StockManagement = () => {
                 </button>
               </div>
               <div style={{ display: 'flex' }}>
-                {/* <button
+                <button
                   style={{
                     width: '130px',
                     color: '#425466',
@@ -256,7 +227,7 @@ const StockManagement = () => {
                   }}
                 >
                   Save & Next
-                </button> */}
+                </button>
                 <button
                   style={{
                     width: '100px',
@@ -279,4 +250,4 @@ const StockManagement = () => {
   );
 };
 
-export default StockManagement;
+export default Stokegeneral;

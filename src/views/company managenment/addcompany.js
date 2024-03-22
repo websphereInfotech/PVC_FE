@@ -1,161 +1,278 @@
-import React from 'react';
-import { Container, Typography, TextField, Button, Grid, MenuItem, Card } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Grid, Paper, InputBase, Table, TableCell, TableBody, TableRow, Card } from '@mui/material';
+import { withStyles } from '@mui/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import { useMediaQuery } from '@mui/material';
+// Custom styled input component
+const StyledInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3)
+    }
+  },
+  input: {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    width: '100%',
+    padding: '10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    '&:focus': {
+      boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
+      borderColor: theme.palette.secondary.main
+    }
+  }
+}))(InputBase);
 
 const AddCompanyForm = () => {
-  const [country, setCountry] = React.useState('');
-  const [state, setState] = React.useState('');
-  const [currency, setCurrency] = React.useState('');
+  const [rows, setRows] = useState([{ srNo: 1, account: '', description: '', debit: '', credit: '' }]);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
-  const handleCountryChange = (event) => {
-    setCountry(event.target.value);
+  const handleAddRow = () => {
+    const newRow = { srNo: rows.length + 1, account: '', description: '', debit: '', credit: '' };
+    setRows([...rows, newRow]);
   };
 
-  const handleStateChange = (event) => {
-    setState(event.target.value);
+  const handleInputChange = (srNo, field, value) => {
+    const updatedRows = rows.map((row) => {
+      if (row.srNo === srNo) {
+        return { ...row, [field]: value };
+      }
+      return row;
+    });
+    setRows(updatedRows);
   };
 
-  const handleCurrencyChange = (event) => {
-    setCurrency(event.target.value);
+  const handleDeleteRow = (srNo) => {
+    const updatedRows = rows.filter((row) => row.srNo !== srNo);
+    // Update serial numbers after deletion
+    const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
+      ...row,
+      srNo: index + 1
+    }));
+    setRows(updatedRowsWithSerialNumbers);
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
-
   return (
-    <Container>
-      <Card style={{ padding: '20px' }}>
-        <Typography
-          variant="h4"
-          align="center"
-          style={{
-            margin: '10px',
-            padding: '10px',
-            backgroundColor: '#425466',
-            borderRadius: '10px',
-            color: 'white'
-          }}
-        >
-          Add Company
+    <Paper elevation={4} style={{ padding: '24px' }}>
+      <div>
+        <Typography variant="h4" align="center" gutterBottom id="mycss">
+          Create Account
         </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Company Name
-              </Typography>
-              <TextField label="Company Name" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Email Id
-              </Typography>
-              <TextField label="Email Id" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Contact No.
-              </Typography>
-              <TextField label="Contact No." fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Mobile No.
-              </Typography>
-              <TextField label="Mobile No." fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Contact Person Name
-              </Typography>
-              <TextField label="Contact Person Name" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                GST No.
-              </Typography>
-              <TextField label="GST No." fullWidth color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Address
-              </Typography>
-              <TextField label="Address" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Country
-              </Typography>
-              <TextField label="Country" fullWidth select color="secondary" value={country} onChange={handleCountryChange}>
-                <MenuItem value="USA">USA</MenuItem>
-                <MenuItem value="Canada">Canada</MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                State
-              </Typography>
-              <TextField label="State" fullWidth select color="secondary" value={state} onChange={handleStateChange}>
-                <MenuItem value="New York">New York</MenuItem>
-                <MenuItem value="California">California</MenuItem>
-                {/* Add more states as needed */}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Pincode
-              </Typography>
-              <TextField label="Pincode" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Cin
-              </Typography>
-              <TextField label="Cin" fullWidth color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Website
-              </Typography>
-              <TextField label="Website" fullWidth color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Currency
-              </Typography>
-              <TextField label="Currency" fullWidth select color="secondary" value={currency} onChange={handleCurrencyChange}>
-                <MenuItem value="USD">USD</MenuItem>
-                <MenuItem value="CAD">CAD</MenuItem>
-                {/* Add more currencies as needed */}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                PAN No
-              </Typography>
-              <TextField label="PAN No" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Company Suffix
-              </Typography>
-              <TextField label="Company Suffix" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Wallet Balance
-              </Typography>
-              <TextField label="Wallet Balance" fullWidth required color="secondary" />
-            </Grid>
-            <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', borderRadius: '10px' }}>
-              <Button type="submit" variant="contained" color="secondary">
-                Save
-              </Button>
+        <Grid container style={{ marginBottom: '16px' }}>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            {/* First row containing the first 4 grid inputs */}
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Under group</Typography>
+              <StyledInput placeholder="Gv001" fullWidth />
             </Grid>
           </Grid>
-        </form>
-      </Card>
-    </Container>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            {/* First row containing the first 4 grid inputs */}
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Account Name</Typography>
+              <StyledInput placeholder="Gv001" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Shorts/Alias Name</Typography>
+              <StyledInput type="date" fullWidth />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            {/* First row containing the first 4 grid inputs */}
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Email</Typography>
+              <StyledInput placeholder="example@gmail.com" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Contact person name</Typography>
+              <StyledInput placeholder="Enter name" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Mobile No.</Typography>
+              <StyledInput placeholder="Mobile no." fullWidth />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">PAN/IT/TAN No.</Typography>
+              <StyledInput placeholder="BJXXXXAJ" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Default Credit Period (In days)</Typography>
+              <StyledInput placeholder="Default Credit Period (In days)" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Mode</Typography>
+              <StyledInput placeholder="cheque" fullWidth />
+            </Grid>
+          </Grid>
+          <Typography variant="h5" align="center" gutterBottom>
+            Mailing Details
+          </Typography>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Address 1</Typography>
+              <StyledInput placeholder="Floor NO.,Building Name" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Address 2</Typography>
+              <StyledInput placeholder="Near by Location" fullWidth />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Country</Typography>
+              <StyledInput placeholder="Country" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">Pincode</Typography>
+              <StyledInput placeholder="Pincode" fullWidth />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">State</Typography>
+              <StyledInput placeholder="State" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">City</Typography>
+              <StyledInput placeholder="city" fullWidth />
+            </Grid>
+          </Grid>
+          <Card sx={{ padding: '15px' }}>
+            <Grid item xs={12} sm={6} md>
+              <div style={{ overflowX: 'auto' }}>
+                <Typography variant="h6" align="left" gutterBottom>
+                  Custom Feild
+                </Typography>
+                <Table>
+                  <TableCell>Lable</TableCell>
+                  <TableCell>Value</TableCell>
+                  <TableCell>Delete</TableCell>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <TableRow key={row.srNo}>
+                        <TableCell>
+                          <StyledInput
+                            // full
+                            placeholder="Enter label"
+                            onChange={(e) => handleInputChange(row.lable, 'label', e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <StyledInput
+                            placeholder="Enter value"
+                            // value={row.account}
+                            fullWidth
+                            onChange={(e) => handleInputChange(row.value, 'value', e.target.value)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo)} />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </Grid>
+          </Card>
+          <Grid item xs={12}>
+            <button
+              style={{
+                width: '100px',
+                color: '#425466',
+                borderColor: '#425466',
+                padding: '2px',
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: '5px',
+                lineHeight: '19px',
+                marginTop: '5px'
+              }}
+              onClick={handleAddRow}
+            >
+              <AddIcon sx={{ fontSize: '18px' }} /> Add Row
+            </button>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6" sx={{ marginTop: '15px' }}>
+              Opening Balance
+            </Typography>
+            <StyledInput placeholder="₹0" fullWidth />
+          </Grid>
+          {isMobile ? (
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px',
+                    marginRight: '5px'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </Grid>
+          ) : (
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0px' }}>
+              <div>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+              <div style={{ display: 'flex' }}>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </Grid>
+          )}
+        </Grid>
+      </div>
+    </Paper>
   );
 };
 

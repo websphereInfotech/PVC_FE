@@ -27,23 +27,27 @@ const StyledInput = withStyles((theme) => ({
   }
 }))(InputBase);
 
-const StockManagement = () => {
+const Salesreturn = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Add Stock Adjust
+          Create Stoke General
         </Typography>
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Doc No.</Typography>
-              <StyledInput placeholder="ADJ0102" fullWidth />
+              <Typography variant="subtitle1">Customer</Typography>
+              <StyledInput placeholder="Enter customer" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Entry Date</Typography>
+              <Typography variant="subtitle1">Credit Note No.</Typography>
+              <StyledInput placeholder="CN0102" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Credit Note Date</Typography>
               <StyledInput type="date" fullWidth />
             </Grid>
           </Grid>
@@ -52,28 +56,27 @@ const StockManagement = () => {
             <div style={{ overflowX: 'auto' }}>
               <Table>
                 <TableHead>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '200px' }}>ITEM NAME</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>UNIT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>COMPU. STK.</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>Sr.NO.</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>PRODUCT</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>BATCH NO.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>PHYSICAL STK.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>ADJ.QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>ADJUST COMMENT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>WASTAGE QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>WASTAGE COMMENT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CONSUME QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CONSUME COMMENT</TableCell>
-                  {/* <TableCell sx={{ fontSize: '12px', padding: '8px' }}>TAXABLE AMT</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '150px' }}>EXPR.DATE</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>MRP</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>INVOICE NO</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>INVOICE DATE</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '150px' }}>INVOICE QTY</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>QTY</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>RATE (₹)</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>TAXABLE AMT</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>GST RATE(%)</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CESS(%)</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>AMOUNT (₹)</TableCell> */}
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>AMOUNT (₹)</TableCell>
                   {/* <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell> */}
                 </TableHead>
               </Table>
-              <p style={{ display: 'flex', justifyContent: 'center' }}>No item created yet</p>
+              <p style={{ display: 'flex', justifyContent: 'center' }}>You have not select any customer!</p>
             </div>
           </Grid>
-          {/* <Grid item xs={12}>
+          <Grid item xs={12}>
             {isMobile ? (
               <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
                 <Typography variant="subtitle1">SUBTOTAL: ₹10.00</Typography>
@@ -95,8 +98,8 @@ const StockManagement = () => {
                 </TableHead>
               </Table>
             )}
-          </Grid> */}
-          {/* 
+          </Grid>
+
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on sepadebit lines
@@ -191,7 +194,7 @@ const StockManagement = () => {
                 </div>
               </div>
             )}
-          </Grid> */}
+          </Grid>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -243,7 +246,7 @@ const StockManagement = () => {
                 </button>
               </div>
               <div style={{ display: 'flex' }}>
-                {/* <button
+                <button
                   style={{
                     width: '130px',
                     color: '#425466',
@@ -256,7 +259,7 @@ const StockManagement = () => {
                   }}
                 >
                   Save & Next
-                </button> */}
+                </button>
                 <button
                   style={{
                     width: '100px',
@@ -279,4 +282,4 @@ const StockManagement = () => {
   );
 };
 
-export default StockManagement;
+export default Salesreturn;
