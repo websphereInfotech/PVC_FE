@@ -3,6 +3,7 @@ import React, { lazy } from 'react';
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
+import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
 // const UtilsTypography = Loadable(lazy(() => import('../views/Utils/Typography')));
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
@@ -27,11 +28,17 @@ const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managen
 
 const Qutation = Loadable(lazy(() => import('../views/sale managenment/qutation')));
 
+const Quotationmain = Loadable(lazy(() => import('../views/sale managenment/qutationmain')));
+
 const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/dileverychalln')));
 
 const Salesreturn = Loadable(lazy(() => import('../views/sale managenment/salesreturn')));
 
+const Salesreturnmain = Loadable(lazy(() => import('../views/sale managenment/salesreturnmain')));
+
 const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/salesinvoice')));
+
+const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
 
 const PurchaseOrderList = Loadable(lazy(() => import('../views/purches managenment/purchaselist')));
 
@@ -51,6 +58,8 @@ const Product = Loadable(lazy(() => import('../views/production managenment/prod
 
 const StockManagement = Loadable(lazy(() => import('../views/stoke managenment/stoke')));
 
+const Stockmain = Loadable(lazy(() => import('../views/stoke managenment/stokemain')));
+
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
@@ -60,6 +69,8 @@ const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee 
 const AddUserForm = Loadable(lazy(() => import('../views/usermanagenment')));
 
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
+
+const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
 
@@ -90,9 +101,13 @@ const MainRoutes = {
     { path: '/addexpense', element: <AddExpense /> },
     { path: '/viewexpense', element: <ExpenseDetailsPage /> },
     { path: '/qutation', element: <Qutation /> },
+    { path: '/qutationmain', element: <Quotationmain /> },
     { path: '/salesinvoice', element: <Salesinvoice /> },
+    { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
     { path: '/deliverychallan', element: <Deliverychallan /> },
+    { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
     { path: '/salesreturn', element: <Salesreturn /> },
+    { path: '/salesreturnmain', element: <Salesreturnmain /> },
     { path: '/purchaselist', element: <PurchaseOrderList /> },
     { path: '/addpurchase', element: <AddPurchasePage /> },
     { path: '/companylist', element: <CompanyList /> },
@@ -101,12 +116,14 @@ const MainRoutes = {
     { path: '/addproduction', element: <AddProductionPage /> },
     { path: '/products', element: <Product /> },
     { path: '/stock', element: <StockManagement /> },
+    { path: '/stockmain', element: <Stockmain /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
     { path: '/adduser', element: <AddUserForm /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
+    { path: '/generalmain', element: <Generalmain /> },
     { path: '/stokegeneral', element: <Stokegeneral /> },
     { path: '/reports', element: <Reports /> }
   ]

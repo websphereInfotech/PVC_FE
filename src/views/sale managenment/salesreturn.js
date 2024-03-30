@@ -34,7 +34,7 @@ const Salesreturn = () => {
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Stoke General
+          Create Sales Return
         </Typography>
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>

@@ -140,25 +140,25 @@ export default {
                   id: 'qutation',
                   title: 'Qutation',
                   type: 'item',
-                  url: '/qutation'
+                  url: '/qutationmain'
                 },
                 {
                   id: 'Delivery Challan',
                   title: 'Delivery Challan',
                   type: 'item',
-                  url: '/deliverychallan'
+                  url: '/deliverychallanmain'
                 },
                 {
                   id: 'sales invoice',
                   title: 'Sales Invoice',
                   type: 'item',
-                  url: '/salesinvoice'
+                  url: '/salesinvoicemain'
                 },
                 {
                   id: 'sales return',
                   title: 'Sales Return',
                   type: 'item',
-                  url: '/salesreturn'
+                  url: '/salesreturnmain'
                 }
               ]
             },
@@ -181,13 +181,13 @@ export default {
               title: 'Expense',
               type: 'item',
               url: '/expenselist'
-            },
-            {
-              id: 'general',
-              title: 'general',
-              type: 'item',
-              url: '/productionreport'
             }
+            // {
+            //   id: 'general',
+            //   title: 'general',
+            //   type: 'item',
+            //   url: '/productionreport'
+            // }
           ]
         }
       ]
@@ -296,7 +296,7 @@ export default {
               id: 'Stoke',
               title: 'Total Stoke',
               type: 'item',
-              url: '/stock'
+              url: '/stockmain'
             },
             {
               id: 'Report',
@@ -348,7 +348,7 @@ export default {
               id: 'Ganeral Voucher',
               title: 'Ganeral Voucher',
               type: 'item',
-              url: '/generalpage'
+              url: '/generalmain'
             },
             {
               id: 'Stoke general',
