@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { withStyles } from '@mui/styles';
+import Select from 'react-select';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
+import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -30,6 +33,8 @@ const StyledInput = withStyles((theme) => ({
 const Salesinvoice = () => {
   const [rows, setRows] = useState([{ srNo: 1, product: '', qty: '', rate: '', amount: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
 
   const handleAddRow = () => {
     const newRow = { srNo: rows.length + 1, product: '', qty: '', rate: '', amount: '' };
@@ -55,6 +60,32 @@ const Salesinvoice = () => {
     }));
     setRows(updatedRowsWithSerialNumbers);
   };
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'customer') {
+      setIsDrawerOpen(true);
+    } else {
+      setIsDrawerOpen(false);
+    }
+  };
+  const handleSelectproductChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'product') {
+      setIsproductDrawerOpen(true);
+    } else {
+      setIsproductDrawerOpen(false);
+    }
+  };
+  const options = [
+    {
+      value: 'customer',
+      label: 'create new customer'
+    }
+  ];
+  const product = [
+    {
+      value: 'product',
+      label: 'create new product'
+    }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -63,11 +94,11 @@ const Salesinvoice = () => {
         </Typography>
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            {/* First row containing the first 4 grid inputs */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Customer</Typography>
-              <StyledInput placeholder="Enter Customer" fullWidth />
+              <Select color="secondary" options={options} onChange={handleSelectChange} />
             </Grid>
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Mobile No.</Typography>
               <StyledInput placeholder="Enter Mobile No." fullWidth />
@@ -135,13 +166,9 @@ const Salesinvoice = () => {
                         />
                       </TableCell>
                       <TableCell sx={{ padding: '5px' }}>
-                        <StyledInput
-                          placeholder="Enter nature of expense"
-                          // value={row.product}
-                          fullWidth
-                          onChange={(e) => handleInputChange(row.product, 'product', e.target.value)}
-                        />
+                        <Select color="secondary" options={product} onChange={handleSelectproductChange} />
                       </TableCell>
+                      <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                       <TableCell sx={{ padding: '5px' }}>
                         <StyledInput
                           placeholder="qty"

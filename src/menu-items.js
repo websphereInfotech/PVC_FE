@@ -173,6 +173,18 @@ export default {
                   title: 'Purchase Orders',
                   type: 'item',
                   url: '/purchaselist'
+                },
+                {
+                  id: 'Purchase Bill',
+                  title: 'Purchase Bill',
+                  type: 'item',
+                  url: '/purchasebill'
+                },
+                {
+                  id: 'Purchase Return',
+                  title: 'Purchase Return',
+                  type: 'item',
+                  url: '/purchasereturn'
                 }
               ]
             },

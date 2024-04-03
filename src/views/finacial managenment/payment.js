@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell } from '@mui/material';
 import { withStyles } from '@mui/styles';
+import Select from 'react-select';
+import AnchorTemporaryDrawer from '../../component/customerqutation';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
@@ -28,33 +30,21 @@ const StyledInput = withStyles((theme) => ({
 }))(InputBase);
 
 const PaymentPage = () => {
-  // const [rows, setRows] = useState([{ srNo: 1, natureofexpencse: '', description: '', rate: '', amount: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
-
-  // const handleAddRow = () => {
-  //   const newRow = { srNo: rows.length + 1, natureofexpencse: '', description: '', rate: '', amount: '' };
-  //   setRows([...rows, newRow]);
-  // };
-
-  // const handleInputChange = (srNo, field, value) => {
-  //   const updatedRows = rows.map((row) => {
-  //     if (row.srNo === srNo) {
-  //       return { ...row, [field]: value };
-  //     }
-  //     return row;
-  //   });
-  //   setRows(updatedRows);
-  // };
-
-  // const handleDeleteRow = (srNo) => {
-  //   const updatedRows = rows.filter((row) => row.srNo !== srNo);
-  //   // Update serial numbers after deletion
-  //   const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
-  //     ...row,
-  //     srNo: index + 1
-  //   }));
-  //   setRows(updatedRowsWithSerialNumbers);
-  // };
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'customer') {
+      setIsDrawerOpen(true);
+    } else {
+      setIsDrawerOpen(false);
+    }
+  };
+  const options = [
+    {
+      value: 'customer',
+      label: 'create new customer'
+    }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -63,11 +53,11 @@ const PaymentPage = () => {
         </Typography>
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            {/* First row containing the first 4 grid inputs */}
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Voucher No.</Typography>
-              <StyledInput placeholder="Enter Voucher No." fullWidth />
+              <Typography variant="subtitle1">Vendor</Typography>
+              <Select color="secondary" options={options} onChange={handleSelectChange} />
             </Grid>
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Account</Typography>
               <StyledInput placeholder="Enter Account" fullWidth />

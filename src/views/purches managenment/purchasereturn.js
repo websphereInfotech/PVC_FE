@@ -29,7 +29,7 @@ const StyledInput = withStyles((theme) => ({
   }
 }))(InputBase);
 
-const Salesreturn = () => {
+const Purchasereturn = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const handleSelectChange = (selectedOption) => {
@@ -50,21 +50,29 @@ const Salesreturn = () => {
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Sales Return
+          Create Purchase Return
         </Typography>
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Customer</Typography>
+              <Typography variant="subtitle1">Vendor</Typography>
               <Select color="secondary" options={options} onChange={handleSelectChange} />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Credit Note No.</Typography>
+              <Typography variant="subtitle1">Debit Note No.</Typography>
               <StyledInput placeholder="CN0102" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Credit Note Date</Typography>
+              <Typography variant="subtitle1">Debit Note Date</Typography>
+              <StyledInput type="date" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Reference No.</Typography>
+              <StyledInput placeholder="AD00/02" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Reference Date</Typography>
               <StyledInput type="date" fullWidth />
             </Grid>
           </Grid>
@@ -74,20 +82,18 @@ const Salesreturn = () => {
               <Table>
                 <TableHead>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>Sr.NO.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>PRODUCT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>BATCH NO.</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '150px' }}>EXPR.DATE</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '180px' }}>PRODUCT</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '0px' }}>BATCH NO.</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '0px', width: '150px' }}>EXPR.DATE</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>MRP</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>INVOICE NO</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>INVOICE DATE</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '150px' }}>INVOICE QTY</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px', width: '150px' }}>Bill NO</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>Bill DATE</TableCell>
+                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>Bill QTY</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>QTY</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>RATE (₹)</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>TAXABLE AMT</TableCell>
-                  <TableCell sx={{ fontSize: '12px', padding: '8px' }}>GST RATE(%)</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>CESS(%)</TableCell>
                   <TableCell sx={{ fontSize: '12px', padding: '8px' }}>AMOUNT (₹)</TableCell>
-                  {/* <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell> */}
                 </TableHead>
               </Table>
               <p style={{ display: 'flex', justifyContent: 'center' }}>You have not select any customer!</p>
@@ -299,4 +305,4 @@ const Salesreturn = () => {
   );
 };
 
-export default Salesreturn;
+export default Purchasereturn;

@@ -5,8 +5,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from './customerqutation';
-import AnchorProductDrawer from './productquotation';
+import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorProductDrawer from '../../component/productquotation';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -33,6 +33,7 @@ const StyledInput = withStyles((theme) => ({
 const Qutation = () => {
   const [rows, setRows] = useState([{ srNo: 1, product: '', qty: '', rate: '', amount: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
 
   const handleAddRow = () => {
@@ -60,10 +61,17 @@ const Qutation = () => {
     setRows(updatedRowsWithSerialNumbers);
   };
   const handleSelectChange = (selectedOption) => {
-    if ((selectedOption && selectedOption.value === 'customer') || (selectedOption && selectedOption.value === 'product')) {
+    if (selectedOption && selectedOption.value === 'customer') {
       setIsDrawerOpen(true);
     } else {
       setIsDrawerOpen(false);
+    }
+  };
+  const handleSelectproductChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'product') {
+      setIsproductDrawerOpen(true);
+    } else {
+      setIsproductDrawerOpen(false);
     }
   };
   const options = [
@@ -140,9 +148,9 @@ const Qutation = () => {
                         />
                       </TableCell>
                       <TableCell sx={{ padding: '5px' }}>
-                        <Select color="secondary" options={product} onChange={handleSelectChange} />
+                        <Select color="secondary" options={product} onChange={handleSelectproductChange} />
                       </TableCell>
-                      <AnchorProductDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+                      <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                       <TableCell sx={{ padding: '5px' }}>
                         <StyledInput
                           placeholder="qty"

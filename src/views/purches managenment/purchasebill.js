@@ -30,7 +30,7 @@ const StyledInput = withStyles((theme) => ({
   }
 }))(InputBase);
 
-const AddPurchasePage = () => {
+const Purchasebill = () => {
   const [rows, setRows] = useState([{ srNo: 1, productService: '', qty: '', rate: '', discount: '', amount: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -89,38 +89,53 @@ const AddPurchasePage = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" gutterBottom id="mycss">
-        Add Purchase
+        Create Purchase Bill
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Vendor</Typography>
-          <Select color="secondary" options={options} onChange={handleSelectChange} />
+      <Grid container spacing={2} sx={{ padding: '0px 20px' }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Vendor</Typography>
+            <Select color="secondary" options={options} onChange={handleSelectChange} />
+          </Grid>
+          <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Mobile No.</Typography>
+            <StyledInput placeholder="Enter Mobile number" fullWidth />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Email</Typography>
+            <StyledInput placeholder="Enter Email" fullWidth />
+          </Grid>
         </Grid>
-        <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Mobile No.</Typography>
-          <StyledInput placeholder="Enter Mobile number" fullWidth />
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Bill Date</Typography>
+            <StyledInput type="date" fullWidth />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Bill No</Typography>
+            <StyledInput placeholder="Enter Bill No" fullWidth />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Terms (Days)</Typography>
+            <StyledInput placeholder="Enter Terms (Days)" fullWidth />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Due Date</Typography>
+            <StyledInput type="date" fullWidth />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Email</Typography>
-          <StyledInput placeholder="Enter Email" fullWidth />
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Book</Typography>
+            <StyledInput placeholder="Enter Terms (Days)" fullWidth />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">PO No</Typography>
+            <StyledInput placeholder="Enter PO No." type="date" fullWidth />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Po No.</Typography>
-          <StyledInput placeholder="Enter " fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Po Date</Typography>
-          <StyledInput type="date" fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation No.</Typography>
-          <StyledInput placeholder="Enter quotation number" fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation Ref.</Typography>
-          <StyledInput placeholder="Enter reference number" fullWidth />
-        </Grid>
+
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>
@@ -324,4 +339,4 @@ const AddPurchasePage = () => {
   );
 };
 
-export default AddPurchasePage;
+export default Purchasebill;

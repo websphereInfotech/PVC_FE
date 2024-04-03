@@ -4,6 +4,8 @@ import React, { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
 import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
+import Purchasereturn from 'views/purches managenment/purchasereturn';
+import Purchaseview from 'views/purches managenment/purchaseview';
 // const UtilsTypography = Loadable(lazy(() => import('../views/Utils/Typography')));
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
@@ -43,6 +45,8 @@ const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/s
 const PurchaseOrderList = Loadable(lazy(() => import('../views/purches managenment/purchaselist')));
 
 const AddPurchasePage = Loadable(lazy(() => import('../views/purches managenment/purchaseadd')));
+
+const Purchasebill = Loadable(lazy(() => import('../views/purches managenment/purchasebill')));
 
 const CompanyList = Loadable(lazy(() => import('../views/company managenment/companylist')));
 
@@ -110,6 +114,9 @@ const MainRoutes = {
     { path: '/salesreturnmain', element: <Salesreturnmain /> },
     { path: '/purchaselist', element: <PurchaseOrderList /> },
     { path: '/addpurchase', element: <AddPurchasePage /> },
+    { path: '/purchasebill', element: <Purchasebill /> },
+    { path: '/purchasereturn', element: <Purchasereturn /> },
+    { path: '/purchaseview', element: <Purchaseview /> },
     { path: '/companylist', element: <CompanyList /> },
     { path: '/addcompany', element: <AddCompanyForm /> },
     { path: '/productionlist', element: <ProductionListPage /> },

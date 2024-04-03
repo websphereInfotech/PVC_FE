@@ -5,8 +5,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from './customerqutation';
-import AnchorDeliverychallanProductDrawer from './deliverychallanproduct';
+import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -34,6 +34,7 @@ const Deliverychallan = () => {
   const [rows, setRows] = useState([{ srNo: 1, product: '', qty: '', rate: '', amount: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
 
   const handleAddRow = () => {
     const newRow = { srNo: rows.length + 1, product: '', qty: '', rate: '', amount: '' };
@@ -60,10 +61,17 @@ const Deliverychallan = () => {
     setRows(updatedRowsWithSerialNumbers);
   };
   const handleSelectChange = (selectedOption) => {
-    if ((selectedOption && selectedOption.value === 'customer') || (selectedOption && selectedOption.value === 'product')) {
+    if (selectedOption && selectedOption.value === 'customer') {
       setIsDrawerOpen(true);
     } else {
       setIsDrawerOpen(false);
+    }
+  };
+  const handleSelectproductChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'product') {
+      setIsproductDrawerOpen(true);
+    } else {
+      setIsproductDrawerOpen(false);
     }
   };
   const options = [
@@ -146,9 +154,9 @@ const Deliverychallan = () => {
                           />
                         </TableCell>
                         <TableCell sx={{ padding: '5px' }}>
-                          <Select color="secondary" options={product} onChange={handleSelectChange} />
+                          <Select color="secondary" options={product} onChange={handleSelectproductChange} />
                         </TableCell>
-                        <AnchorDeliverychallanProductDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+                        <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                         <TableCell sx={{ padding: '5px', display: 'flex', justifyContent: 'center' }}>N/A</TableCell>
                         <TableCell sx={{ padding: '5px' }}>
                           <StyledInput

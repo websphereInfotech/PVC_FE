@@ -64,7 +64,7 @@ const PurchaseOrderList = () => {
                 <TableCell>{order.billDate}</TableCell>
                 <TableCell>{order.status}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="secondary">
+                  <Button variant="outlined" color="secondary" href="/purchaseview">
                     View
                   </Button>
                 </TableCell>

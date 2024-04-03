@@ -4,6 +4,10 @@ import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
+import Select from 'react-select';
+import AnchorTemporaryDrawer from '../../component/customerqutation';
+import Expencedrawer from 'component/expencecreate';
+
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -30,6 +34,8 @@ const StyledInput = withStyles((theme) => ({
 const AddExpense = () => {
   const [rows, setRows] = useState([{ srNo: 1, natureofexpencse: '', description: '', rate: '', amount: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
 
   const handleAddRow = () => {
     const newRow = { srNo: rows.length + 1, natureofexpencse: '', description: '', rate: '', amount: '' };
@@ -55,6 +61,32 @@ const AddExpense = () => {
     }));
     setRows(updatedRowsWithSerialNumbers);
   };
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'customer') {
+      setIsDrawerOpen(true);
+    } else {
+      setIsDrawerOpen(false);
+    }
+  };
+  const handleSelectproductChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'product') {
+      setIsproductDrawerOpen(true);
+    } else {
+      setIsproductDrawerOpen(false);
+    }
+  };
+  const options = [
+    {
+      value: 'customer',
+      label: 'create new customer'
+    }
+  ];
+  const product = [
+    {
+      value: 'product',
+      label: 'create new expence'
+    }
+  ];
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -66,9 +98,10 @@ const AddExpense = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             {/* First row containing the first 4 grid inputs */}
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Vendor</Typography>
-              <StyledInput placeholder="Enter vendor" fullWidth />
+              <Typography variant="subtitle1">Customer</Typography>
+              <Select color="secondary" options={options} onChange={handleSelectChange} />
             </Grid>
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Voucher No.</Typography>
               <StyledInput placeholder="Enter Voucher number" fullWidth />
@@ -131,14 +164,10 @@ const AddExpense = () => {
                           onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
                         />
                       </TableCell>
-                      <TableCell width={420}>
-                        <StyledInput
-                          placeholder="Enter nature of expense"
-                          // value={row.natureofexpencse}
-                          fullWidth
-                          onChange={(e) => handleInputChange(row.natureofexpencse, 'natureofexpencse', e.target.value)}
-                        />
+                      <TableCell sx={{ padding: '5px' }}>
+                        <Select color="secondary" options={product} onChange={handleSelectproductChange} />
                       </TableCell>
+                      <Expencedrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                       <TableCell>
                         <StyledInput
                           placeholder="description"
