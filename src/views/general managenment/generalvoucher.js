@@ -4,6 +4,8 @@ import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
+import Select from 'react-select';
+import AnchorTemporaryDrawer from '../../component/customerqutation';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -35,7 +37,20 @@ const GeneralPage = () => {
     const newRow = { srNo: rows.length + 1, account: '', description: '', debit: '', credit: '' };
     setRows([...rows, newRow]);
   };
-
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.value === 'customer') {
+      setIsDrawerOpen(true);
+    } else {
+      setIsDrawerOpen(false);
+    }
+  };
+  const options = [
+    {
+      value: 'customer',
+      label: 'create new customer'
+    }
+  ];
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
       if (row.srNo === srNo) {
@@ -108,12 +123,8 @@ const GeneralPage = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        <StyledInput
-                          placeholder="Enter nature of expense"
-                          // value={row.account}
-                          fullWidth
-                          onChange={(e) => handleInputChange(row.account, 'account', e.target.value)}
-                        />
+                        <Select color="secondary" options={options} onChange={handleSelectChange} />
+                        <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
                       </TableCell>
                       <TableCell>
                         <StyledInput

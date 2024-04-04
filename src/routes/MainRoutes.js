@@ -6,6 +6,14 @@ import Loadable from 'component/Loadable';
 import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
 import Purchasereturn from 'views/purches managenment/purchasereturn';
 import Purchaseview from 'views/purches managenment/purchaseview';
+import Salesummary from 'component/reports/general reports/salesummary';
+import Saleregister from 'component/reports/general reports/saleregister';
+import Purchasesummary from 'component/reports/general reports/purchasesummary';
+import Purchaseregister from 'component/reports/general reports/purchaseregister';
+import Expensesummary from 'component/reports/general reports/expensesummary';
+import Itemratecard from 'component/reports/general reports/itemratecard';
+import Payablebillwise from 'component/reports/payable reports/payablebillwise';
+import Vendorwise from 'component/reports/payable reports/vendorwise';
 // const UtilsTypography = Loadable(lazy(() => import('../views/Utils/Typography')));
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
@@ -31,6 +39,8 @@ const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managen
 const Qutation = Loadable(lazy(() => import('../views/sale managenment/qutation')));
 
 const Quotationmain = Loadable(lazy(() => import('../views/sale managenment/qutationmain')));
+
+const Qutationlist = Loadable(lazy(() => import('../views/sale managenment/quotationlist')));
 
 const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/dileverychalln')));
 
@@ -105,6 +115,7 @@ const MainRoutes = {
     { path: '/addexpense', element: <AddExpense /> },
     { path: '/viewexpense', element: <ExpenseDetailsPage /> },
     { path: '/qutation', element: <Qutation /> },
+    { path: '/qutationlist', element: <Qutationlist /> },
     { path: '/qutationmain', element: <Quotationmain /> },
     { path: '/salesinvoice', element: <Salesinvoice /> },
     { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
@@ -132,7 +143,16 @@ const MainRoutes = {
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },
     { path: '/stokegeneral', element: <Stokegeneral /> },
-    { path: '/reports', element: <Reports /> }
+    { path: '/reports', element: <Reports /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++Routes of reports +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/salesummary', element: <Salesummary /> },
+    { path: '/saleregister', element: <Saleregister /> },
+    { path: '/purchasesummary', element: <Purchasesummary /> },
+    { path: '/purchaseregister', element: <Purchaseregister /> },
+    { path: '/expensesummary', element: <Expensesummary /> },
+    { path: '/itemratecard', element: <Itemratecard /> },
+    { path: '/billwise', element: <Payablebillwise /> },
+    { path: '/vendorwise', element: <Vendorwise /> }
   ]
 };
 
