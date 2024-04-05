@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,7 +7,11 @@ import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorProductDrawer from '../../component/productquotation';
-// Custom styled input component
+import { useDispatch } from 'react-redux';
+import { createQuotation, createQuotationItem, fetchAllCustomers } from 'store/thunk';
+import { fetchAllProducts } from 'store/thunk';
+import { deleteQuotationItem } from 'store/thunk';
+
 const StyledInput = withStyles((theme) => ({
   root: {
     'label + &': {
@@ -34,6 +38,10 @@ const Qutation = () => {
   const [rows, setRows] = useState([{ srNo: 1, product: '', qty: '', rate: '', amount: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
+  const [customer, setcustomer] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [product, setProduct] = useState([]);
+  const [selectproduct, setSelectproduct] = useState([]);
   const isMobile = useMediaQuery('(max-width:600px)');
 
   const handleAddRow = () => {
@@ -49,43 +57,111 @@ const Qutation = () => {
       return row;
     });
     setRows(updatedRows);
+    // console.log(updatedRows, 'itemrows>>>>>>>');
   };
 
-  const handleDeleteRow = (srNo) => {
+  const handleDeleteRow = async (srNo) => {
+    const deleterow = await dispatch(deleteQuotationItem(srNo));
+    console.log('dleterow', deleterow);
     const updatedRows = rows.filter((row) => row.srNo !== srNo);
-    // Update serial numbers after deletion
     const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
       ...row,
       srNo: index + 1
     }));
     setRows(updatedRowsWithSerialNumbers);
   };
+
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'customer') {
+    if (selectedOption && selectedOption.label === 'create new customer') {
       setIsDrawerOpen(true);
+      console.log(isDrawerOpen, 'open');
     } else {
+      // console.log(selectcustomer, 'customers>???????????????');
+      setSelectcustomer(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
-  const handleSelectproductChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'product') {
+
+  const handleSelectproductChange = (selectedOption, srNo) => {
+    // console.log("selected>>>>>",selectedOption);
+    console.log(selectproduct);
+    if (selectedOption && selectedOption.label === 'create new product') {
       setIsproductDrawerOpen(true);
     } else {
+      const updatedRows = rows.map((row) => {
+        if (row.srNo === srNo) {
+          return { ...row, product: selectedOption.label };
+        }
+        return row;
+      });
+      setRows(updatedRows);
+      setSelectproduct(selectedOption.label);
       setIsproductDrawerOpen(false);
     }
   };
-  const options = [
-    {
-      value: 'customer',
-      label: 'create new customer'
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          setcustomer(response);
+          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        } else {
+          console.error('fetchAllCustomers returned an unexpected response:', response);
+        }
+        const productResponse = await dispatch(fetchAllProducts());
+        if (Array.isArray(productResponse)) {
+          setProduct(productResponse);
+          // console.log(productResponse, '????????????');
+        } else {
+          console.error('fetchAllProducts returned an unexpected response:', productResponse);
+        }
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
+  const handleCreateQuotation = async () => {
+    try {
+      const quotation_no = document.getElementById('quotationNo').value;
+      const date = document.getElementById('quotationDate').value;
+      const validtill = document.getElementById('validTill').value;
+      const email = document.getElementById('email').value;
+      const mobileno = document.getElementById('mobileNo').value;
+
+      const quotationData = {
+        quotation_no,
+        date,
+        validtill,
+        email,
+        mobileno,
+        customer: selectcustomer
+      };
+      const createdQuotation = await dispatch(createQuotation(quotationData));
+      // console.log('data>>>>', quotationData);
+      const quotationId = createdQuotation.id;
+      const payload = {
+        quotationId,
+        items: rows.map((row) => ({
+          srNo: row.srNo,
+          product: row.product,
+          qty: row.qty,
+          rate: row.rate,
+          mrp: row.amount
+        }))
+      };
+      dispatch(createQuotationItem(payload));
+      // console.log(payload);
+      alert('Quotation created successfully');
+    } catch (error) {
+      console.error('Error creating quotation:', error);
+      alert('Failed to create quotation');
     }
-  ];
-  const product = [
-    {
-      value: 'product',
-      label: 'create new product'
-    }
-  ];
+  };
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -96,30 +172,44 @@ const Qutation = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Customer</Typography>
-              <Select color="secondary" options={options} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={
+                  Array.isArray(customer)
+                    ? [
+                        {
+                          value: 'customer',
+                          label: 'create new customer'
+                        },
+                        ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
+                      ]
+                    : []
+                }
+                onChange={(selectedOption) => handleSelectChange(selectedOption)}
+              />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Mobile No.</Typography>
-              <StyledInput placeholder="Enter Mobile No." fullWidth />
+              <StyledInput placeholder="Enter Mobile No." id="mobileNo" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Email</Typography>
-              <StyledInput placeholder="Enter Email Address" fullWidth />
+              <StyledInput placeholder="Enter Email Address" id="email" fullWidth />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Quotation No.</Typography>
-              <StyledInput placeholder="0001" fullWidth />
+              <StyledInput placeholder="0001" id="quotationNo" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Quotation Date</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="quotationDate" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Valid Till</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="validTill" fullWidth />
             </Grid>
           </Grid>
 
@@ -148,7 +238,21 @@ const Qutation = () => {
                         />
                       </TableCell>
                       <TableCell sx={{ padding: '5px' }}>
-                        <Select color="secondary" options={product} onChange={handleSelectproductChange} />
+                        <Select
+                          color="secondary"
+                          options={
+                            Array.isArray(product)
+                              ? [
+                                  {
+                                    value: 'product',
+                                    label: 'create new product'
+                                  },
+                                  ...product.map((products) => ({ value: products.id, label: products.productname }))
+                                ]
+                              : []
+                          }
+                          onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
+                        />
                       </TableCell>
                       <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                       <TableCell sx={{ padding: '5px' }}>
@@ -156,21 +260,21 @@ const Qutation = () => {
                           placeholder="qty"
                           // value={row.qty}
                           fullWidth
-                          onChange={(e) => handleInputChange(row.qty, 'qty', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)}
                         />
                       </TableCell>
                       <TableCell sx={{ padding: '5px' }}>
                         <StyledInput
                           placeholder="rate"
                           // value={row.rate}
-                          onChange={(e) => handleInputChange(row.rate, 'rate', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'rate', e.target.value)}
                         />
                       </TableCell>
                       <TableCell sx={{ padding: '5px' }}>
                         <StyledInput
                           placeholder="amount"
                           // value={row.amount}
-                          onChange={(e) => handleInputChange(row.amount, 'amount', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'amount', e.target.value)}
                         />
                       </TableCell>
                       <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -309,6 +413,7 @@ const Qutation = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  onClick={handleCreateQuotation}
                 >
                   Save
                 </button>
@@ -343,6 +448,7 @@ const Qutation = () => {
                     borderRadius: '5px',
                     marginRight: '10px'
                   }}
+                  onClick={handleCreateQuotation}
                 >
                   Save & Next
                 </button>
@@ -356,6 +462,7 @@ const Qutation = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  onClick={handleCreateQuotation}
                 >
                   Save
                 </button>

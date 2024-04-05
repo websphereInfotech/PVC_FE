@@ -58,7 +58,7 @@ export default {
           title: 'Dashboard',
           type: 'item',
           icon: icons['HomeIcon'],
-          url: '/dashboard/default'
+          url: '/dashboard'
         }
       ]
     },

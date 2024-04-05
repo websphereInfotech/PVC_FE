@@ -5,7 +5,11 @@ import * as actionTypes from './actions';
 
 export const initialState = {
   isOpen: 'dashboard', //for active default menu
-  navType: ''
+  navType: '',
+  // Add properties related to quotations
+  quotations: [],
+  loadingQuotations: false,
+  errorQuotations: null
 };
 
 const customizationReducer = (state = initialState, action) => {
@@ -19,6 +23,43 @@ const customizationReducer = (state = initialState, action) => {
       return {
         ...state,
         navType: action.navType
+      };
+    case actionTypes.FETCH_QUOTATION_REQUEST:
+      return {
+        ...state,
+        loadingQuotations: true,
+        errorQuotations: null
+      };
+    case actionTypes.FETCH_QUOTATION_SUCCESS:
+      return {
+        ...state,
+        loadingQuotations: false,
+        quotations: action.payload
+      };
+    case actionTypes.FETCH_QUOTATION_FAILURE:
+      return {
+        ...state,
+        loadingQuotations: false,
+        errorQuotations: action.payload
+      };
+    case actionTypes.LOGIN_REQUEST:
+      return {
+        ...state,
+        error: null
+      };
+    case actionTypes.LOGIN_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload,
+        error: null
+      };
+    case actionTypes.LOGIN_FAILURE:
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        error: action.payload
       };
     default:
       return state;

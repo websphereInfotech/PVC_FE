@@ -7,7 +7,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Card, Paper } from '@mui/material';
+import { createCustomer } from '../store/thunk';
 
 const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const StyledInput = withStyles((theme) => ({
@@ -16,7 +18,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       backgroundColor: theme.palette.common.white,
       border: '1px solid #ced4da',
       fontSize: 15,
-      width: '100%',
       padding: '5px',
       transition: theme.transitions.create(['border-color', 'box-shadow']),
       '&:focus': {
@@ -30,8 +31,44 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
-
+  const dispatch = useDispatch();
   const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
+  const [formData, setFormData] = React.useState({
+    accountname: '',
+    shortname: '',
+    email: '',
+    contactpersonname: '',
+    mobileno: '',
+    panno: '',
+    creditperiod: '',
+    mode: '',
+    address1: '',
+    address2: '',
+    pincode: '',
+    state: '',
+    city: '',
+    bankdetail: false,
+    creditlimit: false,
+    balance: ''
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      await dispatch(createCustomer(formData));
+      console.log(formData, 'formdata');
+      // console.log('Customer created successfully:', data);
+    } catch (error) {
+      console.error('Error creating customer:', error);
+    }
+  };
 
   const handleAddCustomField = () => {
     const newCustomFields = [...customFields, { label: '', value: '' }];
@@ -49,23 +86,23 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
         <Grid item>
           <Typography variant="subtitle1">Account Name</Typography>
-          <StyledInput placeholder="Enter Account Name" />
+          <StyledInput placeholder="Enter Account Name" name="accountname" value={formData.accountname} onChange={handleChange} />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Short/Alias Name</Typography>
-          <StyledInput placeholder="Enter Short/Alias Name" />
+          <StyledInput placeholder="Enter Short/Alias Name" name="shortname" value={formData.shortname} onChange={handleChange} />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Email</Typography>
-          <StyledInput placeholder="Enter Email" />
+          <StyledInput placeholder="Enter Email" name="email" value={formData.email} onChange={handleChange} />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Contact person name</Typography>
-          <StyledInput placeholder="Enter Name" />
+          <StyledInput placeholder="Enter Name" name="contactpersonname" value={formData.contactpersonname} onChange={handleChange} />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Mobile No.</Typography>
@@ -228,6 +265,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
               justifyContent: 'center',
               borderRadius: '5px'
             }}
+            onClick={handleSave}
           >
             Save
           </button>

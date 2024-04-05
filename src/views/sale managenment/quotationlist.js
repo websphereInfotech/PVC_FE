@@ -1,5 +1,7 @@
-import * as React from 'react';
-// import Paper from '@mui/material/Paper';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchQuotationList } from 'store/thunk';
+import { Card } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,97 +9,39 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Card } from '@mui/material';
 
 const columns = [
   { id: 'date', label: 'Date', minWidth: 170 },
-  { id: 'invoiceno', label: 'Invoice No.', minWidth: 100 },
-  {
-    id: 'customer',
-    label: 'Customer',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US')
-  },
-  {
-    id: 'texableamount',
-    label: 'Texable Amount',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US')
-  },
-  {
-    id: 'otherchargesplus',
-    label: 'Other Charges(+)',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2)
-  },
-  {
-    id: 'otherchargesminus',
-    label: 'Other Charges(-)',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2)
-  },
-  {
-    id: 'disc',
-    label: 'Disc.',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2)
-  },
-  {
-    id: 'status',
-    label: 'Status',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toFixed(2)
-  },
-  {
-    id: 'totalamount',
-    label: 'Total Amount',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US')
-  },
-  {
-    id: 'action',
-    label: 'Action',
-    minWidth: 170,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US')
-  }
+  { id: 'quotation_no', label: 'Quotation No.', minWidth: 100 },
+  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
+  { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
+  { id: 'validtill', label: 'Valid Till', minWidth: 170, align: 'center' }
 ];
 
-function createData(date, invoiceno, customer, texableamount, otherchargesplus, otherchargesminus, disc, status, totalamount, action) {
-  return { date, invoiceno, customer, texableamount, otherchargesplus, otherchargesminus, disc, status, totalamount, action };
-}
+export default function QuotationList() {
+  const dispatch = useDispatch();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [quotations, setQuotations] = useState([]);
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzEyMjEwNDI2LCJleHAiOjE3MTIyMzIwMjZ9.bvYPOCLHLIyrmhRvkNN3XzoFg0A_avEskC1nQB0VbWY`;
 
-const rows = [
-  createData('2024-04-01', 'IN001', 'websphere', 3287263, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN002', 'user', 9596961, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN003', 'new', 301340, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-02', 'IN004', 'newuser', 9833520, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN005', 'onewdemo', 9984670, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN006', 'users', 7692024, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN001', 'websphere', 3287263, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-02', 'IN002', 'user', 9596961, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN003', 'new', 301340, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN004', 'newuser', 9833520, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-01', 'IN005', 'onewdemo', 9984670, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN001', 'websphere', 3287263, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN002', 'user', 9596961, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN003', 'new', 301340, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-04', 'IN004', 'newuser', 9833520, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN005', 'onewdemo', 9984670, 1, 0, '1.5%', 'pending', 456),
-  createData('2024-04-03', 'IN006', 'users', 7692024, 1, 0, '1.5%', 'pending', 456)
-];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchQuotationList(token));
+        setQuotations(response);
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
 
-export default function Qutationlist() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+    fetchData();
+  }, [dispatch, token]);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US'); // Format date as per locale
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -114,34 +58,29 @@ export default function Qutationlist() {
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} align={column.align} style={{ top: 57, minWidth: column.minWidth }}>
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
                   {column.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
+            {quotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+              <TableRow key={index}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.id === 'date' || column.id === 'validtill' ? formatDate(row[column.id]) : row[column.id]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={quotations.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

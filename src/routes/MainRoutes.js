@@ -100,7 +100,7 @@ const MainRoutes = {
     //   element: <AuthLogin />
     // },
     {
-      path: '/dashboard/default',
+      path: '/dashboard',
       element: <DashboardDefault />
     },
     // { path: '/utils/util-typography', element: <UtilsTypography /> },
