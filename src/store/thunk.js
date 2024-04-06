@@ -27,7 +27,10 @@ import {
   createCustomerFailure,
   createCustomFeildRequest,
   createCustomFeildSuccess,
-  createCustomFeildFailure
+  createCustomFeildFailure,
+  viewPurchaseRequest,
+  viewPurchaseSuccess,
+  viewPurchaseFailure
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -168,6 +171,7 @@ export const createCustomer = (customerData) => {
     }
   };
 };
+
 export const createCustomfeild = (payload) => {
   return async (dispatch) => {
     dispatch(createCustomFeildRequest());
@@ -181,6 +185,35 @@ export const createCustomfeild = (payload) => {
     } catch (error) {
       dispatch(createCustomFeildFailure(error.message));
       throw error;
+    }
+  };
+};
+
+export const deleteCustomFeild = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteQuotationItemRequest());
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customfeild/${id}`, config);
+      console.log('response', response);
+      dispatch(deleteQuotationItemSuccess());
+    } catch (error) {
+      console.error('Error deleting quotation:', error);
+      dispatch(deleteQuotationItemFailure());
+    }
+  };
+};
+
+export const purchaseview = () => {
+  return async (dispatch) => {
+    dispatch(viewPurchaseRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchase/1`, config);
+      const data = response.data.data;
+      console.log('data', response.data.data);
+      dispatch(viewPurchaseSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewPurchaseFailure(error.message));
     }
   };
 };

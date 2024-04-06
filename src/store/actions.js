@@ -40,6 +40,10 @@ export const CREATE_CUSTOM_FEILD_REQUEST = 'CREATE_CUSTOM_FEILD_REQUEST';
 export const CREATE_CUSTOM_FEILD_SUCCESS = 'CREATE_CUSTOM_FEILD_SUCCESS';
 export const CREATE_CUSTOM_FEILD_FAILURE = 'CREATE_CUSTOM_FEILD_FAILURE';
 
+export const VIEW_PURCHASE_REQUEST = 'VIEW_PURCHASE_REQUEST';
+export const VIEW_PURCHASE_SUCCESS = 'VIEW_PURCHASE_SUCCESS';
+export const VIEW_PURCHASE_FAILURE = 'VIEW_PURCHASE_FAILURE';
+
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
 });
@@ -167,5 +171,20 @@ export const createCustomFeildSuccess = (data) => ({
 
 export const createCustomFeildFailure = (error) => ({
   type: 'CREATE_CUSTOM_FEILD_FAILURE',
+  payload: error
+});
+
+export const viewPurchaseRequest = (data) => ({
+  type: 'VIEW_PURCHASE_REQUEST',
+  payload: data
+});
+
+export const viewPurchaseSuccess = (data) => ({
+  type: 'VIEW_PURCHASE_SUCCESS',
+  payload: data
+});
+
+export const viewPurchaseFailure = (error) => ({
+  type: 'VIEW_PURCHASE_FAILURE',
   payload: error
 });

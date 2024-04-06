@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Card, Paper } from '@mui/material';
-import { createCustomer } from '../store/thunk';
+import { createCustomer, createCustomfeild } from '../store/thunk';
 
 const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const StyledInput = withStyles((theme) => ({
@@ -35,15 +35,15 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
   const emailRef = React.useRef(null);
   const [bankdetails, setBankDetail] = React.useState(true);
-  const [creditdetails, setCreditDetail] = React.useState(false);
+  const [creditdetails, setCreditDetail] = React.useState(true);
 
   const handleBankDetailChange = (event) => {
     console.log('valuebank', event.target.value);
-    setBankDetail(event.target.value);
+    setBankDetail(event.target.value === 'true');
   };
   const handleCreditDetailChange = (event) => {
     console.log('valuecredit', event.target.value);
-    setCreditDetail(event.target.value);
+    setCreditDetail(event.target.value === 'true');
   };
   const handleSave = async () => {
     try {
@@ -67,8 +67,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       // const creditlimit = document.getElementById('creditlimit').value;
       const balance = document.getElementById('balance').value;
       console.log(accountname, 'email');
-      console.log(bankdetail, 'bank');
-      console.log(creditlimit, 'creditlimit');
+      // console.log(bankdetail, 'bank');
+      // console.log(creditlimit, 'creditlimit');
       const customerData = {
         accountname,
         shortname,
@@ -89,8 +89,19 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         balance
       };
       console.log(customerData, 'formdata');
-      await dispatch(createCustomer(customerData));
-      // console.log('Customer created successfully:', data);
+      const customer = await dispatch(createCustomer(customerData));
+      console.log(customer.data.data, '>>>>>>>>>>>>>>>>');
+      const customerId = customer.data.data.id;
+      const payload = {
+        customerId,
+        items: customFields.map((field) => ({
+          label: field.label,
+          value: field.value
+        }))
+      };
+      console.log(payload, 'payload');
+      await dispatch(createCustomfeild(payload));
+      alert('New Customer Created Successfully');
     } catch (error) {
       console.error('Error creating customer:', error);
     }
@@ -108,7 +119,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   };
 
   const list = (
-    <Box sx={{ width: { xs: 320, sm: 550 }, overflowX: 'hidden', '&::-webkit-scrollbar': { width: '0' } }} role="presentation">
+    <Box sx={{ width: { xs: 320, sm: 550 }, overflowX: 'hidden', '&::-webkit-scrollbar': { width: '0' } }}>
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
         <Grid item>
           <Typography variant="subtitle1">Account Name</Typography>

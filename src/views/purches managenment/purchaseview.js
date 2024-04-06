@@ -2,10 +2,17 @@ import React from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { purchaseview } from 'store/thunk';
 
 const Purchaseview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-
+  // const dispatch = useDispatch();
+  // const purchaseData = useSelector((state) => state.purchase);
+  // console.log(purchaseData, '>>>>>>>>>>>>>>>>>>>>');
+  // useEffect(() => {
+  //   dispatch(purchaseview());
+  //  }, [dispatch]);
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -14,7 +21,7 @@ const Purchaseview = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Vendor</Typography>
-          <Typography variant="subtitle2">websphere infotech</Typography>
+          <Typography variant="subtitle2">websphere</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Mobile No.</Typography>
