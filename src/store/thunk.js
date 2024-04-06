@@ -175,7 +175,7 @@ export const createCustomfeild = (payload) => {
       console.log('enter');
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
       const createdCustomfeilddata = response;
-      // console.log('createdCustomfeilddata>>>>', createdCustomfeilddata);
+      console.log('createdCustomfeilddata>>>>', createdCustomfeilddata);
       dispatch(createCustomFeildSuccess(createdCustomfeilddata));
       return createdCustomfeilddata;
     } catch (error) {
