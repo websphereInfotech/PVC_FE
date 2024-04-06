@@ -24,7 +24,10 @@ import {
   deleteQuotationItemFailure,
   createCustomerRequest,
   createCustomerSuccess,
-  createCustomerFailure
+  createCustomerFailure,
+  createCustomFeildRequest,
+  createCustomFeildSuccess,
+  createCustomFeildFailure
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -150,17 +153,33 @@ export const deleteQuotationItem = (id) => {
   };
 };
 
-export const createCustomer = (formData) => {
+export const createCustomer = (customerData) => {
   return async (dispatch) => {
     dispatch(createCustomerRequest());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
       console.log('createdQuotation>>>>', createdCustomer);
       dispatch(createCustomerSuccess(createdCustomer));
       return createdCustomer;
     } catch (error) {
       dispatch(createCustomerFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const createCustomfeild = (payload) => {
+  return async (dispatch) => {
+    dispatch(createCustomFeildRequest());
+    try {
+      console.log('enter');
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
+      const createdCustomfeilddata = response;
+      // console.log('createdCustomfeilddata>>>>', createdCustomfeilddata);
+      dispatch(createCustomFeildSuccess(createdCustomfeilddata));
+      return createdCustomfeilddata;
+    } catch (error) {
+      dispatch(createCustomFeildFailure(error.message));
       throw error;
     }
   };

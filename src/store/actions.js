@@ -36,6 +36,10 @@ export const CREATE_CUSTOMER_REQUEST = 'CREATE_CUSTOMER_REQUEST';
 export const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS';
 export const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE';
 
+export const CREATE_CUSTOM_FEILD_REQUEST = 'CREATE_CUSTOM_FEILD_REQUEST';
+export const CREATE_CUSTOM_FEILD_SUCCESS = 'CREATE_CUSTOM_FEILD_SUCCESS';
+export const CREATE_CUSTOM_FEILD_FAILURE = 'CREATE_CUSTOM_FEILD_FAILURE';
+
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
 });
@@ -148,5 +152,20 @@ export const createCustomerSuccess = (data) => ({
 
 export const createCustomerFailure = (error) => ({
   type: 'CREATE_CUSTOMER_FAILURE',
+  payload: error
+});
+
+export const createCustomFeildRequest = (data) => ({
+  type: 'CREATE_CUSTOM_FEILD_REQUEST',
+  payload: data
+});
+
+export const createCustomFeildSuccess = (data) => ({
+  type: 'CREATE_CUSTOM_FEILD_SUCCESS',
+  payload: data
+});
+
+export const createCustomFeildFailure = (error) => ({
+  type: 'CREATE_CUSTOM_FEILD_FAILURE',
   payload: error
 });

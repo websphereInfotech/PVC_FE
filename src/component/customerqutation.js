@@ -33,37 +33,63 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   };
   const dispatch = useDispatch();
   const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
-  const [formData, setFormData] = React.useState({
-    accountname: '',
-    shortname: '',
-    email: '',
-    contactpersonname: '',
-    mobileno: '',
-    panno: '',
-    creditperiod: '',
-    mode: '',
-    address1: '',
-    address2: '',
-    pincode: '',
-    state: '',
-    city: '',
-    bankdetail: false,
-    creditlimit: false,
-    balance: ''
-  });
+  const emailRef = React.useRef(null);
+  const [bankdetails, setBankDetail] = React.useState(true);
+  const [creditdetails, setCreditDetail] = React.useState(false);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value
-    }));
+  const handleBankDetailChange = (event) => {
+    console.log('valuebank', event.target.value);
+    setBankDetail(event.target.value);
   };
-
+  const handleCreditDetailChange = (event) => {
+    console.log('valuecredit', event.target.value);
+    setCreditDetail(event.target.value);
+  };
   const handleSave = async () => {
     try {
-      await dispatch(createCustomer(formData));
-      console.log(formData, 'formdata');
+      const accountname = document.getElementById('accountname').value;
+      const shortname = document.getElementById('shortname').value;
+      // const email = document.getElementById('email').value;
+      const email = emailRef.current.value;
+      const contactpersonname = document.getElementById('contactpersonname').value;
+      const mobileno = document.getElementById('mobileno').value;
+      const panno = document.getElementById('panno').value;
+      const creditperiod = document.getElementById('creditperiod').value;
+      const mode = document.getElementById('mode').value;
+      const address1 = document.getElementById('address1').value;
+      const address2 = document.getElementById('address2').value;
+      const pincode = document.getElementById('pincode').value;
+      const state = document.getElementById('state').value;
+      const city = document.getElementById('city').value;
+      const country = document.getElementById('country').value;
+      // const bankdetail = bankdetails === 'yes' ? true : false;
+      // const creditlimit = creditdetails === 'yes' ? true : false;
+      // const creditlimit = document.getElementById('creditlimit').value;
+      const balance = document.getElementById('balance').value;
+      console.log(accountname, 'email');
+      console.log(bankdetail, 'bank');
+      console.log(creditlimit, 'creditlimit');
+      const customerData = {
+        accountname,
+        shortname,
+        email: email,
+        contactpersonname,
+        mobileno,
+        panno,
+        creditperiod,
+        mode,
+        address1,
+        address2,
+        pincode,
+        state,
+        city,
+        country,
+        bankdetail: bankdetails,
+        creditlimit: creditdetails,
+        balance
+      };
+      console.log(customerData, 'formdata');
+      await dispatch(createCustomer(customerData));
       // console.log('Customer created successfully:', data);
     } catch (error) {
       console.error('Error creating customer:', error);
@@ -86,43 +112,43 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
         <Grid item>
           <Typography variant="subtitle1">Account Name</Typography>
-          <StyledInput placeholder="Enter Account Name" name="accountname" value={formData.accountname} onChange={handleChange} />
+          <StyledInput placeholder="Enter Account Name" id="accountname" />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Short/Alias Name</Typography>
-          <StyledInput placeholder="Enter Short/Alias Name" name="shortname" value={formData.shortname} onChange={handleChange} />
+          <StyledInput placeholder="Enter Short/Alias Name" id="shortname" />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Email</Typography>
-          <StyledInput placeholder="Enter Email" name="email" value={formData.email} onChange={handleChange} />
+          <StyledInput placeholder="Enter Email" type="email" inputRef={emailRef} />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Contact person name</Typography>
-          <StyledInput placeholder="Enter Name" name="contactpersonname" value={formData.contactpersonname} onChange={handleChange} />
+          <StyledInput placeholder="Enter Name" id="contactpersonname" />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <StyledInput placeholder="Enter Mobile No." />
+          <StyledInput placeholder="Enter Mobile No." id="mobileno" />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">PAN/IT/TAN No.</Typography>
-          <StyledInput placeholder="BJXXX001" />
+          <StyledInput placeholder="BJXXX001" id="panno" />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Default Credit Period (In days)</Typography>
-          <StyledInput placeholder="Default Credit Period" />
+          <StyledInput placeholder="Default Credit Period" id="creditperiod" />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Mode</Typography>
-          <StyledInput placeholder="Enter Mode" />
+          <StyledInput placeholder="Enter Mode" id="mode" />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
@@ -133,45 +159,45 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Address 1</Typography>
-          <StyledInput placeholder="Floor,buliding Name" />
+          <StyledInput placeholder="Floor,buliding Name" id="address1" />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Address 2</Typography>
-          <StyledInput placeholder="Location" />
+          <StyledInput placeholder="Location" id="address2" />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">Country</Typography>
-          <StyledInput placeholder="Country" />
+          <StyledInput placeholder="Country" id="country" />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">Pincode</Typography>
-          <StyledInput placeholder="395001" />
+          <StyledInput placeholder="395001" id="pincode" />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ margin: '1px' }}>
         <Grid item>
           <Typography variant="subtitle1">State</Typography>
-          <StyledInput placeholder="State" />
+          <StyledInput placeholder="State" id="state" />
         </Grid>
         <Grid item>
           <Typography variant="subtitle1">City</Typography>
-          <StyledInput placeholder="City" />
+          <StyledInput placeholder="City" id="city" />
         </Grid>
       </Grid>
       <Grid item sx={{ margin: '8px 16px' }}>
         <Typography variant="subtitle1">Provide bank details?</Typography>
-        <RadioGroup row defaultValue="yes">
-          <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-          <FormControlLabel value="no" control={<Radio />} label="No" />
+        <RadioGroup row value={bankdetails} onChange={handleBankDetailChange} id="bankdetail">
+          <FormControlLabel value="true" control={<Radio />} label="Yes" />
+          <FormControlLabel value="false" control={<Radio />} label="No" />
         </RadioGroup>
       </Grid>
       <Grid item sx={{ margin: '8px 16px' }}>
         <Typography variant="subtitle1">Enable credit limit?</Typography>
-        <RadioGroup row defaultValue="yes">
-          <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-          <FormControlLabel value="no" control={<Radio />} label="No" />
+        <RadioGroup row value={creditdetails} onChange={handleCreditDetailChange} id="creditlimit">
+          <FormControlLabel value="true" control={<Radio />} label="Yes" />
+          <FormControlLabel value="false" control={<Radio />} label="No" />
         </RadioGroup>
       </Grid>
       <Grid item sx={{ margin: '8px 16px' }}>
@@ -234,7 +260,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
           <Typography variant="h5" sx={{ margin: '20px 0px 10px 0px' }}>
             Opening Balance
           </Typography>
-          <StyledInput placeholder="₹0.00" />
+          <StyledInput placeholder="₹0.00" id="balance" />
         </Grid>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
