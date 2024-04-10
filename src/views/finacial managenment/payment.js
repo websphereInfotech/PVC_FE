@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
+// import Select from 'react-select';
+// import AnchorTemporaryDrawer from '../../component/customerqutation';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
+import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
+import { createPayment } from 'store/thunk';
+import { useNavigate } from 'react-router-dom';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -31,20 +34,45 @@ const StyledInput = withStyles((theme) => ({
 
 const PaymentPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'customer') {
-      setIsDrawerOpen(true);
-    } else {
-      setIsDrawerOpen(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handlecreatepayment = async () => {
+    try {
+      const voucherno = document.getElementById('voucherno').value;
+      const email = document.getElementById('email').value;
+      const paymentdate = document.getElementById('paymentdate').value;
+      const account = document.getElementById('account').value;
+      const mode = document.getElementById('mode').value;
+      const refno = document.getElementById('refno').value;
+      const paidfrom = document.getElementById('paidfrom').value;
+      const amount = document.getElementById('amount').value;
+      const billno = document.getElementById('billno').value;
+      const billfromdate = document.getElementById('billfromdate').value;
+      const billtodate = document.getElementById('billtodate').value;
+
+      const paymentData = {
+        voucherno,
+        account,
+        email,
+        paymentdate,
+        mode,
+        refno,
+        paidfrom,
+        amount,
+        billno,
+        billfromdate,
+        billtodate
+      };
+      const Paymentdata = await dispatch(createPayment(paymentData));
+      console.log('data>>>>', Paymentdata);
+      alert('Paymentdata created successfully');
+      navigate('/paymentlist');
+    } catch (error) {
+      console.error('Error creating Paymentdata:', error);
+      alert('Failed to create Paymentdata');
     }
   };
-  const options = [
-    {
-      value: 'customer',
-      label: 'create new customer'
-    }
-  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -55,16 +83,16 @@ const PaymentPage = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Vendor</Typography>
-              <Select color="secondary" options={options} onChange={handleSelectChange} />
+              <StyledInput color="secondary" id="voucherno" />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            {/* <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} /> */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Account</Typography>
-              <StyledInput placeholder="Enter Account" fullWidth />
+              <StyledInput placeholder="Enter Account" id="account" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Email</Typography>
-              <StyledInput placeholder="Enter Email" fullWidth />
+              <StyledInput placeholder="Enter Email" id="email" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', justifyContent: 'end' }}>
               <div>
@@ -75,26 +103,25 @@ const PaymentPage = () => {
           </Grid>
 
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            {/* Second row containing the next 5 grid inputs */}
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Payment Date</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="paymentdate" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Mode</Typography>
-              <StyledInput placeholder="Enter Mode" fullWidth />
+              <StyledInput placeholder="Enter Mode" id="mode" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Reference No.</Typography>
-              <StyledInput placeholder="Enter Reference No." fullWidth />
+              <StyledInput placeholder="Enter Reference No." id="refno" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Paid from</Typography>
-              <StyledInput placeholder="Enter Paid from" fullWidth />
+              <StyledInput placeholder="Enter Paid from" id="paidfrom" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Amount Paid (₹)</Typography>
-              <StyledInput placeholder="Enter Amount" fullWidth />
+              <StyledInput placeholder="Enter Amount" id="amount" fullWidth />
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -105,15 +132,15 @@ const PaymentPage = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Find Bill No.</Typography>
-              <StyledInput placeholder="Find Bill No." fullWidth />
+              <StyledInput placeholder="Find Bill No." id="billno" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Bill From Date</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="billfromdate" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Bill From To</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="billtodate" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <div style={{ display: 'flex', margin: '25px 0px' }}>
@@ -128,6 +155,7 @@ const PaymentPage = () => {
                     borderRadius: '5px',
                     marginRight: '5px'
                   }}
+                  onClick={handlecreatepayment}
                 >
                   save
                 </button>
@@ -286,6 +314,7 @@ const PaymentPage = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  onClick={handlecreatepayment}
                 >
                   Save
                 </button>
@@ -320,6 +349,7 @@ const PaymentPage = () => {
                     borderRadius: '5px',
                     marginRight: '10px'
                   }}
+                  onClick={handlecreatepayment}
                 >
                   Save & Next
                 </button>
@@ -333,6 +363,7 @@ const PaymentPage = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  onClick={handlecreatepayment}
                 >
                   Save
                 </button>

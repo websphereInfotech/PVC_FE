@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button, Table, TableBody, TableRow, TableCell, Card } from '@mui/material';
 import { Pagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getallPayment, paymentview } from 'store/thunk';
 
 const PaymentListPage = () => {
   const navigate = useNavigate();
@@ -9,43 +11,29 @@ const PaymentListPage = () => {
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(1);
-
+  const dispatch = useDispatch();
+  console.log('Payments:', payments);
   useEffect(() => {
     setIsLoading(true);
-    // Dummy payment data
-    const dummyPayments = [
-      {
-        id: 1,
-        vendor: 'Vendor A',
-        date: '2024-03-07',
-        invoiceNo: 'INV-001',
-        mode: 'Cash',
-        reference: 'REF-001',
-        amount: 150,
-        status: 'Pending'
-      },
-      {
-        id: 2,
-        vendor: 'Vendor B',
-        date: '2024-03-07',
-        invoiceNo: 'INV-002',
-        mode: 'Cash',
-        reference: 'REF-002',
-        amount: 150,
-        status: 'Paid'
-      }
-    ];
-    setPayments(dummyPayments);
-    setIsLoading(false);
-  }, []);
+    dispatch(getallPayment())
+      .then((data) => {
+        setPayments(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching payment data:', error);
+        setIsLoading(false);
+      });
+  }, [dispatch]);
 
   const handleMakePayment = () => {
     navigate('/payment');
     console.log('Payment made');
   };
 
-  const handleViewPayment = () => {
-    navigate(`/paymentview`);
+  const handleViewPayment = (id) => {
+    dispatch(paymentview(id));
+    navigate(`/paymentview/${id}`);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -76,23 +64,24 @@ const PaymentListPage = () => {
             <TableCell variant="head">Mode</TableCell>
             <TableCell variant="head">Reference</TableCell>
             <TableCell variant="head">Amount</TableCell>
-            <TableCell variant="head">Status</TableCell>
+            {/* <TableCell variant="head">Email</TableCell> */}
             <TableCell variant="head">Action</TableCell>
           </TableRow>
           {/* </TableHead> */}
           <TableBody>
-            {payments.slice((page - 1) * rowsPerPage, page * rowsPerPage).map((payment) => (
+            {payments?.data?.map((payment) => (
               <TableRow key={payment.id}>
-                <TableCell>{payment.id}</TableCell>
-                <TableCell>{payment.vendor}</TableCell>
-                <TableCell>{payment.date}</TableCell>
-                <TableCell>{payment.invoiceNo}</TableCell>
-                <TableCell>{payment.mode}</TableCell>
-                <TableCell>{payment.reference}</TableCell>
-                <TableCell>${payment.amount}</TableCell>
-                <TableCell>{payment.status}</TableCell>
+                <TableCell>{payment?.id}</TableCell>
+                <TableCell>{payment?.voucherno}</TableCell>
+                <TableCell>{new Date(payment?.paymentdate).toLocaleDateString()}</TableCell>
+                <TableCell>{payment?.billno}</TableCell>
+                <TableCell>{payment?.mode}</TableCell>
+                <TableCell>{payment?.refno}</TableCell>
+                <TableCell>₹{payment?.amount}</TableCell>
+                {/* <TableCell>{payment?.email}</TableCell> */}
                 <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment.id)}>
+                  {console.log(payment?.id, 'paymentId')}
+                  <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
                     View
                   </Button>
                 </TableCell>

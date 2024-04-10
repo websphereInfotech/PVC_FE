@@ -24,12 +24,11 @@ export default function QuotationList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [quotations, setQuotations] = useState([]);
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzEyMjEwNDI2LCJleHAiOjE3MTIyMzIwMjZ9.bvYPOCLHLIyrmhRvkNN3XzoFg0A_avEskC1nQB0VbWY`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchQuotationList(token));
+        const response = await dispatch(fetchQuotationList());
         setQuotations(response);
       } catch (error) {
         console.error('Error fetching quotations:', error);
@@ -37,7 +36,7 @@ export default function QuotationList() {
     };
 
     fetchData();
-  }, [dispatch, token]);
+  }, [dispatch]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US'); // Format date as per locale

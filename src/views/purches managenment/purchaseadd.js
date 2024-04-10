@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,6 +7,9 @@ import Select from 'react-select';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import { useMediaQuery } from '@mui/material';
+import { fetchAllProducts, fetchAllCustomers, createPurchase, createPurchaseItem } from 'store/thunk';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -31,13 +34,18 @@ const StyledInput = withStyles((theme) => ({
 }))(InputBase);
 
 const AddPurchasePage = () => {
-  const [rows, setRows] = useState([{ srNo: 1, productService: '', qty: '', rate: '', discount: '', amount: '' }]);
+  const [rows, setRows] = useState([{ srNo: '1', productService: '', qty: '', rate: '', discount: '', mrp: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
+  const [customer, setcustomer] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [product, setProduct] = useState([]);
+  const [selectproduct, setSelectproduct] = useState([]);
+  const navigate = useNavigate();
 
   const handleAddRow = () => {
-    const newRow = { srNo: rows.length + 1, productService: '', qty: '', rate: '', discount: '', amount: '' };
+    const newRow = { srNo: (rows.length + 1).toString(), productService: '', qty: '', rate: '', discount: '', mrp: '' };
     setRows([...rows, newRow]);
   };
 
@@ -60,32 +68,101 @@ const AddPurchasePage = () => {
     }));
     setRows(updatedRowsWithSerialNumbers);
   };
+
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'customer') {
+    if (selectedOption && selectedOption.label === 'create new customer') {
       setIsDrawerOpen(true);
+      console.log(isDrawerOpen, 'open');
     } else {
+      // console.log(selectcustomer, 'customers>???????????????');
+      setSelectcustomer(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
-  const handleSelectproductChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'product') {
+
+  const handleSelectproductChange = (selectedOption, srNo) => {
+    // console.log("selected>>>>>",selectedOption);
+    console.log(selectproduct);
+    if (selectedOption && selectedOption.label === 'create new product') {
       setIsproductDrawerOpen(true);
     } else {
+      const updatedRows = rows.map((row) => {
+        if (row.srNo === srNo) {
+          return { ...row, product: selectedOption.label };
+        }
+        return row;
+      });
+      setRows(updatedRows);
+      setSelectproduct(selectedOption.label);
       setIsproductDrawerOpen(false);
     }
   };
-  const options = [
-    {
-      value: 'customer',
-      label: 'create new vendor'
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          setcustomer(response);
+          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        }
+        const productResponse = await dispatch(fetchAllProducts());
+        if (Array.isArray(productResponse)) {
+          setProduct(productResponse);
+          // console.log(productResponse, '????????????');
+        } else {
+          console.error('fetchAllProducts returned an unexpected response:', productResponse);
+        }
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
+  const handlePurchase = async () => {
+    try {
+      const mobileno = document.getElementById('mobileno').value;
+      const email = document.getElementById('email').value;
+      const pono = document.getElementById('pono').value;
+      const date = document.getElementById('date').value;
+      const quotation_no = document.getElementById('quotationno').value;
+      const quotationref = document.getElementById('quotationref').value;
+
+      const purchaseData = {
+        vendor: selectcustomer,
+        mobileno,
+        email,
+        pono,
+        date,
+        quotation_no,
+        quotationref
+      };
+      const createdPurchase = await dispatch(createPurchase(purchaseData));
+      console.log('data>>>>', createdPurchase);
+      const purchaseId = createdPurchase.data.data.id;
+      const payload = {
+        purchaseId,
+        items: rows.map((row) => ({
+          serialno: row.srNo,
+          discount: row.discount,
+          product: row.product,
+          rate: row.rate,
+          mrp: row.mrp,
+          qty: row.qty
+        }))
+      };
+      dispatch(createPurchaseItem(payload));
+      console.log(payload);
+      alert('Purchase created successfully');
+      navigate('/purchaselist');
+    } catch (error) {
+      console.error('Error creating Purchase:', error);
     }
-  ];
-  const product = [
-    {
-      value: 'product',
-      label: 'create new product'
-    }
-  ];
+  };
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" gutterBottom id="mycss">
@@ -93,33 +170,47 @@ const AddPurchasePage = () => {
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Vendor</Typography>
-          <Select color="secondary" options={options} onChange={handleSelectChange} />
+          <Typography variant="subtitle1">Customer</Typography>
+          <Select
+            color="secondary"
+            options={
+              Array.isArray(customer)
+                ? [
+                    {
+                      value: 'customer',
+                      label: 'create new customer'
+                    },
+                    ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
+                  ]
+                : []
+            }
+            onChange={(selectedOption) => handleSelectChange(selectedOption)}
+          />
         </Grid>
         <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <StyledInput placeholder="Enter Mobile number" fullWidth />
+          <StyledInput placeholder="Enter Mobile number" id="mobileno" fullWidth />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Email</Typography>
-          <StyledInput placeholder="Enter Email" fullWidth />
+          <StyledInput placeholder="Enter Email" id="email" fullWidth />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Po No.</Typography>
-          <StyledInput placeholder="Enter " fullWidth />
+          <StyledInput placeholder="Enter Po No." id="pono" fullWidth />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Po Date</Typography>
-          <StyledInput type="date" fullWidth />
+          <StyledInput type="date" fullWidth id="date" />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation No.</Typography>
-          <StyledInput placeholder="Enter quotation number" fullWidth />
+          <StyledInput placeholder="Enter quotation number" id="quotationno" fullWidth />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation Ref.</Typography>
-          <StyledInput placeholder="Enter reference number" fullWidth />
+          <StyledInput placeholder="Enter reference number" id="quotationref" fullWidth />
         </Grid>
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
@@ -146,35 +237,49 @@ const AddPurchasePage = () => {
                       />
                     </TableCell>
                     <TableCell sx={{ padding: '5px' }}>
-                      <Select color="secondary" options={product} onChange={handleSelectproductChange} />
+                      <Select
+                        color="secondary"
+                        options={
+                          Array.isArray(product)
+                            ? [
+                                {
+                                  value: 'product',
+                                  label: 'create new product'
+                                },
+                                ...product.map((products) => ({ value: products.id, label: products.productname }))
+                              ]
+                            : []
+                        }
+                        onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
+                      />
                     </TableCell>
                     <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                     <TableCell>
                       <StyledInput
                         placeholder="qty"
                         // value={row.qty}
-                        onChange={(e) => handleInputChange(row.qty, 'qty', e.target.value)}
+                        onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)}
                       />
                     </TableCell>
                     <TableCell>
                       <StyledInput
                         placeholder="Rate"
                         // value={row.rate}
-                        onChange={(e) => handleInputChange(row.rate, 'rate', e.target.value)}
+                        onChange={(e) => handleInputChange(row.srNo, 'rate', e.target.value)}
                       />
                     </TableCell>
                     <TableCell>
                       <StyledInput
                         placeholder="Discount"
                         // value={row.discount}
-                        onChange={(e) => handleInputChange(row.discount, 'discount', e.target.value)}
+                        onChange={(e) => handleInputChange(row.srNo, 'discount', e.target.value)}
                       />
                     </TableCell>
                     <TableCell>
                       <StyledInput
                         placeholder="Amount"
                         // value={row.amount}
-                        onChange={(e) => handleInputChange(row.amount, 'amount', e.target.value)}
+                        onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)}
                       />
                     </TableCell>
                     <TableCell>
@@ -266,6 +371,7 @@ const AddPurchasePage = () => {
                   justifyContent: 'center',
                   borderRadius: '5px'
                 }}
+                onClick={handlePurchase}
               >
                 Save
               </button>
@@ -300,6 +406,7 @@ const AddPurchasePage = () => {
                   borderRadius: '5px',
                   marginRight: '10px'
                 }}
+                onClick={handlePurchase}
               >
                 Save & Next
               </button>
@@ -313,6 +420,7 @@ const AddPurchasePage = () => {
                   justifyContent: 'center',
                   borderRadius: '5px'
                 }}
+                onClick={handlePurchase}
               >
                 Save
               </button>
