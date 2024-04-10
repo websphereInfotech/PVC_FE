@@ -40,6 +40,17 @@ export const CREATE_CUSTOM_FEILD_REQUEST = 'CREATE_CUSTOM_FEILD_REQUEST';
 export const CREATE_CUSTOM_FEILD_SUCCESS = 'CREATE_CUSTOM_FEILD_SUCCESS';
 export const CREATE_CUSTOM_FEILD_FAILURE = 'CREATE_CUSTOM_FEILD_FAILURE';
 
+export const CREATE_PRODUCT_REQUEST = 'CREATE_PRODUCT_REQUEST';
+export const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS';
+export const CREATE_PRODUCT_FAILURE = 'CREATE_PRODUCT_FAILURE';
+
+export const CREATE_EXPENCE_REQUEST = 'CREATE_EXPENCE_REQUEST';
+export const CREATE_EXPENSE_SUCCESS = 'CREATE_EXPENSE_SUCCESS';
+export const CREATE_EXPENCE_FAILURE = 'CREATE_EXPENSE_FAILURE';
+
+export const CREATE_EXPENSE_ITEM_REQUEST = 'CREATE_EXPENSE_ITEM_REQUEST';
+export const CREATE_EXPENSE_ITEM_SUCCESS = 'CREATE_EXPENSE_ITEM_SUCCESS';
+export const CREATE_EXPENSE_ITEM_FAILURE = 'CREATE_EXPENSE_ITEM_FAILURE';
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
 });
@@ -168,4 +179,49 @@ export const createCustomFeildSuccess = (data) => ({
 export const createCustomFeildFailure = (error) => ({
   type: 'CREATE_CUSTOM_FEILD_FAILURE',
   payload: error
+});
+
+export const createProductRequest = (data) => ({
+  type: 'CREATE_PRODUCT_REQUEST',
+  payload: data
+});
+
+export const createProductSuccess = (data) => ({
+  type: 'CREATE_PRODUCT_SUCCESS',
+  payload: data
+});
+
+export const createProductFailure = (error) => ({
+  type: 'CREATE_PRODUCT_FAILURE',
+  payload: error
+});
+
+export const createExpenseRequest = (data) => ({
+  type: 'CREATE_EXPENCE_REQUEST',
+  payload: data
+});
+
+export const createExpenseSuccess = (data) => ({
+  type: 'CREATE_EXPENSE_SUCCESS',
+  payload: data
+});
+
+export const createExpenseFailure = (error) => ({
+  type: 'CREATE_EXPENSE_FAILURE',
+  payload: error
+});
+
+export const createExpenseItemRequest = (data) => ({
+  type: 'CREATE_EXPENSE_ITEM_REQUEST',
+  payload: data
+});
+
+export const createExpenseItemSuccess = (data) => ({
+  type: 'CREATE_EXPENSE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const createExpenseItemFailure = (data) => ({
+  type: 'CREATE_EXPENSE_ITEM_FAILURE',
+  payload: data
 });
