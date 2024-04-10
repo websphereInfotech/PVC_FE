@@ -392,7 +392,7 @@ const Salesinvoice = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹0.00</h3>
+                  <h3>₹{subtotal}</h3>
                 </div>
               </>
             ) : (
@@ -443,7 +443,7 @@ const Salesinvoice = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹0.00</h3>
+                  <h3>₹{subtotal}</h3>
                 </div>
               </div>
             )}

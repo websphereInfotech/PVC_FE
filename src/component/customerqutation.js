@@ -188,19 +188,21 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <input placeholder="City" id="city" value={formData.city} onChange={handleInputChange} />
           </Grid>
         </Grid>
-        <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }}>
-          <Typography variant="subtitle1">Provide bank details?</Typography>
-          <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
-            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-            <FormControlLabel value="false" control={<Radio />} label="No" />
-          </RadioGroup>
-        </Grid>
-        <Grid item sx={{ margin: '8px 16px' }}>
-          <Typography variant="subtitle1">Enable credit limit?</Typography>
-          <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
-            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-            <FormControlLabel value="false" control={<Radio />} label="No" />
-          </RadioGroup>
+        <Grid container spacing={2} style={{ paddingTop: '16px' }}>
+          <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }} md={5}>
+            <Typography variant="subtitle1">Provide bank details?</Typography>
+            <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
+              <FormControlLabel value="true" control={<Radio />} label="Yes" />
+              <FormControlLabel value="false" control={<Radio />} label="No" />
+            </RadioGroup>
+          </Grid>
+          <Grid item sx={{ margin: '8px 16px' }} md={5}>
+            <Typography variant="subtitle1">Enable credit limit?</Typography>
+            <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
+              <FormControlLabel value="true" control={<Radio />} label="Yes" />
+              <FormControlLabel value="false" control={<Radio />} label="No" />
+            </RadioGroup>
+          </Grid>
         </Grid>
         <Grid item sx={{ margin: '8px 16px' }}>
           <Card sx={{ padding: '10px' }}>

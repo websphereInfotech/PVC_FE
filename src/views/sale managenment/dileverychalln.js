@@ -53,15 +53,16 @@ const Deliverychallan = () => {
 
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
+      // console.log("roe@@@@@@@@@@@@",value);
       if (row.srNo === srNo) {
-        const newValue = parseFloat(value);
-        return { ...row, [field]: newValue };
+        // const newValue = parseFloat(value);
+        return { ...row, [field]: value };
       }
       return row;
     });
 
     updatedRows.forEach((row) => {
-      const amount = row.qty * row.rate; // Calculate amount for the current row only
+      const amount = row.qty * row.mrp; // Calculate amount for the current row only
       row.amount = Number.isNaN(amount) ? 0 : amount;
     });
 
@@ -154,8 +155,9 @@ const Deliverychallan = () => {
         customer: selectcustomer
       };
       const Deliverychallan = await dispatch(createDeliveryChallan(ChallanData));
-      console.log('data>>>>', Deliverychallan);
+      // console.log('data>>>>', Deliverychallan);
       const deliverychallanId = Deliverychallan.data.data.id;
+      // console.log("id",deliverychallanId);
       const payload = {
         deliverychallanId,
         items: rows.map((row) => ({
@@ -169,7 +171,7 @@ const Deliverychallan = () => {
           mrp: row.mrp
         }))
       };
-      console.log(payload, 'payload????');
+      // console.log(payload, 'payload????');
       dispatch(createDeliveryChallanItem(payload));
       alert('Deliverychallan created successfully');
     } catch (error) {
@@ -319,7 +321,7 @@ const Deliverychallan = () => {
                             placeholder="Enter product description"
                             // value={row.productDescription}
                             sx={{ width: '625px' }}
-                            onChange={(e) => handleInputChange(row.description, 'description', e.target.value)}
+                            onChange={(e) => handleInputChange(row.srNo, 'description', e.target.value)}
                           />
                         </TableCell>
                       </TableRow>
