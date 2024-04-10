@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { purchaseview } from 'store/thunk';
 
 const Purchaseview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  useEffect(() => {
+    dispatch(purchaseview(id))
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching payment data:', error);
+      });
+  }, [dispatch, id]);
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -14,39 +28,39 @@ const Purchaseview = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Vendor</Typography>
-          <Typography variant="subtitle2">websphere infotech</Typography>
+          <Typography variant="subtitle2">{data.vendor}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">9537410771</Typography>
+          <Typography variant="subtitle2">{data.mobileno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">wsinfo08317@gmail.com</Typography>
+          <Typography variant="subtitle2">{data.email}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}>
           <Typography variant="subtitle1">Vendor Address</Typography>
           <Typography variant="subtitle2">317,silver, mota varacha, AHMEDABAD,GUJARAT, 395004</Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="subtitle1">Shipping Address</Typography>
           <Typography variant="subtitle2">silver trade center, mota varacha., SURAT,GUJARAT 395002</Typography>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">PO No.</Typography>
-          <Typography variant="subtitle2">PO0001</Typography>
+          <Typography variant="subtitle2">{data.pono}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">PO Date</Typography>
-          <Typography variant="subtitle2">31-03-2024</Typography>
+          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString()}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation No.</Typography>
-          <Typography variant="subtitle2">QN0001</Typography>
+          <Typography variant="subtitle2">{data.quotation_no}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation Ref.</Typography>
-          <Typography variant="subtitle2">websphere info.</Typography>
+          <Typography variant="subtitle2">{data.quotationref}</Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -63,14 +77,17 @@ const Purchaseview = () => {
                 <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>1</TableCell>
-                  <TableCell>demo</TableCell>
-                  <TableCell>10</TableCell>
-                  <TableCell>1000</TableCell>
-                  <TableCell>1%</TableCell>
-                  <TableCell>100</TableCell>
-                </TableRow>
+                {data.purchaseitems &&
+                  data.purchaseitems.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{item?.serialno}</TableCell>
+                      <TableCell>{item?.product}</TableCell>
+                      <TableCell>{item?.qty}</TableCell>
+                      <TableCell>{item?.rate}</TableCell>
+                      <TableCell>{item?.discount}</TableCell>
+                      <TableCell>{item?.mrp}</TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>
@@ -82,15 +99,15 @@ const Purchaseview = () => {
             <>
               <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Taxable Amt.</p>
-                <p>₹100.00</p>
+                <p>₹0.00</p>
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Sub Total</p>
-                <p>₹1100.00</p>
+                <p>₹0.00</p>
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Total Amt.</p>
-                <p>₹1100.00</p>
+                <p>₹0.00</p>
               </div>
             </>
           ) : (
@@ -98,15 +115,15 @@ const Purchaseview = () => {
             <div style={{ float: 'right', width: '30%' }}>
               <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Taxable Amt.</p>
-                <p>₹100.00</p>
+                <p>₹0.00</p>
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Sub Total</p>
-                <p>₹1100.00</p>
+                <p>₹0.00</p>
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Total Amt.</p>
-                <p>₹1100.00</p>
+                <p>₹0.00</p>
               </div>
             </div>
           )}

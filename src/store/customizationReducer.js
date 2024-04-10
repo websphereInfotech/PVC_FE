@@ -9,7 +9,8 @@ export const initialState = {
   // Add properties related to quotations
   quotations: [],
   loadingQuotations: false,
-  errorQuotations: null
+  errorQuotations: null,
+  purchase: []
 };
 
 const customizationReducer = (state = initialState, action) => {
@@ -60,6 +61,13 @@ const customizationReducer = (state = initialState, action) => {
         isAuthenticated: false,
         user: null,
         error: action.payload
+      };
+    case actionTypes.VIEW_PURCHASE_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        purchase: action.payload,
+        error: null
       };
     default:
       return state;

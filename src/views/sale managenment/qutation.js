@@ -10,7 +10,8 @@ import AnchorProductDrawer from '../../component/productquotation';
 import { useDispatch } from 'react-redux';
 import { createQuotation, createQuotationItem, fetchAllCustomers } from 'store/thunk';
 import { fetchAllProducts } from 'store/thunk';
-import { deleteQuotationItem } from 'store/thunk';
+// import { deleteQuotationItem } from 'store/thunk';
+import { useNavigate } from 'react-router-dom';
 
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -42,33 +43,49 @@ const Qutation = () => {
   const [selectcustomer, setSelectcustomer] = useState([]);
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const navigate = useNavigate();
 
   const handleAddRow = () => {
-    const newRow = { srNo: rows.length + 1, product: '', qty: '', rate: '', amount: '' };
+    const newRow = { srNo: rows.length + 1, product: '', qty: '', rate: '', mrp: '' };
     setRows([...rows, newRow]);
   };
 
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
       if (row.srNo === srNo) {
-        return { ...row, [field]: value };
+        const newValue = parseFloat(value);
+        return { ...row, [field]: newValue };
       }
       return row;
     });
+
+    updatedRows.forEach((row) => {
+      const amount = row.qty * row.rate * row.mrp; // Calculate amount for the current row only
+      row.amount = Number.isNaN(amount) ? 0 : amount;
+    });
+
+    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.amount, 0);
+    setSubtotal(Number.isNaN(newSubtotal) ? 0 : newSubtotal);
     setRows(updatedRows);
-    // console.log(updatedRows, 'itemrows>>>>>>>');
   };
 
   const handleDeleteRow = async (srNo) => {
-    const deleterow = await dispatch(deleteQuotationItem(srNo));
-    console.log('dleterow', deleterow);
+    const deletedRow = rows.find((row) => row.srNo === srNo);
+    if (!deletedRow) return;
+
     const updatedRows = rows.filter((row) => row.srNo !== srNo);
     const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
       ...row,
       srNo: index + 1
     }));
+
+    const deletedAmount = deletedRow.amount;
+    const newSubtotal = subtotal - deletedAmount;
+
     setRows(updatedRowsWithSerialNumbers);
+    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
   };
 
   const handleSelectChange = (selectedOption) => {
@@ -108,8 +125,6 @@ const Qutation = () => {
         if (Array.isArray(response)) {
           setcustomer(response);
           // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        } else {
-          console.error('fetchAllCustomers returned an unexpected response:', response);
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
@@ -151,17 +166,19 @@ const Qutation = () => {
           product: row.product,
           qty: row.qty,
           rate: row.rate,
-          mrp: row.amount
+          mrp: row.mrp
         }))
       };
       dispatch(createQuotationItem(payload));
       // console.log(payload);
       alert('Quotation created successfully');
+      navigate('/qutationlist');
     } catch (error) {
       console.error('Error creating quotation:', error);
       alert('Failed to create quotation');
     }
   };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -274,7 +291,7 @@ const Qutation = () => {
                         <StyledInput
                           placeholder="amount"
                           // value={row.amount}
-                          onChange={(e) => handleInputChange(row.srNo, 'amount', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)}
                         />
                       </TableCell>
                       <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -330,7 +347,7 @@ const Qutation = () => {
                   }}
                 >
                   <p>Sub Total</p>
-                  <p>₹0.00</p>
+                  <p>₹{subtotal}</p>
                 </div>
                 <div
                   style={{
@@ -341,7 +358,7 @@ const Qutation = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹0.00</h3>
+                  <h3>₹{subtotal}</h3>
                 </div>
               </>
             ) : (
@@ -357,7 +374,7 @@ const Qutation = () => {
                   }}
                 >
                   <p>Taxable Amt.</p>
-                  <p>₹0.00</p>
+                  <p>₹0</p>
                 </div>
                 <div
                   style={{
@@ -369,7 +386,7 @@ const Qutation = () => {
                   }}
                 >
                   <p>Sub Total</p>
-                  <p>₹0.00</p>
+                  <p>₹{subtotal}</p>
                 </div>
                 <div
                   style={{
@@ -380,7 +397,7 @@ const Qutation = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹0.00</h3>
+                  <h3>₹{subtotal}</h3>
                 </div>
               </div>
             )}

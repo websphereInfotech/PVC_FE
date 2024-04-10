@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell } from '@mui/material';
 import { withStyles } from '@mui/styles';
 // import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,6 +6,8 @@ import { withStyles } from '@mui/styles';
 import Select from 'react-select';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import { useMediaQuery } from '@mui/material';
+import { fetchAllCustomers } from 'store/thunk';
+import { useDispatch } from 'react-redux';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -32,19 +34,59 @@ const StyledInput = withStyles((theme) => ({
 const Salesreturn = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [customer, setcustomer] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState([]);
+
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'customer') {
+    if (selectedOption && selectedOption.label === 'create new customer') {
       setIsDrawerOpen(true);
+      // console.log(isDrawerOpen, 'open');
     } else {
+      console.log(selectcustomer, 'customers>?????/??????????');
+      setSelectcustomer(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
-  const options = [
-    {
-      value: 'customer',
-      label: 'create new customer'
-    }
-  ];
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          setcustomer(response);
+          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        }
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
+  // const handlecreatesalesreturn = async () => {
+  //   try {
+  //     const challanno = document.getElementById('challanno').value;
+  //     const date = document.getElementById('date').value;
+  //     const email = document.getElementById('email').value;
+  //     const mobileno = document.getElementById('mobileno').value;
+
+  //     const Salesreturndata = {
+  //       challanno,
+  //       date,
+  //       email,
+  //       mobileno,
+  //       customer: selectcustomer
+  //     };
+
+  //     dispatch(createDeliveryChallanItem(Salesreturndata));
+  //     alert('Sales return created successfully');
+  //   } catch (error) {
+  //     console.error('Error creating Sales return:', error);
+  //     alert('Failed to create Sales return');
+  //   }
+  // };
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -56,7 +98,21 @@ const Salesreturn = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Customer</Typography>
-              <Select color="secondary" options={options} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={
+                  Array.isArray(customer)
+                    ? [
+                        {
+                          value: 'customer',
+                          label: 'create new customer'
+                        },
+                        ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
+                      ]
+                    : []
+                }
+                onChange={(selectedOption) => handleSelectChange(selectedOption)}
+              />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
@@ -240,6 +296,7 @@ const Salesreturn = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  // onClick={handlecreatesalesreturn}
                 >
                   Save
                 </button>
@@ -274,6 +331,7 @@ const Salesreturn = () => {
                     borderRadius: '5px',
                     marginRight: '10px'
                   }}
+                  // onClick={handlecreatesalesreturn}
                 >
                   Save & Next
                 </button>
@@ -287,6 +345,7 @@ const Salesreturn = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  // onClick={handlecreatesalesreturn}
                 >
                   Save
                 </button>

@@ -40,6 +40,70 @@ export const CREATE_CUSTOM_FEILD_REQUEST = 'CREATE_CUSTOM_FEILD_REQUEST';
 export const CREATE_CUSTOM_FEILD_SUCCESS = 'CREATE_CUSTOM_FEILD_SUCCESS';
 export const CREATE_CUSTOM_FEILD_FAILURE = 'CREATE_CUSTOM_FEILD_FAILURE';
 
+export const VIEW_PURCHASE_REQUEST = 'VIEW_PURCHASE_REQUEST';
+export const VIEW_PURCHASE_SUCCESS = 'VIEW_PURCHASE_SUCCESS';
+export const VIEW_PURCHASE_FAILURE = 'VIEW_PURCHASE_FAILURE';
+
+export const CREATE_DELIVERY_CHALLAN_REQUEST = 'CREATE_DELIVERY_CHALLAN_REQUEST';
+export const CREATE_DELIVERY_CHALLAN_SUCCESS = 'CREATE_DELIVERY_CHALLAN_SUCCESS';
+export const CREATE_DELIVERY_CHALLAN_FAILURE = 'CREATE_DELIVERY_CHALLAN_FAILURE';
+
+export const CREATE_DELIVERY__ITEM_REQUEST = 'CREATE_DELIVERY__ITEM_REQUEST';
+export const CREATE_DELIVERY__ITEM_SUCCESS = 'CREATE_DELIVERY__ITEM_SUCCESS';
+export const CREATE_DELIVERY__ITEM_FAILURE = 'CREATE_DELIVERY__ITEM_FAILURE';
+
+export const CREATE_PAYMENT_REQUEST = 'CREATE_PAYMENT_REQUEST';
+export const CREATE_PAYMENT_SUCCESS = 'CREATE_PAYMENT_SUCCESS';
+export const CREATE_PAYMENT_FAILURE = 'CREATE_PAYMENT_FAILURE';
+
+export const GET_ALL_PAYMENT_REQUEST = 'GET_ALL_PAYMENT_REQUEST';
+export const GET_ALL_PAYMENT_SUCCESS = 'GET_ALL_PAYMENT_SUCCESS';
+export const GET_ALL_PAYMENT_FAILURE = 'GET_ALL_PAYMENT_FAILURE';
+
+export const VIEW_PAYMENT_REQUEST = 'VIEW_PAYMENT_REQUEST';
+export const VIEW_PAYMENT_SUCCESS = 'VIEW_PAYMENT_SUCCESS';
+export const VIEW_PAYMENT_FAILURE = 'VIEW_PAYMENT_FAILURE';
+
+export const CREATE_SALES_INVOICE_REQUEST = 'CREATE_SALES_INVOICE_REQUEST';
+export const CREATE_SALES_INVOICE_SUCCESS = 'CREATE_SALES_INVOICE_SUCCESS';
+export const CREATE_SALES_INVOICE_FAILURE = 'CREATE_SALES_INVOICE_FAILURE';
+
+export const CREATE_SALESINVOICE_ITEM_REQUEST = 'CREATE_SALESINVOICE_ITEM_REQUEST';
+export const CREATE_SALESINVOICE_ITEM_SUCCESS = 'CREATE_SALESINVOICE_ITEM_SUCCESS';
+export const CREATE_SALESINVOICE_ITEM_FAILURE = 'CREATE_SALESINVOICE_ITEM_FAILURE';
+
+export const CREATE_PURCHASE_REQUEST = 'CREATE_PURCHASE_REQUEST';
+export const CREATE_PURCHASE_SUCCESS = 'CREATE_PURCHASE_SUCCESS';
+export const CREATE_PURCHASE_FAILURE = 'CREATE_PURCHASE_FAILURE';
+
+export const CREATE_PURCHASE_ITEM_REQUEST = 'CREATE_PURCHASE_ITEM_REQUEST';
+export const CREATE_PURCHASE_ITEM_SUCCESS = 'CREATE_PURCHASE_ITEM_SUCCESS';
+export const CREATE_PURCHASE_ITEM_FAILURE = 'CREATE_PURCHASE_ITEM_FAILURE';
+
+export const CREATE_PURCHASEBILL_REQUEST = 'CREATE_PURCHASEBILL_REQUEST';
+export const CREATE_PURCHASEBILL_SUCCESS = 'CREATE_PURCHASEBILL_SUCCESS';
+export const CREATE_PURCHASEBILL_FAILURE = 'CREATE_PURCHASEBILL_FAILURE';
+
+export const CREATE_PURCHASEBILL_ITEM_REQUEST = 'CREATE_PURCHASEBILL_ITEM_REQUEST';
+export const CREATE_PURCHASEBILL_ITEM_SUCCESS = 'CREATE_PURCHASEBILL_ITEM_SUCCESS';
+export const CREATE_PURCHASEBILL_ITEM_FAILURE = 'CREATE_PURCHASEBILL_ITEM_FAILURE';
+
+export const FETCH_ALL_PURCHASE_REQUEST = 'FETCH_ALL_PURCHASE_REQUEST';
+export const FETCH_ALL_PURCHASE_SUCCESS = 'FETCH_ALL_PURCHASE_SUCCESS';
+export const FETCH_ALL_PURCHASE_FAILURE = 'FETCH_ALL_PURCHASE_FAILURE';
+
+export const CREATE_PRODUCT_REQUEST = 'CREATE_PRODUCT_REQUEST';
+export const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS';
+export const CREATE_PRODUCT_FAILURE = 'CREATE_PRODUCT_FAILURE';
+
+export const CREATE_EXPENCE_REQUEST = 'CREATE_EXPENCE_REQUEST';
+export const CREATE_EXPENSE_SUCCESS = 'CREATE_EXPENSE_SUCCESS';
+export const CREATE_EXPENCE_FAILURE = 'CREATE_EXPENSE_FAILURE';
+
+export const CREATE_EXPENSE_ITEM_REQUEST = 'CREATE_EXPENSE_ITEM_REQUEST';
+export const CREATE_EXPENSE_ITEM_SUCCESS = 'CREATE_EXPENSE_ITEM_SUCCESS';
+export const CREATE_EXPENSE_ITEM_FAILURE = 'CREATE_EXPENSE_ITEM_FAILURE';
+
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
 });
@@ -168,4 +232,242 @@ export const createCustomFeildSuccess = (data) => ({
 export const createCustomFeildFailure = (error) => ({
   type: 'CREATE_CUSTOM_FEILD_FAILURE',
   payload: error
+});
+
+export const viewPurchaseRequest = (data) => ({
+  type: 'VIEW_PURCHASE_REQUEST',
+  payload: data
+});
+
+export const viewPurchaseSuccess = (data) => ({
+  type: 'VIEW_PURCHASE_SUCCESS',
+  payload: data
+});
+
+export const viewPurchaseFailure = (error) => ({
+  type: 'VIEW_PURCHASE_FAILURE',
+  payload: error
+});
+
+export const createDeliveryChallanRequest = (data) => ({
+  type: 'CREATE_DELIVERY_CHALLAN_REQUEST',
+  payload: data
+});
+
+export const createDeliveryChallanSuccess = (data) => ({
+  type: 'CREATE_DELIVERY_CHALLAN_SUCCESS',
+  payload: data
+});
+
+export const createDeliveryChallanFailure = (error) => ({
+  type: 'CREATE_DELIVERY_CHALLAN_FAILURE',
+  payload: error
+});
+
+export const createDeliveryChallanItemRequest = (data) => ({
+  type: 'CREATE_DELIVERY__ITEM_REQUEST',
+  payload: data
+});
+
+export const createDeliveryChallanItemSuccess = (data) => ({
+  type: 'CREATE_DELIVERY__ITEM_SUCCESS',
+  payload: data
+});
+
+export const createDeliveryChallanItemFailure = (error) => ({
+  type: 'CREATE_DELIVERY__ITEM_FAILURE',
+  payload: error
+});
+
+export const createPaymentRequest = (data) => ({
+  type: 'CREATE_PAYMENT_REQUEST',
+  payload: data
+});
+
+export const createPaymentSuccess = (data) => ({
+  type: 'CREATE_PAYMENT_SUCCESS',
+  payload: data
+});
+
+export const createPaymentFailure = (error) => ({
+  type: 'CREATE_PAYMENT_FAILURE',
+  payload: error
+});
+
+export const getallPaymentRequest = (data) => ({
+  type: 'GET_ALL_PAYMENT_REQUEST',
+  payload: data
+});
+
+export const getallPaymentSuccess = (data) => ({
+  type: 'GET_ALL_PAYMENT_SUCCESS',
+  payload: data
+});
+
+export const getallPaymentFailure = (error) => ({
+  type: 'GET_ALL_PAYMENT_FAILURE',
+  payload: error
+});
+
+export const viewPaymentRequest = (data) => ({
+  type: 'VIEW_PAYMENT_REQUEST',
+  payload: data
+});
+
+export const viewPaymentSuccess = (data) => ({
+  type: 'VIEW_PAYMENT_SUCCESS',
+  payload: data
+});
+
+export const viewPaymentFailure = (error) => ({
+  type: 'VIEW_PAYMENT_FAILURE',
+  payload: error
+});
+
+export const createSalesinvoiceRequest = (data) => ({
+  type: 'CREATE_SALES_INVOICE_REQUEST',
+  payload: data
+});
+
+export const createSalesinvoiceSuccess = (data) => ({
+  type: 'CREATE_SALES_INVOICE_SUCCESS',
+  payload: data
+});
+
+export const createSalesinvoiceFailure = (error) => ({
+  type: 'CREATE_SALES_INVOICE_FAILURE',
+  payload: error
+});
+
+export const createSalesinvoiceItemRequest = (data) => ({
+  type: 'CREATE_SALESINVOICE_ITEM_REQUEST',
+  payload: data
+});
+
+export const createSalesinvoiceItemSuccess = (data) => ({
+  type: 'CREATE_SALESINVOICE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const createSalesinvoiceItemFailure = (error) => ({
+  type: 'CREATE_SALESINVOICE_ITEM_FAILURE',
+  payload: error
+});
+
+export const createPurchaseRequest = (data) => ({
+  type: 'CREATE_PURCHASE_REQUEST',
+  payload: data
+});
+
+export const createPrchaseSuccess = (data) => ({
+  type: 'CREATE_PURCHASE_SUCCESS',
+  payload: data
+});
+
+export const createPurchaseFailure = (error) => ({
+  type: 'CREATE_PURCHASE_FAILURE',
+  payload: error
+});
+
+export const createPurchaseItemRequest = (data) => ({
+  type: 'CREATE_PURCHASE_ITEM_REQUEST',
+  payload: data
+});
+
+export const createPrchaseItemSuccess = (data) => ({
+  type: 'CREATE_PURCHASE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const createPurchaseItemFailure = (error) => ({
+  type: 'CREATE_PURCHASE_ITEM_FAILURE',
+  payload: error
+});
+
+export const createPurchaseBillRequest = (data) => ({
+  type: 'CREATE_PURCHASEBILL_REQUEST',
+  payload: data
+});
+
+export const createPurchaseBillSuccess = (data) => ({
+  type: 'CREATE_PURCHASEBILL_SUCCESS',
+  payload: data
+});
+
+export const createPurchaseBillFailure = (error) => ({
+  type: 'CREATE_PURCHASEBILL_FAILURE',
+  payload: error
+});
+
+export const createPurchaseBillItemRequest = (data) => ({
+  type: 'CREATE_PURCHASEBILL_ITEM_REQUEST',
+  payload: data
+});
+
+export const createPurchaseBillItemSuccess = (data) => ({
+  type: 'CREATE_PURCHASEBILL_ITEM_SUCCESS',
+  payload: data
+});
+
+export const createPurchaseBillItemFailure = (error) => ({
+  type: 'CREATE_PURCHASEBILL_ITEM_FAILURE',
+  payload: error
+});
+
+export const fetchAllPurchaseRequest = () => ({
+  type: 'FETCH_ALL_PURCHASE_REQUEST'
+});
+
+export const fetchAllPurchaseSuccess = (data) => ({
+  type: 'FETCH_ALL_PURCHASE_SUCCESS',
+  payload: data
+});
+
+export const fetchAllPurchaseFailure = (error) => ({
+  type: 'FETCH_ALL_PURCHASE_FAILURE',
+  payload: error
+});
+export const createProductRequest = (data) => ({
+  type: 'CREATE_PRODUCT_REQUEST',
+  payload: data
+});
+
+export const createProductSuccess = (data) => ({
+  type: 'CREATE_PRODUCT_SUCCESS',
+  payload: data
+});
+
+export const createProductFailure = (error) => ({
+  type: 'CREATE_PRODUCT_FAILURE',
+  payload: error
+});
+
+export const createExpenseRequest = (data) => ({
+  type: 'CREATE_EXPENCE_REQUEST',
+  payload: data
+});
+
+export const createExpenseSuccess = (data) => ({
+  type: 'CREATE_EXPENSE_SUCCESS',
+  payload: data
+});
+
+export const createExpenseFailure = (error) => ({
+  type: 'CREATE_EXPENSE_FAILURE',
+  payload: error
+});
+
+export const createExpenseItemRequest = (data) => ({
+  type: 'CREATE_EXPENSE_ITEM_REQUEST',
+  payload: data
+});
+
+export const createExpenseItemSuccess = (data) => ({
+  type: 'CREATE_EXPENSE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const createExpenseItemFailure = (data) => ({
+  type: 'CREATE_EXPENSE_ITEM_FAILURE',
+  payload: data
 });

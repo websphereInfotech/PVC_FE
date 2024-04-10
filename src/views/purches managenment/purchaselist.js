@@ -1,36 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button, Table, TableBody, TableRow, TableCell } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@material-ui/core';
+import { getallPurchase, purchaseview } from 'store/thunk';
+import { useDispatch } from 'react-redux';
 
 const PurchaseOrderList = () => {
   const navigate = useNavigate();
-  // Dummy purchase order data
-  const purchaseOrders = [
-    {
-      id: 1,
-      billNo: 'PO-001',
-      billGenerator: 'John Doe',
-      vendor: 'Vendor A',
-      billType: 'Regular',
-      totalAmount: 1000,
-      billDate: '2024-03-10',
-      status: 'Pending'
-    },
-    {
-      id: 1,
-      billNo: 'PO-002',
-      billGenerator: 'Jane Smith',
-      vendor: 'Vendor B',
-      billType: 'Urgent',
-      totalAmount: 1500,
-      billDate: '2024-03-16',
-      status: 'Paid'
-    }
-  ];
+  const [purchaseOrders, setpurchaseOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  console.log('Payments:', purchaseOrders);
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(getallPurchase())
+      .then((data) => {
+        setpurchaseOrders(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching payment data:', error);
+        setIsLoading(false);
+      });
+  }, [dispatch]);
 
   const handleaddpurchse = () => {
     navigate('/addpurchase');
+  };
+
+  const handleViewPurchase = (id) => {
+    dispatch(purchaseview(id));
+    navigate(`/purchaseview/${id}`);
   };
 
   return (
@@ -45,26 +46,22 @@ const PurchaseOrderList = () => {
         <Table>
           <TableRow>
             <TableCell variant="head">Bill No.</TableCell>
-            <TableCell variant="head">Bill Generator</TableCell>
+            <TableCell variant="head">Mobile No.</TableCell>
             <TableCell variant="head">Vendor</TableCell>
-            <TableCell variant="head">Bill Type</TableCell>
-            <TableCell variant="head">Total Amount</TableCell>
             <TableCell variant="head">Bill Date</TableCell>
-            <TableCell variant="head">Status</TableCell>
+            <TableCell variant="head">PO No.</TableCell>
             <TableCell variant="head">Action</TableCell>
           </TableRow>
           <TableBody>
-            {purchaseOrders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.billNo}</TableCell>
-                <TableCell>{order.billGenerator}</TableCell>
-                <TableCell>{order.vendor}</TableCell>
-                <TableCell>{order.billType}</TableCell>
-                <TableCell>${order.totalAmount}</TableCell>
-                <TableCell>{order.billDate}</TableCell>
-                <TableCell>{order.status}</TableCell>
+            {purchaseOrders?.data?.map((order) => (
+              <TableRow key={order?.id}>
+                <TableCell>{order?.id}</TableCell>
+                <TableCell>{order?.mobileno}</TableCell>
+                <TableCell>{order?.vendor}</TableCell>
+                <TableCell>{new Date(order?.date).toLocaleDateString()}</TableCell>
+                <TableCell>{order?.pono}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="secondary" href="/purchaseview">
+                  <Button variant="outlined" color="secondary" onClick={() => handleViewPurchase(order?.id)}>
                     View
                   </Button>
                 </TableCell>
@@ -72,6 +69,7 @@ const PurchaseOrderList = () => {
             ))}
           </TableBody>
         </Table>
+        {isLoading && <div>Loading...</div>}
       </Card>
     </Container>
   );
