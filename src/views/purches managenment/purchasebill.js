@@ -42,6 +42,7 @@ const Purchasebill = () => {
   const [selectcustomer, setSelectcustomer] = useState([]);
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
   const navigate = useNavigate();
 
   const handleAddRow = () => {
@@ -52,23 +53,38 @@ const Purchasebill = () => {
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
       if (row.srNo === srNo) {
-        return { ...row, [field]: value };
+        const newValue = parseFloat(value);
+        return { ...row, [field]: newValue };
       }
       return row;
     });
+
+    updatedRows.forEach((row) => {
+      const amount = row.qty * row.mrp * row.rate; // Calculate amount for the current row only
+      row.amount = Number.isNaN(amount) ? 0 : amount;
+    });
+
+    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.amount, 0);
+    setSubtotal(Number.isNaN(newSubtotal) ? 0 : newSubtotal);
     setRows(updatedRows);
   };
 
-  const handleDeleteRow = (srNo) => {
+  const handleDeleteRow = async (srNo) => {
+    const deletedRow = rows.find((row) => row.srNo === srNo);
+    if (!deletedRow) return;
+
     const updatedRows = rows.filter((row) => row.srNo !== srNo);
-    // Update serial numbers after deletion
     const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
       ...row,
       srNo: index + 1
     }));
-    setRows(updatedRowsWithSerialNumbers);
-  };
 
+    const deletedAmount = deletedRow.amount;
+    const newSubtotal = subtotal - deletedAmount;
+
+    setRows(updatedRowsWithSerialNumbers);
+    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+  };
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'create new customer') {
       setIsDrawerOpen(true);
@@ -326,11 +342,11 @@ const Purchasebill = () => {
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal}</p>
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal}</p>
               </div>
             </>
           ) : (
@@ -342,11 +358,11 @@ const Purchasebill = () => {
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal}</p>
               </div>
               <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal}</p>
               </div>
             </div>
           )}

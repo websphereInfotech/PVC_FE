@@ -61,7 +61,7 @@ const Deliverychallan = () => {
     });
 
     updatedRows.forEach((row) => {
-      const amount = row.qty * row.rate; // Calculate amount for the current row only
+      const amount = row.qty * row.mrp; // Calculate amount for the current row only
       row.amount = Number.isNaN(amount) ? 0 : amount;
     });
 
