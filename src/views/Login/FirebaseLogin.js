@@ -58,9 +58,12 @@ const FirebaseLogin = ({ ...rest }) => {
         })}
         onSubmit={(values, { setSubmitting }) => {
           dispatch(loginAdmin(values))
-            .then(() => {
+            .then((status) => {
               setSubmitting(false);
-              navigate('/dashboard');
+              if (status === 'true') {
+                navigate('/dashboard');
+              }
+              // console.log("status",status);
             })
             .catch(() => {
               setSubmitting(false);

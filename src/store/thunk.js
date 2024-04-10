@@ -110,11 +110,14 @@ export const loginAdmin = (credentials) => {
       // console.log('login', response.data);
       const token = response.data.token;
       sessionStorage.setItem('token', token);
-      alert('Admin login successfully');
       const userData = response.data;
+      // console.log("********",userData.message);
+      alert(userData.message);
       dispatch(loginSuccess(userData));
+      return userData.status;
     } catch (error) {
       dispatch(loginFailure(error.message));
+      alert(error.response.data.error);
     }
   };
 };
@@ -202,11 +205,14 @@ export const createCustomer = (customerData) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
-      // console.log('createdQuotation>>>>', createdCustomer);
+      console.log('createdQuotation>>>>', createdCustomer);
       dispatch(createCustomerSuccess(createdCustomer));
+      alert('customer crate successfully');
       return createdCustomer;
     } catch (error) {
       dispatch(createCustomerFailure(error.message));
+      // alert(error.response.data.message);
+      // console.log("@@@@@@@@",error.response.data.message);
       throw error;
     }
   };
@@ -224,6 +230,8 @@ export const createCustomfeild = (payload) => {
       return createdCustomfeilddata;
     } catch (error) {
       dispatch(createCustomFeildFailure(error.message));
+      // alert(error.response.data.message);
+      // console.log("!!!!!!!!!!",error.response.data);
       throw error;
     }
   };
@@ -282,9 +290,13 @@ export const createProduct = (data) => {
       const createProductData = response;
       // console.log(response, 'product))))))))))))))))))))))');
       dispatch(createProductSuccess(createProductData));
+      alert(createProductData.data.message);
+      // console.log(createProductData.data.message);
       return createProductData;
     } catch (error) {
       dispatch(createProductFailure(error.message));
+      alert(error.response.data.message);
+      // console.log(error.response);
       throw error;
     }
   };
@@ -294,8 +306,10 @@ export const createDeliveryChallanItem = (payload) => {
   return async (dispatch) => {
     dispatch(createDeliveryChallanItemRequest());
     try {
-      console.log('enter');
+      // console.log('enter');
+      // console.log("payload",payload);
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallanitem`, payload, config);
+      // console.log("enter deli");
       const createdDeliverychallanitems = response;
       // console.log('create_deliverychallan>>>>', createdDeliverychallanitems);
       dispatch(createDeliveryChallanItemSuccess(createdDeliverychallanitems));
@@ -315,9 +329,13 @@ export const createExpense = (data) => {
       const expenceData = response;
       // console.log("respo",response);
       dispatch(createExpenseSuccess(expenceData));
+      // alert(expenceData.data.message);
+      // console.log("###########",expenceData.data.message);
       return expenceData;
     } catch (error) {
       dispatch(createExpenseFailure(error.message));
+      // alert(error.response.data.message);
+      // console.log("@@@@@@@@@@@@@@".error.response.data.message);
       throw error;
     }
   };
