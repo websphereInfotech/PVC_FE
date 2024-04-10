@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,7 +6,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
-import Expencedrawer from 'component/expencecreate';
+import { useDispatch } from 'react-redux';
+import { createExpense, createExpenseItem, fetchAllCustomers } from 'store/thunk';
 
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
@@ -32,13 +33,25 @@ const StyledInput = withStyles((theme) => ({
 }))(InputBase);
 
 const AddExpense = () => {
-  const [rows, setRows] = useState([{ srNo: 1, natureofexpencse: '', description: '', rate: '', amount: '' }]);
+  const dispatch = useDispatch();
+
+  const [rows, setRows] = useState([{ srNo: '1', natureofexpencse: '', description: '', taxable: '', mrp: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-
+  const [customer, setcustomer] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [formData, setFormData] = React.useState({
+    voucherno: '',
+    date: '',
+    gstin: '',
+    mobileno: '',
+    email: '',
+    billno: '',
+    billdate: '',
+    payment: ''
+  });
   const handleAddRow = () => {
-    const newRow = { srNo: rows.length + 1, natureofexpencse: '', description: '', rate: '', amount: '' };
+    const newRow = { srNo: (rows.length + 1).toString(), natureofexpencse: '', description: '', taxable: '', mrp: '' };
     setRows([...rows, newRow]);
   };
 
@@ -62,31 +75,63 @@ const AddExpense = () => {
     setRows(updatedRowsWithSerialNumbers);
   };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'customer') {
+    if (selectedOption && selectedOption.label === 'create new customer') {
       setIsDrawerOpen(true);
+      console.log(isDrawerOpen, 'open');
     } else {
+      // console.log(selectcustomer, 'customers>???????????????');
+      setSelectcustomer(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
-  const handleSelectproductChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'product') {
-      setIsproductDrawerOpen(true);
-    } else {
-      setIsproductDrawerOpen(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          setcustomer(response);
+          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        } else {
+          console.error('fetchAllCustomers returned an unexpected response:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+  const handleSave = async () => {
+    try {
+      const data = {
+        ...formData,
+        customer: selectcustomer
+      };
+      // console.log(data,"data@@@@@@@@@@@@@@@@@");
+      const expenceData = await dispatch(createExpense(data));
+      // console.log('expense', expenceData);
+      const expenseId = expenceData.data.data.id;
+      // console.log(Id, 'id>>>>>>>>>>>>>>>');
+      const payload = {
+        expenseId,
+        items: rows.map((row) => ({
+          serialno: row.srNo,
+          expensse: row.natureofexpencse,
+          description: row.description,
+          taxable: row.taxable,
+          mrp: row.mrp
+        }))
+      };
+      dispatch(createExpenseItem(payload));
+      alert('expence add successfully');
+    } catch (error) {
+      console.error('Error creating customer:', error);
     }
   };
-  const options = [
-    {
-      value: 'customer',
-      label: 'create new customer'
-    }
-  ];
-  const product = [
-    {
-      value: 'product',
-      label: 'create new expence'
-    }
-  ];
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -99,20 +144,34 @@ const AddExpense = () => {
             {/* First row containing the first 4 grid inputs */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Customer</Typography>
-              <Select color="secondary" options={options} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={
+                  Array.isArray(customer)
+                    ? [
+                        {
+                          value: 'customer',
+                          label: 'create new customer'
+                        },
+                        ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
+                      ]
+                    : []
+                }
+                onChange={(selectedOption) => handleSelectChange(selectedOption)}
+              />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Voucher No.</Typography>
-              <StyledInput placeholder="Enter Voucher number" fullWidth />
+              <StyledInput placeholder="Enter Voucher number" id="voucherno" value={formData.voucherno} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Date</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="date" value={formData.date} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">GSTIN</Typography>
-              <StyledInput placeholder="Enter GSTIN" fullWidth />
+              <StyledInput placeholder="Enter GSTIN" id="gstin" value={formData.gstin} onChange={handleChange} />
             </Grid>
           </Grid>
 
@@ -120,23 +179,23 @@ const AddExpense = () => {
             {/* Second row containing the next 5 grid inputs */}
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Mobile No.</Typography>
-              <StyledInput placeholder="Enter Mobile number" fullWidth />
+              <StyledInput placeholder="Enter Mobile number" id="mobileno" value={formData.mobileno} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Email</Typography>
-              <StyledInput placeholder="Enter Email" fullWidth />
+              <StyledInput placeholder="Enter Email" id="email" value={formData.email} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Bill No.</Typography>
-              <StyledInput placeholder="Enter Bill No." fullWidth />
+              <StyledInput placeholder="Enter Bill No." id="billno" value={formData.billno} onChange={handleChange} />
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Bill Date</Typography>
-              <StyledInput type="date" fullWidth />
+              <StyledInput type="date" id="billdate" value={formData.billdate} onChange={handleChange} />
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Payment Method</Typography>
-              <StyledInput placeholder="Enter Payment Method" fullWidth />
+              <StyledInput placeholder="Enter Payment Method" id="payment" value={formData.payment} onChange={handleChange} />
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -164,30 +223,32 @@ const AddExpense = () => {
                           onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
                         />
                       </TableCell>
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell>
+                        <StyledInput
+                          placeholder="Enter"
+                          value={row.expensse}
+                          onChange={(e) => handleInputChange(row.srNo, 'natureofexpencse', e.target.value)}
+                        />
+                      </TableCell>
+                      {/* <TableCell sx={{ padding: '5px' }}>
                         <Select color="secondary" options={product} onChange={handleSelectproductChange} />
                       </TableCell>
-                      <Expencedrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                      <Expencedrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} /> */}
                       <TableCell>
                         <StyledInput
                           placeholder="description"
                           // value={row.description}
-                          fullWidth
-                          onChange={(e) => handleInputChange(row.description, 'description', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'description', e.target.value)}
                         />
                       </TableCell>
                       <TableCell>
-                        <StyledInput
-                          placeholder="Rate"
-                          // value={row.rate}
-                          onChange={(e) => handleInputChange(row.rate, 'rate', e.target.value)}
-                        />
+                        <StyledInput placeholder="Rate" onChange={(e) => handleInputChange(row.srNo, 'taxable', e.target.value)} />
                       </TableCell>
                       <TableCell>
                         <StyledInput
                           placeholder="Amount"
                           // value={row.amount}
-                          onChange={(e) => handleInputChange(row.amount, 'amount', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)}
                         />
                       </TableCell>
                       <TableCell>
@@ -327,6 +388,7 @@ const AddExpense = () => {
                     justifyContent: 'center',
                     borderRadius: '5px'
                   }}
+                  onClick={handleSave}
                 >
                   Save
                 </button>

@@ -66,7 +66,16 @@ import {
   createPurchaseBillItemFailure,
   fetchAllPurchaseRequest,
   fetchAllPurchaseSuccess,
-  fetchAllPurchaseFailure
+  fetchAllPurchaseFailure,
+  createProductRequest,
+  createProductFailure,
+  createProductSuccess,
+  createExpenseRequest,
+  createExpenseFailure,
+  createExpenseSuccess,
+  createExpenseItemRequest,
+  createExpenseItemFailure,
+  createExpenseItemSuccess
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -207,7 +216,7 @@ export const createCustomfeild = (payload) => {
   return async (dispatch) => {
     dispatch(createCustomFeildRequest());
     try {
-      console.log('enter');
+      // console.log('enter');
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
       const createdCustomfeilddata = response;
       // console.log('createdCustomfeilddata>>>>', createdCustomfeilddata);
@@ -261,6 +270,21 @@ export const createDeliveryChallan = (ChallanData) => {
       return createdDeliverychallan;
     } catch (error) {
       dispatch(createDeliveryChallanFailure(error.message));
+    }
+  };
+};
+
+export const createProduct = (data) => {
+  return async (dispatch) => {
+    dispatch(createProductRequest());
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_product`, data, config);
+      const createProductData = response;
+      // console.log(response, 'product))))))))))))))))))))))');
+      dispatch(createProductSuccess(createProductData));
+      return createProductData;
+    } catch (error) {
+      dispatch(createProductFailure(error.message));
       throw error;
     }
   };
@@ -278,6 +302,22 @@ export const createDeliveryChallanItem = (payload) => {
       return createdDeliverychallanitems;
     } catch (error) {
       dispatch(createDeliveryChallanItemFailure(error.message));
+    }
+  };
+};
+
+export const createExpense = (data) => {
+  return async (dispatch) => {
+    // console.log("enter");
+    dispatch(createExpenseRequest());
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expense`, data, config);
+      const expenceData = response;
+      // console.log("respo",response);
+      dispatch(createExpenseSuccess(expenceData));
+      return expenceData;
+    } catch (error) {
+      dispatch(createExpenseFailure(error.message));
       throw error;
     }
   };
@@ -439,6 +479,20 @@ export const getallPurchase = () => {
       return getallpayment;
     } catch (error) {
       dispatch(fetchAllPurchaseFailure(error.message));
+    }
+  };
+};
+
+export const createExpenseItem = (payload) => {
+  return async (dispatch) => {
+    dispatch(createExpenseItemRequest());
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expenseItem`, payload, config);
+      const expenceItem = response;
+      dispatch(createExpenseItemSuccess(expenceItem));
+      return expenceItem;
+    } catch (error) {
+      dispatch(createExpenseItemFailure(error.message));
       throw error;
     }
   };
