@@ -22,7 +22,8 @@ const columns = [
   { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
   { id: 'date', label: 'Bill Date.', minWidth: 170, align: 'center' },
   { id: 'pono', label: 'PO No', minWidth: 100 },
-  { id: 'action', label: 'Action', minWidth: 100 }
+  { id: 'view', label: 'View', minWidth: 100 },
+  { id: 'edit', label: 'Edit', minWidth: 100 }
 ];
 
 const PurchaseOrderList = () => {
@@ -63,7 +64,10 @@ const PurchaseOrderList = () => {
     dispatch(purchaseview(id));
     navigate(`/purchaseview/${id}`);
   };
-
+  const handleUpdatePurchase = (id) => {
+    navigate(`/addpurchase/${id}`);
+    console.log('id', id);
+  };
   return (
     // <Container>
     <Card style={{ width: '100%', padding: '25px' }}>
@@ -89,9 +93,13 @@ const PurchaseOrderList = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseOrder(order.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchase(order?.id)}>
+                        Edit
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString()

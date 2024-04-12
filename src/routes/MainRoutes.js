@@ -124,8 +124,11 @@ const MainRoutes = {
     { path: '/salesreturn', element: <Salesreturn /> },
     { path: '/salesreturnmain', element: <Salesreturnmain /> },
 
-    { path: '/addpurchase', element: <AddPurchasePage /> },
+    // { path: '/addpurchase', element: <AddPurchasePage /> },
     { path: '/purchaselist', element: <PurchaseOrderList /> },
+    { path: '/addpurchase/:id', element: <AddPurchasePage /> },
+    // { path: '/purchasebill', element: <Purchasebill /> },
+    // { path: '/purchasereturn', element: <Purchasereturn /> },
     { path: '/purchaseview/:id', element: <Purchaseview /> },
     { path: '/purchasebill', element: <Purchasebill /> },
     { path: '/purchasebillList', element: <PurchaseBillList /> },
