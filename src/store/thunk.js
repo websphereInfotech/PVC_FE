@@ -715,8 +715,8 @@ export const PurchaseReturnview = (id) => {
     } catch (error) {
       dispatch(viewPurchasereturnFailure(error.message));
     }
-  }
-}
+  };
+};
 
 export const updatePurchase = (id, formData) => {
   return async (dispatch) => {
