@@ -11,15 +11,17 @@ const Purchaseview = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState({});
+
   useEffect(() => {
     dispatch(purchaseview(id))
       .then((data) => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching purchase data:', error);
       });
   }, [dispatch, id]);
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">

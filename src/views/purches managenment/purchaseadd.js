@@ -4,6 +4,7 @@ import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import { useMediaQuery } from '@mui/material';
@@ -365,20 +366,22 @@ const AddPurchasePage = () => {
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  padding: '8px',
-                  borderColor: '#425466',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  marginRight: '5px'
-                }}
-              >
-                Cancel
-              </button>
+              <Link to="/purchaselist" style={{ textDecoration: 'none' }}>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px',
+                    marginRight: '5px'
+                  }}
+                >
+                  Cancel
+                </button>
+              </Link>
               <button
                 style={{
                   width: '100px',
@@ -398,19 +401,21 @@ const AddPurchasePage = () => {
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  padding: '8px',
-                  borderColor: '#425466',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px'
-                }}
-              >
-                Cancel
-              </button>
+              <Link to="/purchaselist" style={{ textDecoration: 'none' }}>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Cancel
+                </button>
+              </Link>
             </div>
             <div style={{ display: 'flex' }}>
               <button

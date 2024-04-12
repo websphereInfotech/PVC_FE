@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Button, Table, TableBody, TableRow, TableCell, Card } from '@mui/material';
-import { Pagination } from '@mui/material';
+import { Typography, Button, Table, TableBody, TableRow, TableCell, Card, TablePagination } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getallPayment, paymentview } from 'store/thunk';
 
+const columns = [
+  { id: 'id', label: 'ID', minWidth: 170 },
+  { id: 'voucherno', label: 'Vendor', minWidth: 170, align: 'center' },
+  { id: 'paymentdate', label: 'Date', minWidth: 170, align: 'center' },
+  { id: 'billno', label: 'Invoice No.', minWidth: 170, align: 'center' },
+  { id: 'mode', label: 'Mode', minWidth: 170, align: 'center' },
+  { id: 'refno', label: 'Reference', minWidth: 170, align: 'center' },
+  { id: 'amount', label: 'Amount', minWidth: 170, align: 'center' },
+  { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
+];
+
 const PaymentListPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const [payments, setPayments] = useState([]);
-  const [page, setPage] = useState(1);
-  const [rowsPerPage] = useState(1);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
-  console.log('Payments:', payments);
+
   useEffect(() => {
-    setIsLoading(true);
     dispatch(getallPayment())
       .then((data) => {
-        setPayments(data);
-        setIsLoading(false);
+        setPayments(data.data);
       })
       .catch((error) => {
         console.error('Error fetching payment data:', error);
-        setIsLoading(false);
       });
   }, [dispatch]);
 
@@ -40,64 +46,58 @@ const PaymentListPage = () => {
     setPage(newPage);
   };
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
-    <Container>
-      <Card style={{ padding: '25px' }}>
-        <Typography variant="h4" align="center" id="mycss">
-          Payment List
-        </Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleMakePayment}
-          style={{ margin: '10px', color: 'white', display: 'flex', justifyContent: 'end' }}
-        >
-          Make Payment
-        </Button>
-        <Table>
-          {/* <TableHead> */}
-          <TableRow style={{ color: 'black', fontWeight: '0' }}>
-            <TableCell variant="head">ID</TableCell>
-            <TableCell variant="head">Vendor</TableCell>
-            <TableCell variant="head">Date</TableCell>
-            <TableCell variant="head">Invoice No.</TableCell>
-            <TableCell variant="head">Mode</TableCell>
-            <TableCell variant="head">Reference</TableCell>
-            <TableCell variant="head">Amount</TableCell>
-            {/* <TableCell variant="head">Email</TableCell> */}
-            <TableCell variant="head">Action</TableCell>
-          </TableRow>
-          {/* </TableHead> */}
-          <TableBody>
-            {payments?.data?.map((payment) => (
-              <TableRow key={payment.id}>
-                <TableCell>{payment?.id}</TableCell>
-                <TableCell>{payment?.voucherno}</TableCell>
-                <TableCell>{new Date(payment?.paymentdate).toLocaleDateString()}</TableCell>
-                <TableCell>{payment?.billno}</TableCell>
-                <TableCell>{payment?.mode}</TableCell>
-                <TableCell>{payment?.refno}</TableCell>
-                <TableCell>₹{payment?.amount}</TableCell>
-                {/* <TableCell>{payment?.email}</TableCell> */}
-                <TableCell>
-                  {console.log(payment?.id, 'paymentId')}
-                  <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
-                    View
-                  </Button>
+    // <Container>
+    <Card style={{ width: '100%' }}>
+      <Typography variant="h4" align="center" id="mycss">
+        Payment List
+      </Typography>
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleMakePayment}>
+        Make Payment
+      </Button>
+      <Table>
+        <TableRow style={{ color: 'black', fontWeight: '0' }}>
+          {columns.map((column) => (
+            <TableCell key={column.id} variant="head" align={column.align} style={{ minWidth: column.minWidth }}>
+              {column.label}
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableBody>
+          {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment) => (
+            <TableRow key={payment.id}>
+              {columns.map((column) => (
+                <TableCell key={column.id} align={column.align}>
+                  {column.id === 'action' ? (
+                    <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
+                      View
+                    </Button>
+                  ) : column.id === 'paymentdate' ? (
+                    new Date(payment[column.id]).toLocaleDateString()
+                  ) : (
+                    payment[column.id]
+                  )}
                 </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
-      <Pagination
-        count={Math.ceil(payments.length / rowsPerPage)}
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={payments?.length || 0}
+        rowsPerPage={rowsPerPage}
         page={page}
-        onChange={handleChangePage}
-        style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {isLoading && <div>Loading...</div>}
-    </Container>
+    </Card>
   );
 };
 

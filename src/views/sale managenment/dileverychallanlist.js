@@ -13,39 +13,36 @@ import {
   TablePagination
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getallExpense, Expenseview } from 'store/thunk'; // Assuming you have a thunk action to fetch expenses
+import { Deliverychallanview, getallDeliverychallan } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 
 const columns = [
-  { id: 'date', label: 'Date', minWidth: 170 },
-  { id: 'voucherno', label: 'Voucher No', minWidth: 100 },
-  { id: 'customer', label: 'Vendor', minWidth: 170, align: 'center' },
-  { id: 'gstin', label: 'GST IN.', minWidth: 170, align: 'center' },
-  { id: 'payment', label: 'Payment Method', minWidth: 170, align: 'center' },
-  { id: 'billno', label: 'Bill No.', minWidth: 170, align: 'center' },
+  { id: 'date', label: 'Date', minWidth: 170, align: 'center' },
+  { id: 'challanno', label: 'Challan No', minWidth: 170 },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
+  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'action', label: 'Action', minWidth: 100 }
 ];
 
-const ExpensePage = () => {
+const DileveryChallanList = () => {
   const navigate = useNavigate();
-  const [expenses, setExpenses] = useState([]);
+  const [deliverychallan, setdeliverychallan] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchExpenses = async () => {
+    const fetchDeliverychallan = async () => {
       try {
-        const data = await dispatch(getallExpense());
-        // console.log(data, 'data');
-        setExpenses(data.data);
+        const data = await dispatch(getallDeliverychallan());
+        // console.log(data.data);
+        setdeliverychallan(data.data);
       } catch (error) {
-        console.error('Error fetching expense data:', error);
+        console.error('Error fetching delivery challan:', error);
       }
     };
 
-    fetchExpenses();
+    fetchDeliverychallan();
   }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
@@ -57,23 +54,23 @@ const ExpensePage = () => {
     setPage(0);
   };
 
-  const handleAddExpense = () => {
-    navigate('/addexpense');
+  const handleAddDeliverychallan = () => {
+    navigate('/deliverychallan');
   };
 
-  const handleViewExpense = (id) => {
-    dispatch(Expenseview(id));
-    navigate(`/viewexpense/${id}`);
+  const handleViewDeliverychallan = (id) => {
+    dispatch(Deliverychallanview(id));
+    navigate(`/deliverychallanview/${id}`);
   };
 
   return (
     // <Container>
-    <Card style={{ padding: '25px' }}>
+    <Card style={{ padding: '25px', width: '100%' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Expense List
+        Dilevery Challan List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddExpense}>
-        Add Expense
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddDeliverychallan}>
+        Create Delivery Challan
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ borderLeft: '1px solid lightgrey' }}>
@@ -87,18 +84,18 @@ const ExpensePage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {expenses?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {deliverychallan?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewExpense(row.id)}>
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewDeliverychallan(order.id)}>
                         View
                       </Button>
                     ) : column.id === 'date' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                      new Date(order[column.id]).toLocaleDateString()
                     ) : (
-                      row[column.id]
+                      order[column.id]
                     )}
                   </TableCell>
                 ))}
@@ -110,7 +107,7 @@ const ExpensePage = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={expenses.length}
+        count={deliverychallan?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -121,4 +118,4 @@ const ExpensePage = () => {
   );
 };
 
-export default ExpensePage;
+export default DileveryChallanList;

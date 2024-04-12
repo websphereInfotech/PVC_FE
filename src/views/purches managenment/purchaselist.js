@@ -1,77 +1,121 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Button, Table, TableBody, TableRow, TableCell } from '@mui/material';
+import {
+  // Container,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TableContainer,
+  TableHead,
+  TablePagination
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '@material-ui/core';
 import { getallPurchase, purchaseview } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 
+const columns = [
+  { id: 'quotation_no', label: 'Bill No', minWidth: 170 },
+  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
+  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
+  { id: 'date', label: 'Bill Date.', minWidth: 170, align: 'center' },
+  { id: 'pono', label: 'PO No', minWidth: 100 },
+  { id: 'action', label: 'Action', minWidth: 100 }
+];
+
 const PurchaseOrderList = () => {
   const navigate = useNavigate();
-  const [purchaseOrders, setpurchaseOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [purchaseOrders, setPurchaseOrders] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
 
-  console.log('Payments:', purchaseOrders);
   useEffect(() => {
-    setIsLoading(true);
-    dispatch(getallPurchase())
-      .then((data) => {
-        setpurchaseOrders(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching payment data:', error);
-        setIsLoading(false);
-      });
+    const fetchPurchaseOrders = async () => {
+      try {
+        const data = await dispatch(getallPurchase());
+        // console.log(data.data);
+        setPurchaseOrders(data.data);
+      } catch (error) {
+        console.error('Error fetching purchase orders:', error);
+      }
+    };
+
+    fetchPurchaseOrders();
   }, [dispatch]);
 
-  const handleaddpurchse = () => {
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleAddPurchaseOrder = () => {
     navigate('/addpurchase');
   };
 
-  const handleViewPurchase = (id) => {
+  const handleViewPurchaseOrder = (id) => {
     dispatch(purchaseview(id));
     navigate(`/purchaseview/${id}`);
   };
 
   return (
-    <Container>
-      <Card style={{ padding: '24px' }}>
-        <Typography variant="h4" align="center" id="mycss">
-          Purchase Order List
-        </Typography>
-        <Button variant="contained" style={{ margin: '16px', backgroundColor: '#425466' }} onClick={handleaddpurchse}>
-          Create New Purchase Order
-        </Button>
-        <Table>
-          <TableRow>
-            <TableCell variant="head">Bill No.</TableCell>
-            <TableCell variant="head">Mobile No.</TableCell>
-            <TableCell variant="head">Vendor</TableCell>
-            <TableCell variant="head">Bill Date</TableCell>
-            <TableCell variant="head">PO No.</TableCell>
-            <TableCell variant="head">Action</TableCell>
-          </TableRow>
-          <TableBody>
-            {purchaseOrders?.data?.map((order) => (
-              <TableRow key={order?.id}>
-                <TableCell>{order?.id}</TableCell>
-                <TableCell>{order?.mobileno}</TableCell>
-                <TableCell>{order?.vendor}</TableCell>
-                <TableCell>{new Date(order?.date).toLocaleDateString()}</TableCell>
-                <TableCell>{order?.pono}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleViewPurchase(order?.id)}>
-                    View
-                  </Button>
+    // <Container>
+    <Card style={{ width: '100%', padding: '25px' }}>
+      <Typography variant="h4" align="center" id="mycss">
+        Purchase Order List
+      </Typography>
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddPurchaseOrder}>
+        Create New Purchase Order
+      </Button>
+      <TableContainer sx={{ maxHeight: 500 }}>
+        <Table style={{ borderLeft: '1px solid lightgrey' }}>
+          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  {column.label}
                 </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {purchaseOrders?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => (
+              <TableRow key={index}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.id === 'action' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseOrder(order.id)}>
+                        View
+                      </Button>
+                    ) : column.id === 'date' ? (
+                      new Date(order[column.id]).toLocaleDateString()
+                    ) : (
+                      order[column.id]
+                    )}
+                  </TableCell>
+                ))}
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        {isLoading && <div>Loading...</div>}
-      </Card>
-    </Container>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={purchaseOrders?.length || 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Card>
+    // </Container>
   );
 };
 
