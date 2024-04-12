@@ -80,6 +80,18 @@ export const CREATE_PURCHASE_ITEM_REQUEST = 'CREATE_PURCHASE_ITEM_REQUEST';
 export const CREATE_PURCHASE_ITEM_SUCCESS = 'CREATE_PURCHASE_ITEM_SUCCESS';
 export const CREATE_PURCHASE_ITEM_FAILURE = 'CREATE_PURCHASE_ITEM_FAILURE';
 
+export const UPDATE_PURCHASE_REQUEST = 'UPDATE_PURCHASE_REQUEST';
+export const UPDATE_PURCHASE_SUCCESS = 'UPDATE_PURCHASE_SUCCESS';
+export const UPDATE_PURCHASE_FAILURE = 'UPDATE_PURCHASE_FAILURE';
+
+export const UPDATE_PURCHASE_ITEM_REQUEST = 'UPDATE_PURCHASE_ITEM_REQUEST';
+export const UPDATE_PURCHASE_ITEM_SUCCESS = 'UPDATE_PURCHASE_ITEM_SUCCESS';
+export const UPDATE_PURCHASE_ITEM_FAILURE = 'UPDATE_PURCHASE_ITEM_FAILURE';
+
+export const DELETE_PURCHASE_ITEM_REQUEST = 'DELETE_PURCHASE_ITEM_REQUEST';
+export const DELETE_PURCHASE_ITEM_SUCCESS = 'DELETE_PURCHASE_ITEM_SUCCESS';
+export const DELETE_PURCHASE_ITEM_FAILURE = 'DELETE_PURCHASE_ITEM_FAILURE';
+
 export const CREATE_PURCHASEBILL_REQUEST = 'CREATE_PURCHASEBILL_REQUEST';
 export const CREATE_PURCHASEBILL_SUCCESS = 'CREATE_PURCHASEBILL_SUCCESS';
 export const CREATE_PURCHASEBILL_FAILURE = 'CREATE_PURCHASEBILL_FAILURE';
@@ -470,4 +482,49 @@ export const createExpenseItemSuccess = (data) => ({
 export const createExpenseItemFailure = (data) => ({
   type: 'CREATE_EXPENSE_ITEM_FAILURE',
   payload: data
+});
+
+export const updatePurchaseRequst = (data) => ({
+  type: 'UPDATE_PURCHASE_REQUEST',
+  payload: data
+});
+
+export const updatePurchasesuccess = (data) => ({
+  type: 'UPDATE_PURCHASE_SUCCESS',
+  payload: data
+});
+
+export const updatePurchasefailure = (error) => ({
+  type: 'UPDATE_PURCHASE_FAILURE',
+  payload: error
+});
+
+export const updatePurchaseItemRequst = (data) => ({
+  type: 'UPDATE_PURCHASE_ITEM_REQUEST',
+  payload: data
+});
+
+export const updatePurchaseItemsuccess = (data) => ({
+  type: 'UPDATE_PURCHASE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const updatePurchaseItemfailure = (error) => ({
+  type: 'UPDATE_PURCHASE_ITEM_FAILURE',
+  payload: error
+});
+
+export const deletePurchaseItemRequest = (data) => ({
+  type: 'DELETE_PURCHASE_ITEM_REQUEST',
+  payload: data
+});
+
+export const deletePurchaseItemSuccess = (data) => ({
+  type: 'DELETE_PURCHASE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const deletePurchaseItemFailure = (error) => ({
+  type: 'DELETE_PURCHASE_ITEM_FAILURE',
+  payload: error
 });

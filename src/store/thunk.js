@@ -75,7 +75,16 @@ import {
   createExpenseSuccess,
   createExpenseItemRequest,
   createExpenseItemFailure,
-  createExpenseItemSuccess
+  createExpenseItemSuccess,
+  updatePurchaseRequst,
+  updatePurchasefailure,
+  updatePurchasesuccess,
+  updatePurchaseItemRequst,
+  updatePurchaseItemfailure,
+  updatePurchaseItemsuccess,
+  deletePurchaseItemRequest,
+  deletePurchaseItemFailure,
+  deletePurchaseItemSuccess
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -205,7 +214,7 @@ export const createCustomer = (customerData) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
-      console.log('createdQuotation>>>>', createdCustomer);
+      // console.log('createdQuotation>>>>', createdCustomer);
       dispatch(createCustomerSuccess(createdCustomer));
       alert('customer crate successfully');
       return createdCustomer;
@@ -511,6 +520,50 @@ export const createExpenseItem = (payload) => {
       return expenceItem;
     } catch (error) {
       dispatch(createExpenseItemFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updatePurchase = (id, formData) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseRequst());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchase/${id}`, formData, config);
+      const updatePurchaseData = response;
+      dispatch(updatePurchasesuccess(updatePurchaseData));
+      // console.log(updatePurchaseData.data.data.id);
+      return updatePurchaseData;
+    } catch (error) {
+      dispatch(updatePurchasefailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updatePurchaseItem = (itemid, updateItemData) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseItemRequst());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseitem/${itemid}`, updateItemData, config);
+      const updatePurchaseItemData = response;
+      dispatch(updatePurchaseItemsuccess(updatePurchaseItemData));
+      return updatePurchaseItemData;
+    } catch (error) {
+      dispatch(updatePurchaseItemfailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deletePurchaseItem = (id) => {
+  return async (dispatch) => {
+    dispatch(deletePurchaseItemRequest());
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseitem/${id}`, config);
+      const deletePurchaseItemData = response;
+      // console.log("@@@@@@@@",deletePurchaseItemData);
+      dispatch(deletePurchaseItemSuccess(deletePurchaseItemData));
+      return deletePurchaseItemData;
+    } catch (error) {
+      dispatch(deletePurchaseItemFailure(error.message));
       throw error;
     }
   };

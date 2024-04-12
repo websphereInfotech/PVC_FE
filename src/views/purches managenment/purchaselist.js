@@ -33,7 +33,10 @@ const PurchaseOrderList = () => {
     dispatch(purchaseview(id));
     navigate(`/purchaseview/${id}`);
   };
-
+  const handleUpdatePurchase = (id) => {
+    navigate(`/addpurchase/${id}`);
+    console.log('id', id);
+  };
   return (
     <Container>
       <Card style={{ padding: '24px' }}>
@@ -63,6 +66,9 @@ const PurchaseOrderList = () => {
                 <TableCell>
                   <Button variant="outlined" color="secondary" onClick={() => handleViewPurchase(order?.id)}>
                     View
+                  </Button>
+                  <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchase(order?.id)}>
+                    Edit
                   </Button>
                 </TableCell>
               </TableRow>

@@ -125,6 +125,7 @@ const MainRoutes = {
     { path: '/salesreturnmain', element: <Salesreturnmain /> },
     { path: '/purchaselist', element: <PurchaseOrderList /> },
     { path: '/addpurchase', element: <AddPurchasePage /> },
+    { path: '/addpurchase/:id', element: <AddPurchasePage /> },
     { path: '/purchasebill', element: <Purchasebill /> },
     { path: '/purchasereturn', element: <Purchasereturn /> },
     { path: '/purchaseview/:id', element: <Purchaseview /> },
