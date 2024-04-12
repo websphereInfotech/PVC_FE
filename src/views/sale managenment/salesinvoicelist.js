@@ -13,38 +13,37 @@ import {
   TablePagination
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getallPurchase, purchaseview } from 'store/thunk';
+import { SalesInvoiceview, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 
 const columns = [
-  { id: 'quotation_no', label: 'Bill No', minWidth: 170 },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
-  { id: 'date', label: 'Bill Date.', minWidth: 170, align: 'center' },
-  { id: 'pono', label: 'PO No', minWidth: 100 },
-  { id: 'view', label: 'View', minWidth: 100 },
-  { id: 'edit', label: 'Edit', minWidth: 100 }
+  { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
+  { id: 'invoiceno', label: 'Invocie No', minWidth: 170 },
+  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
+  { id: 'mobileno', label: 'Mobile No.', minWidth: 100 },
+  { id: 'action', label: 'Action', minWidth: 100 }
 ];
 
-const PurchaseOrderList = () => {
+const Salesinvoicelist = () => {
   const navigate = useNavigate();
-  const [purchaseOrders, setPurchaseOrders] = useState([]);
+  const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchPurchaseOrders = async () => {
+    const fetchSalesinvoice = async () => {
       try {
-        const data = await dispatch(getallPurchase());
-        // console.log(data.data);
-        setPurchaseOrders(data.data);
+        const data = await dispatch(getallSalesInvoice());
+        console.log(data.data);
+        setsalesinvoice(data.data);
       } catch (error) {
-        console.error('Error fetching purchase orders:', error);
+        console.error('Error fetching sales invoice:', error);
       }
     };
 
-    fetchPurchaseOrders();
+    fetchSalesinvoice();
   }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
@@ -56,26 +55,23 @@ const PurchaseOrderList = () => {
     setPage(0);
   };
 
-  const handleAddPurchaseOrder = () => {
-    navigate('/addpurchase');
+  const handleAddSalesinvoice = () => {
+    navigate('/salesinvoice');
   };
 
-  const handleViewPurchaseOrder = (id) => {
-    dispatch(purchaseview(id));
-    navigate(`/purchaseview/${id}`);
+  const handleViewsalesinvoice = (id) => {
+    dispatch(SalesInvoiceview(id));
+    navigate(`/salesinvoiceview/${id}`);
   };
-  const handleUpdatePurchase = (id) => {
-    navigate(`/addpurchase/${id}`);
-    console.log('id', id);
-  };
+
   return (
     // <Container>
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Order List
+        Sales Invoice List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddPurchaseOrder}>
-        Create New Purchase Order
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddSalesinvoice}>
+        Create Sales Invoice
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ borderLeft: '1px solid lightgrey' }}>
@@ -89,22 +85,20 @@ const PurchaseOrderList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {purchaseOrders?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => (
+            {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseOrder(order.id)}>
+                    {column.id === 'action' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewsalesinvoice(data.id)}>
                         View
                       </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchase(order?.id)}>
-                        Edit
-                      </Button>
-                    ) : column.id === 'date' ? (
-                      new Date(order[column.id]).toLocaleDateString()
+                    ) : column.id === 'invoicedate' ? (
+                      new Date(data[column.id]).toLocaleDateString()
+                    ) : column.id === 'duedate' ? (
+                      new Date(data[column.id]).toLocaleDateString()
                     ) : (
-                      order[column.id]
+                      data[column.id]
                     )}
                   </TableCell>
                 ))}
@@ -116,7 +110,7 @@ const PurchaseOrderList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={purchaseOrders?.length || 0}
+        count={salesinvoice?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -127,4 +121,4 @@ const PurchaseOrderList = () => {
   );
 };
 
-export default PurchaseOrderList;
+export default Salesinvoicelist;

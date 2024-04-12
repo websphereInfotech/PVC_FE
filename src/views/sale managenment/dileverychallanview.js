@@ -4,88 +4,77 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Expenseview } from 'store/thunk';
+import { Deliverychallanview } from 'store/thunk';
 
-const ExpenseDetailsPage = () => {
+const DileveryChallanView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    dispatch(Expenseview(id))
+    dispatch(Deliverychallanview(id))
       .then((data) => {
         setData(data);
+        // console.log(data, 'DATA');
       })
       .catch((error) => {
-        console.error('Error fetching expense data:', error);
+        console.error('Error fetching delivery challan data:', error);
       });
   }, [dispatch, id]);
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Expense View
+        Delivery Challan View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Vendor</Typography>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography variant="subtitle1">Customer</Typography>
           <Typography variant="subtitle2">{data.customer}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Voucher No.</Typography>
-          <Typography variant="subtitle2">{data.voucherno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">GST IN</Typography>
-          <Typography variant="subtitle2">{data.gstin}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Mobile No.</Typography>
           <Typography variant="subtitle2">{data.mobileno}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Email</Typography>
           <Typography variant="subtitle2">{data.email}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Bill No.</Typography>
-          <Typography variant="subtitle2">{data.billno}</Typography>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography variant="subtitle1">Challan No.</Typography>
+          <Typography variant="subtitle2">{data.challanno}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Payment Method</Typography>
-          <Typography variant="subtitle2">{data.payment}</Typography>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography variant="subtitle1">Challan Date</Typography>
+          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString()}</Typography>
         </Grid>
-        {/* <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation Ref.</Typography>
-          <Typography variant="subtitle2">{data.quotationref}</Typography>
-        </Grid> */}
 
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>
               <TableHead>
                 <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell>
-                <TableCell width={450} sx={{ fontSize: '12px' }}>
-                  NATURE OF EXPENSE
+                <TableCell sx={{ fontSize: '12px' }}>QUOTATION NO.</TableCell>
+                <TableCell width={420} sx={{ fontSize: '12px' }}>
+                  PRODUCT/SERVICE
                 </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>DESCRIPTION</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>TAXABLE AMT. (₹) </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>BATCH/LOT NO.</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>EXPR. DATE</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>MRP (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
               </TableHead>
               <TableBody>
-                {data.expenseItems &&
-                  data.expenseItems.map((item, index) => (
+                {data.deliverychallanItems &&
+                  data.deliverychallanItems.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.serialno}</TableCell>
-                      <TableCell>{item?.expensse}</TableCell>
-                      <TableCell>{item?.description}</TableCell>
-                      <TableCell>{item?.taxable}</TableCell>
+                      <TableCell>{item?.quotationno}</TableCell>
+                      <TableCell>{item?.product}</TableCell>
+                      <TableCell>{item?.batchno}</TableCell>
+                      <TableCell>{item?.batchno}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
+                      <TableCell>{item?.qty}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>
@@ -93,7 +82,7 @@ const ExpenseDetailsPage = () => {
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           {isMobile ? (
             // For mobile screens, show each total on separate lines
             <>
@@ -127,11 +116,11 @@ const ExpenseDetailsPage = () => {
               </div>
             </div>
           )}
-        </Grid>
+        </Grid> */}
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/expenselist" style={{ textDecoration: 'none' }}>
+            <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button
                   style={{
@@ -151,7 +140,7 @@ const ExpenseDetailsPage = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/expenselist" style={{ textDecoration: 'none' }}>
+            <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button
                   style={{
@@ -175,4 +164,4 @@ const ExpenseDetailsPage = () => {
   );
 };
 
-export default ExpenseDetailsPage;
+export default DileveryChallanView;

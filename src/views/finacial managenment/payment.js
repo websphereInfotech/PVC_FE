@@ -8,7 +8,7 @@ import { withStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 import { createPayment } from 'store/thunk';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -290,20 +290,22 @@ const PaymentPage = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
-                    marginRight: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px',
+                      marginRight: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
                 <button
                   style={{
                     width: '100px',
@@ -323,19 +325,21 @@ const PaymentPage = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button

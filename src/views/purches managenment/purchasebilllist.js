@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Quotationview, fetchQuotationList } from 'store/thunk';
+import { PurchaseBillview, getallPurchaseBill } from 'store/thunk';
 import { Card } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,32 +12,32 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 const columns = [
-  { id: 'date', label: 'Date', minWidth: 170 },
-  { id: 'quotation_no', label: 'Quotation No.', minWidth: 100 },
-  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'billdate', label: 'Date', minWidth: 170 },
+  { id: 'billno', label: 'Bill No.', minWidth: 100 },
+  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
   { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
-  { id: 'validtill', label: 'Valid Till', minWidth: 170, align: 'center' },
+  { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
   { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
 ];
 
-export default function QuotationList() {
+export default function PurchaseBillList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [quotations, setQuotations] = useState([]);
+  const [purchasebill, setPurchasebill] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchQuotationList());
-        setQuotations(response);
+        const response = await dispatch(getallPurchaseBill());
+        // console.log(response, '>>>>>>>>>>>>>>>>');
+        setPurchasebill(response.data);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching purchase bill:', error);
       }
     };
 
@@ -53,21 +53,23 @@ export default function QuotationList() {
     setPage(0);
   };
 
-  const handleViewQuotation = (id) => {
-    dispatch(Quotationview(id));
-    navigate(`/qutationview/${id}`);
+  const handleViewPurchaseBill = (id) => {
+    dispatch(PurchaseBillview(id));
+    navigate(`/purchasebillview/${id}`);
+  };
+
+  const handleAddpuchasebill = () => {
+    navigate('/purchasebill');
   };
 
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Quotation List
+        Purchase Bill List
       </Typography>
-      <Link to="/qutation" style={{ textDecoration: 'none' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }}>
-          Create Quotation
-        </Button>
-      </Link>
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddpuchasebill}>
+        Create Purchase Bill
+      </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ borderLeft: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
@@ -80,17 +82,17 @@ export default function QuotationList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {quotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {purchasebill?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewQuotation(row.id)}>
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
                         View
                       </Button>
-                    ) : column.id === 'date' ? (
+                    ) : column.id === 'billdate' ? (
                       new Date(row[column.id]).toLocaleDateString()
-                    ) : column.id === 'validtill' ? (
+                    ) : column.id === 'duedate' ? (
                       new Date(row[column.id]).toLocaleDateString()
                     ) : (
                       row[column.id]
@@ -105,7 +107,7 @@ export default function QuotationList() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={quotations.length}
+        count={purchasebill.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

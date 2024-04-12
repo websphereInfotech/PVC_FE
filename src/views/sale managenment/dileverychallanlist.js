@@ -13,38 +13,36 @@ import {
   TablePagination
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getallPurchase, purchaseview } from 'store/thunk';
+import { Deliverychallanview, getallDeliverychallan } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 
 const columns = [
-  { id: 'quotation_no', label: 'Bill No', minWidth: 170 },
+  { id: 'date', label: 'Date', minWidth: 170, align: 'center' },
+  { id: 'challanno', label: 'Challan No', minWidth: 170 },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
-  { id: 'date', label: 'Bill Date.', minWidth: 170, align: 'center' },
-  { id: 'pono', label: 'PO No', minWidth: 100 },
-  { id: 'view', label: 'View', minWidth: 100 },
-  { id: 'edit', label: 'Edit', minWidth: 100 }
+  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'action', label: 'Action', minWidth: 100 }
 ];
 
-const PurchaseOrderList = () => {
+const DileveryChallanList = () => {
   const navigate = useNavigate();
-  const [purchaseOrders, setPurchaseOrders] = useState([]);
+  const [deliverychallan, setdeliverychallan] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchPurchaseOrders = async () => {
+    const fetchDeliverychallan = async () => {
       try {
-        const data = await dispatch(getallPurchase());
+        const data = await dispatch(getallDeliverychallan());
         // console.log(data.data);
-        setPurchaseOrders(data.data);
+        setdeliverychallan(data.data);
       } catch (error) {
-        console.error('Error fetching purchase orders:', error);
+        console.error('Error fetching delivery challan:', error);
       }
     };
 
-    fetchPurchaseOrders();
+    fetchDeliverychallan();
   }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
@@ -56,26 +54,23 @@ const PurchaseOrderList = () => {
     setPage(0);
   };
 
-  const handleAddPurchaseOrder = () => {
-    navigate('/addpurchase');
+  const handleAddDeliverychallan = () => {
+    navigate('/deliverychallan');
   };
 
-  const handleViewPurchaseOrder = (id) => {
-    dispatch(purchaseview(id));
-    navigate(`/purchaseview/${id}`);
+  const handleViewDeliverychallan = (id) => {
+    dispatch(Deliverychallanview(id));
+    navigate(`/deliverychallanview/${id}`);
   };
-  const handleUpdatePurchase = (id) => {
-    navigate(`/addpurchase/${id}`);
-    console.log('id', id);
-  };
+
   return (
     // <Container>
-    <Card style={{ width: '100%', padding: '25px' }}>
+    <Card style={{ padding: '25px', width: '100%' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Order List
+        Dilevery Challan List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddPurchaseOrder}>
-        Create New Purchase Order
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddDeliverychallan}>
+        Create Delivery Challan
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ borderLeft: '1px solid lightgrey' }}>
@@ -89,17 +84,13 @@ const PurchaseOrderList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {purchaseOrders?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => (
+            {deliverychallan?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseOrder(order.id)}>
+                    {column.id === 'action' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewDeliverychallan(order.id)}>
                         View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchase(order?.id)}>
-                        Edit
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString()
@@ -116,7 +107,7 @@ const PurchaseOrderList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={purchaseOrders?.length || 0}
+        count={deliverychallan?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -127,4 +118,4 @@ const PurchaseOrderList = () => {
   );
 };
 
-export default PurchaseOrderList;
+export default DileveryChallanList;

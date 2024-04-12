@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Grid, Paper } from '@mui/material';
+import { Typography, Grid, Paper } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { paymentview } from 'store/thunk';
-import { useParams } from 'react-router-dom';
 
 const PaymentViewPage = () => {
+  const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [payments, setPayments] = useState({});
-  console.log(payments, '>>>>>>>>>>>>');
+  const [data, setData] = useState({});
 
   useEffect(() => {
     dispatch(paymentview(id))
       .then((data) => {
-        setPayments(data);
+        setData(data);
       })
       .catch((error) => {
         console.error('Error fetching payment data:', error);
@@ -21,32 +23,93 @@ const PaymentViewPage = () => {
   }, [dispatch, id]);
 
   return (
-    <Container>
-      <Paper style={{ padding: '25px' }}>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Payment Details
-        </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1">ID: {payments?.id}</Typography>
-            <Typography variant="body1">Vendor: {payments?.voucherno}</Typography>
-            <Typography variant="body1">Date: {payments?.paymentdate}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Bill No.: {payments?.billno}</Typography>
-            <Typography variant="body1">Mode: {payments?.mode}</Typography>
-            <Typography variant="body1">Reference No: {payments?.refno}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">Amount: ₹{payments?.amount}</Typography>
-            <Typography variant="body1">Email: {payments?.email}</Typography>
-          </Grid>
+    <Paper elevation={3} style={{ padding: '24px' }}>
+      <Typography variant="h4" align="center" id="mycss">
+        Payment View
+      </Typography>
+      <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Voucher No.</Typography>
+          <Typography variant="subtitle2">{data.voucherno}</Typography>
         </Grid>
-        {/* <Button variant="contained" color="secondary" style={{ marginTop: '16px' }}>
-          Edit Payment
-        </Button> */}
-      </Paper>
-    </Container>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Account</Typography>
+          <Typography variant="subtitle2">{data.account}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Email</Typography>
+          <Typography variant="subtitle2">{data.email}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', justifyContent: 'end' }}>
+          <div>
+            <p style={{ margin: '0px' }}>Amount Paid</p>
+            <h2 style={{ margin: '5px' }}>{data.amount}</h2>
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Mode</Typography>
+          <Typography variant="subtitle2">{data.mode}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Payment Date</Typography>
+          <Typography variant="subtitle2">{new Date(data?.paymentdate).toLocaleDateString()}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Reference No.</Typography>
+          <Typography variant="subtitle2">{data.refno}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Paid from</Typography>
+          <Typography variant="subtitle2">{data.paidfrom}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Amount Paid (₹)</Typography>
+          <Typography variant="subtitle2">{data.amount}</Typography>
+        </Grid>
+
+        {isMobile ? (
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Link to="/paymentlist" style={{ textDecoration: 'none' }}>
+              <div>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </Link>
+          </Grid>
+        ) : (
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Link to="/paymentlist" style={{ textDecoration: 'none' }}>
+              <div>
+                <button
+                  style={{
+                    width: '100px',
+                    color: '#425466',
+                    padding: '8px',
+                    borderColor: '#425466',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    borderRadius: '5px'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </Link>
+          </Grid>
+        )}
+      </Grid>
+    </Paper>
   );
 };
 

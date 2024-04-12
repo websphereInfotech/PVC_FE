@@ -75,7 +75,49 @@ import {
   createExpenseSuccess,
   createExpenseItemRequest,
   createExpenseItemFailure,
-  createExpenseItemSuccess
+  createExpenseItemSuccess,
+  getAllExpenseRequest,
+  getAllExpenseSuccess,
+  getAllExpenseFailure,
+  viewExpenseRequest,
+  viewExpenseSuccess,
+  viewExpenseFailure,
+  viewQuotationRequest,
+  viewQuotationSuccess,
+  viewQuotationFailure,
+  getAllDeliverychallanRequest,
+  getAllDeliverychallanSuccess,
+  getAllDeliverychallanFailure,
+  viewDeliverychallanRequest,
+  viewDeliverychallanSuccess,
+  viewDeliverychallanFailure,
+  getAllSalesinvoiceRequest,
+  getAllSalesinvoiceSuccess,
+  getAllSalesinvoiceFailure,
+  viewSalesinvoiceRequest,
+  viewSalesinvoiceSuccess,
+  viewSalesinvoiceFailure,
+  getAllPurchasebillRequest,
+  getAllPurchasebillSuccess,
+  getAllPurchasebillFailure,
+  viewPurchasebillRequest,
+  viewPurchasebillSuccess,
+  viewPurchasebillFailure,
+  getAllPurchasereturnRequest,
+  getAllPurchasereturnSuccess,
+  getAllPurchasereturnFailure,
+  viewPurchasereturnRequest,
+  viewPurchasereturnSuccess,
+  viewPurchasereturnFailure,
+  updatePurchaseRequst,
+  updatePurchasefailure,
+  updatePurchasesuccess,
+  updatePurchaseItemRequst,
+  updatePurchaseItemfailure,
+  updatePurchaseItemsuccess,
+  deletePurchaseItemRequest,
+  deletePurchaseItemFailure,
+  deletePurchaseItemSuccess
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -205,7 +247,7 @@ export const createCustomer = (customerData) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
-      console.log('createdQuotation>>>>', createdCustomer);
+      // console.log('createdQuotation>>>>', createdCustomer);
       dispatch(createCustomerSuccess(createdCustomer));
       alert('customer crate successfully');
       return createdCustomer;
@@ -511,6 +553,212 @@ export const createExpenseItem = (payload) => {
       return expenceItem;
     } catch (error) {
       dispatch(createExpenseItemFailure(error.message));
+      throw error;
+    }
+  };
+};
+
+export const getallExpense = () => {
+  return async (dispatch) => {
+    dispatch(getAllExpenseRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_expense`, config);
+      const getallExpense = response.data;
+      dispatch(getAllExpenseSuccess(getallExpense));
+      return getallExpense;
+    } catch (error) {
+      dispatch(getAllExpenseFailure(error.message));
+    }
+  };
+};
+
+export const Expenseview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewExpenseRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_expense/${id}`, config);
+      const data = response.data.data;
+      // console.log('data', response.data.data);
+      dispatch(viewExpenseSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewExpenseFailure(error.message));
+    }
+  };
+};
+
+export const Quotationview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewQuotationRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_quotation/${id}`, config);
+      const data = response.data.data;
+      // console.log('data', response.data.data);
+      dispatch(viewQuotationSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewQuotationFailure(error.message));
+    }
+  };
+};
+
+export const getallDeliverychallan = () => {
+  return async (dispatch) => {
+    dispatch(getAllDeliverychallanRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_deliverychallan`, config);
+      const getallDeliverychallan = response.data;
+      dispatch(getAllDeliverychallanSuccess(getallDeliverychallan));
+      return getallDeliverychallan;
+    } catch (error) {
+      dispatch(getAllDeliverychallanFailure(error.message));
+    }
+  };
+};
+
+export const Deliverychallanview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewDeliverychallanRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_deliverychallan/${id}`, config);
+      const data = response.data.data;
+      // console.log('data', response.data.data);
+      dispatch(viewDeliverychallanSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewDeliverychallanFailure(error.message));
+    }
+  };
+};
+
+export const getallSalesInvoice = () => {
+  return async (dispatch) => {
+    dispatch(getAllSalesinvoiceRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_salesInvoice`, config);
+      const getallSalesinvoice = response.data;
+      dispatch(getAllSalesinvoiceSuccess(getallSalesinvoice));
+      return getallSalesinvoice;
+    } catch (error) {
+      dispatch(getAllSalesinvoiceFailure(error.message));
+    }
+  };
+};
+
+export const SalesInvoiceview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewSalesinvoiceRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_salesInvoice/${id}`, config);
+      const data = response.data.data;
+      // console.log('data', response.data.data);
+      dispatch(viewSalesinvoiceSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewSalesinvoiceFailure(error.message));
+    }
+  };
+};
+
+export const getallPurchaseBill = () => {
+  return async (dispatch) => {
+    dispatch(getAllPurchasebillRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchasebill`, config);
+      const getallPurchasebill = response.data;
+      dispatch(getAllPurchasebillSuccess(getallPurchasebill));
+      return getallPurchasebill;
+    } catch (error) {
+      dispatch(getAllPurchasebillFailure(error.message));
+    }
+  };
+};
+
+export const PurchaseBillview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewPurchasebillRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchasebill/${id}`, config);
+      const data = response.data.data;
+      // console.log('data', response.data.data);
+      dispatch(viewPurchasebillSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewPurchasebillFailure(error.message));
+    }
+  };
+};
+
+export const getallPurchaseReturn = () => {
+  return async (dispatch) => {
+    dispatch(getAllPurchasereturnRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchaseReturn`, config);
+      const getallPurchasereturn = response.data.data;
+      dispatch(getAllPurchasereturnSuccess(getallPurchasereturn));
+      return getallPurchasereturn;
+    } catch (error) {
+      dispatch(getAllPurchasereturnFailure(error.message));
+    }
+  };
+};
+
+export const PurchaseReturnview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewPurchasereturnRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchaseReturn/${id}`, config);
+      const data = response.data.data;
+      // console.log('data', response.data.data);
+      dispatch(viewPurchasereturnSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewPurchasereturnFailure(error.message));
+    }
+  };
+};
+
+export const updatePurchase = (id, formData) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseRequst());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchase/${id}`, formData, config);
+      const updatePurchaseData = response;
+      dispatch(updatePurchasesuccess(updatePurchaseData));
+      // console.log(updatePurchaseData.data.data.id);
+      return updatePurchaseData;
+    } catch (error) {
+      dispatch(updatePurchasefailure(error.message));
+      throw error;
+    }
+  };
+};
+
+export const updatePurchaseItem = (itemid, updateItemData) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseItemRequst());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseitem/${itemid}`, updateItemData, config);
+      const updatePurchaseItemData = response;
+      dispatch(updatePurchaseItemsuccess(updatePurchaseItemData));
+      return updatePurchaseItemData;
+    } catch (error) {
+      dispatch(updatePurchaseItemfailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deletePurchaseItem = (id) => {
+  return async (dispatch) => {
+    dispatch(deletePurchaseItemRequest());
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseitem/${id}`, config);
+      const deletePurchaseItemData = response;
+      // console.log("@@@@@@@@",deletePurchaseItemData);
+      dispatch(deletePurchaseItemSuccess(deletePurchaseItemData));
+      return deletePurchaseItemData;
+    } catch (error) {
+      dispatch(deletePurchaseItemFailure(error.message));
       throw error;
     }
   };

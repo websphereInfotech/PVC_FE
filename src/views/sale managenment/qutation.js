@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorProductDrawer from '../../component/productquotation';
 import { useDispatch } from 'react-redux';
@@ -406,20 +407,22 @@ const Qutation = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
-                    marginRight: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px',
+                      marginRight: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
                 <button
                   style={{
                     width: '100px',
@@ -439,19 +442,21 @@ const Qutation = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button

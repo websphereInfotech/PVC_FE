@@ -184,7 +184,7 @@ export default {
                   id: 'Purchase Return',
                   title: 'Purchase Return',
                   type: 'item',
-                  url: '/purchasereturn'
+                  url: '/purchasereturnList'
                 }
               ]
             },
