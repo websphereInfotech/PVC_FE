@@ -98,15 +98,18 @@ const MainRoutes = {
     { path: '/profile', element: <SamplePage /> },
     // { path: '/dashboard/salesdasboard', element: <Salesdashboard /> },
     { path: '/payment', element: <PaymentPage /> },
+    { path: '/payment/:id', element: <PaymentPage /> },
     { path: '/paymentview/:id', element: <PaymentViewPage /> },
     { path: '/paymentlist', element: <PaymentListPage /> },
     { path: '/paymentrecieve', element: <Paymentrecieve /> },
 
     { path: '/expenselist', element: <ExpensePage /> },
     { path: '/addexpense', element: <AddExpense /> },
+    { path: '/addexpense/:id', element: <AddExpense /> },
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     { path: '/qutation', element: <Qutation /> },
+    { path: '/qutation/:id', element: <Qutation /> },
     { path: '/qutationlist', element: <Qutationlist /> },
     { path: '/qutationmain', element: <Quotationmain /> },
     { path: '/qutationview/:id', element: <Quotationviewpage /> },
@@ -117,6 +120,7 @@ const MainRoutes = {
     { path: '/salesinvoiceview/:id', element: <Salesinvoiceview /> },
 
     { path: '/deliverychallan', element: <Deliverychallan /> },
+    { path: '/deliverychallan/:id', element: <Deliverychallan /> },
     { path: '/deliverychallanlist', element: <DileveryChallanList /> },
     { path: '/deliverychallanview/:id', element: <DileveryChallanView /> },
     { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
@@ -124,7 +128,7 @@ const MainRoutes = {
     { path: '/salesreturn', element: <Salesreturn /> },
     { path: '/salesreturnmain', element: <Salesreturnmain /> },
 
-    // { path: '/addpurchase', element: <AddPurchasePage /> },
+    { path: '/addpurchase', element: <AddPurchasePage /> },
     { path: '/purchaselist', element: <PurchaseOrderList /> },
     { path: '/addpurchase/:id', element: <AddPurchasePage /> },
     // { path: '/purchasebill', element: <Purchasebill /> },
@@ -134,6 +138,7 @@ const MainRoutes = {
     { path: '/purchasebillList', element: <PurchaseBillList /> },
     { path: '/purchasebillview/:id', element: <Purchasebillview /> },
     { path: '/purchasereturn', element: <Purchasereturn /> },
+    { path: '/purchasereturn/:id', element: <Purchasereturn /> },
     { path: '/purchasereturnList', element: <PurchaseReturnList /> },
     { path: '/purchasereturnview/:id', element: <Purchasereturnview /> },
 

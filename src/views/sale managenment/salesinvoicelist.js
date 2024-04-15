@@ -36,7 +36,7 @@ const Salesinvoicelist = () => {
     const fetchSalesinvoice = async () => {
       try {
         const data = await dispatch(getallSalesInvoice());
-        console.log(data.data);
+        // console.log(data.data);
         setsalesinvoice(data.data);
       } catch (error) {
         console.error('Error fetching sales invoice:', error);
@@ -74,7 +74,7 @@ const Salesinvoicelist = () => {
         Create Sales Invoice
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table style={{ borderLeft: '1px solid lightgrey' }}>
+        <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (

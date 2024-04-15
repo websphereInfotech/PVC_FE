@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux';
 const columns = [
   { id: 'quotation_no', label: 'Bill No', minWidth: 170 },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
+  { id: 'customer', label: 'customer', minWidth: 170, align: 'center' },
   { id: 'date', label: 'Bill Date.', minWidth: 170, align: 'center' },
   { id: 'pono', label: 'PO No', minWidth: 100 },
   { id: 'view', label: 'View', minWidth: 100 },
@@ -66,7 +66,7 @@ const PurchaseOrderList = () => {
   };
   const handleUpdatePurchase = (id) => {
     navigate(`/addpurchase/${id}`);
-    console.log('id', id);
+    // console.log('id', id);
   };
   return (
     // <Container>
@@ -78,7 +78,7 @@ const PurchaseOrderList = () => {
         Create New Purchase Order
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table style={{ borderLeft: '1px solid lightgrey' }}>
+        <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (

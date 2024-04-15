@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
-import { withStyles } from '@mui/styles';
+import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
@@ -8,36 +7,42 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import { createDeliveryChallan, createDeliveryChallanItem } from 'store/thunk';
+import { createDeliveryChallan, createDeliveryChallanItem, updateDileveryChallan, updateDileveryChallanItem } from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
+import { Link } from 'react-router-dom';
 // Custom styled input component
-const StyledInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(3)
-    }
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    width: '100%',
-    padding: '10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    '&:focus': {
-      boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
-      borderColor: theme.palette.secondary.main
-    }
-  }
-}))(InputBase);
+// const StyledInput = withStyles((theme) => ({
+//   root: {
+//     'label + &': {
+//       marginTop: theme.spacing(3)
+//     }
+//   },
+//   input: {
+//     borderRadius: 4,
+//     position: 'relative',
+//     backgroundColor: theme.palette.common.white,
+//     border: '1px solid #ced4da',
+//     fontSize: 16,
+//     width: '100%',
+//     padding: '10px 12px',
+//     transition: theme.transitions.create(['border-color', 'box-shadow']),
+//     '&:focus': {
+//       boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
+//       borderColor: theme.palette.secondary.main
+//     }
+//   }
+// }))(InputBase);
+import { Deliverychallanview } from 'store/thunk';
+import { useParams } from 'react-router';
 
 const Deliverychallan = () => {
+  const { id } = useParams();
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const dispatch = useDispatch();
+
   const [rows, setRows] = useState([
     { srNo: '1', product: '', qty: '', mrp: '', description: '', expirydate: '', batchno: '', quotationno: '' }
   ]);
-  const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
   const [selectcustomer, setSelectcustomer] = useState([]);
@@ -45,10 +50,19 @@ const Deliverychallan = () => {
   const [selectproduct, setSelectproduct] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [subtotal, setSubtotal] = useState(0);
-
+  const [formData, setFormData] = useState({
+    customer: '',
+    mobileno: '',
+    date: '',
+    challanno: '',
+    email: ''
+  });
   const handleAddRow = () => {
     const newRow = { srNo: (rows.length + 1).toString(), product: '', qty: '', rate: '', amount: '' };
     setRows([...rows, newRow]);
+  };
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
   };
 
   const handleInputChange = (srNo, field, value) => {
@@ -86,6 +100,9 @@ const Deliverychallan = () => {
 
     setRows(updatedRowsWithSerialNumbers);
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+
+    // console.log("id",id);
+    // dispatch(deleteDileveryChallan(id));
   };
 
   const handleSelectChange = (selectedOption) => {
@@ -116,7 +133,6 @@ const Deliverychallan = () => {
       setIsproductDrawerOpen(false);
     }
   };
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,50 +146,84 @@ const Deliverychallan = () => {
         if (Array.isArray(productResponse)) {
           setProduct(productResponse);
           // console.log(productResponse, '????????????');
-        } else {
-          console.error('fetchAllProducts returned an unexpected response:', productResponse);
+        }
+        if (id) {
+          // console.log('id', id);
+          const response = await dispatch(Deliverychallanview(id));
+          // console.log('@@@@@@@@@@@@@@@@@@@@@@ ');
+          // console.log('response', response);
+
+          const { email, mobileno, date, challanno, customer } = response;
+          setFormData({ email, mobileno, date, challanno, customer });
+          const deliverychallanItems = response.deliverychallanItems;
+
+          const updatedRows = deliverychallanItems.map((item, index) => ({
+            id: item.id,
+            serialno: index + 1,
+            product: item.product,
+            description: item.description,
+            quotationno: item.quotationno,
+            batchno: item.batchno,
+            expirydate: item.expirydate,
+            qty: item.qty,
+            mrp: item.mrp
+          }));
+          setRows(updatedRows);
         }
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching :', error);
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   const handlecreatedeliverychallan = async () => {
     try {
-      const challanno = document.getElementById('challanno').value;
-      const date = document.getElementById('date').value;
-      const email = document.getElementById('email').value;
-      const mobileno = document.getElementById('mobileno').value;
-
-      const ChallanData = {
-        challanno,
-        date,
-        email,
-        mobileno,
-        customer: selectcustomer
-      };
-      const Deliverychallan = await dispatch(createDeliveryChallan(ChallanData));
-      // console.log('data>>>>', Deliverychallan);
-      const deliverychallanId = Deliverychallan.data.data.id;
-      // console.log("id",deliverychallanId);
-      const payload = {
-        deliverychallanId,
-        items: rows.map((row) => ({
-          serialno: row.srNo,
-          product: row.product,
-          description: row.description,
-          quotationno: row.quotationno,
-          batchno: row.batchno,
-          expirydate: row.expirydate,
-          qty: row.qty,
-          mrp: row.mrp
-        }))
-      };
-      // console.log(payload, 'payload????');
-      dispatch(createDeliveryChallanItem(payload));
-      alert('Deliverychallan created successfully');
+      if (id) {
+        await dispatch(updateDileveryChallan(id, formData));
+        // console.log("res",response);
+        for (const row of rows) {
+          const payload = {
+            serialno: row.srNo,
+            product: row.product,
+            description: row.description,
+            quotationno: row.quotationno,
+            batchno: row.batchno,
+            expirydate: row.expirydate,
+            qty: row.qty,
+            mrp: row.mrp
+          };
+          // console.log("pay",payload);
+          const id = row.id;
+          dispatch(updateDileveryChallanItem(id, payload));
+          alert('Deliverychallan Updated successfully');
+        }
+      } else {
+        const ChallanData = {
+          ...formData,
+          customer: selectcustomer
+        };
+        const Deliverychallan = await dispatch(createDeliveryChallan(ChallanData));
+        // console.log('data>>>>', Deliverychallan);
+        const deliverychallanId = Deliverychallan.data.data.id;
+        // console.log("id",deliverychallanId);
+        const payload = {
+          deliverychallanId,
+          items: rows.map((row) => ({
+            serialno: row.srNo,
+            product: row.product,
+            description: row.description,
+            quotationno: row.quotationno,
+            batchno: row.batchno,
+            expirydate: row.expirydate,
+            qty: row.qty,
+            mrp: row.mrp
+          }))
+        };
+        // console.log(payload, 'payload????');
+        dispatch(createDeliveryChallanItem(payload));
+        alert('Deliverychallan created successfully');
+      }
     } catch (error) {
       console.error('Error creating Deliverychallan:', error);
       alert('Failed to create Deliverychallan');
@@ -203,27 +253,48 @@ const Deliverychallan = () => {
                       ]
                     : []
                 }
+                value={{ label: formData.customer }}
                 onChange={(selectedOption) => handleSelectChange(selectedOption)}
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Mobile No.</Typography>
-              <StyledInput placeholder="Enter Mobile No." id="mobileno" fullWidth />
+              <input
+                placeholder="Enter Mobile No."
+                id="mobileno"
+                value={formData.mobileno}
+                onChange={(e) => handleChange('mobileno', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Email</Typography>
-              <StyledInput placeholder="Enter Email Address" id="email" fullWidth />
+              <input
+                placeholder="Enter Email Address"
+                id="email"
+                value={formData.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+              />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Challan No.</Typography>
-              <StyledInput placeholder="0001" id="challanno" fullWidth />
+              <input
+                placeholder="0001"
+                id="challanno"
+                value={formData.challanno}
+                onChange={(e) => handleChange('challanno', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Challan Date</Typography>
-              <StyledInput type="date" id="date" fullWidth />
+              <input
+                type="date"
+                id="date"
+                value={formData.date ? formData.date.split('T')[0] : ''}
+                onChange={(e) => handleChange('date', e.target.value)}
+              />
             </Grid>
           </Grid>
 
@@ -247,17 +318,17 @@ const Deliverychallan = () => {
                     <React.Fragment key={row.srNo}>
                       <TableRow>
                         <TableCell sx={{ padding: '5px' }}>
-                          <StyledInput
+                          <input
                             placeholder="Sr.No."
-                            value={row.srNo}
+                            value={row.serialno}
                             readOnly
-                            onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
+                            onChange={(e) => handleInputChange(row.srNo, 'serialno', e.target.value)}
                           />
                         </TableCell>
                         <TableCell sx={{ padding: '5px' }}>
-                          <StyledInput
+                          <input
                             placeholder="Quotation no."
-                            // value={row.srNo}
+                            value={row.quotationno}
                             onChange={(e) => handleInputChange(row.srNo, 'quotationno', e.target.value)}
                           />
                         </TableCell>
@@ -275,52 +346,42 @@ const Deliverychallan = () => {
                                   ]
                                 : []
                             }
+                            value={{ label: row.product }}
                             onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                           />
                         </TableCell>
                         <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                         <TableCell sx={{ padding: '5px', display: 'flex', justifyContent: 'center' }}>
-                          <StyledInput
+                          <input
                             placeholder="date"
-                            // value={row.qty}
-                            fullWidth
+                            value={row.batchno}
                             onChange={(e) => handleInputChange(row.srNo, 'batchno', e.target.value)}
                           />
                         </TableCell>
                         <TableCell sx={{ padding: '5px' }}>
-                          <StyledInput
+                          <input
                             placeholder="date"
-                            // value={row.qty}
-                            fullWidth
+                            value={row.expirydate ? row.expirydate.split('T')[0] : ''}
                             onChange={(e) => handleInputChange(row.srNo, 'expirydate', e.target.value)}
                           />
                         </TableCell>
                         <TableCell sx={{ padding: '5px' }}>
-                          <StyledInput
-                            placeholder="0.00"
-                            // value={row.rate}
-                            onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)}
-                          />
+                          <input placeholder="0.00" value={row.mrp} onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)} />
                         </TableCell>
                         <TableCell sx={{ padding: '5px' }}>
-                          <StyledInput
-                            placeholder="qty"
-                            // value={row.amount}
-                            onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)}
-                          />
+                          <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
                         </TableCell>
                         <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo)} />
+                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo, row.id)} />
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
                         <TableCell colSpan={6} sx={{ padding: '5px' }}>
-                          <StyledInput
+                          <input
                             placeholder="Enter product description"
-                            // value={row.productDescription}
-                            sx={{ width: '625px' }}
+                            value={row.description}
                             onChange={(e) => handleInputChange(row.srNo, 'description', e.target.value)}
                           />
                         </TableCell>
@@ -331,24 +392,28 @@ const Deliverychallan = () => {
               </Table>
             </div>
           </Grid>
-          <Grid item xs={12}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                borderColor: '#425466',
-                padding: '2px',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                lineHeight: '19px',
-                marginTop: '5px'
-              }}
-              onClick={handleAddRow}
-            >
-              <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-            </button>
-          </Grid>
+          {id ? (
+            ''
+          ) : (
+            <Grid item xs={12}>
+              <button
+                style={{
+                  width: '100px',
+                  color: '#425466',
+                  borderColor: '#425466',
+                  padding: '2px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  borderRadius: '5px',
+                  lineHeight: '19px',
+                  marginTop: '5px'
+                }}
+                onClick={handleAddRow}
+              >
+                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
+              </button>
+            </Grid>
+          )}
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on separate lines
@@ -388,20 +453,22 @@ const Deliverychallan = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
-                    marginRight: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px',
+                      marginRight: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
                 <button
                   style={{
                     width: '100px',
@@ -421,19 +488,21 @@ const Deliverychallan = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button

@@ -19,7 +19,8 @@ const columns = [
   { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
   { id: 'refno', label: 'Refernce No.', minWidth: 170, align: 'center' },
   { id: 'refdate', label: 'Refernce Date', minWidth: 170, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
+  { id: 'view', label: 'View', minWidth: 170, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' }
 ];
 
 export default function PurchaseReturnList() {
@@ -56,7 +57,9 @@ export default function PurchaseReturnList() {
     dispatch(PurchaseReturnview(id));
     navigate(`/purchasereturnview/${id}`);
   };
-
+  const handleUpdatePurchaseReturn = (id) => {
+    navigate(`/purchasereturn/${id}`);
+  };
   const handleAddpuchasereturn = () => {
     navigate('/purchasereturn');
   };
@@ -70,7 +73,7 @@ export default function PurchaseReturnList() {
         Create Purchase Return
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table style={{ borderLeft: '1px solid lightgrey' }}>
+        <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
@@ -85,9 +88,13 @@ export default function PurchaseReturnList() {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseReturn(row.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchaseReturn(row.id)}>
+                        Edit
                       </Button>
                     ) : column.id === 'refdate' ? (
                       new Date(row[column.id]).toLocaleDateString()

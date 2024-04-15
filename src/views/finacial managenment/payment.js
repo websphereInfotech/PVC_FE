@@ -1,98 +1,137 @@
-import React from 'react';
-import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell } from '@mui/material';
-import { withStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
+import { Typography, Grid, Paper, Table, TableHead, TableCell } from '@mui/material';
+// import { withStyles } from '@mui/styles';
 // import Select from 'react-select';
 // import AnchorTemporaryDrawer from '../../component/customerqutation';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPayment } from 'store/thunk';
-import { Link, useNavigate } from 'react-router-dom';
+import { createPayment, paymentview, updatePayment } from 'store/thunk';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 // Custom styled input component
-const StyledInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(3)
-    }
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    width: '100%',
-    padding: '10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    '&:focus': {
-      boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
-      borderColor: theme.palette.secondary.main
-    }
-  }
-}))(InputBase);
+// const input = withStyles((theme) => ({
+//   root: {
+//     'label + &': {
+//       marginTop: theme.spacing(3)
+//     }
+//   },
+//   input: {
+//     borderRadius: 4,
+//     position: 'relative',
+//     backgroundColor: theme.palette.common.white,
+//     border: '1px solid #ced4da',
+//     fontSize: 16,
+//     width: '100%',
+//     padding: '10px 12px',
+//     transition: theme.transitions.create(['border-color', 'box-shadow']),
+//     '&:focus': {
+//       boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
+//       borderColor: theme.palette.secondary.main
+//     }
+//   }
+// }))(InputBase);
 
 const PaymentPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
 
+  const [formData, setFormData] = useState({
+    voucherno: '',
+    account: '',
+    email: '',
+    paymentdate: '',
+    mode: '',
+    refno: '',
+    paidfrom: '',
+    amount: '',
+    billno: '',
+    billfromdate: '',
+    billtodate: ''
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (id) {
+          // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",id);
+          const viewPayment = await dispatch(paymentview(id));
+          setFormData(viewPayment);
+          // console.log(viewPayment);
+        }
+      } catch (error) {
+        console.error('Error fetching payment:', error);
+      }
+    };
+    fetchData();
+  }, [dispatch, id]);
   const handlecreatepayment = async () => {
     try {
-      const voucherno = document.getElementById('voucherno').value;
-      const email = document.getElementById('email').value;
-      const paymentdate = document.getElementById('paymentdate').value;
-      const account = document.getElementById('account').value;
-      const mode = document.getElementById('mode').value;
-      const refno = document.getElementById('refno').value;
-      const paidfrom = document.getElementById('paidfrom').value;
-      const amount = document.getElementById('amount').value;
-      const billno = document.getElementById('billno').value;
-      const billfromdate = document.getElementById('billfromdate').value;
-      const billtodate = document.getElementById('billtodate').value;
-
-      const paymentData = {
-        voucherno,
-        account,
-        email,
-        paymentdate,
-        mode,
-        refno,
-        paidfrom,
-        amount,
-        billno,
-        billfromdate,
-        billtodate
-      };
-      const Paymentdata = await dispatch(createPayment(paymentData));
-      console.log('data>>>>', Paymentdata);
-      alert('Paymentdata created successfully');
-      navigate('/paymentlist');
+      if (id) {
+        await dispatch(updatePayment(id, formData));
+        // console.log('update', upadtePaymentData);
+        alert('Paymentdata updted successfully');
+        navigate('/paymentlist');
+      } else {
+        await dispatch(createPayment(formData));
+        // console.log('data>>>>', Paymentdata);
+        alert('Paymentdata created successfully');
+        navigate('/paymentlist');
+      }
     } catch (error) {
       console.error('Error creating Paymentdata:', error);
       alert('Failed to create Paymentdata');
     }
   };
+  const handleInputChange = (fieldName, value) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [fieldName]: value
+    }));
+  };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Add Payment
-        </Typography>
+        {id ? (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Update Payment
+          </Typography>
+        ) : (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Add Payment
+          </Typography>
+        )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Vendor</Typography>
-              <StyledInput color="secondary" id="voucherno" />
+              <input
+                color="secondary"
+                id="voucherno"
+                value={formData.voucherno}
+                onChange={(e) => handleInputChange('voucherno', e.target.value)}
+              />
             </Grid>
             {/* <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} /> */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Account</Typography>
-              <StyledInput placeholder="Enter Account" id="account" fullWidth />
+              <input
+                placeholder="Enter Account"
+                id="account"
+                value={formData.account}
+                onChange={(e) => handleInputChange('account', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Email</Typography>
-              <StyledInput placeholder="Enter Email" id="email" fullWidth />
+              <input
+                placeholder="Enter Email"
+                id="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', justifyContent: 'end' }}>
               <div>
@@ -105,23 +144,43 @@ const PaymentPage = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Payment Date</Typography>
-              <StyledInput type="date" id="paymentdate" fullWidth />
+              <input
+                type="date"
+                id="paymentdate"
+                value={formData.paymentdate ? formData.paymentdate.split('T')[0] : ''}
+                onChange={(e) => handleInputChange('paymentdate', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Mode</Typography>
-              <StyledInput placeholder="Enter Mode" id="mode" fullWidth />
+              <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={(e) => handleInputChange('mode', e.target.value)} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Reference No.</Typography>
-              <StyledInput placeholder="Enter Reference No." id="refno" fullWidth />
+              <input
+                id="refno"
+                placeholder="Enter Reference No."
+                value={formData.refno}
+                onChange={(e) => handleInputChange('refno', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Paid from</Typography>
-              <StyledInput placeholder="Enter Paid from" id="paidfrom" fullWidth />
+              <input
+                id="paidfrom"
+                placeholder="Enter Paid from"
+                value={formData.paidfrom}
+                onChange={(e) => handleInputChange('paidfrom', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Amount Paid (₹)</Typography>
-              <StyledInput placeholder="Enter Amount" id="amount" fullWidth />
+              <input
+                id="amount"
+                placeholder="Enter Amount"
+                value={formData.amount}
+                onChange={(e) => handleInputChange('amount', e.target.value)}
+              />
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -132,15 +191,25 @@ const PaymentPage = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Find Bill No.</Typography>
-              <StyledInput placeholder="Find Bill No." id="billno" fullWidth />
+              <input
+                placeholder="Find Bill No."
+                id="billno"
+                value={formData.billno}
+                onChange={(e) => handleInputChange('billno', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Bill From Date</Typography>
-              <StyledInput type="date" id="billfromdate" fullWidth />
+              <input
+                type="date"
+                id="billfromdate"
+                value={formData.billfromdate ? formData.billfromdate.split('T')[0] : ''}
+                onChange={(e) => handleInputChange('billfromdate', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Bill From To</Typography>
-              <StyledInput type="date" id="billtodate" fullWidth />
+              <input type="date" id="billtodate" value={formData.billtodate ? formData.billtodate.split('T')[0] : ''} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <div style={{ display: 'flex', margin: '25px 0px' }}>
@@ -196,14 +265,14 @@ const PaymentPage = () => {
                   {rows.map((row) => (
                     <TableRow key={row.srNo}>
                       <TableCell>
-                        <StyledInput
+                        <input
                           placeholder="Enter Sr.No."
                           value={row.srNo}
                           onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
                         />
                       </TableCell>
                       <TableCell width={420}>
-                        <StyledInput
+                        <input
                           placeholder="Enter nature of expense"
                           // value={row.natureofexpencse}
                           fullWidth
@@ -211,7 +280,7 @@ const PaymentPage = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        <StyledInput
+                        <input
                           placeholder="description"
                           // value={row.description}
                           fullWidth
@@ -219,14 +288,14 @@ const PaymentPage = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        <StyledInput
+                        <input
                           placeholder="Rate"
                           // value={row.rate}
                           onChange={(e) => handleInputChange(row.rate, 'rate', e.target.value)}
                         />
                       </TableCell>
                       <TableCell>
-                        <StyledInput
+                        <input
                           placeholder="Amount"
                           // value={row.amount}
                           onChange={(e) => handleInputChange(row.amount, 'amount', e.target.value)}
@@ -290,7 +359,7 @@ const PaymentPage = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentlist" style={{ textDecoration: 'none' }}>
                   <button
                     style={{
                       width: '100px',
@@ -325,7 +394,7 @@ const PaymentPage = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentlist" style={{ textDecoration: 'none' }}>
                   <button
                     style={{
                       width: '100px',
