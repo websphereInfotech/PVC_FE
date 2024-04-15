@@ -21,7 +21,8 @@ const columns = [
   { id: 'challanno', label: 'Challan No', minWidth: 170 },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 100 }
+  { id: 'view', label: 'View', minWidth: 100 },
+  { id: 'edit', label: 'Edit', minWidth: 100 }
 ];
 
 const DileveryChallanList = () => {
@@ -63,6 +64,10 @@ const DileveryChallanList = () => {
     navigate(`/deliverychallanview/${id}`);
   };
 
+  const handleUpdateDeliverychallan = (id) => {
+    navigate(`/deliverychallan/${id}`);
+  };
+
   return (
     // <Container>
     <Card style={{ padding: '25px', width: '100%' }}>
@@ -88,9 +93,13 @@ const DileveryChallanList = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewDeliverychallan(order.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateDeliverychallan(order.id)}>
+                        Edit
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString()

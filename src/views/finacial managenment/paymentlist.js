@@ -5,14 +5,15 @@ import { useDispatch } from 'react-redux';
 import { getallPayment, paymentview } from 'store/thunk';
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 170 },
-  { id: 'voucherno', label: 'Vendor', minWidth: 170, align: 'center' },
-  { id: 'paymentdate', label: 'Date', minWidth: 170, align: 'center' },
-  { id: 'billno', label: 'Invoice No.', minWidth: 170, align: 'center' },
-  { id: 'mode', label: 'Mode', minWidth: 170, align: 'center' },
-  { id: 'refno', label: 'Reference', minWidth: 170, align: 'center' },
-  { id: 'amount', label: 'Amount', minWidth: 170, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
+  { id: 'id', label: 'ID' },
+  { id: 'voucherno', label: 'Vendor', align: 'center' },
+  { id: 'paymentdate', label: 'Date', align: 'center' },
+  { id: 'billno', label: 'Invoice No.', align: 'center' },
+  { id: 'mode', label: 'Mode', align: 'center' },
+  { id: 'refno', label: 'Reference', align: 'center' },
+  { id: 'amount', label: 'Amount', align: 'center' },
+  { id: 'view', label: 'View', align: 'center' },
+  { id: 'edit', label: 'Edit', align: 'center' }
 ];
 
 const PaymentListPage = () => {
@@ -42,6 +43,10 @@ const PaymentListPage = () => {
     navigate(`/paymentview/${id}`);
   };
 
+  const handleUpdatePayment = (id) => {
+    // console.log('id',id);
+    navigate(`/payment/${id}`);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -53,7 +58,7 @@ const PaymentListPage = () => {
 
   return (
     // <Container>
-    <Card style={{ width: '100%' }}>
+    <Card style={{ width: '100%', overflow: 'scroll' }}>
       <Typography variant="h4" align="center" id="mycss">
         Payment List
       </Typography>
@@ -73,9 +78,13 @@ const PaymentListPage = () => {
             <TableRow key={payment.id}>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align}>
-                  {column.id === 'action' ? (
+                  {column.id === 'view' ? (
                     <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
                       View
+                    </Button>
+                  ) : column.id === 'edit' ? (
+                    <Button variant="outlined" color="secondary" onClick={() => handleUpdatePayment(payment?.id)}>
+                      Edit
                     </Button>
                   ) : column.id === 'paymentdate' ? (
                     new Date(payment[column.id]).toLocaleDateString()

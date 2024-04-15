@@ -116,6 +116,14 @@ export const CREATE_EXPENSE_ITEM_REQUEST = 'CREATE_EXPENSE_ITEM_REQUEST';
 export const CREATE_EXPENSE_ITEM_SUCCESS = 'CREATE_EXPENSE_ITEM_SUCCESS';
 export const CREATE_EXPENSE_ITEM_FAILURE = 'CREATE_EXPENSE_ITEM_FAILURE';
 
+export const UPDATE_EXPENCE_REQUEST = 'UPDATE_EXPENCE_REQUEST';
+export const UPDATE_EXPENSE_SUCCESS = 'UPDATE_EXPENSE_SUCCESS';
+export const UPDATE_EXPENCE_FAILURE = 'UPDATE_EXPENSE_FAILURE';
+
+export const UPDATE_EXPENSE_ITEM_REQUEST = 'UPDATE_EXPENSE_ITEM_REQUEST';
+export const UPDATE_EXPENSE_ITEM_SUCCESS = 'UPDATE_EXPENSE_ITEM_SUCCESS';
+export const UPDATE_EXPENSE_ITEM_FAILURE = 'UPDATE_EXPENSE_ITEM_FAILURE';
+
 export const FETCH_ALL_EXPENSE_REQUEST = 'FETCH_ALL_EXPENSE_REQUEST';
 export const FETCH_ALL_EXPENSE_SUCCESS = 'FETCH_ALL_EXPENSE_SUCCESS';
 export const FETCH_ALL_EXPENSE_FAILURE = 'FETCH_ALL_EXPENSE_FAILURE';
@@ -159,6 +167,27 @@ export const FETCH_ALL_PURCHASERETURN_FAILURE = 'FETCH_ALL_PURCHASERETURN_FAILUR
 export const VIEW_PURCHASERETURN_REQUEST = 'VIEW_PURCHASERETURN_REQUEST';
 export const VIEW_PURCHASERETURN_SUCCESS = 'VIEW_PURCHASERETURN_SUCCESS';
 export const VIEW_PURCHASERETURN_FAILURE = 'VIEW_PURCHASEBILL_FAILURE';
+
+export const UPDATE_PAYMENT_REQUEST = 'UPDATE_PAYMENT_REQUEST';
+export const UPDATE_PAYMENT_SUCCESS = 'UPDATE_PAYMENT_SUCCESS';
+export const UPDATE_PAYMENT_FAILURE = 'UPDATE_PAYMENT_FAILURE';
+
+export const UPDATE_DILEVERYCHALLAN_REQUEST = 'UPDATE_DILEVERYCHALLAN_REQUEST';
+export const UPDATE_DILEVERYCHALLAN_SUCCESS = 'UPDATE_DILEVERYCHALLAN_SUCCESS';
+export const UPDATE_DILEVERYCHALLAN_FAILURE = 'UPDATE_DILEVERYCHALLAN_FAILURE';
+
+export const UPDATE_DILEVERYCHALLAN_ITEM_REQUEST = 'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST';
+export const UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS ='UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS';
+export const UPDATE_DILEVERYCHALLAN_ITEM_FAILURE ='UPDATE_DILEVERYCHALLAN_ITEM_FAILURE';
+
+export const DELETE_DILEVERYCHALLAN_ITEM_REQUEST = 'DELETE_DILEVERYCHALLAN_ITEM_REQUEST';
+export const DELETE_DILEVERYCHALLAN_ITEM_SUCCESS ='DELETE_DILEVERYCHALLAN_ITEM_SUCCESS';
+export const DELETE_DILEVERYCHALLAN_ITEM_FAILURE ='DELETE_DILEVERYCHALLAN_ITEM_FAILURE';
+
+export const DELETE_EXPENSE_ITEM_REQUEST = 'DELETE_EXPENSE_ITEM_REQUEST';
+export const DELETE_EXPENSE_ITEM_SUCCESS ='DELETE_EXPENSE_ITEM_SUCCESS';
+export const DELETE_EXPENSE_ITEM_FAILURE ='DELETE_EXPENSE_ITEM_FAILURE';
+
 
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
@@ -736,4 +765,107 @@ export const deletePurchaseItemSuccess = (data) => ({
 export const deletePurchaseItemFailure = (error) => ({
   type: 'DELETE_PURCHASE_ITEM_FAILURE',
   payload: error
+});
+
+export const updateExpenseRequest = (data) => ({
+  type: 'UPDATE_EXPENCE_REQUEST',
+  payload: data
+});
+
+export const updateExpenseSuccess = (data) => ({
+  type: 'UPDATE_EXPENSE_SUCCESS',
+  payload: data
+});
+
+export const updateExpenseFailure = (error) => ({
+  type: 'UPDATE_EXPENCE_FAILURE',
+  payload: error
+});
+
+export const updateExpenseItemRequest = (data) => ({
+  type: 'UPDATE_EXPENSE_ITEM_REQUEST',
+  payload: data
+});
+
+export const updateExpenseItemSuccess = (data) => ({
+  type: 'UPDATE_EXPENSE_ITEM_SUCCESS',
+  payload: data
+});
+
+export const updateExpenseItemFailure = (error) => ({
+  type: 'UPDATE_EXPENSE_ITEM_FAILURE',
+  payload: error
+});
+
+export const updatePaymentRequest = (data) => ({
+  type: 'UPDATE_PAYMENT_REQUEST',
+  payload: data
+});
+
+export const updatePaymentSuccess = (data) => ({
+  type: 'UPDATE_PAYMENT_SUCCESS',
+  payload: data
+});
+
+export const updatePaymentFailure = (error) => ({
+  type: 'UPDATE_PAYMENT_FAILURE',
+  payload: error
+});
+
+export const updateDileverychallanRequest = (data) => ({
+  type :'UPDATE_DILEVERYCHALLAN_REQUEST',
+  payload:data
+});
+
+export const updateDileverychallanSuccess = (data) => ({
+  type:'UPDATE_DILEVERYCHALLAN_SUCCESS',
+  payload:data
+});
+
+export const updateDileverychallanFailure = (error) => ({
+  type:'UPDATE_DILEVERYCHALLAN_FAILURE',
+  payload:error
+});
+
+export const updateDileverychallanItemRequest = (data) => ({
+  type:'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST',
+  payload:data
+});
+
+export const updateDileverychallanItemSuccess = (data) => ({
+  type:'UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS',
+  payload:data
+});
+
+export const updateDileverychallanItemFailure = (error) => ({
+  type:'UPDATE_DILEVERYCHALLAN_ITEM_FAILURE',
+  payload:error
+});
+export const deleteDileverychallanItemRequest = (data) => ({
+  type:'DELETE_DILEVERYCHALLAN_ITEM_REQUEST',
+  payload:data
+});
+
+export const deleteDileverychallanItemSuccess = (data) => ({
+  type:'DELETE_DILEVERYCHALLAN_ITEM_SUCCESS',
+  payload:data
+});
+
+export const deleteDileverychallanItemFailure = (error) => ({
+  type:'DELETE_DILEVERYCHALLAN_ITEM_FAILURE',
+  payload:error
+});
+export const deleteExpenseItemRequest = (data) => ({
+  type:'DELETE_EXPENSE_ITEM_REQUEST',
+  payload:data
+});
+
+export const deleteExpenseItemSuccess = (data) => ({
+  type:'DELETE_EXPENSE_ITEM_SUCCESS',
+  payload:data
+});
+
+export const deleteExpenseItemFailure = (error) => ({
+  type:'DELETE_EXPENSE_ITEM_FAILURE',
+  payload:error
 });
