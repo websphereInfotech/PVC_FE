@@ -7,8 +7,17 @@ import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import { useDispatch } from 'react-redux';
-import { createExpense, createExpenseItem, fetchAllCustomers } from 'store/thunk';
 import { Link } from 'react-router-dom';
+import {
+  Expenseview,
+  createExpense,
+  createExpenseItem,
+  deleteExpense,
+  fetchAllCustomers,
+  updateExpense,
+  updateExpenseItem
+} from 'store/thunk';
+import { useParams } from 'react-router-dom';
 
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
@@ -35,12 +44,13 @@ const StyledInput = withStyles((theme) => ({
 
 const AddExpense = () => {
   const dispatch = useDispatch();
-
-  const [rows, setRows] = useState([{ srNo: '1', natureofexpencse: '', description: '', taxable: '', mrp: '' }]);
+  const { id } = useParams();
+  const [rows, setRows] = useState([{ srNo: '1', expensse: '', description: '', taxable: '', mrp: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
   const [selectcustomer, setSelectcustomer] = useState([]);
+  const [idMapping, setIdMapping] = useState({});
   const [formData, setFormData] = React.useState({
     voucherno: '',
     date: '',
@@ -52,7 +62,7 @@ const AddExpense = () => {
     payment: ''
   });
   const handleAddRow = () => {
-    const newRow = { srNo: (rows.length + 1).toString(), natureofexpencse: '', description: '', taxable: '', mrp: '' };
+    const newRow = { srNo: (rows.length + 1).toString(), expensse: '', description: '', taxable: '', mrp: '' };
     setRows([...rows, newRow]);
   };
 
@@ -67,6 +77,8 @@ const AddExpense = () => {
   };
 
   const handleDeleteRow = (srNo) => {
+    const id = idMapping[srNo];
+
     const updatedRows = rows.filter((row) => row.srNo !== srNo);
     // Update serial numbers after deletion
     const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
@@ -74,6 +86,8 @@ const AddExpense = () => {
       srNo: index + 1
     }));
     setRows(updatedRowsWithSerialNumbers);
+    console.log('id', id);
+    dispatch(deleteExpense(id));
   };
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'create new customer') {
@@ -96,35 +110,78 @@ const AddExpense = () => {
         } else {
           console.error('fetchAllCustomers returned an unexpected response:', response);
         }
+        if (id) {
+          const response = await dispatch(Expenseview(id));
+          const { customer, voucherno, date, gstin, mobileno, email, billno, billdate, payment } = response;
+          setFormData({ customer, voucherno, date, gstin, mobileno, email, billno, billdate, payment });
+
+          const expenseItems = response.expenseItems;
+          // console.log("res@@@@@@@@",response.expenseItems[1].id);
+          const updatedRows = expenseItems.map((item, index) => {
+            const rowId = index + 1;
+            const { id } = item;
+            setIdMapping((prevState) => ({ ...prevState, [rowId]: id }));
+            return {
+              // id: rowId,
+              srNo: rowId,
+              expensse: item.expensse,
+              description: item.description,
+              taxable: item.taxable,
+              mrp: item.mrp
+            };
+          });
+          // console.log('update', updatedRows);
+          setRows(updatedRows);
+        }
       } catch (error) {
         console.error('Error fetching quotations:', error);
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, id]);
   const handleSave = async () => {
     try {
-      const data = {
-        ...formData,
-        customer: selectcustomer
-      };
-      // console.log(data,"data@@@@@@@@@@@@@@@@@");
-      const expenceData = await dispatch(createExpense(data));
-      // console.log('expense', expenceData);
-      const expenseId = expenceData.data.data.id;
-      // console.log(Id, 'id>>>>>>>>>>>>>>>');
-      const payload = {
-        expenseId,
-        items: rows.map((row) => ({
-          serialno: row.srNo,
-          expensse: row.natureofexpencse,
-          description: row.description,
-          taxable: row.taxable,
-          mrp: row.mrp
-        }))
-      };
-      dispatch(createExpenseItem(payload));
-      alert('expence add successfully');
+      if (id) {
+        // console.log('id', id);
+        await dispatch(updateExpense(id, formData));
+        // console.log('response', response);
+
+        for (const row of rows) {
+          const updateData = {
+            srNo: row.srNo,
+            expensse: row.expensse,
+            description: row.description,
+            taxable: row.taxable,
+            mrp: row.mrp
+          };
+          const id = row.id;
+
+          // console.log("updateData$$$$$$",updateData);
+          dispatch(updateExpenseItem(id, updateData));
+        }
+      } else {
+        const data = {
+          ...formData,
+          customer: selectcustomer
+        };
+        // console.log(data,"data@@@@@@@@@@@@@@@@@");
+        const expenceData = await dispatch(createExpense(data));
+        // console.log('expense', expenceData);
+        const expenseId = expenceData.data.data.id;
+        // console.log(Id, 'id>>>>>>>>>>>>>>>');
+        const payload = {
+          expenseId,
+          items: rows.map((row) => ({
+            serialno: row.srNo,
+            expensse: row.expensse,
+            description: row.description,
+            taxable: row.taxable,
+            mrp: row.mrp
+          }))
+        };
+        dispatch(createExpenseItem(payload));
+        alert('expence add successfully');
+      }
     } catch (error) {
       console.error('Error creating customer:', error);
     }
@@ -137,9 +194,15 @@ const AddExpense = () => {
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Add Expense
-        </Typography>
+        {id ? (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Update Expense
+          </Typography>
+        ) : (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Add Expense
+          </Typography>
+        )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             {/* First row containing the first 4 grid inputs */}
@@ -158,6 +221,7 @@ const AddExpense = () => {
                       ]
                     : []
                 }
+                value={{ label: formData.customer }}
                 onChange={(selectedOption) => handleSelectChange(selectedOption)}
               />
             </Grid>
@@ -168,7 +232,7 @@ const AddExpense = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Date</Typography>
-              <StyledInput type="date" id="date" value={formData.date} onChange={handleChange} />
+              <StyledInput type="date" id="date" value={formData.date ? formData.date.split('T')[0] : ''} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">GSTIN</Typography>
@@ -228,7 +292,7 @@ const AddExpense = () => {
                         <StyledInput
                           placeholder="Enter"
                           value={row.expensse}
-                          onChange={(e) => handleInputChange(row.srNo, 'natureofexpencse', e.target.value)}
+                          onChange={(e) => handleInputChange(row.srNo, 'expensse', e.target.value)}
                         />
                       </TableCell>
                       {/* <TableCell sx={{ padding: '5px' }}>
@@ -238,17 +302,21 @@ const AddExpense = () => {
                       <TableCell>
                         <StyledInput
                           placeholder="description"
-                          // value={row.description}
+                          value={row.description}
                           onChange={(e) => handleInputChange(row.srNo, 'description', e.target.value)}
                         />
                       </TableCell>
                       <TableCell>
-                        <StyledInput placeholder="Rate" onChange={(e) => handleInputChange(row.srNo, 'taxable', e.target.value)} />
+                        <StyledInput
+                          placeholder="Rate"
+                          value={row.taxable}
+                          onChange={(e) => handleInputChange(row.srNo, 'taxable', e.target.value)}
+                        />
                       </TableCell>
                       <TableCell>
                         <StyledInput
                           placeholder="Amount"
-                          // value={row.amount}
+                          value={row.mrp}
                           onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)}
                         />
                       </TableCell>
@@ -261,24 +329,28 @@ const AddExpense = () => {
               </Table>
             </div>
           </Grid>
-          <Grid item xs={12}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                borderColor: '#425466',
-                padding: '2px',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                lineHeight: '19px',
-                marginTop: '5px'
-              }}
-              onClick={handleAddRow}
-            >
-              <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-            </button>
-          </Grid>
+          {id ? (
+            ''
+          ) : (
+            <Grid item xs={12}>
+              <button
+                style={{
+                  width: '100px',
+                  color: '#425466',
+                  borderColor: '#425466',
+                  padding: '2px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  borderRadius: '5px',
+                  lineHeight: '19px',
+                  marginTop: '5px'
+                }}
+                onClick={handleAddRow}
+              >
+                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
+              </button>
+            </Grid>
+          )}
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on separate lines

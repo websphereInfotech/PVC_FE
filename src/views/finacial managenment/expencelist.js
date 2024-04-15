@@ -24,7 +24,8 @@ const columns = [
   { id: 'payment', label: 'Payment Method', minWidth: 170, align: 'center' },
   { id: 'billno', label: 'Bill No.', minWidth: 170, align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
+  { id: 'view', label: 'View', minWidth: 170, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' }
 ];
 
 const ExpensePage = () => {
@@ -65,7 +66,10 @@ const ExpensePage = () => {
     dispatch(Expenseview(id));
     navigate(`/viewexpense/${id}`);
   };
-
+  const handleUpdateExpense = (id) => {
+    navigate(`/addexpense/${id}`);
+    // console.log(id);
+  };
   return (
     // <Container>
     <Card style={{ padding: '25px' }}>
@@ -91,9 +95,13 @@ const ExpensePage = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewExpense(row.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateExpense(row.id)}>
+                        Edit
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString()

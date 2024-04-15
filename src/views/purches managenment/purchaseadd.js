@@ -150,7 +150,7 @@ const AddPurchasePage = () => {
   };
 
   const handleSelectproductChange = (selectedOption, srNo) => {
-    console.log('selected>>>>>', selectedOption);
+    // console.log('selected>>>>>', selectedOption);
     // console.log(selectproduct,"@@@@@@@@@@@@@@");
     if (selectedOption && selectedOption.value === 'new') {
       setIsproductDrawerOpen(true);
@@ -235,7 +235,7 @@ const AddPurchasePage = () => {
             qty: row.qty,
             mrp: row.mrp
           };
-          // console.log("@@@@@@",rows);
+          // console.log("@@@@@@",updateItemData);
           const itemid = row.id;
           await dispatch(updatePurchaseItem(itemid, updateItemData));
         }
@@ -271,9 +271,16 @@ const AddPurchasePage = () => {
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
-      <Typography variant="h4" align="center" gutterBottom id="mycss">
-        Add Purchase
-      </Typography>
+      {id ? (
+        <Typography variant="h4" align="center" gutterBottom id="mycss">
+          Update Purchase
+        </Typography>
+      ) : (
+        <Typography variant="h4" align="center" gutterBottom id="mycss">
+          Add Purchase
+        </Typography>
+      )}
+
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
@@ -391,6 +398,7 @@ const AddPurchasePage = () => {
                         //       ]
                         //     : []
                         // }
+                        placeholder="select Product"
                         onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                         options={product}
                         value={{ label: row.product }}
@@ -424,23 +432,27 @@ const AddPurchasePage = () => {
             </Table>
           </div>
         </Grid>
-        <Grid item xs={12}>
-          <button
-            style={{
-              width: '100px',
-              color: '#425466',
-              borderColor: '#425466',
-              padding: '2px',
-              display: 'flex',
-              justifyContent: 'center',
-              borderRadius: '5px',
-              lineHeight: '19px'
-            }}
-            onClick={handleAddRow}
-          >
-            <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-          </button>
-        </Grid>
+        {id ? (
+          ''
+        ) : (
+          <Grid item xs={12}>
+            <button
+              style={{
+                width: '100px',
+                color: '#425466',
+                borderColor: '#425466',
+                padding: '2px',
+                display: 'flex',
+                justifyContent: 'center',
+                borderRadius: '5px',
+                lineHeight: '19px'
+              }}
+              onClick={handleAddRow}
+            >
+              <AddIcon sx={{ fontSize: '18px' }} /> Add Row
+            </button>
+          </Grid>
+        )}
         <Grid item xs={12}>
           {isMobile ? (
             // For mobile screens, show each total on separate lines
