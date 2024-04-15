@@ -225,9 +225,15 @@ const Qutation = () => {
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Quotation
-        </Typography>
+        {id ? (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Update Quotation
+          </Typography>
+        ) : (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            create Quotation
+          </Typography>
+        )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>

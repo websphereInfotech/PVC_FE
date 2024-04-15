@@ -106,12 +106,13 @@ const Deliverychallan = () => {
   };
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'create new customer') {
+    if (selectedOption && selectedOption.value === 'new') {
       setIsDrawerOpen(true);
       // console.log(isDrawerOpen, 'open');
     } else {
-      // console.log(selectcustomer, 'customers>???????????????');
-      setSelectcustomer(selectedOption.label);
+      console.log(setSelectcustomer, 'customers>???????????????');
+      // setSelectcustomer(selectedOption.label);
+      setFormData({ ...formData, customer: selectedOption.label });
       setIsDrawerOpen(false);
     }
   };
@@ -137,9 +138,10 @@ const Deliverychallan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
-        if (Array.isArray(response)) {
-          setcustomer(response);
+        const customers = await dispatch(fetchAllCustomers());
+        if (Array.isArray(customers)) {
+          const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
+          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
           // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -233,28 +235,35 @@ const Deliverychallan = () => {
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Delivery Challan
-        </Typography>
+        {id ? (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Update Delivery Challan
+          </Typography>
+        ) : (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Create Delivery Challan
+          </Typography>
+        )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Customer</Typography>
               <Select
                 color="secondary"
-                options={
-                  Array.isArray(customer)
-                    ? [
-                        {
-                          value: 'customer',
-                          label: 'create new customer'
-                        },
-                        ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
-                      ]
-                    : []
-                }
+                // options={
+                //   Array.isArray(customer)
+                //     ? [
+                //         {
+                //           value: 'customer',
+                //           label: 'create new customer'
+                //         },
+                //         ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
+                //       ]
+                //     : []
+                // }
+                options={customer}
                 value={{ label: formData.customer }}
-                onChange={(selectedOption) => handleSelectChange(selectedOption)}
+                onChange={handleSelectChange}
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

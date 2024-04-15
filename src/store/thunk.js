@@ -804,7 +804,7 @@ export const updateQutation = (id, formData) => {
     } catch (error) {
       dispatch(updateQuotationfailure(error.message));
     }
-  }
+  };
 };
 
 export const updateExpense = (id, formData) => {
@@ -834,7 +834,7 @@ export const updateQuotationItem = (itemid, updateItemData) => {
     } catch (error) {
       dispatch(updateQuotationItemfailure(error.message));
     }
-  }
+  };
 };
 
 export const updateExpenseItem = (id, updateData) => {

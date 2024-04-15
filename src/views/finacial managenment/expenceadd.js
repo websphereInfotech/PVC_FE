@@ -12,7 +12,7 @@ import {
   Expenseview,
   createExpense,
   createExpenseItem,
-  deleteExpense,
+  // deleteExpense,
   fetchAllCustomers,
   updateExpense,
   updateExpenseItem
@@ -50,7 +50,7 @@ const AddExpense = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
   const [selectcustomer, setSelectcustomer] = useState([]);
-  const [idMapping, setIdMapping] = useState({});
+  // const [idMapping, setIdMapping] = useState({});
   const [formData, setFormData] = React.useState({
     voucherno: '',
     date: '',
@@ -77,7 +77,7 @@ const AddExpense = () => {
   };
 
   const handleDeleteRow = (srNo) => {
-    const id = idMapping[srNo];
+    // const id = idMapping[srNo];
 
     const updatedRows = rows.filter((row) => row.srNo !== srNo);
     // Update serial numbers after deletion
@@ -86,16 +86,18 @@ const AddExpense = () => {
       srNo: index + 1
     }));
     setRows(updatedRowsWithSerialNumbers);
-    console.log('id', id);
-    dispatch(deleteExpense(id));
+    // console.log('id', id);
+    // dispatch(deleteExpense(id));
   };
+
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'create new customer') {
+    if (selectedOption && selectedOption.value === 'new') {
       setIsDrawerOpen(true);
-      console.log(isDrawerOpen, 'open');
+      // console.log(isDrawerOpen, 'open');
     } else {
-      // console.log(selectcustomer, 'customers>???????????????');
-      setSelectcustomer(selectedOption.label);
+      console.log(setSelectcustomer, 'customers>???????????????');
+      // setSelectcustomer(selectedOption.label);
+      setFormData({ ...formData, customer: selectedOption.label });
       setIsDrawerOpen(false);
     }
   };
@@ -103,9 +105,10 @@ const AddExpense = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
-        if (Array.isArray(response)) {
-          setcustomer(response);
+        const customers = await dispatch(fetchAllCustomers());
+        if (Array.isArray(customers)) {
+          const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
+          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
           // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
         } else {
           console.error('fetchAllCustomers returned an unexpected response:', response);
@@ -117,19 +120,20 @@ const AddExpense = () => {
 
           const expenseItems = response.expenseItems;
           // console.log("res@@@@@@@@",response.expenseItems[1].id);
-          const updatedRows = expenseItems.map((item, index) => {
-            const rowId = index + 1;
-            const { id } = item;
-            setIdMapping((prevState) => ({ ...prevState, [rowId]: id }));
-            return {
-              // id: rowId,
-              srNo: rowId,
-              expensse: item.expensse,
-              description: item.description,
-              taxable: item.taxable,
-              mrp: item.mrp
-            };
-          });
+          const updatedRows = expenseItems.map((item, index) => ({
+            // const rowId = index + 1;
+            // const { id } = item;
+            // setIdMapping((prevState) => ({ ...prevState, [rowId]: id }));
+            // return {
+            // id: rowId,
+            // srNo: rowId,
+            srNo: index + 1,
+            expensse: item.expensse,
+            description: item.description,
+            taxable: item.taxable,
+            mrp: item.mrp
+            // };
+          }));
           // console.log('update', updatedRows);
           setRows(updatedRows);
         }
@@ -142,21 +146,21 @@ const AddExpense = () => {
   const handleSave = async () => {
     try {
       if (id) {
-        // console.log('id', id);
+        console.log('id', id);
         await dispatch(updateExpense(id, formData));
         // console.log('response', response);
 
         for (const row of rows) {
           const updateData = {
-            srNo: row.srNo,
+            serialno: row.srNo,
             expensse: row.expensse,
             description: row.description,
             taxable: row.taxable,
             mrp: row.mrp
           };
-          const id = row.id;
+          // const id = row.id;
 
-          // console.log("updateData$$$$$$",updateData);
+          console.log('updateData$$$$$$', updateData);
           dispatch(updateExpenseItem(id, updateData));
         }
       } else {
@@ -210,19 +214,20 @@ const AddExpense = () => {
               <Typography variant="subtitle1">Customer</Typography>
               <Select
                 color="secondary"
-                options={
-                  Array.isArray(customer)
-                    ? [
-                        {
-                          value: 'customer',
-                          label: 'create new customer'
-                        },
-                        ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
-                      ]
-                    : []
-                }
+                // options={
+                //   Array.isArray(customer)
+                //     ? [
+                //         {
+                //           value: 'customer',
+                //           label: 'create new customer'
+                //         },
+                //         ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
+                //       ]
+                //     : []
+                // }
+                options={customer}
                 value={{ label: formData.customer }}
-                onChange={(selectedOption) => handleSelectChange(selectedOption)}
+                onChange={handleSelectChange}
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

@@ -238,6 +238,7 @@ const AddPurchasePage = () => {
           // console.log("@@@@@@",updateItemData);
           const itemid = row.id;
           await dispatch(updatePurchaseItem(itemid, updateItemData));
+          navigate('/purchaselist');
         }
       } else {
         const purchaseData = {
