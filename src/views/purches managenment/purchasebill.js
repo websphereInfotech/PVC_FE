@@ -173,8 +173,8 @@ const Purchasebill = () => {
       };
       dispatch(createPurchaseBillItem(payload));
       console.log(payload);
-      alert('Purchase created successfully');
-      navigate('/purchaselist');
+      alert('Purchase bill created successfully');
+      navigate('/purchasebillList');
     } catch (error) {
       console.error('Error creating Purchase:', error);
     }

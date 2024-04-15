@@ -58,8 +58,8 @@ const PaymentListPage = () => {
 
   return (
     // <Container>
-    // <Card style={{ width: '100%', padding: '25px' }}>
-    <Card style={{ width: '100%', overflow: 'scroll' }}>
+    <Card style={{ width: '100%', padding: '25px' }}>
+      {/* <Card style={{ width: '100%' }}> */}
       <Typography variant="h4" align="center" id="mycss">
         Payment List
       </Typography>
@@ -71,20 +71,8 @@ const PaymentListPage = () => {
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} align={column.align}>
-                  {column.id === 'view' ? (
-                    <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
-                      View
-                    </Button>
-                  ) : column.id === 'edit' ? (
-                    <Button variant="outlined" color="secondary" onClick={() => handleUpdatePayment(payment?.id)}>
-                      Edit
-                    </Button>
-                  ) : column.id === 'paymentdate' ? (
-                    new Date(payment[column.id]).toLocaleDateString()
-                  ) : (
-                    payment[column.id]
-                  )}
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  {column.label}
                 </TableCell>
               ))}
             </TableRow>
@@ -94,9 +82,13 @@ const PaymentListPage = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePayment(payment?.id)}>
+                        Edit
                       </Button>
                     ) : column.id === 'paymentdate' ? (
                       new Date(payment[column.id]).toLocaleDateString()

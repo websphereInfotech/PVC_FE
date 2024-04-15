@@ -184,17 +184,16 @@ export const UPDATE_DILEVERYCHALLAN_SUCCESS = 'UPDATE_DILEVERYCHALLAN_SUCCESS';
 export const UPDATE_DILEVERYCHALLAN_FAILURE = 'UPDATE_DILEVERYCHALLAN_FAILURE';
 
 export const UPDATE_DILEVERYCHALLAN_ITEM_REQUEST = 'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST';
-export const UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS ='UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS';
-export const UPDATE_DILEVERYCHALLAN_ITEM_FAILURE ='UPDATE_DILEVERYCHALLAN_ITEM_FAILURE';
+export const UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS = 'UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS';
+export const UPDATE_DILEVERYCHALLAN_ITEM_FAILURE = 'UPDATE_DILEVERYCHALLAN_ITEM_FAILURE';
 
 export const DELETE_DILEVERYCHALLAN_ITEM_REQUEST = 'DELETE_DILEVERYCHALLAN_ITEM_REQUEST';
-export const DELETE_DILEVERYCHALLAN_ITEM_SUCCESS ='DELETE_DILEVERYCHALLAN_ITEM_SUCCESS';
-export const DELETE_DILEVERYCHALLAN_ITEM_FAILURE ='DELETE_DILEVERYCHALLAN_ITEM_FAILURE';
+export const DELETE_DILEVERYCHALLAN_ITEM_SUCCESS = 'DELETE_DILEVERYCHALLAN_ITEM_SUCCESS';
+export const DELETE_DILEVERYCHALLAN_ITEM_FAILURE = 'DELETE_DILEVERYCHALLAN_ITEM_FAILURE';
 
 export const DELETE_EXPENSE_ITEM_REQUEST = 'DELETE_EXPENSE_ITEM_REQUEST';
-export const DELETE_EXPENSE_ITEM_SUCCESS ='DELETE_EXPENSE_ITEM_SUCCESS';
-export const DELETE_EXPENSE_ITEM_FAILURE ='DELETE_EXPENSE_ITEM_FAILURE';
-
+export const DELETE_EXPENSE_ITEM_SUCCESS = 'DELETE_EXPENSE_ITEM_SUCCESS';
+export const DELETE_EXPENSE_ITEM_FAILURE = 'DELETE_EXPENSE_ITEM_FAILURE';
 
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
@@ -849,59 +848,59 @@ export const updatePaymentFailure = (error) => ({
 });
 
 export const updateDileverychallanRequest = (data) => ({
-  type :'UPDATE_DILEVERYCHALLAN_REQUEST',
-  payload:data
+  type: 'UPDATE_DILEVERYCHALLAN_REQUEST',
+  payload: data
 });
 
 export const updateDileverychallanSuccess = (data) => ({
-  type:'UPDATE_DILEVERYCHALLAN_SUCCESS',
-  payload:data
+  type: 'UPDATE_DILEVERYCHALLAN_SUCCESS',
+  payload: data
 });
 
 export const updateDileverychallanFailure = (error) => ({
-  type:'UPDATE_DILEVERYCHALLAN_FAILURE',
-  payload:error
+  type: 'UPDATE_DILEVERYCHALLAN_FAILURE',
+  payload: error
 });
 
 export const updateDileverychallanItemRequest = (data) => ({
-  type:'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST',
-  payload:data
+  type: 'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST',
+  payload: data
 });
 
 export const updateDileverychallanItemSuccess = (data) => ({
-  type:'UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS',
-  payload:data
+  type: 'UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS',
+  payload: data
 });
 
 export const updateDileverychallanItemFailure = (error) => ({
-  type:'UPDATE_DILEVERYCHALLAN_ITEM_FAILURE',
-  payload:error
+  type: 'UPDATE_DILEVERYCHALLAN_ITEM_FAILURE',
+  payload: error
 });
 export const deleteDileverychallanItemRequest = (data) => ({
-  type:'DELETE_DILEVERYCHALLAN_ITEM_REQUEST',
-  payload:data
+  type: 'DELETE_DILEVERYCHALLAN_ITEM_REQUEST',
+  payload: data
 });
 
 export const deleteDileverychallanItemSuccess = (data) => ({
-  type:'DELETE_DILEVERYCHALLAN_ITEM_SUCCESS',
-  payload:data
+  type: 'DELETE_DILEVERYCHALLAN_ITEM_SUCCESS',
+  payload: data
 });
 
 export const deleteDileverychallanItemFailure = (error) => ({
-  type:'DELETE_DILEVERYCHALLAN_ITEM_FAILURE',
-  payload:error
+  type: 'DELETE_DILEVERYCHALLAN_ITEM_FAILURE',
+  payload: error
 });
 export const deleteExpenseItemRequest = (data) => ({
-  type:'DELETE_EXPENSE_ITEM_REQUEST',
-  payload:data
+  type: 'DELETE_EXPENSE_ITEM_REQUEST',
+  payload: data
 });
 
 export const deleteExpenseItemSuccess = (data) => ({
-  type:'DELETE_EXPENSE_ITEM_SUCCESS',
-  payload:data
+  type: 'DELETE_EXPENSE_ITEM_SUCCESS',
+  payload: data
 });
 
 export const deleteExpenseItemFailure = (error) => ({
-  type:'DELETE_EXPENSE_ITEM_FAILURE',
-  payload:error
+  type: 'DELETE_EXPENSE_ITEM_FAILURE',
+  payload: error
 });

@@ -134,10 +134,10 @@ const PaymentPage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', justifyContent: 'end' }}>
-              <div>
+              {/* <div>
                 <p style={{ margin: '0px' }}>Amount Paid</p>
                 <h2 style={{ margin: '5px' }}>₹ 100.00</h2>
-              </div>
+              </div> */}
             </Grid>
           </Grid>
 
@@ -209,7 +209,12 @@ const PaymentPage = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Bill From To</Typography>
-              <input type="date" id="billtodate" value={formData.billtodate ? formData.billtodate.split('T')[0] : ''} />
+              <input
+                type="date"
+                id="billtodate"
+                value={formData.billtodate ? formData.billtodate.split('T')[0] : ''}
+                onChange={(e) => handleInputChange('billtodate', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <div style={{ display: 'flex', margin: '25px 0px' }}>
