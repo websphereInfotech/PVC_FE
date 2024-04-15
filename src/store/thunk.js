@@ -117,7 +117,13 @@ import {
   updatePurchaseItemsuccess,
   deletePurchaseItemRequest,
   deletePurchaseItemFailure,
-  deletePurchaseItemSuccess
+  deletePurchaseItemSuccess,
+  updateQuotationRequst,
+  updateQuotationsuccess,
+  updateQuotationfailure,
+  updateQuotationItemRequst,
+  updateQuotationItemsuccess,
+  updateQuotationItemfailure
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -748,6 +754,7 @@ export const updatePurchaseItem = (itemid, updateItemData) => {
     }
   };
 };
+
 export const deletePurchaseItem = (id) => {
   return async (dispatch) => {
     dispatch(deletePurchaseItemRequest());
@@ -759,6 +766,37 @@ export const deletePurchaseItem = (id) => {
       return deletePurchaseItemData;
     } catch (error) {
       dispatch(deletePurchaseItemFailure(error.message));
+      throw error;
+    }
+  };
+};
+
+export const updateQutation = (id, formData) => {
+  return async (dispatch) => {
+    dispatch(updateQuotationRequst());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotation/${id}`, formData, config);
+      const updateQuotationData = response;
+      dispatch(updateQuotationsuccess(updateQuotationData));
+      // console.log(updateQuotationData.data.data.id);
+      return updateQuotationData;
+    } catch (error) {
+      dispatch(updateQuotationfailure(error.message));
+      throw error;
+    }
+  };
+};
+
+export const updateQuotationItem = (itemid, updateItemData) => {
+  return async (dispatch) => {
+    dispatch(updateQuotationItemRequst());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotationItem/${itemid}`, updateItemData, config);
+      const updateQuotationItemData = response;
+      dispatch(updateQuotationItemsuccess(updateQuotationItemData));
+      return updateQuotationItemData;
+    } catch (error) {
+      dispatch(updateQuotationItemfailure(error.message));
       throw error;
     }
   };

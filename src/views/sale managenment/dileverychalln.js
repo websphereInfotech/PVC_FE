@@ -10,6 +10,7 @@ import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
 import { createDeliveryChallan, createDeliveryChallanItem } from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
+import { Link } from 'react-router-dom';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -388,20 +389,22 @@ const Deliverychallan = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
-                    marginRight: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px',
+                      marginRight: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
                 <button
                   style={{
                     width: '100px',
@@ -421,19 +424,21 @@ const Deliverychallan = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    style={{
+                      width: '100px',
+                      color: '#425466',
+                      padding: '8px',
+                      borderColor: '#425466',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      borderRadius: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button

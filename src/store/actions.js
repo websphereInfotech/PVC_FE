@@ -160,6 +160,14 @@ export const VIEW_PURCHASERETURN_REQUEST = 'VIEW_PURCHASERETURN_REQUEST';
 export const VIEW_PURCHASERETURN_SUCCESS = 'VIEW_PURCHASERETURN_SUCCESS';
 export const VIEW_PURCHASERETURN_FAILURE = 'VIEW_PURCHASEBILL_FAILURE';
 
+export const UPDATE_QUOTATION_REQUEST = 'UPDATE_QUOTATION_REQUEST';
+export const UPDATE_QUOTATION_SUCCESS = 'UPDATE_QUOTATION_SUCCESS';
+export const UPDATE_QUOTATION_FAILURE = 'UPDATE_QUOTATION_FAILURE';
+
+export const UPDATE_QUOTATIONITEM_REQUEST = 'UPDATE_QUOTATIONITEM_REQUEST';
+export const UPDATE_QUOTATIONITEM_SUCCESS = 'UPDATE_QUOTATIONITEM_SUCCESS';
+export const UPDATE_QUOTATIONITEM_FAILURE = 'UPDATE_QUOTATIONITEM_FAILURE';
+
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
 });
@@ -735,5 +743,35 @@ export const deletePurchaseItemSuccess = (data) => ({
 
 export const deletePurchaseItemFailure = (error) => ({
   type: 'DELETE_PURCHASE_ITEM_FAILURE',
+  payload: error
+});
+
+export const updateQuotationRequst = (data) => ({
+  type: 'UPDATE_QUOTATION_REQUEST',
+  payload: data
+});
+
+export const updateQuotationsuccess = (data) => ({
+  type: 'UPDATE_QUOTATION_SUCCESS',
+  payload: data
+});
+
+export const updateQuotationfailure = (error) => ({
+  type: 'UPDATE_QUOTATION_FAILURE',
+  payload: error
+});
+
+export const updateQuotationItemRequst = (data) => ({
+  type: 'UPDATE_QUOTATIONITEM_REQUEST',
+  payload: data
+});
+
+export const updateQuotationItemsuccess = (data) => ({
+  type: 'UPDATE_QUOTATIONITEM_SUCCESS',
+  payload: data
+});
+
+export const updateQuotationItemfailure = (error) => ({
+  type: 'UPDATE_QUOTATIONITEM_FAILURE',
   payload: error
 });

@@ -290,7 +290,7 @@ const PaymentPage = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentlist" style={{ textDecoration: 'none' }}>
                   <button
                     style={{
                       width: '100px',
@@ -325,7 +325,7 @@ const PaymentPage = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentlist" style={{ textDecoration: 'none' }}>
                   <button
                     style={{
                       width: '100px',

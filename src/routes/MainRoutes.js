@@ -107,6 +107,7 @@ const MainRoutes = {
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     { path: '/qutation', element: <Qutation /> },
+    { path: '/qutation/:id', element: <Qutation /> },
     { path: '/qutationlist', element: <Qutationlist /> },
     { path: '/qutationmain', element: <Quotationmain /> },
     { path: '/qutationview/:id', element: <Quotationviewpage /> },
@@ -124,7 +125,7 @@ const MainRoutes = {
     { path: '/salesreturn', element: <Salesreturn /> },
     { path: '/salesreturnmain', element: <Salesreturnmain /> },
 
-    // { path: '/addpurchase', element: <AddPurchasePage /> },
+    { path: '/addpurchase', element: <AddPurchasePage /> },
     { path: '/purchaselist', element: <PurchaseOrderList /> },
     { path: '/addpurchase/:id', element: <AddPurchasePage /> },
     // { path: '/purchasebill', element: <Purchasebill /> },

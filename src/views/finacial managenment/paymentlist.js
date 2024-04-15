@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Table, TableBody, TableRow, TableCell, Card, TablePagination } from '@mui/material';
+import { Typography, Button, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getallPayment, paymentview } from 'store/thunk';
@@ -34,7 +34,7 @@ const PaymentListPage = () => {
 
   const handleMakePayment = () => {
     navigate('/payment');
-    console.log('Payment made');
+    // console.log('Payment made');
   };
 
   const handleViewPayment = (id) => {
@@ -53,41 +53,45 @@ const PaymentListPage = () => {
 
   return (
     // <Container>
-    <Card style={{ width: '100%' }}>
+    <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Payment List
       </Typography>
       <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleMakePayment}>
         Make Payment
       </Button>
-      <Table>
-        <TableRow style={{ color: 'black', fontWeight: '0' }}>
-          {columns.map((column) => (
-            <TableCell key={column.id} variant="head" align={column.align} style={{ minWidth: column.minWidth }}>
-              {column.label}
-            </TableCell>
-          ))}
-        </TableRow>
-        <TableBody>
-          {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment) => (
-            <TableRow key={payment.id}>
+      <TableContainer>
+        <Table style={{ border: '1px solid lightgrey' }}>
+          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+            <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} align={column.align}>
-                  {column.id === 'action' ? (
-                    <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
-                      View
-                    </Button>
-                  ) : column.id === 'paymentdate' ? (
-                    new Date(payment[column.id]).toLocaleDateString()
-                  ) : (
-                    payment[column.id]
-                  )}
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  {column.label}
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment) => (
+              <TableRow key={payment.id}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.id === 'action' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
+                        View
+                      </Button>
+                    ) : column.id === 'paymentdate' ? (
+                      new Date(payment[column.id]).toLocaleDateString()
+                    ) : (
+                      payment[column.id]
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"

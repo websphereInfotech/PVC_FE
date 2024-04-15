@@ -71,7 +71,7 @@ export default function PurchaseBillList() {
         Create Purchase Bill
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
-        <Table style={{ borderLeft: '1px solid lightgrey' }}>
+        <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
