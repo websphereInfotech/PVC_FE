@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import { createDeliveryChallan, createDeliveryChallanItem, updateDileveryChallan, updateDileveryChallanItem } from 'store/thunk';
+import { createDeliveryChallan, createDeliveryChallanItem, deleteDileveryChallan, updateDileveryChallan, updateDileveryChallanItem } from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
 import { Link } from 'react-router-dom';
 // Custom styled input component
@@ -50,6 +50,7 @@ const Deliverychallan = () => {
   const [selectproduct, setSelectproduct] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [subtotal, setSubtotal] = useState(0);
+  const [idMapping, setIdMapping] = useState({});
   const [formData, setFormData] = useState({
     customer: '',
     mobileno: '',
@@ -57,26 +58,26 @@ const Deliverychallan = () => {
     challanno: '',
     email: ''
   });
+
   const handleAddRow = () => {
     const newRow = { srNo: (rows.length + 1).toString(), product: '', qty: '', rate: '', amount: '' };
     setRows([...rows, newRow]);
   };
+
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
-      // console.log("roe@@@@@@@@@@@@",value);
       if (row.srNo === srNo) {
-        // const newValue = parseFloat(value);
         return { ...row, [field]: value };
       }
       return row;
     });
 
     updatedRows.forEach((row) => {
-      const amount = row.qty * row.mrp; // Calculate amount for the current row only
+      const amount = row.qty * row.mrp;
       row.amount = Number.isNaN(amount) ? 0 : amount;
     });
 
@@ -86,6 +87,8 @@ const Deliverychallan = () => {
   };
 
   const handleDeleteRow = async (srNo) => {
+    const id = idMapping[srNo];
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@idMapping",idMapping)
     const deletedRow = rows.find((row) => row.srNo === srNo);
     if (!deletedRow) return;
 
@@ -101,24 +104,21 @@ const Deliverychallan = () => {
     setRows(updatedRowsWithSerialNumbers);
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
 
-    // console.log("id",id);
-    // dispatch(deleteDileveryChallan(id));
+    console.log('id', id);
+    dispatch(deleteDileveryChallan(id));
   };
 
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.value === 'new') {
       setIsDrawerOpen(true);
-      // console.log(isDrawerOpen, 'open');
     } else {
-      console.log(setSelectcustomer, 'customers>???????????????');
-      // setSelectcustomer(selectedOption.label);
+      console.log(setSelectcustomer);
       setFormData({ ...formData, customer: selectedOption.label });
       setIsDrawerOpen(false);
     }
   };
 
   const handleSelectproductChange = (selectedOption, srNo) => {
-    // console.log("selected>>>>>",selectedOption);
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'create new product') {
       setIsproductDrawerOpen(true);
@@ -142,34 +142,32 @@ const Deliverychallan = () => {
         if (Array.isArray(customers)) {
           const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
-          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
           setProduct(productResponse);
-          // console.log(productResponse, '????????????');
         }
         if (id) {
-          // console.log('id', id);
           const response = await dispatch(Deliverychallanview(id));
-          // console.log('@@@@@@@@@@@@@@@@@@@@@@ ');
-          // console.log('response', response);
-
           const { email, mobileno, date, challanno, customer } = response;
           setFormData({ email, mobileno, date, challanno, customer });
           const deliverychallanItems = response.deliverychallanItems;
-
-          const updatedRows = deliverychallanItems.map((item, index) => ({
-            id: item.id,
-            serialno: index + 1,
-            product: item.product,
-            description: item.description,
-            quotationno: item.quotationno,
-            batchno: item.batchno,
-            expirydate: item.expirydate,
-            qty: item.qty,
-            mrp: item.mrp
-          }));
+  
+          const updatedRows = deliverychallanItems.map((item, index) => {
+            const rowId = index + 1;
+            const { id } = item;
+            setIdMapping((prevState) => ({ ...prevState, [rowId]: id }));
+            return {
+              srNo: rowId,
+              product: item.product,
+              description: item.description,
+              quotationno: item.quotationno,
+              batchno: item.batchno,
+              expirydate: item.expirydate,
+              qty: item.qty,
+              mrp: item.mrp
+            };
+          });
           setRows(updatedRows);
         }
       } catch (error) {
@@ -184,6 +182,7 @@ const Deliverychallan = () => {
       if (id) {
         await dispatch(updateDileveryChallan(id, formData));
         // console.log("res",response);
+        // const id = idMapping[srNo];
         for (const row of rows) {
           const payload = {
             serialno: row.srNo,
@@ -195,7 +194,6 @@ const Deliverychallan = () => {
             qty: row.qty,
             mrp: row.mrp
           };
-          // console.log("pay",payload);
           const id = row.id;
           dispatch(updateDileveryChallanItem(id, payload));
           alert('Deliverychallan Updated successfully');
@@ -206,9 +204,7 @@ const Deliverychallan = () => {
           customer: selectcustomer
         };
         const Deliverychallan = await dispatch(createDeliveryChallan(ChallanData));
-        // console.log('data>>>>', Deliverychallan);
         const deliverychallanId = Deliverychallan.data.data.id;
-        // console.log("id",deliverychallanId);
         const payload = {
           deliverychallanId,
           items: rows.map((row) => ({
@@ -222,7 +218,6 @@ const Deliverychallan = () => {
             mrp: row.mrp
           }))
         };
-        // console.log(payload, 'payload????');
         dispatch(createDeliveryChallanItem(payload));
         alert('Deliverychallan created successfully');
       }
@@ -329,7 +324,7 @@ const Deliverychallan = () => {
                         <TableCell sx={{ padding: '5px' }}>
                           <input
                             placeholder="Sr.No."
-                            value={row.serialno}
+                            value={row.srNo}
                             readOnly
                             onChange={(e) => handleInputChange(row.srNo, 'serialno', e.target.value)}
                           />
@@ -381,7 +376,7 @@ const Deliverychallan = () => {
                           <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
                         </TableCell>
                         <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo, row.id)} />
+                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo)} />
                         </TableCell>
                       </TableRow>
                       <TableRow>

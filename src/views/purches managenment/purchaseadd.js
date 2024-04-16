@@ -69,35 +69,10 @@ const AddPurchasePage = () => {
     setRows([...rows, newRow]);
   };
 
-  // const handleInputChange = (srNo, field, value) => {
-  //   const updatedRows = rows.map((row) => {
-  //     if (row.srNo === srNo) {
-  //       const newValue = parseFloat(value);
-  //       return { ...row, [field]: newValue };
-  //     }
-  //     return row;
-  //   });
-
-  //   updatedRows.forEach((row) => {
-  //     const qty = parseFloat(row.qty);
-  //     const rate = parseFloat(row.rate);
-  //     const discount = parseFloat(row.discount);
-  //     const mrp = parseFloat(row.mrp);
-  //     console.log("qty",qty);
-  //     console.log("rate",rate);
-  //     console.log("dis",discount);
-  //     console.log("mrp",mrp);
-  //     const amount = qty * mrp * rate - discount; // Calculate the amount based on parsed values
-  //     row.amount = isNaN(amount) ? 0 : amount;
-  //   });
-  //   const newSubtotal = updatedRows.reduce((acc, row) => acc + row.amount, 0);
-  //   setSubtotal(Number.isNaN(newSubtotal) ? 0 : newSubtotal);
-  //   setRows(updatedRows);
-  // };
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
       if (row.srNo === srNo) {
-        return { ...row, [field]: value }; // Ensure value is a string
+        return { ...row, [field]: value };
       }
       return row;
     });
@@ -107,10 +82,9 @@ const AddPurchasePage = () => {
       const rate = parseFloat(row.rate);
       const discount = parseFloat(row.discount);
       const mrp = parseFloat(row.mrp);
-      const amount = qty * mrp * rate - discount; // Calculate the amount based on parsed values
+      const amount = qty * mrp * rate - discount;
       row.amount = isNaN(amount) ? 0 : amount;
     });
-    // console.log('rows', rows);
     const newSubtotal = updatedRows.reduce((acc, row) => acc + row.amount, 0);
     setSubtotal(Number.isNaN(newSubtotal) ? 0 : newSubtotal);
     setRows(updatedRows);
@@ -132,26 +106,20 @@ const AddPurchasePage = () => {
     setRows(updatedRowsWithSerialNumbers);
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
 
-    console.log('id', id);
-    const response = await dispatch(deletePurchaseItem(id));
-    console.log('response', response);
+    await dispatch(deletePurchaseItem(id));
   };
 
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.value === 'new') {
       setIsDrawerOpen(true);
-      // console.log(isDrawerOpen, 'open');
     } else {
-      console.log(setSelectcustomer, 'customers>???????????????');
-      // setSelectcustomer(selectedOption.label);
+      console.log(setSelectcustomer);
       setFormData({ ...formData, customer: selectedOption.label });
       setIsDrawerOpen(false);
     }
   };
 
   const handleSelectproductChange = (selectedOption, srNo) => {
-    // console.log('selected>>>>>', selectedOption);
-    // console.log(selectproduct,"@@@@@@@@@@@@@@");
     if (selectedOption && selectedOption.value === 'new') {
       setIsproductDrawerOpen(true);
     } else {
@@ -161,11 +129,8 @@ const AddPurchasePage = () => {
         }
         return row;
       });
-      // console.log('product',product);
-      // console.log('update', updatedRows);
       setRows(updatedRows);
       setSelectproduct(selectedOption.label);
-      // console.log('@@@@@@@@@', setSelectproduct);
       setIsproductDrawerOpen(false);
     }
   };
@@ -177,27 +142,22 @@ const AddPurchasePage = () => {
       try {
         const customers = await dispatch(fetchAllCustomers());
         if (Array.isArray(customers)) {
-          // setcustomer(customers);
           const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
-          // console.log(options, 'option>>>>>>>>>>>>>>>>>>>>>>>>>');
         }
         const products = await dispatch(fetchAllProducts());
         if (Array.isArray(products)) {
           // setProduct(productResponse);
           const options = products.map((product) => ({ value: product.id, label: product.productname }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
-          // console.log(options , 'option????????????');
         }
 
         if (id) {
           const response = await dispatch(purchaseview(id));
-          // console.log('response@@@@@@@@@@', response);
           const { customer, date, email, mobileno, quotation_no, quotationref, pono } = response;
           setFormData({ customer, date, email, mobileno, quotation_no, quotationref, pono });
 
           const purchaseItems = response.purchaseitems;
-          // console.log('pur&&&&&&&&&&&&', purchaseItems);
           const updatedRows = purchaseItems.map((item, index) => ({
             id: item.id,
             srNo: index + 1,
@@ -208,8 +168,6 @@ const AddPurchasePage = () => {
             mrp: item.mrp,
             amount: item.amount
           }));
-          // console.log("@@@@@@@@@@",rows);
-          // console.log("Mapped purchase items:", updatedRows);
 
           setRows(updatedRows);
         }
@@ -223,8 +181,8 @@ const AddPurchasePage = () => {
   const handlePurchase = async () => {
     try {
       if (id) {
-        const updateData = await dispatch(updatePurchase(id, formData));
-        console.log(updateData.data.data);
+        await dispatch(updatePurchase(id, formData));
+
         for (const row of rows) {
           const updateItemData = {
             date: formData.date,
@@ -235,9 +193,9 @@ const AddPurchasePage = () => {
             qty: row.qty,
             mrp: row.mrp
           };
-          // console.log("@@@@@@",updateItemData);
           const itemid = row.id;
           await dispatch(updatePurchaseItem(itemid, updateItemData));
+          alert('Purchase updated successfully');
           navigate('/purchaselist');
         }
       } else {
@@ -245,9 +203,7 @@ const AddPurchasePage = () => {
           customer: selectcustomer,
           ...formData
         };
-        // console.log('purchaseData@@@@@@@@@@', purchaseData);
         const createdPurchase = await dispatch(createPurchase(purchaseData));
-        // console.log('data>>>>', createdPurchase);
         const purchaseId = createdPurchase.data.data.id;
         const payload = {
           purchaseId,
@@ -261,7 +217,6 @@ const AddPurchasePage = () => {
           }))
         };
         dispatch(createPurchaseItem(payload));
-        // console.log(payload);
         alert('Purchase created successfully');
         navigate('/purchaselist');
       }
@@ -285,25 +240,7 @@ const AddPurchasePage = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
-          {/* {console.log(formData.customer,"***********")} */}
-          <Select
-            color="secondary"
-            // options={
-            //   Array.isArray(customer)
-            //     ? [
-            //         {
-            //           value: 'customer',
-            //           label: 'create new customer'
-            //         },
-            //         ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
-            //       ]
-            //     : []
-            // }
-            // onChange={(selectedOption) => handleSelectChange(selectedOption)}
-            options={customer}
-            value={{ label: formData.customer }}
-            onChange={handleSelectChange}
-          />
+          <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
         </Grid>
         <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         <Grid item xs={12} sm={6} md={3}>
@@ -385,25 +322,12 @@ const AddPurchasePage = () => {
                       />
                     </TableCell>
                     <TableCell sx={{ padding: '5px' }}>
-                      {/* {console.log(row.product, 'data>>>>>>>>>>>>>>>.product')} */}
                       <Select
                         color="secondary"
-                        // options={
-                        //   Array.isArray(product)
-                        //     ? [
-                        //         {
-                        //           value: 'product',
-                        //           label: 'create new product'
-                        //         },
-                        //         ...product.map((products) => ({ value: products.id, label: products.productname }))
-                        //       ]
-                        //     : []
-                        // }
                         placeholder="select Product"
                         onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                         options={product}
                         value={{ label: row.product }}
-                        // onChange={handleSelectproductChange}
                       />
                     </TableCell>
                     <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
