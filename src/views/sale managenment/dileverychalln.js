@@ -7,7 +7,13 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import { createDeliveryChallan, createDeliveryChallanItem, deleteDileveryChallan, updateDileveryChallan, updateDileveryChallanItem } from 'store/thunk';
+import {
+  createDeliveryChallan,
+  createDeliveryChallanItem,
+  deleteDileveryChallan,
+  updateDileveryChallan,
+  updateDileveryChallanItem
+} from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
 import { Link } from 'react-router-dom';
 // Custom styled input component
@@ -88,7 +94,7 @@ const Deliverychallan = () => {
 
   const handleDeleteRow = async (srNo) => {
     const id = idMapping[srNo];
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@idMapping",idMapping)
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@idMapping', idMapping);
     const deletedRow = rows.find((row) => row.srNo === srNo);
     if (!deletedRow) return;
 
@@ -152,7 +158,7 @@ const Deliverychallan = () => {
           const { email, mobileno, date, challanno, customer } = response;
           setFormData({ email, mobileno, date, challanno, customer });
           const deliverychallanItems = response.deliverychallanItems;
-  
+
           const updatedRows = deliverychallanItems.map((item, index) => {
             const rowId = index + 1;
             const { id } = item;

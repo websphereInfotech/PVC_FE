@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 
 const columns = [
   { id: 'date', label: 'Date', minWidth: 170, align: 'center' },
-  { id: 'challanno', label: 'Challan No', minWidth: 170 },
+  { id: 'challanno', label: 'Challan No', minWidth: 170, align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100 },

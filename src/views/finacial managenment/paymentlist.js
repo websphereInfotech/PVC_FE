@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { getallPayment, paymentview } from 'store/thunk';
 
 const columns = [
-  { id: 'id', label: 'ID' },
+  { id: 'id', label: 'ID', align: 'center' },
   { id: 'voucherno', label: 'Vendor', align: 'center' },
   { id: 'paymentdate', label: 'Date', align: 'center' },
   { id: 'billno', label: 'Invoice No.', align: 'center' },
