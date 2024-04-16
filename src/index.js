@@ -15,7 +15,8 @@ import reducer from 'store/reducer';
 import * as serviceWorker from 'serviceWorker';
 
 const store = configureStore({ reducer });
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const root = createRoot(document.getElementById('root'));
 
 // ==============================|| MAIN - REACT DOM RENDER  ||==============
@@ -24,6 +25,7 @@ root.render(
   <Provider store={store}>
     <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
       <App />
+      <ToastContainer />
     </BrowserRouter>
   </Provider>
 );

@@ -57,26 +57,26 @@ const Deliverychallan = () => {
     challanno: '',
     email: ''
   });
+
   const handleAddRow = () => {
     const newRow = { srNo: (rows.length + 1).toString(), product: '', qty: '', rate: '', amount: '' };
     setRows([...rows, newRow]);
   };
+
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
-      // console.log("roe@@@@@@@@@@@@",value);
       if (row.srNo === srNo) {
-        // const newValue = parseFloat(value);
         return { ...row, [field]: value };
       }
       return row;
     });
 
     updatedRows.forEach((row) => {
-      const amount = row.qty * row.mrp; // Calculate amount for the current row only
+      const amount = row.qty * row.mrp;
       row.amount = Number.isNaN(amount) ? 0 : amount;
     });
 
@@ -100,25 +100,19 @@ const Deliverychallan = () => {
 
     setRows(updatedRowsWithSerialNumbers);
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-
-    // console.log("id",id);
-    // dispatch(deleteDileveryChallan(id));
   };
 
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.value === 'new') {
       setIsDrawerOpen(true);
-      // console.log(isDrawerOpen, 'open');
     } else {
-      console.log(setSelectcustomer, 'customers>???????????????');
-      // setSelectcustomer(selectedOption.label);
+      console.log(setSelectcustomer);
       setFormData({ ...formData, customer: selectedOption.label });
       setIsDrawerOpen(false);
     }
   };
 
   const handleSelectproductChange = (selectedOption, srNo) => {
-    // console.log("selected>>>>>",selectedOption);
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'create new product') {
       setIsproductDrawerOpen(true);
@@ -142,18 +136,13 @@ const Deliverychallan = () => {
         if (Array.isArray(customers)) {
           const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
-          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
           setProduct(productResponse);
-          // console.log(productResponse, '????????????');
         }
         if (id) {
-          // console.log('id', id);
           const response = await dispatch(Deliverychallanview(id));
-          // console.log('@@@@@@@@@@@@@@@@@@@@@@ ');
-          // console.log('response', response);
 
           const { email, mobileno, date, challanno, customer } = response;
           setFormData({ email, mobileno, date, challanno, customer });
@@ -183,7 +172,6 @@ const Deliverychallan = () => {
     try {
       if (id) {
         await dispatch(updateDileveryChallan(id, formData));
-        // console.log("res",response);
         for (const row of rows) {
           const payload = {
             serialno: row.srNo,
@@ -195,7 +183,6 @@ const Deliverychallan = () => {
             qty: row.qty,
             mrp: row.mrp
           };
-          // console.log("pay",payload);
           const id = row.id;
           dispatch(updateDileveryChallanItem(id, payload));
           alert('Deliverychallan Updated successfully');
@@ -206,9 +193,7 @@ const Deliverychallan = () => {
           customer: selectcustomer
         };
         const Deliverychallan = await dispatch(createDeliveryChallan(ChallanData));
-        // console.log('data>>>>', Deliverychallan);
         const deliverychallanId = Deliverychallan.data.data.id;
-        // console.log("id",deliverychallanId);
         const payload = {
           deliverychallanId,
           items: rows.map((row) => ({
@@ -222,7 +207,6 @@ const Deliverychallan = () => {
             mrp: row.mrp
           }))
         };
-        // console.log(payload, 'payload????');
         dispatch(createDeliveryChallanItem(payload));
         alert('Deliverychallan created successfully');
       }

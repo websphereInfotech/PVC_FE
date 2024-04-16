@@ -6,9 +6,9 @@ import {
   Box,
   Button,
   FormHelperText,
-  Grid,
+  // Grid,
   TextField,
-  Typography,
+  // Typography,
   FormControl,
   InputLabel,
   OutlinedInput,
@@ -26,7 +26,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { loginAdmin } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-// import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from '@mui/icons-material/Email';
 // import Google from 'assets/images/social-google.svg';
 
 // ==============================|| FIREBASE LOGIN ||============================== //
@@ -57,13 +57,9 @@ const FirebaseLogin = ({ ...rest }) => {
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={(values, { setSubmitting }) => {
-          dispatch(loginAdmin(values))
-            .then((status) => {
+          dispatch(loginAdmin(values, navigate))
+            .then(() => {
               setSubmitting(false);
-              if (status === 'true') {
-                navigate('/dashboard');
-              }
-              // console.log("status",status);
             })
             .catch(() => {
               setSubmitting(false);
@@ -85,13 +81,15 @@ const FirebaseLogin = ({ ...rest }) => {
               value={values.email}
               variant="outlined"
               color="secondary"
-              // InputProps={{
-              //   startAdornment: (
-              //     <InputAdornment position="start">
-              //       <EmailIcon color="action" />
-              //     </InputAdornment>
-              //   )
-              // }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton aria-label="toggle password visibility" edge="end" size="large">
+                      <EmailIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ mt: theme.spacing(3), mb: theme.spacing(1) }}>
@@ -128,13 +126,6 @@ const FirebaseLogin = ({ ...rest }) => {
                 </FormHelperText>
               )}
             </FormControl>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none' }}>
-                  Forgot Password?
-                </Typography>
-              </Grid>
-            </Grid>
 
             {errors.submit && (
               <Box mt={3}>

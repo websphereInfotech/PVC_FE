@@ -101,16 +101,14 @@ const Qutation = () => {
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
-      console.log(isDrawerOpen, 'open');
     } else {
-      console.log(setSelectcustomer, 'customers>???????????????');
+      console.log(setSelectcustomer);
       setFormData({ ...formData, customer: selectedOption.label });
       setIsDrawerOpen(false);
     }
   };
 
   const handleSelectproductChange = (selectedOption, srNo) => {
-    // console.log("selected>>>>>",selectedOption);
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'Create New Product') {
       setIsproductDrawerOpen(true);
@@ -135,25 +133,21 @@ const Qutation = () => {
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.shortname }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
-          // console.log(response, 'customer>>>>>>>>>>>>>>>>>>>>>>>>>>');
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({ value: product.id, label: product.productname }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
-          // console.log(productResponse, '????????????');
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
 
         if (id) {
           const response = await dispatch(Quotationview(id));
-          // console.log('response@@@@@@@@@@', response);
           const { customer, date, email, mobileno, quotation_no, validtill } = response;
           setFormData({ customer, date, email, mobileno, quotation_no, validtill });
 
           const quotationItems = response.quotationItems;
-          // console.log('pur&&&&&&&&&&&&', purchaseItems);
           const updatedRows = quotationItems.map((item) => ({
             id: item.id,
             srNo: item.srNo,
@@ -162,8 +156,6 @@ const Qutation = () => {
             rate: item.rate,
             mrp: item.mrp
           }));
-          // console.log("@@@@@@@@@@",rows);
-          // console.log("Mapped purchase items:", updatedRows);
 
           setRows(updatedRows);
         }
@@ -177,8 +169,7 @@ const Qutation = () => {
   const handleCreateQuotation = async () => {
     try {
       if (id) {
-        const updateData = await dispatch(updateQutation(id, formData));
-        console.log(updateData.data.data);
+        await dispatch(updateQutation(id, formData));
         for (const row of rows) {
           const updateItemData = {
             srNo: row.srNo,
@@ -187,7 +178,6 @@ const Qutation = () => {
             qty: row.qty,
             mrp: row.mrp
           };
-          console.log('@@@@@@', rows);
           const itemid = row.id;
           await dispatch(updateQuotationItem(itemid, updateItemData));
         }
@@ -199,7 +189,6 @@ const Qutation = () => {
           ...formData
         };
         const createdQuotation = await dispatch(createQuotation(quotationData));
-        // console.log('data>>>>', quotationData);
         const quotationId = createdQuotation.id;
         const payload = {
           quotationId,
@@ -212,7 +201,6 @@ const Qutation = () => {
           }))
         };
         dispatch(createQuotationItem(payload));
-        // console.log(payload);
         alert('Quotation created successfully');
         navigate('/qutationlist');
       }
