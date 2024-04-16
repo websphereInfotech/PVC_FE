@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import { createDeliveryChallan, createDeliveryChallanItem, updateDileveryChallan, updateDileveryChallanItem } from 'store/thunk';
+import { createDeliveryChallan, createDeliveryChallanItem, deleteDileveryChallan, updateDileveryChallan, updateDileveryChallanItem } from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
 import { Link } from 'react-router-dom';
 // Custom styled input component
@@ -50,6 +50,7 @@ const Deliverychallan = () => {
   const [selectproduct, setSelectproduct] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [subtotal, setSubtotal] = useState(0);
+  const [idMapping, setIdMapping] = useState({});
   const [formData, setFormData] = useState({
     customer: '',
     mobileno: '',
@@ -86,6 +87,8 @@ const Deliverychallan = () => {
   };
 
   const handleDeleteRow = async (srNo) => {
+    const id = idMapping[srNo];
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@idMapping",idMapping)
     const deletedRow = rows.find((row) => row.srNo === srNo);
     if (!deletedRow) return;
 
@@ -101,8 +104,8 @@ const Deliverychallan = () => {
     setRows(updatedRowsWithSerialNumbers);
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
 
-    // console.log("id",id);
-    // dispatch(deleteDileveryChallan(id));
+    console.log('id', id);
+    dispatch(deleteDileveryChallan(id));
   };
 
   const handleSelectChange = (selectedOption) => {
@@ -150,24 +153,25 @@ const Deliverychallan = () => {
         if (id) {
           // console.log('id', id);
           const response = await dispatch(Deliverychallanview(id));
-          // console.log('@@@@@@@@@@@@@@@@@@@@@@ ');
-          // console.log('response', response);
-
           const { email, mobileno, date, challanno, customer } = response;
           setFormData({ email, mobileno, date, challanno, customer });
           const deliverychallanItems = response.deliverychallanItems;
-
-          const updatedRows = deliverychallanItems.map((item, index) => ({
-            id: item.id,
-            serialno: index + 1,
-            product: item.product,
-            description: item.description,
-            quotationno: item.quotationno,
-            batchno: item.batchno,
-            expirydate: item.expirydate,
-            qty: item.qty,
-            mrp: item.mrp
-          }));
+  
+          const updatedRows = deliverychallanItems.map((item, index) => {
+            const rowId = index + 1;
+            const { id } = item;
+            setIdMapping((prevState) => ({ ...prevState, [rowId]: id }));
+            return {
+              srNo: rowId,
+              product: item.product,
+              description: item.description,
+              quotationno: item.quotationno,
+              batchno: item.batchno,
+              expirydate: item.expirydate,
+              qty: item.qty,
+              mrp: item.mrp
+            };
+          });
           setRows(updatedRows);
         }
       } catch (error) {
@@ -182,6 +186,7 @@ const Deliverychallan = () => {
       if (id) {
         await dispatch(updateDileveryChallan(id, formData));
         // console.log("res",response);
+        // const id = idMapping[srNo];
         for (const row of rows) {
           const payload = {
             serialno: row.srNo,
@@ -320,7 +325,7 @@ const Deliverychallan = () => {
                         <TableCell sx={{ padding: '5px' }}>
                           <input
                             placeholder="Sr.No."
-                            value={row.serialno}
+                            value={row.srNo}
                             readOnly
                             onChange={(e) => handleInputChange(row.srNo, 'serialno', e.target.value)}
                           />
@@ -372,7 +377,7 @@ const Deliverychallan = () => {
                           <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
                         </TableCell>
                         <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo, row.id)} />
+                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo)} />
                         </TableCell>
                       </TableRow>
                       <TableRow>

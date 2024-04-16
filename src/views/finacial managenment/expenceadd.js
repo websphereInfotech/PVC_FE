@@ -86,7 +86,7 @@ const AddExpense = () => {
       srNo: index + 1
     }));
     setRows(updatedRowsWithSerialNumbers);
-    console.log('id', id);
+    // console.log('id', id);
     dispatch(deleteExpense(id));
   };
   const handleSelectChange = (selectedOption) => {
