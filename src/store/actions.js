@@ -761,4 +761,5 @@ export const viewPurchasereturnSuccess = (data) => ({
 });
 export const viewPurchasereturnFailure = (error) => ({
   type: 'VIEW_PURCHASERETURN_FAILURE',
+  payload: error
 });
