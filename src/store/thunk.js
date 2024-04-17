@@ -180,6 +180,7 @@ export const loginAdmin = (credentials, navigate) => {
       const userData = response.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
         onClose: () => {
           navigate('/dashboard');
         }
@@ -188,7 +189,7 @@ export const loginAdmin = (credentials, navigate) => {
       return userData.status;
     } catch (error) {
       dispatch(loginFailure(error.message));
-      toast.error(error.response.data.error);
+      toast.error(error.response.data.error, { autoClose: 1000 });
     }
   };
 };

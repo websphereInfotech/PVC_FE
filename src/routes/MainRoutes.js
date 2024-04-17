@@ -80,7 +80,7 @@ const Stockmain = Loadable(lazy(() => import('../views/stock managenment/stockma
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
-const AddUserForm = Loadable(lazy(() => import('../views/usermanagenment')));
+const AddUserForm = Loadable(lazy(() => import('../views/permission managenment/permission')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
@@ -96,7 +96,6 @@ const MainRoutes = {
       path: '/dashboard',
       element: <DashboardDefault />
     },
-
     { path: '/profile', element: <SamplePage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of paymentss +++++++++++++++++++++++++++++++++++++++++++++++++++

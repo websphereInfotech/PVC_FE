@@ -82,16 +82,9 @@ export default {
           type: 'collapse',
           icon: icons['SecurityOutlinedIcon'],
           children: [
-            // {
-            //   id: 'login-1',
-            //   title: 'Login',
-            //   type: 'item',
-            //   url: '/application/login'
-            //   // target: true
-            // },
             {
-              id: 'user',
-              title: 'user managenment',
+              id: 'permission',
+              title: 'permission',
               type: 'item',
               url: '/adduser'
               // target: true
