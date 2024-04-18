@@ -159,7 +159,11 @@ import {
   getAllPurchasereturnFailure,
   viewPurchasereturnRequest,
   viewPurchasereturnSuccess,
-  viewPurchasereturnFailure
+  viewPurchasereturnFailure,
+  // PERMISSION ++++++++++++++++++++++
+  getAllPermissionsRequest,
+  getAllPermissionsSuccess,
+  getAllPermissionsFailure
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -865,6 +869,21 @@ export const PurchaseReturnview = (id) => {
       return data;
     } catch (error) {
       dispatch(viewPurchasereturnFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PERMISSION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallPermissions = () => {
+  return async (dispatch) => {
+    dispatch(getAllPermissionsRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
+      const getallPermission = response.data.data;
+      dispatch(getAllPermissionsSuccess(getallPermission));
+      return getallPermission;
+    } catch (error) {
+      dispatch(getAllPermissionsFailure(error.message));
     }
   };
 };

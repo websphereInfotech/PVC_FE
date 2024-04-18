@@ -86,7 +86,7 @@ export default {
               id: 'permission',
               title: 'permission',
               type: 'item',
-              url: '/adduser'
+              url: '/permission'
               // target: true
             }
           ]

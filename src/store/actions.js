@@ -170,6 +170,11 @@ export const VIEW_PURCHASERETURN_REQUEST = 'VIEW_PURCHASERETURN_REQUEST';
 export const VIEW_PURCHASERETURN_SUCCESS = 'VIEW_PURCHASERETURN_SUCCESS';
 export const VIEW_PURCHASERETURN_FAILURE = 'VIEW_PURCHASEBILL_FAILURE';
 
+// #################################################################### PERMISSIONS ###################################################################
+export const FETCH_ALL_PERMISSIONS_REQUEST = 'FETCH_ALL_PERMISSIONS_REQUEST';
+export const FETCH_ALL_PERMISSIONS_SUCCESS = 'FETCH_ALL_PERMISSIONS_SUCCESS';
+export const FETCH_ALL_PERMISSIONS_FAILURE = 'FETCH_ALL_PERMISSIONS_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -761,5 +766,18 @@ export const viewPurchasereturnSuccess = (data) => ({
 });
 export const viewPurchasereturnFailure = (error) => ({
   type: 'VIEW_PURCHASERETURN_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PERMISSIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getAllPermissionsRequest = (data) => ({
+  type: 'FETCH_ALL_PERMISSIONS_REQUEST',
+  payload: data
+});
+export const getAllPermissionsSuccess = (data) => ({
+  type: 'FETCH_ALL_PERMISSIONS_SUCCESS',
+  payload: data
+});
+export const getAllPermissionsFailure = (error) => ({
+  type: 'FETCH_ALL_PERMISSIONS_FAILURE',
   payload: error
 });

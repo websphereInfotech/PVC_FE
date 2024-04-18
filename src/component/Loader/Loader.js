@@ -2,18 +2,15 @@ import React from 'react';
 
 // material-ui
 import { styled } from '@mui/material/styles';
-import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // loader style
-const LoaderWrapper = styled('div')(({ theme }) => ({
+const LoaderWrapper = styled('div')(() => ({
   position: 'fixed',
-  top: 0,
-  left: 0,
-  zIndex: 2001,
-  width: '100%',
-  '& > * + *': {
-    marginTop: theme.spacing(2)
-  }
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 2001
 }));
 
 // ==============================|| LOADER ||============================== //
@@ -21,7 +18,7 @@ const LoaderWrapper = styled('div')(({ theme }) => ({
 const Loader = () => {
   return (
     <LoaderWrapper>
-      <LinearProgress color="secondary" />
+      <CircularProgress color="secondary" />
     </LoaderWrapper>
   );
 };
