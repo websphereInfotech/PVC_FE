@@ -134,11 +134,14 @@ import { Card, Grid, Checkbox } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useDispatch } from 'react-redux';
-import { getallPermissions } from 'store/thunk';
+import { getallPermissions, updatePermission } from 'store/thunk';
 
 export default function CollapsibleTable() {
   const [openRows, setOpenRows] = React.useState([]);
   const [permissions, setPermissions] = React.useState([]);
+  const [selectedUserRole, setSelectedUserRole] = React.useState(null);
+  const [checkbox, setCheckbox] = React.useState(true);
+
   const dispatch = useDispatch();
 
   // api call of get all permission
@@ -155,7 +158,8 @@ export default function CollapsibleTable() {
   }, [dispatch]);
 
   // open dropdown of row
-  const toggleRow = (index) => {
+
+  const toggleRow = (index, userRole) => {
     setOpenRows((prevOpenRows) => {
       const isOpen = prevOpenRows.includes(index);
       if (isOpen) {
@@ -164,6 +168,7 @@ export default function CollapsibleTable() {
         return [...prevOpenRows, index];
       }
     });
+    setSelectedUserRole(userRole);
   };
   // remove underscode and capital frist letter for show permission name
   const formatPermissionName = (permissionName) => {
@@ -171,6 +176,30 @@ export default function CollapsibleTable() {
     return words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
+  const handleCheckboxChange = async (permissionId) => {
+    try {
+      setCheckbox((prevCheckbox) => !prevCheckbox);
+      console.log(permissionId, 'permissionId');
+      console.log(checkbox, 'checkbox');
+      const updatedPermissions = [
+        {
+          id: permissionId,
+          permissionValue: checkbox
+        }
+      ];
+      console.log(updatedPermissions, 'DATA>>>>>>>>>>>>>>>>>>>>>>>');
+      const data = {
+        userRole: selectedUserRole,
+        permissions: updatedPermissions
+      };
+      setCheckbox(updatedPermissions[0].permissionValue);
+      console.log(data, 'data');
+      const updatedata = await dispatch(updatePermission(data));
+      console.log(updatedata, 'update data');
+    } catch (error) {
+      console.error('Error updating permissions:', error);
+    }
+  };
   return (
     <Card style={{ height: 'auto' }}>
       <TableContainer style={{ padding: '20px' }}>
@@ -179,11 +208,11 @@ export default function CollapsibleTable() {
         </Typography>
         <Table>
           <TableBody>
-            {permissions.map((permission, index) => (
+            {permissions?.map((permission, index) => (
               <React.Fragment key={index}>
                 <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                   <TableCell width={'16px'}>
-                    <IconButton aria-label="expand row" size="small" onClick={() => toggleRow(index)}>
+                    <IconButton aria-label="expand row" size="small" onClick={() => toggleRow(index, permission.role)}>
                       {openRows.includes(index) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                   </TableCell>
@@ -195,18 +224,30 @@ export default function CollapsibleTable() {
                       <Box sx={{ margin: 1 }}>
                         <Grid container spacing={2}>
                           {permission.permissions?.map((pre, index) => (
-                            <Grid item xs={12} sm={3} key={index}>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={3}
+                              key={index}
+                              sx={{
+                                borderRight: '1px solid lightgrey',
+                                borderBottom: '1px solid lightgrey',
+                                borderLeft: '1px solid lightgrey',
+                                borderTop: '1px solid lightgrey'
+                              }}
+                            >
                               <Box>
+                                {/* {index} */}
                                 <Typography variant="h5">{pre.resource}</Typography>
                                 <Table size="small" aria-label="permissions">
                                   <TableBody>
                                     {pre.permissions?.map((p, i) => (
-                                      <TableRow key={i} sx={{ display: 'flex' }}>
-                                        <Typography width={'230px'} sx={{ display: 'flex', alignItems: 'center' }}>
+                                      <TableRow key={i} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                                           {formatPermissionName(p.permission)}
                                         </Typography>
                                         <Typography>
-                                          <Checkbox checked={p.permissionValue} />
+                                          <Checkbox checked={p.permissionValue === true} onClick={() => handleCheckboxChange(p.id)} />
                                         </Typography>
                                       </TableRow>
                                     ))}

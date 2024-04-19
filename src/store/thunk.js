@@ -163,7 +163,10 @@ import {
   // PERMISSION ++++++++++++++++++++++
   getAllPermissionsRequest,
   getAllPermissionsSuccess,
-  getAllPermissionsFailure
+  getAllPermissionsFailure,
+  updatePermissionsRequest,
+  updatePermissionsSuccess,
+  updatePermissionsFailure
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -884,6 +887,20 @@ export const getallPermissions = () => {
       return getallPermission;
     } catch (error) {
       dispatch(getAllPermissionsFailure(error.message));
+    }
+  };
+};
+export const updatePermission = (data) => {
+  return async (dispatch) => {
+    dispatch(updatePermissionsRequest());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data);
+      const updatePermissionData = response.data;
+      dispatch(updatePermissionsSuccess(updatePermissionData));
+      return updatePermissionData;
+    } catch (error) {
+      dispatch(updatePermissionsFailure(error.message));
+      throw error;
     }
   };
 };
