@@ -140,7 +140,7 @@ export default function CollapsibleTable() {
   const [openRows, setOpenRows] = React.useState([]);
   const [permissions, setPermissions] = React.useState([]);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
-  const [checkbox, setCheckbox] = React.useState(true);
+  // const [checkbox, setCheckbox] = React.useState();
 
   const dispatch = useDispatch();
 
@@ -158,7 +158,6 @@ export default function CollapsibleTable() {
   }, [dispatch]);
 
   // open dropdown of row
-
   const toggleRow = (index, userRole) => {
     setOpenRows((prevOpenRows) => {
       const isOpen = prevOpenRows.includes(index);
@@ -170,29 +169,30 @@ export default function CollapsibleTable() {
     });
     setSelectedUserRole(userRole);
   };
+
   // remove underscode and capital frist letter for show permission name
   const formatPermissionName = (permissionName) => {
     const words = permissionName.split('_');
     return words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
-  const handleCheckboxChange = async (permissionId) => {
+  const handleCheckboxChange = async (permissionId, permissionValue) => {
     try {
-      setCheckbox((prevCheckbox) => !prevCheckbox);
-      console.log(permissionId, 'permissionId');
-      console.log(checkbox, 'checkbox');
+      console.log(permissionValue, 'permissionId');
+      // console.log(checkbox, 'checkbox');
       const updatedPermissions = [
         {
           id: permissionId,
-          permissionValue: checkbox
+          permissionValue: !permissionValue
         }
       ];
-      console.log(updatedPermissions, 'DATA>>>>>>>>>>>>>>>>>>>>>>>');
+      console.log(updatedPermissions[0].permissionValue, 'DATA>>>>>>>>>>>value>>>>>>>>>>>>');
+      // setCheckbox(updatedPermissions[0].permissionValue);
       const data = {
         userRole: selectedUserRole,
         permissions: updatedPermissions
       };
-      setCheckbox(updatedPermissions[0].permissionValue);
+      // setCheckbox(updatedPermissions[0].permissionValue);
       console.log(data, 'data');
       const updatedata = await dispatch(updatePermission(data));
       console.log(updatedata, 'update data');
@@ -212,7 +212,11 @@ export default function CollapsibleTable() {
               <React.Fragment key={index}>
                 <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                   <TableCell width={'16px'}>
-                    <IconButton aria-label="expand row" size="small" onClick={() => toggleRow(index, permission.role)}>
+                    <IconButton
+                      aria-label="expand row"
+                      size="small"
+                      onClick={() => toggleRow(index, permission.role, permission.permissionValue)}
+                    >
                       {openRows.includes(index) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                   </TableCell>
@@ -237,7 +241,6 @@ export default function CollapsibleTable() {
                               }}
                             >
                               <Box>
-                                {/* {index} */}
                                 <Typography variant="h5">{pre.resource}</Typography>
                                 <Table size="small" aria-label="permissions">
                                   <TableBody>
@@ -247,7 +250,10 @@ export default function CollapsibleTable() {
                                           {formatPermissionName(p.permission)}
                                         </Typography>
                                         <Typography>
-                                          <Checkbox checked={p.permissionValue === true} onClick={() => handleCheckboxChange(p.id)} />
+                                          <Checkbox
+                                            defaultChecked={p.permissionValue}
+                                            onChange={() => handleCheckboxChange(p.id, p.permissionValue)}
+                                          />
                                         </Typography>
                                       </TableRow>
                                     ))}
