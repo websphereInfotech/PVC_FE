@@ -80,7 +80,7 @@ const Stockmain = Loadable(lazy(() => import('../views/stock managenment/stockma
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
-const AddUserForm = Loadable(lazy(() => import('../views/permission managenment/permission')));
+const Permission = Loadable(lazy(() => import('../views/permission managenment/permission')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
@@ -168,7 +168,7 @@ const MainRoutes = {
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
-    { path: '/adduser', element: <AddUserForm /> },
+    { path: '/permission', element: <Permission /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },

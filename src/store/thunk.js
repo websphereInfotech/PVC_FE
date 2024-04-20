@@ -159,7 +159,14 @@ import {
   getAllPurchasereturnFailure,
   viewPurchasereturnRequest,
   viewPurchasereturnSuccess,
-  viewPurchasereturnFailure
+  viewPurchasereturnFailure,
+  // PERMISSION ++++++++++++++++++++++
+  getAllPermissionsRequest,
+  getAllPermissionsSuccess,
+  getAllPermissionsFailure,
+  updatePermissionsRequest,
+  updatePermissionsSuccess,
+  updatePermissionsFailure
 } from './actions';
 
 const token = sessionStorage.getItem('token');
@@ -865,6 +872,35 @@ export const PurchaseReturnview = (id) => {
       return data;
     } catch (error) {
       dispatch(viewPurchasereturnFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PERMISSION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallPermissions = () => {
+  return async (dispatch) => {
+    dispatch(getAllPermissionsRequest());
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
+      const getallPermission = response.data.data;
+      dispatch(getAllPermissionsSuccess(getallPermission));
+      return getallPermission;
+    } catch (error) {
+      dispatch(getAllPermissionsFailure(error.message));
+    }
+  };
+};
+export const updatePermission = (data) => {
+  return async (dispatch) => {
+    dispatch(updatePermissionsRequest());
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data);
+      const updatePermissionData = response.data;
+      dispatch(updatePermissionsSuccess(updatePermissionData));
+      return updatePermissionData;
+    } catch (error) {
+      dispatch(updatePermissionsFailure(error.message));
+      throw error;
     }
   };
 };
