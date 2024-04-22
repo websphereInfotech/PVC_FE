@@ -895,7 +895,7 @@ export const updatePermission = (data) => {
     dispatch(updatePermissionsRequest());
     try {
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data);
-      const updatePermissionData = response.data;
+      const updatePermissionData = response.data.data;
       dispatch(updatePermissionsSuccess(updatePermissionData));
       return updatePermissionData;
     } catch (error) {

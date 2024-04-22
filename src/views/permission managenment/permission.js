@@ -120,7 +120,6 @@
 //   );
 // }
 import * as React from 'react';
-// import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -140,16 +139,27 @@ export default function CollapsibleTable() {
   const [openRows, setOpenRows] = React.useState([]);
   const [permissions, setPermissions] = React.useState([]);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
-  // const [checkbox, setCheckbox] = React.useState();
+  const [checkbox, setCheckbox] = React.useState({});
 
   const dispatch = useDispatch();
 
-  // api call of get all permission
+  // api call to get all permissions
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await dispatch(getallPermissions());
         setPermissions(data);
+
+        // Initialize checkbox state based on database values
+        const initialState = {};
+        data.forEach((permission) => {
+          permission.permissions.forEach((pre) => {
+            pre.permissions.forEach((p) => {
+              initialState[p.id] = p.permissionValue;
+            });
+          });
+        });
+        setCheckbox(initialState);
       } catch (error) {
         console.error('Error fetching Permissions:', error);
       }
@@ -157,7 +167,7 @@ export default function CollapsibleTable() {
     fetchData();
   }, [dispatch]);
 
-  // open dropdown of row
+  // open dropdown of row [role like super admin]
   const toggleRow = (index, userRole) => {
     setOpenRows((prevOpenRows) => {
       const isOpen = prevOpenRows.includes(index);
@@ -170,36 +180,37 @@ export default function CollapsibleTable() {
     setSelectedUserRole(userRole);
   };
 
-  // remove underscode and capital frist letter for show permission name
+  // remove underscores and capitalize first letter for permission name
   const formatPermissionName = (permissionName) => {
     const words = permissionName.split('_');
     return words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
+  // handle checkbox change
   const handleCheckboxChange = async (permissionId, permissionValue) => {
     try {
-      console.log(permissionValue, 'permissionId');
-      // console.log(checkbox, 'checkbox');
       const updatedPermissions = [
         {
           id: permissionId,
           permissionValue: !permissionValue
         }
       ];
-      console.log(updatedPermissions[0].permissionValue, 'DATA>>>>>>>>>>>value>>>>>>>>>>>>');
-      // setCheckbox(updatedPermissions[0].permissionValue);
       const data = {
         userRole: selectedUserRole,
         permissions: updatedPermissions
       };
-      // setCheckbox(updatedPermissions[0].permissionValue);
-      console.log(data, 'data');
-      const updatedata = await dispatch(updatePermission(data));
-      console.log(updatedata, 'update data');
+      await dispatch(updatePermission(data));
+
+      // Update checkbox state
+      setCheckbox((prevState) => ({
+        ...prevState,
+        [permissionId]: !permissionValue
+      }));
     } catch (error) {
       console.error('Error updating permissions:', error);
     }
   };
+
   return (
     <Card style={{ height: 'auto' }}>
       <TableContainer style={{ padding: '20px' }}>
@@ -212,11 +223,7 @@ export default function CollapsibleTable() {
               <React.Fragment key={index}>
                 <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                   <TableCell width={'16px'}>
-                    <IconButton
-                      aria-label="expand row"
-                      size="small"
-                      onClick={() => toggleRow(index, permission.role, permission.permissionValue)}
-                    >
+                    <IconButton aria-label="expand row" size="small" onClick={() => toggleRow(index, permission.role)}>
                       {openRows.includes(index) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                   </TableCell>
@@ -250,10 +257,7 @@ export default function CollapsibleTable() {
                                           {formatPermissionName(p.permission)}
                                         </Typography>
                                         <Typography>
-                                          <Checkbox
-                                            defaultChecked={p.permissionValue}
-                                            onChange={() => handleCheckboxChange(p.id, p.permissionValue)}
-                                          />
+                                          <Checkbox checked={checkbox[p.id]} onChange={() => handleCheckboxChange(p.id, checkbox[p.id])} />
                                         </Typography>
                                       </TableRow>
                                     ))}
