@@ -16,18 +16,12 @@ import {
   createQuotationRequest,
   createQuotationSuccess,
   createQuotationFailure,
-  createQuotationItemRequest,
-  createQuotationItemSuccess,
-  createQuotationItemFailure,
   deleteQuotationItemRequest,
   deleteQuotationItemSuccess,
   deleteQuotationItemFailure,
   updateQuotationRequst,
   updateQuotationsuccess,
   updateQuotationfailure,
-  updateQuotationItemRequst,
-  updateQuotationItemsuccess,
-  updateQuotationItemfailure,
   viewQuotationRequest,
   viewQuotationSuccess,
   viewQuotationFailure,
@@ -168,12 +162,15 @@ import {
   updatePermissionsSuccess,
   updatePermissionsFailure
 } from './actions';
+import { jwtDecode } from 'jwt-decode';
 
-const token = sessionStorage.getItem('token');
-const config = {
-  headers: {
-    token: token
-  }
+const createConfig = () => {
+  const token = sessionStorage.getItem('token');
+  return {
+    headers: {
+      token: token
+    }
+  };
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -184,19 +181,23 @@ export const loginAdmin = (credentials, navigate) => {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/admin_login`, credentials);
       const token = response.data.token;
       sessionStorage.setItem('token', token);
+      const decodedToken = jwtDecode(token);
+      const tokentype = decodedToken.type;
+      sessionStorage.setItem('type', tokentype);
       const userData = response.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
           navigate('/dashboard');
+          window.location.reload();
         }
       });
       dispatch(loginSuccess(userData));
-      return userData.status;
+      return userData;
     } catch (error) {
-      dispatch(loginFailure(error.message));
       toast.error(error.response.data.error, { autoClose: 1000 });
+      dispatch(loginFailure(error.message));
     }
   };
 };
@@ -206,6 +207,7 @@ export const fetchQuotationList = () => {
   return async (dispatch) => {
     dispatch(fetchQuotationRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_quotation`, config);
       const data = await response.data.data;
       dispatch(fetchQuotationSuccess(data));
@@ -216,31 +218,48 @@ export const fetchQuotationList = () => {
     }
   };
 };
-export const createQuotation = (quotationData) => {
+export const createQuotation = (quotationData, navigate) => {
   return async (dispatch) => {
     dispatch(createQuotationRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_quotation`, quotationData, config);
       const createdQuotation = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/qutationlist');
+        }
+      });
       dispatch(createQuotationSuccess(createdQuotation));
       return createdQuotation;
     } catch (error) {
+      toast.error(error.response.data.message);
       dispatch(createQuotationFailure(error.message));
       throw error;
     }
   };
 };
-export const createQuotationItem = (payload) => {
+export const updateQutation = (id, formData, navigate) => {
   return async (dispatch) => {
-    dispatch(createQuotationItemRequest());
+    dispatch(updateQuotationRequst());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_quatationItem`, payload, config);
-      const createdQuotationitemdata = response;
-      dispatch(createQuotationItemSuccess(createdQuotationitemdata));
-      return createdQuotationitemdata;
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotation/${id}`, formData, config);
+      const updateQuotationData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/qutationlist');
+        }
+      });
+      dispatch(updateQuotationsuccess(updateQuotationData));
+      return updateQuotationData;
     } catch (error) {
-      dispatch(createQuotationItemFailure(error.message));
-      throw error;
+      toast.error(error.response.data.message);
+      dispatch(updateQuotationfailure(error.message));
     }
   };
 };
@@ -248,11 +267,15 @@ export const deleteQuotationItem = (id) => {
   return async (dispatch) => {
     dispatch(deleteQuotationItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_quotationitem/${id}`, config);
-      console.log('response', response);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       dispatch(deleteQuotationItemSuccess());
     } catch (error) {
-      console.error('Error deleting quotation:', error);
+      toast.error(error.response.data.message);
       dispatch(deleteQuotationItemFailure());
     }
   };
@@ -261,39 +284,14 @@ export const Quotationview = (id) => {
   return async (dispatch) => {
     dispatch(viewQuotationRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_quotation/${id}`, config);
       const data = response.data.data;
       dispatch(viewQuotationSuccess(data));
       return data;
     } catch (error) {
+      toast.error(error.response.data.error);
       dispatch(viewQuotationFailure(error.message));
-    }
-  };
-};
-export const updateQutation = (id, formData) => {
-  return async (dispatch) => {
-    dispatch(updateQuotationRequst());
-    try {
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotation/${id}`, formData, config);
-      const updateQuotationData = response;
-      dispatch(updateQuotationsuccess(updateQuotationData));
-      // console.log(updateQuotationData.data.data.id);
-      return updateQuotationData;
-    } catch (error) {
-      dispatch(updateQuotationfailure(error.message));
-    }
-  };
-};
-export const updateQuotationItem = (itemid, updateItemData) => {
-  return async (dispatch) => {
-    dispatch(updateQuotationItemRequst());
-    try {
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotationItem/${itemid}`, updateItemData, config);
-      const updateQuotationItemData = response;
-      dispatch(updateQuotationItemsuccess(updateQuotationItemData));
-      return updateQuotationItemData;
-    } catch (error) {
-      dispatch(updateQuotationItemfailure(error.message));
     }
   };
 };
@@ -303,6 +301,7 @@ export const getallDeliverychallan = () => {
   return async (dispatch) => {
     dispatch(getAllDeliverychallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_deliverychallan`, config);
       const getallDeliverychallan = response.data;
       dispatch(getAllDeliverychallanSuccess(getallDeliverychallan));
@@ -312,15 +311,27 @@ export const getallDeliverychallan = () => {
     }
   };
 };
-export const createDeliveryChallan = (ChallanData) => {
+export const createDeliveryChallan = (ChallanData, navigate) => {
   return async (dispatch) => {
     dispatch(createDeliveryChallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallan`, ChallanData, config);
       const createdDeliverychallan = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/deliverychallanlist');
+        }
+      });
+      console.log(response);
       dispatch(createDeliveryChallanSuccess(createdDeliverychallan));
       return createdDeliverychallan;
     } catch (error) {
+      // toast.error(error.response.data.message,{
+      //   autoClose: 1000
+      // });
       dispatch(createDeliveryChallanFailure(error.message));
     }
   };
@@ -329,6 +340,7 @@ export const Deliverychallanview = (id) => {
   return async (dispatch) => {
     dispatch(viewDeliverychallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_deliverychallan/${id}`, config);
       const data = response.data.data;
       dispatch(viewDeliverychallanSuccess(data));
@@ -342,6 +354,7 @@ export const updateDileveryChallan = (id, ChallanData) => {
   return async (dispatch) => {
     dispatch(updateDileverychallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallan/${id}`, ChallanData, config);
 
       const updateChallanData = response;
@@ -357,6 +370,7 @@ export const updateDileveryChallanItem = (id, payload) => {
   return async (dispatch) => {
     dispatch(updateDileverychallanItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallanitem/${id}`, payload, config);
       const updateChallanItem = response;
       dispatch(updateDileverychallanItemSuccess(updateChallanItem));
@@ -371,6 +385,7 @@ export const deleteDileveryChallan = (id) => {
   return async (dispatch) => {
     dispatch(deleteDileverychallanItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_deliverychallanitem/${id}`, config);
       const deleteChallanItem = response;
       dispatch(deleteDileverychallanItemSuccess(deleteChallanItem));
@@ -385,6 +400,7 @@ export const createDeliveryChallanItem = (payload) => {
   return async (dispatch) => {
     dispatch(createDeliveryChallanItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallanitem`, payload, config);
       const createdDeliverychallanitems = response;
       dispatch(createDeliveryChallanItemSuccess(createdDeliverychallanitems));
@@ -400,6 +416,7 @@ export const fetchAllCustomers = () => {
   return async (dispatch) => {
     dispatch(fetchAllCustomersRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_customer`, config);
       const data = response.data.data;
       dispatch(fetchAllCustomersSuccess(data));
@@ -413,6 +430,7 @@ export const createCustomer = (customerData) => {
   return async (dispatch) => {
     dispatch(createCustomerRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
       dispatch(createCustomerSuccess(createdCustomer));
@@ -428,6 +446,7 @@ export const createCustomfeild = (payload) => {
   return async (dispatch) => {
     dispatch(createCustomFeildRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
       const createdCustomfeilddata = response;
       dispatch(createCustomFeildSuccess(createdCustomfeilddata));
@@ -442,6 +461,7 @@ export const deleteCustomFeild = (id) => {
   return async (dispatch) => {
     dispatch(deleteQuotationItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customfeild/${id}`, config);
       console.log('response', response);
       dispatch(deleteQuotationItemSuccess());
@@ -457,6 +477,7 @@ export const fetchAllProducts = () => {
   return async (dispatch) => {
     dispatch(fetchAllProdutsRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_product`, config);
       const data = response.data.data;
       dispatch(fetchAllProdutsSuccess(data));
@@ -470,14 +491,19 @@ export const createProduct = (data) => {
   return async (dispatch) => {
     dispatch(createProductRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_product`, data, config);
       const createProductData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       dispatch(createProductSuccess(createProductData));
-      alert(createProductData.data.message);
+      window.location.reload();
       return createProductData;
     } catch (error) {
       dispatch(createProductFailure(error.message));
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
       throw error;
     }
   };
@@ -488,6 +514,7 @@ export const createPayment = (formData) => {
   return async (dispatch) => {
     dispatch(createPaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_payment`, formData, config);
       const createdpayment = response;
       dispatch(createPaymentSuccess(createdpayment));
@@ -502,6 +529,7 @@ export const getallPayment = () => {
   return async (dispatch) => {
     dispatch(getallPaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_payment`, config);
       const getallpayment = response.data;
       dispatch(getallPaymentSuccess(getallpayment));
@@ -516,6 +544,7 @@ export const paymentview = (id) => {
   return async (dispatch) => {
     dispatch(viewPaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_payment/${id}`, config);
       const data = response.data.data;
       dispatch(viewPaymentSuccess(data));
@@ -529,6 +558,7 @@ export const updatePayment = (id, formData) => {
   return async (dispatch) => {
     dispatch(updatePaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_payment/${id}`, formData, config);
       const upadtePaymentData = response;
       dispatch(updatePaymentSuccess(upadtePaymentData));
@@ -545,6 +575,7 @@ export const createSalesInvoice = (salesinvoicedata) => {
   return async (dispatch) => {
     dispatch(createSalesinvoiceRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice`, salesinvoicedata, config);
       const cretesalesinvoice = response;
       dispatch(createSalesinvoiceSuccess(cretesalesinvoice));
@@ -559,6 +590,7 @@ export const createSalesinvoiceItem = (payload) => {
   return async (dispatch) => {
     dispatch(createSalesinvoiceItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice_item`, payload, config);
       const createdSalesinvoiceitems = response;
       dispatch(createSalesinvoiceItemSuccess(createdSalesinvoiceitems));
@@ -573,6 +605,7 @@ export const getallSalesInvoice = () => {
   return async (dispatch) => {
     dispatch(getAllSalesinvoiceRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_salesInvoice`, config);
       const getallSalesinvoice = response.data;
       dispatch(getAllSalesinvoiceSuccess(getallSalesinvoice));
@@ -586,6 +619,7 @@ export const SalesInvoiceview = (id) => {
   return async (dispatch) => {
     dispatch(viewSalesinvoiceRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_salesInvoice/${id}`, config);
       const data = response.data.data;
       dispatch(viewSalesinvoiceSuccess(data));
@@ -601,6 +635,7 @@ export const createPurchase = (purchaseData) => {
   return async (dispatch) => {
     dispatch(createPurchaseRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchase`, purchaseData, config);
       const cretepurchase = response;
       dispatch(createPrchaseSuccess(cretepurchase));
@@ -615,6 +650,7 @@ export const createPurchaseItem = (payload) => {
   return async (dispatch) => {
     dispatch(createPurchaseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchaseitem`, payload, config);
       const createdPurchaseitems = response;
       dispatch(createPrchaseItemSuccess(createdPurchaseitems));
@@ -629,6 +665,7 @@ export const updatePurchase = (id, formData) => {
   return async (dispatch) => {
     dispatch(updatePurchaseRequst());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchase/${id}`, formData, config);
       const updatePurchaseData = response;
       dispatch(updatePurchasesuccess(updatePurchaseData));
@@ -643,6 +680,7 @@ export const updatePurchaseItem = (itemid, updateItemData) => {
   return async (dispatch) => {
     dispatch(updatePurchaseItemRequst());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseitem/${itemid}`, updateItemData, config);
       const updatePurchaseItemData = response;
       dispatch(updatePurchaseItemsuccess(updatePurchaseItemData));
@@ -657,6 +695,7 @@ export const deletePurchaseItem = (id) => {
   return async (dispatch) => {
     dispatch(deletePurchaseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseitem/${id}`, config);
       const deletePurchaseItemData = response;
       dispatch(deletePurchaseItemSuccess(deletePurchaseItemData));
@@ -671,6 +710,7 @@ export const getallPurchase = () => {
   return async (dispatch) => {
     dispatch(fetchAllPurchaseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchase`, config);
       const getallpayment = response.data;
       dispatch(fetchAllPurchaseSuccess(getallpayment));
@@ -684,6 +724,7 @@ export const purchaseview = (id) => {
   return async (dispatch) => {
     dispatch(viewPurchaseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchase/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchaseSuccess(data));
@@ -699,6 +740,7 @@ export const createPurchaseBill = (purchasebillData) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, purchasebillData, config);
       const cretepurchasebill = response;
       dispatch(createPurchaseBillSuccess(cretepurchasebill));
@@ -713,6 +755,7 @@ export const createPurchaseBillItem = (payload) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill_item`, payload, config);
       const createdPurchaseBillitems = response;
       dispatch(createPurchaseBillItemSuccess(createdPurchaseBillitems));
@@ -727,6 +770,7 @@ export const getallPurchaseBill = () => {
   return async (dispatch) => {
     dispatch(getAllPurchasebillRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchasebill`, config);
       const getallPurchasebill = response.data;
       dispatch(getAllPurchasebillSuccess(getallPurchasebill));
@@ -740,6 +784,7 @@ export const PurchaseBillview = (id) => {
   return async (dispatch) => {
     dispatch(viewPurchasebillRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchasebill/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchasebillSuccess(data));
@@ -755,6 +800,7 @@ export const createExpenseItem = (payload) => {
   return async (dispatch) => {
     dispatch(createExpenseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expenseItem`, payload, config);
       const expenceItem = response;
       dispatch(createExpenseItemSuccess(expenceItem));
@@ -769,6 +815,7 @@ export const getallExpense = () => {
   return async (dispatch) => {
     dispatch(getAllExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_expense`, config);
       const getallExpense = response.data;
       dispatch(getAllExpenseSuccess(getallExpense));
@@ -782,6 +829,7 @@ export const Expenseview = (id) => {
   return async (dispatch) => {
     dispatch(viewExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_expense/${id}`, config);
       const data = response.data.data;
       dispatch(viewExpenseSuccess(data));
@@ -795,6 +843,7 @@ export const updateExpense = (id, formData) => {
   return async (dispatch) => {
     dispatch(updateExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_expense/${id}`, formData, config);
       const updateExpenseData = response;
       dispatch(updateExpenseSuccess(updateExpenseData));
@@ -809,6 +858,7 @@ export const updateExpenseItem = (id, updateData) => {
   return async (dispatch) => {
     dispatch(updateExpenseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_expenseItem/${id}`, updateData, config);
       const updateExpenseItemData = response;
       dispatch(updateExpenseItemSuccess(updateExpenseItemData));
@@ -823,6 +873,7 @@ export const deleteExpense = (id) => {
   return async (dispatch) => {
     dispatch(deleteExpenseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_expenseItem/${id}`, config);
       const deleteExpenseItem = response;
       dispatch(deleteExpenseItemSuccess(deleteExpenseItem));
@@ -837,6 +888,7 @@ export const createExpense = (data) => {
   return async (dispatch) => {
     dispatch(createExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expense`, data, config);
       const expenceData = response;
       dispatch(createExpenseSuccess(expenceData));
@@ -853,6 +905,7 @@ export const getallPurchaseReturn = () => {
   return async (dispatch) => {
     dispatch(getAllPurchasereturnRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchaseReturn`, config);
       const getallPurchasereturn = response.data.data;
       dispatch(getAllPurchasereturnSuccess(getallPurchasereturn));
@@ -866,6 +919,7 @@ export const PurchaseReturnview = (id) => {
   return async (dispatch) => {
     dispatch(viewPurchasereturnRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchaseReturn/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchasereturnSuccess(data));
@@ -881,7 +935,9 @@ export const getallPermissions = () => {
   return async (dispatch) => {
     dispatch(getAllPermissionsRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
+      // console.log(token);
       const getallPermission = response.data.data;
       dispatch(getAllPermissionsSuccess(getallPermission));
       return getallPermission;
@@ -894,7 +950,8 @@ export const updatePermission = (data) => {
   return async (dispatch) => {
     dispatch(updatePermissionsRequest());
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data);
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data, config);
       const updatePermissionData = response.data.data;
       dispatch(updatePermissionsSuccess(updatePermissionData));
       return updatePermissionData;

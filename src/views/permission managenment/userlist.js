@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Quotationview, fetchQuotationList } from 'store/thunk';
+import React, { useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import { Card } from '@mui/material';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
+// import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -11,40 +10,23 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const columns = [
-  { id: 'date', label: 'Date', align: 'center' },
-  { id: 'quotation_no', label: 'Quotation No.', align: 'center' },
-  { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'name', label: 'User Name', align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', align: 'center' },
   { id: 'email', label: 'Email', align: 'center' },
-  { id: 'validtill', label: 'Valid Till', align: 'center' },
+  { id: 'role', label: 'Role', align: 'center' },
+  { id: 'basicsalary', label: 'Basic Salary', align: 'center' },
   { id: 'view', label: 'View', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' }
 ];
 
-export default function QuotationList() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+export default function UserList() {
+  //   const navigate = useNavigate();
+  //   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [quotations, setQuotations] = useState([]);
-
-  // called api of all quotation
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchQuotationList());
-        setQuotations(response);
-      } catch (error) {
-        console.error('Error fetching quotations:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
 
   // use for change page
   const handleChangePage = (event, newPage) => {
@@ -57,26 +39,14 @@ export default function QuotationList() {
     setPage(0);
   };
 
-  // use for view single button passed id of data
-  const handleViewQuotation = (id) => {
-    dispatch(Quotationview(id));
-    navigate(`/qutationview/${id}`);
-  };
-
-  //use for edit button passed id of data
-  const handleUpdateQuotation = (id) => {
-    dispatch(Quotationview(id));
-    navigate(`/qutation/${id}`);
-  };
-
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Quotation List
+        User List
       </Typography>
-      <Link to="/qutation" style={{ textDecoration: 'none' }}>
+      <Link to="/adduser" style={{ textDecoration: 'none' }}>
         <Button variant="contained" color="secondary" style={{ margin: '16px' }}>
-          Create Quotation
+          Create USer
         </Button>
       </Link>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -90,17 +60,17 @@ export default function QuotationList() {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          {/* <TableBody>
             {quotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewQuotation(row.id)}>
+                      <Button variant="outlined" color="secondary" >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateQuotation(row.id)}>
+                      <Button variant="outlined" color="secondary">
                         Edit
                       </Button>
                     ) : column.id === 'date' ? (
@@ -114,13 +84,13 @@ export default function QuotationList() {
                 ))}
               </TableRow>
             ))}
-          </TableBody>
+          </TableBody> */}
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={quotations.length}
+        // count={quotations.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -326,20 +326,7 @@ const Salesinvoice = () => {
             </div>
           </Grid>
           <Grid item xs={12}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                borderColor: '#425466',
-                padding: '2px',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                lineHeight: '19px',
-                marginTop: '5px'
-              }}
-              onClick={handleAddRow}
-            >
+            <button id="buttoncs" onClick={handleAddRow}>
               <AddIcon sx={{ fontSize: '18px' }} /> Add Row
             </button>
           </Grid>
@@ -347,50 +334,19 @@ const Salesinvoice = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Taxable Amt.</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Total Taxable Amt.</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs" style={{ borderBottom: 'none' }}>
                   <h3>Total Amt.</h3>
                   <h3>₹{subtotal}</h3>
                 </div>
@@ -399,47 +355,26 @@ const Salesinvoice = () => {
               // For larger screens, show all totals on one line
               <div style={{ float: 'right', width: '30%' }}>
                 <div
+                  id="subtotalcs"
                   style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    borderTop: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
+                    borderTop: '0.2px solid lightgrey'
                   }}
                 >
                   <p>Taxable Amt.</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Total Taxable Amt.</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
                 </div>
                 <div
+                  id="subtotalcs"
                   style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
+                    borderBottom: 'none'
                   }}
                 >
                   <h3>Total Amt.</h3>
@@ -454,32 +389,15 @@ const Salesinvoice = () => {
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
                   <button
+                    id="savebtncs"
                     style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px',
                       marginRight: '5px'
                     }}
                   >
                     Cancel
                   </button>
                 </Link>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                  onClick={handleSalesinvoice}
-                >
+                <button id="savebtncs" onClick={handleSalesinvoice}>
                   Save
                 </button>
               </div>
@@ -488,49 +406,20 @@ const Salesinvoice = () => {
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
                 <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
-                  <button
-                    style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px'
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '130px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '10px'
                   }}
                   onClick={handleSalesinvoice}
                 >
                   Save & Next
                 </button>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                  onClick={handleSalesinvoice}
-                >
+                <button id="savebtncs" onClick={handleSalesinvoice}>
                   Save
                 </button>
               </div>

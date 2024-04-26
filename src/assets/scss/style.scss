@@ -18,51 +18,52 @@
 .apexcharts-legend-marker {
   margin-right: 8px !important;
 }
-.css-1pk4xzu-MuiTypography-root{
+.css-1pk4xzu-MuiTypography-root {
   padding: 0px;
   margin: 0px;
 }
 
-.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root{
+.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root {
   margin-bottom: 0px;
 }
 
-.css-hyum1k-MuiToolbar-root{
+.css-hyum1k-MuiToolbar-root {
   background-color: #425466;
   color: white;
 }
 
-.css-vgd225-MuiGrid-root{
+.css-vgd225-MuiGrid-root {
   background-color: #425466;
 }
 
-.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root,.css-1pk4xzu-MuiTypography-root{
+.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root,
+.css-1pk4xzu-MuiTypography-root {
   color: #425466;
   // background-color: #425466;
 }
-.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root:hover{
+.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root:hover {
   color: #425466;
 }
-.css-g0fv4t-MuiButtonBase-root-MuiListItemButton-root.Mui-selected{
+.css-g0fv4t-MuiButtonBase-root-MuiListItemButton-root.Mui-selected {
   color: white;
   background-color: white;
 }
-.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root.Mui-selected{
+.css-15bg8is-MuiButtonBase-root-MuiListItemButton-root.Mui-selected {
   color: #425466;
 }
 .css-1o27bpj-MuiTypography-root {
-color: #425466;
+  color: #425466;
 }
-.css-4awsrc-MuiSvgIcon-root{
+.css-4awsrc-MuiSvgIcon-root {
   color: #425466;
 }
 .css-i8z6kq-MuiTypography-root {
-font-size: 0.875rem;
+  font-size: 0.875rem;
 }
-.css-e2po7r{
+.css-e2po7r {
   background-color: cadetblue;
 }
-#mycss{
+#mycss {
   margin-bottom: 25px;
   padding: 10px;
   background-color: #425466;
@@ -73,67 +74,113 @@ font-size: 0.875rem;
   color: #425466;
 }
 .css-1ris7d9-MuiButtonBase-root-MuiListItemButton-root:hover .MuiListItemIcon-root {
-color: #425466;
+  color: #425466;
 }
 .css-t3ipsp-control:hover {
-border-color: #425466;
+  border-color: #425466;
 }
-.css-t3ipsp-control{
- box-shadow: 0 0 0 1px #425466 ;
- border-color: #425466;
+.css-t3ipsp-control {
+  box-shadow: 0 0 0 1px #425466;
+  border-color: #425466;
 }
 .css-1dznpnu-MuiButtonBase-root-MuiRadio-root.Mui-checked {
-color: #425466;
+  color: #425466;
 }
 // .myborder{
 //   border-left: 0.2px solid lightgrey;
 // }
 
 input {
-  // width: 100%;
+  width: 70%;
   border: 1px solid #ced4da;
-  padding: 10px 12px;
+  padding: 10px;
   position: relative;
   font-size: 16px;
-  transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  // transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border-radius: 4px;
   background-color: #fff;
 }
-@media (max-width:'425px') {
+
+@media (max-width: '425px') {
   // .css-xew46m-MuiGrid-root {
   //   width: calc(100% + 180px);
   // }
-  .heading{
+  .heading {
     font-size: 18px;
   }
   .css-xew46m-MuiGrid-root {
     display: block;
   }
 }
-.css-mhc70k-MuiGrid-root{
+.css-mhc70k-MuiGrid-root {
   margin: 0;
 }
 .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
-background: transparent;
+  background: transparent;
 }
 .css-18ebnrr-MuiTableCell-root {
-padding: 10px 0px;
+  padding: 10px 0px;
 }
-.css-11wvztw-MuiTableCell-root{
+.css-11wvztw-MuiTableCell-root {
   padding: 10px 0px;
 }
 .css-1g1evsd-MuiTableCell-root {
   padding: 10px 12px;
+  text-align: center;
 }
-.css-11x8vwv-MuiTableCell-root{
+.css-11x8vwv-MuiTableCell-root {
   border-bottom: none;
 }
 .css-1ie4xhm-MuiTypography-root {
- padding: 10px 0px;
+  padding: 10px 0px;
 }
-.css-p6phex-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-p6phex-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate{
+.css-p6phex-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
+.css-p6phex-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
   color: #425466;
 }
-.css-mhc70k-MuiGrid-root>.MuiGrid-item {
-padding: 10px;
+.css-mhc70k-MuiGrid-root > .MuiGrid-item {
+  padding: 10px;
+}
+#newcs {
+  padding: 5px;
+  text-align: center;
+}
+#buttoncs {
+  width: 100px;
+  color: #425466;
+  border-color: #425466;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  line-height: 19px;
+  margin-top: 5px;
+}
+#subtotalcs {
+  border-bottom: 0.2px solid lightgrey;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0px;
+}
+#savebtncs {
+  width: 100px;
+  color: #425466;
+  padding: 8px;
+  border-color: #425466;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+}
+#btncs {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.css-b62m3t-container {
+  width: 70%;
+}
+.css-o7venk-MuiTableCell-root {
+  padding: 10px 12px;
+  text-align: center;
 }

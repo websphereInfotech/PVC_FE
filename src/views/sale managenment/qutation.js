@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
-// import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
@@ -9,35 +8,13 @@ import { Link } from 'react-router-dom';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorProductDrawer from '../../component/productquotation';
 import { useDispatch } from 'react-redux';
-import { createQuotation, createQuotationItem, fetchAllCustomers, Quotationview, updateQuotationItem, updateQutation } from 'store/thunk';
+import { createQuotation, fetchAllCustomers, Quotationview, updateQutation, deleteQuotationItem } from 'store/thunk';
 import { fetchAllProducts } from 'store/thunk';
-// import { deleteQuotationItem } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// const StyledInput = withStyles((theme) => ({
-//   root: {
-//     'label + &': {
-//       marginTop: theme.spacing(3)
-//     }
-//   },
-//   input: {
-//     borderRadius: 4,
-//     position: 'relative',
-//     backgroundColor: theme.palette.common.white,
-//     border: '1px solid #ced4da',
-//     fontSize: 16,
-//     width: '100%',
-//     padding: '10px 12px',
-//     transition: theme.transitions.create(['border-color', 'box-shadow']),
-//     '&:focus': {
-//       boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
-//       borderColor: theme.palette.secondary.main
-//     }
-//   }
-// }))(InputBase);
-
 const Qutation = () => {
-  const [rows, setRows] = useState([{ srNo: 1, product: '', qty: '', rate: '', mrp: '' }]);
+  const [no, setNo] = useState(1);
+  const [rows, setRows] = useState([{ srNo: no, product: '', qty: '', rate: '', mrp: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
@@ -53,51 +30,106 @@ const Qutation = () => {
     quotation_no: '',
     validtill: ''
   });
+  const [productResponse, setProductResponse] = useState([]);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // manage button of addrow
+
+  // useEffect(() => {
+  //   const demodata = async () => {
+  //     try {
+  //       // Fetch the quotation list and wait for the response
+  //       const allQuotationsResponse = await dispatch(fetchQuotationList());
+  //       console.log('allQuotationsResponse', allQuotationsResponse);
+
+  //       // Check if the quotation list is empty
+  //       // if (allQuotationsResponse.length === 0) {
+  //       //   // If there are no quotations, start with serial number 1
+  //       //   const newRow = { srNo: 1, product: '', qty: '', rate: '', mrp: '' };
+  //       //   setRows([...rows, newRow]);
+  //       //   return;
+  //       // }
+  //       const lastQuotation = allQuotationsResponse[allQuotationsResponse.length - 1];
+  //       console.log('lastQuotation,', lastQuotation);
+
+  //       const lastQuotationItems = lastQuotation.items;
+  //       console.log('lastQuotationItems', lastQuotationItems);
+
+  //       const existingSerialNumbers = lastQuotationItems.map((row) => row.srNo);
+  //       console.log('existingSerialNumbers', existingSerialNumbers);
+
+  //       // let nextSrNo;
+  //       if (existingSerialNumbers.length === 0) {
+  //         setNo((prevNo) => prevNo - 1);
+  //         const newRow = { srNo: no, product: '', qty: '', rate: '', mrp: '' };
+  //         setRows([...rows, newRow]);
+  //         console.log(no, 'no');
+  //       } else {
+  //         const highestSerialNumber = Math.max(...existingSerialNumbers);
+  //         console.log('highestSerialNumber', highestSerialNumber);
+  //         // nextSrNo = highestSerialNumber + 1;
+  //         console.log('nextSrNo', nextSrNo);
+  //         setNo(highestSerialNumber + 1);
+  //         const newRow = { srNo: no, product: '', qty: '', rate: '', mrp: '' };
+  //         setRows([...rows, newRow]);
+  //       }
+
+  //       // const newRow = { srNo: nextSrNo, product: '', qty: '', rate: '', mrp: '' };
+
+  //       // setRows([...rows, newRow]);
+  //     } catch (error) {
+  //       console.error('Error fetching last quotation:', error);
+  //     }
+  //   };
+  //   demodata();
+  // }, [dispatch, no, rows]);
+
   const handleAddRow = () => {
-    const newRow = { srNo: rows.length + 1, product: '', qty: '', rate: '', mrp: '' };
+    // console.log('no', no+1);
+    const newRow = { srNo: no + 1, product: '', qty: '', rate: '', mrp: '' };
     setRows([...rows, newRow]);
+    setNo(no + 1);
   };
 
+  //manage value of input of row
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
       if (row.srNo === srNo) {
-        // const newValue = parseFloat(value);
         return { ...row, [field]: value };
       }
       return row;
     });
 
     updatedRows.forEach((row) => {
-      const amount = row.qty * row.rate * row.mrp; // Calculate amount for the current row only
-      row.amount = Number.isNaN(amount) ? 0 : amount;
+      const amount = row.qty * row.rate;
+      row.mrp = amount;
     });
 
-    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.amount, 0);
-    setSubtotal(Number.isNaN(newSubtotal) ? 0 : newSubtotal);
+    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(newSubtotal);
     setRows(updatedRows);
   };
 
-  const handleDeleteRow = async (srNo) => {
+  //use for delete product row
+  const handleDeleteRow = async (srNo, id) => {
     const deletedRow = rows.find((row) => row.srNo === srNo);
     if (!deletedRow) return;
 
     const updatedRows = rows.filter((row) => row.srNo !== srNo);
-    const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
-      ...row,
-      srNo: index + 1
-    }));
 
     const deletedAmount = deletedRow.amount;
     const newSubtotal = subtotal - deletedAmount;
 
-    setRows(updatedRowsWithSerialNumbers);
+    setRows(updatedRows);
+
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    dispatch(deleteQuotationItem(id));
   };
 
+  // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
@@ -108,14 +140,17 @@ const Qutation = () => {
     }
   };
 
+  // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, srNo) => {
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'Create New Product') {
       setIsproductDrawerOpen(true);
     } else {
+      const selectedProductData = productResponse.find((product) => product.productname === selectedOption.label);
+      const salesPrice = selectedProductData ? selectedProductData.salesprice : 0;
       const updatedRows = rows.map((row) => {
         if (row.srNo === srNo) {
-          return { ...row, product: selectedOption.label };
+          return { ...row, product: selectedOption.label, rate: salesPrice };
         }
         return row;
       });
@@ -124,8 +159,8 @@ const Qutation = () => {
       setIsproductDrawerOpen(false);
     }
   };
-  const dispatch = useDispatch();
 
+  // called api of all product and customer for sho name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -136,6 +171,7 @@ const Qutation = () => {
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
+          setProductResponse(productResponse);
           const options = productResponse.map((product) => ({ value: product.id, label: product.productname }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
         } else {
@@ -147,16 +183,17 @@ const Qutation = () => {
           const { customer, date, email, mobileno, quotation_no, validtill } = response;
           setFormData({ customer, date, email, mobileno, quotation_no, validtill });
 
-          const quotationItems = response.quotationItems;
-          const updatedRows = quotationItems.map((item) => ({
-            id: item.id,
-            srNo: item.srNo,
-            product: item.product,
-            qty: item.qty,
-            rate: item.rate,
-            mrp: item.mrp
-          }));
-
+          const quotationItems = response.items;
+          const updatedRows = quotationItems.map((item) => {
+            return {
+              id: item.id,
+              srNo: item.srNo,
+              product: item.product,
+              qty: item.qty,
+              rate: item.rate,
+              mrp: item.mrp
+            };
+          });
           setRows(updatedRows);
         }
       } catch (error) {
@@ -166,47 +203,37 @@ const Qutation = () => {
     fetchData();
   }, [dispatch, id]);
 
+  //use for update and create quotation data
   const handleCreateQuotation = async () => {
     try {
       if (id) {
-        await dispatch(updateQutation(id, formData));
-        for (const row of rows) {
-          const updateItemData = {
-            srNo: row.srNo,
-            product: row.product,
-            rate: row.rate,
-            qty: row.qty,
-            mrp: row.mrp
-          };
-          const itemid = row.id;
-          await dispatch(updateQuotationItem(itemid, updateItemData));
-        }
-        alert('Quotation updated successfully');
-        navigate('/qutationlist');
-      } else {
-        const quotationData = {
-          customer: selectcustomer,
-          ...formData
-        };
-        const createdQuotation = await dispatch(createQuotation(quotationData));
-        const quotationId = createdQuotation.id;
         const payload = {
-          quotationId,
+          ...formData,
           items: rows.map((row) => ({
             srNo: row.srNo,
-            product: selectproduct,
+            product: row.product,
             qty: row.qty,
             rate: row.rate,
             mrp: row.mrp
           }))
         };
-        dispatch(createQuotationItem(payload));
-        alert('Quotation created successfully');
-        navigate('/qutationlist');
+        await dispatch(updateQutation(id, payload, navigate));
+      } else {
+        const quotationData = {
+          customer: selectcustomer,
+          ...formData,
+          items: rows.map((row) => ({
+            srNo: row.srNo,
+            product: row.product,
+            qty: row.qty,
+            rate: row.rate,
+            mrp: row.mrp
+          }))
+        };
+        await dispatch(createQuotation(quotationData, navigate));
       }
     } catch (error) {
       console.error('Error creating quotation:', error);
-      alert('Failed to create quotation');
     }
   };
 
@@ -226,24 +253,7 @@ const Qutation = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Customer</Typography>
-              <Select
-                color="secondary"
-                // options={
-                //   Array.isArray(customer)
-                //     ? [
-                //         {
-                //           value: 'customer',
-                //           label: 'create new customer'
-                //         },
-                //         ...customer.map((customers) => ({ value: customers.id, label: customers.shortname }))
-                //       ]
-                //     : []
-                // }
-                // onChange={(selectedOption) => handleSelectChange(selectedOption)}
-                options={customer}
-                value={{ label: formData.customer }}
-                onChange={handleSelectChange}
-              />
+              <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
@@ -296,7 +306,7 @@ const Qutation = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+            <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
                   <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
@@ -311,42 +321,32 @@ const Qutation = () => {
                 <TableBody>
                   {rows.map((row) => (
                     <TableRow key={row.srNo}>
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell id="newcs">
                         <input
                           placeholder="Enter Sr.No."
                           value={row.srNo}
                           onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
                         />
                       </TableCell>
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell id="newcs">
                         <Select
                           color="secondary"
-                          // options={
-                          //   Array.isArray(product)
-                          //     ? [
-                          //         {
-                          //           value: 'product',
-                          //           label: 'create new product'
-                          //         },
-                          //         ...product.map((products) => ({ value: products.id, label: products.productname }))
-                          //       ]
-                          //     : []
-                          // }
-                          // onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                           onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                           options={product}
                           value={{ label: row.product }}
                         />
                       </TableCell>
                       <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
                       </TableCell>
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell id="newcs">
                         <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(row.srNo, 'rate', e.target.value)} />
                       </TableCell>
-                      <TableCell sx={{ padding: '5px' }}>
-                        <input placeholder="Amount" value={row.mrp} onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)} />
+                      <TableCell id="newcs" style={{ fontSize: '16px' }}>
+                        {row.mrp}
+                        {/* <input type="hidden" value={row.mrp} /> */}
+                        {/* <input placeholder="Amount" value={subtotal} onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)} /> */}
                       </TableCell>
                       <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
                         <DeleteIcon onClick={() => handleDeleteRow(row.srNo, row.id)} />
@@ -358,20 +358,7 @@ const Qutation = () => {
             </div>
           </Grid>
           <Grid item xs={12}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                borderColor: '#425466',
-                padding: '2px',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                lineHeight: '19px',
-                marginTop: '5px'
-              }}
-              onClick={handleAddRow}
-            >
+            <button id="buttoncs" onClick={handleAddRow}>
               <AddIcon sx={{ fontSize: '18px' }} /> Add Row
             </button>
           </Grid>
@@ -379,36 +366,18 @@ const Qutation = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Taxable Amt.</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
                 </div>
                 <div
+                  id="subtotalcs"
                   style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
+                    borderBottom: 'none'
                   }}
                 >
                   <h3>Total Amt.</h3>
@@ -419,35 +388,22 @@ const Qutation = () => {
               // For larger screens, show all totals on one line
               <div style={{ float: 'right', width: '30%' }}>
                 <div
+                  id="subtotalcs"
                   style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    borderTop: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
+                    borderTop: '0.2px solid lightgrey'
                   }}
                 >
                   <p>Taxable Amt.</p>
                   <p>₹0</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
                 </div>
                 <div
+                  id="subtotalcs"
                   style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    margin: '5px 0px'
+                    borderBottom: 'none'
                   }}
                 >
                   <h3>Total Amt.</h3>
@@ -462,32 +418,15 @@ const Qutation = () => {
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
                   <button
+                    id="savebtncs"
                     style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px',
                       marginRight: '5px'
                     }}
                   >
                     Cancel
                   </button>
                 </Link>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                  onClick={handleCreateQuotation}
-                >
+                <button id="savebtncs" onClick={handleCreateQuotation}>
                   Save
                 </button>
               </div>
@@ -496,49 +435,20 @@ const Qutation = () => {
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
                 <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
-                  <button
-                    style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px'
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '130px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '10px'
                   }}
                   onClick={handleCreateQuotation}
                 >
                   Save & Next
                 </button>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                  onClick={handleCreateQuotation}
-                >
+                <button id="savebtncs" onClick={handleCreateQuotation}>
                   Save
                 </button>
               </div>

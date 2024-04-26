@@ -32,11 +32,11 @@ const DileveryChallanList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
 
+  // all delivery challan api called
   useEffect(() => {
     const fetchDeliverychallan = async () => {
       try {
         const data = await dispatch(getallDeliverychallan());
-        // console.log(data.data);
         setdeliverychallan(data.data);
       } catch (error) {
         console.error('Error fetching delivery challan:', error);
@@ -46,24 +46,29 @@ const DileveryChallanList = () => {
     fetchDeliverychallan();
   }, [dispatch]);
 
+  // set pagination to change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // how much row show in one page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
+  //navigate page on create deliverychallan
   const handleAddDeliverychallan = () => {
     navigate('/deliverychallan');
   };
 
+  //passed id for view single data
   const handleViewDeliverychallan = (id) => {
     dispatch(Deliverychallanview(id));
     navigate(`/deliverychallanview/${id}`);
   };
 
+  //passed id for update data
   const handleUpdateDeliverychallan = (id) => {
     navigate(`/deliverychallan/${id}`);
   };

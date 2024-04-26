@@ -177,45 +177,19 @@ const Salesreturn = () => {
             {isMobile ? (
               // For mobile screens, show each total on sepadebit lines
               <>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>Taxable Amt</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>SGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>CGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    borderTop: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹0.00</p>
                 </div>
@@ -223,45 +197,19 @@ const Salesreturn = () => {
             ) : (
               // For larger screens, show all totals on one line
               <div style={{ float: 'right', width: '30%' }}>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>Taxable Amt</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>SGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>CGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    borderBottom: '0.2px solid lightgrey',
-                    borderTop: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹0.00</p>
                 </div>
@@ -273,29 +221,15 @@ const Salesreturn = () => {
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '5px'
                   }}
                 >
                   Cancel
                 </button>
                 <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
+                  id="savebtncs"
                   // onClick={handlecreatesalesreturn}
                 >
                   Save
@@ -305,30 +239,12 @@ const Salesreturn = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <button id="savebtncs">Cancel</button>
               </div>
               <div style={{ display: 'flex' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '130px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '10px'
                   }}
                   // onClick={handlecreatesalesreturn}
@@ -336,15 +252,7 @@ const Salesreturn = () => {
                   Save & Next
                 </button>
                 <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
+                  id="savebtncs"
                   // onClick={handlecreatesalesreturn}
                 >
                   Save

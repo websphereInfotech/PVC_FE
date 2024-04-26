@@ -2,6 +2,7 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const MENU_OPEN = '@customization/MENU_OPEN';
+export const MENU_CLOSE = '@customization/MENU_CLOSE';
 export const MENU_TYPE = '@customization/MENU_TYPE';
 
 // ######################################## LOGIN #########################################################################
@@ -16,18 +17,12 @@ export const FETCH_QUOTATION_FAILURE = 'FETCH_QUOTATION_FAILURE';
 export const CREATE_QUOTATION_REQUEST = 'CREATE_QUOTATION_REQUEST';
 export const CREATE_QUOTATION_SUCCESS = 'CREATE_QUOTATION_SUCCESS';
 export const CREATE_QUOTATION_FAILURE = 'CREATE_QUOTATION_FAILURE';
-export const CREATE_QUOTATION_ITEM_REQUEST = 'CREATE_QUOTATION_ITEM_REQUEST';
-export const CREATE_QUOTATION_ITEM_SUCCESS = 'CREATE_QUOTATION_ITEM_SUCCESS';
-export const CREATE_QUOTATION_ITEM_FAILURE = 'CREATE_QUOTATION_ITEM_FAILURE';
 export const DELETE_QUOTATION_ITEM_REQUEST = 'DELETE_QUOTATION_ITEM_REQUEST';
 export const DELETE_QUOTATION_ITEM_SUCCESS = 'DELETE_QUOTATION_ITEM_SUCCESS';
 export const DELETE_QUOTATION_ITEM_FAILURE = 'DELETE_QUOTATION_ITEM_FAILURE';
 export const UPDATE_QUOTATION_REQUEST = 'UPDATE_QUOTATION_REQUEST';
 export const UPDATE_QUOTATION_SUCCESS = 'UPDATE_QUOTATION_SUCCESS';
 export const UPDATE_QUOTATION_FAILURE = 'UPDATE_QUOTATION_FAILURE';
-export const UPDATE_QUOTATIONITEM_REQUEST = 'UPDATE_QUOTATIONITEM_REQUEST';
-export const UPDATE_QUOTATIONITEM_SUCCESS = 'UPDATE_QUOTATIONITEM_SUCCESS';
-export const UPDATE_QUOTATIONITEM_FAILURE = 'UPDATE_QUOTATIONITEM_FAILURE';
 export const VIEW_QUOTATION_REQUEST = 'VIEW_QUOTATION_REQUEST';
 export const VIEW_QUOTATION_SUCCESS = 'VIEW_QUOTATION_SUCCESS';
 export const VIEW_QUOTATION_FAILURE = 'VIEW_QUOTATION_FAILURE';
@@ -215,18 +210,6 @@ export const createQuotationFailure = (error) => ({
   type: 'CREATE_QUOTATION_FAILURE',
   payload: error
 });
-export const createQuotationItemRequest = (data) => ({
-  type: 'CREATE_QUOTATION_ITEM_REQUEST',
-  payload: data
-});
-export const createQuotationItemSuccess = (data) => ({
-  type: 'CREATE_QUOTATION_ITEM_SUCCESS',
-  payload: data
-});
-export const createQuotationItemFailure = (error) => ({
-  type: 'CREATE_QUOTATION_ITEM_FAILURE',
-  payload: error
-});
 export const deleteQuotationItemRequest = (data) => ({
   type: 'DELETE_QUOTATION_ITEM_REQUEST',
   payload: data
@@ -261,18 +244,6 @@ export const updateQuotationsuccess = (data) => ({
 });
 export const updateQuotationfailure = (error) => ({
   type: 'UPDATE_QUOTATION_FAILURE',
-  payload: error
-});
-export const updateQuotationItemRequst = (data) => ({
-  type: 'UPDATE_QUOTATIONITEM_REQUEST',
-  payload: data
-});
-export const updateQuotationItemsuccess = (data) => ({
-  type: 'UPDATE_QUOTATIONITEM_SUCCESS',
-  payload: data
-});
-export const updateQuotationItemfailure = (error) => ({
-  type: 'UPDATE_QUOTATIONITEM_FAILURE',
   payload: error
 });
 

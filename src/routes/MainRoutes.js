@@ -77,10 +77,15 @@ const Product = Loadable(lazy(() => import('../views/production managenment/prod
 const StockManagement = Loadable(lazy(() => import('../views/stock managenment/stock')));
 const Stockmain = Loadable(lazy(() => import('../views/stock managenment/stockmain')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++++ Route permission +++++++++++++++++++++++++++++++++++
+const Permission = Loadable(lazy(() => import('../views/permission managenment/permission')));
+const User = Loadable(lazy(() => import('../views/permission managenment/adduser')));
+const UserList = Loadable(lazy(() => import('../views/permission managenment/userlist')));
+const Userviewpage = Loadable(lazy(() => import('../views/permission managenment/userview')));
+
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
-const Permission = Loadable(lazy(() => import('../views/permission managenment/permission')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
@@ -165,10 +170,15 @@ const MainRoutes = {
     { path: '/stock', element: <StockManagement /> },
     { path: '/stockmain', element: <Stockmain /> },
 
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
+    { path: '/permission', element: <Permission /> },
+    { path: '/adduser', element: <User /> },
+    { path: '/userlist', element: <UserList /> },
+    { path: '/userview', element: <Userviewpage /> },
+
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
-    { path: '/permission', element: <Permission /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },

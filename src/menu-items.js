@@ -19,8 +19,6 @@ import PropaneTankIcon from '@mui/icons-material/PropaneTank';
 import HomeIcon from '@mui/icons-material/Home';
 import ScannerIcon from '@mui/icons-material/Scanner';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-// import { FaBeer } from 'react-icons/fa';
-// import { FaSalesforce } from 'react-icons/fa';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -44,8 +42,15 @@ const icons = {
   ScannerIcon: ScannerIcon,
   BusinessCenterIcon: BusinessCenterIcon
 };
+const getTypeFromSessionStorage = () => {
+  return sessionStorage.getItem('type');
+};
 
-// eslint-disable-next-line
+const createConfig = () => {
+  const type = getTypeFromSessionStorage();
+  return type;
+};
+
 export default {
   items: [
     {
@@ -62,37 +67,34 @@ export default {
         }
       ]
     },
-    {
-      // id: 'pages',
-      // title: 'Pages',
-      // caption: 'Prebuild Pages',
-      type: 'group',
-      icon: icons['NavigationOutlinedIcon'],
-      children: [
-        // {
-        //   id: 'sample-page',
-        //   title: 'Sample Page',
-        //   type: 'item',
-        //   url: '/sample-page',
-        //   icon: icons['ChromeReaderModeOutlinedIcon']
-        // },
-        {
-          id: 'auth',
-          title: 'Authentication',
-          type: 'collapse',
-          icon: icons['SecurityOutlinedIcon'],
+    createConfig() === 'C'
+      ? {
+          type: 'group',
+          icon: icons['NavigationOutlinedIcon'],
           children: [
             {
-              id: 'permission',
-              title: 'permission',
-              type: 'item',
-              url: '/permission'
-              // target: true
+              id: 'auth',
+              title: 'Authentication',
+              type: 'collapse',
+              icon: icons['SecurityOutlinedIcon'],
+              children: [
+                {
+                  id: 'permission',
+                  title: 'Permission',
+                  type: 'item',
+                  url: '/permission'
+                },
+                {
+                  id: 'adduser',
+                  title: 'Create User',
+                  type: 'item',
+                  url: '/adduser'
+                }
+              ]
             }
           ]
         }
-      ]
-    },
+      : {},
     {
       type: 'group',
       icon: icons[''],
@@ -114,13 +116,13 @@ export default {
                   title: 'Payment List',
                   type: 'item',
                   url: '/paymentlist'
-                },
-                {
-                  id: 'payment-recieve',
-                  title: 'Payment Recieve',
-                  type: 'item',
-                  url: '/paymentrecieve'
                 }
+                // {
+                //   id: 'payment-recieve',
+                //   title: 'Payment Recieve',
+                //   type: 'item',
+                //   url: '/paymentrecieve'
+                // }
               ]
             },
             {

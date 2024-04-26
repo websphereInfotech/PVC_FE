@@ -12,10 +12,12 @@ const Quotationviewpage = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
 
+  //called api for view data
   useEffect(() => {
     dispatch(Quotationview(id))
       .then((data) => {
         setData(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error('Error fetching quotation data:', error);
@@ -30,19 +32,19 @@ const Quotationviewpage = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.customer}</Typography>
+          <Typography variant="subtitle2">{data?.customer}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data.mobileno}</Typography>
+          <Typography variant="subtitle2">{data?.mobileno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data.email}</Typography>
+          <Typography variant="subtitle2">{data?.email}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation No.</Typography>
-          <Typography variant="subtitle2">{data.quotation_no}</Typography>
+          <Typography variant="subtitle2">{data?.quotation_no}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation Date</Typography>
@@ -50,24 +52,22 @@ const Quotationviewpage = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Valid Till</Typography>
-          <Typography variant="subtitle2">{data.validtill}</Typography>
+          <Typography variant="subtitle2">{data?.validtill}</Typography>
         </Grid>
 
         <Grid item xs={12}>
-          <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
+          <div style={{ maxHeight: '300px' }}>
             <Table>
               <TableHead>
                 <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell>
-                <TableCell width={450} sx={{ fontSize: '12px' }}>
-                  PRODUCT/SERVICE
-                </TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>PRODUCT/SERVICE</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹) (EXCL. TAX)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
               </TableHead>
               <TableBody>
-                {data.quotationItems &&
-                  data.quotationItems.map((item, index) => (
+                {data?.items &&
+                  data?.items.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.srNo}</TableCell>
                       <TableCell>{item?.product}</TableCell>
@@ -85,15 +85,15 @@ const Quotationviewpage = () => {
           {isMobile ? (
             // For mobile screens, show each total on separate lines
             <>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Taxable Amt.</p>
                 <p>₹0.00</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
                 <p>₹0.00</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
                 <p>₹0.00</p>
               </div>
@@ -101,15 +101,15 @@ const Quotationviewpage = () => {
           ) : (
             // For larger screens, show all totals on one line
             <div style={{ float: 'right', width: '30%' }}>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Taxable Amt.</p>
                 <p>₹0.00</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
                 <p>₹0.00</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
                 <p>₹0.00</p>
               </div>
@@ -121,19 +121,7 @@ const Quotationviewpage = () => {
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <button id="savebtncs">Cancel</button>
               </div>
             </Link>
           </Grid>
@@ -141,19 +129,7 @@ const Quotationviewpage = () => {
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <button id="savebtncs">Cancel</button>
               </div>
             </Link>
           </Grid>

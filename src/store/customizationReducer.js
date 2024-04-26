@@ -4,9 +4,9 @@ import * as actionTypes from './actions';
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
 
 export const initialState = {
-  isOpen: 'dashboard', //for active default menu
+  open: false,
+  isOpen: true, //for active default menu
   navType: '',
-  // Add properties related to quotations
   quotations: [],
   loadingQuotations: false,
   errorQuotations: null,
@@ -19,6 +19,11 @@ const customizationReducer = (state = initialState, action) => {
       return {
         ...state,
         isOpen: action.isOpen
+      };
+    case actionTypes.MENU_CLOSE:
+      return {
+        ...state,
+        open: action.open
       };
     case actionTypes.MENU_TYPE:
       return {
@@ -52,7 +57,7 @@ const customizationReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload,
+        user: action.payload.user,
         error: null
       };
     case actionTypes.LOGIN_FAILURE:

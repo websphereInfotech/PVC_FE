@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
-import { createProductSuccess } from 'store/actions';
 import { createProduct } from 'store/thunk';
 
 const AnchorProductDrawer = ({ open, onClose }) => {
@@ -17,7 +16,6 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   };
 
   const dispatch = useDispatch();
-
   const [itemtype, setItemType] = React.useState('Product');
   const [bankdetail, setBankDetail] = React.useState('Batch wise');
   const [openingstock, setOpeningStock] = React.useState(true);
@@ -36,7 +34,6 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     purchaseprice: '',
     gstrate: ''
   });
-  // console.log("item",itemselected);
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -74,9 +71,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         itemselected,
         cess
       };
-      const productData = await dispatch(createProduct(data));
-      console.log(data);
-      dispatch(createProductSuccess(productData));
+      await dispatch(createProduct(data));
     } catch (error) {
       console.error('Error creating Product', error);
     }

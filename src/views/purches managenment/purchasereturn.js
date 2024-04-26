@@ -128,33 +128,15 @@ const Purchasereturn = () => {
             {isMobile ? (
               // For mobile screens, show each total on sepadebit lines
               <>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>Taxable Amt</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>SGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>CGST</p>
                   <p>₹0.00</p>
                 </div>
@@ -174,43 +156,23 @@ const Purchasereturn = () => {
             ) : (
               // For larger screens, show all totals on one line
               <div style={{ float: 'right', width: '30%' }}>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>Taxable Amt</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>SGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>CGST</p>
                   <p>₹0.00</p>
                 </div>
                 <div
+                  id="subtotalcs"
                   style={{
-                    borderBottom: '0.2px solid lightgrey',
                     borderTop: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
+                    margin: '0px'
                   }}
                 >
                   <p>Sub Total</p>
@@ -225,82 +187,34 @@ const Purchasereturn = () => {
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link to="/purchasereturnList" style={{ textDecoration: 'none' }}>
                   <button
+                    id="savebtncs"
                     style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px',
                       marginRight: '5px'
                     }}
                   >
                     Cancel
                   </button>
                 </Link>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Save
-                </button>
+                <button id="savebtncs">Save</button>
               </div>
             </Grid>
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
                 <Link to="/purchasereturnList" style={{ textDecoration: 'none' }}>
-                  <button
-                    style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px'
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '130px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '10px'
                   }}
                 >
                   Save & Next
                 </button>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Save
-                </button>
+                <button id="savebtncs">Save</button>
               </div>
             </Grid>
           )}

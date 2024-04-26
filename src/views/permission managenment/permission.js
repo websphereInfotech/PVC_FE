@@ -149,12 +149,11 @@ export default function CollapsibleTable() {
       try {
         const data = await dispatch(getallPermissions());
         setPermissions(data);
-
         // Initialize checkbox state based on database values
         const initialState = {};
         data.forEach((permission) => {
-          permission.permissions.forEach((pre) => {
-            pre.permissions.forEach((p) => {
+          permission?.permissions?.forEach((pre) => {
+            pre?.permissions?.forEach((p) => {
               initialState[p.id] = p.permissionValue;
             });
           });
