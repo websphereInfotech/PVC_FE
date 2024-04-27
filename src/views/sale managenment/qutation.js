@@ -13,8 +13,7 @@ import { fetchAllProducts } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Qutation = () => {
-  const [no, setNo] = useState(1);
-  const [rows, setRows] = useState([{ srNo: no, product: '', qty: '', rate: '', mrp: '' }]);
+  const [rows, setRows] = useState([{ srNo: 1, product: '', qty: '', rate: '', mrp: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
@@ -36,7 +35,35 @@ const Qutation = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // manage button of addrow
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Fetch the existing quotations from the database
+  //       const allQuotationsResponse = await dispatch(fetchQuotationList());
+
+  //       // Calculate the highest srNo from the existing quotations
+  //       let highestSrNo = 0;
+  //       if (allQuotationsResponse.length > 0) {
+  //         const lastQuotation = allQuotationsResponse[allQuotationsResponse.length - 1];
+  //         const lastQuotationItems = lastQuotation.items;
+  //         const existingSerialNumbers = lastQuotationItems.map((row) => row.srNo);
+  //         highestSrNo = Math.max(...existingSerialNumbers);
+  //       }
+
+  //       // Set the default srNo for the initial row
+  //       const defaultSrNo = highestSrNo + 1;
+
+  //       // Create the default row with the default srNo
+  //       const defaultRow = { srNo: defaultSrNo, product: '', qty: '', rate: '', mrp: '' };
+
+  //       // Set the rows state with the default row
+  //       setRows([defaultRow]);
+  //     } catch (error) {
+  //       console.error('Error fetching quotations:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [dispatch]);
 
   // useEffect(() => {
   //   const demodata = async () => {
@@ -61,25 +88,18 @@ const Qutation = () => {
   //       const existingSerialNumbers = lastQuotationItems.map((row) => row.srNo);
   //       console.log('existingSerialNumbers', existingSerialNumbers);
 
-  //       // let nextSrNo;
-  //       if (existingSerialNumbers.length === 0) {
-  //         setNo((prevNo) => prevNo - 1);
+  //       let nextSrNo;
+  //       if (lastQuotation?.items?.length === 0) {
+  //         setNo((prevNo) => prevNo + 1);
   //         const newRow = { srNo: no, product: '', qty: '', rate: '', mrp: '' };
   //         setRows([...rows, newRow]);
   //         console.log(no, 'no');
   //       } else {
   //         const highestSerialNumber = Math.max(...existingSerialNumbers);
   //         console.log('highestSerialNumber', highestSerialNumber);
-  //         // nextSrNo = highestSerialNumber + 1;
+  //         nextSrNo = highestSerialNumber + 1;
   //         console.log('nextSrNo', nextSrNo);
-  //         setNo(highestSerialNumber + 1);
-  //         const newRow = { srNo: no, product: '', qty: '', rate: '', mrp: '' };
-  //         setRows([...rows, newRow]);
   //       }
-
-  //       // const newRow = { srNo: nextSrNo, product: '', qty: '', rate: '', mrp: '' };
-
-  //       // setRows([...rows, newRow]);
   //     } catch (error) {
   //       console.error('Error fetching last quotation:', error);
   //     }
@@ -87,18 +107,19 @@ const Qutation = () => {
   //   demodata();
   // }, [dispatch, no, rows]);
 
+  // manage button of addrow
   const handleAddRow = () => {
-    // console.log('no', no+1);
-    const newRow = { srNo: no + 1, product: '', qty: '', rate: '', mrp: '' };
-    setRows([...rows, newRow]);
-    setNo(no + 1);
+    const newSrNo = rows.length + 1;
+    console.log('newSrNo', newSrNo);
+    const newRow = { srNo: newSrNo, product: '', qty: '', rate: '', mrp: '' };
+    setRows((prevRows) => [...prevRows, newRow]);
   };
 
   //manage value of input of row
   const handleInputChange = (srNo, field, value) => {
     const updatedRows = rows.map((row) => {
       if (row.srNo === srNo) {
-        return { ...row, [field]: value };
+        return { ...row, [field]: value, srNo: row.srNo };
       }
       return row;
     });
@@ -114,19 +135,19 @@ const Qutation = () => {
   };
 
   //use for delete product row
-  const handleDeleteRow = async (srNo, id) => {
-    const deletedRow = rows.find((row) => row.srNo === srNo);
-    if (!deletedRow) return;
+  const handleDeleteRow = async (id) => {
+    const updatedRows = rows.filter((row) => row.id !== id);
 
-    const updatedRows = rows.filter((row) => row.srNo !== srNo);
-
-    const deletedAmount = deletedRow.amount;
-    const newSubtotal = subtotal - deletedAmount;
-
+    const deletedRow = rows.find((row) => row.id === id);
+    if (deletedRow) {
+      const deletedAmount = deletedRow.mrp;
+      const newSubtotal = subtotal - deletedAmount;
+      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    }
     setRows(updatedRows);
-
-    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    dispatch(deleteQuotationItem(id));
+    if (deletedRow) {
+      dispatch(deleteQuotationItem(id));
+    }
   };
 
   // use for select customer name from dropdown
@@ -210,7 +231,7 @@ const Qutation = () => {
         const payload = {
           ...formData,
           items: rows.map((row) => ({
-            srNo: row.srNo,
+            srNo: row.id,
             product: row.product,
             qty: row.qty,
             rate: row.rate,
@@ -223,7 +244,7 @@ const Qutation = () => {
           customer: selectcustomer,
           ...formData,
           items: rows.map((row) => ({
-            srNo: row.srNo,
+            srNo: row.id,
             product: row.product,
             qty: row.qty,
             rate: row.rate,
@@ -309,7 +330,7 @@ const Qutation = () => {
             <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
-                  <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
+                  {/* <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell> */}
                   <TableCell width={650} sx={{ fontSize: '12px' }}>
                     PRODUCT
                   </TableCell>
@@ -321,13 +342,13 @@ const Qutation = () => {
                 <TableBody>
                   {rows.map((row) => (
                     <TableRow key={row.srNo}>
-                      <TableCell id="newcs">
+                      {/* <TableCell id="newcs">
                         <input
                           placeholder="Enter Sr.No."
                           value={row.srNo}
                           onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
                         />
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell id="newcs">
                         <Select
                           color="secondary"
@@ -349,7 +370,7 @@ const Qutation = () => {
                         {/* <input placeholder="Amount" value={subtotal} onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)} /> */}
                       </TableCell>
                       <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <DeleteIcon onClick={() => handleDeleteRow(row.srNo, row.id)} />
+                        <DeleteIcon onClick={() => handleDeleteRow(row.id)} />
                       </TableCell>
                     </TableRow>
                   ))}

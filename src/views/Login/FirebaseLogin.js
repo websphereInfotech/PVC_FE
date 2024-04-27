@@ -26,8 +26,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { loginAdmin } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import EmailIcon from '@mui/icons-material/Email';
-// import Google from 'assets/images/social-google.svg';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 // ==============================|| FIREBASE LOGIN ||============================== //
 
@@ -49,11 +48,11 @@ const FirebaseLogin = ({ ...rest }) => {
     <>
       <Formik
         initialValues={{
-          email: '',
+          mobileno: '',
           password: ''
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          mobileno: Yup.string().max(10).required('Mobile Number is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={(values, { setSubmitting }) => {
@@ -69,23 +68,22 @@ const FirebaseLogin = ({ ...rest }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...rest}>
             <TextField
-              error={Boolean(touched.email && errors.email)}
+              error={Boolean(touched.mobileno && errors.mobileno)}
               fullWidth
-              helperText={touched.email && errors.email}
-              label="Email Address / Username"
+              helperText={touched.mobileno && errors.mobileno}
+              label="Mobile Number"
               margin="normal"
-              name="email"
+              name="mobileno"
               onBlur={handleBlur}
               onChange={handleChange}
-              type="email"
-              value={values.email}
+              value={values.mobileno}
               variant="outlined"
               color="secondary"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton aria-label="toggle password visibility" edge="end" size="large">
-                      <EmailIcon />
+                      <PhoneIcon />
                     </IconButton>
                   </InputAdornment>
                 )
@@ -138,6 +136,12 @@ const FirebaseLogin = ({ ...rest }) => {
                 Log In
               </Button>
             </Box>
+
+            {/* <Box pt={2}>
+              <Button fullWidth position='end' size="large" variant="text" color="secondary">
+                Reset Password ?
+              </Button>
+            </Box> */}
           </form>
         )}
       </Formik>

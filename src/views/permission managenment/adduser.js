@@ -1,32 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { Userview, createuser, updateUser } from 'store/thunk';
+import { useDispatch } from 'react-redux';
 
 const User = () => {
-  //   const [formData, setFormData] = useState({
-  //     customer: '',
-  //     mobileno: '',
-  //     email: '',
-  //     date: '',
-  //     quotation_no: '',
-  //     validtill: ''
-  //   });
+  const [formData, setFormData] = useState({
+    username: '',
+    mobileno: '',
+    email: '',
+    role: '',
+    salary: '',
+    password: '',
+    confirmpassword: ''
+  });
   const isMobile = useMediaQuery('(max-width:600px)');
-  //   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams();
   const roledata = [
     { value: 'Admin', label: 'Admin' },
-    { value: 'Finance', label: 'Finance' },
+    { value: 'Financial', label: 'Financial' },
     { value: 'Employee', label: 'Employee' },
-    { value: 'Worker', label: 'Worker' },
+    { value: 'Workers', label: 'Workers' },
     { value: 'Other', label: 'Other' }
   ];
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(Userview(id));
+          const { username, role, email, mobileno, salary, password, confirmpassword } = response;
+          setFormData({ username, role, email, mobileno, salary, password, confirmpassword });
+        }
+      } catch (error) {
+        console.error('Error creating user:', error);
+      }
+    };
+    fetchdata();
+  }, [dispatch, id]);
+
+  const handleCreateUser = async () => {
+    try {
+      if (id) {
+        await dispatch(updateUser(id, formData, navigate));
+      } else {
+        const data = { ...formData };
+        await dispatch(createuser(data, navigate));
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -43,59 +74,72 @@ const User = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="subtitle1">User Name</Typography>
-              <input placeholder="Enter Name" />
+              <input
+                placeholder="Enter Name"
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="subtitle1">Mobile No.</Typography>
               <input
                 placeholder="Enter Mobile number"
-                // id="mobileno"
-                // value={formData.mobileno}
-                // onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
+                id="mobileno"
+                value={formData.mobileno}
+                onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="subtitle1">Email</Typography>
               <input
                 placeholder="Enter Email"
-                // id="email"
-                // value={formData.email}
-                // onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                id="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="subtitle1">Role</Typography>
-              <Select color="secondary" options={roledata} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">Password</Typography>
-              <input
-                // type="password"
-                placeholder="Enter Password"
-                // id="date"
-                // value={formData.date ? formData.date.split('T')[0] : ''}
-                // onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              <Select
+                color="secondary"
+                options={roledata}
+                value={roledata.find((option) => option.value === formData.role)}
+                onChange={(selectedOption) => setFormData({ ...formData, role: selectedOption.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">Confirm Password</Typography>
-              <input
-                // type="password"
-                placeholder="Enter Confirm Password"
-                // id="validtill"
-                // value={formData.validtill ? formData.validtill.split('T')[0] : ''}
-                // onChange={(e) => setFormData({ ...formData, validtill: e.target.value })}
-              />
-            </Grid>
+            {!id && (
+              <>
+                <Grid item xs={12} sm={6} md={4}>
+                  <Typography variant="subtitle1">Password</Typography>
+                  <input
+                    type="password"
+                    placeholder="Enter Password"
+                    id="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                  <Typography variant="subtitle1">Confirm Password</Typography>
+                  <input
+                    type="password"
+                    placeholder="Enter Confirm Password"
+                    id="confirmpassword"
+                    value={formData.confirmpassword}
+                    onChange={(e) => setFormData({ ...formData, confirmpassword: e.target.value })}
+                  />
+                </Grid>
+              </>
+            )}
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="subtitle1">Basic Salary</Typography>
               <input
                 placeholder="Enter Salary"
-                // id="validtill"
-                // value={formData.validtill ? formData.validtill.split('T')[0] : ''}
-                // onChange={(e) => setFormData({ ...formData, validtill: e.target.value })}
+                id="salary"
+                value={formData.salary}
+                onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
               />
             </Grid>
           </Grid>
@@ -113,7 +157,9 @@ const User = () => {
                     Cancel
                   </button>
                 </Link>
-                <button id="savebtncs">Save</button>
+                <button id="savebtncs" onClick={handleCreateUser}>
+                  Save
+                </button>
               </div>
             </Grid>
           ) : (
@@ -129,10 +175,13 @@ const User = () => {
                   style={{
                     marginRight: '10px'
                   }}
+                  onClick={handleCreateUser}
                 >
                   Save & Next
                 </button>
-                <button id="savebtncs">Save</button>
+                <button id="savebtncs" onClick={handleCreateUser}>
+                  Save
+                </button>
               </div>
             </Grid>
           )}

@@ -173,8 +173,9 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
     { path: '/permission', element: <Permission /> },
     { path: '/adduser', element: <User /> },
+    { path: '/updateuser/:id', element: <User /> },
     { path: '/userlist', element: <UserList /> },
-    { path: '/userview', element: <Userviewpage /> },
+    { path: '/userview/:id', element: <Userviewpage /> },
 
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },

@@ -59,7 +59,7 @@ const Quotationviewpage = () => {
           <div style={{ maxHeight: '300px' }}>
             <Table>
               <TableHead>
-                <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell>
+                {/* <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell> */}
                 <TableCell sx={{ fontSize: '12px' }}>PRODUCT/SERVICE</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹) (EXCL. TAX)</TableCell>
@@ -69,7 +69,7 @@ const Quotationviewpage = () => {
                 {data?.items &&
                   data?.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.srNo}</TableCell>
+                      {/* <TableCell>{item?.srNo}</TableCell> */}
                       <TableCell>{item?.product}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.qty}</TableCell>

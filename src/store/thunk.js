@@ -9,6 +9,9 @@ import {
   loginRequest,
   loginSuccess,
   loginFailure,
+  logoutRequest,
+  logoutSuccess,
+  logoutFailure,
   // QUOTATION ++++++++++++++++++++++++++++++
   fetchQuotationRequest,
   fetchQuotationSuccess,
@@ -160,7 +163,20 @@ import {
   getAllPermissionsFailure,
   updatePermissionsRequest,
   updatePermissionsSuccess,
-  updatePermissionsFailure
+  updatePermissionsFailure,
+  // USER ++++++++++++++++++++++++
+  createUserRequest,
+  createUserSuccess,
+  createUserFailure,
+  getallUserRequest,
+  getallUserSuccess,
+  getallUserFailure,
+  viewUserRequest,
+  viewUserSuccess,
+  viewUserFailure,
+  UpdateUserRequest,
+  UpdateUserSuccess,
+  UpdateUserFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -178,7 +194,7 @@ export const loginAdmin = (credentials, navigate) => {
   return async (dispatch) => {
     dispatch(loginRequest());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/admin_login`, credentials);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user_login`, credentials);
       const token = response.data.token;
       sessionStorage.setItem('token', token);
       const decodedToken = jwtDecode(token);
@@ -198,6 +214,28 @@ export const loginAdmin = (credentials, navigate) => {
     } catch (error) {
       toast.error(error.response.data.error, { autoClose: 1000 });
       dispatch(loginFailure(error.message));
+    }
+  };
+};
+export const logoutAdmin = (navigate) => {
+  return async (dispatch) => {
+    dispatch(logoutRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user_logout`, {}, config);
+      const userData = response.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/');
+        }
+      });
+      dispatch(logoutSuccess(userData));
+      return userData;
+    } catch (error) {
+      toast.error(error.response.data.error, { autoClose: 1000 });
+      dispatch(logoutFailure(error.message));
     }
   };
 };
@@ -433,7 +471,12 @@ export const createCustomer = (customerData) => {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       dispatch(createCustomerSuccess(createdCustomer));
+      window.location.reload();
       alert('customer crate successfully');
       return createdCustomer;
     } catch (error) {
@@ -957,6 +1000,81 @@ export const updatePermission = (data) => {
       return updatePermissionData;
     } catch (error) {
       dispatch(updatePermissionsFailure(error.message));
+      throw error;
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ User +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createuser = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(createUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_user`, data, config);
+      const userData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/userlist');
+        }
+      });
+      dispatch(createUserSuccess(userData));
+      return userData;
+    } catch (error) {
+      dispatch(createUserFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallusers = () => {
+  return async (dispatch) => {
+    dispatch(getallUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user`, config);
+      const getallUsers = response.data.data;
+      dispatch(getallUserSuccess(getallUsers));
+      return getallUsers;
+    } catch (error) {
+      dispatch(getallUserFailure(error.message));
+    }
+  };
+};
+export const Userview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_user/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewUserSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(viewUserFailure(error.message));
+    }
+  };
+};
+export const updateUser = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_user/${id}`, formData, config);
+      const updateUserData = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/userlist');
+        }
+      });
+      dispatch(UpdateUserSuccess(updateUserData));
+      return updateUserData;
+    } catch (error) {
+      dispatch(UpdateUserFailure(error.message));
       throw error;
     }
   };

@@ -9,6 +9,9 @@ export const MENU_TYPE = '@customization/MENU_TYPE';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
 // ######################################## QUOTATION #####################################################################
 export const FETCH_QUOTATION_REQUEST = 'FETCH_QUOTATION_REQUEST';
@@ -174,6 +177,21 @@ export const UPDATE_PERMISSIONS_REQUEST = 'UPDATE_PERMISSIONS_REQUEST';
 export const UPDATE_PERMISSIONS_SUCCESS = 'UPDATE_PERMISSIONS_SUCCESS';
 export const UPDATE_PERMISSIONS_FAILURE = 'UPDATE_PERMISSIONS_FAILURE';
 
+// ############################################################### USER #######################################################################
+
+export const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
+export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
+export const CREATE_USER_FAILURE = 'CREATE_USER_FAILURE';
+export const GET_ALL_USER_REQUEST = 'GET_ALL_USER_REQUEST';
+export const GET_ALL_USER_SUCCESS = 'GET_ALL_USER_SUCCESS';
+export const GET_ALL_USER_FAILURE = 'GET_ALL_USER_FAILURE';
+export const VIEW_USER_REQUEST = 'VIEW_USER_REQUEST';
+export const VIEW_USER_SUCCESS = 'VIEW_USER_SUCCESS';
+export const VIEW_USER_FAILURE = 'VIEW_USER_FAILURE';
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -186,7 +204,17 @@ export const loginFailure = (error) => ({
   type: 'LOGIN_FAILURE',
   payload: error
 });
-
+export const logoutRequest = () => ({
+  type: 'LOGOUT_REQUEST'
+});
+export const logoutSuccess = (user) => ({
+  type: 'LOGOUT_SUCCESS',
+  payload: user
+});
+export const logoutFailure = (error) => ({
+  type: 'LOGOUT_FAILURE',
+  payload: error
+});
 // #################################################################### QUOTATION ###################################################################################
 export const fetchQuotationRequest = () => ({
   type: 'FETCH_QUOTATION_REQUEST'
@@ -766,5 +794,54 @@ export const updatePermissionsSuccess = (data) => ({
 });
 export const updatePermissionsFailure = (error) => ({
   type: 'UPDATE_PERMISSIONS_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ USER ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createUserRequest = (data) => ({
+  type: 'CREATE_USER_REQUEST',
+  payload: data
+});
+export const createUserSuccess = (data) => ({
+  type: 'CREATE_USER_SUCCESS',
+  payload: data
+});
+export const createUserFailure = (error) => ({
+  type: 'CREATE_USER_FAILURE',
+  payload: error
+});
+export const getallUserRequest = (data) => ({
+  type: 'GET_ALL_USER_REQUEST',
+  payload: data
+});
+export const getallUserSuccess = (data) => ({
+  type: 'GET_ALL_USER_SUCCESS',
+  payload: data
+});
+export const getallUserFailure = (error) => ({
+  type: 'GET_ALL_USER_FAILURE',
+  payload: error
+});
+export const viewUserRequest = (data) => ({
+  type: 'VIEW_USER_REQUEST',
+  payload: data
+});
+export const viewUserSuccess = (data) => ({
+  type: 'VIEW_USER_SUCCESS',
+  payload: data
+});
+export const viewUserFailure = (error) => ({
+  type: 'VIEW_USER_FAILURE',
+  payload: error
+});
+export const UpdateUserRequest = (data) => ({
+  type: 'UPDATE_USER_REQUEST',
+  payload: data
+});
+export const UpdateUserSuccess = (data) => ({
+  type: 'UPDATE_USER_SUCCESS',
+  payload: data
+});
+export const UpdateUserFailure = (error) => ({
+  type: 'UPDATE_USER_FAILURE',
   payload: error
 });

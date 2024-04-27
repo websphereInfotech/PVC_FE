@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Card } from '@mui/material';
 import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
+import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -10,23 +10,25 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getallusers, Userview } from 'store/thunk';
 
 const columns = [
-  { id: 'name', label: 'User Name', align: 'center' },
+  { id: 'username', label: 'User Name', align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', align: 'center' },
   { id: 'email', label: 'Email', align: 'center' },
   { id: 'role', label: 'Role', align: 'center' },
-  { id: 'basicsalary', label: 'Basic Salary', align: 'center' },
+  { id: 'salary', label: 'Basic Salary', align: 'center' },
   { id: 'view', label: 'View', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' }
 ];
 
 export default function UserList() {
-  //   const navigate = useNavigate();
-  //   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [data, setData] = useState([]);
 
   // use for change page
   const handleChangePage = (event, newPage) => {
@@ -39,6 +41,27 @@ export default function UserList() {
     setPage(0);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(getallusers());
+        setData(response);
+      } catch (error) {
+        console.error('Error fetching User:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const handleViewUser = (id) => {
+    dispatch(Userview(id));
+    navigate(`/userview/${id}`);
+  };
+  const handleUpdateUser = (id) => {
+    dispatch(Userview(id));
+    navigate(`/updateuser/${id}`);
+  };
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -60,17 +83,17 @@ export default function UserList() {
               ))}
             </TableRow>
           </TableHead>
-          {/* <TableBody>
-            {quotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+          <TableBody>
+            {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" >
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewUser(row.id)}>
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary">
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)}>
                         Edit
                       </Button>
                     ) : column.id === 'date' ? (
@@ -84,13 +107,13 @@ export default function UserList() {
                 ))}
               </TableRow>
             ))}
-          </TableBody> */}
+          </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        // count={quotations.length}
+        count={data?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

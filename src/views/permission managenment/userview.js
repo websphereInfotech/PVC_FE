@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
-// import { Quotationview } from 'store/thunk';
+import { Userview } from 'store/thunk';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const Userviewpage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-  //   const dispatch = useDispatch();
-  //   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [data, setData] = useState({});
+
+  //called api for view data
+  useEffect(() => {
+    dispatch(Userview(id))
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching User data:', error);
+      });
+  }, [dispatch, id]);
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
@@ -19,28 +31,23 @@ const Userviewpage = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">User</Typography>
-          <Typography variant="subtitle2">demo name</Typography>
-          {/* <Typography variant="subtitle2">{data?.customer}</Typography> */}
+          <Typography variant="subtitle2">{data?.username}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">0123456789</Typography>
-          {/* <Typography variant="subtitle2">{data?.mobileno}</Typography> */}
+          <Typography variant="subtitle2">{data?.mobileno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">demo@gmail.com</Typography>
-          {/* <Typography variant="subtitle2">{data?.email}</Typography> */}
+          <Typography variant="subtitle2">{data?.email}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Role</Typography>
-          <Typography variant="subtitle2">Admin</Typography>
-          {/* <Typography variant="subtitle2">{data?.quotation_no}</Typography> */}
+          <Typography variant="subtitle2">{data?.role}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Basic Salary</Typography>
-          <Typography variant="subtitle2">12000</Typography>
-          {/* <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString()}</Typography> */}
+          <Typography variant="subtitle2">{data?.salary}</Typography>
         </Grid>
 
         {isMobile ? (
