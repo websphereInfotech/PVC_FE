@@ -143,7 +143,7 @@ input {
 }
 #newcs {
   padding: 5px;
-  text-align: center;
+  // text-align: center;
 }
 #buttoncs {
   width: 100px;
@@ -178,9 +178,13 @@ input {
   justify-content: space-between;
 }
 .css-b62m3t-container {
-  width: 70%;
+  width: 80%;
 }
 .css-o7venk-MuiTableCell-root {
   padding: 10px 12px;
-  text-align: center;
+  width: 20%;
+  // text-align: center;
 }
+// .css-7j6new-MuiTableCell-root {
+// border-bottom: none;
+// }

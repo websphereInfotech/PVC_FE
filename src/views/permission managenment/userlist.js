@@ -20,7 +20,8 @@ const columns = [
   { id: 'role', label: 'Role', align: 'center' },
   { id: 'salary', label: 'Basic Salary', align: 'center' },
   { id: 'view', label: 'View', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' }
+  { id: 'edit', label: 'Edit', align: 'center' },
+  { id: 'delete', label: 'Delete', align: 'center' }
 ];
 
 export default function UserList() {
@@ -95,6 +96,10 @@ export default function UserList() {
                     ) : column.id === 'edit' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)}>
                         Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)}>
+                        Delete
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString()

@@ -10,7 +10,8 @@ export const initialState = {
   quotations: [],
   loadingQuotations: false,
   errorQuotations: null,
-  purchase: []
+  purchase: [],
+  permipermissions: []
 };
 
 const customizationReducer = (state = initialState, action) => {
@@ -73,6 +74,11 @@ const customizationReducer = (state = initialState, action) => {
         isAuthenticated: true,
         purchase: action.payload,
         error: null
+      };
+    case actionTypes.FETCH_ALL_PERMISSIONS_SUCCESS:
+      return {
+        ...state,
+        permissions: action.payload
       };
     default:
       return state;

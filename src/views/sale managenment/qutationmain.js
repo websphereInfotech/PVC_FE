@@ -1,19 +1,24 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
-// import { SiInvoiceninja } from 'react-icons/si';
-// import { HiReceiptRefund } from "react-icons/hi";
 import { RiRefundFill } from 'react-icons/ri';
-// import MarkAsUnreadIcon from '@mui/icons-material/MarkAsUnread';
+import useCan from '../checkpermissionvalue';
 
 const Quotationmain = () => {
+  const { canCreateQuotation, canViewAllQuotation } = useCan();
   return (
     <Grid>
       <Grid xs={12} md={4} sm={6} sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h3" sx={{ alignItems: 'center', display: 'flex', fontWeight: '300' }}>
           Quotation
         </Typography>
-        <Button variant="contained" color="secondary" sx={{ fontWeight: '300', display: { xs: 'none', sm: 'block' } }} href="/qutation">
-          Create Quotation
+        <Button
+          variant="contained"
+          disabled={!canViewAllQuotation()}
+          color="secondary"
+          sx={{ fontWeight: '300', display: { xs: 'none', sm: 'block' } }}
+          href="/qutationlist"
+        >
+          Quotation List
         </Button>
       </Grid>
       <Grid xs={12} md={8} sm={6} sx={{ marginTop: '20px' }}>
@@ -33,7 +38,7 @@ const Quotationmain = () => {
               <p style={{ color: 'rgb(130 134 139)', fontWeight: '400', fontSize: '1rem' }}>
                 With perfect estimation, give your customers an offer they can not reject!<br></br>
               </p>
-              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }} href="/qutation">
+              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }} href="/qutation" disabled={!canCreateQuotation()}>
                 Create Quotation
               </Button>
             </div>

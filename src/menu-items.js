@@ -43,12 +43,12 @@ const icons = {
   BusinessCenterIcon: BusinessCenterIcon
 };
 const getTypeFromSessionStorage = () => {
-  return sessionStorage.getItem('type');
+  return sessionStorage.getItem('token');
 };
 
 const createConfig = () => {
-  const type = getTypeFromSessionStorage();
-  return type;
+  const token = getTypeFromSessionStorage();
+  return token;
 };
 
 export default {
@@ -67,7 +67,7 @@ export default {
         }
       ]
     },
-    createConfig() === 'C'
+    createConfig() === 'C' && 'Super Admin'
       ? {
           type: 'group',
           icon: icons['NavigationOutlinedIcon'],
@@ -86,9 +86,9 @@ export default {
                 },
                 {
                   id: 'adduser',
-                  title: 'Create User',
+                  title: 'User Management',
                   type: 'item',
-                  url: '/adduser'
+                  url: '/userlist'
                 }
               ]
             }

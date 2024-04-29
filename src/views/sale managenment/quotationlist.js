@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -26,6 +27,7 @@ const columns = [
 ];
 
 export default function QuotationList() {
+  const { canUpdateQuotation, canCreateQuotation, canViewQuotation } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
@@ -75,7 +77,7 @@ export default function QuotationList() {
         Quotation List
       </Typography>
       <Link to="/qutation" style={{ textDecoration: 'none' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }}>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} disabled={!canCreateQuotation()}>
           Create Quotation
         </Button>
       </Link>
@@ -96,11 +98,21 @@ export default function QuotationList() {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewQuotation(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canViewQuotation()}
+                        onClick={() => handleViewQuotation(row.id)}
+                      >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateQuotation(row.id)}>
+                      <Button
+                        disabled={!canUpdateQuotation()}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdateQuotation(row.id)}
+                      >
                         Edit
                       </Button>
                     ) : column.id === 'date' ? (

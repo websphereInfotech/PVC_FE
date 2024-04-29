@@ -477,9 +477,11 @@ export const createCustomer = (customerData) => {
       });
       dispatch(createCustomerSuccess(createdCustomer));
       window.location.reload();
-      alert('customer crate successfully');
       return createdCustomer;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(createCustomerFailure(error.message));
       throw error;
     }

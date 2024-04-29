@@ -30,6 +30,7 @@ const User = () => {
     { value: 'Other', label: 'Other' }
   ];
 
+  // show data in feild for update user details
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchdata = async () => {
@@ -46,6 +47,7 @@ const User = () => {
     fetchdata();
   }, [dispatch, id]);
 
+  // handle use for create user and update user
   const handleCreateUser = async () => {
     try {
       if (id) {
@@ -58,6 +60,7 @@ const User = () => {
       console.error('Error creating user:', error);
     }
   };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
