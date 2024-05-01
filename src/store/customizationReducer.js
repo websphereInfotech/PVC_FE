@@ -72,8 +72,6 @@ const customizationReducer = (state = getInitialState(), action) => {
         error: null
       };
     case actionTypes.LOGIN_SUCCESS:
-      console.log('LOGIN_SUCCESS - Token:', action.payload.token);
-      console.log('LOGIN_SUCCESS - User:', action.payload);
       return {
         ...state,
         user: action.payload,
@@ -82,12 +80,17 @@ const customizationReducer = (state = getInitialState(), action) => {
       };
 
     case actionTypes.LOGIN_FAILURE:
-      console.log('LOGIN_FAILURE - Error:', action.payload);
       return {
         ...state,
         isAuthenticated: false,
         user: null,
         error: action.payload
+      };
+    case actionTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null
       };
     case actionTypes.VIEW_PURCHASE_SUCCESS:
       return {
