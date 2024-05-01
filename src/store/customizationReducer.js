@@ -5,7 +5,7 @@ import * as actionTypes from './actions';
 
 export const initialState = {
   open: false,
-  isOpen: true, 
+  isOpen: true,
   navType: '',
   quotations: [],
   loadingQuotations: false,
@@ -25,7 +25,7 @@ const getInitialState = () => {
     return {
       ...initialState,
       isAuthenticated: true,
-      user: JSON.parse(user),
+      user: JSON.parse(user)
     };
   }
   return initialState;
@@ -71,18 +71,18 @@ const customizationReducer = (state = getInitialState(), action) => {
         ...state,
         error: null
       };
-      case actionTypes.LOGIN_SUCCESS:
-        console.log("LOGIN_SUCCESS - Token:", action.payload.token);
-        console.log("LOGIN_SUCCESS - User:", action.payload);
-        return {
-          ...state,
-          user: action.payload,
-          isAuthenticated: true,
-          error: null,
-        };
-      
+    case actionTypes.LOGIN_SUCCESS:
+      console.log('LOGIN_SUCCESS - Token:', action.payload.token);
+      console.log('LOGIN_SUCCESS - User:', action.payload);
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        error: null
+      };
+
     case actionTypes.LOGIN_FAILURE:
-      console.log("LOGIN_FAILURE - Error:", action.payload);
+      console.log('LOGIN_FAILURE - Error:', action.payload);
       return {
         ...state,
         isAuthenticated: false,

@@ -96,11 +96,15 @@ const ReportPage = Loadable(lazy(() => import('../views/production managenment/p
 
 const MainRoutes = {
   path: '/',
-  element: <Protected><MainLayout /></Protected>,
+  element: (
+    <Protected>
+      <MainLayout />
+    </Protected>
+  ),
   children: [
     {
       path: '/dashboard',
-      element: <Protected><DashboardDefault /></Protected>
+      element: <DashboardDefault />
     },
     { path: '/profile', element: <SamplePage /> },
 

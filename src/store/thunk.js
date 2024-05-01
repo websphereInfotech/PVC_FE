@@ -202,7 +202,6 @@ export const loginAdmin = (credentials, navigate) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user_login`, credentials);
       const token = response.data.token;
-      console.log("token>>>>>>>>>>>>>>",token);
       sessionStorage.setItem('token', token);
       const decodedToken = jwtDecode(token);
       const tokentype = decodedToken.type;
@@ -210,8 +209,7 @@ export const loginAdmin = (credentials, navigate) => {
       const roletype = decodedToken.role;
       sessionStorage.setItem('role', roletype);
       const userData = response.data;
-      sessionStorage.setItem('user',JSON.stringify(userData));
-      console.log("userData<<<<<<<<<<<<<<<",userData);
+      sessionStorage.setItem('user', JSON.stringify(userData));
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,

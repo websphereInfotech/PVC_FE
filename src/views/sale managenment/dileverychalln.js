@@ -282,12 +282,16 @@ const Deliverychallan = () => {
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Customer</Typography>
+              <Typography variant="subtitle1">
+                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Mobile No.</Typography>
+              <Typography variant="subtitle1">
+                Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Mobile No."
                 id="mobileno"
@@ -296,7 +300,9 @@ const Deliverychallan = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Email</Typography>
+              <Typography variant="subtitle1">
+                Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Email Address"
                 id="email"
@@ -307,7 +313,9 @@ const Deliverychallan = () => {
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Challan No.</Typography>
+              <Typography variant="subtitle1">
+                Challan No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="0001"
                 id="challanno"
@@ -316,7 +324,9 @@ const Deliverychallan = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Challan Date</Typography>
+              <Typography variant="subtitle1">
+                Challan Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 type="date"
                 id="date"
@@ -331,12 +341,24 @@ const Deliverychallan = () => {
               <Table>
                 <TableHead>
                   <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>QUOTATION NO.</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>PRODUCT</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>BATCH NO.</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>EXP.DATE</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>MRP</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    QUOTATION NO. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    BATCH NO. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    EXP.DATE : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    MRP:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    QTY:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>

@@ -192,7 +192,9 @@ const Salesinvoice = () => {
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Customer</Typography>
+              <Typography variant="subtitle1">
+                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <Select
                 color="secondary"
                 options={
@@ -211,43 +213,61 @@ const Salesinvoice = () => {
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Mobile No.</Typography>
+              <Typography variant="subtitle1">
+                Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput placeholder="Enter Mobile No." id="mobileno" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Email</Typography>
+              <Typography variant="subtitle1">
+                Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput placeholder="Enter Email Address" id="email" fullWidth />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Book</Typography>
+              <Typography variant="subtitle1">
+                Book : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput fullWidth id="book" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Series Name</Typography>
+              <Typography variant="subtitle1">
+                Series Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput placeholder="Sales invoice" id="seriesname" fullWidth />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Invoice No.</Typography>
+              <Typography variant="subtitle1">
+                Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput placeholder="0001" fullWidth id="invoiceno" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Invoice Date</Typography>
+              <Typography variant="subtitle1">
+                Invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput type="date" fullWidth id="invoicedate" />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Terms (Days)</Typography>
+              <Typography variant="subtitle1">
+                Terms (Days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput placeholder="Terms (Days)" fullWidth id="terms" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Due Date</Typography>
+              <Typography variant="subtitle1">
+                Due Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput type="date" fullWidth id="duedate" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Quotation No.</Typography>
+              <Typography variant="subtitle1">
+                Quotation No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <StyledInput placeholder="Quotation no." id="quotation_no" fullWidth />
             </Grid>
           </Grid>
@@ -256,13 +276,21 @@ const Salesinvoice = () => {
             <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
               <Table>
                 <TableHead>
-                  <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
-                  <TableCell width={650} sx={{ fontSize: '12px' }}>
-                    PRODUCT
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    Sr.No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
+                  <TableCell width={650} sx={{ fontSize: '12px' }}>
+                    PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    RATE (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    AMOUNT (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>
