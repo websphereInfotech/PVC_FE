@@ -113,43 +113,59 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       <Box sx={{ width: { xs: 320, sm: 550 } }} role="presentation" marginTop={'50px'}>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Account Name</Typography>
+            <Typography variant="subtitle1">
+              Account Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Account Name" id="accountname" value={formData.accountname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Short/Alias Name</Typography>
+            <Typography variant="subtitle1">
+              Short/Alias Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Short/Alias Name" id="shortname" value={formData.shortname} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Email</Typography>
+            <Typography variant="subtitle1">
+              Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Email" type="email" ref={emailRef} id="email" value={formData.email} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Contact person name</Typography>
+            <Typography variant="subtitle1">
+              Contact person name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Name" id="contactpersonname" value={formData.contactpersonname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Mobile No.</Typography>
+            <Typography variant="subtitle1">
+              Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Mobile No." id="mobileno" value={formData.mobileno} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">PAN/IT/TAN No.</Typography>
+            <Typography variant="subtitle1">
+              PAN/IT/TAN No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="BJXXX001" id="panno" value={formData.panno} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Default Credit Period (In days)</Typography>
+            <Typography variant="subtitle1">
+              Default Credit Period (In days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Default Credit Period" id="creditperiod" value={formData.creditperiod} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Mode</Typography>
+            <Typography variant="subtitle1">
+              Mode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={handleInputChange} />
           </Grid>
         </Grid>
@@ -160,7 +176,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Address 1</Typography>
+            <Typography variant="subtitle1">
+              Address 1 : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Floor,buliding Name" id="address1" value={formData.address1} onChange={handleInputChange} />
           </Grid>
           <Grid item>
@@ -170,34 +188,46 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Country</Typography>
+            <Typography variant="subtitle1">
+              Country : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Country" id="country" value={formData.country} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Pincode</Typography>
+            <Typography variant="subtitle1">
+              Pincode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="395001" id="pincode" value={formData.pincode} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">State</Typography>
+            <Typography variant="subtitle1">
+              State : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="State" id="state" value={formData.state} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">City</Typography>
+            <Typography variant="subtitle1">
+              City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="City" id="city" value={formData.city} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }} md={5}>
-            <Typography variant="subtitle1">Provide bank details?</Typography>
+            <Typography variant="subtitle1">
+              Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
           <Grid item sx={{ margin: '8px 16px' }} md={5}>
-            <Typography variant="subtitle1">Enable credit limit?</Typography>
+            <Typography variant="subtitle1">
+              Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -210,7 +240,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             {customFields.map((field, index) => (
               <Grid key={index} container spacing={2} sx={{ margin: '1px' }}>
                 <Grid item md={5}>
-                  <Typography variant="subtitle1">Label</Typography>
+                  <Typography variant="subtitle1">
+                    Label : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input
                     placeholder="Label"
                     value={field.label}
@@ -222,7 +254,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
                   />
                 </Grid>
                 <Grid item md={5}>
-                  <Typography variant="subtitle1">Value</Typography>
+                  <Typography variant="subtitle1">
+                    Value : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input
                     placeholder="Value"
                     value={field.value}
@@ -262,7 +296,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         <Grid item sx={{ margin: '8px 16px' }}>
           <Grid item sx={12} sm={6}>
             <Typography variant="h5" sx={{ margin: '20px 0px 10px 0px' }}>
-              Opening Balance
+              Opening Balance : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="₹0.00" id="balance" value={formData.balance} onChange={handleInputChange} />
           </Grid>
