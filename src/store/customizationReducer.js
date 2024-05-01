@@ -5,16 +5,33 @@ import * as actionTypes from './actions';
 
 export const initialState = {
   open: false,
-  isOpen: true, //for active default menu
+  isOpen: true, 
   navType: '',
   quotations: [],
   loadingQuotations: false,
   errorQuotations: null,
   purchase: [],
-  permipermissions: []
+  permipermissions: [],
+  isAuthenticated: false,
+  user: {},
+  error: null
 };
 
-const customizationReducer = (state = initialState, action) => {
+const getInitialState = () => {
+  const token = sessionStorage.getItem('token');
+  const user = sessionStorage.getItem('user');
+
+  if (token && user) {
+    return {
+      ...initialState,
+      isAuthenticated: true,
+      user: JSON.parse(user),
+    };
+  }
+  return initialState;
+};
+
+const customizationReducer = (state = getInitialState(), action) => {
   switch (action.type) {
     case actionTypes.MENU_OPEN:
       return {
@@ -31,37 +48,41 @@ const customizationReducer = (state = initialState, action) => {
         ...state,
         navType: action.navType
       };
-    case actionTypes.FETCH_QUOTATION_REQUEST:
-      return {
-        ...state,
-        loadingQuotations: true,
-        errorQuotations: null
-      };
-    case actionTypes.FETCH_QUOTATION_SUCCESS:
-      return {
-        ...state,
-        loadingQuotations: false,
-        quotations: action.payload
-      };
-    case actionTypes.FETCH_QUOTATION_FAILURE:
-      return {
-        ...state,
-        loadingQuotations: false,
-        errorQuotations: action.payload
-      };
+    // case actionTypes.FETCH_QUOTATION_REQUEST:
+    //   return {
+    //     ...state,
+    //     loadingQuotations: true,
+    //     errorQuotations: null
+    //   };
+    // case actionTypes.FETCH_QUOTATION_SUCCESS:
+    //   return {
+    //     ...state,
+    //     loadingQuotations: false,
+    //     quotations: action.payload
+    //   };
+    // case actionTypes.FETCH_QUOTATION_FAILURE:
+    //   return {
+    //     ...state,
+    //     loadingQuotations: false,
+    //     errorQuotations: action.payload
+    //   };
     case actionTypes.LOGIN_REQUEST:
       return {
         ...state,
         error: null
       };
-    case actionTypes.LOGIN_SUCCESS:
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        error: null
-      };
+      case actionTypes.LOGIN_SUCCESS:
+        console.log("LOGIN_SUCCESS - Token:", action.payload.token);
+        console.log("LOGIN_SUCCESS - User:", action.payload);
+        return {
+          ...state,
+          user: action.payload,
+          isAuthenticated: true,
+          error: null,
+        };
+      
     case actionTypes.LOGIN_FAILURE:
+      console.log("LOGIN_FAILURE - Error:", action.payload);
       return {
         ...state,
         isAuthenticated: false,

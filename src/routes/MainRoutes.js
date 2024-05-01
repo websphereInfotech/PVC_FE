@@ -13,6 +13,7 @@ import Expensesummary from 'component/reports/general reports/expensesummary';
 import Itemratecard from 'component/reports/general reports/itemratecard';
 import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
+import Protected from 'service/Protected';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -95,11 +96,11 @@ const ReportPage = Loadable(lazy(() => import('../views/production managenment/p
 
 const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: <Protected><MainLayout /></Protected>,
   children: [
     {
       path: '/dashboard',
-      element: <DashboardDefault />
+      element: <Protected><DashboardDefault /></Protected>
     },
     { path: '/profile', element: <SamplePage /> },
 

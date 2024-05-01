@@ -43,12 +43,12 @@ const icons = {
   BusinessCenterIcon: BusinessCenterIcon
 };
 const getTypeFromSessionStorage = () => {
-  return sessionStorage.getItem('token');
+  return sessionStorage.getItem('type');
 };
 
 const createConfig = () => {
-  const token = getTypeFromSessionStorage();
-  return token;
+  const type = getTypeFromSessionStorage();
+  return type;
 };
 
 export default {
@@ -67,7 +67,7 @@ export default {
         }
       ]
     },
-    createConfig() === 'C' && 'Super Admin'
+    createConfig() === 'C'
       ? {
           type: 'group',
           icon: icons['NavigationOutlinedIcon'],

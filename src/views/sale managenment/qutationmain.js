@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import { RiRefundFill } from 'react-icons/ri';
 import useCan from '../checkpermissionvalue';
+import { Link } from 'react-router-dom';
 
 const Quotationmain = () => {
   const { canCreateQuotation, canViewAllQuotation } = useCan();
@@ -11,15 +12,16 @@ const Quotationmain = () => {
         <Typography variant="h3" sx={{ alignItems: 'center', display: 'flex', fontWeight: '300' }}>
           Quotation
         </Typography>
+        <Link to={'/qutationlist'}>
         <Button
           variant="contained"
           disabled={!canViewAllQuotation()}
           color="secondary"
           sx={{ fontWeight: '300', display: { xs: 'none', sm: 'block' } }}
-          href="/qutationlist"
         >
           Quotation List
         </Button>
+        </Link>
       </Grid>
       <Grid xs={12} md={8} sm={6} sx={{ marginTop: '20px' }}>
         <Card
@@ -38,9 +40,11 @@ const Quotationmain = () => {
               <p style={{ color: 'rgb(130 134 139)', fontWeight: '400', fontSize: '1rem' }}>
                 With perfect estimation, give your customers an offer they can not reject!<br></br>
               </p>
-              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }} href="/qutation" disabled={!canCreateQuotation()}>
+              <Link to={'/qutation'}>
+              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }}  disabled={!canCreateQuotation()}>
                 Create Quotation
               </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

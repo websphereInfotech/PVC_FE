@@ -106,7 +106,9 @@ const PaymentPage = () => {
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Vendor</Typography>
+              <Typography variant="subtitle1">
+                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 color="secondary"
                 id="voucherno"
@@ -116,7 +118,9 @@ const PaymentPage = () => {
             </Grid>
             {/* <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} /> */}
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Account</Typography>
+              <Typography variant="subtitle1">
+                Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Account"
                 id="account"
@@ -125,7 +129,9 @@ const PaymentPage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Email</Typography>
+              <Typography variant="subtitle1">
+                Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Email"
                 id="email"
@@ -143,7 +149,9 @@ const PaymentPage = () => {
 
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={2}>
-              <Typography variant="subtitle1">Payment Date</Typography>
+              <Typography variant="subtitle1">
+                Payment Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 type="date"
                 id="paymentdate"
@@ -152,11 +160,15 @@ const PaymentPage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
-              <Typography variant="subtitle1">Mode</Typography>
+              <Typography variant="subtitle1">
+                Mode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={(e) => handleInputChange('mode', e.target.value)} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
-              <Typography variant="subtitle1">Reference No.</Typography>
+              <Typography variant="subtitle1">
+                Reference No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 id="refno"
                 placeholder="Enter Reference No."
@@ -165,7 +177,9 @@ const PaymentPage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
-              <Typography variant="subtitle1">Paid from</Typography>
+              <Typography variant="subtitle1">
+                Paid from : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 id="paidfrom"
                 placeholder="Enter Paid from"
@@ -174,7 +188,9 @@ const PaymentPage = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
-              <Typography variant="subtitle1">Amount Paid (₹)</Typography>
+              <Typography variant="subtitle1">
+                Amount Paid (₹): <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 id="amount"
                 placeholder="Enter Amount"
@@ -190,7 +206,9 @@ const PaymentPage = () => {
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={2}>
-              <Typography variant="subtitle1">Find Bill No.</Typography>
+              <Typography variant="subtitle1">
+                Find Bill No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Find Bill No."
                 id="billno"

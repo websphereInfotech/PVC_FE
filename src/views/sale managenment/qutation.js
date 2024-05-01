@@ -205,12 +205,16 @@ const Qutation = () => {
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Customer</Typography>
+              <Typography variant="subtitle1">
+                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Mobile No.</Typography>
+              <Typography variant="subtitle1">
+                Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Mobile number"
                 id="mobileno"
@@ -219,7 +223,9 @@ const Qutation = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Email</Typography>
+              <Typography variant="subtitle1">
+                Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Email"
                 id="email"
@@ -230,7 +236,9 @@ const Qutation = () => {
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Quotation No.</Typography>
+              <Typography variant="subtitle1">
+                Quotation No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Quotation No."
                 id="quotation_no"
@@ -239,7 +247,9 @@ const Qutation = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Quotation Date</Typography>
+              <Typography variant="subtitle1">
+                Quotation Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 type="date"
                 id="date"
@@ -248,7 +258,9 @@ const Qutation = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Valid Till</Typography>
+              <Typography variant="subtitle1">
+                Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 type="date"
                 id="validtill"
@@ -264,11 +276,17 @@ const Qutation = () => {
                 <TableHead>
                   {/* <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell> */}
                   <TableCell width={500} sx={{ fontSize: '12px' }}>
-                    PRODUCT
+                    PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    RATE (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    AMOUNT (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>
