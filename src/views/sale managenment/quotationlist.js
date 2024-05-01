@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Quotationview, fetchQuotationList } from 'store/thunk';
-import { Card } from '@mui/material';
+import { Quotationview, fetchQuotationList, deleteQuotation } from 'store/thunk';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -23,16 +23,19 @@ const columns = [
   { id: 'email', label: 'Email', align: 'center' },
   { id: 'validtill', label: 'Valid Till', align: 'center' },
   { id: 'view', label: 'View', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' }
+  { id: 'edit', label: 'Edit', align: 'center' },
+  { id: 'delete', label: 'Delete', align: 'center' }
 ];
 
 export default function QuotationList() {
-  const { canUpdateQuotation, canCreateQuotation, canViewQuotation } = useCan();
+  const { canUpdateQuotation, canCreateQuotation, canViewQuotation, canDeQuotation } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [quotations, setQuotations] = useState([]);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   // called api of all quotation
   useEffect(() => {
@@ -71,6 +74,19 @@ export default function QuotationList() {
     navigate(`/qutation/${id}`);
   };
 
+  const handleDeleteConfirmation = (id) => {
+    setOpenConfirmation(true);
+    setSelectedId(id);
+  };
+
+  const handleDeleteQuotation = async () => {
+    try {
+      await dispatch(deleteQuotation(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -115,6 +131,15 @@ export default function QuotationList() {
                       >
                         Edit
                       </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button
+                        disabled={!canDeQuotation()}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                      >
+                        Delete
+                      </Button>
                     ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString()
                     ) : column.id === 'validtill' ? (
@@ -138,6 +163,18 @@ export default function QuotationList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this quotation?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteQuotation} color="secondary" variant="contained">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }

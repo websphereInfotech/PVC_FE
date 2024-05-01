@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { PurchaseBillview, getallPurchaseBill } from 'store/thunk';
-import { Card } from '@mui/material';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,7 +20,9 @@ const columns = [
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
   { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 170, align: 'center' }
+  { id: 'view', label: 'View', minWidth: 170, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 170, align: 'center' }
 ];
 
 export default function PurchaseBillList() {
@@ -29,6 +31,7 @@ export default function PurchaseBillList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [purchasebill, setPurchasebill] = useState([]);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +65,10 @@ export default function PurchaseBillList() {
     navigate('/purchasebill');
   };
 
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+  };
+
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -86,9 +93,17 @@ export default function PurchaseBillList() {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
+                        Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(row.id)}>
+                        Delete
                       </Button>
                     ) : column.id === 'billdate' ? (
                       new Date(row[column.id]).toLocaleDateString()
@@ -113,6 +128,18 @@ export default function PurchaseBillList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this Bill?</DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }

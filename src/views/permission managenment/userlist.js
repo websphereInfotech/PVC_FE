@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Card } from '@mui/material';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,7 +11,8 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { getallusers, Userview } from 'store/thunk';
+import { deleteUser, getallusers, Userview } from 'store/thunk';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'username', label: 'User Name', align: 'center' },
@@ -25,11 +26,14 @@ const columns = [
 ];
 
 export default function UserList() {
+  const { canUserView, canUserUpdate, canUserCreate, canUserDelete } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   // use for change page
   const handleChangePage = (event, newPage) => {
@@ -46,7 +50,8 @@ export default function UserList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallusers());
-        setData(response);
+        const filteredData = response.filter((user) => user.role !== 'Super Admin');
+        setData(filteredData);
       } catch (error) {
         console.error('Error fetching User:', error);
       }
@@ -63,13 +68,29 @@ export default function UserList() {
     dispatch(Userview(id));
     navigate(`/updateuser/${id}`);
   };
+  const handleDeleteConfirmation = (id) => {
+    setOpenConfirmation(true);
+    setSelectedUserId(id);
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await dispatch(deleteUser(selectedUserId));
+      setOpenConfirmation(false);
+      const response = await dispatch(getallusers());
+      const filteredData = response.filter((user) => user.role !== 'Super Admin');
+      setData(filteredData);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         User List
       </Typography>
       <Link to="/adduser" style={{ textDecoration: 'none' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }}>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} disabled={!canUserCreate()}>
           Create USer
         </Button>
       </Link>
@@ -90,15 +111,20 @@ export default function UserList() {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewUser(row.id)}>
+                      <Button variant="outlined" color="secondary" onClick={() => handleViewUser(row.id)} disabled={!canUserView()}>
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)}>
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)} disabled={!canUserUpdate()}>
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                        disabled={!canUserDelete()}
+                      >
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (
@@ -124,6 +150,18 @@ export default function UserList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this user?</DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleDeleteUser} color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }

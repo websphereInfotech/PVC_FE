@@ -3,7 +3,7 @@ import React, { lazy } from 'react';
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
-import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
+// import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
 import Purchaseview from 'views/purches managenment/purchaseview';
 import Salesummary from 'component/reports/general reports/salesummary';
 import Saleregister from 'component/reports/general reports/saleregister';
@@ -31,7 +31,7 @@ const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managen
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Qutation = Loadable(lazy(() => import('../views/sale managenment/qutation')));
-const Quotationmain = Loadable(lazy(() => import('../views/sale managenment/qutationmain')));
+// const Quotationmain = Loadable(lazy(() => import('../views/sale managenment/qutationmain')));
 const Qutationlist = Loadable(lazy(() => import('../views/sale managenment/quotationlist')));
 const Quotationviewpage = Loadable(lazy(() => import('../views/sale managenment/quotationview')));
 
@@ -46,7 +46,7 @@ const Salesreturnmain = Loadable(lazy(() => import('../views/sale managenment/sa
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/salesinvoice')));
-const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
+// const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
 const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/salesinvoicelist')));
 const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/salesinvoiceview')));
 
@@ -120,12 +120,12 @@ const MainRoutes = {
     { path: '/qutation', element: <Qutation /> },
     { path: '/qutation/:id', element: <Qutation /> },
     { path: '/qutationlist', element: <Qutationlist /> },
-    { path: '/qutationmain', element: <Quotationmain /> },
+    // { path: '/qutationmain', element: <Quotationmain /> },
     { path: '/qutationview/:id', element: <Quotationviewpage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesinvoice', element: <Salesinvoice /> },
-    { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
+    // { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
     { path: '/salesinvoicelist', element: <Salesinvoicelist /> },
     { path: '/salesinvoiceview/:id', element: <Salesinvoiceview /> },
 
@@ -134,7 +134,7 @@ const MainRoutes = {
     { path: '/deliverychallan/:id', element: <Deliverychallan /> },
     { path: '/deliverychallanlist', element: <DileveryChallanList /> },
     { path: '/deliverychallanview/:id', element: <DileveryChallanView /> },
-    { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
+    // { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesreturn', element: <Salesreturn /> },

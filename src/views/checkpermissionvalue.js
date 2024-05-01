@@ -19,13 +19,13 @@ const useCan = () => {
     fetchData();
   }, [dispatch]);
 
-  const checkPermission = (permissionName) => {
+  const checkPermission = (resource, permissionName) => {
     const token = sessionStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
     const rolePermissions = permissions?.find((role) => role.role === userRole);
     if (rolePermissions) {
-      const permission = rolePermissions?.permissions?.find((resource) => resource.resource === 'Quotation');
+      const permission = rolePermissions?.permissions?.find((res) => res.resource === resource);
       if (permission) {
         return permission.permissions.some((perm) => perm.permission === permissionName && perm.permissionValue === true);
       }
@@ -33,27 +33,93 @@ const useCan = () => {
     return false;
   };
 
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ QOUTATION
   const canCreateQuotation = () => {
-    return checkPermission('create_quotation');
+    return checkPermission('Quotation', 'create_quotation');
   };
-
   const canUpdateQuotation = () => {
-    return checkPermission('update_quotation');
+    return checkPermission('Quotation', 'update_quotation');
   };
-
   const canDeleteQuotation = () => {
-    return checkPermission('delete_quotationitem');
+    return checkPermission('Quotation', 'delete_quotationitem');
   };
-
+  const canDeQuotation = () => {
+    return checkPermission('Quotation', 'delete_quotation');
+  };
   const canViewQuotation = () => {
-    return checkPermission('view_single_quotation');
+    return checkPermission('Quotation', 'view_single_quotation');
   };
-
   const canViewAllQuotation = () => {
-    return checkPermission('view_all_quotation');
+    return checkPermission('Quotation', 'view_all_quotation');
   };
 
-  return { canCreateQuotation, canUpdateQuotation, canDeleteQuotation, canViewQuotation, canViewAllQuotation };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN
+  const canUserUpdate = () => {
+    return checkPermission('Login', 'update_user');
+  };
+  const canUserView = () => {
+    return checkPermission('Login', 'view_user');
+  };
+  const canUserLogout = () => {
+    return checkPermission('Login', 'user_logout');
+  };
+  const canUserResetpassword = () => {
+    return checkPermission('Login', 'reset_password');
+  };
+  const canUserCreate = () => {
+    return checkPermission('Login', 'create_user');
+  };
+  const canUserDelete = () => {
+    return checkPermission('Login', 'delete_user');
+  };
+  const canUserViewAll = () => {
+    return checkPermission('Login', 'view_all_user');
+  };
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERY CHALLAN
+  const canCreateDeliverychallan = () => {
+    return checkPermission('Delivery Challan', 'create_deliverychallan');
+  };
+  const canUpdateDeliverychallan = () => {
+    return checkPermission('Delivery Challan', 'update_deliverychallan');
+  };
+  const canDeleteDeliverychallan = () => {
+    return checkPermission('Delivery Challan', 'delete_deliverychallan');
+  };
+  const canDeleteDeliverychallanItem = () => {
+    return checkPermission('Delivery Challan', 'delete_deliverychallanitem');
+  };
+  const canViewDeliverychallan = () => {
+    return checkPermission('Delivery Challan', 'view_single_deliverychallan');
+  };
+  const canViewAllDeliverychallan = () => {
+    return checkPermission('Delivery Challan', 'view_all_deliverychallan');
+  };
+
+  return {
+    // QUOTATION +++++++++++++++++++++++
+    canCreateQuotation,
+    canUpdateQuotation,
+    canDeleteQuotation,
+    canViewQuotation,
+    canViewAllQuotation,
+    canDeQuotation,
+    // USERS +++++++++++++++++++++++++++
+    canUserUpdate,
+    canUserView,
+    canUserLogout,
+    canUserResetpassword,
+    canUserCreate,
+    canUserDelete,
+    canUserViewAll,
+    // DELIVERY CHALLAN +++++++++++++++
+    canCreateDeliverychallan,
+    canUpdateDeliverychallan,
+    canDeleteDeliverychallan,
+    canDeleteDeliverychallanItem,
+    canViewDeliverychallan,
+    canViewAllDeliverychallan
+  };
 };
 
 export default useCan;
