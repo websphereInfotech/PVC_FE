@@ -14,12 +14,13 @@ import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { logoutAdmin } from 'store/thunk';
+import useCan from 'views/checkpermissionvalue';
 
 // ==============================|| PROFILE SECTION ||============================== //
 
 const ProfileSection = () => {
   const theme = useTheme();
-
+  const { canUserLogout } = useCan();
   // const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -126,7 +127,7 @@ const ProfileSection = () => {
                     </ListItemIcon>
                     <ListItemText secondary="Lock Screen" />
                   </ListItemButton> */}
-                  <ListItemButton onClick={handlelogout}>
+                  <ListItemButton onClick={handlelogout} disabled={!canUserLogout()}>
                     <ListItemIcon>
                       <MeetingRoomTwoToneIcon />
                     </ListItemIcon>

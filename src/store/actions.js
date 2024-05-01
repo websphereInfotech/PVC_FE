@@ -23,6 +23,9 @@ export const CREATE_QUOTATION_FAILURE = 'CREATE_QUOTATION_FAILURE';
 export const DELETE_QUOTATION_ITEM_REQUEST = 'DELETE_QUOTATION_ITEM_REQUEST';
 export const DELETE_QUOTATION_ITEM_SUCCESS = 'DELETE_QUOTATION_ITEM_SUCCESS';
 export const DELETE_QUOTATION_ITEM_FAILURE = 'DELETE_QUOTATION_ITEM_FAILURE';
+export const DELETE_QUOTATION_REQUEST = 'DELETE_QUOTATION_REQUEST';
+export const DELETE_QUOTATION_SUCCESS = 'DELETE_QUOTATION_SUCCESS';
+export const DELETE_QUOTATION_FAILURE = 'DELETE_QUOTATION_FAILURE';
 export const UPDATE_QUOTATION_REQUEST = 'UPDATE_QUOTATION_REQUEST';
 export const UPDATE_QUOTATION_SUCCESS = 'UPDATE_QUOTATION_SUCCESS';
 export const UPDATE_QUOTATION_FAILURE = 'UPDATE_QUOTATION_FAILURE';
@@ -191,6 +194,9 @@ export const VIEW_USER_FAILURE = 'VIEW_USER_FAILURE';
 export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
+export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -248,6 +254,18 @@ export const deleteQuotationItemSuccess = (data) => ({
 });
 export const deleteQuotationItemFailure = (error) => ({
   type: 'DELETE_QUOTATION_ITEM_FAILURE',
+  payload: error
+});
+export const deleteQuotationRequest = (data) => ({
+  type: 'DELETE_QUOTATION_REQUEST',
+  payload: data
+});
+export const deleteQuotationSuccess = (data) => ({
+  type: 'DELETE_QUOTATION_SUCCESS',
+  payload: data
+});
+export const deleteQuotationFailure = (error) => ({
+  type: 'DELETE_QUOTATION_FAILURE',
   payload: error
 });
 export const viewQuotationRequest = (data) => ({
@@ -843,5 +861,17 @@ export const UpdateUserSuccess = (data) => ({
 });
 export const UpdateUserFailure = (error) => ({
   type: 'UPDATE_USER_FAILURE',
+  payload: error
+});
+export const deleteUserRequest = (data) => ({
+  type: 'DELETE_USER_REQUEST',
+  payload: data
+});
+export const deleteUserSuccess = (data) => ({
+  type: 'DELETE_USER_SUCCESS',
+  payload: data
+});
+export const deleteUserFailure = (error) => ({
+  type: 'DELETE_USER_FAILURE',
   payload: error
 });

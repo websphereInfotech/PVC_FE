@@ -19,6 +19,7 @@ const User = () => {
     password: '',
     confirmpassword: ''
   });
+
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -173,7 +174,7 @@ const User = () => {
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button
+                {/* <button
                   id="savebtncs"
                   style={{
                     marginRight: '10px'
@@ -181,7 +182,7 @@ const User = () => {
                   onClick={handleCreateUser}
                 >
                   Save & Next
-                </button>
+                </button> */}
                 <button id="savebtncs" onClick={handleCreateUser}>
                   Save
                 </button>

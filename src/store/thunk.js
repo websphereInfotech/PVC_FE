@@ -22,6 +22,9 @@ import {
   deleteQuotationItemRequest,
   deleteQuotationItemSuccess,
   deleteQuotationItemFailure,
+  deleteQuotationRequest,
+  deleteQuotationSuccess,
+  deleteQuotationFailure,
   updateQuotationRequst,
   updateQuotationsuccess,
   updateQuotationfailure,
@@ -176,7 +179,10 @@ import {
   viewUserFailure,
   UpdateUserRequest,
   UpdateUserSuccess,
-  UpdateUserFailure
+  UpdateUserFailure,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -201,6 +207,8 @@ export const loginAdmin = (credentials, navigate) => {
       const decodedToken = jwtDecode(token);
       const tokentype = decodedToken.type;
       sessionStorage.setItem('type', tokentype);
+      const roletype = decodedToken.role;
+      sessionStorage.setItem('role', roletype);
       const userData = response.data;
       sessionStorage.setItem('user',JSON.stringify(userData));
       console.log("userData<<<<<<<<<<<<<<<",userData);
@@ -336,7 +344,24 @@ export const Quotationview = (id) => {
     }
   };
 };
-
+export const deleteQuotation = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteQuotationRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_quotation/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteQuotationSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteQuotationFailure());
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERYCHALLAN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallDeliverychallan = () => {
   return async (dispatch) => {
@@ -1080,6 +1105,26 @@ export const updateUser = (id, formData, navigate) => {
       return updateUserData;
     } catch (error) {
       dispatch(UpdateUserFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteUser = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_user/${id}`, config);
+      const deleteUser = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteUserSuccess(deleteUser));
+      window.location.reload();
+      return deleteUser;
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
       throw error;
     }
   };

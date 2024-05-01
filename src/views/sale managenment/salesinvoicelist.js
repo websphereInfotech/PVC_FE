@@ -10,7 +10,11 @@ import {
   Card,
   TableContainer,
   TableHead,
-  TablePagination
+  TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SalesInvoiceview, getallSalesInvoice } from 'store/thunk';
@@ -22,7 +26,9 @@ const columns = [
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 100 },
-  { id: 'action', label: 'Action', minWidth: 100 }
+  { id: 'view', label: 'View', minWidth: 100 },
+  { id: 'edit', label: 'Edit', minWidth: 100 },
+  { id: 'delete', label: 'Delete', minWidth: 100 }
 ];
 
 const Salesinvoicelist = () => {
@@ -31,6 +37,7 @@ const Salesinvoicelist = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchSalesinvoice = async () => {
@@ -63,7 +70,9 @@ const Salesinvoicelist = () => {
     dispatch(SalesInvoiceview(id));
     navigate(`/salesinvoiceview/${id}`);
   };
-
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+  };
   return (
     // <Container>
     <Card style={{ width: '100%', padding: '25px' }}>
@@ -89,9 +98,17 @@ const Salesinvoicelist = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
+                    {column.id === 'view' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewsalesinvoice(data.id)}>
                         View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button variant="outlined" color="secondary">
+                        Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(data.id)}>
+                        Delete
                       </Button>
                     ) : column.id === 'invoicedate' ? (
                       new Date(data[column.id]).toLocaleDateString()
@@ -116,6 +133,18 @@ const Salesinvoicelist = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this user?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
     // </Container>
   );

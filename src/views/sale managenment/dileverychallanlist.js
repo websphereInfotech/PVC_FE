@@ -10,7 +10,11 @@ import {
   Card,
   TableContainer,
   TableHead,
-  TablePagination
+  TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Deliverychallanview, getallDeliverychallan } from 'store/thunk';
@@ -22,7 +26,8 @@ const columns = [
   { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100 },
-  { id: 'edit', label: 'Edit', minWidth: 100 }
+  { id: 'edit', label: 'Edit', minWidth: 100 },
+  { id: 'delete', label: 'Delete', minWidth: 100 }
 ];
 
 const DileveryChallanList = () => {
@@ -31,6 +36,8 @@ const DileveryChallanList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  // const [selectedUserId, setSelectedUserId] = useState(null);
 
   // all delivery challan api called
   useEffect(() => {
@@ -73,6 +80,23 @@ const DileveryChallanList = () => {
     navigate(`/deliverychallan/${id}`);
   };
 
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+    // setSelectedUserId(id);
+  };
+
+  // const handleDeleteUser = async () => {
+  //   try {
+  //     await dispatch(deleteUser(selectedUserId));
+  //     setOpenConfirmation(false); // Close confirmation popup after deletion
+  //     // Fetch data again to update the list
+  //     const response = await dispatch(getallusers());
+  //     const filteredData = response.filter((user) => user.role !== 'Super Admin');
+  //     setData(filteredData);
+  //   } catch (error) {
+  //     console.error('Error deleting user:', error);
+  //   }
+  // };
   return (
     // <Container>
     <Card style={{ padding: '25px', width: '100%' }}>
@@ -106,6 +130,10 @@ const DileveryChallanList = () => {
                       <Button variant="outlined" color="secondary" onClick={() => handleUpdateDeliverychallan(order.id)}>
                         Edit
                       </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(order.id)}>
+                        Delete
+                      </Button>
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString()
                     ) : (
@@ -127,6 +155,18 @@ const DileveryChallanList = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this Challan?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} variant="contained" color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
     // </Container>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { PurchaseReturnview, getallPurchaseReturn } from 'store/thunk';
-import { Card } from '@mui/material';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,7 +20,8 @@ const columns = [
   { id: 'refno', label: 'Refernce No.', minWidth: 170, align: 'center' },
   { id: 'refdate', label: 'Refernce Date', minWidth: 170, align: 'center' },
   { id: 'view', label: 'View', minWidth: 170, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' }
+  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 170, align: 'center' }
 ];
 
 export default function PurchaseReturnList() {
@@ -29,6 +30,7 @@ export default function PurchaseReturnList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [purchasereturn, setPurchasereturn] = useState([]);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,7 +65,9 @@ export default function PurchaseReturnList() {
   const handleAddpuchasereturn = () => {
     navigate('/purchasereturn');
   };
-
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+  };
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -96,6 +100,10 @@ export default function PurchaseReturnList() {
                       <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchaseReturn(row.id)}>
                         Edit
                       </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(row.id)}>
+                        Delete
+                      </Button>
                     ) : column.id === 'refdate' ? (
                       new Date(row[column.id]).toLocaleDateString()
                     ) : column.id === 'debitdate' ? (
@@ -119,6 +127,18 @@ export default function PurchaseReturnList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this?</DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }
