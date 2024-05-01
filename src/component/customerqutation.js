@@ -29,6 +29,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     contactpersonname: '',
     mobileno: '',
     panno: '',
+    // gstno:'',
     creditperiod: '',
     mode: '',
     address1: '',
@@ -98,7 +99,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
           padding: '10px 15px',
           position: 'fixed',
           zIndex: '999',
-          width: { xs: '100%', sm: '550px' }
+          width: { xs: '1000px', sm: '550px' }
         }}
       >
         <Grid item>
@@ -142,12 +143,16 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">PAN/IT/TAN No.</Typography>
             <input placeholder="BJXXX001" id="panno" value={formData.panno} onChange={handleInputChange} />
           </Grid>
+          {/* <Grid item>
+          <Typography variant="subtitle1">GST No.</Typography>
+            <input placeholder="GSTIN452" id="panno" value={formData.gstno} onChange={handleInputChange} />
+          </Grid> */}
+        </Grid>
+        <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
             <Typography variant="subtitle1">Default Credit Period (In days)</Typography>
             <input placeholder="Default Credit Period" id="creditperiod" value={formData.creditperiod} onChange={handleInputChange} />
           </Grid>
-        </Grid>
-        <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
             <Typography variant="subtitle1">Mode</Typography>
             <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={handleInputChange} />

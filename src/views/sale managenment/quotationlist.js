@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
@@ -87,16 +87,17 @@ export default function QuotationList() {
       console.error('Error deleting user:', error);
     }
   };
+
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Quotation List
       </Typography>
-      <Link to="/qutation" style={{ textDecoration: 'none' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} disabled={!canCreateQuotation()}>
-          Create Quotation
-        </Button>
-      </Link>
+      {/* <Link to="/qutation" style={{ textDecoration: 'none' }}> */}
+      <Button variant="contained" href="/qutation" color="secondary" style={{ margin: '16px' }} disabled={!canCreateQuotation()}>
+        Create Quotation
+      </Button>
+      {/* </Link> */}
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>

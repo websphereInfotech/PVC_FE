@@ -6,9 +6,11 @@ const Protected = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.customization.isAuthenticated);
 
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={`/?t=${Date.now()}`} replace />;
   }
   return children;
 };
-
+// Protected.propTypes = {
+//   children: PropTypes.node
+// };
 export default Protected;

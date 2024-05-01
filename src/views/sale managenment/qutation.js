@@ -257,6 +257,49 @@ const Qutation = () => {
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
             </Grid>
+            {/* <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Quotation Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                type="date"
+                id="date"
+                value={formData.date || new Date().toISOString().split('T')[0]}
+                onChange={(e) => {
+                  const selectedDate = e.target.value;
+                  console.log(selectedDate, '>>>>>>>>>>>>>>>>');
+                  const [year, month, day] = selectedDate.split('-');
+                  const formattedDate = `${day}/${month}/${year}`;
+                  console.log(formattedDate, 'formattedDate');
+                  setFormData({ ...formData, date: formattedDate });
+                }}
+              />
+            </Grid> */}
+
+            {/* <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                type="date"
+                id="validtill"
+                min={formData.date}
+                value={formData.validtill ? formData.validtill.split('T')[0] : ''}
+                onChange={(e) => {
+                  const selectedDate = e.target.value;
+                  console.log('Selected Date:', selectedDate);
+                  console.log('Quotation Date:', formData.date);
+                  if (selectedDate >= formData.date) {
+                    const [month, day, year] = selectedDate.split('-');
+                    const formattedDate = `${day}/${month}/${year}`;
+                    setFormData({ ...formData, validtill: formattedDate });
+                  } else {
+                    toast.error('Valid Till date cannot be before Quotation Date', { autoClose: 1000 });
+                  }
+                }}
+              />
+            </Grid> */}
+
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

@@ -89,6 +89,12 @@ const customizationReducer = (state = getInitialState(), action) => {
         user: null,
         error: action.payload
       };
+    case 'LOGOUT_SUCCESS':
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null
+      };
     case actionTypes.VIEW_PURCHASE_SUCCESS:
       return {
         ...state,

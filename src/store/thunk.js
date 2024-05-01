@@ -221,7 +221,8 @@ export const loginAdmin = (credentials, navigate) => {
       dispatch(loginSuccess(userData));
       return userData;
     } catch (error) {
-      toast.error(error.response.data.error, { autoClose: 1000 });
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      console.log(error);
       dispatch(loginFailure(error.message));
     }
   };
@@ -414,14 +415,20 @@ export const Deliverychallanview = (id) => {
     }
   };
 };
-export const updateDileveryChallan = (id, ChallanData) => {
+export const updateDileveryChallan = (id, ChallanData, navigate) => {
   return async (dispatch) => {
     dispatch(updateDileverychallanRequest());
     try {
       const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallan/${id}`, ChallanData, config);
-
       const updateChallanData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/deliverychallanlist');
+        }
+      });
       dispatch(updateDileverychallanSuccess(updateChallanData));
       return updateChallanData;
     } catch (error) {
