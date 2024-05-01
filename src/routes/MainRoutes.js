@@ -104,7 +104,11 @@ const MainRoutes = {
   children: [
     {
       path: '/dashboard',
-      element: <DashboardDefault />
+      element: (
+        <Protected>
+          <DashboardDefault />
+        </Protected>
+      )
     },
     { path: '/profile', element: <SamplePage /> },
 

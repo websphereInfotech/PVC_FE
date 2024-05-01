@@ -6,7 +6,7 @@ const Protected = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.customization.isAuthenticated);
 
   if (!isAuthenticated) {
-    return <Navigate to={`/?t=${Date.now()}`} replace />;
+    return <Navigate to="/login" replace />;
   }
   return children;
 };

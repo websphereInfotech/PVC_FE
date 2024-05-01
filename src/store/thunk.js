@@ -233,6 +233,7 @@ export const logoutAdmin = (navigate) => {
     try {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user_logout`, {}, config);
+
       const userData = response.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
