@@ -5,8 +5,8 @@ import { withStyles } from '@mui/styles';
 // import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
 import { useMediaQuery } from '@mui/material';
+import AnchorVendorDrawer from 'component/vendor';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -43,7 +43,7 @@ const Purchasereturn = () => {
   const options = [
     {
       value: 'customer',
-      label: 'create new customer'
+      label: 'create new vendor'
     }
   ];
 
@@ -59,7 +59,7 @@ const Purchasereturn = () => {
               <Typography variant="subtitle1">Vendor</Typography>
               <Select color="secondary" options={options} onChange={handleSelectChange} />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Debit Note No.</Typography>
               <StyledInput placeholder="CN0102" fullWidth />

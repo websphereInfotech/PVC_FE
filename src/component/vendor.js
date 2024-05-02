@@ -9,8 +9,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Card, Paper } from '@mui/material';
 import { createCustomer, createCustomfeild } from '../store/thunk';
 
-const AnchorTemporaryDrawer = ({ open, onClose }) => {
-  AnchorTemporaryDrawer.propTypes = {
+const AnchorVendorDrawer = ({ open, onClose }) => {
+  AnchorVendorDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -104,7 +104,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       >
         <Grid item>
           <Typography variant="h4" className="heading">
-            New Customer (Sundry Debtors)
+            New Vendor (Sundry Debtors)
           </Typography>
         </Grid>
         <Grid item>
@@ -279,20 +279,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
               </Grid>
             ))}
             <Grid item xs={12}>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  borderColor: '#425466',
-                  padding: '2px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  lineHeight: '19px',
-                  marginTop: '10px'
-                }}
-                onClick={handleAddCustomField}
-              >
+              <button id="buttoncs" onClick={handleAddCustomField}>
                 <AddIcon sx={{ fontSize: '18px' }} /> Add Row
               </button>
             </Grid>
@@ -308,34 +295,12 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
           <div>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={onClose}
-            >
+            <button id="savebtncs" onClick={onClose}>
               Cancel
             </button>
           </div>
           <div style={{ display: 'flex' }}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={handleSave}
-            >
+            <button id="savebtncs" onClick={handleSave}>
               Save
             </button>
           </div>
@@ -345,4 +310,4 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   );
 };
 
-export default AnchorTemporaryDrawer;
+export default AnchorVendorDrawer;

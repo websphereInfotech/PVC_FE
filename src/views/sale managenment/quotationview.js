@@ -17,13 +17,12 @@ const Quotationviewpage = () => {
     dispatch(Quotationview(id))
       .then((data) => {
         setData(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error('Error fetching quotation data:', error);
       });
   }, [dispatch, id]);
-
+  const subtotal = data?.items?.reduce((acc, item) => acc + item.mrp, 0);
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -34,14 +33,14 @@ const Quotationviewpage = () => {
           <Typography variant="subtitle1">Customer</Typography>
           <Typography variant="subtitle2">{data?.customer}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        {/* <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Mobile No.</Typography>
           <Typography variant="subtitle2">{data?.mobileno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1">Email</Typography>
           <Typography variant="subtitle2">{data?.email}</Typography>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation No.</Typography>
           <Typography variant="subtitle2">{data?.quotation_no}</Typography>
@@ -52,7 +51,7 @@ const Quotationviewpage = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Valid Till</Typography>
-          <Typography variant="subtitle2">{data?.validtill}</Typography>
+          <Typography variant="subtitle2">{new Date(data?.validtill).toLocaleDateString()}</Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -91,11 +90,11 @@ const Quotationviewpage = () => {
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>{subtotal?.toFixed(2)}</p>
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>{subtotal?.toFixed(2)}</p>
               </div>
             </>
           ) : (
@@ -107,11 +106,11 @@ const Quotationviewpage = () => {
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>{subtotal?.toFixed(2)}</p>
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>{subtotal?.toFixed(2)}</p>
               </div>
             </div>
           )}

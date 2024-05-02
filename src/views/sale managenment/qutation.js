@@ -8,10 +8,12 @@ import { Link } from 'react-router-dom';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorProductDrawer from '../../component/productquotation';
 import { useDispatch } from 'react-redux';
-import { createQuotation, fetchAllCustomers, Quotationview, updateQutation, deleteQuotationItem } from 'store/thunk';
+import { createQuotation, fetchAllCustomers, Quotationview, updateQutation, deleteQuotationItem, fetchQuotationList } from 'store/thunk';
 import { fetchAllProducts } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router-dom';
 import useCan from 'views/checkpermissionvalue';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Qutation = () => {
   const { canDeleteQuotation } = useCan();
@@ -25,10 +27,10 @@ const Qutation = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [formData, setFormData] = useState({
     customer: '',
-    mobileno: '',
-    email: '',
-    date: '',
-    quotation_no: '',
+    // mobileno: '',
+    // email: '',
+    date: new Date().toISOString().split('T')[0],
+    quotation_no: 'Q-1',
     validtill: ''
   });
   const [productResponse, setProductResponse] = useState([]);
@@ -69,16 +71,22 @@ const Qutation = () => {
       updatedRows.splice(index, 1);
       setRows(updatedRows);
       dispatch(deleteQuotationItem(id));
-    } else {
-      const updatedRows = [...rows];
-      updatedRows.splice(index, 1);
       const deletedRow = rows.find((row) => row.id === id);
       if (deletedRow) {
         const deletedAmount = deletedRow.mrp;
         const newSubtotal = subtotal - deletedAmount;
         setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
       }
+    } else {
+      const updatedRows = [...rows];
+      updatedRows.splice(index, 1);
       setRows(updatedRows);
+      const deletedRow = rows[index];
+      if (deletedRow) {
+        const deletedAmount = deletedRow.mrp;
+        const newSubtotal = subtotal - deletedAmount;
+        setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+      }
     }
   };
 
@@ -153,10 +161,40 @@ const Qutation = () => {
         console.error('Error fetching quotations:', error);
       }
     };
-    fetchData();
-  }, [dispatch, id]);
+    const generateAutoQuotationNumber = async () => {
+      try {
+        const quotationResponse = await dispatch(fetchQuotationList());
+        const nextQuotationNumber = quotationResponse.length + 1;
 
-  //use for update and create quotation data
+        const quotationNumber = `Q-${nextQuotationNumber}`;
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          quotation_no: quotationNumber
+        }));
+      } catch (error) {
+        console.error('Error generating auto quotation number:', error);
+      }
+    };
+    const calculateValidTill = () => {
+      const quotationDate = new Date(formData.date);
+      const validTillDate = new Date(quotationDate.setDate(quotationDate.getDate() + 7));
+      setFormData((prevState) => ({
+        ...prevState,
+        validtill: validTillDate.toISOString().split('T')[0]
+      }));
+    };
+
+    fetchData();
+    generateAutoQuotationNumber();
+    calculateValidTill();
+  }, [dispatch, id, formData.date]);
+
+  useEffect(() => {
+    const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(initialSubtotal);
+  }, [rows]);
+
   const handleCreateQuotation = async () => {
     try {
       if (id) {
@@ -211,7 +249,7 @@ const Qutation = () => {
               <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-            <Grid item xs={12} sm={6} md={3}>
+            {/* <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -221,8 +259,8 @@ const Qutation = () => {
                 value={formData.mobileno}
                 onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
               />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -232,7 +270,7 @@ const Qutation = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -250,66 +288,38 @@ const Qutation = () => {
               <Typography variant="subtitle1">
                 Quotation Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
+              <DatePicker
+                selected={new Date(formData.date)}
+                onChange={(date) => setFormData({ ...formData, date: date })}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+              {/* <input
                 type="date"
                 id="date"
                 value={formData.date ? formData.date.split('T')[0] : ''}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              />
+              /> */}
             </Grid>
-            {/* <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Quotation Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                type="date"
-                id="date"
-                value={formData.date || new Date().toISOString().split('T')[0]}
-                onChange={(e) => {
-                  const selectedDate = e.target.value;
-                  console.log(selectedDate, '>>>>>>>>>>>>>>>>');
-                  const [year, month, day] = selectedDate.split('-');
-                  const formattedDate = `${day}/${month}/${year}`;
-                  console.log(formattedDate, 'formattedDate');
-                  setFormData({ ...formData, date: formattedDate });
-                }}
-              />
-            </Grid> */}
-
-            {/* <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                type="date"
-                id="validtill"
-                min={formData.date}
-                value={formData.validtill ? formData.validtill.split('T')[0] : ''}
-                onChange={(e) => {
-                  const selectedDate = e.target.value;
-                  console.log('Selected Date:', selectedDate);
-                  console.log('Quotation Date:', formData.date);
-                  if (selectedDate >= formData.date) {
-                    const [month, day, year] = selectedDate.split('-');
-                    const formattedDate = `${day}/${month}/${year}`;
-                    setFormData({ ...formData, validtill: formattedDate });
-                  } else {
-                    toast.error('Valid Till date cannot be before Quotation Date', { autoClose: 1000 });
-                  }
-                }}
-              />
-            </Grid> */}
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
+              <DatePicker
+                selected={formData.validtill}
+                onChange={(validtill) => setFormData({ ...formData, validtill: validtill })}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+              {/* <input
                 type="date"
                 id="validtill"
                 value={formData.validtill ? formData.validtill.split('T')[0] : ''}
                 onChange={(e) => setFormData({ ...formData, validtill: e.target.value })}
-              />
+              /> */}
             </Grid>
           </Grid>
 
@@ -350,7 +360,12 @@ const Qutation = () => {
                           value={{ label: row.product }}
                         />
                       </TableCell>
-                      <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                      {/* <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} /> */}
+                      <AnchorProductDrawer
+                        open={isproductDrawerOpen}
+                        onClose={() => setIsproductDrawerOpen(false)}
+                        onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                      />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                       </TableCell>
@@ -361,7 +376,11 @@ const Qutation = () => {
                         {row.mrp}
                       </TableCell>
                       <TableCell disabled={!canDeleteQuotation()}>
-                        <DeleteIcon onClick={() => handleDeleteRow(row.id, index)} />
+                        <DeleteIcon
+                          onClick={() => {
+                            handleDeleteRow(row.id, index);
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}

@@ -208,6 +208,8 @@ export const loginAdmin = (credentials, navigate) => {
       sessionStorage.setItem('type', tokentype);
       const roletype = decodedToken.role;
       sessionStorage.setItem('role', roletype);
+      const username = decodedToken.username;
+      sessionStorage.setItem('username', username);
       const userData = response.data;
       sessionStorage.setItem('user', JSON.stringify(userData));
       toast.success(response.data.message, {
