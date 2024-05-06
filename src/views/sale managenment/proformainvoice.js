@@ -15,7 +15,7 @@ import useCan from 'views/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const Qutation = () => {
+const Proformainvoice = () => {
   const { canDeleteQuotation } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -27,10 +27,8 @@ const Qutation = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [formData, setFormData] = useState({
     customer: '',
-    // mobileno: '',
-    // email: '',
-    date: new Date().toISOString().split('T')[0],
-    quotation_no: 'Q-1',
+    date: new Date(),
+    quotation_no: '',
     validtill: ''
   });
   const [productResponse, setProductResponse] = useState([]);
@@ -111,6 +109,8 @@ const Qutation = () => {
       const salesPrice = selectedProductData ? selectedProductData.salesprice : 0;
       const updatedRows = rows.map((row, rowIndex) => {
         if (rowIndex === index) {
+          console.log(selectedOption, 'selected options');
+          console.log(row, 'row>>>>>>>>>>>>>>>>>>');
           return { ...row, product: selectedOption.label, rate: salesPrice };
         }
         return row;
@@ -141,8 +141,8 @@ const Qutation = () => {
 
         if (id) {
           const response = await dispatch(Quotationview(id));
-          const { customer, date, email, mobileno, quotation_no, validtill } = response;
-          setFormData({ customer, date, email, mobileno, quotation_no, validtill });
+          const { customer, date, quotation_no, validtill } = response;
+          setFormData({ customer, date, quotation_no, validtill });
 
           const quotationItems = response.items;
           const updatedRows = quotationItems.map((item) => {
@@ -161,13 +161,24 @@ const Qutation = () => {
         console.error('Error fetching quotations:', error);
       }
     };
+
     const generateAutoQuotationNumber = async () => {
       try {
         const quotationResponse = await dispatch(fetchQuotationList());
-        const nextQuotationNumber = quotationResponse.length + 1;
+        let nextQuotationNumber = 1;
+
+        const existingQuotationNumbers = quotationResponse.map((quotation) => {
+          const quotationNumber = quotation.quotation_no.split('-')[1];
+          return parseInt(quotationNumber);
+        });
+
+        const maxQuotationNumber = Math.max(...existingQuotationNumbers);
+
+        if (!isNaN(maxQuotationNumber)) {
+          nextQuotationNumber = maxQuotationNumber + 1;
+        }
 
         const quotationNumber = `Q-${nextQuotationNumber}`;
-
         setFormData((prevFormData) => ({
           ...prevFormData,
           quotation_no: quotationNumber
@@ -176,19 +187,10 @@ const Qutation = () => {
         console.error('Error generating auto quotation number:', error);
       }
     };
-    const calculateValidTill = () => {
-      const quotationDate = new Date(formData.date);
-      const validTillDate = new Date(quotationDate.setDate(quotationDate.getDate() + 7));
-      setFormData((prevState) => ({
-        ...prevState,
-        validtill: validTillDate.toISOString().split('T')[0]
-      }));
-    };
 
     fetchData();
     generateAutoQuotationNumber();
-    calculateValidTill();
-  }, [dispatch, id, formData.date]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
@@ -198,14 +200,15 @@ const Qutation = () => {
   const handleCreateQuotation = async () => {
     try {
       if (id) {
+        console.log(formData, 'fromdata updatee>>>>>>>>>>>>>');
         const payload = {
           ...formData,
           items: rows.map((row) => ({
             // srNo: row.id,
             product: row.product,
             qty: row.qty,
-            rate: row.rate,
-            mrp: row.mrp
+            rate: row.rate
+            // mrp: row.mrp
           }))
         };
         await dispatch(updateQutation(id, payload, navigate));
@@ -228,16 +231,26 @@ const Qutation = () => {
     }
   };
 
+  const handleQuotationDateChange = (date) => {
+    const newValidTill = new Date(date);
+    newValidTill.setDate(newValidTill.getDate() + 7);
+    setFormData({ ...formData, date, validtill: newValidTill });
+  };
+
+  const handleValidTillDateChange = (date) => {
+    setFormData({ ...formData, validtill: date });
+  };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Quotation
+            Update Pro Forma Invoice
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            create Quotation
+            Create Pro Forma Invoice
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -289,18 +302,28 @@ const Qutation = () => {
                 Quotation Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={new Date(formData.date)}
-                onChange={(date) => setFormData({ ...formData, date: date })}
+                selected={formData.date}
+                onChange={(date) => handleQuotationDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
               />
-              {/* <input
-                type="date"
-                id="date"
-                value={formData.date ? formData.date.split('T')[0] : ''}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              /> */}
+              {/* {id ? (
+                <input
+                  type="date"
+                  id="date"
+                  value={formData.date ? formData.date : ''}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                />
+              ) : (
+                <DatePicker
+                  selected={formData.date}
+                  onChange={(date) => setFormData({ ...formData, date: date.toLocaleDateString() })}
+                  dateFormat="dd/MM/yyyy"
+                  isClearable={false}
+                  showTimeSelect={false}
+                />
+              )} */}
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
@@ -309,10 +332,11 @@ const Qutation = () => {
               </Typography>
               <DatePicker
                 selected={formData.validtill}
-                onChange={(validtill) => setFormData({ ...formData, validtill: validtill })}
+                onChange={(date) => handleValidTillDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
+                minDate={formData.date}
               />
               {/* <input
                 type="date"
@@ -447,7 +471,7 @@ const Qutation = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
+                <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
                   <button
                     id="savebtncs"
                     style={{
@@ -465,7 +489,7 @@ const Qutation = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
+                <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
@@ -491,4 +515,4 @@ const Qutation = () => {
   );
 };
 
-export default Qutation;
+export default Proformainvoice;

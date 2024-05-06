@@ -37,7 +37,8 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     salesprice: '',
     purchaseprice: '',
     SGST: '',
-    IGST: ''
+    IGST: '',
+    HSNcode: ''
   });
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -89,6 +90,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         itemselected,
         cess
       };
+      console.log(data, 'data');
       await dispatch(createProduct(data));
     } catch (error) {
       console.error('Error creating Product', error);
@@ -96,14 +98,10 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   };
 
   const GST = [
-    { value: '5', label: 'SGST 5' },
-    { value: '5', label: 'IGST 5' },
-    { value: '12', label: 'SGST 12' },
-    { value: '12', label: 'IGST 12' },
-    { value: '18', label: 'SGST 18' },
-    { value: '18', label: 'IGST 18' },
-    { value: '28', label: 'SGST 28' },
-    { value: '28', label: 'IGST 28' }
+    { value: '5', label: 'GST 5%' },
+    { value: '12', label: 'GST 12%' },
+    { value: '18', label: 'GST 18%' },
+    { value: '28', label: 'GST 28%' }
   ];
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -164,6 +162,12 @@ const AnchorProductDrawer = ({ open, onClose }) => {
           <Grid item>
             <Typography variant="subtitle1">GST Rate(%)</Typography>
             <Select options={GST} value={{ label: selectedGST }} onChange={handleGSTChange} />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ margin: '1px' }}>
+          <Grid item>
+            <Typography variant="subtitle1">HSN Code </Typography>
+            <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
         </Grid>
         {/* <Grid container sm={6} sx={{ margin: '10px' }}> */}

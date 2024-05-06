@@ -4,7 +4,7 @@ import { RiRefundFill } from 'react-icons/ri';
 import useCan from '../checkpermissionvalue';
 import { Link } from 'react-router-dom';
 
-const Quotationmain = () => {
+const Proformainvoicemain = () => {
   const { canCreateQuotation, canViewAllQuotation } = useCan();
   return (
     <Grid>
@@ -53,4 +53,4 @@ const Quotationmain = () => {
   );
 };
 
-export default Quotationmain;
+export default Proformainvoicemain;

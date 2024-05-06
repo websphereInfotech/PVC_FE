@@ -182,7 +182,14 @@ import {
   UpdateUserFailure,
   deleteUserRequest,
   deleteUserSuccess,
-  deleteUserFailure
+  deleteUserFailure,
+  // VENDOR ++++++++++++++++++++++++++
+  createVendorRequest,
+  createVendorSuccess,
+  createVendorFailure,
+  fetchAllVendorsRequest,
+  fetchAllVendorsSuccess,
+  fetchAllVendorsFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -280,7 +287,7 @@ export const createQuotation = (quotationData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/qutationlist');
+          navigate('/proformainvoiceList');
         }
       });
       dispatch(createQuotationSuccess(createdQuotation));
@@ -303,7 +310,7 @@ export const updateQutation = (id, formData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/qutationlist');
+          navigate('/proformainvoiceList');
         }
       });
       dispatch(updateQuotationsuccess(updateQuotationData));
@@ -512,7 +519,7 @@ export const createCustomer = (customerData) => {
         autoClose: 1000
       });
       dispatch(createCustomerSuccess(createdCustomer));
-      window.location.reload();
+      // window.location.reload();
       return createdCustomer;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -1134,6 +1141,44 @@ export const deleteUser = (id) => {
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
       throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createVendor = (vendorData) => {
+  return async (dispatch) => {
+    dispatch(createVendorRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_vendor`, vendorData, config);
+      const createdVendor = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(createVendorSuccess(createdVendor));
+      window.location.reload();
+      return createdVendor;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createVendorFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllVendors = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllVendorsRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_vandor`, config);
+      const data = response.data.data;
+      dispatch(fetchAllVendorsSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllVendorsFailure(error.message));
     }
   };
 };

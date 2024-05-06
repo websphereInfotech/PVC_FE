@@ -4,10 +4,8 @@ import Drawer from '@mui/material/Drawer';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Card, Paper } from '@mui/material';
-import { createCustomer, createCustomfeild } from '../store/thunk';
+import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
+import { createVendor } from '../store/thunk';
 
 const AnchorVendorDrawer = ({ open, onClose }) => {
   AnchorVendorDrawer.propTypes = {
@@ -20,7 +18,6 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
   // State for radio buttons
   const [bankdetail, setBankDetail] = React.useState(true);
   const [creditlimit, setCreditlimit] = React.useState(false);
-  const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
   // State for input fields
   const [formData, setFormData] = React.useState({
     accountname: '',
@@ -47,15 +44,6 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-  const handleAddCustomField = () => {
-    const newCustomFields = [...customFields, { label: '', value: '' }];
-    setCustomFields(newCustomFields);
-  };
-  const handleDeleteCustomField = (index) => {
-    const updatedCustomFields = [...customFields];
-    updatedCustomFields.splice(index, 1);
-    setCustomFields(updatedCustomFields);
-  };
 
   const handleBankDetailChange = (event) => {
     setBankDetail(event.target.value === 'true' ? true : false);
@@ -67,26 +55,14 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
 
   const handleSave = async () => {
     try {
-      const customerData = {
+      const vendorData = {
         ...formData,
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
-      // console.log(customerData, 'formdata');
-      const data = await dispatch(createCustomer(customerData));
-      const customerId = data.data.data.id;
-      //  console.log("id",customerId);
-      const payload = {
-        customerId,
-        items: customFields.map((row) => ({
-          label: row.label,
-          value: row.value
-        }))
-      };
-      //  console.log("plyload",payload);
-      dispatch(createCustomfeild(payload));
+      await dispatch(createVendor(vendorData));
     } catch (error) {
-      console.error('Error creating customer:', error);
+      console.error('Error creating vendor:', error);
     }
   };
 
@@ -239,52 +215,7 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
             </RadioGroup>
           </Grid>
         </Grid>
-        <Grid item sx={{ margin: '8px 16px' }}>
-          <Card sx={{ padding: '10px' }}>
-            <h3>Custom Feild</h3>
-            {customFields.map((field, index) => (
-              <Grid key={index} container spacing={2} sx={{ margin: '1px' }}>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">
-                    Label : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Label"
-                    value={field.label}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].label = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">
-                    Value : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Value"
-                    value={field.value}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].value = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={2}>
-                  <Typography variant="subtitle1">Delete</Typography>
-                  <DeleteIcon onClick={() => handleDeleteCustomField(index)} sx={{ margin: '7px' }} />
-                </Grid>
-              </Grid>
-            ))}
-            <Grid item xs={12}>
-              <button id="buttoncs" onClick={handleAddCustomField}>
-                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-              </button>
-            </Grid>
-          </Card>
-        </Grid>
+
         <Grid item sx={{ margin: '8px 16px' }}>
           <Grid item sx={12} sm={6}>
             <Typography variant="h5" sx={{ margin: '20px 0px 10px 0px' }}>

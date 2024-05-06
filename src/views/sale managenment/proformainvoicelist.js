@@ -16,9 +16,9 @@ import { useNavigate } from 'react-router-dom';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'date', label: 'Date', align: 'center' },
   { id: 'quotation_no', label: 'Quotation No.', align: 'center' },
   { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
   // { id: 'mobileno', label: 'Mobile No.', align: 'center' },
   // { id: 'email', label: 'Email', align: 'center' },
   { id: 'validtill', label: 'Valid Till', align: 'center' },
@@ -27,7 +27,7 @@ const columns = [
   { id: 'delete', label: 'Delete', align: 'center' }
 ];
 
-export default function QuotationList() {
+export default function ProformainvoiceList() {
   const { canUpdateQuotation, canCreateQuotation, canViewQuotation, canDeQuotation } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,6 +42,11 @@ export default function QuotationList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchQuotationList());
+        response.sort((a, b) => {
+          const aNum = parseInt(a.quotation_no.split('-')[1]);
+          const bNum = parseInt(b.quotation_no.split('-')[1]);
+          return aNum - bNum;
+        });
         setQuotations(response);
       } catch (error) {
         console.error('Error fetching quotations:', error);
@@ -65,13 +70,13 @@ export default function QuotationList() {
   // use for view single button passed id of data
   const handleViewQuotation = (id) => {
     dispatch(Quotationview(id));
-    navigate(`/qutationview/${id}`);
+    navigate(`/proformainvoiceviewpage/${id}`);
   };
 
   //use for edit button passed id of data
   const handleUpdateQuotation = (id) => {
     dispatch(Quotationview(id));
-    navigate(`/qutation/${id}`);
+    navigate(`/proformainvoice/${id}`);
   };
 
   const handleDeleteConfirmation = (id) => {
@@ -91,11 +96,11 @@ export default function QuotationList() {
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Quotation List
+        Pro Forma Invoice List
       </Typography>
       {/* <Link to="/qutation" style={{ textDecoration: 'none' }}> */}
-      <Button variant="contained" href="/qutation" color="secondary" style={{ margin: '16px' }} disabled={!canCreateQuotation()}>
-        Create Quotation
+      <Button variant="contained" href="/proformainvoice" color="secondary" style={{ margin: '16px' }} disabled={!canCreateQuotation()}>
+        Create Pro Forma Invoice
       </Button>
       {/* </Link> */}
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -141,10 +146,8 @@ export default function QuotationList() {
                       >
                         Delete
                       </Button>
-                    ) : column.id === 'date' ? (
-                      new Date(row[column.id]).toLocaleDateString()
-                    ) : column.id === 'validtill' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                    ) : column.id === 'date' || column.id === 'validtill' ? (
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : (
                       row[column.id]
                     )}
@@ -166,7 +169,7 @@ export default function QuotationList() {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>Are you sure you want to delete this quotation?</DialogContent>
+        <DialogContent>Are you sure you want to delete this pro forma invoice?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
