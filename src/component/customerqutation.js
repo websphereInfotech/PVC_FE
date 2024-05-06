@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 // import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import { createCustomer } from '../store/thunk';
+// import PlacesAutocomplete from 'react-places-autocomplete';
 
 const AnchorTemporaryDrawer = ({ open, onClose }) => {
   AnchorTemporaryDrawer.propTypes = {
@@ -45,6 +46,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const [accountType, setAccountType] = React.useState('');
   const [ifscCode, setIfscCode] = React.useState('');
   const [totalCredit, setTotalCredit] = React.useState('');
+  // const [address, setAddress] = React.useState('');
 
   // Function to handle bank details change
   const handleBankDetailChange = (event) => {
@@ -106,7 +108,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       console.error('Error creating customer:', error);
     }
   };
-
+  // const handleSelect = (city) => {
+  //   console.log(city); // Handle selected city
+  // };
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Paper
@@ -178,12 +182,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
             <Typography variant="subtitle1">
-              Mode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={handleInputChange} />
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1">
               Default Credit Period (In days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="Default Credit Period" id="creditperiod" value={formData.creditperiod} onChange={handleInputChange} />
@@ -231,6 +229,29 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
+            {/* <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
+              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                <div>
+                  <input {...getInputProps({ placeholder: 'Type address' })} />
+                  <div>
+                    {loading ? <div>Loading...</div> : null}
+
+                    {suggestions.map((suggestion) => {
+                      const style = {
+                        backgroundColor: suggestion.active ? '#41b6e6' : '#fff'
+                      };
+
+                      return (
+                        <div key={index} {...getSuggestionItemProps(suggestion, { style })}>
+                          {suggestion.description}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </PlacesAutocomplete> */}
+
             <input placeholder="City" id="city" value={formData.city} onChange={handleInputChange} />
           </Grid>
         </Grid>

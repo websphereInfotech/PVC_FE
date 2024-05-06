@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Quotationview } from 'store/thunk';
+import { Proformainvoiceview } from 'store/thunk';
 
 const Proformainvoiceviewpage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -14,7 +14,7 @@ const Proformainvoiceviewpage = () => {
 
   //called api for view data
   useEffect(() => {
-    dispatch(Quotationview(id))
+    dispatch(Proformainvoiceview(id))
       .then((data) => {
         setData(data);
       })
@@ -34,11 +34,11 @@ const Proformainvoiceviewpage = () => {
           <Typography variant="subtitle2">{data?.customer}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation No.</Typography>
-          <Typography variant="subtitle2">{data?.quotation_no}</Typography>
+          <Typography variant="subtitle1">ProFormaInvoice No.</Typography>
+          <Typography variant="subtitle2">{data?.ProFormaInvoice_no}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation Date</Typography>
+          <Typography variant="subtitle1">ProFormaInvoice Date</Typography>
           <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('es-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
@@ -60,8 +60,8 @@ const Proformainvoiceviewpage = () => {
                   data?.items.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.product}</TableCell>
-                      <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
+                      <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}

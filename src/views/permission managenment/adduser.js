@@ -25,7 +25,7 @@ const User = () => {
   const { id } = useParams();
   const roledata = [
     { value: 'Admin', label: 'Admin' },
-    { value: 'Financial', label: 'Financial' },
+    { value: 'Account', label: 'Account' },
     { value: 'Employee', label: 'Employee' },
     { value: 'Workers', label: 'Workers' },
     { value: 'Other', label: 'Other' }

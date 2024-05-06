@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Quotationview, fetchQuotationList, deleteQuotation } from 'store/thunk';
+import { Proformainvoiceview, fetchproformainvoiceList, deleteProformainvoice } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'quotation_no', label: 'Quotation No.', align: 'center' },
+  { id: 'ProFormaInvoice_no', label: 'No.', align: 'center' },
   { id: 'customer', label: 'Customer', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
   // { id: 'mobileno', label: 'Mobile No.', align: 'center' },
@@ -28,7 +28,12 @@ const columns = [
 ];
 
 export default function ProformainvoiceList() {
-  const { canUpdateQuotation, canCreateQuotation, canViewQuotation, canDeQuotation } = useCan();
+  const {
+    canUpdateProformainvoiceQuotation,
+    canCreateProformainvoiceQuotation,
+    canViewProformainvoiceQuotation,
+    canDeProformainvoiceQuotation
+  } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
@@ -41,10 +46,10 @@ export default function ProformainvoiceList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchQuotationList());
+        const response = await dispatch(fetchproformainvoiceList());
         response.sort((a, b) => {
-          const aNum = parseInt(a.quotation_no.split('-')[1]);
-          const bNum = parseInt(b.quotation_no.split('-')[1]);
+          const aNum = parseInt(a.ProFormaInvoice_no.split('-')[1]);
+          const bNum = parseInt(b.ProFormaInvoice_no.split('-')[1]);
           return aNum - bNum;
         });
         setQuotations(response);
@@ -69,13 +74,13 @@ export default function ProformainvoiceList() {
 
   // use for view single button passed id of data
   const handleViewQuotation = (id) => {
-    dispatch(Quotationview(id));
+    dispatch(Proformainvoiceview(id));
     navigate(`/proformainvoiceviewpage/${id}`);
   };
 
   //use for edit button passed id of data
   const handleUpdateQuotation = (id) => {
-    dispatch(Quotationview(id));
+    dispatch(Proformainvoiceview(id));
     navigate(`/proformainvoice/${id}`);
   };
 
@@ -86,7 +91,7 @@ export default function ProformainvoiceList() {
 
   const handleDeleteQuotation = async () => {
     try {
-      await dispatch(deleteQuotation(selectedId));
+      await dispatch(deleteProformainvoice(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -99,7 +104,13 @@ export default function ProformainvoiceList() {
         Pro Forma Invoice List
       </Typography>
       {/* <Link to="/qutation" style={{ textDecoration: 'none' }}> */}
-      <Button variant="contained" href="/proformainvoice" color="secondary" style={{ margin: '16px' }} disabled={!canCreateQuotation()}>
+      <Button
+        variant="contained"
+        href="/proformainvoice"
+        color="secondary"
+        style={{ margin: '16px' }}
+        disabled={!canCreateProformainvoiceQuotation()}
+      >
         Create Pro Forma Invoice
       </Button>
       {/* </Link> */}
@@ -123,14 +134,14 @@ export default function ProformainvoiceList() {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canViewQuotation()}
+                        disabled={!canViewProformainvoiceQuotation()}
                         onClick={() => handleViewQuotation(row.id)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
-                        disabled={!canUpdateQuotation()}
+                        disabled={!canUpdateProformainvoiceQuotation()}
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdateQuotation(row.id)}
@@ -139,7 +150,7 @@ export default function ProformainvoiceList() {
                       </Button>
                     ) : column.id === 'delete' ? (
                       <Button
-                        disabled={!canDeQuotation()}
+                        disabled={!canDeProformainvoiceQuotation()}
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleDeleteConfirmation(row.id)}

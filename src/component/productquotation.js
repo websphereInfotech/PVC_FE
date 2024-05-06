@@ -12,19 +12,19 @@ import { createProduct } from 'store/thunk';
 // import MenuItem from 'menu-items';
 // import MenuItem from 'menu-items';
 
-const AnchorProductDrawer = ({ open, onClose }) => {
+const AnchorProductDrawer = ({ open, onClose, props }) => {
   AnchorProductDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
-
+  console.log(props, 'props');
   const dispatch = useDispatch();
   const [itemtype, setItemType] = React.useState('Product');
-  const [bankdetail, setBankDetail] = React.useState('Batch wise');
+  // const [bankdetail, setBankDetail] = React.useState('Batch wise');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
   const [lowstock, setLowStock] = React.useState(false);
-  const [itemselected, setItemSelected] = React.useState('Show Item In Purchase');
+  // const [itemselected, setItemSelected] = React.useState('Show Item In Purchase');
   const [cess, setCess] = React.useState(true);
   const [selectedGST, setSelectedGST] = React.useState('');
 
@@ -36,8 +36,8 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     unit: '',
     salesprice: '',
     purchaseprice: '',
-    SGST: '',
-    IGST: '',
+    SGST: '0',
+    IGST: '0',
     HSNcode: ''
   });
   const handleInputChange = (e) => {
@@ -47,9 +47,9 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   const handleItem = (e) => {
     setItemType(e.target.value);
   };
-  const handleBankDetail = (e) => {
-    setBankDetail(e.target.value);
-  };
+  // const handleBankDetail = (e) => {
+  //   setBankDetail(e.target.value);
+  // };
   const handleOpeningStock = (e) => {
     setOpeningStock(e.target.value === 'true' ? true : false);
   };
@@ -59,23 +59,34 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   const handleLowStock = (e) => {
     setLowStock(e.target.value === 'true' ? true : false);
   };
-  const handleItemSetected = (e) => {
-    setItemSelected(e.target.value);
-  };
+  // const handleItemSetected = (e) => {
+  //   setItemSelected(e.target.value);
+  // };
   const handleCess = (e) => {
     setCess(e.target.value === 'true' ? true : false);
   };
 
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.label);
-    const { label, value } = selectedOption;
-    if (label.includes('SGST')) {
-      console.log(value, 'sgstValue');
-      setFormData({ ...formData, SGST: value, IGST: '0' });
-    } else if (label.includes('IGST')) {
-      console.log(value, 'igstValue');
-      setFormData({ ...formData, IGST: value, SGST: '0' });
+    console.log(selectedOption.value, 'value');
+    if (props === true) {
+      // formData.SGST=selectedOption.value
+      console.log(selectedOption.value, 'valueSGST');
+      setFormData({ ...formData, SGST: selectedOption.value, IGST: '0' });
+    } else if (props === false) {
+      // formData.IGST = selectedOption.value
+      console.log(selectedOption.value, 'valueIGST');
+      setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
     }
+    console.log(formData, 'selectedGST');
+    // const { label, value } = selectedOption;
+    // if (label.includes('SGST')) {
+    //   console.log(value, 'sgstValue');
+    //   setFormData({ ...formData, SGST: value, IGST: '0' });
+    // } else if (label.includes('IGST')) {
+    //   console.log(value, 'igstValue');
+    //   setFormData({ ...formData, IGST: value, SGST: '0' });
+    // }
   };
 
   const handleSave = async () => {
@@ -83,11 +94,9 @@ const AnchorProductDrawer = ({ open, onClose }) => {
       const data = {
         ...formData,
         itemtype,
-        bankdetail,
         openingstock,
         nagativeqty,
         lowstock,
-        itemselected,
         cess
       };
       console.log(data, 'data');
@@ -125,7 +134,9 @@ const AnchorProductDrawer = ({ open, onClose }) => {
       <Box sx={{ width: { xs: 320, sm: 660 }, overflowX: 'hidden', '&::-webkit-scrollbar': { width: '0' } }} role="presentation">
         <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Item Type</Typography>
+            <Typography variant="subtitle1">
+              Item Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row defaultValue="Product" value={formData.itemtype} onChange={handleItem}>
               <FormControlLabel value="Product" control={<Radio />} label="Product" />
               <FormControlLabel value="Service" control={<Radio />} label="Service" />
@@ -134,7 +145,9 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Product</Typography>
+            <Typography variant="subtitle1">
+              Product : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Product" id="productname" value={formData.productname} onChange={handleInputChange} />
           </Grid>
           {/* </Grid>
@@ -156,75 +169,75 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Unit</Typography>
+            <Typography variant="subtitle1">
+              Unit : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="YR-OTHERS" id="unit" value={formData.unit} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">GST Rate(%)</Typography>
+            <Typography variant="subtitle1">
+              GST Rate(%):<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <Select options={GST} value={{ label: selectedGST }} onChange={handleGSTChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">HSN Code </Typography>
+            <Typography variant="subtitle1">
+              HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>{' '}
+            </Typography>
             <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
         </Grid>
-        {/* <Grid container sm={6} sx={{ margin: '10px' }}> */}
-        <Grid item sx={{ margin: '10px 12px' }}>
-          <Typography variant="subtitle1">Provide bank details?</Typography>
-          <RadioGroup row defaultValue="Batch wise" value={formData.bankdetail} onChange={handleBankDetail}>
-            <FormControlLabel value="Normal" control={<Radio />} label="Normal" />
-            <FormControlLabel value="Batch wise" control={<Radio />} label="Batch wise" />
-            <FormControlLabel value="Lot wise" control={<Radio />} label="Lot wise" />
-          </RadioGroup>
+        <Grid container spacing={2} sx={{ margin: '1px' }}>
+          <Grid item sx={{ margin: '0px 0px' }}>
+            <Typography variant="subtitle1">
+              Do you want to add batch wise<br></br>
+              opening stock?
+            </Typography>
+            <RadioGroup row defaultValue="No" value={formData.openingstock} onChange={handleOpeningStock}>
+              <FormControlLabel value="true" control={<Radio />} label="Yes" />
+              <FormControlLabel value="false" control={<Radio />} label="No" />
+            </RadioGroup>
+          </Grid>
         </Grid>
+
         <Grid item sx={{ margin: '10px 12px' }}>
           <Typography variant="subtitle1">
-            Do you want to add batch wise<br></br>
-            opening stock?
+            Negative Qty Allowed :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <RadioGroup row defaultValue="No" value={formData.openingstock} onChange={handleOpeningStock}>
-            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-            <FormControlLabel value="false" control={<Radio />} label="No" />
-          </RadioGroup>
-        </Grid>
-        {/* </Grid> */}
-        {/* <Grid container spacing={2} sx={{ margin: '0px' }}> */}
-        <Grid item sx={{ margin: '10px 12px' }}>
-          <Typography variant="subtitle1">Negative Qty Allowed</Typography>
           <RadioGroup row defaultValue="No" value={formData.nagativeqty} onChange={handleNegativeQty}>
             <FormControlLabel value="true" control={<Radio />} label="Yes" />
             <FormControlLabel value="false" control={<Radio />} label="No" />
           </RadioGroup>
         </Grid>
         <Grid item sx={{ margin: '10px 12px' }}>
-          <Typography variant="subtitle1">Low Stock Warning</Typography>
+          <Typography variant="subtitle1">
+            Low Stock Warning : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
           <RadioGroup row defaultValue="No" value={formData.lowstock} onChange={handleLowStock}>
             <FormControlLabel value="true" control={<Radio />} label="Yes" />
             <FormControlLabel value="false" control={<Radio />} label="No" />
           </RadioGroup>
         </Grid>
-        {/* </Grid> */}
-        {/* <Grid container spacing={2} sx={{ margin: '1px' }}> */}
-        <Grid item sx={{ margin: '10px 12px' }} md={6} lg={12}>
+
+        {/* <Grid item sx={{ margin: '10px 12px' }} md={6} lg={12}>
           <RadioGroup row defaultValue="Show Item In Purchase" value={formData.itemselected} onChange={handleItemSetected}>
             <FormControlLabel value="Show Item In Purchase" control={<Radio />} label="Show Item In Purchase" />
             <FormControlLabel value="Show Item In Sales" control={<Radio />} label="Show Item In Sales" />
           </RadioGroup>
-          {/* </Grid> */}
-          {/* <Grid item sx={{ margin: '0px 0px' }}>
-            <RadioGroup row defaultValue="Show Item In Sales">
-            </RadioGroup>
-          </Grid> */}
-        </Grid>
+        </Grid> */}
         <Grid container spacing={2} sx={{ margin: '0px' }}>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">Purchase Price</Typography>
+            <Typography variant="subtitle1">
+              Purchase Price : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="0.000" id="purchaseprice" value={formData.purchaseprice} onChange={handleInputChange} />
           </Grid>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">Sales Price</Typography>
+            <Typography variant="subtitle1">
+              Sales Price: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="0.000" id="salesprice" value={formData.salesprice} onChange={handleInputChange} />
           </Grid>
         </Grid>
