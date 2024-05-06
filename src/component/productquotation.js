@@ -98,7 +98,9 @@ const AnchorProductDrawer = ({ open, onClose }) => {
       <Box sx={{ width: { xs: 320, sm: 660 }, overflowX: 'hidden', '&::-webkit-scrollbar': { width: '0' } }} role="presentation">
         <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Item Type</Typography>
+            <Typography variant="subtitle1">
+              Item Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row defaultValue="Product" value={formData.itemtype} onChange={handleItem}>
               <FormControlLabel value="Product" control={<Radio />} label="Product" />
               <FormControlLabel value="Service" control={<Radio />} label="Service" />
@@ -107,35 +109,47 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Product</Typography>
+            <Typography variant="subtitle1">
+              Product : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Product" id="productname" value={formData.productname} onChange={handleInputChange} />
           </Grid>
           {/* </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}> */}
           <Grid item>
-            <Typography variant="subtitle1">Product Description</Typography>
+            <Typography variant="subtitle1">
+              Product Description : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Product" id="description" value={formData.description} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Item Group</Typography>
+            <Typography variant="subtitle1">
+              Item Group : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Group" id="itemgroup" value={formData.itemgroup} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Item Category</Typography>
+            <Typography variant="subtitle1">
+              Item Category : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Category" id="itemcategory" value={formData.itemcategory} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Unit</Typography>
+            <Typography variant="subtitle1">
+              Unit : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="YR-OTHERS" id="unit" value={formData.unit} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }}>
-            <Typography variant="subtitle1">Provide bank details?</Typography>
+            <Typography variant="subtitle1">
+              Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row defaultValue="Batch wise" value={formData.bankdetail} onChange={handleBankDetail}>
               <FormControlLabel value="Normal" control={<Radio />} label="Normal" />
               <FormControlLabel value="Batch wise" control={<Radio />} label="Batch wise" />
@@ -145,7 +159,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
           <Grid item sx={{ margin: '0px 0px' }}>
             <Typography variant="subtitle1">
               Do you want to add batch wise<br></br>
-              opening stock?
+              opening stock? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <RadioGroup row defaultValue="No" value={formData.openingstock} onChange={handleOpeningStock}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
@@ -155,14 +169,18 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }}>
-            <Typography variant="subtitle1">Negative Qty Allowed</Typography>
+            <Typography variant="subtitle1">
+              Negative Qty Allowed : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row defaultValue="No" value={formData.nagativeqty} onChange={handleNegativeQty}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
           <Grid item sx={{ margin: '0px 0px' }}>
-            <Typography variant="subtitle1">Low Stock Warning</Typography>
+            <Typography variant="subtitle1">
+              Low Stock Warning : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row defaultValue="No" value={formData.lowstock} onChange={handleLowStock}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -183,23 +201,31 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">Purchase Price</Typography>
+            <Typography variant="subtitle1">
+              Purchase Price : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="0.000" id="purchaseprice" value={formData.purchaseprice} onChange={handleInputChange} />
           </Grid>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">Sales Price</Typography>
+            <Typography variant="subtitle1">
+              Sales Price: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="0.000" id="salesprice" value={formData.salesprice} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">GST Rate(%)</Typography>
+            <Typography variant="subtitle1">
+              GST Rate(%) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="0%" id="gstrate" value={formData.gstrate} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }} sm={6}>
-            <Typography variant="subtitle1">Cess Enable</Typography>
+            <Typography variant="subtitle1">
+              Cess Enable : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row defaultValue="No" value={formData.cess} onChange={handleCess}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
