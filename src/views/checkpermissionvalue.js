@@ -34,23 +34,23 @@ const useCan = () => {
   };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ QOUTATION
-  const canCreateQuotation = () => {
-    return checkPermission('Quotation', 'create_quotation');
+  const canCreateProformainvoiceQuotation = () => {
+    return checkPermission('ProFormaInvoice', 'create_ProFormaInvoice');
   };
-  const canUpdateQuotation = () => {
-    return checkPermission('Quotation', 'update_quotation');
+  const canUpdateProformainvoiceQuotation = () => {
+    return checkPermission('ProFormaInvoice', 'update_ProFormaInvoice');
   };
-  const canDeleteQuotation = () => {
-    return checkPermission('Quotation', 'delete_quotationitem');
+  const canDeleteProformainvoiceQuotation = () => {
+    return checkPermission('ProFormaInvoice', 'delete_ProFormaInvoiceItem');
   };
-  const canDeQuotation = () => {
-    return checkPermission('Quotation', 'delete_quotation');
+  const canDeProformainvoiceQuotation = () => {
+    return checkPermission('ProFormaInvoice', 'delete_ProFormaInvoice');
   };
-  const canViewQuotation = () => {
-    return checkPermission('Quotation', 'view_single_quotation');
+  const canViewProformainvoiceQuotation = () => {
+    return checkPermission('ProFormaInvoice', 'view_single_ProFormaInvoice');
   };
-  const canViewAllQuotation = () => {
-    return checkPermission('Quotation', 'view_all_quotation');
+  const canViewAllProformainvoiceQuotation = () => {
+    return checkPermission('ProFormaInvoice', 'get_all_ProFormaInvoice');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN
@@ -343,13 +343,13 @@ const useCan = () => {
   };
 
   return {
-    // QUOTATION +++++++++++++++++++++++
-    canCreateQuotation,
-    canUpdateQuotation,
-    canDeleteQuotation,
-    canViewQuotation,
-    canViewAllQuotation,
-    canDeQuotation,
+    // PROFORMAINVOICE +++++++++++++++++++++++
+    canCreateProformainvoiceQuotation,
+    canUpdateProformainvoiceQuotation,
+    canDeleteProformainvoiceQuotation,
+    canViewProformainvoiceQuotation,
+    canViewAllProformainvoiceQuotation,
+    canDeProformainvoiceQuotation,
     // USERS +++++++++++++++++++++++++++
     canUserUpdate,
     canUserView,

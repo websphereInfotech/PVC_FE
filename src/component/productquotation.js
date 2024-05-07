@@ -4,8 +4,6 @@ import Drawer from '@mui/material/Drawer';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import { createProduct } from 'store/thunk';
 
@@ -14,14 +12,11 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
-
   const dispatch = useDispatch();
   const [itemtype, setItemType] = React.useState('Product');
-  const [bankdetail, setBankDetail] = React.useState('Batch wise');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
   const [lowstock, setLowStock] = React.useState(false);
-  const [itemselected, setItemSelected] = React.useState('Show Item In Purchase');
   const [cess, setCess] = React.useState(true);
 
   const [formData, setFormData] = React.useState({
@@ -32,6 +27,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     unit: '',
     salesprice: '',
     purchaseprice: '',
+    HSNcode: '',
     gstrate: ''
   });
   const handleInputChange = (e) => {
@@ -40,9 +36,6 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   };
   const handleItem = (e) => {
     setItemType(e.target.value);
-  };
-  const handleBankDetail = (e) => {
-    setBankDetail(e.target.value);
   };
   const handleOpeningStock = (e) => {
     setOpeningStock(e.target.value === 'true' ? true : false);
@@ -53,22 +46,33 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   const handleLowStock = (e) => {
     setLowStock(e.target.value === 'true' ? true : false);
   };
-  const handleItemSetected = (e) => {
-    setItemSelected(e.target.value);
-  };
   const handleCess = (e) => {
     setCess(e.target.value === 'true' ? true : false);
   };
+
+  const handleGSTChange = (selectedOption) => {
+    setSelectedGST(selectedOption.value);
+    setFormData({ ...formData, gstrate: selectedOption.value });
+    // if (props === true) {
+    //   // formData.SGST=selectedOption.value
+    //   console.log(selectedOption.value, 'valueSGST');
+    //   setFormData({ ...formData, SGST: selectedOption.value, IGST: '0' });
+    // } else if (props === false) {
+    //   // formData.IGST = selectedOption.value
+    //   console.log(selectedOption.value, 'valueIGST');
+    //   setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
+    // }
+    console.log(formData, 'selectedGST');
+  };
+
   const handleSave = async () => {
     try {
       const data = {
         ...formData,
         itemtype,
-        bankdetail,
         openingstock,
         nagativeqty,
         lowstock,
-        itemselected,
         cess
       };
       await dispatch(createProduct(data));
@@ -117,23 +121,17 @@ const AnchorProductDrawer = ({ open, onClose }) => {
           {/* </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}> */}
           <Grid item>
-            <Typography variant="subtitle1">
-              Product Description : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">Product Description</Typography>
             <input placeholder="Enter Product" id="description" value={formData.description} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
-            <Typography variant="subtitle1">
-              Item Group : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">Item Group</Typography>
             <input placeholder="Enter Group" id="itemgroup" value={formData.itemgroup} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">
-              Item Category : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">Item Category</Typography>
             <input placeholder="Enter Category" id="itemcategory" value={formData.itemcategory} onChange={handleInputChange} />
           </Grid>
         </Grid>
@@ -144,22 +142,26 @@ const AnchorProductDrawer = ({ open, onClose }) => {
             </Typography>
             <input placeholder="YR-OTHERS" id="unit" value={formData.unit} onChange={handleInputChange} />
           </Grid>
+          <Grid item>
+            <Typography variant="subtitle1">
+              GST Rate(%):<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select options={GST} value={{ label: selectedGST }} onChange={handleGSTChange} />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ margin: '1px' }}>
+          <Grid item>
+            <Typography variant="subtitle1">
+              HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>{' '}
+            </Typography>
+            <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
+          </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }}>
             <Typography variant="subtitle1">
-              Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <RadioGroup row defaultValue="Batch wise" value={formData.bankdetail} onChange={handleBankDetail}>
-              <FormControlLabel value="Normal" control={<Radio />} label="Normal" />
-              <FormControlLabel value="Batch wise" control={<Radio />} label="Batch wise" />
-              <FormControlLabel value="Lot wise" control={<Radio />} label="Lot wise" />
-            </RadioGroup>
-          </Grid>
-          <Grid item sx={{ margin: '0px 0px' }}>
-            <Typography variant="subtitle1">
               Do you want to add batch wise<br></br>
-              opening stock? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              opening stock?
             </Typography>
             <RadioGroup row defaultValue="No" value={formData.openingstock} onChange={handleOpeningStock}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
@@ -199,7 +201,28 @@ const AnchorProductDrawer = ({ open, onClose }) => {
             </RadioGroup>
           </Grid> */}
         </Grid>
-        <Grid container spacing={2} sx={{ margin: '1px' }}>
+        {/* <Grid container spacing={2} sx={{ margin: '1px' }}> */}
+
+        <Grid item sx={{ margin: '10px 12px' }}>
+          <Typography variant="subtitle1">
+            Negative Qty Allowed :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <RadioGroup row defaultValue="No" value={formData.nagativeqty} onChange={handleNegativeQty}>
+            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
+        </Grid>
+        <Grid item sx={{ margin: '10px 12px' }}>
+          <Typography variant="subtitle1">
+            Low Stock Warning : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <RadioGroup row defaultValue="No" value={formData.lowstock} onChange={handleLowStock}>
+            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
+        </Grid>
+
+        <Grid container spacing={2} sx={{ margin: '0px' }}>
           <Grid item sm={6}>
             <Typography variant="subtitle1">
               Purchase Price : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -221,11 +244,10 @@ const AnchorProductDrawer = ({ open, onClose }) => {
             <input placeholder="0%" id="gstrate" value={formData.gstrate} onChange={handleInputChange} />
           </Grid>
         </Grid>
+
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }} sm={6}>
-            <Typography variant="subtitle1">
-              Cess Enable : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">Cess Enable</Typography>
             <RadioGroup row defaultValue="No" value={formData.cess} onChange={handleCess}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />

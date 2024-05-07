@@ -92,13 +92,13 @@ const MenuItem = () => {
     return false;
   };
 
-  const hasAllPermissions = checkAllPermissions('Quotation', [
-    'view_all_quotation',
-    'view_single_quotation',
-    'delete_quotation',
-    'delete_quotationitem',
-    'update_quotation',
-    'create_quotation'
+  const hasAllPermissions = checkAllPermissions('ProFormaInvoice', [
+    'get_all_ProFormaInvoice',
+    'view_single_ProFormaInvoice',
+    'delete_ProFormaInvoice',
+    'delete_ProFormaInvoiceItem',
+    'update_ProFormaInvoice',
+    'create_ProFormaInvoice'
   ]);
 
   return {

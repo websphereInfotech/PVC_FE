@@ -137,11 +137,11 @@ const FirebaseLogin = ({ ...rest }) => {
               </Button>
             </Box>
 
-            <Box pt={2}>
+            {/* <Box pt={2}>
               <Button fullWidth position="end" size="large" variant="text" color="secondary">
                 Reset Password ?
               </Button>
-            </Box>
+            </Box> */}
           </form>
         )}
       </Formik>

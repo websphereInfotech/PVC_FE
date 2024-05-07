@@ -13,24 +13,24 @@ import {
   logoutSuccess,
   logoutFailure,
   // QUOTATION ++++++++++++++++++++++++++++++
-  fetchQuotationRequest,
-  fetchQuotationSuccess,
-  fetchQuotationFailure,
-  createQuotationRequest,
-  createQuotationSuccess,
-  createQuotationFailure,
-  deleteQuotationItemRequest,
-  deleteQuotationItemSuccess,
-  deleteQuotationItemFailure,
-  deleteQuotationRequest,
-  deleteQuotationSuccess,
-  deleteQuotationFailure,
-  updateQuotationRequst,
-  updateQuotationsuccess,
-  updateQuotationfailure,
-  viewQuotationRequest,
-  viewQuotationSuccess,
-  viewQuotationFailure,
+  fetchProformainvoiceRequest,
+  fetchProformainvoiceSuccess,
+  fetchProformainvoiceFailure,
+  createProformainvoiceRequest,
+  createProformainvoiceSuccess,
+  createProformainvoiceFailure,
+  deleteProformainvoiceItemRequest,
+  deleteProformainvoiceItemSuccess,
+  deleteProformainvoiceItemFailure,
+  deleteProformainvoiceRequest,
+  deleteProformainvoiceSuccess,
+  deleteProformainvoiceFailure,
+  updateProformainvoiceRequst,
+  updateProformainvoicesuccess,
+  updateProformainvoicefailure,
+  viewProformainvoiceRequest,
+  viewProformainvoiceSuccess,
+  viewProformainvoiceFailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersRequest,
   fetchAllCustomersSuccess,
@@ -189,7 +189,11 @@ import {
   createVendorFailure,
   fetchAllVendorsRequest,
   fetchAllVendorsSuccess,
-  fetchAllVendorsFailure
+  fetchAllVendorsFailure,
+  //  COMPANY ++++++++++++++++++++++++
+  fetchAllCompanyRequest,
+  fetchAllCompanySuccess,
+  fetchAllCompanyFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -261,27 +265,27 @@ export const logoutAdmin = (navigate) => {
 };
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++  QOUTATION  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-export const fetchQuotationList = () => {
+export const fetchproformainvoiceList = () => {
   return async (dispatch) => {
-    dispatch(fetchQuotationRequest());
+    dispatch(fetchProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_quotation`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_ProFormaInvoice`, config);
       const data = await response.data.data;
-      dispatch(fetchQuotationSuccess(data));
+      dispatch(fetchProformainvoiceSuccess(data));
       return data;
     } catch (error) {
-      dispatch(fetchQuotationFailure(error));
+      dispatch(fetchProformainvoiceFailure(error));
       throw error;
     }
   };
 };
-export const createQuotation = (quotationData, navigate) => {
+export const createProformainvoice = (quotationData, navigate) => {
   return async (dispatch) => {
-    dispatch(createQuotationRequest());
+    dispatch(createProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_quotation`, quotationData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_ProFormaInvoice`, quotationData, config);
       const createdQuotation = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -290,21 +294,21 @@ export const createQuotation = (quotationData, navigate) => {
           navigate('/proformainvoiceList');
         }
       });
-      dispatch(createQuotationSuccess(createdQuotation));
+      dispatch(createProformainvoiceSuccess(createdQuotation));
       return createdQuotation;
     } catch (error) {
       toast.error(error.response.data.message);
-      dispatch(createQuotationFailure(error.message));
+      dispatch(createProformainvoiceFailure(error.message));
       throw error;
     }
   };
 };
-export const updateQutation = (id, formData, navigate) => {
+export const updateProformainvoice = (id, formData, navigate) => {
   return async (dispatch) => {
-    dispatch(updateQuotationRequst());
+    dispatch(updateProformainvoiceRequst());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotation/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_ProFormaInvoice/${id}`, formData, config);
       const updateQuotationData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -313,61 +317,61 @@ export const updateQutation = (id, formData, navigate) => {
           navigate('/proformainvoiceList');
         }
       });
-      dispatch(updateQuotationsuccess(updateQuotationData));
+      dispatch(updateProformainvoicesuccess(updateQuotationData));
       return updateQuotationData;
     } catch (error) {
       toast.error(error.response.data.message);
-      dispatch(updateQuotationfailure(error.message));
+      dispatch(updateProformainvoicefailure(error.message));
     }
   };
 };
-export const deleteQuotationItem = (id) => {
+export const deleteProformainvoiceItem = (id) => {
   return async (dispatch) => {
-    dispatch(deleteQuotationItemRequest());
+    dispatch(deleteProformainvoiceItemRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_quotationitem/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_ProFormaInvoiceItem/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      dispatch(deleteQuotationItemSuccess());
+      dispatch(deleteProformainvoiceItemSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
-      dispatch(deleteQuotationItemFailure());
+      dispatch(deleteProformainvoiceItemFailure());
     }
   };
 };
-export const Quotationview = (id) => {
+export const Proformainvoiceview = (id) => {
   return async (dispatch) => {
-    dispatch(viewQuotationRequest());
+    dispatch(viewProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_quotation/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_ProFormaInvoice/${id}`, config);
       const data = response.data.data;
-      dispatch(viewQuotationSuccess(data));
+      dispatch(viewProformainvoiceSuccess(data));
       return data;
     } catch (error) {
       toast.error(error.response.data.error);
-      dispatch(viewQuotationFailure(error.message));
+      dispatch(viewProformainvoiceFailure(error.message));
     }
   };
 };
-export const deleteQuotation = (id) => {
+export const deleteProformainvoice = (id) => {
   return async (dispatch) => {
-    dispatch(deleteQuotationRequest());
+    dispatch(deleteProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_quotation/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_ProFormaInvoice/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
       window.location.reload();
-      dispatch(deleteQuotationSuccess());
+      dispatch(deleteProformainvoiceSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
-      dispatch(deleteQuotationFailure());
+      dispatch(deleteProformainvoiceFailure());
     }
   };
 };
@@ -519,7 +523,7 @@ export const createCustomer = (customerData) => {
         autoClose: 1000
       });
       dispatch(createCustomerSuccess(createdCustomer));
-      // window.location.reload();
+      window.location.reload();
       return createdCustomer;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -547,15 +551,15 @@ export const createCustomfeild = (payload) => {
 };
 export const deleteCustomFeild = (id) => {
   return async (dispatch) => {
-    dispatch(deleteQuotationItemRequest());
+    dispatch(deleteProformainvoiceItemRequest());
     try {
       const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customfeild/${id}`, config);
       console.log('response', response);
-      dispatch(deleteQuotationItemSuccess());
+      dispatch(deleteProformainvoiceItemSuccess());
     } catch (error) {
       console.error('Error deleting quotation:', error);
-      dispatch(deleteQuotationItemFailure());
+      dispatch(deleteProformainvoiceItemFailure());
     }
   };
 };
@@ -590,8 +594,8 @@ export const createProduct = (data) => {
       window.location.reload();
       return createProductData;
     } catch (error) {
-      dispatch(createProductFailure(error.message));
       toast.error(error.response.data.message);
+      dispatch(createProductFailure(error.message));
       throw error;
     }
   };
@@ -1068,6 +1072,9 @@ export const createuser = (data, navigate) => {
       dispatch(createUserSuccess(userData));
       return userData;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(createUserFailure(error.message));
       throw error;
     }
@@ -1179,6 +1186,22 @@ export const fetchAllVendors = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllVendorsFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const fetchAllCompany = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_company`, config);
+      const data = response.data.data;
+      dispatch(fetchAllCompanySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllCompanyFailure(error.message));
     }
   };
 };

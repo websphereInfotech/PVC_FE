@@ -5,7 +5,7 @@ import useCan from '../checkpermissionvalue';
 import { Link } from 'react-router-dom';
 
 const Proformainvoicemain = () => {
-  const { canCreateQuotation, canViewAllQuotation } = useCan();
+  const { canCreateProformainvoiceQuotation, canViewAllProformainvoiceQuotation } = useCan();
   return (
     <Grid>
       <Grid xs={12} md={4} sm={6} sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -15,7 +15,7 @@ const Proformainvoicemain = () => {
         <Link to={'/qutationlist'}>
         <Button
           variant="contained"
-          disabled={!canViewAllQuotation()}
+          disabled={!canViewAllProformainvoiceQuotation()}
           color="secondary"
           sx={{ fontWeight: '300', display: { xs: 'none', sm: 'block' } }}
         >
@@ -41,7 +41,7 @@ const Proformainvoicemain = () => {
                 With perfect estimation, give your customers an offer they can not reject!<br></br>
               </p>
               <Link to={'/qutation'}>
-              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }}  disabled={!canCreateQuotation()}>
+              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }}  disabled={!canCreateProformainvoiceQuotation()}>
                 Create Quotation
               </Button>
               </Link>

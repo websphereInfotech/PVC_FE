@@ -25,7 +25,7 @@ const User = () => {
   const { id } = useParams();
   const roledata = [
     { value: 'Admin', label: 'Admin' },
-    { value: 'Financial', label: 'Financial' },
+    { value: 'Account', label: 'Account' },
     { value: 'Employee', label: 'Employee' },
     { value: 'Workers', label: 'Workers' },
     { value: 'Other', label: 'Other' }
@@ -77,7 +77,9 @@ const User = () => {
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">User Name</Typography>
+              <Typography variant="subtitle1">
+                User Name :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Name"
                 value={formData.username}
@@ -85,7 +87,9 @@ const User = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">Mobile No.</Typography>
+              <Typography variant="subtitle1">
+                Mobile No. :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Mobile number"
                 id="mobileno"
@@ -94,7 +98,9 @@ const User = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">Email</Typography>
+              <Typography variant="subtitle1">
+                Email: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Email"
                 id="email"
@@ -105,7 +111,9 @@ const User = () => {
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">Role</Typography>
+              <Typography variant="subtitle1">
+                Role: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <Select
                 color="secondary"
                 options={roledata}
@@ -116,7 +124,9 @@ const User = () => {
             {!id && (
               <>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="subtitle1">Password</Typography>
+                  <Typography variant="subtitle1">
+                    Password: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input
                     type="password"
                     placeholder="Enter Password"
@@ -126,7 +136,9 @@ const User = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="subtitle1">Confirm Password</Typography>
+                  <Typography variant="subtitle1">
+                    Confirm Password: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input
                     type="password"
                     placeholder="Enter Confirm Password"
@@ -138,7 +150,9 @@ const User = () => {
               </>
             )}
             <Grid item xs={12} sm={6} md={4}>
-              <Typography variant="subtitle1">Basic Salary</Typography>
+              <Typography variant="subtitle1">
+                Basic Salary: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter Salary"
                 id="salary"
