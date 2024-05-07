@@ -4,7 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
+import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper, Select } from '@mui/material';
 import { createProduct } from 'store/thunk';
 
 const AnchorProductDrawer = ({ open, onClose }) => {
@@ -18,7 +18,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   const [nagativeqty, setNagativeQty] = React.useState(false);
   const [lowstock, setLowStock] = React.useState(false);
   const [cess, setCess] = React.useState(true);
-
+const [GST,selectedGST] = React.useState();
   const [formData, setFormData] = React.useState({
     productname: '',
     description: '',
@@ -191,7 +191,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }} md={6} lg={12}>
-            <RadioGroup row defaultValue="Show Item In Purchase" value={formData.itemselected} onChange={handleItemSetected}>
+            <RadioGroup row defaultValue="Show Item In Purchase" value={formData.itemselected} >
               <FormControlLabel value="Show Item In Purchase" control={<Radio />} label="Show Item In Purchase" />
               <FormControlLabel value="Show Item In Sales" control={<Radio />} label="Show Item In Sales" />
             </RadioGroup>
