@@ -19,6 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { Deliverychallanview, getallDeliverychallan } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', minWidth: 170, align: 'center' },
@@ -31,6 +32,7 @@ const columns = [
 ];
 
 const DileveryChallanList = () => {
+  const { canViewDeliverychallan, canDeleteDeliverychallan, canCreateDeliverychallan, canUpdateDeliverychallan } = useCan();
   const navigate = useNavigate();
   const [deliverychallan, setdeliverychallan] = useState([]);
   const [page, setPage] = useState(0);
@@ -103,7 +105,13 @@ const DileveryChallanList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Dilevery Challan List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddDeliverychallan}>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: '16px' }}
+        onClick={handleAddDeliverychallan}
+        disabled={!canCreateDeliverychallan()}
+      >
         Create Delivery Challan
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -123,15 +131,30 @@ const DileveryChallanList = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewDeliverychallan(order.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canViewDeliverychallan()}
+                        onClick={() => handleViewDeliverychallan(order.id)}
+                      >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateDeliverychallan(order.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdateDeliverychallan(order.id)}
+                        disabled={!canUpdateDeliverychallan()}
+                      >
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(order.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(order.id)}
+                        disabled={!canDeleteDeliverychallan()}
+                      >
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (

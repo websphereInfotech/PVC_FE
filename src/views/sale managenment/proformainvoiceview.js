@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Quotationview } from 'store/thunk';
 
-const Quotationviewpage = () => {
+const Proformainvoiceviewpage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -17,17 +17,16 @@ const Quotationviewpage = () => {
     dispatch(Quotationview(id))
       .then((data) => {
         setData(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error('Error fetching quotation data:', error);
       });
   }, [dispatch, id]);
-
+  const subtotal = data?.items?.reduce((acc, item) => acc + item.mrp, 0);
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Quotation View
+        Pro Forma Invoice View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -35,31 +34,22 @@ const Quotationviewpage = () => {
           <Typography variant="subtitle2">{data?.customer}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data?.mobileno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data?.email}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation No.</Typography>
           <Typography variant="subtitle2">{data?.quotation_no}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Quotation Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('es-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Valid Till</Typography>
-          <Typography variant="subtitle2">{data?.validtill}</Typography>
+          <Typography variant="subtitle2">{new Date(data?.validtill).toLocaleDateString('es-GB')}</Typography>
         </Grid>
 
         <Grid item xs={12}>
           <div style={{ maxHeight: '300px' }}>
             <Table>
               <TableHead>
-                {/* <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell> */}
                 <TableCell sx={{ fontSize: '12px' }}>PRODUCT/SERVICE</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹) (EXCL. TAX)</TableCell>
@@ -69,7 +59,6 @@ const Quotationviewpage = () => {
                 {data?.items &&
                   data?.items.map((item, index) => (
                     <TableRow key={index}>
-                      {/* <TableCell>{item?.srNo}</TableCell> */}
                       <TableCell>{item?.product}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
@@ -91,11 +80,11 @@ const Quotationviewpage = () => {
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal?.toFixed(2)}</p>
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal?.toFixed(2)}</p>
               </div>
             </>
           ) : (
@@ -107,11 +96,11 @@ const Quotationviewpage = () => {
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal?.toFixed(2)}</p>
               </div>
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal?.toFixed(2)}</p>
               </div>
             </div>
           )}
@@ -119,7 +108,7 @@ const Quotationviewpage = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
+            <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -127,7 +116,7 @@ const Quotationviewpage = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/qutationlist" style={{ textDecoration: 'none' }}>
+            <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -139,4 +128,4 @@ const Quotationviewpage = () => {
   );
 };
 
-export default Quotationviewpage;
+export default Proformainvoiceviewpage;

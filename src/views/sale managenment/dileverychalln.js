@@ -7,14 +7,13 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   createDeliveryChallan,
-  createDeliveryChallanItem,
+  // createDeliveryChallanItem,
   deleteDileveryChallan,
-  updateDileveryChallan,
-  updateDileveryChallanItem
+  updateDileveryChallan
+  // updateDileveryChallanItem
 } from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
 import { Link } from 'react-router-dom';
@@ -59,7 +58,7 @@ const Deliverychallan = () => {
   const [selectproduct, setSelectproduct] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [subtotal, setSubtotal] = useState(0);
-  const [idMapping, setIdMapping] = useState({});
+  // const [idMapping, setIdMapping] = useState({});
   const [formData, setFormData] = useState({
     customer: '',
     mobileno: '',
@@ -109,8 +108,6 @@ const Deliverychallan = () => {
 
   // use for delete row
   const handleDeleteRow = async (srNo) => {
-    const id = idMapping[srNo];
-    console.log(id);
     const deletedRow = rows.find((row) => row.srNo === srNo);
     if (!deletedRow) return;
 
@@ -173,14 +170,11 @@ const Deliverychallan = () => {
           const response = await dispatch(Deliverychallanview(id));
           const { email, mobileno, date, challanno, customer } = response;
           setFormData({ email, mobileno, date, challanno, customer });
-          const P_deliverychallanItems = response.P_deliverychallanItems;
+          const deliverychallanItems = response.items;
 
-          const updatedRows = P_deliverychallanItems.map((item, index) => {
-            const rowId = index + 1;
-            const { id } = item;
-            setIdMapping((prevState) => ({ ...prevState, [rowId]: id }));
+          const updatedRows = deliverychallanItems.map((item) => {
             return {
-              srNo: rowId,
+              srNo: item.id,
               product: item.product,
               description: item.description,
               quotationno: item.quotationno,
@@ -203,52 +197,8 @@ const Deliverychallan = () => {
   const handlecreatedeliverychallan = async () => {
     try {
       if (id) {
-        await dispatch(updateDileveryChallan(id, formData));
-        for (const row of rows) {
-          const payload = {
-            serialno: row.srNo,
-            product: row.product,
-            description: row.description,
-            quotationno: row.quotationno,
-            batchno: row.batchno,
-            expirydate: row.expirydate,
-            qty: row.qty,
-            mrp: row.mrp
-          };
-          const id = idMapping[row.srNo];
-          dispatch(updateDileveryChallanItem(id, payload, navigate));
-          toast.success('dilevierychallan update successfully', {
-            icon: <img src={require('../../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-            autoClose: 1000,
-            onClose: () => {
-              navigate('/deliverychallanlist');
-            }
-          });
-        }
-      } else {
-        const ChallanData = {
-          ...formData
-        };
-        const Deliverychallan = await dispatch(createDeliveryChallan(ChallanData, navigate));
-        const allFieldsEmpty = Object.values(formData).every((value) => value === '');
-        if (allFieldsEmpty) {
-          toast.error(`Please Fill Required Fields`);
-          return;
-        }
-        const requiredFields = ['srNo', 'product', 'description', 'quotationno', 'batchno', 'expirydate', 'qty', 'mrp'];
-        for (const row of rows) {
-          for (const field of requiredFields) {
-            if (!row[field]) {
-              toast.error(`Please fill in the ${field} in a deliverychallan`, {
-                autoClose: 1000
-              });
-              return;
-            }
-          }
-        }
-        const deliverychallanId = Deliverychallan.data.data.id;
         const payload = {
-          deliverychallanId,
+          ...formData,
           items: rows.map((row) => ({
             serialno: row.srNo,
             product: row.product,
@@ -260,7 +210,23 @@ const Deliverychallan = () => {
             mrp: row.mrp
           }))
         };
-        dispatch(createDeliveryChallanItem(payload));
+        dispatch(updateDileveryChallan(id, payload, navigate));
+      } else {
+        const payload = {
+          ...formData,
+          items: rows?.map((row) => ({
+            serialno: row.srNo,
+            product: row.product,
+            description: row.description,
+            quotationno: row.quotationno,
+            batchno: row.batchno,
+            expirydate: row.expirydate,
+            qty: row.qty,
+            mrp: row.mrp
+          }))
+        };
+        const Deliverychallan = await dispatch(createDeliveryChallan(payload, navigate));
+        console.log(Deliverychallan, 'Deliverychallan');
       }
     } catch (error) {
       console.error('Error creating Deliverychallan:', error);
@@ -447,15 +413,11 @@ const Deliverychallan = () => {
             </div>
           </Grid>
 
-          {id ? (
-            ''
-          ) : (
-            <Grid item xs={12}>
-              <button id="buttoncs" onClick={handleAddRow}>
-                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-              </button>
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <button id="buttoncs" onClick={handleAddRow}>
+              <AddIcon sx={{ fontSize: '18px' }} /> Add Row
+            </button>
+          </Grid>
 
           <Grid item xs={12}>
             {isMobile ? (
@@ -496,9 +458,9 @@ const Deliverychallan = () => {
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" style={{ marginRight: '5px' }} onClick={handlecreatedeliverychallan}>
+                {/* <button id="savebtncs" style={{ marginRight: '5px' }} onClick={handlecreatedeliverychallan}>
                   Save & Next
-                </button>
+                </button> */}
                 <button id="savebtncs" onClick={handlecreatedeliverychallan}>
                   Save
                 </button>

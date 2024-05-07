@@ -182,10 +182,10 @@ const MenuItem = () => {
                 icon: icons['LoyaltyIcon'],
                 children: [
                   hasAllPermissions && {
-                    id: 'qutation',
-                    title: 'Qutation',
+                    id: 'proformainvoice',
+                    title: 'Pro Forma Invoice',
                     type: 'item',
-                    url: '/qutationlist'
+                    url: '/proformainvoiceList'
                   },
                   {
                     id: 'Delivery Challan',
@@ -204,6 +204,12 @@ const MenuItem = () => {
                     title: 'Sales Return',
                     type: 'item',
                     url: '/salesreturnmain'
+                  },
+                  {
+                    id: 'reciept',
+                    title: 'Reciept',
+                    type: 'item'
+                    // url: '/salesreturnmain'
                   }
                 ]
               },

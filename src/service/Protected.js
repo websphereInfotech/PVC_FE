@@ -10,5 +10,7 @@ const Protected = ({ children }) => {
   }
   return children;
 };
-
+// Protected.propTypes = {
+//   children: PropTypes.node
+// };
 export default Protected;

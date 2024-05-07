@@ -4,13 +4,11 @@ import Drawer from '@mui/material/Drawer';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
-import { createCustomer } from '../store/thunk';
+import { createVendor } from '../store/thunk';
 
-const AnchorTemporaryDrawer = ({ open, onClose }) => {
-  AnchorTemporaryDrawer.propTypes = {
+const AnchorVendorDrawer = ({ open, onClose }) => {
+  AnchorVendorDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -18,9 +16,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const dispatch = useDispatch();
 
   // State for radio buttons
-  const [bankdetail, setBankDetail] = React.useState(false);
+  const [bankdetail, setBankDetail] = React.useState(true);
   const [creditlimit, setCreditlimit] = React.useState(false);
-  // const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
   // State for input fields
   const [formData, setFormData] = React.useState({
     accountname: '',
@@ -40,70 +37,32 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     country: '',
     balance: ''
   });
-  const [bankName, setBankName] = React.useState('');
-  const [accountNumber, setAccountNumber] = React.useState('');
-  const [accountType, setAccountType] = React.useState('');
-  const [ifscCode, setIfscCode] = React.useState('');
-  const [totalCredit, setTotalCredit] = React.useState('');
 
-  // Function to handle bank details change
-  const handleBankDetailChange = (event) => {
-    setBankDetail(event.target.value === 'true' ? true : false);
-    if (!event.target.value) {
-      setBankName('');
-      setAccountNumber('');
-      setAccountType('');
-      setIfscCode('');
-    }
-  };
   const emailRef = React.useRef(null);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-  // const handleAddCustomField = () => {
-  //   const newCustomFields = [...customFields, { label: '', value: '' }];
-  //   setCustomFields(newCustomFields);
-  // };
-  // const handleDeleteCustomField = (index) => {
-  //   const updatedCustomFields = [...customFields];
-  //   updatedCustomFields.splice(index, 1);
-  //   setCustomFields(updatedCustomFields);
-  // };
 
-  // const handleBankDetailChange = (event) => {
-  //   setBankDetail(event.target.value === 'true' ? true : false);
-  // };
+  const handleBankDetailChange = (event) => {
+    setBankDetail(event.target.value === 'true' ? true : false);
+  };
 
   const handleCreditDetailChange = (event) => {
     setCreditlimit(event.target.value === 'true' ? true : false);
   };
-  const handleTotalCreditChange = (event) => {
-    setTotalCredit(event.target.value);
-  };
 
   const handleSave = async () => {
     try {
-      const customerData = {
+      const vendorData = {
         ...formData,
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
-      if (bankdetail) {
-        customerData.items = [
-          {
-            accountnumber: accountNumber,
-            ifsccode: ifscCode,
-            bankname: bankName,
-            accounttype: accountType
-          }
-        ];
-      }
-      console.log(customerData, 'customerData');
-      await dispatch(createCustomer(customerData));
+      await dispatch(createVendor(vendorData));
     } catch (error) {
-      console.error('Error creating customer:', error);
+      console.error('Error creating vendor:', error);
     }
   };
 
@@ -121,7 +80,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       >
         <Grid item>
           <Typography variant="h4" className="heading">
-            New Customer (Sundry Debtors)
+            New Vendor (Sundry Debtors)
           </Typography>
         </Grid>
         <Grid item>
@@ -137,7 +96,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <input placeholder="Enter Account Name" id="accountname" value={formData.accountname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Short/Alias Name</Typography>
+            <Typography variant="subtitle1">
+              Short/Alias Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Short/Alias Name" id="shortname" value={formData.shortname} onChange={handleInputChange} />
           </Grid>
         </Grid>
@@ -165,13 +126,13 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">PAN/IT/TAN No.</Typography>
+            <Typography variant="subtitle1">
+              PAN/IT/TAN No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="BJXXX001" id="panno" value={formData.panno} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">
-              GST No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">GST No.</Typography>
             <input placeholder="GSTIN452" id="gstnumber" value={formData.gstnumber} onChange={handleInputChange} />
           </Grid>
         </Grid>
@@ -244,30 +205,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
-          {bankdetail && (
-            <>
-              <Grid container spacing={2} style={{ paddingTop: '16px' }}>
-                <Grid item>
-                  <Typography variant="subtitle1">Bank Name:</Typography>
-                  <input placeholder="Enter Bank Name" value={bankName} onChange={(e) => setBankName(e.target.value)} />
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1">Account Number:</Typography>
-                  <input placeholder="Enter Account Number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} />
-                </Grid>
-              </Grid>
-              <Grid container spacing={2} style={{ paddingTop: '16px' }}>
-                <Grid item>
-                  <Typography variant="subtitle1">Account Type:</Typography>
-                  <input placeholder="Enter Account Type" value={accountType} onChange={(e) => setAccountType(e.target.value)} />
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1">IFSC Code:</Typography>
-                  <input placeholder="Enter IFSC Code" value={ifscCode} onChange={(e) => setIfscCode(e.target.value)} />
-                </Grid>
-              </Grid>
-            </>
-          )}
           <Grid item sx={{ margin: '8px 16px' }} md={5}>
             <Typography variant="subtitle1">
               Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -277,76 +214,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
-          <Grid style={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
-            {creditlimit && (
-              <Grid item sx={{ margin: '8px 16px' }} md={5}>
-                <Typography variant="subtitle1">
-                  Total Credit: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                </Typography>
-                <input placeholder="Enter Total Credit" value={totalCredit} onChange={handleTotalCreditChange} />
-              </Grid>
-            )}
-          </Grid>
         </Grid>
-        {/* <Grid item sx={{ margin: '8px 16px' }}>
-          <Card sx={{ padding: '10px' }}>
-            <h3>Custom Feild</h3>
-            {customFields.map((field, index) => (
-              <Grid key={index} container spacing={2} sx={{ margin: '1px' }}>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">
-                    Label : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Label"
-                    value={field.label}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].label = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">
-                    Value : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Value"
-                    value={field.value}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].value = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={2}>
-                  <Typography variant="subtitle1">Delete</Typography>
-                  <DeleteIcon onClick={() => handleDeleteCustomField(index)} sx={{ margin: '7px' }} />
-                </Grid>
-              </Grid>
-            ))}
-            <Grid item xs={12}>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  borderColor: '#425466',
-                  padding: '2px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  lineHeight: '19px',
-                  marginTop: '10px'
-                }}
-                onClick={handleAddCustomField}
-              >
-                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-              </button>
-            </Grid>
-          </Card>
-        </Grid> */}
+
         <Grid item sx={{ margin: '8px 16px' }}>
           <Grid item sx={12} sm={6}>
             <Typography variant="h5" sx={{ margin: '20px 0px 10px 0px' }}>
@@ -357,34 +226,12 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
           <div>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={onClose}
-            >
+            <button id="savebtncs" onClick={onClose}>
               Cancel
             </button>
           </div>
           <div style={{ display: 'flex' }}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={handleSave}
-            >
+            <button id="savebtncs" onClick={handleSave}>
               Save
             </button>
           </div>
@@ -394,4 +241,4 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   );
 };
 
-export default AnchorTemporaryDrawer;
+export default AnchorVendorDrawer;

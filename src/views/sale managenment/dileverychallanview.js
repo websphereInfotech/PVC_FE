@@ -31,19 +31,19 @@ const DileveryChallanView = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.customer}</Typography>
+          <Typography variant="subtitle2">{data?.customer}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data.mobileno}</Typography>
+          <Typography variant="subtitle2">{data?.mobileno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data.email}</Typography>
+          <Typography variant="subtitle2">{data?.email}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan No.</Typography>
-          <Typography variant="subtitle2">{data.challanno}</Typography>
+          <Typography variant="subtitle2">{data?.challanno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan Date</Typography>
@@ -65,8 +65,8 @@ const DileveryChallanView = () => {
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
               </TableHead>
               <TableBody>
-                {data.P_deliverychallanItems &&
-                  data.P_deliverychallanItems.map((item, index) => (
+                {data?.items &&
+                  data?.items?.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.serialno}</TableCell>
                       <TableCell>{item?.quotationno}</TableCell>

@@ -10,7 +10,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { deleteUser, getallusers, Userview } from 'store/thunk';
 import useCan from 'views/checkpermissionvalue';
 
@@ -89,11 +89,11 @@ export default function UserList() {
       <Typography variant="h4" align="center" id="mycss">
         User List
       </Typography>
-      <Link to="/adduser" style={{ textDecoration: 'none' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} disabled={!canUserCreate()}>
-          Create USer
-        </Button>
-      </Link>
+      {/* <Link to="/adduser" style={{ textDecoration: 'none' }} disabled={!canUserCreate()}> */}
+      <Button variant="contained" href="/adduser" color="secondary" style={{ margin: '16px' }} disabled={!canUserCreate()}>
+        Create USer
+      </Button>
+      {/* </Link> */}
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>

@@ -198,6 +198,15 @@ export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 
+// ########################################################################### VENDOR ###############################################################
+
+export const CREATE_VENDOR_REQUEST = 'CREATE_VENDOR_REQUEST';
+export const CREATE_VENDOR_SUCCESS = 'CREATE_VENDOR_SUCCESS';
+export const CREATE_VENDOR_FAILURE = 'CREATE_VENDOR_FAILURE';
+export const FETCH_ALL_VENDORS_REQUEST = 'FETCH_ALL_VENDORS_REQUEST';
+export const FETCH_ALL_VENDORS_SUCCESS = 'FETCH_ALL_VENDORS_SUCCESS';
+export const FETCH_ALL_VENDORS_FAILURE = 'FETCH_ALL_VENDORS_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -873,5 +882,30 @@ export const deleteUserSuccess = (data) => ({
 });
 export const deleteUserFailure = (error) => ({
   type: 'DELETE_USER_FAILURE',
+  payload: error
+});
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createVendorRequest = (data) => ({
+  type: 'CREATE_VENDOR_REQUEST',
+  payload: data
+});
+export const createVendorSuccess = (data) => ({
+  type: 'CREATE_VENDOR_SUCCESS',
+  payload: data
+});
+export const createVendorFailure = (error) => ({
+  type: 'CREATE_VENDOR_FAILURE',
+  payload: error
+});
+export const fetchAllVendorsRequest = () => ({
+  type: 'FETCH_ALL_VENDORS_REQUEST'
+});
+export const fetchAllVendorsSuccess = (data) => ({
+  type: 'FETCH_ALL_VENDORS_SUCCESS',
+  payload: data
+});
+export const fetchAllVendorsFailure = (error) => ({
+  type: 'FETCH_ALL_VENDORS_FAILURE',
   payload: error
 });

@@ -31,10 +31,10 @@ const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/exp
 const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managenment/expenceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Qutation = Loadable(lazy(() => import('../views/sale managenment/qutation')));
-// const Quotationmain = Loadable(lazy(() => import('../views/sale managenment/qutationmain')));
-const Qutationlist = Loadable(lazy(() => import('../views/sale managenment/quotationlist')));
-const Quotationviewpage = Loadable(lazy(() => import('../views/sale managenment/quotationview')));
+const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/proformainvoice')));
+// const Proformainvoicemain = Loadable(lazy(() => import('../views/sale managenment/proformainvoicemain')));
+const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/proformainvoicelist')));
+const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/proformainvoiceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of delivery challan +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/dileverychalln')));
@@ -126,11 +126,11 @@ const MainRoutes = {
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotations +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/qutation', element: <Qutation /> },
-    { path: '/qutation/:id', element: <Qutation /> },
-    { path: '/qutationlist', element: <Qutationlist /> },
-    // { path: '/qutationmain', element: <Quotationmain /> },
-    { path: '/qutationview/:id', element: <Quotationviewpage /> },
+    { path: '/proformainvoice', element: <Proformainvoice /> },
+    { path: '/proformainvoice/:id', element: <Proformainvoice /> },
+    { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
+    // { path: '/proformainvoicemain', element: <Proformainvoicemain /> },
+    { path: '/proformainvoiceviewpage/:id', element: <Proformainvoiceviewpage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesinvoice', element: <Salesinvoice /> },

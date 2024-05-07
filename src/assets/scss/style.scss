@@ -89,9 +89,11 @@
 // .myborder{
 //   border-left: 0.2px solid lightgrey;
 // }
-
+.css-qbdosj-Input {
+width: 213px;
+}
 input {
-  width: 70%;
+  width: 80%;
   border: 1px solid #ced4da;
   padding: 10px;
   position: relative;
@@ -185,6 +187,6 @@ input {
   width: 20%;
   // text-align: center;
 }
-// .css-7j6new-MuiTableCell-root {
-// border-bottom: none;
-// }
+.css-davpi6-MuiPaper-root-MuiDrawer-paper {
+overflow-x: hidden;
+}
