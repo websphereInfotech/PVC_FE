@@ -523,7 +523,7 @@ export const createCustomer = (customerData) => {
         autoClose: 1000
       });
       dispatch(createCustomerSuccess(createdCustomer));
-      // window.location.reload();
+      window.location.reload();
       return createdCustomer;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -594,8 +594,8 @@ export const createProduct = (data) => {
       window.location.reload();
       return createProductData;
     } catch (error) {
-      dispatch(createProductFailure(error.message));
       toast.error(error.response.data.message);
+      dispatch(createProductFailure(error.message));
       throw error;
     }
   };
@@ -1072,6 +1072,9 @@ export const createuser = (data, navigate) => {
       dispatch(createUserSuccess(userData));
       return userData;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(createUserFailure(error.message));
       throw error;
     }

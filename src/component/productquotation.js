@@ -4,27 +4,20 @@ import Drawer from '@mui/material/Drawer';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import Select from 'react-select';
 import { createProduct } from 'store/thunk';
-// import MenuItem from 'menu-items';
-// import MenuItem from 'menu-items';
 
-const AnchorProductDrawer = ({ open, onClose, props }) => {
+const AnchorProductDrawer = ({ open, onClose }) => {
   AnchorProductDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
-  console.log(props, 'props');
   const dispatch = useDispatch();
   const [itemtype, setItemType] = React.useState('Product');
-  // const [bankdetail, setBankDetail] = React.useState('Batch wise');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
   const [lowstock, setLowStock] = React.useState(false);
-  // const [itemselected, setItemSelected] = React.useState('Show Item In Purchase');
   const [cess, setCess] = React.useState(true);
   const [selectedGST, setSelectedGST] = React.useState('');
 
@@ -36,9 +29,8 @@ const AnchorProductDrawer = ({ open, onClose, props }) => {
     unit: '',
     salesprice: '',
     purchaseprice: '',
-    SGST: '0',
-    IGST: '0',
-    HSNcode: ''
+    HSNcode: '',
+    gstrate: ''
   });
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -47,9 +39,6 @@ const AnchorProductDrawer = ({ open, onClose, props }) => {
   const handleItem = (e) => {
     setItemType(e.target.value);
   };
-  // const handleBankDetail = (e) => {
-  //   setBankDetail(e.target.value);
-  // };
   const handleOpeningStock = (e) => {
     setOpeningStock(e.target.value === 'true' ? true : false);
   };
@@ -59,34 +48,23 @@ const AnchorProductDrawer = ({ open, onClose, props }) => {
   const handleLowStock = (e) => {
     setLowStock(e.target.value === 'true' ? true : false);
   };
-  // const handleItemSetected = (e) => {
-  //   setItemSelected(e.target.value);
-  // };
   const handleCess = (e) => {
     setCess(e.target.value === 'true' ? true : false);
   };
 
   const handleGSTChange = (selectedOption) => {
-    setSelectedGST(selectedOption.label);
-    console.log(selectedOption.value, 'value');
-    if (props === true) {
-      // formData.SGST=selectedOption.value
-      console.log(selectedOption.value, 'valueSGST');
-      setFormData({ ...formData, SGST: selectedOption.value, IGST: '0' });
-    } else if (props === false) {
-      // formData.IGST = selectedOption.value
-      console.log(selectedOption.value, 'valueIGST');
-      setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
-    }
-    console.log(formData, 'selectedGST');
-    // const { label, value } = selectedOption;
-    // if (label.includes('SGST')) {
-    //   console.log(value, 'sgstValue');
-    //   setFormData({ ...formData, SGST: value, IGST: '0' });
-    // } else if (label.includes('IGST')) {
-    //   console.log(value, 'igstValue');
-    //   setFormData({ ...formData, IGST: value, SGST: '0' });
+    setSelectedGST(selectedOption.value);
+    setFormData({ ...formData, gstrate: selectedOption.value });
+    // if (props === true) {
+    //   // formData.SGST=selectedOption.value
+    //   console.log(selectedOption.value, 'valueSGST');
+    //   setFormData({ ...formData, SGST: selectedOption.value, IGST: '0' });
+    // } else if (props === false) {
+    //   // formData.IGST = selectedOption.value
+    //   console.log(selectedOption.value, 'valueIGST');
+    //   setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
     // }
+    console.log(formData, 'selectedGST');
   };
 
   const handleSave = async () => {
@@ -221,12 +199,6 @@ const AnchorProductDrawer = ({ open, onClose, props }) => {
           </RadioGroup>
         </Grid>
 
-        {/* <Grid item sx={{ margin: '10px 12px' }} md={6} lg={12}>
-          <RadioGroup row defaultValue="Show Item In Purchase" value={formData.itemselected} onChange={handleItemSetected}>
-            <FormControlLabel value="Show Item In Purchase" control={<Radio />} label="Show Item In Purchase" />
-            <FormControlLabel value="Show Item In Sales" control={<Radio />} label="Show Item In Sales" />
-          </RadioGroup>
-        </Grid> */}
         <Grid container spacing={2} sx={{ margin: '0px' }}>
           <Grid item sm={6}>
             <Typography variant="subtitle1">

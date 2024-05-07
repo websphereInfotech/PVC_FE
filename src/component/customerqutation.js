@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 // import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import { createCustomer } from '../store/thunk';
+import { CitySelect, CountrySelect, StateSelect } from 'react-country-state-city';
+import 'react-country-state-city/dist/react-country-state-city.css';
 // import PlacesAutocomplete from 'react-places-autocomplete';
 
 const AnchorTemporaryDrawer = ({ open, onClose }) => {
@@ -21,8 +23,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   // State for radio buttons
   const [bankdetail, setBankDetail] = React.useState(false);
   const [creditlimit, setCreditlimit] = React.useState(false);
-  // const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
-  // State for input fields
+  const [countryid, setCountryid] = React.useState(101);
+  const [stateid, setstateid] = React.useState(0);
   const [formData, setFormData] = React.useState({
     accountname: '',
     shortname: '',
@@ -32,21 +34,20 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     panno: '',
     gstnumber: '',
     creditperiod: '',
-    mode: '',
     address1: '',
     address2: '',
     pincode: '',
-    state: '',
-    city: '',
+    // state: '',
+    // city: '',
     country: '',
     balance: ''
+    // totalcreadit:'
   });
   const [bankName, setBankName] = React.useState('');
   const [accountNumber, setAccountNumber] = React.useState('');
   const [accountType, setAccountType] = React.useState('');
   const [ifscCode, setIfscCode] = React.useState('');
-  const [totalCredit, setTotalCredit] = React.useState('');
-  // const [address, setAddress] = React.useState('');
+  const [totalCredit, setTotalCredit] = React.useState();
 
   // Function to handle bank details change
   const handleBankDetailChange = (event) => {
@@ -64,20 +65,14 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-  // const handleAddCustomField = () => {
-  //   const newCustomFields = [...customFields, { label: '', value: '' }];
-  //   setCustomFields(newCustomFields);
-  // };
-  // const handleDeleteCustomField = (index) => {
-  //   const updatedCustomFields = [...customFields];
-  //   updatedCustomFields.splice(index, 1);
-  //   setCustomFields(updatedCustomFields);
-  // };
 
-  // const handleBankDetailChange = (event) => {
-  //   setBankDetail(event.target.value === 'true' ? true : false);
-  // };
+  const handleCityChange = (selectedCity) => {
+    setFormData({ ...formData, city: selectedCity.name });
+  };
 
+  const handleStateChange = (selectedState) => {
+    setFormData({ ...formData, state: selectedState.name });
+  };
   const handleCreditDetailChange = (event) => {
     setCreditlimit(event.target.value === 'true' ? true : false);
   };
@@ -92,15 +87,16 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
+      if (creditlimit) {
+        customerData.totalcreadit = totalCredit;
+      }
       if (bankdetail) {
-        customerData.items = [
-          {
-            accountnumber: accountNumber,
-            ifsccode: ifscCode,
-            bankname: bankName,
-            accounttype: accountType
-          }
-        ];
+        customerData.bankdetails = {
+          accountnumber: accountNumber,
+          ifsccode: ifscCode,
+          bankname: bankName,
+          accounttype: accountType
+        };
       }
       console.log(customerData, 'customerData');
       await dispatch(createCustomer(customerData));
@@ -108,9 +104,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       console.error('Error creating customer:', error);
     }
   };
-  // const handleSelect = (city) => {
-  //   console.log(city); // Handle selected city
-  // };
+
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Paper
@@ -223,7 +217,15 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               State : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="State" id="state" value={formData.state} onChange={handleInputChange} />
+            {console.log(setCountryid)}
+            <StateSelect
+              countryid={countryid}
+              onChange={(selectedState) => {
+                setstateid(selectedState.id);
+                handleStateChange(selectedState);
+              }}
+              placeHolder="Select State"
+            />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1">
@@ -251,8 +253,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
                 </div>
               )}
             </PlacesAutocomplete> */}
-
-            <input placeholder="City" id="city" value={formData.city} onChange={handleInputChange} />
+            {console.log(CountrySelect)}
+            <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder="Select City" />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
@@ -269,21 +271,29 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <>
               <Grid container spacing={2} style={{ paddingTop: '16px' }}>
                 <Grid item>
-                  <Typography variant="subtitle1">Bank Name:</Typography>
+                  <Typography variant="subtitle1">
+                    Bank Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input placeholder="Enter Bank Name" value={bankName} onChange={(e) => setBankName(e.target.value)} />
                 </Grid>
                 <Grid item>
-                  <Typography variant="subtitle1">Account Number:</Typography>
+                  <Typography variant="subtitle1">
+                    Account Number: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input placeholder="Enter Account Number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} />
                 </Grid>
               </Grid>
               <Grid container spacing={2} style={{ paddingTop: '16px' }}>
                 <Grid item>
-                  <Typography variant="subtitle1">Account Type:</Typography>
+                  <Typography variant="subtitle1">
+                    Account Type: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input placeholder="Enter Account Type" value={accountType} onChange={(e) => setAccountType(e.target.value)} />
                 </Grid>
                 <Grid item>
-                  <Typography variant="subtitle1">IFSC Code:</Typography>
+                  <Typography variant="subtitle1">
+                    IFSC Code: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
                   <input placeholder="Enter IFSC Code" value={ifscCode} onChange={(e) => setIfscCode(e.target.value)} />
                 </Grid>
               </Grid>
@@ -298,7 +308,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
-          <Grid style={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
+          <Grid style={{ width: '100%' }}>
             {creditlimit && (
               <Grid item sx={{ margin: '8px 16px' }} md={5}>
                 <Typography variant="subtitle1">
