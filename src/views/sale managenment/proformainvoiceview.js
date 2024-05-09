@@ -22,7 +22,12 @@ const Proformainvoiceviewpage = () => {
         console.error('Error fetching quotation data:', error);
       });
   }, [dispatch, id]);
-  const subtotal = data?.items?.reduce((acc, item) => acc + item.mrp, 0);
+  const subtotal = data.totalMrp ? data.totalMrp : 0;
+  const maintotal = data.mainTotal ? data.mainTotal : 0;
+  const sgst = data.totalSgst ? data.totalSgst / 2 : 0;
+  const cgst = data.totalSgst ? data.totalSgst / 2 : 0;
+  const igst = data.totalIgst ? data.totalIgst : 0;
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -31,7 +36,7 @@ const Proformainvoiceviewpage = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data?.customer}</Typography>
+          <Typography variant="subtitle2">{data?.customer?.shortname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">ProFormaInvoice No.</Typography>
@@ -47,7 +52,7 @@ const Proformainvoiceviewpage = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <div style={{ maxHeight: '300px' }}>
+          <div style={{ maxHeight: '300px', overflowX: 'auto' }}>
             <Table>
               <TableHead>
                 <TableCell sx={{ fontSize: '12px' }}>PRODUCT/SERVICE</TableCell>
@@ -59,7 +64,7 @@ const Proformainvoiceviewpage = () => {
                 {data?.items &&
                   data?.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.product}</TableCell>
+                      <TableCell>{item?.product?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
@@ -75,33 +80,71 @@ const Proformainvoiceviewpage = () => {
             // For mobile screens, show each total on separate lines
             <>
               <div style={{ margin: '0px' }} id="subtotalcs">
-                <p>Taxable Amt.</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
                 <p>₹{subtotal?.toFixed(2)}</p>
               </div>
+              {data.totalSgst && (
+                <Grid item xs={12}>
+                  <div style={{ margin: '0px' }} id="subtotalcs">
+                    <p>SGST</p>
+                    <p>₹{sgst.toFixed(2)}</p>
+                  </div>
+                  <div style={{ margin: '0px' }} id="subtotalcs">
+                    <p>CGST</p>
+                    <p>₹{cgst.toFixed(2)}</p>
+                  </div>
+                </Grid>
+              )}
+              {/* {data.totalIgst && (
+                <Grid item xs={12}>
+                  <div style={{ margin: '0px' }} id="subtotalcs">
+                    <p>IGST</p>
+                    <p>₹{igst.toFixed(2)}</p>
+                  </div>
+                </Grid>
+              )} */}
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹{subtotal?.toFixed(2)}</p>
+                <p>₹{maintotal.toFixed(2)}</p>
               </div>
             </>
           ) : (
             // For larger screens, show all totals on one line
             <div style={{ float: 'right', width: '30%' }}>
-              <div style={{ margin: '0px' }} id="subtotalcs">
-                <p>Taxable Amt.</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ margin: '0px' }} id="subtotalcs">
-                <p>Sub Total</p>
-                <p>₹{subtotal?.toFixed(2)}</p>
-              </div>
-              <div style={{ margin: '0px' }} id="subtotalcs">
-                <p>Total Amt.</p>
-                <p>₹{subtotal?.toFixed(2)}</p>
-              </div>
+              <>
+                <div style={{ margin: '0px' }} id="subtotalcs">
+                  <p>Sub Total</p>
+                  <p>₹{subtotal?.toFixed(2)}</p>
+                </div>
+                {data.totalSgst ? (
+                  <Grid item xs={12}>
+                    <div style={{ margin: '0px' }} id="subtotalcs">
+                      <p>SGST</p>
+                      <p>₹{sgst.toFixed(2)}</p>
+                    </div>
+                    <div style={{ margin: '0px' }} id="subtotalcs">
+                      <p>CGST</p>
+                      <p>₹{cgst.toFixed(2)}</p>
+                    </div>
+                  </Grid>
+                ) : (
+                  ''
+                )}
+                {data.totalIgst ? (
+                  <Grid item xs={12}>
+                    <div style={{ margin: '0px' }} id="subtotalcs">
+                      <p>IGST</p>
+                      <p>₹{igst.toFixed(2)}</p>
+                    </div>
+                  </Grid>
+                ) : (
+                  ''
+                )}
+                <div style={{ margin: '0px' }} id="subtotalcs">
+                  <p>Total Amt.</p>
+                  <p>₹{maintotal.toFixed(2)}</p>
+                </div>
+              </>
             </div>
           )}
         </Grid>
