@@ -159,6 +159,8 @@ export default function ProformainvoiceList() {
                       </Button>
                     ) : column.id === 'date' || column.id === 'validtill' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'customer' ? (
+                      row.customer.shortname
                     ) : (
                       row[column.id]
                     )}

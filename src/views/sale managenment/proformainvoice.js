@@ -32,19 +32,23 @@ const Proformainvoice = () => {
   const [customer, setcustomer] = useState([]);
   const [selectcustomer, setSelectcustomer] = useState('');
   const [customerState, setCustomerState] = useState('');
-  const [product, setProduct] = useState([]);
+  const [customername, setCustomername] = useState('');
+  const [companystate, setCompanystate] = useState('');
+  const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [gststate, setGststate] = useState('');
-  const [sgst, setSgst] = useState(0);
-  const [plusgst, setPlusgst] = useState(0);
-  // const [txtable,setTxtable] = useState(0);
   const [formData, setFormData] = useState({
-    customer: '',
+    customerId: '',
     date: new Date(),
     ProFormaInvoice_no: '',
-    validtill: ''
+    validtill: '',
+    totalSgst: 0,
+    totalIgst: 0,
+    totalMrp: 0,
+    mainTotal: 0
   });
+  const [plusgst, setPlusgst] = useState(formData.totalSgst || formData.totalIgst || 0);
   const [productResponse, setProductResponse] = useState([]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
@@ -55,6 +59,255 @@ const Proformainvoice = () => {
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
+  };
+
+  //use for delete product row
+  // const handleDeleteRow = async (id, index) => {
+  //   if (id) {
+  //     const updatedRows = [...rows];
+  //     updatedRows.splice(index, 1);
+  //     setRows(updatedRows);
+  //     dispatch(deleteProformainvoiceItem(id));
+  //     const deletedRow = rows.find((row) => row.id === id);
+  //     if (deletedRow) {
+  //       const deletedAmount = deletedRow.mrp;
+  //       const newSubtotal = subtotal - deletedAmount;
+  //       setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+  //     }
+  //   } else {
+  //     const updatedRows = [...rows];
+  //     updatedRows.splice(index, 1);
+  //     setRows(updatedRows);
+  //     const deletedRow = rows[index];
+  //     if (deletedRow) {
+  //       const deletedAmount = deletedRow.mrp;
+  //       const newSubtotal = subtotal - deletedAmount;
+  //       setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+  //     }
+  //   }
+  // };
+
+  const handleDeleteRow = async (id, index) => {
+    if (id) {
+      const updatedRows = [...rows];
+      const deletedRow = updatedRows.splice(index, 1)[0];
+      setRows(updatedRows);
+      dispatch(deleteProformainvoiceItem(id));
+
+      const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
+      const newPlusgst = plusgst - deletedGstAmount;
+      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+
+      const deletedAmount = deletedRow.mrp;
+      const newSubtotal = subtotal - deletedAmount;
+      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    } else {
+      const updatedRows = [...rows];
+      const deletedRow = updatedRows.splice(index, 1)[0];
+      setRows(updatedRows);
+
+      const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
+      const newPlusgst = plusgst - deletedGstAmount;
+      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+
+      const deletedAmount = deletedRow.mrp;
+      const newSubtotal = subtotal - deletedAmount;
+      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    }
+  };
+
+  // use for select product name from dropdown
+  const handleSelectproductChange = (selectedOption, index) => {
+    console.log(selectproduct);
+    if (selectedOption && selectedOption.label === 'Create New Product') {
+      setIsproductDrawerOpen(true);
+    } else {
+      const updatedRows = rows.map((row, rowIndex) => {
+        if (rowIndex === index) {
+          return {
+            ...row,
+            productId: selectedOption.value,
+            product: selectedOption.label,
+            rate: selectedOption.rate,
+            gstrate: selectedOption.gstrate
+          };
+        }
+        return row;
+      });
+
+      setRows(updatedRows);
+      setSelectproduct(selectedOption.value);
+      setIsproductDrawerOpen(false);
+    }
+  };
+
+  // called api of all product and customer for show name of them in dropdown
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          const options = response.map((customer) => ({ value: customer.id, label: customer.shortname, state: customer.state }));
+          setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+        }
+        const productResponse = await dispatch(fetchAllProducts());
+        if (Array.isArray(productResponse)) {
+          setProductResponse(productResponse);
+          const options = productResponse.map((product) => ({
+            value: product.id,
+            label: product.productname,
+            rate: product.salesprice,
+            gstrate: product.gstrate
+          }));
+          setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
+        } else {
+          console.error('fetchAllProducts returned an unexpected response:', productResponse);
+        }
+
+        const data = await dispatch(fetchAllCompany());
+        const datademo = data[0].state === customerState;
+        setCompanystate(data[0].state);
+        setGststate(datademo);
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
+    const generateAutoQuotationNumber = async () => {
+      if (!id) {
+        try {
+          const quotationResponse = await dispatch(fetchproformainvoiceList());
+          let nextQuotationNumber = 1;
+          if (quotationResponse.length === 0) {
+            const quotationNumber = `Q-${nextQuotationNumber}`;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              ProFormaInvoice_no: quotationNumber
+            }));
+            return;
+          }
+          const existingQuotationNumbers = quotationResponse.map((quotation) => {
+            const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
+            return parseInt(quotationNumber);
+          });
+
+          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
+
+          if (!isNaN(maxQuotationNumber)) {
+            nextQuotationNumber = maxQuotationNumber + 1;
+          }
+
+          const quotationNumber = `Q-${nextQuotationNumber}`;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            ProFormaInvoice_no: quotationNumber
+          }));
+        } catch (error) {
+          console.error('Error generating auto proformainvoice number:', error);
+        }
+      }
+    };
+    generateAutoQuotationNumber();
+    fetchData();
+  }, [dispatch, customerState, gststate, id]);
+
+  useEffect(() => {
+    const data = async () => {
+      if (id) {
+        const response = await dispatch(Proformainvoiceview(id));
+        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
+        setSelectcustomer(customer.id);
+        setCustomerState(customer.state);
+        setCustomername(customer.shortname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.product.id,
+          product: item.product.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.mrp,
+          gstrate: item.product.gstrate
+        }));
+        setRows(updatedRows);
+        updatedRows.forEach((row) => {
+          const amount = row.qty * row.rate;
+          row.mrp = amount;
+          const gstAmount = amount * (row.gstrate / 100);
+          setPlusgst(gstAmount);
+        });
+      }
+    };
+    data();
+  }, [dispatch, id]);
+
+  // use for select customer name from dropdown
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label === 'Create New Customer') {
+      setIsDrawerOpen(true);
+    } else {
+      formData.customerId = selectedOption.value;
+      setFormData(formData);
+      setCustomername(selectedOption.label);
+      setCustomerState(selectedOption.state);
+      setIsDrawerOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(initialSubtotal);
+  }, [rows]);
+
+  const handleCreateQuotation = async () => {
+    try {
+      if (id) {
+        const payload = {
+          ...formData,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            qty: Number(row.qty),
+            rate: row.rate
+          }))
+        };
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        await dispatch(updateProformainvoice(id, payload, navigate));
+      } else {
+        const quotationData = {
+          ...formData,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            qty: row.qty,
+            rate: row.rate,
+            mrp: row.mrp
+          }))
+        };
+        console.log(selectcustomer);
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          quotationData.totalSgst = plusgst;
+          quotationData.totalIgst = 0;
+        } else {
+          quotationData.totalSgst = 0;
+          quotationData.totalIgst = plusgst;
+        }
+        await dispatch(createProformainvoice(quotationData, navigate));
+      }
+    } catch (error) {
+      console.error('Error creating proformainvoice:', error);
+    }
   };
 
   //manage value of input of row
@@ -69,216 +322,36 @@ const Proformainvoice = () => {
     updatedRows.forEach((row) => {
       const amount = row.qty * row.rate;
       row.mrp = amount;
+      const gstAmount = row.mrp * (row.gstrate / 100);
+      row.gst = gstAmount;
     });
 
     const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(newSubtotal);
+    if (id && gststate) {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalSgst: newPlusgst
+      }));
+    } else {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalIgst: newPlusgst
+      }));
+    }
     setRows(updatedRows);
-    console.log(selectproduct, 'selectproduct>>>>>>>>>>>>>>>>>>>');
-    if (selectproduct) {
-      const selectedProduct = productResponse.find((product) => product.id === selectproduct);
 
+    const rowId = rows[index];
+    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
+    if (selectedProduct) {
       const updatedRowsWithGST = updatedRows.map((row) => {
-        const gstAmount = row.mrp * (selectedProduct.gstrate / 100);
-        return { ...row, gstAmount };
+        const gstAmount = row.mrp * (row.gstrate / 100);
+        return { ...row, gst: gstAmount };
       });
-
-      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gstAmount, 0);
-      console.log(totalGST,'totalGST');
+      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
       setPlusgst(totalGST);
-
-      setRows(updatedRowsWithGST);
-
-      const newsgst = totalGST / 2;
-      setSgst(newsgst);
-    }
-  };
-
-  //use for delete product row
-  const handleDeleteRow = async (id, index) => {
-    if (id) {
-      const updatedRows = [...rows];
-      updatedRows.splice(index, 1);
-      setRows(updatedRows);
-      dispatch(deleteProformainvoiceItem(id));
-      const deletedRow = rows.find((row) => row.id === id);
-      if (deletedRow) {
-        const deletedAmount = deletedRow.mrp;
-        const newSubtotal = subtotal - deletedAmount;
-        setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-      }
-    } else {
-      const updatedRows = [...rows];
-      updatedRows.splice(index, 1);
-      setRows(updatedRows);
-      const deletedRow = rows[index];
-      if (deletedRow) {
-        const deletedAmount = deletedRow.mrp;
-        const newSubtotal = subtotal - deletedAmount;
-        setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-      }
-    }
-  };
-
-  // use for select customer name from dropdown
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
-      setIsDrawerOpen(true);
-    } else {
-      setSelectcustomer(selectedOption.value);
-      setCustomerState(selectedOption.state);
-      console.log(selectedOption.value, 'value???????????????????');
-      setFormData({ ...formData, customer: selectedOption.label });
-      setIsDrawerOpen(false);
-    }
-  };
-
-  // use for select product name from dropdown
-  const handleSelectproductChange = (selectedOption, index) => {
-    console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
-      setIsproductDrawerOpen(true);
-    } else {
-      console.log(productResponse, 'productResponse');
-      const updatedRows = rows.map((row, rowIndex) => {
-        if (rowIndex === index) {
-          // console.log(selectedOption, 'selected options');
-          // console.log(row, 'row>>>>>>>>>>>>>>>>>>');
-          return { ...row, product: selectedOption.label, rate: selectedOption.rate, gstrate: selectedOption.gstrate };
-        }
-        return row;
-      });
-      setRows(updatedRows);
-      setSelectproduct(selectedOption.value);
-      setIsproductDrawerOpen(false);
-    }
-  };
-
-  // called api of all product and customer for show name of them in dropdown
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchAllCustomers());
-        if (Array.isArray(response)) {
-          // console.log(response[0], 'response');
-          const options = response.map((customer) => ({ value: customer.id, label: customer.shortname, state: customer.state }));
-          setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
-        }
-        const productResponse = await dispatch(fetchAllProducts());
-        if (Array.isArray(productResponse)) {
-          setProductResponse(productResponse);
-          const options = productResponse.map((product) => ({
-            value: product.id,
-            label: product.productname,
-            rate: product.salesprice,
-            gstrate: product.gstrate
-          }));
-          // console.log(options, 'options');
-          setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
-        } else {
-          console.error('fetchAllProducts returned an unexpected response:', productResponse);
-        }
-
-        const data = await dispatch(fetchAllCompany());
-        const datademo = data[0].state === customerState;
-        setGststate(datademo);
-        console.log('data>>>>>>>>>>', gststate);
-        console.log(data[0].state, 'data>>>>>>>>>company.state');
-        console.log(customerState, '>>>>>>>>>>>>customerState');
-        console.log(datademo, 'result >>>>>>>>>>>>>>>datademo');
-
-        if (id) {
-          const response = await dispatch(Proformainvoiceview(id));
-          const { customer, date, ProFormaInvoice_no, validtill } = response;
-          setFormData({ customer, date, ProFormaInvoice_no, validtill });
-
-          const quotationItems = response.items;
-          const updatedRows = quotationItems.map((item) => {
-            return {
-              id: item.id,
-              product: item.product,
-              qty: item.qty,
-              rate: item.rate,
-              mrp: item.mrp
-            };
-          });
-          setRows(updatedRows);
-        }
-      } catch (error) {
-        console.error('Error fetching quotations:', error);
-      }
-    };
-
-    const generateAutoQuotationNumber = async () => {
-      try {
-        const quotationResponse = await dispatch(fetchproformainvoiceList());
-        let nextQuotationNumber = 1;
-        if (quotationResponse.length === 0) {
-          const quotationNumber = `Q-${nextQuotationNumber}`;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            ProFormaInvoice_no: quotationNumber
-          }));
-          return;
-        }
-        const existingQuotationNumbers = quotationResponse.map((quotation) => {
-          const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
-          return parseInt(quotationNumber);
-        });
-
-        const maxQuotationNumber = Math.max(...existingQuotationNumbers);
-
-        if (!isNaN(maxQuotationNumber)) {
-          nextQuotationNumber = maxQuotationNumber + 1;
-        }
-
-        const quotationNumber = `Q-${nextQuotationNumber}`;
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          ProFormaInvoice_no: quotationNumber
-        }));
-      } catch (error) {
-        console.error('Error generating auto proformainvoice number:', error);
-      }
-    };
-
-    fetchData();
-    generateAutoQuotationNumber();
-  }, [dispatch, customerState, gststate, id]);
-
-  useEffect(() => {
-    const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
-    setSubtotal(initialSubtotal);
-  }, [rows]);
-
-  const handleCreateQuotation = async () => {
-    try {
-      if (id) {
-        // console.log(formData, 'fromdata updatee>>>>>>>>>>>>>');
-        const payload = {
-          ...formData,
-          items: rows.map((row) => ({
-            product: row.product,
-            qty: row.qty,
-            rate: row.rate
-          }))
-        };
-        await dispatch(updateProformainvoice(id, payload, navigate));
-      } else {
-        const quotationData = {
-          customer: selectcustomer,
-          ...formData,
-          items: rows.map((row) => ({
-            product: row.product,
-            qty: row.qty,
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        await dispatch(createProformainvoice(quotationData, navigate));
-      }
-    } catch (error) {
-      console.error('Error creating proformainvoice:', error);
     }
   };
 
@@ -310,7 +383,12 @@ const Proformainvoice = () => {
               <Typography variant="subtitle1">
                 Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={customer}
+                value={{ value: formData.customerId, label: customername }}
+                onChange={handleSelectChange}
+              />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
           </Grid>
@@ -380,7 +458,7 @@ const Proformainvoice = () => {
                           color="secondary"
                           onChange={(selectedOption) => handleSelectproductChange(selectedOption, index)}
                           options={product}
-                          value={{ label: row.product }}
+                          value={{ value: row.productId, label: row.product }}
                         />
                       </TableCell>
                       <AnchorProductDrawer
@@ -420,6 +498,23 @@ const Proformainvoice = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
+                {gststate ? (
+                  <>
+                    <div id="subtotalcs">
+                      <p>SGST</p>
+                      <p>₹{plusgst / 2}</p>
+                    </div>
+                    <div id="subtotalcs">
+                      <p>CGST</p>
+                      <p>₹{plusgst / 2}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div id="subtotalcs">
+                    <p>IGST</p>
+                    <p>₹{plusgst}</p>
+                  </div>
+                )}
                 <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
@@ -428,31 +523,40 @@ const Proformainvoice = () => {
                   {/* <h3>Total Amt.</h3> */}
                   {/* <h3>₹{subtotal + txtable}</h3> */}
                   <h3>Total Amt.</h3>
-                  <h3>₹{Number(subtotal)}</h3>
+                  <h3>₹{Number(subtotal) + Number(plusgst)}</h3>
                 </div>
               </>
             ) : (
               // For larger screens, show all totals on one line
 
               <div style={{ float: 'right', width: '30%' }}>
-                <div
-                  id="subtotalcs"
-                  style={{
-                    borderTop: '0.2px solid lightgrey'
-                  }}
-                >
-                  <p>SGST</p>
-                  <p>₹{plusgst}</p>
-                </div>
-                <div id="subtotalcs">
-                  <p>CGST</p>
-                  <p>₹{plusgst}</p>
-                </div>
-
                 <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
                 </div>
+                {gststate ? (
+                  <>
+                    <div id="subtotalcs">
+                      <p>SGST</p>
+                      {/* {id ? <p>₹{formData.totalSgst / 2}</p> : <p>₹{plusgst / 2}</p>} */}
+                      {/* <p>₹{formData?.totalSgst / 2}</p> */}
+                      <p>₹{plusgst / 2}</p>
+                    </div>
+                    <div id="subtotalcs">
+                      <p>CGST</p>
+                      {/* {id ? <p>₹{formData.totalSgst / 2}</p> : <p>₹{plusgst / 2}</p>} */}
+                      {/* <p>₹{formData.totalSgst / 2}</p> */}
+                      <p>₹{plusgst / 2}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div id="subtotalcs">
+                    <p>IGST</p>
+                    {/* {id ? <p>₹{formData.totalIgst}</p> : <p>₹{plusgst}</p>} */}
+                    {/* <p>₹{formData.totalIgst}</p> */}
+                    <p>₹{plusgst}</p>
+                  </div>
+                )}
                 <div
                   id="subtotalcs"
                   style={{
@@ -460,7 +564,7 @@ const Proformainvoice = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹{Number(subtotal) + Number(sgst) * 2}</h3>
+                  <h3>₹{Number(subtotal) + Number(plusgst)}</h3>
                 </div>
               </div>
             )}

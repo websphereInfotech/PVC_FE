@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 // import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import { createCustomer } from '../store/thunk';
-import { CitySelect, CountrySelect, StateSelect } from 'react-country-state-city';
+import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 // import PlacesAutocomplete from 'react-places-autocomplete';
 
@@ -24,6 +24,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const [bankdetail, setBankDetail] = React.useState(false);
   const [creditlimit, setCreditlimit] = React.useState(false);
   const [countryid, setCountryid] = React.useState(101);
+  {
+    console.log(setCountryid);
+  }
   const [stateid, setstateid] = React.useState(0);
   const [formData, setFormData] = React.useState({
     accountname: '',
@@ -217,7 +220,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               State : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            {console.log(setCountryid)}
             <StateSelect
               countryid={countryid}
               onChange={(selectedState) => {
@@ -231,42 +233,19 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            {/* <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
-              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                <div>
-                  <input {...getInputProps({ placeholder: 'Type address' })} />
-                  <div>
-                    {loading ? <div>Loading...</div> : null}
-
-                    {suggestions.map((suggestion) => {
-                      const style = {
-                        backgroundColor: suggestion.active ? '#41b6e6' : '#fff'
-                      };
-
-                      return (
-                        <div key={index} {...getSuggestionItemProps(suggestion, { style })}>
-                          {suggestion.description}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </PlacesAutocomplete> */}
-            {console.log(CountrySelect)}
             <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder="Select City" />
           </Grid>
         </Grid>
-        <Grid container spacing={2} style={{ paddingTop: '16px' }}>
-          <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }} md={5}>
-            <Typography variant="subtitle1">
-              Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
-              <FormControlLabel value="true" control={<Radio />} label="Yes" />
-              <FormControlLabel value="false" control={<Radio />} label="No" />
-            </RadioGroup>
-          </Grid>
+        <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }} md={5}>
+          <Typography variant="subtitle1">
+            Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
+            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
+        </Grid>
+        <Grid style={{ width: '100%' }}>
           {bankdetail && (
             <>
               <Grid container spacing={2} style={{ paddingTop: '16px' }}>
@@ -299,25 +278,25 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
               </Grid>
             </>
           )}
-          <Grid item sx={{ margin: '8px 16px' }} md={5}>
-            <Typography variant="subtitle1">
-              Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
-              <FormControlLabel value="true" control={<Radio />} label="Yes" />
-              <FormControlLabel value="false" control={<Radio />} label="No" />
-            </RadioGroup>
-          </Grid>
-          <Grid style={{ width: '100%' }}>
-            {creditlimit && (
-              <Grid item sx={{ margin: '8px 16px' }} md={5}>
-                <Typography variant="subtitle1">
-                  Total Credit: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                </Typography>
-                <input placeholder="Enter Total Credit" value={totalCredit} onChange={handleTotalCreditChange} />
-              </Grid>
-            )}
-          </Grid>
+        </Grid>
+        <Grid item sx={{ margin: '8px 16px' }} md={5}>
+          <Typography variant="subtitle1">
+            Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
+            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
+        </Grid>
+        <Grid style={{ width: '100%' }}>
+          {creditlimit && (
+            <Grid item sx={{ margin: '8px 16px' }} md={5}>
+              <Typography variant="subtitle1">
+                Total Credit: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input placeholder="Enter Total Credit" value={totalCredit} onChange={handleTotalCreditChange} />
+            </Grid>
+          )}
         </Grid>
         {/* <Grid item sx={{ margin: '8px 16px' }}>
           <Card sx={{ padding: '10px' }}>
