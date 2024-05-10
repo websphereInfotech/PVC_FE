@@ -37,6 +37,7 @@ const Proformainvoice = () => {
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+  // const
   const [gststate, setGststate] = useState('');
   const [formData, setFormData] = useState({
     customerId: '',
@@ -225,16 +226,20 @@ const Proformainvoice = () => {
           product: item.product.productname,
           qty: item.qty,
           rate: item.rate,
-          mrp: item.mrp,
-          gstrate: item.product.gstrate
+          mrp: item.rate * item.qty,
+          gstrate: item.product.gstrate,
+          gst: item.mrp * (item.product.gstrate / 100)
         }));
         setRows(updatedRows);
-        updatedRows.forEach((row) => {
-          const amount = row.qty * row.rate;
-          row.mrp = amount;
-          const gstAmount = amount * (row.gstrate / 100);
-          setPlusgst(gstAmount);
-        });
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+        // setPlusgst(gst)
+        // updatedRows.forEach((row) => {
+        //   const amount = row.qty * row.rate;
+        //   row.mrp = amount;
+        //   const gstAmount = amount * (row.gstrate / 100);
+        //   setPlusgst(gstAmount);
+        // });
       }
     };
     data();
@@ -268,7 +273,8 @@ const Proformainvoice = () => {
           items: rows.map((row) => ({
             productId: row.productId,
             qty: Number(row.qty),
-            rate: row.rate
+            rate: row.rate,
+            mrp: row.mrp
           }))
         };
         const gststate = companystate === customerState ? 'true' : 'false';

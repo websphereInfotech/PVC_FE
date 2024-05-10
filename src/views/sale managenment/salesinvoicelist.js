@@ -19,6 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { SalesInvoiceview, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
@@ -32,6 +33,7 @@ const columns = [
 ];
 
 const Salesinvoicelist = () => {
+  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice } = useCan();
   const navigate = useNavigate();
   const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
@@ -65,7 +67,10 @@ const Salesinvoicelist = () => {
   const handleAddSalesinvoice = () => {
     navigate('/salesinvoice');
   };
-
+  const handleUpdateSalesInvoice = (id) => {
+    dispatch(SalesInvoiceview(id));
+    navigate(`/salesinvoice/${id}`);
+  };
   const handleViewsalesinvoice = (id) => {
     dispatch(SalesInvoiceview(id));
     navigate(`/salesinvoiceview/${id}`);
@@ -94,28 +99,43 @@ const Salesinvoicelist = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data, index) => (
+            {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewsalesinvoice(data.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canViewalesinvoice()}
+                        onClick={() => handleViewsalesinvoice(row.id)}
+                      >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary">
+                      <Button
+                        disabled={!canUpdateSalesinvoice()}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdateSalesInvoice(row.id)}
+                      >
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(data.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canDeleteSalesinvoice()}
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                      >
                         Delete
                       </Button>
                     ) : column.id === 'invoicedate' ? (
-                      new Date(data[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString()
                     ) : column.id === 'duedate' ? (
-                      new Date(data[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString()
                     ) : (
-                      data[column.id]
+                      row[column.id]
                     )}
                   </TableCell>
                 ))}
