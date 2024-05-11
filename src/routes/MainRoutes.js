@@ -134,6 +134,7 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesinvoice', element: <Salesinvoice /> },
+    { path: '/salesinvoice/:id', element: <Salesinvoice /> },
     // { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
     { path: '/salesinvoicelist', element: <Salesinvoicelist /> },
     { path: '/salesinvoiceview/:id', element: <Salesinvoiceview /> },

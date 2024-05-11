@@ -37,6 +37,7 @@ const Proformainvoice = () => {
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+  // const
   const [gststate, setGststate] = useState('');
   const [formData, setFormData] = useState({
     customerId: '',
@@ -207,6 +208,40 @@ const Proformainvoice = () => {
     generateAutoQuotationNumber();
     fetchData();
   }, [dispatch, customerState, gststate, id]);
+
+  useEffect(() => {
+    const data = async () => {
+      if (id) {
+        const response = await dispatch(Proformainvoiceview(id));
+        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
+        setSelectcustomer(customer.id);
+        setCustomerState(customer.state);
+        setCustomername(customer.shortname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.product.id,
+          product: item.product.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.rate * item.qty,
+          gstrate: item.product.gstrate,
+          gst: item.mrp * (item.product.gstrate / 100)
+        }));
+        setRows(updatedRows);
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+        // setPlusgst(gst)
+        // updatedRows.forEach((row) => {
+        //   const amount = row.qty * row.rate;
+        //   row.mrp = amount;
+        //   const gstAmount = amount * (row.gstrate / 100);
+        //   setPlusgst(gstAmount);
+        // });
+      }
+    };
+    data();
+  }, [dispatch, id]);
 
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
