@@ -4,7 +4,7 @@ import { withStyles } from '@mui/styles';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorTemporaryDrawer from '../../component/customeradd';
 import { useMediaQuery } from '@mui/material';
 import { fetchAllCustomers } from 'store/thunk';
 import { useDispatch } from 'react-redux';

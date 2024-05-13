@@ -8,8 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
-import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
+import AnchorTemporaryDrawer from '../../component/customeradd';
 import {
   fetchAllProducts,
   fetchAllCustomers,
@@ -20,6 +19,7 @@ import {
   // deleteProformainvoiceItem
 } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import AnchorProductDrawer from 'component/productadd';
 
 const Salesinvoice = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
@@ -463,7 +463,7 @@ const Salesinvoice = () => {
                           value={{ value: row.productId, label: row.product }}
                         />
                       </TableCell>
-                      <AnchorDeliverychallanProductDrawer
+                      <AnchorProductDrawer
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}

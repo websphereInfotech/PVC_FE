@@ -4,8 +4,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorProductDrawer from '../../component/productadd';
+import AnchorTemporaryDrawer from '../../component/customeradd';
 import { useMediaQuery } from '@mui/material';
 import {
   fetchAllProducts,
@@ -330,7 +330,7 @@ const AddPurchasePage = () => {
                         value={{ label: row.product }}
                       />
                     </TableCell>
-                    <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                    <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                     <TableCell>
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
                     </TableCell>

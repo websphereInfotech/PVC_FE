@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorTemporaryDrawer from '../../component/customeradd';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {

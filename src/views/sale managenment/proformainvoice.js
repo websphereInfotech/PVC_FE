@@ -5,8 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
-import AnchorProductDrawer from '../../component/productquotation';
+import AnchorTemporaryDrawer from '../../component/customeradd';
+import AnchorProductDrawer from '../../component/productadd';
 import { useDispatch } from 'react-redux';
 import {
   createProformainvoice,
