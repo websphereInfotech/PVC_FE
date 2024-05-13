@@ -115,9 +115,12 @@ import {
   createSalesinvoiceRequest,
   createSalesinvoiceSuccess,
   createSalesinvoiceFailure,
-  createSalesinvoiceItemRequest,
-  createSalesinvoiceItemSuccess,
-  createSalesinvoiceItemFailure,
+  updateSalesinvoiceRequest,
+  updateSalesinvoiceSuccess,
+  updateSalesinvoiceFailure,
+  deleteSalesinvoiceRequest,
+  deleteSalesinvoiceSuccess,
+  deleteSalesinvoiceFailure,
   // PURCHASE BILL +++++++++++++++
   createPurchaseBillRequest,
   createPurchaseBillSuccess,
@@ -297,7 +300,7 @@ export const createProformainvoice = (quotationData, navigate) => {
       dispatch(createProformainvoiceSuccess(createdQuotation));
       return createdQuotation;
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(createProformainvoiceFailure(error.message));
       throw error;
     }
@@ -663,32 +666,25 @@ export const updatePayment = (id, formData) => {
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALESINVOICE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createSalesInvoice = (salesinvoicedata) => {
+export const createSalesInvoice = (payload, navigate) => {
   return async (dispatch) => {
     dispatch(createSalesinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice`, salesinvoicedata, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice`, payload, config);
       const cretesalesinvoice = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/salesinvoicelist');
+        }
+      });
       dispatch(createSalesinvoiceSuccess(cretesalesinvoice));
       return cretesalesinvoice;
     } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(createSalesinvoiceFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createSalesinvoiceItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createSalesinvoiceItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice_item`, payload, config);
-      const createdSalesinvoiceitems = response;
-      dispatch(createSalesinvoiceItemSuccess(createdSalesinvoiceitems));
-      return createdSalesinvoiceitems;
-    } catch (error) {
-      dispatch(createSalesinvoiceItemFailure(error.message));
       throw error;
     }
   };
@@ -721,7 +717,47 @@ export const SalesInvoiceview = (id) => {
     }
   };
 };
-
+export const updateSalesinvoice = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateSalesinvoiceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_salesInvoice/${id}`, payload, config);
+      const updateSalesinvoiceData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/salesinvoicelist');
+        }
+      });
+      dispatch(updateSalesinvoiceSuccess(updateSalesinvoiceData));
+      return updateSalesinvoiceData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updateSalesinvoiceFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteSalesinvoice = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteSalesinvoiceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_salesInvoice/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteSalesinvoiceSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteSalesinvoiceFailure());
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPurchase = (purchaseData) => {
   return async (dispatch) => {

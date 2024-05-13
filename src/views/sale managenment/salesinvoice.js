@@ -10,7 +10,15 @@ import { useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../component/customerqutation';
 import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import { fetchAllProducts, fetchAllCustomers, createSalesInvoice, createSalesinvoiceItem } from 'store/thunk';
+import {
+  fetchAllProducts,
+  fetchAllCustomers,
+  createSalesInvoice,
+  SalesInvoiceview,
+  updateSalesinvoice,
+  fetchAllCompany
+  // deleteProformainvoiceItem
+} from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Salesinvoice = () => {
@@ -18,9 +26,9 @@ const Salesinvoice = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customername, setCustomername] = useState('');
-  // const [companystate, setCompanystate] = useState('');
-  // const [subtotal, setSubtotal] = useState(0);
-  // const [gststate, setGststate] = useState('');
+  const [companystate, setCompanystate] = useState('');
+  const [customerState, setCustomerState] = useState('');
+  const [gststate, setGststate] = useState('');
   const [plusgst, setPlusgst] = useState(0);
   const [productResponse, setProductResponse] = useState([]);
   const [customer, setcustomer] = useState([]);
@@ -49,78 +57,35 @@ const Salesinvoice = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
-  const handleInputChange = (index, field, value) => {
-    const updatedRows = rows.map((row, rowIndex) => {
-      if (rowIndex === index) {
-        return { ...row, [field]: value };
-      }
-      return row;
-    });
+  const handleDeleteRow = async (id, index) => {
+    // if (id) {
+    //   const updatedRows = [...rows];
+    //   const deletedRow = updatedRows.splice(index, 1)[0];
+    //   setRows(updatedRows);
+    //   // dispatch(deleteProformainvoiceItem(id));
 
-    updatedRows.forEach((row) => {
-      const amount = row.qty * row.rate;
-      row.mrp = amount;
-      const gstAmount = row.mrp * (row.gstrate / 100);
-      row.gst = gstAmount;
-    });
+    //   const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
+    //   const newPlusgst = plusgst - deletedGstAmount;
+    //   setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
 
-    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
-    setSubtotal(newSubtotal);
-    if (id && gststate) {
-      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        totalSgst: newPlusgst
-      }));
-    } else {
-      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        totalIgst: newPlusgst
-      }));
-    }
+    //   const deletedAmount = deletedRow.mrp;
+    //   const newSubtotal = subtotal - deletedAmount;
+    //   setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    // } else {
+    const updatedRows = [...rows];
+    const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
 
-    const rowId = rows[index];
-    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
-    if (selectedProduct) {
-      const updatedRowsWithGST = updatedRows.map((row) => {
-        const gstAmount = row.mrp * (row.gstrate / 100);
-        return { ...row, gst: gstAmount };
-      });
-      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
-      setPlusgst(totalGST);
-    }
+    const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
+    const newPlusgst = plusgst - deletedGstAmount;
+    setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+
+    const deletedAmount = deletedRow.mrp;
+    const newSubtotal = subtotal - deletedAmount;
+    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    // }
   };
 
-  const handleDeleteRow = async (id, index) => {
-    if (id) {
-      const updatedRows = [...rows];
-      const deletedRow = updatedRows.splice(index, 1)[0];
-      setRows(updatedRows);
-      dispatch(deleteProformainvoiceItem(id));
-
-      const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-      const newPlusgst = plusgst - deletedGstAmount;
-      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
-
-      const deletedAmount = deletedRow.mrp;
-      const newSubtotal = subtotal - deletedAmount;
-      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    } else {
-      const updatedRows = [...rows];
-      const deletedRow = updatedRows.splice(index, 1)[0];
-      setRows(updatedRows);
-
-      const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-      const newPlusgst = plusgst - deletedGstAmount;
-      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
-
-      const deletedAmount = deletedRow.mrp;
-      const newSubtotal = subtotal - deletedAmount;
-      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    }
-  };
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
@@ -128,7 +93,7 @@ const Salesinvoice = () => {
       formData.customerId = selectedOption.value;
       setFormData(formData);
       setCustomername(selectedOption.label);
-      // setCustomerState(selectedOption.state);
+      setCustomerState(selectedOption.state);
       setIsDrawerOpen(false);
     }
   };
@@ -138,7 +103,6 @@ const Salesinvoice = () => {
     if (selectedOption && selectedOption.label === 'Create New Product') {
       setIsproductDrawerOpen(true);
     } else {
-      console.log(selectedOption, 'selectedOption');
       const updatedRows = rows.map((row, rowIndex) => {
         if (rowIndex === index) {
           return {
@@ -191,72 +155,168 @@ const Salesinvoice = () => {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
 
-        // const data = await dispatch(fetchAllCompany());
-        // const datademo = data[0].state === customerState;
-        // setCompanystate(data[0].state);
-        // setGststate(datademo);
+        const data = await dispatch(fetchAllCompany());
+        const datademo = data[0].state === customerState;
+        setCompanystate(data[0].state);
+        setGststate(datademo);
       } catch (error) {
         console.error('Error fetching quotations:', error);
       }
     };
     fetchData();
-  }, [dispatch]);
-  // useEffect(() => {
-  //   const data = async () => {
-  //     if (id) {
-  //       const response = await dispatch(Proformainvoiceview(id));
-  //       const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-  //       setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-  //       setSelectcustomer(customer.id);
-  //       setCustomerState(customer.state);
-  //       setCustomername(customer.shortname);
-  //       const updatedRows = response.items.map((item) => ({
-  //         id: item.id,
-  //         productId: item.product.id,
-  //         product: item.product.productname,
-  //         qty: item.qty,
-  //         rate: item.rate,
-  //         mrp: item.rate * item.qty,
-  //         gstrate: item.product.gstrate,
-  //         gst: item.mrp * (item.product.gstrate / 100)
-  //       }));
-  //       setRows(updatedRows);
-  //       const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-  //       setPlusgst(totalGST);
-  //     }
-  //   };
-  //   data();
-  // }, [dispatch]);
+  }, [dispatch, companystate, customerState]);
+
+  useEffect(() => {
+    const data = async () => {
+      if (id) {
+        const response = await dispatch(SalesInvoiceview(id));
+        const { InvioceCustomer, mobileno, ProFormaInvoice_no, email, book, seriesname, invoiceno, invoicedate, terms, duedate } = response;
+        // console.log(response, 'response');
+        setFormData({
+          customerId: InvioceCustomer.id,
+          mobileno,
+          ProFormaInvoice_no,
+          email,
+          book,
+          seriesname,
+          invoiceno,
+          invoicedate,
+          terms,
+          duedate
+        });
+        setSelectcustomer(InvioceCustomer.id);
+        setCustomerState(InvioceCustomer.state);
+        setCustomername(InvioceCustomer.shortname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.InvoiceProduct.id,
+          product: item.InvoiceProduct.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.qty * item.rate,
+          gstrate: item.InvoiceProduct.gstrate,
+          gst: item.mrp * (item.InvoiceProduct.gstrate / 100)
+        }));
+        setRows(updatedRows);
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+      }
+    };
+    data();
+  }, [dispatch, id]);
+  useEffect(() => {
+    const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(initialSubtotal);
+  }, [rows]);
   const handleSalesinvoice = async () => {
     try {
       console.log('data>>>>', selectcustomer, setSelectcustomer);
-      // const salesInvoiceId = salesinvoice.data.data.id;
-      const payload = {
-        ...formData,
-        items: rows.map((row) => ({
-          productId: row.productId,
-          mrp: row.mrp,
-          rate: row.rate,
-          qty: row.qty
-        }))
-      };
-      await dispatch(createSalesInvoice(payload, navigate));
-      console.log(payload, 'payload????');
-      dispatch(createSalesinvoiceItem(payload));
-      alert('Sales Invoice created successfully');
-      navigate('/salesinvoicemain');
+      if (id) {
+        const payload = {
+          ...formData,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            rate: row.rate,
+            qty: row.qty,
+            mrp: row.mrp
+          }))
+        };
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        await dispatch(updateSalesinvoice(id, payload, navigate));
+      } else {
+        const payload = {
+          ...formData,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            mrp: row.mrp,
+            rate: row.rate,
+            qty: row.qty
+          }))
+        };
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        await dispatch(createSalesInvoice(payload, navigate));
+      }
     } catch (error) {
       console.error('Error creating Sales Invoice:', error);
       alert('Failed to create Sales Invoice');
     }
   };
+  const handleInputChange = (index, field, value) => {
+    const updatedRows = rows.map((row, rowIndex) => {
+      if (rowIndex === index) {
+        return { ...row, [field]: value };
+      }
+      return row;
+    });
 
+    updatedRows.forEach((row) => {
+      const amount = row.qty * row.rate;
+      row.mrp = amount;
+      const gstAmount = row.mrp * (row.gstrate / 100);
+      row.gst = gstAmount;
+    });
+
+    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(newSubtotal);
+    if (id && gststate) {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalSgst: newPlusgst
+      }));
+    } else {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalIgst: newPlusgst
+      }));
+    }
+    setRows(updatedRows);
+
+    const rowId = rows[index];
+    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
+    if (selectedProduct) {
+      const updatedRowsWithGST = updatedRows.map((row) => {
+        const gstAmount = row.mrp * (row.gstrate / 100);
+        return { ...row, gst: gstAmount };
+      });
+      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
+      setPlusgst(totalGST);
+    }
+  };
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Sales Invoice
-        </Typography>
+        {id ? (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Update Sales Invoice
+          </Typography>
+        ) : (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Create Sales Invoice
+          </Typography>
+        )}
+
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -275,13 +335,23 @@ const Salesinvoice = () => {
               <Typography variant="subtitle1">
                 Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input placeholder="Enter Mobile No." onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })} />
+              <input
+                placeholder="Enter Mobile No."
+                id="mobileno"
+                value={formData.mobileno}
+                onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input placeholder="Enter Email Address" onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+              <input
+                placeholder="Enter Email Address"
+                id="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
@@ -289,19 +359,29 @@ const Salesinvoice = () => {
               <Typography variant="subtitle1">
                 Book : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input onChange={(e) => setFormData({ ...formData, book: e.target.value })} />
+              <input id="book" value={formData.book} onChange={(e) => setFormData({ ...formData, book: e.target.value })} />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Series Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input placeholder="Sales invoice" onChange={(e) => setFormData({ ...formData, seriesname: e.target.value })} />
+              <input
+                placeholder="Sales invoice"
+                id="seriesname"
+                value={formData.seriesname}
+                onChange={(e) => setFormData({ ...formData, seriesname: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input placeholder="0001" onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })} />
+              <input
+                placeholder="0001"
+                id="invoiceno"
+                value={formData.invoiceno}
+                onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
@@ -321,7 +401,12 @@ const Salesinvoice = () => {
               <Typography variant="subtitle1">
                 Terms (Days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input placeholder="Terms (Days)" id="terms" onChange={(e) => setFormData({ ...formData, terms: e.target.value })} />
+              <input
+                placeholder="Terms (Days)"
+                id="terms"
+                value={formData.terms}
+                onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
@@ -340,7 +425,12 @@ const Salesinvoice = () => {
               <Typography variant="subtitle1">
                 Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input placeholder="Quotation no." onChange={(e) => setFormData({ ...formData, ProFormaInvoice_no: e.target.value })} />
+              <input
+                placeholder="Quotation no."
+                id="proformainvoice_no"
+                value={formData.ProFormaInvoice_no}
+                onChange={(e) => setFormData({ ...formData, ProFormaInvoice_no: e.target.value })}
+              />
             </Grid>
           </Grid>
 
@@ -405,43 +495,57 @@ const Salesinvoice = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
+                {gststate ? (
+                  <>
+                    <div id="subtotalcs">
+                      <p>Sub Total</p>
+                      <p>₹{subtotal}</p>
+                    </div>
+                    <div id="subtotalcs">
+                      <p>SGST</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
+                    </div>
+                    <div id="subtotalcs">
+                      <p>CGST</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div id="subtotalcs">
+                    <p>IGST</p>
+                    <p>₹{plusgst.toFixed(2)}</p>
+                  </div>
+                )}
                 <div id="subtotalcs">
-                  <p>Taxable Amt.</p>
-                  <p>₹0.00</p>
-                </div>
-                <div id="subtotalcs">
-                  <p>Total Taxable Amt.</p>
-                  <p>₹0.00</p>
-                </div>
-                <div id="subtotalcs">
-                  <p>Sub Total</p>
-                  <p>₹{subtotal}</p>
-                </div>
-                <div id="subtotalcs" style={{ borderBottom: 'none' }}>
                   <h3>Total Amt.</h3>
-                  <h3>₹{subtotal}</h3>
+                  <h3>₹{(Number(subtotal) + Number(plusgst)).toFixed(2)}</h3>
                 </div>
               </>
             ) : (
               // For larger screens, show all totals on one line
+
               <div style={{ float: 'right', width: '30%' }}>
-                <div
-                  id="subtotalcs"
-                  style={{
-                    borderTop: '0.2px solid lightgrey'
-                  }}
-                >
-                  <p>Taxable Amt.</p>
-                  <p>₹0.00</p>
-                </div>
-                <div id="subtotalcs">
-                  <p>Total Taxable Amt.</p>
-                  <p>₹0.00</p>
-                </div>
                 <div id="subtotalcs">
                   <p>Sub Total</p>
                   <p>₹{subtotal}</p>
                 </div>
+                {gststate ? (
+                  <>
+                    <div id="subtotalcs">
+                      <p>SGST</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
+                    </div>
+                    <div id="subtotalcs">
+                      <p>CGST</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div id="subtotalcs">
+                    <p>IGST</p>
+                    <p>₹{plusgst.toFixed(2)}</p>
+                  </div>
+                )}
                 <div
                   id="subtotalcs"
                   style={{
@@ -449,7 +553,7 @@ const Salesinvoice = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹{subtotal}</h3>
+                  <h3>₹{(Number(subtotal) + Number(plusgst)).toFixed(2)}</h3>
                 </div>
               </div>
             )}

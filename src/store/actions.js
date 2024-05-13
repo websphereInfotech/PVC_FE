@@ -93,6 +93,9 @@ export const UPDATE_PAYMENT_FAILURE = 'UPDATE_PAYMENT_FAILURE';
 export const CREATE_SALES_INVOICE_REQUEST = 'CREATE_SALES_INVOICE_REQUEST';
 export const CREATE_SALES_INVOICE_SUCCESS = 'CREATE_SALES_INVOICE_SUCCESS';
 export const CREATE_SALES_INVOICE_FAILURE = 'CREATE_SALES_INVOICE_FAILURE';
+export const DELETE_SALES_INVOICE_REQUEST = 'DELETE_SALES_INVOICE_REQUEST';
+export const DELETE_SALES_INVOICE_SUCCESS = 'DELETE_SALES_INVOICE_SUCCESS';
+export const DELETE_SALES_INVOICE_FAILURE = 'DELETE_SALES_INVOICE_FAILURE';
 export const CREATE_SALESINVOICE_ITEM_REQUEST = 'CREATE_SALESINVOICE_ITEM_REQUEST';
 export const CREATE_SALESINVOICE_ITEM_SUCCESS = 'CREATE_SALESINVOICE_ITEM_SUCCESS';
 export const CREATE_SALESINVOICE_ITEM_FAILURE = 'CREATE_SALESINVOICE_ITEM_FAILURE';
@@ -481,11 +484,11 @@ export const updatePaymentFailure = (error) => ({
 });
 
 // ##################################################################################### SALES INVOICE ################################################################
+
 export const createSalesinvoiceRequest = (data) => ({
   type: 'CREATE_SALES_INVOICE_REQUEST',
   payload: data
 });
-
 export const createSalesinvoiceSuccess = (data) => ({
   type: 'CREATE_SALES_INVOICE_SUCCESS',
   payload: data
@@ -494,16 +497,28 @@ export const createSalesinvoiceFailure = (error) => ({
   type: 'CREATE_SALES_INVOICE_FAILURE',
   payload: error
 });
-export const createSalesinvoiceItemRequest = (data) => ({
-  type: 'CREATE_SALESINVOICE_ITEM_REQUEST',
+export const deleteSalesinvoiceRequest = (data) => ({
+  type: 'DELETE_SALES_INVOICE_REQUEST',
   payload: data
 });
-export const createSalesinvoiceItemSuccess = (data) => ({
-  type: 'CREATE_SALESINVOICE_ITEM_SUCCESS',
+export const deleteSalesinvoiceSuccess = (data) => ({
+  type: 'DELETE_SALES_INVOICE_SUCCESS',
   payload: data
 });
-export const createSalesinvoiceItemFailure = (error) => ({
-  type: 'CREATE_SALESINVOICE_ITEM_FAILURE',
+export const deleteSalesinvoiceFailure = (error) => ({
+  type: 'DELETE_SALES_INVOICE_FAILURE',
+  payload: error
+});
+export const updateSalesinvoiceRequest = (data) => ({
+  type: 'UPDATE_SALESINVOICE_REQUEST',
+  payload: data
+});
+export const updateSalesinvoiceSuccess = (data) => ({
+  type: 'UPDATE_SALESINVOICE_SUCCESS',
+  payload: data
+});
+export const updateSalesinvoiceFailure = (error) => ({
+  type: 'UPDATE_SALESINVOICE_FAILURE',
   payload: error
 });
 export const getAllSalesinvoiceRequest = (data) => ({

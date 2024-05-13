@@ -17,19 +17,19 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { SalesInvoiceview, getallSalesInvoice } from 'store/thunk';
+import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
-  { id: 'invoiceno', label: 'Invocie No', minWidth: 170 },
+  { id: 'invoiceno', label: 'Invocie No', minWidth: 170, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 100 },
-  { id: 'view', label: 'View', minWidth: 100 },
-  { id: 'edit', label: 'Edit', minWidth: 100 },
-  { id: 'delete', label: 'Delete', minWidth: 100 }
+  // { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center'  },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 const Salesinvoicelist = () => {
@@ -40,12 +40,12 @@ const Salesinvoicelist = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     const fetchSalesinvoice = async () => {
       try {
         const data = await dispatch(getallSalesInvoice());
-        // console.log(data.data);
         setsalesinvoice(data.data);
       } catch (error) {
         console.error('Error fetching sales invoice:', error);
@@ -67,17 +67,32 @@ const Salesinvoicelist = () => {
   const handleAddSalesinvoice = () => {
     navigate('/salesinvoice');
   };
+
   const handleUpdateSalesInvoice = (id) => {
     dispatch(SalesInvoiceview(id));
     navigate(`/salesinvoice/${id}`);
   };
+
   const handleViewsalesinvoice = (id) => {
     dispatch(SalesInvoiceview(id));
     navigate(`/salesinvoiceview/${id}`);
   };
-  const handleDeleteConfirmation = () => {
+
+  const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
+    setSelectedId(id);
   };
+
+  const handleDeleteSalesInvoice = async () => {
+    try {
+      console.log(selectedId, 'selected');
+      await dispatch(deleteSalesinvoice(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
   return (
     // <Container>
     <Card style={{ width: '100%', padding: '25px' }}>
@@ -134,6 +149,8 @@ const Salesinvoicelist = () => {
                       new Date(row[column.id]).toLocaleDateString()
                     ) : column.id === 'duedate' ? (
                       new Date(row[column.id]).toLocaleDateString()
+                    ) : column.id === 'customer' ? (
+                      row.InvioceCustomer.shortname
                     ) : (
                       row[column.id]
                     )}
@@ -155,12 +172,12 @@ const Salesinvoicelist = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>Are you sure you want to delete this user?</DialogContent>
+        <DialogContent>Are you sure you want to delete this Sale Invoice?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handleDeleteSalesInvoice} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

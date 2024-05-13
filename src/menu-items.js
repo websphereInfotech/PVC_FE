@@ -101,6 +101,13 @@ const MenuItem = () => {
     'create_ProFormaInvoice'
   ]);
 
+  const hasAllpermissionsalesinvoice = checkAllPermissions('Sales Invoice', [
+    'create_salesinvoice',
+    'update_salesInvoice',
+    'delete_salesInvoice',
+    'view_single_salesInvoice',
+    'view_all_salesInvoice'
+  ]);
   return {
     items: [
       {
@@ -193,7 +200,7 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/deliverychallanlist'
                   },
-                  {
+                  hasAllpermissionsalesinvoice && {
                     id: 'sales invoice',
                     title: 'Sales Invoice',
                     type: 'item',
