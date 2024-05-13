@@ -204,7 +204,8 @@ const createConfig = () => {
   const token = sessionStorage.getItem('token');
   return {
     headers: {
-      token: token
+      token: token,
+      'ngrok-skip-browser-warning': '69420'
     }
   };
 };
