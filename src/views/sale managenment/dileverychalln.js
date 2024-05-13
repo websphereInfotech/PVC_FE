@@ -303,7 +303,7 @@ const Deliverychallan = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <div style={{ overflowX: 'auto', maxHeight: '300px' }}>
+            <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
                   <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>

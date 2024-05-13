@@ -46,6 +46,11 @@ const Salesinvoicelist = () => {
     const fetchSalesinvoice = async () => {
       try {
         const data = await dispatch(getallSalesInvoice());
+        data.data.sort((a, b) => {
+          const aNum = parseInt(a.invoiceno);
+          const bNum = parseInt(b.invoiceno);
+          return aNum - bNum;
+        });
         setsalesinvoice(data.data);
       } catch (error) {
         console.error('Error fetching sales invoice:', error);
@@ -146,9 +151,9 @@ const Salesinvoicelist = () => {
                         Delete
                       </Button>
                     ) : column.id === 'invoicedate' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'duedate' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.InvioceCustomer.shortname
                     ) : (

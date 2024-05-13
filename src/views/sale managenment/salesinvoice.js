@@ -15,13 +15,16 @@ import {
   createSalesInvoice,
   SalesInvoiceview,
   updateSalesinvoice,
-  fetchAllCompany
+  fetchAllCompany,
+  getallSalesInvoice,
+  fetchproformainvoiceList
   // deleteProformainvoiceItem
 } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorProductDrawer from 'component/productadd';
 
 const Salesinvoice = () => {
+  const dispatch = useDispatch();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -35,18 +38,22 @@ const Salesinvoice = () => {
   const [selectcustomer, setSelectcustomer] = useState([]);
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
+  const [proformainvoice, setProformainvoice] = useState([]);
+  const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
     customerId: '',
-    mobileno: '',
-    email: '',
-    book: '',
-    seriesname: '',
-    invoiceno: '',
+    destination: null,
+    dispatchThrough: null,
+    dispatchno: null,
+    deliverydate: null,
+    LL_RR_no: null,
+    motorVehicleNo: null,
+    invoiceno: null,
     invoicedate: new Date(),
     terms: '',
     duedate: '',
-    ProFormaInvoice_no: ''
+    proFormaId: ''
   });
   const { id } = useParams();
   const [subtotal, setSubtotal] = useState(0);
@@ -57,7 +64,7 @@ const Salesinvoice = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
-  const handleDeleteRow = async (id, index) => {
+  const handleDeleteRow = async (index) => {
     // if (id) {
     //   const updatedRows = [...rows];
     //   const deletedRow = updatedRows.splice(index, 1)[0];
@@ -97,7 +104,9 @@ const Salesinvoice = () => {
       setIsDrawerOpen(false);
     }
   };
-
+  const handleDueDateChange = (date) => {
+    setFormData({ ...formData, duedate: date });
+  };
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'Create New Product') {
@@ -121,17 +130,58 @@ const Salesinvoice = () => {
       setIsproductDrawerOpen(false);
     }
   };
+  const calculateDuedate = (InvoiceDate) => {
+    const defaultValidityPeriod = 7;
+    const duedate = new Date(InvoiceDate);
+    duedate.setDate(duedate.getDate() + defaultValidityPeriod);
+    return duedate;
+  };
 
   const handleInvoiceDateChange = (date) => {
-    const newdeudate = new Date(date);
-    newdeudate.setDate(newdeudate.getDate() + 7);
-    setFormData({ ...formData, date, duedate: newdeudate });
+    const newDueDate = calculateDuedate(date);
+    setFormData({ ...formData, invoicedate: date, duedate: newDueDate });
   };
 
-  const handleDueDateChange = (date) => {
-    setFormData({ ...formData, duedate: date });
-  };
-  const dispatch = useDispatch();
+  useEffect(() => {
+    const initialDueDate = calculateDuedate(formData.invoicedate);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      duedate: initialDueDate
+    }));
+
+    const generateAutoInvoiceNumber = async () => {
+      if (!id) {
+        try {
+          const invoiceResponse = await dispatch(getallSalesInvoice());
+          let nextInvoiceNumber = 1;
+          if (invoiceResponse.data.length === 0) {
+            const InvoiceNumber = nextInvoiceNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              invoiceno: InvoiceNumber
+            }));
+            return;
+          }
+          const existingInvoiceNumbers = invoiceResponse.data.map((Invoice) => {
+            const InvoiceNumber = Invoice.invoiceno;
+            return parseInt(InvoiceNumber);
+          });
+          const maxInvoiceNumber = Math.max(...existingInvoiceNumbers);
+          if (!isNaN(maxInvoiceNumber)) {
+            nextInvoiceNumber = maxInvoiceNumber + 1;
+          }
+          const invoiceNumber = nextInvoiceNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            invoiceno: invoiceNumber
+          }));
+        } catch (error) {
+          console.error('Error generating auto Sales invoice number:', error);
+        }
+      }
+    };
+    generateAutoInvoiceNumber();
+  }, [dispatch, formData.invoicedate, id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,24 +216,55 @@ const Salesinvoice = () => {
     fetchData();
   }, [dispatch, companystate, customerState]);
 
+  const handleproformnumber = (selectedOption) => {
+    const updatedFormData = {
+      ...formData,
+      proFormaId: selectedOption.value
+    };
+    setFormData(updatedFormData);
+    setProformainvoicelabel(selectedOption.label);
+    console.log(selectedOption);
+  };
+
   useEffect(() => {
     const data = async () => {
+      const proformainvoiceresponse = await dispatch(fetchproformainvoiceList());
+      const options = proformainvoiceresponse.map((item) => ({
+        value: item.id,
+        label: `${item.ProFormaInvoice_no}  ${item.customer.shortname}`
+      }));
+      setProformainvoice(options);
       if (id) {
         const response = await dispatch(SalesInvoiceview(id));
-        const { InvioceCustomer, mobileno, ProFormaInvoice_no, email, book, seriesname, invoiceno, invoicedate, terms, duedate } = response;
-        // console.log(response, 'response');
+        const {
+          InvioceCustomer,
+          dispatchThrough,
+          motorVehicleNo,
+          LL_RR_no,
+          dispatchno,
+          destination,
+          deliverydate,
+          invoiceno,
+          invoicedate,
+          terms,
+          duedate,
+          proFormaItem
+        } = response;
         setFormData({
           customerId: InvioceCustomer.id,
-          mobileno,
-          ProFormaInvoice_no,
-          email,
-          book,
-          seriesname,
+          dispatchThrough,
+          motorVehicleNo,
+          LL_RR_no,
+          proFormaId: proFormaItem.id,
+          dispatchno,
+          destination,
+          deliverydate,
           invoiceno,
           invoicedate,
           terms,
           duedate
         });
+        setProformainvoicelabel(proFormaItem.ProFormaInvoice_no);
         setSelectcustomer(InvioceCustomer.id);
         setCustomerState(InvioceCustomer.state);
         setCustomername(InvioceCustomer.shortname);
@@ -204,10 +285,12 @@ const Salesinvoice = () => {
     };
     data();
   }, [dispatch, id]);
+
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
   }, [rows]);
+
   const handleSalesinvoice = async () => {
     try {
       console.log('data>>>>', selectcustomer, setSelectcustomer);
@@ -332,44 +415,58 @@ const Salesinvoice = () => {
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Dispatch Duo No. :</Typography>
               <input
-                placeholder="Enter Mobile No."
-                id="mobileno"
-                value={formData.mobileno}
-                onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
+                placeholder="Enter Dispatch Duo No."
+                id="dispatchno"
+                value={formData.dispatchno}
+                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Delivery Note Date :</Typography>
               <input
-                placeholder="Enter Email Address"
-                id="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                type="date"
+                id="deliverydate"
+                value={formData.deliverydate}
+                onChange={(e) => setFormData({ ...formData, deliverydate: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Through :</Typography>
+              <input
+                id="dispatchThrough"
+                value={formData.dispatchThrough}
+                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
               />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Book : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input id="book" value={formData.book} onChange={(e) => setFormData({ ...formData, book: e.target.value })} />
+              <Typography variant="subtitle1">Destination :</Typography>
+              <input
+                placeholder="Destination"
+                id="destination"
+                value={formData.destination}
+                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Series Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">LR-RR No. :</Typography>
               <input
-                placeholder="Sales invoice"
-                id="seriesname"
-                value={formData.seriesname}
-                onChange={(e) => setFormData({ ...formData, seriesname: e.target.value })}
+                placeholder="LR-RR No"
+                id="LL_RR_no"
+                value={formData.LL_RR_no}
+                onChange={(e) => setFormData({ ...formData, LL_RR_no: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Motor Vehical No. :</Typography>
+              <input
+                placeholder="Vehical No"
+                id="motorVehicleNo"
+                value={formData.motorVehicleNo}
+                onChange={(e) => setFormData({ ...formData, motorVehicleNo: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -383,6 +480,8 @@ const Salesinvoice = () => {
                 onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -395,8 +494,6 @@ const Salesinvoice = () => {
                 showTimeSelect={false}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Terms (Days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -418,27 +515,28 @@ const Salesinvoice = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                minDate={formData.date}
+                minDate={formData.invoicedate}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
-                placeholder="Quotation no."
-                id="proformainvoice_no"
-                value={formData.ProFormaInvoice_no}
-                onChange={(e) => setFormData({ ...formData, ProFormaInvoice_no: e.target.value })}
+              {/* {console.log('SELECTEDOPTION', selectedOption)} */}
+              <Select
+                color="secondary"
+                options={proformainvoice}
+                value={{ value: formData.proFormaId, label: proformainvoicelabel }}
+                onChange={handleproformnumber}
               />
             </Grid>
           </Grid>
 
           <Grid item xs={12}>
-            <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+            <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
-                  <TableCell width={650} sx={{ fontSize: '12px' }}>
+                  <TableCell width={500} sx={{ fontSize: '12px' }}>
                     PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
@@ -468,16 +566,16 @@ const Salesinvoice = () => {
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
                       />
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                       </TableCell>
-                      <TableCell sx={{ padding: '5px' }}>
+                      <TableCell id="newcs">
                         <input placeholder="rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />
                       </TableCell>
                       <TableCell id="newcs" style={{ fontSize: '16px' }}>
                         {row.mrp}
                       </TableCell>
-                      <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <TableCell>
                         <DeleteIcon onClick={() => handleDeleteRow(row.id, index)} />
                       </TableCell>
                     </TableRow>
@@ -486,11 +584,13 @@ const Salesinvoice = () => {
               </Table>
             </div>
           </Grid>
+
           <Grid item xs={12}>
             <button id="buttoncs" onClick={handleAddRow}>
               <AddIcon sx={{ fontSize: '18px' }} /> Add Row
             </button>
           </Grid>
+
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on separate lines

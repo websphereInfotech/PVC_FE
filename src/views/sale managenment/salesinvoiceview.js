@@ -37,25 +37,33 @@ const Salesinvoiceview = () => {
           <Typography variant="subtitle2">{data.InvioceCustomer?.shortname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data.mobileno}</Typography>
+          <Typography variant="subtitle1">Dispatch Duo No.</Typography>
+          <Typography variant="subtitle2">{data.dispatchno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data.email}</Typography>
+          <Typography variant="subtitle1">Delivery Note Date</Typography>
+          <Typography variant="subtitle2">{new Date(data.deliverydate).toLocaleDateString()}</Typography>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Book</Typography>
-          <Typography variant="subtitle2">{data.book}</Typography>
+          <Typography variant="subtitle1">Dispatch Through :</Typography>
+          <Typography variant="subtitle2">{data.dispatchThrough}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Destination</Typography>
+          <Typography variant="subtitle2">{data.destination}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">LR-RR No.</Typography>
+          <Typography variant="subtitle2">{data.LL_RR_no}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Motor Vehical No.</Typography>
+          <Typography variant="subtitle2">{data.motorVehicleNo}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Invoice Date</Typography>
           <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Series Name</Typography>
-          <Typography variant="subtitle2">{data.seriesname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Invoice No.</Typography>
@@ -71,8 +79,8 @@ const Salesinvoiceview = () => {
           <Typography variant="subtitle2">{new Date(data.duedate).toLocaleDateString()}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation No.</Typography>
-          <Typography variant="subtitle2">{data.ProFormaInvoice_no}</Typography>
+          <Typography variant="subtitle1">Pro Forma Invoice No.</Typography>
+          <Typography variant="subtitle2">{data.proFormaItem?.ProFormaInvoice_no}</Typography>
         </Grid>
 
         <Grid item xs={12}>

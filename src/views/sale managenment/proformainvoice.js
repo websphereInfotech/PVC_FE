@@ -173,39 +173,7 @@ const Proformainvoice = () => {
         console.error('Error fetching quotations:', error);
       }
     };
-    const generateAutoQuotationNumber = async () => {
-      if (!id) {
-        try {
-          const quotationResponse = await dispatch(fetchproformainvoiceList());
-          let nextQuotationNumber = 1;
-          if (quotationResponse.length === 0) {
-            const quotationNumber = `Q-${nextQuotationNumber}`;
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              ProFormaInvoice_no: quotationNumber
-            }));
-            return;
-          }
-          const existingQuotationNumbers = quotationResponse.map((quotation) => {
-            const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
-            return parseInt(quotationNumber);
-          });
-          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
-          if (!isNaN(maxQuotationNumber)) {
-            nextQuotationNumber = maxQuotationNumber + 1;
-          }
 
-          const quotationNumber = `Q-${nextQuotationNumber}`;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            ProFormaInvoice_no: quotationNumber
-          }));
-        } catch (error) {
-          console.error('Error generating auto proformainvoice number:', error);
-        }
-      }
-    };
-    generateAutoQuotationNumber();
     fetchData();
   }, [dispatch, customerState, gststate, id]);
 
@@ -390,17 +358,61 @@ const Proformainvoice = () => {
       setPlusgst(totalGST);
     }
   };
-
-  const handleQuotationDateChange = (date) => {
-    const newValidTill = new Date(date);
-    newValidTill.setDate(newValidTill.getDate() + 7);
-    setFormData({ ...formData, date, validtill: newValidTill });
-  };
-
   const handleValidTillDateChange = (date) => {
     setFormData({ ...formData, validtill: date });
   };
+  const calculateValidTillDate = (proformaInvoiceDate) => {
+    const defaultValidityPeriod = 7;
+    const validTillDate = new Date(proformaInvoiceDate);
+    validTillDate.setDate(validTillDate.getDate() + defaultValidityPeriod);
+    return validTillDate;
+  };
 
+  const handleQuotationDateChange = (date) => {
+    const newValidTill = calculateValidTillDate(date);
+    setFormData({ ...formData, date, validtill: newValidTill });
+  };
+
+  useEffect(() => {
+    const initialValidTill = calculateValidTillDate(formData.date);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      validtill: initialValidTill
+    }));
+    const generateAutoQuotationNumber = async () => {
+      if (!id) {
+        try {
+          const quotationResponse = await dispatch(fetchproformainvoiceList());
+          let nextQuotationNumber = 1;
+          if (quotationResponse.length === 0) {
+            const quotationNumber = `Q-${nextQuotationNumber}`;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              ProFormaInvoice_no: quotationNumber
+            }));
+            return;
+          }
+          const existingQuotationNumbers = quotationResponse.map((quotation) => {
+            const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
+            return parseInt(quotationNumber);
+          });
+          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
+          if (!isNaN(maxQuotationNumber)) {
+            nextQuotationNumber = maxQuotationNumber + 1;
+          }
+
+          const quotationNumber = `Q-${nextQuotationNumber}`;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            ProFormaInvoice_no: quotationNumber
+          }));
+        } catch (error) {
+          console.error('Error generating auto proformainvoice number:', error);
+        }
+      }
+    };
+    generateAutoQuotationNumber();
+  }, [dispatch, formData.date, id]);
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -525,11 +537,13 @@ const Proformainvoice = () => {
               </Table>
             </div>
           </Grid>
+
           <Grid item xs={12}>
             <button id="buttoncs" onClick={handleAddRow}>
               <AddIcon sx={{ fontSize: '18px' }} /> Add Row
             </button>
           </Grid>
+
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on separate lines
