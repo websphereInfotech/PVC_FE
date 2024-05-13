@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorTemporaryDrawer from '../../component/customeradd';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -338,20 +338,7 @@ const AddExpense = () => {
             ''
           ) : (
             <Grid item xs={12}>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  borderColor: '#425466',
-                  padding: '2px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  lineHeight: '19px',
-                  marginTop: '5px'
-                }}
-                onClick={handleAddRow}
-              >
+              <button id="buttoncs" onClick={handleAddRow}>
                 <AddIcon sx={{ fontSize: '18px' }} /> Add Row
               </button>
             </Grid>
@@ -360,15 +347,15 @@ const AddExpense = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
-                <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <div id="subtotalcs" style={{ margin: '0px' }}>
                   <p>Taxable Amt.</p>
                   <p>₹0.00</p>
                 </div>
-                <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <div id="subtotalcs" style={{ margin: '0px' }}>
                   <p>Sub Total</p>
                   <p>₹0.00</p>
                 </div>
-                <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <div id="subtotalcs" style={{ margin: '0px' }}>
                   <p>Total Amt.</p>
                   <p>₹0.00</p>
                 </div>
@@ -397,81 +384,34 @@ const AddExpense = () => {
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link to="/expenselist" style={{ textDecoration: 'none' }}>
                   <button
+                    id="savebtncs"
                     style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px',
                       marginRight: '5px'
                     }}
                   >
                     Cancel
                   </button>
                 </Link>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Save
-                </button>
+                <button id="savebtncs">Save</button>
               </div>
             </Grid>
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
                 <Link to="/expenselist" style={{ textDecoration: 'none' }}>
-                  <button
-                    style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px'
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '130px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '10px'
                   }}
                 >
                   Save & Next
                 </button>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                  onClick={handleSave}
-                >
+                <button id="savebtncs" onClick={handleSave}>
                   Save
                 </button>
               </div>

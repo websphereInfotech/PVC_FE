@@ -10,33 +10,47 @@ import {
   Card,
   TableContainer,
   TableHead,
-  TablePagination
+  TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { SalesInvoiceview, getallSalesInvoice } from 'store/thunk';
+import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
-  { id: 'invoiceno', label: 'Invocie No', minWidth: 170 },
+  { id: 'invoiceno', label: 'Invocie No', minWidth: 170, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 100 },
-  { id: 'action', label: 'Action', minWidth: 100 }
+  // { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center'  },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 const Salesinvoicelist = () => {
+  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice } = useCan();
   const navigate = useNavigate();
   const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     const fetchSalesinvoice = async () => {
       try {
         const data = await dispatch(getallSalesInvoice());
-        // console.log(data.data);
+        data.data.sort((a, b) => {
+          const aNum = parseInt(a.invoiceno);
+          const bNum = parseInt(b.invoiceno);
+          return aNum - bNum;
+        });
         setsalesinvoice(data.data);
       } catch (error) {
         console.error('Error fetching sales invoice:', error);
@@ -59,9 +73,29 @@ const Salesinvoicelist = () => {
     navigate('/salesinvoice');
   };
 
+  const handleUpdateSalesInvoice = (id) => {
+    dispatch(SalesInvoiceview(id));
+    navigate(`/salesinvoice/${id}`);
+  };
+
   const handleViewsalesinvoice = (id) => {
     dispatch(SalesInvoiceview(id));
     navigate(`/salesinvoiceview/${id}`);
+  };
+
+  const handleDeleteConfirmation = (id) => {
+    setOpenConfirmation(true);
+    setSelectedId(id);
+  };
+
+  const handleDeleteSalesInvoice = async () => {
+    try {
+      console.log(selectedId, 'selected');
+      await dispatch(deleteSalesinvoice(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
   return (
@@ -85,20 +119,45 @@ const Salesinvoicelist = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data, index) => (
+            {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'action' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewsalesinvoice(data.id)}>
+                    {column.id === 'view' ? (
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canViewalesinvoice()}
+                        onClick={() => handleViewsalesinvoice(row.id)}
+                      >
                         View
                       </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button
+                        disabled={!canUpdateSalesinvoice()}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdateSalesInvoice(row.id)}
+                      >
+                        Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canDeleteSalesinvoice()}
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                      >
+                        Delete
+                      </Button>
                     ) : column.id === 'invoicedate' ? (
-                      new Date(data[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'duedate' ? (
-                      new Date(data[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'customer' ? (
+                      row.InvioceCustomer.shortname
                     ) : (
-                      data[column.id]
+                      row[column.id]
                     )}
                   </TableCell>
                 ))}
@@ -116,6 +175,18 @@ const Salesinvoicelist = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this Sale Invoice?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteSalesInvoice} variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
     // </Container>
   );

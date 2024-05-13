@@ -2,35 +2,36 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const MENU_OPEN = '@customization/MENU_OPEN';
+export const MENU_CLOSE = '@customization/MENU_CLOSE';
 export const MENU_TYPE = '@customization/MENU_TYPE';
 
 // ######################################## LOGIN #########################################################################
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
-// ######################################## QUOTATION #####################################################################
-export const FETCH_QUOTATION_REQUEST = 'FETCH_QUOTATION_REQUEST';
-export const FETCH_QUOTATION_SUCCESS = 'FETCH_QUOTATION_SUCCESS';
-export const FETCH_QUOTATION_FAILURE = 'FETCH_QUOTATION_FAILURE';
-export const CREATE_QUOTATION_REQUEST = 'CREATE_QUOTATION_REQUEST';
-export const CREATE_QUOTATION_SUCCESS = 'CREATE_QUOTATION_SUCCESS';
-export const CREATE_QUOTATION_FAILURE = 'CREATE_QUOTATION_FAILURE';
-export const CREATE_QUOTATION_ITEM_REQUEST = 'CREATE_QUOTATION_ITEM_REQUEST';
-export const CREATE_QUOTATION_ITEM_SUCCESS = 'CREATE_QUOTATION_ITEM_SUCCESS';
-export const CREATE_QUOTATION_ITEM_FAILURE = 'CREATE_QUOTATION_ITEM_FAILURE';
-export const DELETE_QUOTATION_ITEM_REQUEST = 'DELETE_QUOTATION_ITEM_REQUEST';
-export const DELETE_QUOTATION_ITEM_SUCCESS = 'DELETE_QUOTATION_ITEM_SUCCESS';
-export const DELETE_QUOTATION_ITEM_FAILURE = 'DELETE_QUOTATION_ITEM_FAILURE';
-export const UPDATE_QUOTATION_REQUEST = 'UPDATE_QUOTATION_REQUEST';
-export const UPDATE_QUOTATION_SUCCESS = 'UPDATE_QUOTATION_SUCCESS';
-export const UPDATE_QUOTATION_FAILURE = 'UPDATE_QUOTATION_FAILURE';
-export const UPDATE_QUOTATIONITEM_REQUEST = 'UPDATE_QUOTATIONITEM_REQUEST';
-export const UPDATE_QUOTATIONITEM_SUCCESS = 'UPDATE_QUOTATIONITEM_SUCCESS';
-export const UPDATE_QUOTATIONITEM_FAILURE = 'UPDATE_QUOTATIONITEM_FAILURE';
-export const VIEW_QUOTATION_REQUEST = 'VIEW_QUOTATION_REQUEST';
-export const VIEW_QUOTATION_SUCCESS = 'VIEW_QUOTATION_SUCCESS';
-export const VIEW_QUOTATION_FAILURE = 'VIEW_QUOTATION_FAILURE';
+// ######################################## PRO FORMA INVOICE #####################################################################
+export const FETCH_PRO_FORMA_INVOICE_REQUEST = 'FETCH_PRO_FORMA_INVOICE_REQUEST';
+export const FETCH_PRO_FORMA_INVOICE_SUCCESS = 'FETCH_PRO_FORMA_INVOICE_SUCCESS';
+export const FETCH_PRO_FORMA_INVOICE_FAILURE = 'FETCH_PRO_FORMA_INVOICE_FAILURE';
+export const CREATE_PRO_FORMA_INVOICE_REQUEST = 'CREATE_PRO_FORMA_INVOICE_REQUEST';
+export const CREATE_PRO_FORMA_INVOICE_SUCCESS = 'CREATE_PRO_FORMA_INVOICE_SUCCESS';
+export const CREATE_PRO_FORMA_INVOICE_FAILURE = 'CREATE_PRO_FORMA_INVOICE_FAILURE';
+export const DELETE_PRO_FORMA_INVOICE_ITEM_REQUEST = 'DELETE_PRO_FORMA_INVOICE_ITEM_REQUEST';
+export const DELETE_PRO_FORMA_INVOICE_ITEM_SUCCESS = 'DELETE_PRO_FORMA_INVOICE_ITEM_SUCCESS';
+export const DELETE_PRO_FORMA_INVOICE_ITEM_FAILURE = 'DELETE_PRO_FORMA_INVOICE_ITEM_FAILURE';
+export const DELETE_PRO_FORMA_INVOICE_REQUEST = 'DELETE_PRO_FORMA_INVOICE_REQUEST';
+export const DELETE_PRO_FORMA_INVOICE_SUCCESS = 'DELETE_PRO_FORMA_INVOICE_SUCCESS';
+export const DELETE_PRO_FORMA_INVOICE_FAILURE = 'DELETE_PRO_FORMA_INVOICE_FAILURE';
+export const UPDATE_PRO_FORMA_INVOICE_REQUEST = 'UPDATE_PRO_FORMA_INVOICE_REQUEST';
+export const UPDATE_PRO_FORMA_INVOICE_SUCCESS = 'UPDATE_PRO_FORMA_INVOICE_SUCCESS';
+export const UPDATE_PRO_FORMA_INVOICE_FAILURE = 'UPDATE_PRO_FORMA_INVOICE_FAILURE';
+export const VIEW_PRO_FORMA_INVOICE_REQUEST = 'VIEW_PRO_FORMA_INVOICE_REQUEST';
+export const VIEW_PRO_FORMA_INVOICE_SUCCESS = 'VIEW_PRO_FORMA_INVOICE_SUCCESS';
+export const VIEW_PRO_FORMA_INVOICE_FAILURE = 'VIEW_PRO_FORMA_INVOICE_FAILURE';
 
 // ########################################## PRODUCT ###############################################################################################
 export const FETCH_ALL_PRODUCTS_REQUEST = 'FETCH_ALL_PRODUCTS_REQUEST';
@@ -92,6 +93,9 @@ export const UPDATE_PAYMENT_FAILURE = 'UPDATE_PAYMENT_FAILURE';
 export const CREATE_SALES_INVOICE_REQUEST = 'CREATE_SALES_INVOICE_REQUEST';
 export const CREATE_SALES_INVOICE_SUCCESS = 'CREATE_SALES_INVOICE_SUCCESS';
 export const CREATE_SALES_INVOICE_FAILURE = 'CREATE_SALES_INVOICE_FAILURE';
+export const DELETE_SALES_INVOICE_REQUEST = 'DELETE_SALES_INVOICE_REQUEST';
+export const DELETE_SALES_INVOICE_SUCCESS = 'DELETE_SALES_INVOICE_SUCCESS';
+export const DELETE_SALES_INVOICE_FAILURE = 'DELETE_SALES_INVOICE_FAILURE';
 export const CREATE_SALESINVOICE_ITEM_REQUEST = 'CREATE_SALESINVOICE_ITEM_REQUEST';
 export const CREATE_SALESINVOICE_ITEM_SUCCESS = 'CREATE_SALESINVOICE_ITEM_SUCCESS';
 export const CREATE_SALESINVOICE_ITEM_FAILURE = 'CREATE_SALESINVOICE_ITEM_FAILURE';
@@ -179,6 +183,38 @@ export const UPDATE_PERMISSIONS_REQUEST = 'UPDATE_PERMISSIONS_REQUEST';
 export const UPDATE_PERMISSIONS_SUCCESS = 'UPDATE_PERMISSIONS_SUCCESS';
 export const UPDATE_PERMISSIONS_FAILURE = 'UPDATE_PERMISSIONS_FAILURE';
 
+// ############################################################### USER #######################################################################
+
+export const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
+export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
+export const CREATE_USER_FAILURE = 'CREATE_USER_FAILURE';
+export const GET_ALL_USER_REQUEST = 'GET_ALL_USER_REQUEST';
+export const GET_ALL_USER_SUCCESS = 'GET_ALL_USER_SUCCESS';
+export const GET_ALL_USER_FAILURE = 'GET_ALL_USER_FAILURE';
+export const VIEW_USER_REQUEST = 'VIEW_USER_REQUEST';
+export const VIEW_USER_SUCCESS = 'VIEW_USER_SUCCESS';
+export const VIEW_USER_FAILURE = 'VIEW_USER_FAILURE';
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
+export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
+
+// ########################################################################### VENDOR ###############################################################
+
+export const CREATE_VENDOR_REQUEST = 'CREATE_VENDOR_REQUEST';
+export const CREATE_VENDOR_SUCCESS = 'CREATE_VENDOR_SUCCESS';
+export const CREATE_VENDOR_FAILURE = 'CREATE_VENDOR_FAILURE';
+export const FETCH_ALL_VENDORS_REQUEST = 'FETCH_ALL_VENDORS_REQUEST';
+export const FETCH_ALL_VENDORS_SUCCESS = 'FETCH_ALL_VENDORS_SUCCESS';
+export const FETCH_ALL_VENDORS_FAILURE = 'FETCH_ALL_VENDORS_FAILURE';
+
+// ###################################################################### COMPANY #####################################################################
+export const FETCH_ALL_COMPANY_REQUEST = 'FETCH_ALL_COMPANY_REQUEST';
+export const FETCH_ALL_COMPANY_SUCCESS = 'FETCH_ALL_COMPANY_SUCCESS';
+export const FETCH_ALL_COMPANY_FAILURE = 'FETCH_ALL_COMPANY_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -191,88 +227,86 @@ export const loginFailure = (error) => ({
   type: 'LOGIN_FAILURE',
   payload: error
 });
-
-// #################################################################### QUOTATION ###################################################################################
-export const fetchQuotationRequest = () => ({
-  type: 'FETCH_QUOTATION_REQUEST'
+export const logoutRequest = () => ({
+  type: 'LOGOUT_REQUEST'
 });
-export const fetchQuotationSuccess = (data) => ({
-  type: 'FETCH_QUOTATION_SUCCESS',
-  payload: data
+export const logoutSuccess = (user) => ({
+  type: 'LOGOUT_SUCCESS',
+  payload: user
 });
-export const fetchQuotationFailure = (error) => ({
-  type: 'FETCH_QUOTATION_FAILURE',
+export const logoutFailure = (error) => ({
+  type: 'LOGOUT_FAILURE',
   payload: error
 });
-export const createQuotationRequest = () => ({
-  type: 'CREATE_QUOTATION_REQUEST'
+// #################################################################### PRO_FORMA_INVOICE ###################################################################################
+export const fetchProformainvoiceRequest = () => ({
+  type: 'FETCH_PRO_FORMA_INVOICE_REQUEST'
 });
-export const createQuotationSuccess = (data) => ({
-  type: 'CREATE_QUOTATION_SUCCESS',
+export const fetchProformainvoiceSuccess = (data) => ({
+  type: 'FETCH_PRO_FORMA_INVOICE_SUCCESS',
   payload: data
 });
-export const createQuotationFailure = (error) => ({
-  type: 'CREATE_QUOTATION_FAILURE',
+export const fetchProformainvoiceFailure = (error) => ({
+  type: 'FETCH_PRO_FORMA_INVOICE_FAILURE',
   payload: error
 });
-export const createQuotationItemRequest = (data) => ({
-  type: 'CREATE_QUOTATION_ITEM_REQUEST',
+export const createProformainvoiceRequest = () => ({
+  type: 'CREATE_PRO_FORMA_INVOICE_REQUEST'
+});
+export const createProformainvoiceSuccess = (data) => ({
+  type: 'CREATE_PRO_FORMA_INVOICE_SUCCESS',
   payload: data
 });
-export const createQuotationItemSuccess = (data) => ({
-  type: 'CREATE_QUOTATION_ITEM_SUCCESS',
-  payload: data
-});
-export const createQuotationItemFailure = (error) => ({
-  type: 'CREATE_QUOTATION_ITEM_FAILURE',
+export const createProformainvoiceFailure = (error) => ({
+  type: 'CREATE_PRO_FORMA_INVOICE_FAILURE',
   payload: error
 });
-export const deleteQuotationItemRequest = (data) => ({
-  type: 'DELETE_QUOTATION_ITEM_REQUEST',
+export const deleteProformainvoiceItemRequest = (data) => ({
+  type: 'DELETE_PRO_FORMA_INVOICE_ITEM_REQUEST',
   payload: data
 });
-export const deleteQuotationItemSuccess = (data) => ({
-  type: 'DELETE_QUOTATION_ITEM_SUCCESS',
+export const deleteProformainvoiceItemSuccess = (data) => ({
+  type: 'DELETE_PRO_FORMA_INVOICE_ITEM_SUCCESS',
   payload: data
 });
-export const deleteQuotationItemFailure = (error) => ({
-  type: 'DELETE_QUOTATION_ITEM_FAILURE',
+export const deleteProformainvoiceItemFailure = (error) => ({
+  type: 'DELETE_PRO_FORMA_INVOICE_ITEM_FAILURE',
   payload: error
 });
-export const viewQuotationRequest = (data) => ({
-  type: 'VIEW_QUOTATION_REQUEST',
+export const deleteProformainvoiceRequest = (data) => ({
+  type: 'DELETE_PRO_FORMA_INVOICE_REQUEST',
   payload: data
 });
-export const viewQuotationSuccess = (data) => ({
-  type: 'VIEW_QUOTATION_SUCCESS',
+export const deleteProformainvoiceSuccess = (data) => ({
+  type: 'DELETE_PRO_FORMA_INVOICE_SUCCESS',
   payload: data
 });
-export const viewQuotationFailure = (error) => ({
-  type: 'VIEW_QUOTATION_FAILURE',
+export const deleteProformainvoiceFailure = (error) => ({
+  type: 'DELETE_PRO_FORMA_INVOICE_FAILURE',
   payload: error
 });
-export const updateQuotationRequst = (data) => ({
-  type: 'UPDATE_QUOTATION_REQUEST',
+export const viewProformainvoiceRequest = (data) => ({
+  type: 'VIEW_PRO_FORMA_INVOICE_REQUEST',
   payload: data
 });
-export const updateQuotationsuccess = (data) => ({
-  type: 'UPDATE_QUOTATION_SUCCESS',
+export const viewProformainvoiceSuccess = (data) => ({
+  type: 'VIEW_PRO_FORMA_INVOICE_SUCCESS',
   payload: data
 });
-export const updateQuotationfailure = (error) => ({
-  type: 'UPDATE_QUOTATION_FAILURE',
+export const viewProformainvoiceFailure = (error) => ({
+  type: 'VIEW_PRO_FORMA_INVOICE_FAILURE',
   payload: error
 });
-export const updateQuotationItemRequst = (data) => ({
-  type: 'UPDATE_QUOTATIONITEM_REQUEST',
+export const updateProformainvoiceRequst = (data) => ({
+  type: 'UPDATE_PRO_FORMA_INVOICE_REQUEST',
   payload: data
 });
-export const updateQuotationItemsuccess = (data) => ({
-  type: 'UPDATE_QUOTATIONITEM_SUCCESS',
+export const updateProformainvoicesuccess = (data) => ({
+  type: 'UPDATE_PRO_FORMA_INVOICE_SUCCESS',
   payload: data
 });
-export const updateQuotationItemfailure = (error) => ({
-  type: 'UPDATE_QUOTATIONITEM_FAILURE',
+export const updateProformainvoicefailure = (error) => ({
+  type: 'UPDATE_PRO_FORMA_INVOICE_FAILURE',
   payload: error
 });
 
@@ -450,11 +484,11 @@ export const updatePaymentFailure = (error) => ({
 });
 
 // ##################################################################################### SALES INVOICE ################################################################
+
 export const createSalesinvoiceRequest = (data) => ({
   type: 'CREATE_SALES_INVOICE_REQUEST',
   payload: data
 });
-
 export const createSalesinvoiceSuccess = (data) => ({
   type: 'CREATE_SALES_INVOICE_SUCCESS',
   payload: data
@@ -463,16 +497,28 @@ export const createSalesinvoiceFailure = (error) => ({
   type: 'CREATE_SALES_INVOICE_FAILURE',
   payload: error
 });
-export const createSalesinvoiceItemRequest = (data) => ({
-  type: 'CREATE_SALESINVOICE_ITEM_REQUEST',
+export const deleteSalesinvoiceRequest = (data) => ({
+  type: 'DELETE_SALES_INVOICE_REQUEST',
   payload: data
 });
-export const createSalesinvoiceItemSuccess = (data) => ({
-  type: 'CREATE_SALESINVOICE_ITEM_SUCCESS',
+export const deleteSalesinvoiceSuccess = (data) => ({
+  type: 'DELETE_SALES_INVOICE_SUCCESS',
   payload: data
 });
-export const createSalesinvoiceItemFailure = (error) => ({
-  type: 'CREATE_SALESINVOICE_ITEM_FAILURE',
+export const deleteSalesinvoiceFailure = (error) => ({
+  type: 'DELETE_SALES_INVOICE_FAILURE',
+  payload: error
+});
+export const updateSalesinvoiceRequest = (data) => ({
+  type: 'UPDATE_SALESINVOICE_REQUEST',
+  payload: data
+});
+export const updateSalesinvoiceSuccess = (data) => ({
+  type: 'UPDATE_SALESINVOICE_SUCCESS',
+  payload: data
+});
+export const updateSalesinvoiceFailure = (error) => ({
+  type: 'UPDATE_SALESINVOICE_FAILURE',
   payload: error
 });
 export const getAllSalesinvoiceRequest = (data) => ({
@@ -795,5 +841,104 @@ export const updatePermissionsSuccess = (data) => ({
 });
 export const updatePermissionsFailure = (error) => ({
   type: 'UPDATE_PERMISSIONS_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ USER ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createUserRequest = (data) => ({
+  type: 'CREATE_USER_REQUEST',
+  payload: data
+});
+export const createUserSuccess = (data) => ({
+  type: 'CREATE_USER_SUCCESS',
+  payload: data
+});
+export const createUserFailure = (error) => ({
+  type: 'CREATE_USER_FAILURE',
+  payload: error
+});
+export const getallUserRequest = (data) => ({
+  type: 'GET_ALL_USER_REQUEST',
+  payload: data
+});
+export const getallUserSuccess = (data) => ({
+  type: 'GET_ALL_USER_SUCCESS',
+  payload: data
+});
+export const getallUserFailure = (error) => ({
+  type: 'GET_ALL_USER_FAILURE',
+  payload: error
+});
+export const viewUserRequest = (data) => ({
+  type: 'VIEW_USER_REQUEST',
+  payload: data
+});
+export const viewUserSuccess = (data) => ({
+  type: 'VIEW_USER_SUCCESS',
+  payload: data
+});
+export const viewUserFailure = (error) => ({
+  type: 'VIEW_USER_FAILURE',
+  payload: error
+});
+export const UpdateUserRequest = (data) => ({
+  type: 'UPDATE_USER_REQUEST',
+  payload: data
+});
+export const UpdateUserSuccess = (data) => ({
+  type: 'UPDATE_USER_SUCCESS',
+  payload: data
+});
+export const UpdateUserFailure = (error) => ({
+  type: 'UPDATE_USER_FAILURE',
+  payload: error
+});
+export const deleteUserRequest = (data) => ({
+  type: 'DELETE_USER_REQUEST',
+  payload: data
+});
+export const deleteUserSuccess = (data) => ({
+  type: 'DELETE_USER_SUCCESS',
+  payload: data
+});
+export const deleteUserFailure = (error) => ({
+  type: 'DELETE_USER_FAILURE',
+  payload: error
+});
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createVendorRequest = (data) => ({
+  type: 'CREATE_VENDOR_REQUEST',
+  payload: data
+});
+export const createVendorSuccess = (data) => ({
+  type: 'CREATE_VENDOR_SUCCESS',
+  payload: data
+});
+export const createVendorFailure = (error) => ({
+  type: 'CREATE_VENDOR_FAILURE',
+  payload: error
+});
+export const fetchAllVendorsRequest = () => ({
+  type: 'FETCH_ALL_VENDORS_REQUEST'
+});
+export const fetchAllVendorsSuccess = (data) => ({
+  type: 'FETCH_ALL_VENDORS_SUCCESS',
+  payload: data
+});
+export const fetchAllVendorsFailure = (error) => ({
+  type: 'FETCH_ALL_VENDORS_FAILURE',
+  payload: error
+});
+
+// +++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++
+export const fetchAllCompanyRequest = () => ({
+  type: 'FETCH_ALL_COMPANY_REQUEST'
+});
+export const fetchAllCompanySuccess = (data) => ({
+  type: 'FETCH_ALL_COMPANY_SUCCESS',
+  payload: data
+});
+export const fetchAllCompanyFailure = (error) => ({
+  type: 'FETCH_ALL_COMPANY_FAILURE',
   payload: error
 });

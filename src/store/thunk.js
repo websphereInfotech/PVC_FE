@@ -9,28 +9,28 @@ import {
   loginRequest,
   loginSuccess,
   loginFailure,
+  logoutRequest,
+  logoutSuccess,
+  logoutFailure,
   // QUOTATION ++++++++++++++++++++++++++++++
-  fetchQuotationRequest,
-  fetchQuotationSuccess,
-  fetchQuotationFailure,
-  createQuotationRequest,
-  createQuotationSuccess,
-  createQuotationFailure,
-  createQuotationItemRequest,
-  createQuotationItemSuccess,
-  createQuotationItemFailure,
-  deleteQuotationItemRequest,
-  deleteQuotationItemSuccess,
-  deleteQuotationItemFailure,
-  updateQuotationRequst,
-  updateQuotationsuccess,
-  updateQuotationfailure,
-  updateQuotationItemRequst,
-  updateQuotationItemsuccess,
-  updateQuotationItemfailure,
-  viewQuotationRequest,
-  viewQuotationSuccess,
-  viewQuotationFailure,
+  fetchProformainvoiceRequest,
+  fetchProformainvoiceSuccess,
+  fetchProformainvoiceFailure,
+  createProformainvoiceRequest,
+  createProformainvoiceSuccess,
+  createProformainvoiceFailure,
+  deleteProformainvoiceItemRequest,
+  deleteProformainvoiceItemSuccess,
+  deleteProformainvoiceItemFailure,
+  deleteProformainvoiceRequest,
+  deleteProformainvoiceSuccess,
+  deleteProformainvoiceFailure,
+  updateProformainvoiceRequst,
+  updateProformainvoicesuccess,
+  updateProformainvoicefailure,
+  viewProformainvoiceRequest,
+  viewProformainvoiceSuccess,
+  viewProformainvoiceFailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersRequest,
   fetchAllCustomersSuccess,
@@ -115,9 +115,12 @@ import {
   createSalesinvoiceRequest,
   createSalesinvoiceSuccess,
   createSalesinvoiceFailure,
-  createSalesinvoiceItemRequest,
-  createSalesinvoiceItemSuccess,
-  createSalesinvoiceItemFailure,
+  updateSalesinvoiceRequest,
+  updateSalesinvoiceSuccess,
+  updateSalesinvoiceFailure,
+  deleteSalesinvoiceRequest,
+  deleteSalesinvoiceSuccess,
+  deleteSalesinvoiceFailure,
   // PURCHASE BILL +++++++++++++++
   createPurchaseBillRequest,
   createPurchaseBillSuccess,
@@ -166,14 +169,45 @@ import {
   getAllPermissionsFailure,
   updatePermissionsRequest,
   updatePermissionsSuccess,
-  updatePermissionsFailure
+  updatePermissionsFailure,
+  // USER ++++++++++++++++++++++++
+  createUserRequest,
+  createUserSuccess,
+  createUserFailure,
+  getallUserRequest,
+  getallUserSuccess,
+  getallUserFailure,
+  viewUserRequest,
+  viewUserSuccess,
+  viewUserFailure,
+  UpdateUserRequest,
+  UpdateUserSuccess,
+  UpdateUserFailure,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFailure,
+  // VENDOR ++++++++++++++++++++++++++
+  createVendorRequest,
+  createVendorSuccess,
+  createVendorFailure,
+  fetchAllVendorsRequest,
+  fetchAllVendorsSuccess,
+  fetchAllVendorsFailure,
+  //  COMPANY ++++++++++++++++++++++++
+  fetchAllCompanyRequest,
+  fetchAllCompanySuccess,
+  fetchAllCompanyFailure
 } from './actions';
+import { jwtDecode } from 'jwt-decode';
 
-const token = sessionStorage.getItem('token');
-const config = {
-  headers: {
-    token: token
-  }
+const createConfig = () => {
+  const token = sessionStorage.getItem('token');
+  return {
+    headers: {
+      token: token,
+      'ngrok-skip-browser-warning': '69420'
+    }
+  };
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -181,128 +215,176 @@ export const loginAdmin = (credentials, navigate) => {
   return async (dispatch) => {
     dispatch(loginRequest());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/admin_login`, credentials);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user_login`, credentials);
       const token = response.data.token;
       sessionStorage.setItem('token', token);
+      const decodedToken = jwtDecode(token);
+      const tokentype = decodedToken.type;
+      sessionStorage.setItem('type', tokentype);
+      const roletype = decodedToken.role;
+      sessionStorage.setItem('role', roletype);
+      const username = decodedToken.username;
+      sessionStorage.setItem('username', username);
       const userData = response.data;
+      sessionStorage.setItem('user', JSON.stringify(userData));
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
           navigate('/dashboard');
+          // window.location.reload();
         }
       });
       dispatch(loginSuccess(userData));
-      return userData.status;
+      return userData;
     } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      console.log(error);
       dispatch(loginFailure(error.message));
+    }
+  };
+};
+export const logoutAdmin = (navigate) => {
+  return async (dispatch) => {
+    dispatch(logoutRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user_logout`, {}, config);
+
+      const userData = response.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/');
+        }
+      });
+      dispatch(logoutSuccess(userData));
+      return userData;
+    } catch (error) {
       toast.error(error.response.data.error, { autoClose: 1000 });
+      dispatch(logoutFailure(error.message));
     }
   };
 };
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++  QOUTATION  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-export const fetchQuotationList = () => {
+export const fetchproformainvoiceList = () => {
   return async (dispatch) => {
-    dispatch(fetchQuotationRequest());
+    dispatch(fetchProformainvoiceRequest());
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_quotation`, config);
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_ProFormaInvoice`, config);
       const data = await response.data.data;
-      dispatch(fetchQuotationSuccess(data));
+      dispatch(fetchProformainvoiceSuccess(data));
       return data;
     } catch (error) {
-      dispatch(fetchQuotationFailure(error));
+      dispatch(fetchProformainvoiceFailure(error));
       throw error;
     }
   };
 };
-export const createQuotation = (quotationData) => {
+export const createProformainvoice = (quotationData, navigate) => {
   return async (dispatch) => {
-    dispatch(createQuotationRequest());
+    dispatch(createProformainvoiceRequest());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_quotation`, quotationData, config);
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_ProFormaInvoice`, quotationData, config);
       const createdQuotation = response.data.data;
-      dispatch(createQuotationSuccess(createdQuotation));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/proformainvoiceList');
+        }
+      });
+      dispatch(createProformainvoiceSuccess(createdQuotation));
       return createdQuotation;
     } catch (error) {
-      dispatch(createQuotationFailure(error.message));
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(createProformainvoiceFailure(error.message));
       throw error;
     }
   };
 };
-export const createQuotationItem = (payload) => {
+export const updateProformainvoice = (id, formData, navigate) => {
   return async (dispatch) => {
-    dispatch(createQuotationItemRequest());
+    dispatch(updateProformainvoiceRequst());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_quatationItem`, payload, config);
-      const createdQuotationitemdata = response;
-      dispatch(createQuotationItemSuccess(createdQuotationitemdata));
-      return createdQuotationitemdata;
-    } catch (error) {
-      dispatch(createQuotationItemFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deleteQuotationItem = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteQuotationItemRequest());
-    try {
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_quotationitem/${id}`, config);
-      console.log('response', response);
-      dispatch(deleteQuotationItemSuccess());
-    } catch (error) {
-      console.error('Error deleting quotation:', error);
-      dispatch(deleteQuotationItemFailure());
-    }
-  };
-};
-export const Quotationview = (id) => {
-  return async (dispatch) => {
-    dispatch(viewQuotationRequest());
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_quotation/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewQuotationSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewQuotationFailure(error.message));
-    }
-  };
-};
-export const updateQutation = (id, formData) => {
-  return async (dispatch) => {
-    dispatch(updateQuotationRequst());
-    try {
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotation/${id}`, formData, config);
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_ProFormaInvoice/${id}`, formData, config);
       const updateQuotationData = response;
-      dispatch(updateQuotationsuccess(updateQuotationData));
-      // console.log(updateQuotationData.data.data.id);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/proformainvoiceList');
+        }
+      });
+      dispatch(updateProformainvoicesuccess(updateQuotationData));
       return updateQuotationData;
     } catch (error) {
-      dispatch(updateQuotationfailure(error.message));
+      toast.error(error.response.data.message);
+      dispatch(updateProformainvoicefailure(error.message));
     }
   };
 };
-export const updateQuotationItem = (itemid, updateItemData) => {
+export const deleteProformainvoiceItem = (id) => {
   return async (dispatch) => {
-    dispatch(updateQuotationItemRequst());
+    dispatch(deleteProformainvoiceItemRequest());
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_quotationItem/${itemid}`, updateItemData, config);
-      const updateQuotationItemData = response;
-      dispatch(updateQuotationItemsuccess(updateQuotationItemData));
-      return updateQuotationItemData;
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_ProFormaInvoiceItem/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteProformainvoiceItemSuccess());
     } catch (error) {
-      dispatch(updateQuotationItemfailure(error.message));
+      toast.error(error.response.data.message);
+      dispatch(deleteProformainvoiceItemFailure());
     }
   };
 };
-
+export const Proformainvoiceview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewProformainvoiceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_ProFormaInvoice/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewProformainvoiceSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(viewProformainvoiceFailure(error.message));
+    }
+  };
+};
+export const deleteProformainvoice = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteProformainvoiceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_ProFormaInvoice/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteProformainvoiceSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteProformainvoiceFailure());
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERYCHALLAN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallDeliverychallan = () => {
   return async (dispatch) => {
     dispatch(getAllDeliverychallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_deliverychallan`, config);
       const getallDeliverychallan = response.data;
       dispatch(getAllDeliverychallanSuccess(getallDeliverychallan));
@@ -312,15 +394,27 @@ export const getallDeliverychallan = () => {
     }
   };
 };
-export const createDeliveryChallan = (ChallanData) => {
+export const createDeliveryChallan = (ChallanData, navigate) => {
   return async (dispatch) => {
     dispatch(createDeliveryChallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallan`, ChallanData, config);
       const createdDeliverychallan = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/deliverychallanlist');
+        }
+      });
+      console.log(response);
       dispatch(createDeliveryChallanSuccess(createdDeliverychallan));
       return createdDeliverychallan;
     } catch (error) {
+      // toast.error(error.response.data.message,{
+      //   autoClose: 1000
+      // });
       dispatch(createDeliveryChallanFailure(error.message));
     }
   };
@@ -329,6 +423,7 @@ export const Deliverychallanview = (id) => {
   return async (dispatch) => {
     dispatch(viewDeliverychallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_deliverychallan/${id}`, config);
       const data = response.data.data;
       dispatch(viewDeliverychallanSuccess(data));
@@ -338,13 +433,20 @@ export const Deliverychallanview = (id) => {
     }
   };
 };
-export const updateDileveryChallan = (id, ChallanData) => {
+export const updateDileveryChallan = (id, ChallanData, navigate) => {
   return async (dispatch) => {
     dispatch(updateDileverychallanRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallan/${id}`, ChallanData, config);
-
       const updateChallanData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/deliverychallanlist');
+        }
+      });
       dispatch(updateDileverychallanSuccess(updateChallanData));
       return updateChallanData;
     } catch (error) {
@@ -357,6 +459,7 @@ export const updateDileveryChallanItem = (id, payload) => {
   return async (dispatch) => {
     dispatch(updateDileverychallanItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallanitem/${id}`, payload, config);
       const updateChallanItem = response;
       dispatch(updateDileverychallanItemSuccess(updateChallanItem));
@@ -371,6 +474,7 @@ export const deleteDileveryChallan = (id) => {
   return async (dispatch) => {
     dispatch(deleteDileverychallanItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_deliverychallanitem/${id}`, config);
       const deleteChallanItem = response;
       dispatch(deleteDileverychallanItemSuccess(deleteChallanItem));
@@ -385,6 +489,7 @@ export const createDeliveryChallanItem = (payload) => {
   return async (dispatch) => {
     dispatch(createDeliveryChallanItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallanitem`, payload, config);
       const createdDeliverychallanitems = response;
       dispatch(createDeliveryChallanItemSuccess(createdDeliverychallanitems));
@@ -400,6 +505,7 @@ export const fetchAllCustomers = () => {
   return async (dispatch) => {
     dispatch(fetchAllCustomersRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_customer`, config);
       const data = response.data.data;
       dispatch(fetchAllCustomersSuccess(data));
@@ -413,12 +519,20 @@ export const createCustomer = (customerData) => {
   return async (dispatch) => {
     dispatch(createCustomerRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
       const createdCustomer = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       dispatch(createCustomerSuccess(createdCustomer));
-      alert('customer crate successfully');
+      window.location.reload();
       return createdCustomer;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(createCustomerFailure(error.message));
       throw error;
     }
@@ -428,6 +542,7 @@ export const createCustomfeild = (payload) => {
   return async (dispatch) => {
     dispatch(createCustomFeildRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
       const createdCustomfeilddata = response;
       dispatch(createCustomFeildSuccess(createdCustomfeilddata));
@@ -440,14 +555,15 @@ export const createCustomfeild = (payload) => {
 };
 export const deleteCustomFeild = (id) => {
   return async (dispatch) => {
-    dispatch(deleteQuotationItemRequest());
+    dispatch(deleteProformainvoiceItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customfeild/${id}`, config);
       console.log('response', response);
-      dispatch(deleteQuotationItemSuccess());
+      dispatch(deleteProformainvoiceItemSuccess());
     } catch (error) {
       console.error('Error deleting quotation:', error);
-      dispatch(deleteQuotationItemFailure());
+      dispatch(deleteProformainvoiceItemFailure());
     }
   };
 };
@@ -457,6 +573,7 @@ export const fetchAllProducts = () => {
   return async (dispatch) => {
     dispatch(fetchAllProdutsRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_product`, config);
       const data = response.data.data;
       dispatch(fetchAllProdutsSuccess(data));
@@ -470,14 +587,19 @@ export const createProduct = (data) => {
   return async (dispatch) => {
     dispatch(createProductRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_product`, data, config);
       const createProductData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       dispatch(createProductSuccess(createProductData));
-      alert(createProductData.data.message);
+      window.location.reload();
       return createProductData;
     } catch (error) {
+      toast.error(error.response.data.message);
       dispatch(createProductFailure(error.message));
-      alert(error.response.data.message);
       throw error;
     }
   };
@@ -488,6 +610,7 @@ export const createPayment = (formData) => {
   return async (dispatch) => {
     dispatch(createPaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_payment`, formData, config);
       const createdpayment = response;
       dispatch(createPaymentSuccess(createdpayment));
@@ -502,6 +625,7 @@ export const getallPayment = () => {
   return async (dispatch) => {
     dispatch(getallPaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_payment`, config);
       const getallpayment = response.data;
       dispatch(getallPaymentSuccess(getallpayment));
@@ -516,6 +640,7 @@ export const paymentview = (id) => {
   return async (dispatch) => {
     dispatch(viewPaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_payment/${id}`, config);
       const data = response.data.data;
       dispatch(viewPaymentSuccess(data));
@@ -529,6 +654,7 @@ export const updatePayment = (id, formData) => {
   return async (dispatch) => {
     dispatch(updatePaymentRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_payment/${id}`, formData, config);
       const upadtePaymentData = response;
       dispatch(updatePaymentSuccess(upadtePaymentData));
@@ -541,30 +667,25 @@ export const updatePayment = (id, formData) => {
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALESINVOICE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createSalesInvoice = (salesinvoicedata) => {
+export const createSalesInvoice = (payload, navigate) => {
   return async (dispatch) => {
     dispatch(createSalesinvoiceRequest());
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice`, salesinvoicedata, config);
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice`, payload, config);
       const cretesalesinvoice = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/salesinvoicelist');
+        }
+      });
       dispatch(createSalesinvoiceSuccess(cretesalesinvoice));
       return cretesalesinvoice;
     } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(createSalesinvoiceFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createSalesinvoiceItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createSalesinvoiceItemRequest());
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice_item`, payload, config);
-      const createdSalesinvoiceitems = response;
-      dispatch(createSalesinvoiceItemSuccess(createdSalesinvoiceitems));
-      return createdSalesinvoiceitems;
-    } catch (error) {
-      dispatch(createSalesinvoiceItemFailure(error.message));
       throw error;
     }
   };
@@ -573,6 +694,7 @@ export const getallSalesInvoice = () => {
   return async (dispatch) => {
     dispatch(getAllSalesinvoiceRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_salesInvoice`, config);
       const getallSalesinvoice = response.data;
       dispatch(getAllSalesinvoiceSuccess(getallSalesinvoice));
@@ -586,6 +708,7 @@ export const SalesInvoiceview = (id) => {
   return async (dispatch) => {
     dispatch(viewSalesinvoiceRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_salesInvoice/${id}`, config);
       const data = response.data.data;
       dispatch(viewSalesinvoiceSuccess(data));
@@ -595,12 +718,53 @@ export const SalesInvoiceview = (id) => {
     }
   };
 };
-
+export const updateSalesinvoice = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateSalesinvoiceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_salesInvoice/${id}`, payload, config);
+      const updateSalesinvoiceData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/salesinvoicelist');
+        }
+      });
+      dispatch(updateSalesinvoiceSuccess(updateSalesinvoiceData));
+      return updateSalesinvoiceData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updateSalesinvoiceFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteSalesinvoice = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteSalesinvoiceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_salesInvoice/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteSalesinvoiceSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteSalesinvoiceFailure());
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPurchase = (purchaseData) => {
   return async (dispatch) => {
     dispatch(createPurchaseRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchase`, purchaseData, config);
       const cretepurchase = response;
       dispatch(createPrchaseSuccess(cretepurchase));
@@ -615,6 +779,7 @@ export const createPurchaseItem = (payload) => {
   return async (dispatch) => {
     dispatch(createPurchaseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchaseitem`, payload, config);
       const createdPurchaseitems = response;
       dispatch(createPrchaseItemSuccess(createdPurchaseitems));
@@ -629,6 +794,7 @@ export const updatePurchase = (id, formData) => {
   return async (dispatch) => {
     dispatch(updatePurchaseRequst());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchase/${id}`, formData, config);
       const updatePurchaseData = response;
       dispatch(updatePurchasesuccess(updatePurchaseData));
@@ -643,6 +809,7 @@ export const updatePurchaseItem = (itemid, updateItemData) => {
   return async (dispatch) => {
     dispatch(updatePurchaseItemRequst());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseitem/${itemid}`, updateItemData, config);
       const updatePurchaseItemData = response;
       dispatch(updatePurchaseItemsuccess(updatePurchaseItemData));
@@ -657,6 +824,7 @@ export const deletePurchaseItem = (id) => {
   return async (dispatch) => {
     dispatch(deletePurchaseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseitem/${id}`, config);
       const deletePurchaseItemData = response;
       dispatch(deletePurchaseItemSuccess(deletePurchaseItemData));
@@ -671,6 +839,7 @@ export const getallPurchase = () => {
   return async (dispatch) => {
     dispatch(fetchAllPurchaseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchase`, config);
       const getallpayment = response.data;
       dispatch(fetchAllPurchaseSuccess(getallpayment));
@@ -684,6 +853,7 @@ export const purchaseview = (id) => {
   return async (dispatch) => {
     dispatch(viewPurchaseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchase/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchaseSuccess(data));
@@ -699,6 +869,7 @@ export const createPurchaseBill = (purchasebillData) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, purchasebillData, config);
       const cretepurchasebill = response;
       dispatch(createPurchaseBillSuccess(cretepurchasebill));
@@ -713,6 +884,7 @@ export const createPurchaseBillItem = (payload) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill_item`, payload, config);
       const createdPurchaseBillitems = response;
       dispatch(createPurchaseBillItemSuccess(createdPurchaseBillitems));
@@ -727,6 +899,7 @@ export const getallPurchaseBill = () => {
   return async (dispatch) => {
     dispatch(getAllPurchasebillRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchasebill`, config);
       const getallPurchasebill = response.data;
       dispatch(getAllPurchasebillSuccess(getallPurchasebill));
@@ -740,6 +913,7 @@ export const PurchaseBillview = (id) => {
   return async (dispatch) => {
     dispatch(viewPurchasebillRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchasebill/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchasebillSuccess(data));
@@ -755,6 +929,7 @@ export const createExpenseItem = (payload) => {
   return async (dispatch) => {
     dispatch(createExpenseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expenseItem`, payload, config);
       const expenceItem = response;
       dispatch(createExpenseItemSuccess(expenceItem));
@@ -769,6 +944,7 @@ export const getallExpense = () => {
   return async (dispatch) => {
     dispatch(getAllExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_expense`, config);
       const getallExpense = response.data;
       dispatch(getAllExpenseSuccess(getallExpense));
@@ -782,6 +958,7 @@ export const Expenseview = (id) => {
   return async (dispatch) => {
     dispatch(viewExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_expense/${id}`, config);
       const data = response.data.data;
       dispatch(viewExpenseSuccess(data));
@@ -795,6 +972,7 @@ export const updateExpense = (id, formData) => {
   return async (dispatch) => {
     dispatch(updateExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_expense/${id}`, formData, config);
       const updateExpenseData = response;
       dispatch(updateExpenseSuccess(updateExpenseData));
@@ -809,6 +987,7 @@ export const updateExpenseItem = (id, updateData) => {
   return async (dispatch) => {
     dispatch(updateExpenseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_expenseItem/${id}`, updateData, config);
       const updateExpenseItemData = response;
       dispatch(updateExpenseItemSuccess(updateExpenseItemData));
@@ -823,6 +1002,7 @@ export const deleteExpense = (id) => {
   return async (dispatch) => {
     dispatch(deleteExpenseItemRequest());
     try {
+      const config = createConfig();
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_expenseItem/${id}`, config);
       const deleteExpenseItem = response;
       dispatch(deleteExpenseItemSuccess(deleteExpenseItem));
@@ -837,6 +1017,7 @@ export const createExpense = (data) => {
   return async (dispatch) => {
     dispatch(createExpenseRequest());
     try {
+      const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expense`, data, config);
       const expenceData = response;
       dispatch(createExpenseSuccess(expenceData));
@@ -853,6 +1034,7 @@ export const getallPurchaseReturn = () => {
   return async (dispatch) => {
     dispatch(getAllPurchasereturnRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchaseReturn`, config);
       const getallPurchasereturn = response.data.data;
       dispatch(getAllPurchasereturnSuccess(getallPurchasereturn));
@@ -866,6 +1048,7 @@ export const PurchaseReturnview = (id) => {
   return async (dispatch) => {
     dispatch(viewPurchasereturnRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchaseReturn/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchasereturnSuccess(data));
@@ -881,7 +1064,9 @@ export const getallPermissions = () => {
   return async (dispatch) => {
     dispatch(getAllPermissionsRequest());
     try {
+      const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
+      // console.log(token);
       const getallPermission = response.data.data;
       dispatch(getAllPermissionsSuccess(getallPermission));
       return getallPermission;
@@ -894,13 +1079,166 @@ export const updatePermission = (data) => {
   return async (dispatch) => {
     dispatch(updatePermissionsRequest());
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data);
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data, config);
       const updatePermissionData = response.data.data;
       dispatch(updatePermissionsSuccess(updatePermissionData));
       return updatePermissionData;
     } catch (error) {
       dispatch(updatePermissionsFailure(error.message));
       throw error;
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ User +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createuser = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(createUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_user`, data, config);
+      const userData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/userlist');
+        }
+      });
+      dispatch(createUserSuccess(userData));
+      return userData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createUserFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallusers = () => {
+  return async (dispatch) => {
+    dispatch(getallUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user`, config);
+      const getallUsers = response.data.data;
+      dispatch(getallUserSuccess(getallUsers));
+      return getallUsers;
+    } catch (error) {
+      dispatch(getallUserFailure(error.message));
+    }
+  };
+};
+export const Userview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_user/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewUserSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(viewUserFailure(error.message));
+    }
+  };
+};
+export const updateUser = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_user/${id}`, formData, config);
+      const updateUserData = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/userlist');
+        }
+      });
+      dispatch(UpdateUserSuccess(updateUserData));
+      return updateUserData;
+    } catch (error) {
+      dispatch(UpdateUserFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteUser = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_user/${id}`, config);
+      const deleteUser = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteUserSuccess(deleteUser));
+      window.location.reload();
+      return deleteUser;
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+      throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createVendor = (vendorData) => {
+  return async (dispatch) => {
+    dispatch(createVendorRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_vendor`, vendorData, config);
+      const createdVendor = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(createVendorSuccess(createdVendor));
+      window.location.reload();
+      return createdVendor;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createVendorFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllVendors = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllVendorsRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_vandor`, config);
+      const data = response.data.data;
+      dispatch(fetchAllVendorsSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllVendorsFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const fetchAllCompany = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_company`, config);
+      const data = response.data.data;
+      dispatch(fetchAllCompanySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllCompanyFailure(error.message));
     }
   };
 };

@@ -3,7 +3,7 @@ import React, { lazy } from 'react';
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
-import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
+// import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
 import Purchaseview from 'views/purches managenment/purchaseview';
 import Salesummary from 'component/reports/general reports/salesummary';
 import Saleregister from 'component/reports/general reports/saleregister';
@@ -13,6 +13,7 @@ import Expensesummary from 'component/reports/general reports/expensesummary';
 import Itemratecard from 'component/reports/general reports/itemratecard';
 import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
+import Protected from 'service/Protected';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -30,10 +31,10 @@ const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/exp
 const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managenment/expenceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Qutation = Loadable(lazy(() => import('../views/sale managenment/qutation')));
-const Quotationmain = Loadable(lazy(() => import('../views/sale managenment/qutationmain')));
-const Qutationlist = Loadable(lazy(() => import('../views/sale managenment/quotationlist')));
-const Quotationviewpage = Loadable(lazy(() => import('../views/sale managenment/quotationview')));
+const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/proformainvoice')));
+// const Proformainvoicemain = Loadable(lazy(() => import('../views/sale managenment/proformainvoicemain')));
+const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/proformainvoicelist')));
+const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/proformainvoiceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of delivery challan +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/dileverychalln')));
@@ -46,7 +47,7 @@ const Salesreturnmain = Loadable(lazy(() => import('../views/sale managenment/sa
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/salesinvoice')));
-const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
+// const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
 const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/salesinvoicelist')));
 const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/salesinvoiceview')));
 
@@ -77,10 +78,15 @@ const Product = Loadable(lazy(() => import('../views/production managenment/prod
 const StockManagement = Loadable(lazy(() => import('../views/stock managenment/stock')));
 const Stockmain = Loadable(lazy(() => import('../views/stock managenment/stockmain')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++++ Route permission +++++++++++++++++++++++++++++++++++
+const Permission = Loadable(lazy(() => import('../views/permission managenment/permission')));
+const User = Loadable(lazy(() => import('../views/permission managenment/adduser')));
+const UserList = Loadable(lazy(() => import('../views/permission managenment/userlist')));
+const Userviewpage = Loadable(lazy(() => import('../views/permission managenment/userview')));
+
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
-const Permission = Loadable(lazy(() => import('../views/permission managenment/permission')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
@@ -90,11 +96,19 @@ const ReportPage = Loadable(lazy(() => import('../views/production managenment/p
 
 const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: (
+    <Protected>
+      <MainLayout />
+    </Protected>
+  ),
   children: [
     {
       path: '/dashboard',
-      element: <DashboardDefault />
+      element: (
+        <Protected>
+          <DashboardDefault />
+        </Protected>
+      )
     },
     { path: '/profile', element: <SamplePage /> },
 
@@ -112,15 +126,16 @@ const MainRoutes = {
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotations +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/qutation', element: <Qutation /> },
-    { path: '/qutation/:id', element: <Qutation /> },
-    { path: '/qutationlist', element: <Qutationlist /> },
-    { path: '/qutationmain', element: <Quotationmain /> },
-    { path: '/qutationview/:id', element: <Quotationviewpage /> },
+    { path: '/proformainvoice', element: <Proformainvoice /> },
+    { path: '/proformainvoice/:id', element: <Proformainvoice /> },
+    { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
+    // { path: '/proformainvoicemain', element: <Proformainvoicemain /> },
+    { path: '/proformainvoiceviewpage/:id', element: <Proformainvoiceviewpage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesinvoice', element: <Salesinvoice /> },
-    { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
+    { path: '/salesinvoice/:id', element: <Salesinvoice /> },
+    // { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
     { path: '/salesinvoicelist', element: <Salesinvoicelist /> },
     { path: '/salesinvoiceview/:id', element: <Salesinvoiceview /> },
 
@@ -129,7 +144,7 @@ const MainRoutes = {
     { path: '/deliverychallan/:id', element: <Deliverychallan /> },
     { path: '/deliverychallanlist', element: <DileveryChallanList /> },
     { path: '/deliverychallanview/:id', element: <DileveryChallanView /> },
-    { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
+    // { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesreturn', element: <Salesreturn /> },
@@ -165,10 +180,16 @@ const MainRoutes = {
     { path: '/stock', element: <StockManagement /> },
     { path: '/stockmain', element: <Stockmain /> },
 
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
+    { path: '/permission', element: <Permission /> },
+    { path: '/adduser', element: <User /> },
+    { path: '/updateuser/:id', element: <User /> },
+    { path: '/userlist', element: <UserList /> },
+    { path: '/userview/:id', element: <Userviewpage /> },
+
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
-    { path: '/permission', element: <Permission /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },

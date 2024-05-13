@@ -4,13 +4,11 @@ import Drawer from '@mui/material/Drawer';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Card, Paper } from '@mui/material';
-import { createCustomer, createCustomfeild } from '../store/thunk';
+import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
+import { createVendor } from '../store/thunk';
 
-const AnchorTemporaryDrawer = ({ open, onClose }) => {
-  AnchorTemporaryDrawer.propTypes = {
+const AnchorVendorDrawer = ({ open, onClose }) => {
+  AnchorVendorDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -20,7 +18,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   // State for radio buttons
   const [bankdetail, setBankDetail] = React.useState(true);
   const [creditlimit, setCreditlimit] = React.useState(false);
-  const [customFields, setCustomFields] = React.useState([{ label: '', value: '' }]);
   // State for input fields
   const [formData, setFormData] = React.useState({
     accountname: '',
@@ -29,6 +26,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     contactpersonname: '',
     mobileno: '',
     panno: '',
+    gstnumber: '',
     creditperiod: '',
     mode: '',
     address1: '',
@@ -46,15 +44,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-  const handleAddCustomField = () => {
-    const newCustomFields = [...customFields, { label: '', value: '' }];
-    setCustomFields(newCustomFields);
-  };
-  const handleDeleteCustomField = (index) => {
-    const updatedCustomFields = [...customFields];
-    updatedCustomFields.splice(index, 1);
-    setCustomFields(updatedCustomFields);
-  };
 
   const handleBankDetailChange = (event) => {
     setBankDetail(event.target.value === 'true' ? true : false);
@@ -66,26 +55,14 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
 
   const handleSave = async () => {
     try {
-      const customerData = {
+      const vendorData = {
         ...formData,
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
-      // console.log(customerData, 'formdata');
-      const data = await dispatch(createCustomer(customerData));
-      const customerId = data.data.data.id;
-      //  console.log("id",customerId);
-      const payload = {
-        customerId,
-        items: customFields.map((row) => ({
-          label: row.label,
-          value: row.value
-        }))
-      };
-      //  console.log("plyload",payload);
-      dispatch(createCustomfeild(payload));
+      await dispatch(createVendor(vendorData));
     } catch (error) {
-      console.error('Error creating customer:', error);
+      console.error('Error creating vendor:', error);
     }
   };
 
@@ -98,12 +75,12 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
           padding: '10px 15px',
           position: 'fixed',
           zIndex: '999',
-          width: { xs: '100%', sm: '550px' }
+          width: { xs: '1000px', sm: '550px' }
         }}
       >
         <Grid item>
           <Typography variant="h4" className="heading">
-            New Customer (Sundry Debtors)
+            New Vendor (Sundry Debtors)
           </Typography>
         </Grid>
         <Grid item>
@@ -113,44 +90,64 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
       <Box sx={{ width: { xs: 320, sm: 550 } }} role="presentation" marginTop={'50px'}>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Account Name</Typography>
+            <Typography variant="subtitle1">
+              Account Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Account Name" id="accountname" value={formData.accountname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Short/Alias Name</Typography>
+            <Typography variant="subtitle1">
+              Short/Alias Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Short/Alias Name" id="shortname" value={formData.shortname} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Email</Typography>
+            <Typography variant="subtitle1">
+              Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Email" type="email" ref={emailRef} id="email" value={formData.email} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Contact person name</Typography>
+            <Typography variant="subtitle1">
+              Contact person name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Name" id="contactpersonname" value={formData.contactpersonname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Mobile No.</Typography>
+            <Typography variant="subtitle1">
+              Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Mobile No." id="mobileno" value={formData.mobileno} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">PAN/IT/TAN No.</Typography>
+            <Typography variant="subtitle1">
+              PAN/IT/TAN No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="BJXXX001" id="panno" value={formData.panno} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Default Credit Period (In days)</Typography>
-            <input placeholder="Default Credit Period" id="creditperiod" value={formData.creditperiod} onChange={handleInputChange} />
+            <Typography variant="subtitle1">GST No.</Typography>
+            <input placeholder="GSTIN452" id="gstnumber" value={formData.gstnumber} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Mode</Typography>
+            <Typography variant="subtitle1">
+              Mode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={handleInputChange} />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1">
+              Default Credit Period (In days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input placeholder="Default Credit Period" id="creditperiod" value={formData.creditperiod} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
@@ -160,7 +157,9 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Address 1</Typography>
+            <Typography variant="subtitle1">
+              Address 1 : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Floor,buliding Name" id="address1" value={formData.address1} onChange={handleInputChange} />
           </Grid>
           <Grid item>
@@ -170,133 +169,69 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">Country</Typography>
+            <Typography variant="subtitle1">
+              Country : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="Country" id="country" value={formData.country} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Pincode</Typography>
+            <Typography variant="subtitle1">
+              Pincode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="395001" id="pincode" value={formData.pincode} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">State</Typography>
+            <Typography variant="subtitle1">
+              State : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="State" id="state" value={formData.state} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">City</Typography>
+            <Typography variant="subtitle1">
+              City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="City" id="city" value={formData.city} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }} md={5}>
-            <Typography variant="subtitle1">Provide bank details?</Typography>
+            <Typography variant="subtitle1">
+              Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
           <Grid item sx={{ margin: '8px 16px' }} md={5}>
-            <Typography variant="subtitle1">Enable credit limit?</Typography>
+            <Typography variant="subtitle1">
+              Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
         </Grid>
-        <Grid item sx={{ margin: '8px 16px' }}>
-          <Card sx={{ padding: '10px' }}>
-            <h3>Custom Feild</h3>
-            {customFields.map((field, index) => (
-              <Grid key={index} container spacing={2} sx={{ margin: '1px' }}>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">Label</Typography>
-                  <input
-                    placeholder="Label"
-                    value={field.label}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].label = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">Value</Typography>
-                  <input
-                    placeholder="Value"
-                    value={field.value}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].value = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={2}>
-                  <Typography variant="subtitle1">Delete</Typography>
-                  <DeleteIcon onClick={() => handleDeleteCustomField(index)} sx={{ margin: '7px' }} />
-                </Grid>
-              </Grid>
-            ))}
-            <Grid item xs={12}>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  borderColor: '#425466',
-                  padding: '2px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  lineHeight: '19px',
-                  marginTop: '10px'
-                }}
-                onClick={handleAddCustomField}
-              >
-                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-              </button>
-            </Grid>
-          </Card>
-        </Grid>
+
         <Grid item sx={{ margin: '8px 16px' }}>
           <Grid item sx={12} sm={6}>
             <Typography variant="h5" sx={{ margin: '20px 0px 10px 0px' }}>
-              Opening Balance
+              Opening Balance : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="₹0.00" id="balance" value={formData.balance} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
           <div>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={onClose}
-            >
+            <button id="savebtncs" onClick={onClose}>
               Cancel
             </button>
           </div>
           <div style={{ display: 'flex' }}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={handleSave}
-            >
+            <button id="savebtncs" onClick={handleSave}>
               Save
             </button>
           </div>
@@ -306,4 +241,4 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   );
 };
 
-export default AnchorTemporaryDrawer;
+export default AnchorVendorDrawer;

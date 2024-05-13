@@ -12,11 +12,11 @@ const DileveryChallanView = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
 
+  //call single deliverychallan view api
   useEffect(() => {
     dispatch(Deliverychallanview(id))
       .then((data) => {
         setData(data);
-        // console.log(data, 'DATA');
       })
       .catch((error) => {
         console.error('Error fetching delivery challan data:', error);
@@ -31,19 +31,19 @@ const DileveryChallanView = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.customer}</Typography>
+          <Typography variant="subtitle2">{data?.customer}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data.mobileno}</Typography>
+          <Typography variant="subtitle2">{data?.mobileno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data.email}</Typography>
+          <Typography variant="subtitle2">{data?.email}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan No.</Typography>
-          <Typography variant="subtitle2">{data.challanno}</Typography>
+          <Typography variant="subtitle2">{data?.challanno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan Date</Typography>
@@ -65,8 +65,8 @@ const DileveryChallanView = () => {
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
               </TableHead>
               <TableBody>
-                {data.deliverychallanItems &&
-                  data.deliverychallanItems.map((item, index) => (
+                {data?.items &&
+                  data?.items?.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.serialno}</TableCell>
                       <TableCell>{item?.quotationno}</TableCell>
@@ -82,59 +82,11 @@ const DileveryChallanView = () => {
           </div>
         </Grid>
 
-        {/* <Grid item xs={12}>
-          {isMobile ? (
-            // For mobile screens, show each total on separate lines
-            <>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Taxable Amt.</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Sub Total</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Total Amt.</p>
-                <p>₹0.00</p>
-              </div>
-            </>
-          ) : (
-            // For larger screens, show all totals on one line
-            <div style={{ float: 'right', width: '30%' }}>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Taxable Amt.</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Sub Total</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Total Amt.</p>
-                <p>₹0.00</p>
-              </div>
-            </div>
-          )}
-        </Grid> */}
-
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <button id="savebtncs">Cancel</button>
               </div>
             </Link>
           </Grid>
@@ -142,19 +94,7 @@ const DileveryChallanView = () => {
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Link to="/deliverychallanlist" style={{ textDecoration: 'none' }}>
               <div>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <button id="savebtncs">Cancel</button>
               </div>
             </Link>
           </Grid>

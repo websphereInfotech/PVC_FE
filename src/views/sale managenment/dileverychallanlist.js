@@ -10,33 +10,42 @@ import {
   Card,
   TableContainer,
   TableHead,
-  TablePagination
+  TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Deliverychallanview, getallDeliverychallan } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'date', label: 'Date', minWidth: 170, align: 'center' },
-  { id: 'challanno', label: 'Challan No', minWidth: 170, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100 },
-  { id: 'edit', label: 'Edit', minWidth: 100 }
+  { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
+  { id: 'challanno', label: 'Challan No', minWidth: 100, align: 'center' },
+  { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center' },
+  { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 const DileveryChallanList = () => {
+  const { canViewDeliverychallan, canDeleteDeliverychallan, canCreateDeliverychallan, canUpdateDeliverychallan } = useCan();
   const navigate = useNavigate();
   const [deliverychallan, setdeliverychallan] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  // const [selectedUserId, setSelectedUserId] = useState(null);
 
+  // all delivery challan api called
   useEffect(() => {
     const fetchDeliverychallan = async () => {
       try {
         const data = await dispatch(getallDeliverychallan());
-        // console.log(data.data);
         setdeliverychallan(data.data);
       } catch (error) {
         console.error('Error fetching delivery challan:', error);
@@ -46,27 +55,50 @@ const DileveryChallanList = () => {
     fetchDeliverychallan();
   }, [dispatch]);
 
+  // set pagination to change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // how much row show in one page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
+  //navigate page on create deliverychallan
   const handleAddDeliverychallan = () => {
     navigate('/deliverychallan');
   };
 
+  //passed id for view single data
   const handleViewDeliverychallan = (id) => {
     dispatch(Deliverychallanview(id));
     navigate(`/deliverychallanview/${id}`);
   };
 
+  //passed id for update data
   const handleUpdateDeliverychallan = (id) => {
     navigate(`/deliverychallan/${id}`);
   };
+
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+    // setSelectedUserId(id);
+  };
+
+  // const handleDeleteUser = async () => {
+  //   try {
+  //     await dispatch(deleteUser(selectedUserId));
+  //     setOpenConfirmation(false); // Close confirmation popup after deletion
+  //     // Fetch data again to update the list
+  //     const response = await dispatch(getallusers());
+  //     const filteredData = response.filter((user) => user.role !== 'Super Admin');
+  //     setData(filteredData);
+  //   } catch (error) {
+  //     console.error('Error deleting user:', error);
+  //   }
+  // };
 
   return (
     // <Container>
@@ -74,7 +106,13 @@ const DileveryChallanList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Dilevery Challan List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddDeliverychallan}>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: '16px' }}
+        onClick={handleAddDeliverychallan}
+        disabled={!canCreateDeliverychallan()}
+      >
         Create Delivery Challan
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -94,12 +132,31 @@ const DileveryChallanList = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewDeliverychallan(order.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        disabled={!canViewDeliverychallan()}
+                        onClick={() => handleViewDeliverychallan(order.id)}
+                      >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateDeliverychallan(order.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdateDeliverychallan(order.id)}
+                        disabled={!canUpdateDeliverychallan()}
+                      >
                         Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(order.id)}
+                        disabled={!canDeleteDeliverychallan()}
+                      >
+                        Delete
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString()
@@ -122,6 +179,18 @@ const DileveryChallanList = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this Challan?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} variant="contained" color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
     // </Container>
   );

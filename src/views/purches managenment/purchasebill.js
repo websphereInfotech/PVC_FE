@@ -4,8 +4,8 @@ import { withStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
-import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
+import AnchorProductDrawer from '../../component/productadd';
+import AnchorTemporaryDrawer from '../../component/customeradd';
 import { useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { createPurchaseBill, createPurchaseBillItem, fetchAllProducts, fetchAllCustomers } from 'store/thunk';
@@ -284,7 +284,7 @@ const Purchasebill = () => {
                         onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                       />
                     </TableCell>
-                    <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                    <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                     <TableCell>
                       <StyledInput
                         placeholder="qty"
@@ -316,19 +316,7 @@ const Purchasebill = () => {
           </div>
         </Grid>
         <Grid item xs={12}>
-          <button
-            style={{
-              width: '100px',
-              color: '#425466',
-              borderColor: '#425466',
-              padding: '2px',
-              display: 'flex',
-              justifyContent: 'center',
-              borderRadius: '5px',
-              lineHeight: '19px'
-            }}
-            onClick={handleAddRow}
-          >
+          <button id="buttoncs" onClick={handleAddRow}>
             <AddIcon sx={{ fontSize: '18px' }} /> Add Row
           </button>
         </Grid>
@@ -336,15 +324,15 @@ const Purchasebill = () => {
           {isMobile ? (
             // For mobile screens, show each total on separate lines
             <>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div id="subtotalcs" style={{ margin: '0px' }}>
                 <p>Taxable Amt.</p>
                 <p>₹0.00</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div id="subtotalcs" style={{ margin: '0px' }}>
                 <p>Sub Total</p>
                 <p>₹{subtotal}</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div id="subtotalcs" style={{ margin: '0px' }}>
                 <p>Total Amt.</p>
                 <p>₹{subtotal}</p>
               </div>
@@ -373,32 +361,15 @@ const Purchasebill = () => {
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
               <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '5px'
                   }}
                 >
                   Cancel
                 </button>
               </Link>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  padding: '8px',
-                  borderColor: '#425466',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px'
-                }}
-                onClick={handlePurchaseBill}
-              >
+              <button id="savebtncs" onClick={handlePurchaseBill}>
                 Save
               </button>
             </div>
@@ -407,50 +378,22 @@ const Purchasebill = () => {
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                  href="/purchasebill"
-                >
+                <button id="savebtncs" href="/purchasebill">
                   Cancel
                 </button>
               </Link>
             </div>
             <div style={{ display: 'flex' }}>
               <button
+                id="savebtncs"
                 style={{
-                  width: '130px',
-                  color: '#425466',
-                  padding: '8px',
-                  borderColor: '#425466',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
                   marginRight: '10px'
                 }}
                 onClick={handlePurchaseBill}
               >
                 Save & Next
               </button>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  padding: '8px',
-                  borderColor: '#425466',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px'
-                }}
-                onClick={handlePurchaseBill}
-              >
+              <button id="savebtncs" onClick={handlePurchaseBill}>
                 Save
               </button>
             </div>

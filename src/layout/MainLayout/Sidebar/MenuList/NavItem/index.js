@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 // third party
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // project import
-import * as actionTypes from 'store/actions';
+// import * as actionTypes from 'store/actions';
 
 // assets
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -20,7 +20,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 const NavItem = ({ item, level }) => {
   // const theme = useTheme();
   const customization = useSelector((state) => state.customization);
-  const dispatch = useDispatch();
+  // const menuOpen = useSelector((state) => state.open);
+  // const dispatch = useDispatch();
   const Icon = item.icon;
   const itemIcon = item.icon ? (
     <Icon color="secondary" />
@@ -36,7 +37,15 @@ const NavItem = ({ item, level }) => {
   if (item.external) {
     listItemProps = { component: 'a', href: item.url };
   }
-
+  // const handleCloseDrawer = () => {
+  //   // console.log('enter');
+  //   // drawerToggle();
+  //   // menuOpen.open;
+  //   // console.log('customization.isOpen ', customization);
+  //   console.log('customization.isOpen ', menuOpen.open);
+  //   dispatch({ type: actionTypes.MENU_CLOSE });
+  //   console.log('actionTypes.MENU_CLOSE', actionTypes.MENU_CLOSE);
+  // };
   return (
     <ListItemButton
       disabled={item.disabled}
@@ -48,7 +57,7 @@ const NavItem = ({ item, level }) => {
       }}
       selected={customization.isOpen === item.id}
       component={Link}
-      onClick={() => dispatch({ type: actionTypes.MENU_OPEN, isOpen: item.id })}
+      // onClick={handleCloseDrawer}
       to={item.url}
       target={itemTarget}
       {...listItemProps}
@@ -84,6 +93,7 @@ const NavItem = ({ item, level }) => {
 NavItem.propTypes = {
   item: PropTypes.object,
   level: PropTypes.number,
+  // drawerToggle: PropTypes.func,
   icon: PropTypes.object,
   target: PropTypes.object,
   url: PropTypes.string,

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, InputBase, Table, TableHead, TableCell } from '@mui/material';
 import { withStyles } from '@mui/styles';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
 import { useMediaQuery } from '@mui/material';
+import AnchorVendorDrawer from 'component/vendor';
+import { useDispatch } from 'react-redux';
+import { fetchAllVendors } from 'store/thunk';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -33,19 +35,33 @@ const StyledInput = withStyles((theme) => ({
 const Purchasereturn = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [vendor, setVendor] = useState([]);
+  // const [selectcustomer, setSelectcustomer] = useState([]);
+
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'customer') {
+    if (selectedOption && selectedOption.label === 'Create New Vendor') {
       setIsDrawerOpen(true);
     } else {
+      // console.log(setSelectcustomer);
       setIsDrawerOpen(false);
     }
   };
-  const options = [
-    {
-      value: 'customer',
-      label: 'create new customer'
-    }
-  ];
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllVendors());
+        if (Array.isArray(response)) {
+          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.shortname }));
+          setVendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching quotations:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -57,9 +73,9 @@ const Purchasereturn = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Vendor</Typography>
-              <Select color="secondary" options={options} onChange={handleSelectChange} />
+              <Select color="secondary" options={vendor} onChange={handleSelectChange} />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Debit Note No.</Typography>
               <StyledInput placeholder="CN0102" fullWidth />
@@ -128,33 +144,15 @@ const Purchasereturn = () => {
             {isMobile ? (
               // For mobile screens, show each total on sepadebit lines
               <>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>Taxable Amt</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>SGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>CGST</p>
                   <p>₹0.00</p>
                 </div>
@@ -174,43 +172,23 @@ const Purchasereturn = () => {
             ) : (
               // For larger screens, show all totals on one line
               <div style={{ float: 'right', width: '30%' }}>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>Taxable Amt</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>SGST</p>
                   <p>₹0.00</p>
                 </div>
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
+                <div id="btncs">
                   <p>CGST</p>
                   <p>₹0.00</p>
                 </div>
                 <div
+                  id="subtotalcs"
                   style={{
-                    borderBottom: '0.2px solid lightgrey',
                     borderTop: '0.2px solid lightgrey',
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between'
+                    margin: '0px'
                   }}
                 >
                   <p>Sub Total</p>
@@ -225,82 +203,34 @@ const Purchasereturn = () => {
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link to="/purchasereturnList" style={{ textDecoration: 'none' }}>
                   <button
+                    id="savebtncs"
                     style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px',
                       marginRight: '5px'
                     }}
                   >
                     Cancel
                   </button>
                 </Link>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Save
-                </button>
+                <button id="savebtncs">Save</button>
               </div>
             </Grid>
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
                 <Link to="/purchasereturnList" style={{ textDecoration: 'none' }}>
-                  <button
-                    style={{
-                      width: '100px',
-                      color: '#425466',
-                      padding: '8px',
-                      borderColor: '#425466',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      borderRadius: '5px'
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button
+                  id="savebtncs"
                   style={{
-                    width: '130px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px',
                     marginRight: '10px'
                   }}
                 >
                   Save & Next
                 </button>
-                <button
-                  style={{
-                    width: '100px',
-                    color: '#425466',
-                    padding: '8px',
-                    borderColor: '#425466',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '5px'
-                  }}
-                >
-                  Save
-                </button>
+                <button id="savebtncs">Save</button>
               </div>
             </Grid>
           )}

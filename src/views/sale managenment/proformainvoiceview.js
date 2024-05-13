@@ -4,21 +4,22 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { SalesInvoiceview } from 'store/thunk';
+import { Proformainvoiceview } from 'store/thunk';
 
-const Salesinvoiceview = () => {
+const Proformainvoiceviewpage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState({});
 
+  //called api for view data
   useEffect(() => {
-    dispatch(SalesInvoiceview(id))
+    dispatch(Proformainvoiceview(id))
       .then((data) => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching sales invoice data:', error);
+        console.error('Error fetching quotation data:', error);
       });
   }, [dispatch, id]);
   const subtotal = data.totalMrp ? data.totalMrp : 0;
@@ -26,79 +27,44 @@ const Salesinvoiceview = () => {
   const sgst = data.totalSgst ? data.totalSgst / 2 : 0;
   const cgst = data.totalSgst ? data.totalSgst / 2 : 0;
   const igst = data.totalIgst ? data.totalIgst : 0;
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Sales Invoice View
+        Pro Forma Invoice View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.InvioceCustomer?.shortname}</Typography>
+          <Typography variant="subtitle2">{data?.customer?.shortname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Dispatch Duo No.</Typography>
-          <Typography variant="subtitle2">{data.dispatchno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1">Delivery Note Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.deliverydate).toLocaleDateString()}</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Dispatch Through :</Typography>
-          <Typography variant="subtitle2">{data.dispatchThrough}</Typography>
+          <Typography variant="subtitle1">ProFormaInvoice No.</Typography>
+          <Typography variant="subtitle2">{data?.ProFormaInvoice_no}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Destination</Typography>
-          <Typography variant="subtitle2">{data.destination}</Typography>
+          <Typography variant="subtitle1">ProFormaInvoice Date</Typography>
+          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('es-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">LR-RR No.</Typography>
-          <Typography variant="subtitle2">{data.LL_RR_no}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Motor Vehical No.</Typography>
-          <Typography variant="subtitle2">{data.motorVehicleNo}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Invoice Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.invoiceno}</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Terms (Days)</Typography>
-          <Typography variant="subtitle2">{data.terms}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Due Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.duedate).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Pro Forma Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.proFormaItem?.ProFormaInvoice_no}</Typography>
+          <Typography variant="subtitle1">Valid Till</Typography>
+          <Typography variant="subtitle2">{new Date(data?.validtill).toLocaleDateString('es-GB')}</Typography>
         </Grid>
 
         <Grid item xs={12}>
-          <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
+          <div style={{ maxHeight: '300px', overflowX: 'auto' }}>
             <Table>
               <TableHead>
-                <TableCell width={420} sx={{ fontSize: '12px' }}>
-                  PRODUCT/SERVICE
-                </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>MRP (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>PRODUCT/SERVICE</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>RATE (₹) (EXCL. TAX)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
               </TableHead>
               <TableBody>
-                {data.items &&
-                  data.items.map((item, index) => (
+                {data?.items &&
+                  data?.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.InvoiceProduct?.productname}</TableCell>
+                      <TableCell>{item?.product?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
@@ -185,7 +151,7 @@ const Salesinvoiceview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
+            <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -193,7 +159,7 @@ const Salesinvoiceview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
+            <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -205,4 +171,4 @@ const Salesinvoiceview = () => {
   );
 };
 
-export default Salesinvoiceview;
+export default Proformainvoiceviewpage;

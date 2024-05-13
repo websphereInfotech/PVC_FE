@@ -13,7 +13,7 @@
 //   // SalesInvoiceview,
 //   // getallSalesInvoice,
 //   // QUOTATION +++++++++++++++++++++++++++++++++++
-//   fetchQuotationList,
+//   fetchproformainvoiceList,
 //   createQuotation,
 //   createQuotationItem,
 //   deleteQuotationItem,
@@ -111,7 +111,7 @@
 // // };
 
 // const quotationPermissions = {
-//   'Get All Quotations': fetchQuotationList,
+//   'Get All Quotations': fetchproformainvoiceList,
 //   'Create Quotation': createQuotation,
 //   'Create Quotation Item': createQuotationItem,
 //   'Delete Quotation Item': deleteQuotationItem,

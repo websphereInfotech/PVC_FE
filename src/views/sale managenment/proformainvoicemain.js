@@ -1,20 +1,27 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
-// import { SiInvoiceninja } from 'react-icons/si';
-// import { HiReceiptRefund } from "react-icons/hi";
 import { RiRefundFill } from 'react-icons/ri';
-// import MarkAsUnreadIcon from '@mui/icons-material/MarkAsUnread';
+import useCan from '../checkpermissionvalue';
+import { Link } from 'react-router-dom';
 
-const Quotationmain = () => {
+const Proformainvoicemain = () => {
+  const { canCreateProformainvoiceQuotation, canViewAllProformainvoiceQuotation } = useCan();
   return (
     <Grid>
       <Grid xs={12} md={4} sm={6} sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h3" sx={{ alignItems: 'center', display: 'flex', fontWeight: '300' }}>
           Quotation
         </Typography>
-        <Button variant="contained" color="secondary" sx={{ fontWeight: '300', display: { xs: 'none', sm: 'block' } }} href="/qutation">
-          Create Quotation
+        <Link to={'/qutationlist'}>
+        <Button
+          variant="contained"
+          disabled={!canViewAllProformainvoiceQuotation()}
+          color="secondary"
+          sx={{ fontWeight: '300', display: { xs: 'none', sm: 'block' } }}
+        >
+          Quotation List
         </Button>
+        </Link>
       </Grid>
       <Grid xs={12} md={8} sm={6} sx={{ marginTop: '20px' }}>
         <Card
@@ -33,9 +40,11 @@ const Quotationmain = () => {
               <p style={{ color: 'rgb(130 134 139)', fontWeight: '400', fontSize: '1rem' }}>
                 With perfect estimation, give your customers an offer they can not reject!<br></br>
               </p>
-              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }} href="/qutation">
+              <Link to={'/qutation'}>
+              <Button variant="contained" color="secondary" sx={{ fontWeight: '300' }}  disabled={!canCreateProformainvoiceQuotation()}>
                 Create Quotation
               </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -44,4 +53,4 @@ const Quotationmain = () => {
   );
 };
 
-export default Quotationmain;
+export default Proformainvoicemain;
