@@ -37,7 +37,7 @@ export default function ProformainvoiceList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [quotations, setQuotations] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -99,7 +99,7 @@ export default function ProformainvoiceList() {
   };
 
   return (
-    <Card sx={{ width: 'auro', padding: '20px' }}>
+    <Card sx={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Pro Forma Invoice List
       </Typography>
@@ -114,7 +114,7 @@ export default function ProformainvoiceList() {
         Create Pro Forma Invoice
       </Button>
       {/* </Link> */}
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 800, display: 'flex', alignItems: 'center' }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
@@ -172,7 +172,7 @@ export default function ProformainvoiceList() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[8, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={quotations.length}
         rowsPerPage={rowsPerPage}

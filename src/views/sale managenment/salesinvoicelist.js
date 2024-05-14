@@ -37,7 +37,7 @@ const Salesinvoicelist = () => {
   const navigate = useNavigate();
   const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -107,7 +107,7 @@ const Salesinvoicelist = () => {
       <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddSalesinvoice}>
         Create Sales Invoice
       </Button>
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
@@ -167,7 +167,7 @@ const Salesinvoicelist = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[8, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={salesinvoice?.length || 0}
         rowsPerPage={rowsPerPage}

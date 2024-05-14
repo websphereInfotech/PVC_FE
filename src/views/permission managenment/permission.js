@@ -134,7 +134,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useDispatch } from 'react-redux';
 import { getallPermissions, updatePermission } from 'store/thunk';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 export default function CollapsibleTable() {
   const [openRows, setOpenRows] = React.useState([]);
@@ -247,27 +247,37 @@ export default function CollapsibleTable() {
   const handleSelectAll = (resource) => {
     const updatedCheckbox = { ...checkbox };
     const updatedPermissions = { ...selectedPermissions };
-    console.log(updatedPermissions, 'updatedPermissions');
-
-    const selectedRolePermissions = permissions.find((permission) => permission.role === selectedUserRole);
-    console.log(selectedRolePermissions, 'selectedRolePermissions');
-    if (selectedRolePermissions) {
-      selectedRolePermissions.permissions.forEach((pre) => {
-        if (pre.resource === resource) {
-          pre.permissions.forEach((p) => {
-            updatedCheckbox[p.id] = !updatedPermissions[p.id];
-            updatedPermissions[p.id] = !selectedPermissions[p.id];
-          });
-        }
-      });
-    }
+    let allChecked = true;
+    permissions.forEach((permission) => {
+      if (permission.role === selectedUserRole) {
+        permission.permissions.forEach((pre) => {
+          if (pre.resource === resource) {
+            pre.permissions.forEach((p) => {
+              if (!updatedCheckbox[p.id]) {
+                allChecked = false;
+              }
+            });
+          }
+        });
+      }
+    });
+    const newValue = !allChecked;
+  // console.log("newvalue",newValue);
+  // console.log("allChecked",!allChecked);
+    permissions.forEach((permission) => {
+      if (permission.role === selectedUserRole) {
+        permission.permissions.forEach((pre) => {
+          if (pre.resource === resource) {
+            pre.permissions.forEach((p) => {
+              updatedCheckbox[p.id] = newValue;
+              updatedPermissions[p.id] = newValue;
+            });
+          }
+        });
+      }
+    });
     setCheckbox(updatedCheckbox);
     setSelectedPermissions(updatedPermissions);
-
-    console.log(updatedCheckbox, 'updatedCheckbox');
-    // console.log(checkbox, 'checkbox');
-    console.log(updatedPermissions, 'updatedPermissions');
-    console.log(selectedPermissions, 'selectedPermissions');
     const data = {
       userRole: selectedUserRole,
       permissions: Object.keys(updatedPermissions).map((permissionId) => ({
@@ -276,7 +286,6 @@ export default function CollapsibleTable() {
       }))
     };
     dispatch(updatePermission(data));
-    console.log(data, 'data');
   };
 
   return (
@@ -318,13 +327,14 @@ export default function CollapsibleTable() {
                               <Box>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                   <Typography variant="h5">{pre.resource}</Typography>
-                                  <Link
-                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                                  {/* <Link
+                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', color: 'black' }}
                                     color="secondary"
                                     onClick={() => handleSelectAll(pre.resource)}
                                   >
                                     Select All
-                                  </Link>
+                                  </Link> */}
+                                  <Checkbox onClick={() => handleSelectAll(pre.resource)} />
                                 </div>
                                 <Table size="small" aria-label="permissions">
                                   <TableBody>
