@@ -5,8 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
-import AnchorProductDrawer from '../../component/productquotation';
+import AnchorTemporaryDrawer from '../../component/customeradd';
+import AnchorProductDrawer from '../../component/productadd';
 import { useDispatch } from 'react-redux';
 import {
   createProformainvoice,
@@ -37,6 +37,7 @@ const Proformainvoice = () => {
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+  // const
   const [gststate, setGststate] = useState('');
   const [formData, setFormData] = useState({
     customerId: '',
@@ -172,41 +173,7 @@ const Proformainvoice = () => {
         console.error('Error fetching quotations:', error);
       }
     };
-    const generateAutoQuotationNumber = async () => {
-      if (!id) {
-        try {
-          const quotationResponse = await dispatch(fetchproformainvoiceList());
-          let nextQuotationNumber = 1;
-          if (quotationResponse.length === 0) {
-            const quotationNumber = `Q-${nextQuotationNumber}`;
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              ProFormaInvoice_no: quotationNumber
-            }));
-            return;
-          }
-          const existingQuotationNumbers = quotationResponse.map((quotation) => {
-            const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
-            return parseInt(quotationNumber);
-          });
 
-          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
-
-          if (!isNaN(maxQuotationNumber)) {
-            nextQuotationNumber = maxQuotationNumber + 1;
-          }
-
-          const quotationNumber = `Q-${nextQuotationNumber}`;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            ProFormaInvoice_no: quotationNumber
-          }));
-        } catch (error) {
-          console.error('Error generating auto proformainvoice number:', error);
-        }
-      }
-    };
-    generateAutoQuotationNumber();
     fetchData();
   }, [dispatch, customerState, gststate, id]);
 
@@ -225,16 +192,20 @@ const Proformainvoice = () => {
           product: item.product.productname,
           qty: item.qty,
           rate: item.rate,
-          mrp: item.mrp,
-          gstrate: item.product.gstrate
+          mrp: item.rate * item.qty,
+          gstrate: item.product.gstrate,
+          gst: item.mrp * (item.product.gstrate / 100)
         }));
         setRows(updatedRows);
-        updatedRows.forEach((row) => {
-          const amount = row.qty * row.rate;
-          row.mrp = amount;
-          const gstAmount = amount * (row.gstrate / 100);
-          setPlusgst(gstAmount);
-        });
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+        // setPlusgst(gst)
+        // updatedRows.forEach((row) => {
+        //   const amount = row.qty * row.rate;
+        //   row.mrp = amount;
+        //   const gstAmount = amount * (row.gstrate / 100);
+        //   setPlusgst(gstAmount);
+        // });
       }
     };
     data();
@@ -257,7 +228,39 @@ const Proformainvoice = () => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
   }, [rows]);
+  useEffect(() => {
+    const data = async () => {
+      if (id) {
+        const response = await dispatch(Proformainvoiceview(id));
+        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
+        setSelectcustomer(customer.id);
+        setCustomerState(customer.state);
+        setCustomername(customer.shortname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.product.id,
+          product: item.product.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.qty * item.rate,
+          gstrate: item.product.gstrate,
+          gst: item.mrp * (item.product.gstrate / 100)
+        }));
+        setRows(updatedRows);
+        // const updateGST = updatedRows.forEach((row) => {
+        //   const amount = row.qty * row.rate;
+        //   row.mrp = amount;
+        //   const gstAmount = amount * (row.gstrate / 100);
+        //   setPlusgst(gstAmount);
 
+        // });
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+      }
+    };
+    data();
+  }, [dispatch, id]);
   const handleCreateQuotation = async () => {
     try {
       if (id) {
@@ -268,7 +271,8 @@ const Proformainvoice = () => {
           items: rows.map((row) => ({
             productId: row.productId,
             qty: Number(row.qty),
-            rate: row.rate
+            rate: row.rate,
+            mrp: row.mrp
           }))
         };
         const gststate = companystate === customerState ? 'true' : 'false';
@@ -354,17 +358,61 @@ const Proformainvoice = () => {
       setPlusgst(totalGST);
     }
   };
-
-  const handleQuotationDateChange = (date) => {
-    const newValidTill = new Date(date);
-    newValidTill.setDate(newValidTill.getDate() + 7);
-    setFormData({ ...formData, date, validtill: newValidTill });
-  };
-
   const handleValidTillDateChange = (date) => {
     setFormData({ ...formData, validtill: date });
   };
+  const calculateValidTillDate = (proformaInvoiceDate) => {
+    const defaultValidityPeriod = 7;
+    const validTillDate = new Date(proformaInvoiceDate);
+    validTillDate.setDate(validTillDate.getDate() + defaultValidityPeriod);
+    return validTillDate;
+  };
 
+  const handleQuotationDateChange = (date) => {
+    const newValidTill = calculateValidTillDate(date);
+    setFormData({ ...formData, date, validtill: newValidTill });
+  };
+
+  useEffect(() => {
+    const initialValidTill = calculateValidTillDate(formData.date);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      validtill: initialValidTill
+    }));
+    const generateAutoQuotationNumber = async () => {
+      if (!id) {
+        try {
+          const quotationResponse = await dispatch(fetchproformainvoiceList());
+          let nextQuotationNumber = 1;
+          if (quotationResponse.length === 0) {
+            const quotationNumber = `Q-${nextQuotationNumber}`;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              ProFormaInvoice_no: quotationNumber
+            }));
+            return;
+          }
+          const existingQuotationNumbers = quotationResponse.map((quotation) => {
+            const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
+            return parseInt(quotationNumber);
+          });
+          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
+          if (!isNaN(maxQuotationNumber)) {
+            nextQuotationNumber = maxQuotationNumber + 1;
+          }
+
+          const quotationNumber = `Q-${nextQuotationNumber}`;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            ProFormaInvoice_no: quotationNumber
+          }));
+        } catch (error) {
+          console.error('Error generating auto proformainvoice number:', error);
+        }
+      }
+    };
+    generateAutoQuotationNumber();
+  }, [dispatch, formData.date, id]);
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -489,11 +537,13 @@ const Proformainvoice = () => {
               </Table>
             </div>
           </Grid>
+
           <Grid item xs={12}>
             <button id="buttoncs" onClick={handleAddRow}>
               <AddIcon sx={{ fontSize: '18px' }} /> Add Row
             </button>
           </Grid>
+
           <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on separate lines
@@ -501,29 +551,27 @@ const Proformainvoice = () => {
                 {gststate ? (
                   <>
                     <div id="subtotalcs">
+                      <p>Sub Total</p>
+                      <p>₹{subtotal}</p>
+                    </div>
+                    <div id="subtotalcs">
                       <p>SGST</p>
-                      <p>₹{plusgst / 2}</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
                     </div>
                     <div id="subtotalcs">
                       <p>CGST</p>
-                      <p>₹{plusgst / 2}</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
                     </div>
                   </>
                 ) : (
                   <div id="subtotalcs">
                     <p>IGST</p>
-                    <p>₹{plusgst}</p>
+                    <p>₹{plusgst.toFixed(2)}</p>
                   </div>
                 )}
                 <div id="subtotalcs">
-                  <p>Sub Total</p>
-                  <p>₹{subtotal}</p>
-                </div>
-                <div id="subtotalcs">
-                  {/* <h3>Total Amt.</h3> */}
-                  {/* <h3>₹{subtotal + txtable}</h3> */}
                   <h3>Total Amt.</h3>
-                  <h3>₹{Number(subtotal) + Number(plusgst)}</h3>
+                  <h3>₹{(Number(subtotal) + Number(plusgst)).toFixed(2)}</h3>
                 </div>
               </>
             ) : (
@@ -538,23 +586,17 @@ const Proformainvoice = () => {
                   <>
                     <div id="subtotalcs">
                       <p>SGST</p>
-                      {/* {id ? <p>₹{formData.totalSgst / 2}</p> : <p>₹{plusgst / 2}</p>} */}
-                      {/* <p>₹{formData?.totalSgst / 2}</p> */}
-                      <p>₹{plusgst / 2}</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
                     </div>
                     <div id="subtotalcs">
                       <p>CGST</p>
-                      {/* {id ? <p>₹{formData.totalSgst / 2}</p> : <p>₹{plusgst / 2}</p>} */}
-                      {/* <p>₹{formData.totalSgst / 2}</p> */}
-                      <p>₹{plusgst / 2}</p>
+                      <p>₹{(plusgst / 2).toFixed(2)}</p>
                     </div>
                   </>
                 ) : (
                   <div id="subtotalcs">
                     <p>IGST</p>
-                    {/* {id ? <p>₹{formData.totalIgst}</p> : <p>₹{plusgst}</p>} */}
-                    {/* <p>₹{formData.totalIgst}</p> */}
-                    <p>₹{plusgst}</p>
+                    <p>₹{plusgst.toFixed(2)}</p>
                   </div>
                 )}
                 <div
@@ -564,7 +606,7 @@ const Proformainvoice = () => {
                   }}
                 >
                   <h3>Total Amt.</h3>
-                  <h3>₹{Number(subtotal) + Number(plusgst)}</h3>
+                  <h3>₹{(Number(subtotal) + Number(plusgst)).toFixed(2)}</h3>
                 </div>
               </div>
             )}

@@ -5,8 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import AnchorTemporaryDrawer from '../../component/customerqutation';
-import AnchorDeliverychallanProductDrawer from '../../component/deliverychallanproduct';
+import AnchorTemporaryDrawer from '../../component/customeradd';
+import AnchorProductDrawer from '../../component/productadd';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   createDeliveryChallan,
@@ -303,7 +303,7 @@ const Deliverychallan = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <div style={{ overflowX: 'auto', maxHeight: '300px' }}>
+            <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
                   <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
@@ -365,7 +365,7 @@ const Deliverychallan = () => {
                             onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
                           />
                         </TableCell>
-                        <AnchorDeliverychallanProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                        <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
                         <TableCell id="newcs">
                           <input
                             placeholder="date"

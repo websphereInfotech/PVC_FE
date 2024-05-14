@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   // Container,
   Typography,
@@ -17,9 +17,9 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
-import { useDispatch } from 'react-redux';
-import useCan from 'views/checkpermissionvalue';
+// import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
+// import { useDispatch } from 'react-redux';
+// import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'invoiceno', label: 'Invocie No', minWidth: 170, align: 'center' },
@@ -33,32 +33,32 @@ const columns = [
 ];
 
 const Salesinvoicelist = () => {
-  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice } = useCan();
+  // const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice } = useCan();
   const navigate = useNavigate();
-  const [salesinvoice, setsalesinvoice] = useState([]);
+  // const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  // const [selectedId, setSelectedId] = useState(null);
 
-  useEffect(() => {
-    const fetchSalesinvoice = async () => {
-      try {
-        const data = await dispatch(getallSalesInvoice());
-        data.data.sort((a, b) => {
-          const aNum = parseInt(a.invoiceno);
-          const bNum = parseInt(b.invoiceno);
-          return aNum - bNum;
-        });
-        setsalesinvoice(data.data);
-      } catch (error) {
-        console.error('Error fetching sales invoice:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchSalesinvoice = async () => {
+  //     try {
+  //       const data = await dispatch(getallSalesInvoice());
+  //       data.data.sort((a, b) => {
+  //         const aNum = parseInt(a.invoiceno);
+  //         const bNum = parseInt(b.invoiceno);
+  //         return aNum - bNum;
+  //       });
+  //       setsalesinvoice(data.data);
+  //     } catch (error) {
+  //       console.error('Error fetching sales invoice:', error);
+  //     }
+  //   };
 
-    fetchSalesinvoice();
-  }, [dispatch]);
+  //   fetchSalesinvoice();
+  // }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -70,42 +70,42 @@ const Salesinvoicelist = () => {
   };
 
   const handleAddSalesinvoice = () => {
-    navigate('/salesinvoice');
+    navigate('/salesreturn');
   };
 
-  const handleUpdateSalesInvoice = (id) => {
-    dispatch(SalesInvoiceview(id));
-    navigate(`/salesinvoice/${id}`);
-  };
+  // const handleUpdateSalesInvoice = (id) => {
+  //   dispatch(SalesInvoiceview(id));
+  //   navigate(`/salesinvoice/${id}`);
+  // };
 
-  const handleViewsalesinvoice = (id) => {
-    dispatch(SalesInvoiceview(id));
-    navigate(`/salesinvoiceview/${id}`);
-  };
+  // const handleViewsalesinvoice = (id) => {
+  //   dispatch(SalesInvoiceview(id));
+  //   navigate(`/salesinvoiceview/${id}`);
+  // };
 
-  const handleDeleteConfirmation = (id) => {
-    setOpenConfirmation(true);
-    setSelectedId(id);
-  };
+  // const handleDeleteConfirmation = (id) => {
+  //   setOpenConfirmation(true);
+  //   setSelectedId(id);
+  // };
 
-  const handleDeleteSalesInvoice = async () => {
-    try {
-      console.log(selectedId, 'selected');
-      await dispatch(deleteSalesinvoice(selectedId));
-      setOpenConfirmation(false);
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
+  // const handleDeleteSalesInvoice = async () => {
+  //   try {
+  //     console.log(selectedId, 'selected');
+  //     await dispatch(deleteSalesinvoice(selectedId));
+  //     setOpenConfirmation(false);
+  //   } catch (error) {
+  //     console.error('Error deleting user:', error);
+  //   }
+  // };
 
   return (
     // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Sales Invoice List
+        Return Sales Invoice List
       </Typography>
       <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddSalesinvoice}>
-        Create Sales Invoice
+        Create Return Sales Invoice
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -119,7 +119,7 @@ const Salesinvoicelist = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {/* {salesinvoice?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -127,17 +127,17 @@ const Salesinvoicelist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canViewalesinvoice()}
-                        onClick={() => handleViewsalesinvoice(row.id)}
+                        // disabled={!canViewalesinvoice()}
+                        // onClick={() => handleViewsalesinvoice(row.id)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
-                        disabled={!canUpdateSalesinvoice()}
+                        // disabled={!canUpdateSalesinvoice()}
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleUpdateSalesInvoice(row.id)}
+                        // onClick={() => handleUpdateSalesInvoice(row.id)}
                       >
                         Edit
                       </Button>
@@ -145,8 +145,8 @@ const Salesinvoicelist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canDeleteSalesinvoice()}
-                        onClick={() => handleDeleteConfirmation(row.id)}
+                        // disabled={!canDeleteSalesinvoice()}
+                        // onClick={() => handleDeleteConfirmation(row.id)}
                       >
                         Delete
                       </Button>
@@ -162,14 +162,14 @@ const Salesinvoicelist = () => {
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[8, 25, 100]}
         component="div"
-        count={salesinvoice?.length || 0}
+        // count={salesinvoice?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -182,7 +182,7 @@ const Salesinvoicelist = () => {
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleDeleteSalesInvoice} variant="contained" color="secondary">
+          <Button variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

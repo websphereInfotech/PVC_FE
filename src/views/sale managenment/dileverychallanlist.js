@@ -22,13 +22,13 @@ import { useDispatch } from 'react-redux';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'date', label: 'Date', minWidth: 170, align: 'center' },
-  { id: 'challanno', label: 'Challan No', minWidth: 170, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100 },
-  { id: 'edit', label: 'Edit', minWidth: 100 },
-  { id: 'delete', label: 'Delete', minWidth: 100 }
+  { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
+  { id: 'challanno', label: 'Challan No', minWidth: 100, align: 'center' },
+  { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center' },
+  { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 const DileveryChallanList = () => {
@@ -99,6 +99,7 @@ const DileveryChallanList = () => {
   //     console.error('Error deleting user:', error);
   //   }
   // };
+
   return (
     // <Container>
     <Card style={{ padding: '25px', width: '100%' }}>

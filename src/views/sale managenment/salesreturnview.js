@@ -4,9 +4,9 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { SalesInvoiceview } from 'store/thunk';
+// import { SalesInvoiceReturnview } from 'store/thunk';
 
-const Salesinvoiceview = () => {
+const SalesinvoiceReturnview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -185,7 +185,7 @@ const Salesinvoiceview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
+            <Link to="/salesreturnlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -193,7 +193,7 @@ const Salesinvoiceview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
+            <Link to="/salesreturnlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -205,4 +205,4 @@ const Salesinvoiceview = () => {
   );
 };
 
-export default Salesinvoiceview;
+export default SalesinvoiceReturnview;
