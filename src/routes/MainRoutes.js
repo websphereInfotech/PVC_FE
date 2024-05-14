@@ -43,8 +43,8 @@ const DileveryChallanView = Loadable(lazy(() => import('../views/sale managenmen
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salesreturn = Loadable(lazy(() => import('../views/sale managenment/salesreturn')));
-const Salesreturnmain = Loadable(lazy(() => import('../views/sale managenment/salesreturnmain')));
-
+const Salesreturnlist = Loadable(lazy(() => import('../views/sale managenment/salesreturnlist')));
+const SalesinvoiceReturnview = Loadable(lazy(() => import('../views/sale managenment/salesreturnview')));
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/salesinvoice')));
 // const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
@@ -148,7 +148,8 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesreturn', element: <Salesreturn /> },
-    { path: '/salesreturnmain', element: <Salesreturnmain /> },
+    { path: '/salesreturnlist', element: <Salesreturnlist /> },
+    { path: '/salesreturnview', element: <SalesinvoiceReturnview /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/addpurchase', element: <AddPurchasePage /> },

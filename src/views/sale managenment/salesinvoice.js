@@ -302,7 +302,7 @@ const Salesinvoice = () => {
           items: rows.map((row) => ({
             productId: row.productId,
             rate: row.rate,
-            qty: row.qty,
+            qty: Number(row.qty),
             mrp: row.mrp
           }))
         };

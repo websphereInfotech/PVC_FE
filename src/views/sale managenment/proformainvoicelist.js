@@ -99,7 +99,7 @@ export default function ProformainvoiceList() {
   };
 
   return (
-    <Card sx={{ width: '100%', padding: '25px' }}>
+    <Card sx={{ width: 'auro', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Pro Forma Invoice List
       </Typography>
@@ -108,7 +108,7 @@ export default function ProformainvoiceList() {
         variant="contained"
         href="/proformainvoice"
         color="secondary"
-        style={{ margin: '16px' }}
+        style={{ margin: '10px' }}
         disabled={!canCreateProformainvoiceQuotation()}
       >
         Create Pro Forma Invoice

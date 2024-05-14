@@ -8,6 +8,7 @@ import AnchorTemporaryDrawer from '../../component/customeradd';
 import { useMediaQuery } from '@mui/material';
 import { fetchAllCustomers } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 // Custom styled input component
 const StyledInput = withStyles((theme) => ({
   root: {
@@ -220,14 +221,16 @@ const Salesreturn = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button
-                  id="savebtncs"
-                  style={{
-                    marginRight: '5px'
-                  }}
-                >
-                  Cancel
-                </button>
+                <Link to="/salesreturnlist" style={{ textDecoration: 'none' }}>
+                  <button
+                    id="savebtncs"
+                    style={{
+                      marginRight: '5px'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </Link>
                 <button
                   id="savebtncs"
                   // onClick={handlecreatesalesreturn}
@@ -239,7 +242,9 @@ const Salesreturn = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <button id="savebtncs">Cancel</button>
+                <Link to="/salesreturnlist" style={{ textDecoration: 'none' }}>
+                  <button id="savebtncs">Cancel</button>
+                </Link>
               </div>
               <div style={{ display: 'flex' }}>
                 <button

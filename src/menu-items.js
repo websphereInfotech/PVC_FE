@@ -210,7 +210,7 @@ const MenuItem = () => {
                     id: 'sales return',
                     title: 'Sales Return',
                     type: 'item',
-                    url: '/salesreturnmain'
+                    url: '/salesreturnlist'
                   },
                   {
                     id: 'reciept',
