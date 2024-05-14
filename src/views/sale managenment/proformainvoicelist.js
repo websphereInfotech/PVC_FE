@@ -37,7 +37,7 @@ export default function ProformainvoiceList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
   const [quotations, setQuotations] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -172,7 +172,7 @@ export default function ProformainvoiceList() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[8, 25, 100]}
         component="div"
         count={quotations.length}
         rowsPerPage={rowsPerPage}
