@@ -262,8 +262,8 @@ export default function CollapsibleTable() {
       }
     });
     const newValue = !allChecked;
-  // console.log("newvalue",newValue);
-  // console.log("allChecked",!allChecked);
+    // console.log("newvalue",newValue);
+    // console.log("allChecked",!allChecked);
     permissions.forEach((permission) => {
       if (permission.role === selectedUserRole) {
         permission.permissions.forEach((pre) => {
