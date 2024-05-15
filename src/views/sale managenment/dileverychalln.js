@@ -11,7 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   createDeliveryChallan,
   // createDeliveryChallanItem,
-  deleteDileveryChallan,
+  // deleteDileveryChallan,
+  getallDeliverychallan,
   updateDileveryChallan
   // updateDileveryChallanItem
 } from 'store/thunk';
@@ -41,192 +42,226 @@ import { Link } from 'react-router-dom';
 // }))(InputBase);
 import { Deliverychallanview } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Deliverychallan = () => {
   const { id } = useParams();
+  console.log(id, 'id');
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState([
-    { srNo: '1', product: '', qty: '', mrp: '', description: '', expirydate: '', batchno: '', quotationno: '' }
-  ]);
+  const [rows, setRows] = useState([{ product: '', qty: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
-  // const [selectcustomer, setSelectcustomer] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState('');
+  const [customername, setCustomername] = useState('');
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [subtotal, setSubtotal] = useState(0);
-  // const [idMapping, setIdMapping] = useState({});
   const [formData, setFormData] = useState({
-    customer: '',
-    mobileno: '',
-    date: '',
-    challanno: '',
-    email: ''
+    customerId: '',
+    date: new Date(),
+    challanno: ''
   });
 
   // to add multiple row for product item
   const handleAddRow = () => {
     const newRow = {
-      srNo: (rows.length + 1).toString(),
       product: '',
-      qty: '',
-      mrp: '',
-      description: '',
-      expirydate: '',
-      batchno: '',
-      quotationno: ''
+      qty: ''
     };
-    setRows([...rows, newRow]);
+    setRows((prevRows) => [...prevRows, newRow]);
   };
 
   // set form data value
-  const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  };
-
+  // const handleChange = (field, value) => {
+  //   setFormData({ ...formData, [field]: value });
+  // };
+  useEffect(() => {
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
+  }, [rows]);
   //set input's target value
-  const handleInputChange = (srNo, field, value) => {
-    const updatedRows = rows.map((row) => {
-      if (row.srNo === srNo) {
+  const handleInputChange = (index, field, value) => {
+    const updatedRows = rows.map((row, rowIndex) => {
+      if (rowIndex === index) {
         return { ...row, [field]: value };
       }
       return row;
     });
-
-    updatedRows.forEach((row) => {
-      const amount = row.qty * row.mrp;
-      row.amount = Number.isNaN(amount) ? 0 : amount;
-    });
-
-    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.amount, 0);
-    setSubtotal(Number.isNaN(newSubtotal) ? 0 : newSubtotal);
     setRows(updatedRows);
+    let total = 0;
+    rows.forEach((row) => {
+      total += parseInt(row.qty);
+    });
+    setTotalQuantity(total);
   };
 
   // use for delete row
-  const handleDeleteRow = async (srNo) => {
-    const deletedRow = rows.find((row) => row.srNo === srNo);
-    if (!deletedRow) return;
-
-    const updatedRows = rows.filter((row) => row.srNo !== srNo);
-    const updatedRowsWithSerialNumbers = updatedRows.map((row, index) => ({
-      ...row,
-      srNo: index + 1
-    }));
-
-    const deletedAmount = deletedRow.amount;
-    const newSubtotal = subtotal - deletedAmount;
-
-    setRows(updatedRowsWithSerialNumbers);
-    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    dispatch(deleteDileveryChallan(id));
+  const handleDeleteRow = async (index) => {
+    const updatedRows = [...rows];
+    updatedRows.splice(index, 1);
+    setRows(updatedRows);
+    // dispatch(deleteDileveryChallan(id));
   };
 
   //use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'new') {
+    if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
     } else {
-      setFormData({ ...formData, customer: selectedOption.label });
+      formData.customerId = selectedOption.value;
+      setFormData(formData);
+      setCustomername(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
 
   //use for select product name from dropdown
-  const handleSelectproductChange = (selectedOption, srNo) => {
+  const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'create new product') {
       setIsproductDrawerOpen(true);
     } else {
-      const updatedRows = rows.map((row) => {
-        if (row.srNo === srNo) {
-          return { ...row, product: selectedOption.label };
+      const updatedRows = rows.map((row, rowIndex) => {
+        if (rowIndex === index) {
+          return {
+            ...row,
+            productId: selectedOption.value,
+            product: selectedOption.label
+          };
         }
         return row;
       });
+
       setRows(updatedRows);
-      setSelectproduct(selectedOption.label);
+      setSelectproduct(selectedOption.value);
       setIsproductDrawerOpen(false);
     }
   };
-
+  const handleChallanDateChange = (date) => {
+    setFormData({ ...formData, date: date });
+  };
   // call all customer and all product api's
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customers = await dispatch(fetchAllCustomers());
-        if (Array.isArray(customers)) {
-          const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
-          setProduct(productResponse);
-        }
-        if (id) {
-          const response = await dispatch(Deliverychallanview(id));
-          const { email, mobileno, date, challanno, customer } = response;
-          setFormData({ email, mobileno, date, challanno, customer });
-          const deliverychallanItems = response.items;
-
-          const updatedRows = deliverychallanItems.map((item) => {
-            return {
-              srNo: item.id,
-              product: item.product,
-              description: item.description,
-              quotationno: item.quotationno,
-              batchno: item.batchno,
-              expirydate: item.expirydate,
-              qty: item.qty,
-              mrp: item.mrp
-            };
-          });
-          setRows(updatedRows);
+          // setProductResponse(productResponse);
+          const options = productResponse.map((product) => ({
+            value: product.id,
+            label: product.productname
+          }));
+          setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
+        } else {
+          console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
       } catch (error) {
-        console.error('Error fetching :', error);
+        console.error('Error fetching quotations:', error);
       }
     };
     fetchData();
   }, [dispatch, id]);
 
+  useEffect(() => {
+    const data = async () => {
+      if (id) {
+        console.log(id, 'viewid');
+        const response = await dispatch(Deliverychallanview(id));
+        const { DeliveryCustomer, date, challanno } = response;
+        console.log(response.DeliveryCustomer, 'response');
+        setFormData({ customerId: DeliveryCustomer.id, date, challanno });
+        // console.log(formData,'formdata');
+        setSelectcustomer(DeliveryCustomer.id);
+        setCustomername(DeliveryCustomer.accountname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.DeliveryProduct.id,
+          product: item.DeliveryProduct.productname,
+          qty: item.qty
+        }));
+        setRows(updatedRows);
+      }
+    };
+
+    const generateAutoChallanNumber = async () => {
+      if (!id) {
+        try {
+          const ChallanResponse = await dispatch(getallDeliverychallan());
+          console.log(ChallanResponse, 'response');
+          let nextChallanNumber = 1;
+          if (ChallanResponse.length === 0) {
+            const ChallanNumber = nextChallanNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              challanno: ChallanNumber
+            }));
+            return;
+          }
+          const existingChallanNumbers = ChallanResponse.map((Challan) => {
+            const ChallanNumber = Challan.challanno;
+            return ChallanNumber;
+          });
+          const maxChallanNumber = Math.max(...existingChallanNumbers);
+          if (!isNaN(maxChallanNumber)) {
+            nextChallanNumber = maxChallanNumber + 1;
+          }
+
+          const ChallanNumber = { nextChallanNumber };
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            challanno: ChallanNumber
+          }));
+        } catch (error) {
+          console.error('Error generating auto proformainvoice number:', error);
+        }
+      }
+    };
+
+    generateAutoChallanNumber();
+    data();
+  }, [dispatch, id]);
+
   //call craete and update deliverychallan and deliverychallan items
   const handlecreatedeliverychallan = async () => {
     try {
+      console.log(id, 'updateid');
       if (id) {
         const payload = {
           ...formData,
+          totalQty: totalQuantity,
           items: rows.map((row) => ({
-            serialno: row.srNo,
-            product: row.product,
-            description: row.description,
-            quotationno: row.quotationno,
-            batchno: row.batchno,
-            expirydate: row.expirydate,
-            qty: row.qty,
-            mrp: row.mrp
+            productId: row.productId,
+            qty: row.qty
           }))
         };
         dispatch(updateDileveryChallan(id, payload, navigate));
       } else {
         const payload = {
           ...formData,
-          items: rows?.map((row) => ({
-            serialno: row.srNo,
-            product: row.product,
-            description: row.description,
-            quotationno: row.quotationno,
-            batchno: row.batchno,
-            expirydate: row.expirydate,
-            qty: row.qty,
-            mrp: row.mrp
+          totalQty: totalQuantity,
+          items: rows.map((row) => ({
+            productId: row.productId,
+            qty: Number(row.qty)
           }))
         };
-        const Deliverychallan = await dispatch(createDeliveryChallan(payload, navigate));
-        console.log(Deliverychallan, 'Deliverychallan');
+        await dispatch(createDeliveryChallan(payload, navigate));
+        console.log(selectcustomer, 'Deliverychallan');
       }
     } catch (error) {
       console.error('Error creating Deliverychallan:', error);
@@ -251,33 +286,15 @@ const Deliverychallan = () => {
               <Typography variant="subtitle1">
                 Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={customer}
+                value={{ value: formData.customerId, label: customername }}
+                onChange={handleSelectChange}
+              />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Mobile No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                placeholder="Enter Mobile No."
-                id="mobileno"
-                value={formData.mobileno}
-                onChange={(e) => handleChange('mobileno', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Email : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                placeholder="Enter Email Address"
-                id="email"
-                value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Challan No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -286,18 +303,19 @@ const Deliverychallan = () => {
                 placeholder="0001"
                 id="challanno"
                 value={formData.challanno}
-                onChange={(e) => handleChange('challanno', e.target.value)}
+                onChange={(e) => setFormData({ ...formData, challanno: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Challan Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
-                type="date"
-                id="date"
-                value={formData.date ? formData.date.split('T')[0] : ''}
-                onChange={(e) => handleChange('date', e.target.value)}
+              <DatePicker
+                selected={formData.date}
+                onChange={(date) => handleChallanDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
               />
             </Grid>
           </Grid>
@@ -306,21 +324,8 @@ const Deliverychallan = () => {
             <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
-                  <TableCell sx={{ fontSize: '12px' }}>Sr.No.</TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    QUOTATION NO. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    BATCH NO. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    EXP.DATE : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    MRP:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -328,83 +333,26 @@ const Deliverychallan = () => {
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <React.Fragment key={row.srNo}>
+                  {rows.map((row, index) => (
+                    <React.Fragment key={index}>
                       <TableRow>
-                        <TableCell id="newcs">
-                          <input
-                            // style={{width:'20px'}}
-                            placeholder="Sr.No."
-                            value={row.srNo}
-                            readOnly
-                            onChange={(e) => handleInputChange(row.srNo, 'serialno', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell id="newcs">
-                          <input
-                            placeholder="Quotation no."
-                            value={row.quotationno}
-                            onChange={(e) => handleInputChange(row.srNo, 'quotationno', e.target.value)}
-                          />
-                        </TableCell>
                         <TableCell id="newcs">
                           <Select
                             color="secondary"
-                            options={
-                              Array.isArray(product)
-                                ? [
-                                    {
-                                      value: 'product',
-                                      label: 'create new product'
-                                    },
-                                    ...product.map((products) => ({ value: products.id, label: products.productname }))
-                                  ]
-                                : []
-                            }
-                            value={{ label: row.product }}
-                            onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
+                            onChange={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                            options={product}
+                            value={{ value: row.productId, label: row.product }}
                           />
                         </TableCell>
                         <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+
                         <TableCell id="newcs">
-                          <input
-                            placeholder="date"
-                            value={row.batchno}
-                            onChange={(e) => handleInputChange(row.srNo, 'batchno', e.target.value)}
-                          />
+                          <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                         </TableCell>
-                        <TableCell id="newcs">
-                          <input
-                            placeholder="date"
-                            value={row.expirydate ? row.expirydate.split('T')[0] : ''}
-                            onChange={(e) => handleInputChange(row.srNo, 'expirydate', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell id="newcs">
-                          <input placeholder="0.00" value={row.mrp} onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)} />
-                        </TableCell>
-                        <TableCell id="newcs">
-                          <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
-                        </TableCell>
+                        {console.log(totalQuantity, 'totalQuantity')}
                         <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <DeleteIcon onClick={() => handleDeleteRow(row.srNo)} />
+                          <DeleteIcon onClick={() => handleDeleteRow(index)} />
                         </TableCell>
-                      </TableRow>
-                      <TableRow sx={{ border: 'none' }}>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell id="newcs">
-                          <input
-                            placeholder="Enter product description"
-                            value={row.description}
-                            onChange={(e) => handleInputChange(row.srNo, 'description', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
                       </TableRow>
                     </React.Fragment>
                   ))}
@@ -419,7 +367,7 @@ const Deliverychallan = () => {
             </button>
           </Grid>
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
@@ -437,7 +385,7 @@ const Deliverychallan = () => {
                 </div>
               </div>
             )}
-          </Grid>
+          </Grid> */}
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>

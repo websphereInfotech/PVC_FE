@@ -17,14 +17,13 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Deliverychallanview, getallDeliverychallan } from 'store/thunk';
+import { Deliverychallanview, getallDeliverychallan, deleteDileveryChallan } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'challanno', label: 'Challan No', minWidth: 100, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center' },
+  { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
@@ -39,14 +38,14 @@ const DileveryChallanList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  // const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   // all delivery challan api called
   useEffect(() => {
     const fetchDeliverychallan = async () => {
       try {
         const data = await dispatch(getallDeliverychallan());
-        setdeliverychallan(data.data);
+        setdeliverychallan(data);
       } catch (error) {
         console.error('Error fetching delivery challan:', error);
       }
@@ -79,26 +78,23 @@ const DileveryChallanList = () => {
 
   //passed id for update data
   const handleUpdateDeliverychallan = (id) => {
+    dispatch(Deliverychallanview(id));
     navigate(`/deliverychallan/${id}`);
   };
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    // setSelectedUserId(id);
+    setSelectedUserId(id);
   };
 
-  // const handleDeleteUser = async () => {
-  //   try {
-  //     await dispatch(deleteUser(selectedUserId));
-  //     setOpenConfirmation(false); // Close confirmation popup after deletion
-  //     // Fetch data again to update the list
-  //     const response = await dispatch(getallusers());
-  //     const filteredData = response.filter((user) => user.role !== 'Super Admin');
-  //     setData(filteredData);
-  //   } catch (error) {
-  //     console.error('Error deleting user:', error);
-  //   }
-  // };
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteDileveryChallan(selectedUserId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
 
   return (
     // <Container>
@@ -159,7 +155,9 @@ const DileveryChallanList = () => {
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (
-                      new Date(order[column.id]).toLocaleDateString()
+                      new Date(order[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'customer' ? (
+                      order.DeliveryCustomer.accountname
                     ) : (
                       order[column.id]
                     )}
@@ -186,7 +184,7 @@ const DileveryChallanList = () => {
           <Button onClick={() => setOpenConfirmation(false)} variant="contained" color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handleDelete} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

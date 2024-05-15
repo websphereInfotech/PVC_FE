@@ -386,7 +386,7 @@ export const getallDeliverychallan = () => {
     try {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_deliverychallan`, config);
-      const getallDeliverychallan = response.data;
+      const getallDeliverychallan = response.data.data;
       dispatch(getAllDeliverychallanSuccess(getallDeliverychallan));
       return getallDeliverychallan;
     } catch (error) {
@@ -450,8 +450,8 @@ export const updateDileveryChallan = (id, ChallanData, navigate) => {
       dispatch(updateDileverychallanSuccess(updateChallanData));
       return updateChallanData;
     } catch (error) {
+      toast.error(error.response.data.message);
       dispatch(updateDileverychallanFailure(error.message));
-      throw error;
     }
   };
 };

@@ -13,7 +13,7 @@ import {
   fetchAllCustomers,
   Proformainvoiceview,
   updateProformainvoice,
-  deleteProformainvoiceItem,
+  // deleteProformainvoiceItem,
   fetchproformainvoiceList,
   fetchAllCompany
 } from 'store/thunk';
@@ -88,33 +88,33 @@ const Proformainvoice = () => {
   //   }
   // };
 
-  const handleDeleteRow = async (id, index) => {
-    if (id) {
-      const updatedRows = [...rows];
-      const deletedRow = updatedRows.splice(index, 1)[0];
-      setRows(updatedRows);
-      dispatch(deleteProformainvoiceItem(id));
+  const handleDeleteRow = async (index) => {
+    // if (id) {
+    //   const updatedRows = [...rows];
+    //   const deletedRow = updatedRows.splice(index, 1)[0];
+    //   setRows(updatedRows);
+    //   dispatch(deleteProformainvoiceItem(id));
 
-      const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-      const newPlusgst = plusgst - deletedGstAmount;
-      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+    //   const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
+    //   const newPlusgst = plusgst - deletedGstAmount;
+    //   setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
 
-      const deletedAmount = deletedRow.mrp;
-      const newSubtotal = subtotal - deletedAmount;
-      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    } else {
-      const updatedRows = [...rows];
-      const deletedRow = updatedRows.splice(index, 1)[0];
-      setRows(updatedRows);
+    //   const deletedAmount = deletedRow.mrp;
+    //   const newSubtotal = subtotal - deletedAmount;
+    //   setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    // } else {
+    const updatedRows = [...rows];
+    const deletedRow = updatedRows.splice(index, 1)[0];
+    setRows(updatedRows);
 
-      const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-      const newPlusgst = plusgst - deletedGstAmount;
-      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+    const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
+    const newPlusgst = plusgst - deletedGstAmount;
+    setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
 
-      const deletedAmount = deletedRow.mrp;
-      const newSubtotal = subtotal - deletedAmount;
-      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    }
+    const deletedAmount = deletedRow.mrp;
+    const newSubtotal = subtotal - deletedAmount;
+    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    // }
   };
 
   // use for select product name from dropdown
@@ -148,7 +148,7 @@ const Proformainvoice = () => {
       try {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.shortname, state: customer.state }));
+          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
           setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -228,6 +228,7 @@ const Proformainvoice = () => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
   }, [rows]);
+
   useEffect(() => {
     const data = async () => {
       if (id) {
@@ -236,7 +237,7 @@ const Proformainvoice = () => {
         setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
         setSelectcustomer(customer.id);
         setCustomerState(customer.state);
-        setCustomername(customer.shortname);
+        setCustomername(customer.accountname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.product.id,
@@ -248,19 +249,13 @@ const Proformainvoice = () => {
           gst: item.mrp * (item.product.gstrate / 100)
         }));
         setRows(updatedRows);
-        // const updateGST = updatedRows.forEach((row) => {
-        //   const amount = row.qty * row.rate;
-        //   row.mrp = amount;
-        //   const gstAmount = amount * (row.gstrate / 100);
-        //   setPlusgst(gstAmount);
-
-        // });
         const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
         setPlusgst(totalGST);
       }
     };
     data();
   }, [dispatch, id]);
+
   const handleCreateQuotation = async () => {
     try {
       if (id) {
@@ -358,9 +353,11 @@ const Proformainvoice = () => {
       setPlusgst(totalGST);
     }
   };
+
   const handleValidTillDateChange = (date) => {
     setFormData({ ...formData, validtill: date });
   };
+
   const calculateValidTillDate = (proformaInvoiceDate) => {
     const defaultValidityPeriod = 7;
     const validTillDate = new Date(proformaInvoiceDate);

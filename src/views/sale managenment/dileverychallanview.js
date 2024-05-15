@@ -31,15 +31,7 @@ const DileveryChallanView = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data?.customer}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data?.mobileno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data?.email}</Typography>
+          <Typography variant="subtitle2">{data?.DeliveryCustomer?.accountname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan No.</Typography>
@@ -47,36 +39,28 @@ const DileveryChallanView = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('en-GB')}</Typography>
         </Grid>
 
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>
               <TableHead>
-                <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>QUOTATION NO.</TableCell>
                 <TableCell width={420} sx={{ fontSize: '12px' }}>
                   PRODUCT/SERVICE
                 </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>BATCH/LOT NO.</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>EXPR. DATE</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>MRP (₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
               </TableHead>
               <TableBody>
                 {data?.items &&
                   data?.items?.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.serialno}</TableCell>
-                      <TableCell>{item?.quotationno}</TableCell>
-                      <TableCell>{item?.product}</TableCell>
-                      <TableCell>{item?.batchno}</TableCell>
-                      <TableCell>{item?.batchno}</TableCell>
-                      <TableCell>{item?.mrp}</TableCell>
+                      <TableCell>{item?.DeliveryProduct?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                     </TableRow>
                   ))}
+                <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>{data?.TotalQty}</TableCell>
               </TableBody>
             </Table>
           </div>

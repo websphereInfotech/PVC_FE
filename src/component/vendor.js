@@ -170,12 +170,6 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
             <Typography variant="subtitle1">
-              Country : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="Country" id="country" value={formData.country} onChange={handleInputChange} />
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1">
               Pincode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="395001" id="pincode" value={formData.pincode} onChange={handleInputChange} />
