@@ -207,16 +207,16 @@ const MenuItem = () => {
                     url: '/salesinvoicelist'
                   },
                   {
-                    id: 'sales return',
-                    title: 'Sales Return',
+                    id: 'debit note',
+                    title: 'Debit Note',
                     type: 'item',
-                    url: '/salesreturnlist'
+                    url: '/debitnotelist'
                   },
                   {
-                    id: 'reciept',
-                    title: 'Reciept',
-                    type: 'item'
-                    // url: '/salesreturnmain'
+                    id: 'credit note',
+                    title: 'Credit Note',
+                    type: 'item',
+                    url: '/creditnotelist'
                   }
                 ]
               },

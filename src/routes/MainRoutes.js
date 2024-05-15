@@ -41,10 +41,16 @@ const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/di
 const DileveryChallanList = Loadable(lazy(() => import('../views/sale managenment/dileverychallanlist')));
 const DileveryChallanView = Loadable(lazy(() => import('../views/sale managenment/dileverychallanview')));
 
-// ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Salesreturn = Loadable(lazy(() => import('../views/sale managenment/salesreturn')));
-const Salesreturnlist = Loadable(lazy(() => import('../views/sale managenment/salesreturnlist')));
-const SalesinvoiceReturnview = Loadable(lazy(() => import('../views/sale managenment/salesreturnview')));
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of Debit note +++++++++++++++++++++++++++++++++++++++++++++++++++
+const DebitNote = Loadable(lazy(() => import('../views/sale managenment/debitnote')));
+const Debitnotelist = Loadable(lazy(() => import('../views/sale managenment/debitnotelist')));
+const Debitnoteview = Loadable(lazy(() => import('../views/sale managenment/debitnoteview')));
+
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Creditnote = Loadable(lazy(() => import('../views/sale managenment/creditnote')));
+const Creditnotelist = Loadable(lazy(() => import('../views/sale managenment/creditnotelist')));
+const CreditnoteView = Loadable(lazy(() => import('../views/sale managenment/creditnoteview')));
+
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/salesinvoice')));
 // const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
@@ -147,9 +153,16 @@ const MainRoutes = {
     // { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/salesreturn', element: <Salesreturn /> },
-    { path: '/salesreturnlist', element: <Salesreturnlist /> },
-    { path: '/salesreturnview', element: <SalesinvoiceReturnview /> },
+    { path: '/debitnote', element: <DebitNote /> },
+    { path: '/debitnote/:id', element: <DebitNote /> },
+    { path: '/debitnotelist', element: <Debitnotelist /> },
+    { path: '/debitnoteview/:id', element: <Debitnoteview /> },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/creditnote', element: <Creditnote /> },
+    { path: '/creditnote/:id', element: <Creditnote /> },
+    { path: '/creditnotelist', element: <Creditnotelist /> },
+    { path: '/creditnoteview/:id', element: <CreditnoteView /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/addpurchase', element: <AddPurchasePage /> },

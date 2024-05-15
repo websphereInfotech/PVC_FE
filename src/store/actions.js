@@ -106,6 +106,40 @@ export const VIEW_SALESINVOICE_REQUEST = 'VIEW_SALESINVOICE_REQUEST';
 export const VIEW_SALESINVOICE_SUCCESS = 'VIEW_SALESINVOICE_SUCCESS';
 export const VIEW_SALESINVOICE_FAILURE = 'VIEW_SALESINVOICE_FAILURE';
 
+// ########################################## SALES INVOICE ###############################################################################################
+export const CREATE_DEBIT_NOTE_REQUEST = 'CREATE_DEBIT_NOTE_REQUEST';
+export const CREATE_DEBIT_NOTE_SUCCESS = 'CREATE_DEBIT_NOTE_SUCCESS';
+export const CREATE_DEBIT_NOTE_FAILURE = 'CREATE_DEBIT_NOTE_FAILURE';
+export const DELETE_DEBIT_NOTE_REQUEST = 'DELETE_DEBIT_NOTE_REQUEST';
+export const DELETE_DEBIT_NOTE_SUCCESS = 'DELETE_DEBIT_NOTE_SUCCESS';
+export const DELETE_DEBIT_NOTE_FAILURE = 'DELETE_DEBIT_NOTE_FAILURE';
+export const UPDATE_DEBIT_NOTE_REQUEST = 'UPDATE_DEBIT_NOTE_REQUEST';
+export const UPDATE_DEBIT_NOTE_SUCCESS = 'UPDATE_DEBIT_NOTE_SUCCESS';
+export const UPDATE_DEBIT_NOTE_FAILURE = 'UPDATE_DEBIT_NOTE_FAILURE';
+export const FETCH_ALL_DEBITNOTE_REQUEST = 'FETCH_ALL_DEBITNOTE_REQUEST';
+export const FETCH_ALL_DEBITNOTE_SUCCESS = 'FETCH_ALL_DEBITNOTE_SUCCESS';
+export const FETCH_ALL_DEBITNOTE_FAILURE = 'FETCH_ALL_DEBITNOTE_FAILURE';
+export const VIEW_DEBIT_NOTE_REQUEST = 'VIEW_DEBIT_NOTE_REQUEST';
+export const VIEW_DEBIT_NOTE_SUCCESS = 'VIEW_DEBIT_NOTE_SUCCESS';
+export const VIEW_DEBIT_NOTE_FAILURE = 'VIEW_DEBIT_NOTE_FAILURE';
+
+// ########################################## CREDIT NOTE ###############################################################################################
+export const CREATE_CREDIT_NOTE_REQUEST = 'CREATE_CREDIT_NOTE_REQUEST';
+export const CREATE_CREDIT_NOTE_SUCCESS = 'CREATE_CREDIT_NOTE_SUCCESS';
+export const CREATE_CREDIT_NOTE_FAILURE = 'CREATE_CREDIT_NOTE_FAILURE';
+export const DELETE_CREDIT_NOTE_REQUEST = 'DELETE_CREDIT_NOTE_REQUEST';
+export const DELETE_CREDIT_NOTE_SUCCESS = 'DELETE_CREDIT_NOTE_SUCCESS';
+export const DELETE_CREDIT_NOTE_FAILURE = 'DELETE_CREDIT_NOTE_FAILURE';
+export const UPDATE_CREDIT_NOTE_REQUEST = 'UPDATE_CREDIT_NOTE_REQUEST';
+export const UPDATE_CREDIT_NOTE_SUCCESS = 'UPDATE_CREDIT_NOTE_SUCCESS';
+export const UPDATE_CREDIT_NOTE_FAILURE = 'UPDATE_CREDIT_NOTE_FAILURE';
+export const FETCH_ALL_CREDITNOTE_REQUEST = 'FETCH_ALL_CREDITNOTE_REQUEST';
+export const FETCH_ALL_CREDITNOTE_SUCCESS = 'FETCH_ALL_CREDITNOTE_SUCCESS';
+export const FETCH_ALL_CREDITNOTE_FAILURE = 'FETCH_ALL_CREDITNOTE_FAILURE';
+export const VIEW_CREDIT_NOTE_REQUEST = 'VIEW_CREDIT_NOTE_REQUEST';
+export const VIEW_CREDIT_NOTE_SUCCESS = 'VIEW_CREDIT_NOTE_SUCCESS';
+export const VIEW_CREDIT_NOTE_FAILURE = 'VIEW_CREDIT_NOTE_FAILURE';
+
 // ########################################## PURCHASE ###############################################################################################
 export const VIEW_PURCHASE_REQUEST = 'VIEW_PURCHASE_REQUEST';
 export const VIEW_PURCHASE_SUCCESS = 'VIEW_PURCHASE_SUCCESS';
@@ -940,5 +974,131 @@ export const fetchAllCompanySuccess = (data) => ({
 });
 export const fetchAllCompanyFailure = (error) => ({
   type: 'FETCH_ALL_COMPANY_FAILURE',
+  payload: error
+});
+
+// ##################################################################################### DEBIT NOTE ################################################################
+
+export const createDebitnoteRequest = (data) => ({
+  type: 'CREATE_DEBIT_NOTE_REQUEST',
+  payload: data
+});
+export const createDebitnoteSuccess = (data) => ({
+  type: 'CREATE_DEBIT_NOTE_SUCCESS',
+  payload: data
+});
+export const createDebitnoteFailure = (error) => ({
+  type: 'CREATE_DEBIT_NOTE_FAILURE',
+  payload: error
+});
+export const deleteDebitnoteRequest = (data) => ({
+  type: 'DELETE_DEBIT_NOTE_REQUEST',
+  payload: data
+});
+export const deleteDebitnoteSuccess = (data) => ({
+  type: 'DELETE_DEBIT_NOTE_SUCCESS',
+  payload: data
+});
+export const deleteDebitnoteFailure = (error) => ({
+  type: 'DELETE_DEBIT_NOTE_FAILURE',
+  payload: error
+});
+export const updateDebitnoteRequest = (data) => ({
+  type: 'UPDATE_DEBIT_NOTE_REQUEST',
+  payload: data
+});
+export const updateDebitnoteSuccess = (data) => ({
+  type: 'UPDATE_DEBIT_NOTE_SUCCESS',
+  payload: data
+});
+export const updateDebitnoteFailure = (error) => ({
+  type: 'UPDATE_DEBIT_NOTE_FAILURE',
+  payload: error
+});
+export const getAllDebitnoteRequest = (data) => ({
+  type: 'FETCH_ALL_DEBITNOTE_REQUEST',
+  payload: data
+});
+export const getAllDebitnoteSuccess = (data) => ({
+  type: 'FETCH_ALL_DEBITNOTE_SUCCESS',
+  payload: data
+});
+export const getAllDebitnoteFailure = (error) => ({
+  type: 'FETCH_ALL_DEBITNOTE_FAILURE',
+  payload: error
+});
+export const viewDebitnoteRequest = (data) => ({
+  type: 'VIEW_DEBIT_NOTE_REQUEST',
+  payload: data
+});
+export const viewDebitnoteSuccess = (data) => ({
+  type: 'VIEW_DEBIT_NOTE_SUCCESS',
+  payload: data
+});
+export const viewDebitnoteFailure = (error) => ({
+  type: 'VIEW_DEBIT_NOTE_FAILURE',
+  payload: error
+});
+
+// ##################################################################################### CREDIT NOTE ################################################################
+
+export const createCreditnoteRequest = (data) => ({
+  type: 'CREATE_CREDIT_NOTE_REQUEST',
+  payload: data
+});
+export const createCreditnoteSuccess = (data) => ({
+  type: 'CREATE_CREDIT_NOTE_SUCCESS',
+  payload: data
+});
+export const createCreditnoteFailure = (error) => ({
+  type: 'CREATE_CREDIT_NOTE_FAILURE',
+  payload: error
+});
+export const deleteCreditnoteRequest = (data) => ({
+  type: 'DELETE_CREDIT_NOTE_REQUEST',
+  payload: data
+});
+export const deleteCreditnoteSuccess = (data) => ({
+  type: 'DELETE_CREDIT_NOTE_SUCCESS',
+  payload: data
+});
+export const deleteCreditnoteFailure = (error) => ({
+  type: 'DELETE_CREDIT_NOTE_FAILURE',
+  payload: error
+});
+export const updateCreditnoteRequest = (data) => ({
+  type: 'UPDATE_CREDIT_NOTE_REQUEST',
+  payload: data
+});
+export const updateCreditnoteSuccess = (data) => ({
+  type: 'UPDATE_CREDIT_NOTE_SUCCESS',
+  payload: data
+});
+export const updateCreditnoteFailure = (error) => ({
+  type: 'UPDATE_CREDIT_NOTE_FAILURE',
+  payload: error
+});
+export const getAllCreditnoteRequest = (data) => ({
+  type: 'FETCH_ALL_CREDITNOTE_REQUEST',
+  payload: data
+});
+export const getAllCreditnoteSuccess = (data) => ({
+  type: 'FETCH_ALL_CREDITNOTE_SUCCESS',
+  payload: data
+});
+export const getAllCreditnoteFailure = (error) => ({
+  type: 'FETCH_ALL_CREDITNOTE_FAILURE',
+  payload: error
+});
+export const viewCreditnoteRequest = (data) => ({
+  type: 'VIEW_CREDIT_NOTE_REQUEST',
+  payload: data
+});
+export const viewCreditnoteSuccess = (data) => ({
+  type: 'VIEW_CREDIT_NOTE_SUCCESS',
+  payload: data
+});
+export const viewCreditnoteFailure = (error) => ({
+  type: 'VIEW_CREDIT_NOTE_FAILURE',
   payload: error
 });

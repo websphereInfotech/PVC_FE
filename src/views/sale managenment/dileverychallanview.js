@@ -60,7 +60,7 @@ const DileveryChallanView = () => {
                     </TableRow>
                   ))}
                 <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>{data?.TotalQty}</TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
               </TableBody>
             </Table>
           </div>

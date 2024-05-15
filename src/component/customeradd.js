@@ -202,7 +202,6 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
-    
           <Grid item>
             <Typography variant="subtitle1">
               Pincode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

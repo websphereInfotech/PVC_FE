@@ -39,6 +39,7 @@ const Salesinvoice = () => {
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [proformainvoice, setProformainvoice] = useState([]);
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -64,21 +65,18 @@ const Salesinvoice = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
+  useEffect(() => {
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
+  }, [rows]);
+
   const handleDeleteRow = async (index) => {
-    // if (id) {
-    //   const updatedRows = [...rows];
-    //   const deletedRow = updatedRows.splice(index, 1)[0];
-    //   setRows(updatedRows);
-    //   // dispatch(deleteProformainvoiceItem(id));
-
-    //   const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-    //   const newPlusgst = plusgst - deletedGstAmount;
-    //   setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
-
-    //   const deletedAmount = deletedRow.mrp;
-    //   const newSubtotal = subtotal - deletedAmount;
-    //   setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    // } else {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
@@ -90,7 +88,6 @@ const Salesinvoice = () => {
     const deletedAmount = deletedRow.mrp;
     const newSubtotal = subtotal - deletedAmount;
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    // }
   };
 
   const handleSelectChange = (selectedOption) => {
@@ -297,6 +294,7 @@ const Salesinvoice = () => {
       if (id) {
         const payload = {
           ...formData,
+          totalQty:totalQuantity,
           totalMrp: subtotal,
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({
@@ -319,6 +317,7 @@ const Salesinvoice = () => {
       } else {
         const payload = {
           ...formData,
+          totalQty:totalQuantity,
           totalMrp: subtotal,
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({
@@ -351,6 +350,13 @@ const Salesinvoice = () => {
       }
       return row;
     });
+
+    setRows(updatedRows);
+    let total = 0;
+    rows.forEach((row) => {
+      total += parseInt(row.qty);
+    });
+    setTotalQuantity(total);
 
     updatedRows.forEach((row) => {
       const amount = row.qty * row.rate;

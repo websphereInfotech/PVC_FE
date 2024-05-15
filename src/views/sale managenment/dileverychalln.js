@@ -203,32 +203,31 @@ const Deliverychallan = () => {
       if (!id) {
         try {
           const ChallanResponse = await dispatch(getallDeliverychallan());
-          console.log(ChallanResponse, 'response');
           let nextChallanNumber = 1;
           if (ChallanResponse.length === 0) {
             const ChallanNumber = nextChallanNumber;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              challanno: ChallanNumber
+              challanno: Number(ChallanNumber)
             }));
             return;
           }
           const existingChallanNumbers = ChallanResponse.map((Challan) => {
             const ChallanNumber = Challan.challanno;
-            return ChallanNumber;
+            return parseInt(ChallanNumber);
           });
           const maxChallanNumber = Math.max(...existingChallanNumbers);
           if (!isNaN(maxChallanNumber)) {
             nextChallanNumber = maxChallanNumber + 1;
           }
 
-          const ChallanNumber = { nextChallanNumber };
+          const ChallanNumber = nextChallanNumber;
           setFormData((prevFormData) => ({
             ...prevFormData,
-            challanno: ChallanNumber
+            challanno: Number(ChallanNumber)
           }));
         } catch (error) {
-          console.error('Error generating auto proformainvoice number:', error);
+          console.error('Error generating auto Delivery Challan number:', error);
         }
       }
     };
