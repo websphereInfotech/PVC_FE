@@ -39,6 +39,7 @@ const Salesinvoice = () => {
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [proformainvoice, setProformainvoice] = useState([]);
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -64,21 +65,18 @@ const Salesinvoice = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
+  useEffect(() => {
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
+  }, [rows]);
+
   const handleDeleteRow = async (index) => {
-    // if (id) {
-    //   const updatedRows = [...rows];
-    //   const deletedRow = updatedRows.splice(index, 1)[0];
-    //   setRows(updatedRows);
-    //   // dispatch(deleteProformainvoiceItem(id));
-
-    //   const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-    //   const newPlusgst = plusgst - deletedGstAmount;
-    //   setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
-
-    //   const deletedAmount = deletedRow.mrp;
-    //   const newSubtotal = subtotal - deletedAmount;
-    //   setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    // } else {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
@@ -90,7 +88,6 @@ const Salesinvoice = () => {
     const deletedAmount = deletedRow.mrp;
     const newSubtotal = subtotal - deletedAmount;
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
-    // }
   };
 
   const handleSelectChange = (selectedOption) => {
@@ -188,7 +185,7 @@ const Salesinvoice = () => {
       try {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.shortname, state: customer.state }));
+          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
           setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -267,7 +264,7 @@ const Salesinvoice = () => {
         setProformainvoicelabel(proFormaItem.ProFormaInvoice_no);
         setSelectcustomer(InvioceCustomer.id);
         setCustomerState(InvioceCustomer.state);
-        setCustomername(InvioceCustomer.shortname);
+        setCustomername(InvioceCustomer.accountname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.InvoiceProduct.id,
@@ -297,6 +294,7 @@ const Salesinvoice = () => {
       if (id) {
         const payload = {
           ...formData,
+          totalQty:totalQuantity,
           totalMrp: subtotal,
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({
@@ -319,6 +317,7 @@ const Salesinvoice = () => {
       } else {
         const payload = {
           ...formData,
+          totalQty:totalQuantity,
           totalMrp: subtotal,
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({
@@ -351,6 +350,13 @@ const Salesinvoice = () => {
       }
       return row;
     });
+
+    setRows(updatedRows);
+    let total = 0;
+    rows.forEach((row) => {
+      total += parseInt(row.qty);
+    });
+    setTotalQuantity(total);
 
     updatedRows.forEach((row) => {
       const amount = row.qty * row.rate;
@@ -415,12 +421,14 @@ const Salesinvoice = () => {
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Dispatch Duo No. :</Typography>
+              <Typography variant="subtitle1">
+                Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
-                placeholder="Enter Dispatch Duo No."
-                id="dispatchno"
-                value={formData.dispatchno}
-                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
+                placeholder="0001"
+                id="invoiceno"
+                value={formData.invoiceno}
+                onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -470,14 +478,12 @@ const Salesinvoice = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Dispatch Doc No. :</Typography>
               <input
-                placeholder="0001"
-                id="invoiceno"
-                value={formData.invoiceno}
-                onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
+                placeholder="Enter Dispatch Doc No."
+                id="dispatchno"
+                value={formData.dispatchno}
+                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
               />
             </Grid>
           </Grid>
@@ -494,17 +500,7 @@ const Salesinvoice = () => {
                 showTimeSelect={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Terms (Days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                placeholder="Terms (Days)"
-                id="terms"
-                value={formData.terms}
-                onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
-              />
-            </Grid>
+
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Due Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -519,9 +515,16 @@ const Salesinvoice = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Terms (Days) :</Typography>
+              <input
+                placeholder="Terms (Days)"
+                id="terms"
+                value={formData.terms}
+                onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Pro forma invoice No. :</Typography>
               {/* {console.log('SELECTEDOPTION', selectedOption)} */}
               <Select
                 color="secondary"

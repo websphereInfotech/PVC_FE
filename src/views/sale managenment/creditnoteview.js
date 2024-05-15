@@ -4,16 +4,16 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-// import { SalesInvoiceReturnview } from 'store/thunk';
+import { Debitnoteviewdata } from 'store/thunk';
 
-const SalesinvoiceReturnview = () => {
+const CreditnoteView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    dispatch(SalesInvoiceview(id))
+    dispatch(Debitnoteviewdata(id))
       .then((data) => {
         setData(data);
       })
@@ -21,6 +21,7 @@ const SalesinvoiceReturnview = () => {
         console.error('Error fetching sales invoice data:', error);
       });
   }, [dispatch, id]);
+
   const subtotal = data.totalMrp ? data.totalMrp : 0;
   const maintotal = data.mainTotal ? data.mainTotal : 0;
   const sgst = data.totalSgst ? data.totalSgst / 2 : 0;
@@ -29,58 +30,20 @@ const SalesinvoiceReturnview = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Sales Invoice View
+        Debit Note View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.InvioceCustomer?.shortname}</Typography>
+          <Typography variant="subtitle2">{data.DebitCustomer?.accountname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Dispatch Duo No.</Typography>
-          <Typography variant="subtitle2">{data.dispatchno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1">Delivery Note Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.deliverydate).toLocaleDateString()}</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Dispatch Through :</Typography>
-          <Typography variant="subtitle2">{data.dispatchThrough}</Typography>
+          <Typography variant="subtitle1">Date</Typography>
+          <Typography variant="subtitle2">{new Date(data.debitdate).toLocaleDateString()}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Destination</Typography>
-          <Typography variant="subtitle2">{data.destination}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">LR-RR No.</Typography>
-          <Typography variant="subtitle2">{data.LL_RR_no}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Motor Vehical No.</Typography>
-          <Typography variant="subtitle2">{data.motorVehicleNo}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Invoice Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.invoiceno}</Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Terms (Days)</Typography>
-          <Typography variant="subtitle2">{data.terms}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Due Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.duedate).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Pro Forma Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.proFormaItem?.ProFormaInvoice_no}</Typography>
+          <Typography variant="subtitle1">Debit Note No.</Typography>
+          <Typography variant="subtitle2">{data.debitnoteno}</Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -98,12 +61,16 @@ const SalesinvoiceReturnview = () => {
                 {data.items &&
                   data.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.InvoiceProduct?.productname}</TableCell>
+                      <TableCell>{item?.DebitProduct.productname}</TableCell>
+                      <TableCell>{item?.mrp}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
-                      <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}
+                <TableCell></TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
               </TableBody>
             </Table>
           </div>
@@ -129,14 +96,6 @@ const SalesinvoiceReturnview = () => {
                   </div>
                 </Grid>
               )}
-              {/* {data.totalIgst && (
-                <Grid item xs={12}>
-                  <div style={{ margin: '0px' }} id="subtotalcs">
-                    <p>IGST</p>
-                    <p>₹{igst.toFixed(2)}</p>
-                  </div>
-                </Grid>
-              )} */}
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
                 <p>₹{maintotal.toFixed(2)}</p>
@@ -185,7 +144,7 @@ const SalesinvoiceReturnview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/salesreturnlist" style={{ textDecoration: 'none' }}>
+            <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -193,7 +152,7 @@ const SalesinvoiceReturnview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/salesreturnlist" style={{ textDecoration: 'none' }}>
+            <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -205,4 +164,4 @@ const SalesinvoiceReturnview = () => {
   );
 };
 
-export default SalesinvoiceReturnview;
+export default CreditnoteView;
