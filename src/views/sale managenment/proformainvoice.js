@@ -63,16 +63,6 @@ const Proformainvoice = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
   };
-  useEffect(() => {
-    const updateTotalQuantity = () => {
-      let total = 0;
-      rows.forEach((row) => {
-        total += parseInt(row.qty);
-      });
-      setTotalQuantity(total);
-    };
-    updateTotalQuantity();
-  }, [rows]);
 
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
@@ -170,13 +160,6 @@ const Proformainvoice = () => {
         setRows(updatedRows);
         const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
         setPlusgst(totalGST);
-        // setPlusgst(gst)
-        // updatedRows.forEach((row) => {
-        //   const amount = row.qty * row.rate;
-        //   row.mrp = amount;
-        //   const gstAmount = amount * (row.gstrate / 100);
-        //   setPlusgst(gstAmount);
-        // });
       }
     };
     data();
@@ -198,34 +181,15 @@ const Proformainvoice = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
-  }, [rows]);
-
-  useEffect(() => {
-    const data = async () => {
-      if (id) {
-        const response = await dispatch(Proformainvoiceview(id));
-        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectcustomer(customer.id);
-        setCustomerState(customer.state);
-        setCustomername(customer.accountname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.product.id,
-          product: item.product.productname,
-          qty: item.qty,
-          rate: item.rate,
-          mrp: item.qty * item.rate,
-          gstrate: item.product.gstrate,
-          gst: item.mrp * (item.product.gstrate / 100)
-        }));
-        setRows(updatedRows);
-        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-        setPlusgst(totalGST);
-      }
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
     };
-    data();
-  }, [dispatch, id]);
+    updateTotalQuantity();
+  }, [rows]);
 
   const handleCreateQuotation = async () => {
     try {

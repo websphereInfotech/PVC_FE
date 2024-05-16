@@ -132,7 +132,13 @@ const MenuItem = () => {
     'update_creditNote',
     'delete_creditNote'
   ]);
-
+  const hasAllPermissionPurchasebill = checkAllPermissions('Purchase Bill', [
+    'create_purchasebill',
+    'update_purchasebill',
+    'delete_purchasebill',
+    'view_single_purchasebill',
+    'view_all_purchasebill'
+  ]);
   return {
     items: [
       {
@@ -263,7 +269,7 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/purchaselist'
                   },
-                  {
+                  hasAllPermissionPurchasebill && {
                     id: 'Purchase Bill',
                     title: 'Purchase Bill',
                     type: 'item',

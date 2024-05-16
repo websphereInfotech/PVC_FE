@@ -65,17 +65,6 @@ const Salesinvoice = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
-  useEffect(() => {
-    const updateTotalQuantity = () => {
-      let total = 0;
-      rows.forEach((row) => {
-        total += parseInt(row.qty);
-      });
-      setTotalQuantity(total);
-    };
-    updateTotalQuantity();
-  }, [rows]);
-
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -101,9 +90,11 @@ const Salesinvoice = () => {
       setIsDrawerOpen(false);
     }
   };
+
   const handleDueDateChange = (date) => {
     setFormData({ ...formData, duedate: date });
   };
+
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'Create New Product') {
@@ -127,6 +118,7 @@ const Salesinvoice = () => {
       setIsproductDrawerOpen(false);
     }
   };
+
   const calculateDuedate = (InvoiceDate) => {
     const defaultValidityPeriod = 7;
     const duedate = new Date(InvoiceDate);
@@ -286,6 +278,14 @@ const Salesinvoice = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
   }, [rows]);
 
   const handleSalesinvoice = async () => {
