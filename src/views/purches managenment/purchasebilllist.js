@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
@@ -23,6 +24,7 @@ const columns = [
 ];
 
 export default function PurchaseBillList() {
+  const { canViewPurchasebill, canDeletePurchasebill, canUpdatePurchasebill, canCreatePurchasebill } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
@@ -85,7 +87,13 @@ export default function PurchaseBillList() {
       <Typography variant="h4" align="center" id="mycss">
         Purchase Bill List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddpuchasebill}>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: '16px' }}
+        onClick={handleAddpuchasebill}
+        disabled={!canCreatePurchasebill()}
+      >
         Create Purchase Bill
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -105,15 +113,30 @@ export default function PurchaseBillList() {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleViewPurchaseBill(row.id)}
+                        disabled={!canViewPurchasebill()}
+                      >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchaseBill(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdatePurchaseBill(row.id)}
+                        disabled={!canUpdatePurchasebill()}
+                      >
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                        disabled={!canDeletePurchasebill()}
+                      >
                         Delete
                       </Button>
                     ) : column.id === 'invoicedate' ? (

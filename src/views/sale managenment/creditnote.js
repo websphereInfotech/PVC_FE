@@ -80,17 +80,6 @@ const Creditnote = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
-  useEffect(() => {
-    const updateTotalQuantity = () => {
-      let total = 0;
-      rows.forEach((row) => {
-        total += parseInt(row.qty);
-      });
-      setTotalQuantity(total);
-    };
-    updateTotalQuantity();
-  }, [rows]);
-
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
@@ -167,6 +156,14 @@ const Creditnote = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
   }, [rows]);
 
   const handleCreditDateChange = (date) => {

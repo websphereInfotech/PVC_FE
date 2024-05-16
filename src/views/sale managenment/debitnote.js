@@ -73,16 +73,7 @@ const DebitNote = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
   };
-  useEffect(() => {
-    const updateTotalQuantity = () => {
-      let total = 0;
-      rows.forEach((row) => {
-        total += parseInt(row.qty);
-      });
-      setTotalQuantity(total);
-    };
-    updateTotalQuantity();
-  }, [rows]);
+
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
@@ -143,33 +134,6 @@ const DebitNote = () => {
     fetchData();
   }, [dispatch, customerState, gststate, id]);
 
-  useEffect(() => {
-    const data = async () => {
-      if (id) {
-        const response = await dispatch(Debitnoteviewdata(id));
-        const { DebitCustomer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: DebitCustomer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectcustomer(DebitCustomer.id);
-        setCustomerState(DebitCustomer.state);
-        setCustomername(DebitCustomer.shortname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.DebitProduct.id,
-          product: item.DebitProduct.productname,
-          qty: item.qty,
-          rate: item.rate,
-          mrp: item.rate * item.qty,
-          gstrate: item.DebitProduct.gstrate,
-          gst: item.mrp * (item.DebitProduct.gstrate / 100)
-        }));
-        setRows(updatedRows);
-        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-        setPlusgst(totalGST);
-      }
-    };
-    data();
-  }, [dispatch, id]);
-
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Customer') {
@@ -186,6 +150,14 @@ const DebitNote = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
   }, [rows]);
 
   const handleDebitDateChange = (date) => {
