@@ -324,7 +324,7 @@ const Salesinvoice = () => {
             productId: row.productId,
             mrp: row.mrp,
             rate: row.rate,
-            qty: row.qty
+            qty: Number(row.qty)
           }))
         };
         const gststate = companystate === customerState ? 'true' : 'false';
@@ -340,7 +340,6 @@ const Salesinvoice = () => {
       }
     } catch (error) {
       console.error('Error creating Sales Invoice:', error);
-      alert('Failed to create Sales Invoice');
     }
   };
   const handleInputChange = (index, field, value) => {

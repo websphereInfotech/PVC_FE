@@ -38,9 +38,6 @@ import {
   createCustomerRequest,
   createCustomerSuccess,
   createCustomerFailure,
-  createCustomFeildRequest,
-  createCustomFeildSuccess,
-  createCustomFeildFailure,
   // PRODUCT ++++++++++++++++++++++++++++++++++
   fetchAllProdutsRequest,
   fetchAllProdutsSuccess,
@@ -74,9 +71,6 @@ import {
   createDeliveryChallanRequest,
   createDeliveryChallanSuccess,
   createDeliveryChallanFailure,
-  createDeliveryChallanItemRequest,
-  createDeliveryChallanItemSuccess,
-  createDeliveryChallanItemFailure,
   getAllDeliverychallanRequest,
   getAllDeliverychallanSuccess,
   getAllDeliverychallanFailure,
@@ -86,9 +80,6 @@ import {
   updateDileverychallanRequest,
   updateDileverychallanFailure,
   updateDileverychallanSuccess,
-  updateDileverychallanItemRequest,
-  updateDileverychallanItemFailure,
-  updateDileverychallanItemSuccess,
   deleteDileverychallanItemRequest,
   deleteDileverychallanItemFailure,
   deleteDileverychallanItemSuccess,
@@ -487,21 +478,6 @@ export const updateDileveryChallan = (id, ChallanData, navigate) => {
     }
   };
 };
-export const updateDileveryChallanItem = (id, payload) => {
-  return async (dispatch) => {
-    dispatch(updateDileverychallanItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallanitem/${id}`, payload, config);
-      const updateChallanItem = response;
-      dispatch(updateDileverychallanItemSuccess(updateChallanItem));
-      return updateChallanItem;
-    } catch (error) {
-      dispatch(updateDileverychallanItemFailure(error.message));
-      throw error;
-    }
-  };
-};
 export const deleteDileveryChallan = (id) => {
   return async (dispatch) => {
     dispatch(deleteDileverychallanItemRequest());
@@ -515,20 +491,6 @@ export const deleteDileveryChallan = (id) => {
     } catch (error) {
       dispatch(deleteDileverychallanItemFailure(error.message));
       throw error;
-    }
-  };
-};
-export const createDeliveryChallanItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createDeliveryChallanItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallanitem`, payload, config);
-      const createdDeliverychallanitems = response;
-      dispatch(createDeliveryChallanItemSuccess(createdDeliverychallanitems));
-      return createdDeliverychallanitems;
-    } catch (error) {
-      dispatch(createDeliveryChallanItemFailure(error.message));
     }
   };
 };
@@ -568,35 +530,6 @@ export const createCustomer = (customerData) => {
       });
       dispatch(createCustomerFailure(error.message));
       throw error;
-    }
-  };
-};
-export const createCustomfeild = (payload) => {
-  return async (dispatch) => {
-    dispatch(createCustomFeildRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
-      const createdCustomfeilddata = response;
-      dispatch(createCustomFeildSuccess(createdCustomfeilddata));
-      return createdCustomfeilddata;
-    } catch (error) {
-      dispatch(createCustomFeildFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deleteCustomFeild = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteProformainvoiceItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customfeild/${id}`, config);
-      console.log('response', response);
-      dispatch(deleteProformainvoiceItemSuccess());
-    } catch (error) {
-      console.error('Error deleting quotation:', error);
-      dispatch(deleteProformainvoiceItemFailure());
     }
   };
 };
@@ -947,7 +880,7 @@ export const updateCreditnote = (id, payload, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/debitnotelist');
+          navigate('/creditnotelist');
         }
       });
       dispatch(updateCreditnoteSuccess(updateCreditnoteData));
@@ -1083,13 +1016,20 @@ export const purchaseview = (id) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPurchaseBill = (purchasebillData) => {
+export const createPurchaseBill = (payload,navigate) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, purchasebillData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, payload, config);
       const cretepurchasebill = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/purchasebilllist');
+        }
+      });
       dispatch(createPurchaseBillSuccess(cretepurchasebill));
       return cretepurchasebill;
     } catch (error) {

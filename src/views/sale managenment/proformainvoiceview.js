@@ -56,8 +56,8 @@ const Proformainvoiceviewpage = () => {
             <Table>
               <TableHead>
                 <TableCell sx={{ fontSize: '12px' }}>PRODUCT/SERVICE</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹) (EXCL. TAX)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
               </TableHead>
               <TableBody>
@@ -65,11 +65,15 @@ const Proformainvoiceviewpage = () => {
                   data?.items.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.product?.productname}</TableCell>
-                      <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
+                      <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}
+                <TableCell></TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
               </TableBody>
             </Table>
           </div>

@@ -90,20 +90,24 @@ const Salesinvoiceview = () => {
                 <TableCell width={420} sx={{ fontSize: '12px' }}>
                   PRODUCT/SERVICE
                 </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>MRP (₹)</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>MRP (₹)</TableCell>
               </TableHead>
               <TableBody>
                 {data.items &&
                   data.items.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.InvoiceProduct?.productname}</TableCell>
-                      <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
+                      <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}
+                  <TableCell></TableCell>
+                  <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
+                  <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
               </TableBody>
             </Table>
           </div>

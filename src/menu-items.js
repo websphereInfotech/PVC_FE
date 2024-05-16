@@ -108,6 +108,31 @@ const MenuItem = () => {
     'view_single_salesInvoice',
     'view_all_salesInvoice'
   ]);
+
+  const hasAllPermissiondeliverychallan = checkAllPermissions('Delivery Challan', [
+    'get_all_deliverychallan',
+    'create_deliverychallan',
+    'view_deliverychallan',
+    'update_deliverychallan',
+    'delete_deliverychallan'
+  ]);
+
+  const hasAllPermissionDebitnote = checkAllPermissions('Debit Note', [
+    'create_debitNote',
+    'get_all_debitNote',
+    'view_single_debitNote',
+    'update_debitNote',
+    'delete_debitNote'
+  ]);
+
+  const hasAllPermissionCreditnote = checkAllPermissions('Credit Note', [
+    'create_creditNote',
+    'get_all_creditNote',
+    'view_single_creditNote',
+    'update_creditNote',
+    'delete_creditNote'
+  ]);
+
   return {
     items: [
       {
@@ -194,7 +219,7 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/proformainvoiceList'
                   },
-                  {
+                  hasAllPermissiondeliverychallan && {
                     id: 'Delivery Challan',
                     title: 'Delivery Challan',
                     type: 'item',
@@ -206,17 +231,23 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/salesinvoicelist'
                   },
-                  {
+                  hasAllPermissionDebitnote && {
                     id: 'debit note',
                     title: 'Debit Note',
                     type: 'item',
                     url: '/debitnotelist'
                   },
-                  {
+                  hasAllPermissionCreditnote && {
                     id: 'credit note',
                     title: 'Credit Note',
                     type: 'item',
                     url: '/creditnotelist'
+                  },
+                  {
+                    id: 'sales cash',
+                    title: 'Sales Cash',
+                    type: 'item'
+                    // url: '/creditnotelist'
                   }
                 ]
               },
