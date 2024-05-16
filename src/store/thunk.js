@@ -125,6 +125,9 @@ import {
   viewPurchasebillRequest,
   viewPurchasebillSuccess,
   viewPurchasebillFailure,
+  deletePurchasebillRequest,
+  deletePurchasebillSuccess,
+  deletePurchasebillFailure,
   // EXPENSE +++++++++++++++++++++++++
   createExpenseRequest,
   createExpenseFailure,
@@ -1085,6 +1088,22 @@ export const updatePurchaseBill = (id, payload, navigate) => {
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(updatePurchaseBillFailure(error.message));
+    }
+  };
+};
+export const deletePurchasebill = (id) => {
+  return async (dispatch) => {
+    dispatch(deletePurchasebillRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchasebill/${id}`, config);
+      const deletePurchasebillData = response;
+      dispatch(deletePurchasebillSuccess(deletePurchasebillData));
+      window.location.reload();
+      return deletePurchasebillData;
+    } catch (error) {
+      dispatch(deletePurchasebillFailure(error.message));
+      throw error;
     }
   };
 };

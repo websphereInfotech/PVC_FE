@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { PurchaseBillview, getallPurchaseBill } from 'store/thunk';
+import { PurchaseBillview, deletePurchasebill, getallPurchaseBill } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,7 +17,6 @@ const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
   { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
-  // { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
@@ -30,6 +29,7 @@ export default function PurchaseBillList() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [purchasebill, setPurchasebill] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [billid, setBillid] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,8 +66,18 @@ export default function PurchaseBillList() {
     navigate('/purchasebill');
   };
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
+    setBillid(id);
+  };
+
+  const handleDeletePurchasebill = async () => {
+    try {
+      await dispatch(deletePurchasebill(billid));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting Bill:', error);
+    }
   };
 
   return (
@@ -138,7 +148,7 @@ export default function PurchaseBillList() {
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handleDeletePurchasebill} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
