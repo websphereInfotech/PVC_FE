@@ -294,7 +294,7 @@ const Salesinvoice = () => {
       if (id) {
         const payload = {
           ...formData,
-          totalQty:totalQuantity,
+          totalQty: totalQuantity,
           totalMrp: subtotal,
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({
@@ -317,7 +317,7 @@ const Salesinvoice = () => {
       } else {
         const payload = {
           ...formData,
-          totalQty:totalQuantity,
+          totalQty: totalQuantity,
           totalMrp: subtotal,
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({

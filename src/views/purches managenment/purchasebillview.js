@@ -22,6 +22,12 @@ const Purchasebillview = () => {
       });
   }, [dispatch, id]);
 
+  const subtotal = data.totalMrp ? data.totalMrp : 0;
+  const maintotal = data.mainTotal ? data.mainTotal : 0;
+  const sgst = data.totalSgst ? data.totalSgst / 2 : 0;
+  const cgst = data.totalSgst ? data.totalSgst / 2 : 0;
+  const igst = data.totalIgst ? data.totalIgst : 0;
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -30,66 +36,54 @@ const Purchasebillview = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Vendor</Typography>
-          <Typography variant="subtitle2">{data.vendor}</Typography>
+          <Typography variant="subtitle2">{data?.purchseVendor?.accountname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Mobile No.</Typography>
-          <Typography variant="subtitle2">{data.mobileno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1">Email</Typography>
-          <Typography variant="subtitle2">{data.email}</Typography>
+          <Typography variant="subtitle1">Inv. No.</Typography>
+          <Typography variant="subtitle2">{data?.invoiceno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Bill No.</Typography>
-          <Typography variant="subtitle2">{data.billno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Bill Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.billdate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle1">Date</Typography>
+          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('en-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Terms (Days)</Typography>
-          <Typography variant="subtitle2">{data.terms}</Typography>
+          <Typography variant="subtitle2">{data?.terms}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Due Date</Typography>
           <Typography variant="subtitle2">{new Date(data?.duedate).toLocaleDateString()}</Typography>
         </Grid>
-        <Grid item xs={12} sm={3}>
-          <Typography variant="subtitle1">Book</Typography>
-          <Typography variant="subtitle2">{data.book}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Typography variant="subtitle1">PO No.</Typography>
-          <Typography variant="subtitle2">{data.pono}</Typography>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Inv. Date</Typography>
+          <Typography variant="subtitle2">{new Date(data?.invoicedate).toLocaleDateString()}</Typography>
         </Grid>
 
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>
               <TableHead>
-                <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell>
                 <TableCell width={560} sx={{ fontSize: '12px' }}>
                   PRODUCT/SERVICE
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>MRP(₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
-                {/* <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell> */}
               </TableHead>
               <TableBody>
-                {data.purchasebillItems &&
-                  data.purchasebillItems.map((item, index) => (
+                {data.items &&
+                  data.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.purchasebillId}</TableCell>
-                      <TableCell>{item?.product}</TableCell>
+                      <TableCell>{item?.purchseProduct?.productname}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
-                      {/* <TableCell>{item?.discount}</TableCell> */}
                     </TableRow>
                   ))}
+                <TableCell></TableCell>
+                <TableCell sx={{ fontSize: '14px', textAlign: 'right' }}>TotalQTY:</TableCell>
+                <TableCell sx={{ fontSize: '14px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
               </TableBody>
             </Table>
           </div>
@@ -99,34 +93,64 @@ const Purchasebillview = () => {
           {isMobile ? (
             // For mobile screens, show each total on separate lines
             <>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Taxable Amt.</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Sub Total</p>
-                <p>₹0.00</p>
+                <p>₹{subtotal?.toFixed(2)}</p>
               </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              {data.totalSgst && (
+                <Grid item xs={12}>
+                  <div style={{ margin: '0px' }} id="subtotalcs">
+                    <p>SGST</p>
+                    <p>₹{sgst.toFixed(2)}</p>
+                  </div>
+                  <div style={{ margin: '0px' }} id="subtotalcs">
+                    <p>CGST</p>
+                    <p>₹{cgst.toFixed(2)}</p>
+                  </div>
+                </Grid>
+              )}
+              <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹0.00</p>
+                <p>₹{maintotal.toFixed(2)}</p>
               </div>
             </>
           ) : (
             // For larger screens, show all totals on one line
             <div style={{ float: 'right', width: '30%' }}>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Taxable Amt.</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Sub Total</p>
-                <p>₹0.00</p>
-              </div>
-              <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                <p>Total Amt.</p>
-                <p>₹0.00</p>
-              </div>
+              <>
+                <div style={{ margin: '0px' }} id="subtotalcs">
+                  <p>Sub Total</p>
+                  <p>₹{subtotal?.toFixed(2)}</p>
+                </div>
+                {data.totalSgst ? (
+                  <Grid item xs={12}>
+                    <div style={{ margin: '0px' }} id="subtotalcs">
+                      <p>SGST</p>
+                      <p>₹{sgst.toFixed(2)}</p>
+                    </div>
+                    <div style={{ margin: '0px' }} id="subtotalcs">
+                      <p>CGST</p>
+                      <p>₹{cgst.toFixed(2)}</p>
+                    </div>
+                  </Grid>
+                ) : (
+                  ''
+                )}
+                {data.totalIgst ? (
+                  <Grid item xs={12}>
+                    <div style={{ margin: '0px' }} id="subtotalcs">
+                      <p>IGST</p>
+                      <p>₹{igst.toFixed(2)}</p>
+                    </div>
+                  </Grid>
+                ) : (
+                  ''
+                )}
+                <div style={{ margin: '0px' }} id="subtotalcs">
+                  <p>Total Amt.</p>
+                  <p>₹{maintotal.toFixed(2)}</p>
+                </div>
+              </>
             </div>
           )}
         </Grid>

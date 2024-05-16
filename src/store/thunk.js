@@ -116,9 +116,9 @@ import {
   createPurchaseBillRequest,
   createPurchaseBillSuccess,
   createPurchaseBillFailure,
-  createPurchaseBillItemRequest,
-  createPurchaseBillItemSuccess,
-  createPurchaseBillItemFailure,
+  updatePurchaseBillRequest,
+  updatePurchaseBillSuccess,
+  updatePurchaseBillFailure,
   getAllPurchasebillRequest,
   getAllPurchasebillSuccess,
   getAllPurchasebillFailure,
@@ -1016,7 +1016,7 @@ export const purchaseview = (id) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPurchaseBill = (payload,navigate) => {
+export const createPurchaseBill = (payload, navigate) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillRequest());
     try {
@@ -1025,31 +1025,16 @@ export const createPurchaseBill = (payload,navigate) => {
       const cretepurchasebill = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
+        autoClose: 900,
         onClose: () => {
-          navigate('/purchasebilllist');
+          navigate('/purchasebillList');
         }
       });
       dispatch(createPurchaseBillSuccess(cretepurchasebill));
       return cretepurchasebill;
     } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(createPurchaseBillFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createPurchaseBillItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createPurchaseBillItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill_item`, payload, config);
-      const createdPurchaseBillitems = response;
-      dispatch(createPurchaseBillItemSuccess(createdPurchaseBillitems));
-      return createdPurchaseBillitems;
-    } catch (error) {
-      dispatch(createPurchaseBillItemFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1081,7 +1066,28 @@ export const PurchaseBillview = (id) => {
     }
   };
 };
-
+export const updatePurchaseBill = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseBillRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchasebill/${id}`, payload, config);
+      const updatePurchasebillData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 900,
+        onClose: () => {
+          navigate('/purchasebillList');
+        }
+      });
+      dispatch(updatePurchaseBillSuccess(updatePurchasebillData));
+      return updatePurchasebillData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updatePurchaseBillFailure(error.message));
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ EXPENSE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createExpenseItem = (payload) => {
   return async (dispatch) => {
