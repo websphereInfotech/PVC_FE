@@ -61,6 +61,10 @@ export default function PurchaseBillList() {
     navigate(`/purchasebillview/${id}`);
   };
 
+  const handleUpdatePurchaseBill = (id) => {
+    dispatch(PurchaseBillview(id));
+    navigate(`/purchasebill/${id}`);
+  };
   const handleAddpuchasebill = () => {
     navigate('/purchasebill');
   };
@@ -98,7 +102,7 @@ export default function PurchaseBillList() {
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePurchaseBill(row.id)}>
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (

@@ -17,79 +17,78 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Deliverychallanview, getallDeliverychallan, deleteDileveryChallan } from 'store/thunk';
+import { Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'challanno', label: 'Challan No', minWidth: 100, align: 'center' },
-  { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
-  { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
+  { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
+  { id: 'creditdate', label: 'Date.', minWidth: 170, align: 'center' },
+  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
-const DileveryChallanList = () => {
-  const { canViewDeliverychallan, canDeleteDeliverychallan, canCreateDeliverychallan, canUpdateDeliverychallan } = useCan();
+const Creditnotelist = () => {
+  const { canUpdateCreditnote, canViewCreditnote, canCreateCreditnote, canDeleteCreditnote } = useCan();
   const navigate = useNavigate();
-  const [deliverychallan, setdeliverychallan] = useState([]);
+  const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
-  // all delivery challan api called
   useEffect(() => {
-    const fetchDeliverychallan = async () => {
+    const fetchcreditnote = async () => {
       try {
-        const data = await dispatch(getallDeliverychallan());
-        setdeliverychallan(data);
+        const data = await dispatch(getallCreditnote());
+        data.sort((a, b) => {
+          const aNum = parseInt(a.creditnoteNo);
+          const bNum = parseInt(b.creditnoteNo);
+          return aNum - bNum;
+        });
+        setCreditnote(data);
       } catch (error) {
-        console.error('Error fetching delivery challan:', error);
+        console.error('Error fetching Credit note:', error);
       }
     };
 
-    fetchDeliverychallan();
+    fetchcreditnote();
   }, [dispatch]);
 
-  // set pagination to change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  // how much row show in one page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  //navigate page on create deliverychallan
-  const handleAddDeliverychallan = () => {
-    navigate('/deliverychallan');
+  const handleAddCreditnote = () => {
+    navigate('/creditnote');
   };
 
-  //passed id for view single data
-  const handleViewDeliverychallan = (id) => {
-    dispatch(Deliverychallanview(id));
-    navigate(`/deliverychallanview/${id}`);
+  const handleUpdateDebitnote = (id) => {
+    dispatch(Creditnoteviewdata(id));
+    navigate(`/creditnote/${id}`);
   };
 
-  //passed id for update data
-  const handleUpdateDeliverychallan = (id) => {
-    dispatch(Deliverychallanview(id));
-    navigate(`/deliverychallan/${id}`);
+  const handleViewDebitnote = (id) => {
+    dispatch(Creditnoteviewdata(id));
+    navigate(`/creditnoteview/${id}`);
   };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setSelectedUserId(id);
+    setSelectedId(id);
   };
 
-  const handleDelete = async () => {
+  const handleDeleteDebitnote = async () => {
     try {
-      await dispatch(deleteDileveryChallan(selectedUserId));
+      await dispatch(deleteCreditnote(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -98,18 +97,18 @@ const DileveryChallanList = () => {
 
   return (
     // <Container>
-    <Card style={{ padding: '25px', width: '100%' }}>
+    <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Dilevery Challan List
+        Credit Note List
       </Typography>
       <Button
         variant="contained"
         color="secondary"
-        style={{ margin: '16px' }}
-        onClick={handleAddDeliverychallan}
-        disabled={!canCreateDeliverychallan()}
+        style={{ margin: '10px' }}
+        onClick={handleAddCreditnote}
+        disabled={!canCreateCreditnote()}
       >
-        Create Delivery Challan
+        Create Credit Note
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -123,7 +122,7 @@ const DileveryChallanList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {deliverychallan?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((order, index) => (
+            {Creditnote?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -131,17 +130,17 @@ const DileveryChallanList = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canViewDeliverychallan()}
-                        onClick={() => handleViewDeliverychallan(order.id)}
+                        disabled={!canViewCreditnote()}
+                        onClick={() => handleViewDebitnote(row.id)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
+                        disabled={!canUpdateCreditnote()}
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleUpdateDeliverychallan(order.id)}
-                        disabled={!canUpdateDeliverychallan()}
+                        onClick={() => handleUpdateDebitnote(row.id)}
                       >
                         Edit
                       </Button>
@@ -149,17 +148,17 @@ const DileveryChallanList = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleDeleteConfirmation(order.id)}
-                        disabled={!canDeleteDeliverychallan()}
+                        disabled={!canDeleteCreditnote()}
+                        onClick={() => handleDeleteConfirmation(row.id)}
                       >
                         Delete
                       </Button>
-                    ) : column.id === 'date' ? (
-                      new Date(order[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'creditdate' ? (
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
-                      order.DeliveryCustomer.accountname
+                      row.CreditCustomer.accountname
                     ) : (
-                      order[column.id]
+                      row[column.id]
                     )}
                   </TableCell>
                 ))}
@@ -169,9 +168,9 @@ const DileveryChallanList = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[8, 25, 100]}
         component="div"
-        count={deliverychallan?.length || 0}
+        count={Creditnote.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -179,12 +178,12 @@ const DileveryChallanList = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>Are you sure you want to delete this Challan?</DialogContent>
+        <DialogContent>Are you sure you want to delete this Credit Note?</DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmation(false)} variant="contained" color="secondary">
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleDelete} variant="contained" color="secondary">
+          <Button onClick={handleDeleteDebitnote} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -194,4 +193,4 @@ const DileveryChallanList = () => {
   );
 };
 
-export default DileveryChallanList;
+export default Creditnotelist;

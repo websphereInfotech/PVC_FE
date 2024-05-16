@@ -134,12 +134,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useDispatch } from 'react-redux';
 import { getallPermissions, updatePermission } from 'store/thunk';
+// import { Link } from 'react-router-dom';
 
 export default function CollapsibleTable() {
   const [openRows, setOpenRows] = React.useState([]);
   const [permissions, setPermissions] = React.useState([]);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
   const [checkbox, setCheckbox] = React.useState({});
+  const [selectedPermissions, setSelectedPermissions] = React.useState({});
 
   const dispatch = useDispatch();
 
@@ -186,18 +188,50 @@ export default function CollapsibleTable() {
   };
 
   // handle checkbox change
+  // const handleCheckboxChange = async (permissionId, permissionValue) => {
+  //   try {
+  //     const updatedPermissions = [
+  //       {
+  //         id: permissionId,
+  //         permissionValue: !permissionValue
+  //       }
+  //     ];
+  //     const data = {
+  //       userRole: selectedUserRole,
+  //       permissions: updatedPermissions
+  //     };
+  //     await dispatch(updatePermission(data));
+
+  //     // Update checkbox state
+  //     setCheckbox((prevState) => ({
+  //       ...prevState,
+  //       [permissionId]: !permissionValue
+  //     }));
+  //   } catch (error) {
+  //     console.error('Error updating permissions:', error);
+  //   }
+  // };
   const handleCheckboxChange = async (permissionId, permissionValue) => {
     try {
-      const updatedPermissions = [
-        {
-          id: permissionId,
-          permissionValue: !permissionValue
-        }
-      ];
+      // Update selectedPermissions state
+      const updatedPermissions = {
+        ...selectedPermissions,
+        [permissionId]: !permissionValue
+      };
+      setSelectedPermissions(updatedPermissions);
+
+      // Prepare data for API update
       const data = {
         userRole: selectedUserRole,
-        permissions: updatedPermissions
+        permissions: [
+          {
+            id: permissionId,
+            permissionValue: !permissionValue
+          }
+        ]
       };
+
+      console.log(data, 'dta>>>>>>>>>>>>>>');
       await dispatch(updatePermission(data));
 
       // Update checkbox state
@@ -208,6 +242,50 @@ export default function CollapsibleTable() {
     } catch (error) {
       console.error('Error updating permissions:', error);
     }
+  };
+
+  const handleSelectAll = (resource) => {
+    const updatedCheckbox = { ...checkbox };
+    const updatedPermissions = { ...selectedPermissions };
+    let allChecked = true;
+    permissions.forEach((permission) => {
+      if (permission.role === selectedUserRole) {
+        permission.permissions.forEach((pre) => {
+          if (pre.resource === resource) {
+            pre.permissions.forEach((p) => {
+              if (!updatedCheckbox[p.id]) {
+                allChecked = false;
+              }
+            });
+          }
+        });
+      }
+    });
+    const newValue = !allChecked;
+    // console.log("newvalue",newValue);
+    // console.log("allChecked",!allChecked);
+    permissions.forEach((permission) => {
+      if (permission.role === selectedUserRole) {
+        permission.permissions.forEach((pre) => {
+          if (pre.resource === resource) {
+            pre.permissions.forEach((p) => {
+              updatedCheckbox[p.id] = newValue;
+              updatedPermissions[p.id] = newValue;
+            });
+          }
+        });
+      }
+    });
+    setCheckbox(updatedCheckbox);
+    setSelectedPermissions(updatedPermissions);
+    const data = {
+      userRole: selectedUserRole,
+      permissions: Object.keys(updatedPermissions).map((permissionId) => ({
+        id: permissionId,
+        permissionValue: updatedPermissions[permissionId]
+      }))
+    };
+    dispatch(updatePermission(data));
   };
 
   return (
@@ -247,7 +325,17 @@ export default function CollapsibleTable() {
                               }}
                             >
                               <Box>
-                                <Typography variant="h5">{pre.resource}</Typography>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                  <Typography variant="h5">{pre.resource}</Typography>
+                                  {/* <Link
+                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', color: 'black' }}
+                                    color="secondary"
+                                    onClick={() => handleSelectAll(pre.resource)}
+                                  >
+                                    Select All
+                                  </Link> */}
+                                  <Checkbox onClick={() => handleSelectAll(pre.resource)} />
+                                </div>
                                 <Table size="small" aria-label="permissions">
                                   <TableBody>
                                     {pre.permissions?.map((p, i) => (

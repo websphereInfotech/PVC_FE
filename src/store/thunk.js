@@ -38,9 +38,6 @@ import {
   createCustomerRequest,
   createCustomerSuccess,
   createCustomerFailure,
-  createCustomFeildRequest,
-  createCustomFeildSuccess,
-  createCustomFeildFailure,
   // PRODUCT ++++++++++++++++++++++++++++++++++
   fetchAllProdutsRequest,
   fetchAllProdutsSuccess,
@@ -74,9 +71,6 @@ import {
   createDeliveryChallanRequest,
   createDeliveryChallanSuccess,
   createDeliveryChallanFailure,
-  createDeliveryChallanItemRequest,
-  createDeliveryChallanItemSuccess,
-  createDeliveryChallanItemFailure,
   getAllDeliverychallanRequest,
   getAllDeliverychallanSuccess,
   getAllDeliverychallanFailure,
@@ -86,9 +80,6 @@ import {
   updateDileverychallanRequest,
   updateDileverychallanFailure,
   updateDileverychallanSuccess,
-  updateDileverychallanItemRequest,
-  updateDileverychallanItemFailure,
-  updateDileverychallanItemSuccess,
   deleteDileverychallanItemRequest,
   deleteDileverychallanItemFailure,
   deleteDileverychallanItemSuccess,
@@ -196,7 +187,39 @@ import {
   //  COMPANY ++++++++++++++++++++++++
   fetchAllCompanyRequest,
   fetchAllCompanySuccess,
-  fetchAllCompanyFailure
+  fetchAllCompanyFailure,
+  // DEBIT NOTE+++++++++++++++++++++
+  createDebitnoteRequest,
+  createDebitnoteSuccess,
+  createDebitnoteFailure,
+  getAllDebitnoteRequest,
+  getAllDebitnoteSuccess,
+  getAllDebitnoteFailure,
+  viewDebitnoteRequest,
+  viewDebitnoteSuccess,
+  viewDebitnoteFailure,
+  updateDebitnoteRequest,
+  updateDebitnoteSuccess,
+  updateDebitnoteFailure,
+  deleteDebitnoteRequest,
+  deleteDebitnoteSuccess,
+  deleteDebitnoteFailure,
+  // Credit NOTE+++++++++++++++++++++
+  createCreditnoteRequest,
+  createCreditnoteSuccess,
+  createCreditnoteFailure,
+  getAllCreditnoteRequest,
+  getAllCreditnoteSuccess,
+  getAllCreditnoteFailure,
+  viewCreditnoteRequest,
+  viewCreditnoteSuccess,
+  viewCreditnoteFailure,
+  updateCreditnoteRequest,
+  updateCreditnoteSuccess,
+  updateCreditnoteFailure,
+  deleteCreditnoteRequest,
+  deleteCreditnoteSuccess,
+  deleteCreditnoteFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -386,7 +409,7 @@ export const getallDeliverychallan = () => {
     try {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_deliverychallan`, config);
-      const getallDeliverychallan = response.data;
+      const getallDeliverychallan = response.data.data;
       dispatch(getAllDeliverychallanSuccess(getallDeliverychallan));
       return getallDeliverychallan;
     } catch (error) {
@@ -450,23 +473,8 @@ export const updateDileveryChallan = (id, ChallanData, navigate) => {
       dispatch(updateDileverychallanSuccess(updateChallanData));
       return updateChallanData;
     } catch (error) {
+      toast.error(error.response.data.message);
       dispatch(updateDileverychallanFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const updateDileveryChallanItem = (id, payload) => {
-  return async (dispatch) => {
-    dispatch(updateDileverychallanItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallanitem/${id}`, payload, config);
-      const updateChallanItem = response;
-      dispatch(updateDileverychallanItemSuccess(updateChallanItem));
-      return updateChallanItem;
-    } catch (error) {
-      dispatch(updateDileverychallanItemFailure(error.message));
-      throw error;
     }
   };
 };
@@ -475,27 +483,14 @@ export const deleteDileveryChallan = (id) => {
     dispatch(deleteDileverychallanItemRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_deliverychallanitem/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_deliverychallan/${id}`, config);
       const deleteChallanItem = response;
       dispatch(deleteDileverychallanItemSuccess(deleteChallanItem));
+      window.location.reload();
       return deleteChallanItem;
     } catch (error) {
       dispatch(deleteDileverychallanItemFailure(error.message));
       throw error;
-    }
-  };
-};
-export const createDeliveryChallanItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createDeliveryChallanItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallanitem`, payload, config);
-      const createdDeliverychallanitems = response;
-      dispatch(createDeliveryChallanItemSuccess(createdDeliverychallanitems));
-      return createdDeliverychallanitems;
-    } catch (error) {
-      dispatch(createDeliveryChallanItemFailure(error.message));
     }
   };
 };
@@ -535,35 +530,6 @@ export const createCustomer = (customerData) => {
       });
       dispatch(createCustomerFailure(error.message));
       throw error;
-    }
-  };
-};
-export const createCustomfeild = (payload) => {
-  return async (dispatch) => {
-    dispatch(createCustomFeildRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customfeild`, payload, config);
-      const createdCustomfeilddata = response;
-      dispatch(createCustomFeildSuccess(createdCustomfeilddata));
-      return createdCustomfeilddata;
-    } catch (error) {
-      dispatch(createCustomFeildFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deleteCustomFeild = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteProformainvoiceItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customfeild/${id}`, config);
-      console.log('response', response);
-      dispatch(deleteProformainvoiceItemSuccess());
-    } catch (error) {
-      console.error('Error deleting quotation:', error);
-      dispatch(deleteProformainvoiceItemFailure());
     }
   };
 };
@@ -759,6 +725,191 @@ export const deleteSalesinvoice = (id) => {
     }
   };
 };
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createDebitnote = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createDebitnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_debitNote`, payload, config);
+      const createDebitnote = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/debitnotelist');
+        }
+      });
+      dispatch(createDebitnoteSuccess(createDebitnote));
+      return createDebitnote;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(createDebitnoteFailure(error.message));
+    }
+  };
+};
+export const getallDebitnote = () => {
+  return async (dispatch) => {
+    dispatch(getAllDebitnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_debitNote`, config);
+      const getallDebitnote = response.data.data;
+      dispatch(getAllDebitnoteSuccess(getallDebitnote));
+      return getallDebitnote;
+    } catch (error) {
+      dispatch(getAllDebitnoteFailure(error.message));
+    }
+  };
+};
+export const Debitnoteviewdata = (id) => {
+  return async (dispatch) => {
+    dispatch(viewDebitnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_debitNote/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewDebitnoteSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewDebitnoteFailure(error.message));
+    }
+  };
+};
+export const updateDebitnote = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateDebitnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_debitNote/${id}`, payload, config);
+      const updateDebitnoteData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/debitnotelist');
+        }
+      });
+      dispatch(updateDebitnoteSuccess(updateDebitnoteData));
+      return updateDebitnoteData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updateDebitnoteFailure(error.message));
+    }
+  };
+};
+export const deleteDebitnote = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteDebitnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_debitNote/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteDebitnoteSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteDebitnoteFailure());
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createCreditnote = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createCreditnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_creditNote`, payload, config);
+      const createCreditnote = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/creditnotelist');
+        }
+      });
+      dispatch(createCreditnoteSuccess(createCreditnote));
+      return createCreditnote;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(createCreditnoteFailure(error.message));
+    }
+  };
+};
+export const getallCreditnote = () => {
+  return async (dispatch) => {
+    dispatch(getAllCreditnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_creditNote`, config);
+      const getallCreditnote = response.data.data;
+      dispatch(getAllCreditnoteSuccess(getallCreditnote));
+      return getallCreditnote;
+    } catch (error) {
+      dispatch(getAllCreditnoteFailure(error.message));
+    }
+  };
+};
+export const Creditnoteviewdata = (id) => {
+  return async (dispatch) => {
+    dispatch(viewCreditnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_creditNote/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewCreditnoteSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewCreditnoteFailure(error.message));
+    }
+  };
+};
+export const updateCreditnote = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateCreditnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_creditNote/${id}`, payload, config);
+      const updateCreditnoteData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/creditnotelist');
+        }
+      });
+      dispatch(updateCreditnoteSuccess(updateCreditnoteData));
+      return updateCreditnoteData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updateCreditnoteFailure(error.message));
+    }
+  };
+};
+export const deleteCreditnote = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteCreditnoteRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_creditNote/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteCreditnoteSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteCreditnoteFailure());
+    }
+  };
+};
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPurchase = (purchaseData) => {
   return async (dispatch) => {
@@ -865,13 +1016,20 @@ export const purchaseview = (id) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPurchaseBill = (purchasebillData) => {
+export const createPurchaseBill = (payload,navigate) => {
   return async (dispatch) => {
     dispatch(createPurchaseBillRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, purchasebillData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, payload, config);
       const cretepurchasebill = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/purchasebilllist');
+        }
+      });
       dispatch(createPurchaseBillSuccess(cretepurchasebill));
       return cretepurchasebill;
     } catch (error) {

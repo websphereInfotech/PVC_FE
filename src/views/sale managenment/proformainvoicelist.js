@@ -99,7 +99,7 @@ export default function ProformainvoiceList() {
   };
 
   return (
-    <Card sx={{ width: '100%', padding: '25px' }}>
+    <Card sx={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Pro Forma Invoice List
       </Typography>
@@ -108,13 +108,13 @@ export default function ProformainvoiceList() {
         variant="contained"
         href="/proformainvoice"
         color="secondary"
-        style={{ margin: '16px' }}
+        style={{ margin: '10px' }}
         disabled={!canCreateProformainvoiceQuotation()}
       >
         Create Pro Forma Invoice
       </Button>
       {/* </Link> */}
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 800, display: 'flex', alignItems: 'center' }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
@@ -160,7 +160,7 @@ export default function ProformainvoiceList() {
                     ) : column.id === 'date' || column.id === 'validtill' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
-                      row.customer.shortname
+                      row.customer.accountname
                     ) : (
                       row[column.id]
                     )}

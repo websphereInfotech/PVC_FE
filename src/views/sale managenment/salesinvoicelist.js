@@ -100,14 +100,14 @@ const Salesinvoicelist = () => {
 
   return (
     // <Container>
-    <Card style={{ width: '100%', padding: '25px' }}>
+    <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Sales Invoice List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddSalesinvoice}>
+      <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddSalesinvoice}>
         Create Sales Invoice
       </Button>
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>

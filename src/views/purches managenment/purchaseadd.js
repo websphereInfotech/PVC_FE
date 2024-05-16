@@ -5,68 +5,54 @@ import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import AnchorProductDrawer from '../../component/productadd';
-import AnchorTemporaryDrawer from '../../component/customeradd';
+import AnchorVendorDrawer from '../../component/vendor';
 import { useMediaQuery } from '@mui/material';
 import {
   fetchAllProducts,
-  fetchAllCustomers,
   createPurchase,
   createPurchaseItem,
-  purchaseview,
+  // purchaseview,
   updatePurchase,
   updatePurchaseItem,
-  deletePurchaseItem
+  deletePurchaseItem,
+  fetchAllVendors
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-// Custom styled input component
-// const input = withStyles((theme) => ({
-//   root: {
-//     'label + &': {
-//       marginTop: theme.spacing(3)
-//     }
-//   },
-//   input: {
-//     borderRadius: 4,
-//     position: 'relative',
-//     backgroundColor: theme.palette.common.white,
-//     border: '1px solid #ced4da',
-//     fontSize: 16,
-//     width: '100%',
-//     padding: '10px 12px',
-//     transition: theme.transitions.create(['border-color', 'box-shadow']),
-//     '&:focus': {
-//       boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
-//       borderColor: theme.palette.secondary.main
-//     }
-//   }
-// }))(InputBase);
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const AddPurchasePage = () => {
-  const [rows, setRows] = useState([{ srNo: '1', product: '', qty: '', rate: '', discount: '', mrp: '' }]);
+  const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [vendor, setvendor] = useState([]);
+  const [selectvendor, setSelectvendor] = useState([]);
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+  const [vendorname, setvendorname] = useState('');
+  const [companystate, setCompanystate] = useState('');
+  const [gststate, setGststate] = useState('');
+  const [vendorstate, setvendorstate] = useState('');
   const [formData, setFormData] = useState({
-    quotation_no: '',
-    date: '',
-    email: '',
-    mobileno: '',
-    quotationref: '',
-    pono: '',
-    customer: ''
+    invoicedate: new Date(),
+    vendorId: '',
+    duedate: new Date(),
+    terms: '',
+    invoiceno: '',
+    totalSgst: 0,
+    totalIgst: 0,
+    totalMrp: 0,
+    mainTotal: 0
   });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  // const { Id } = useParams();
   const handleAddRow = () => {
-    const newRow = { srNo: (rows.length + 1).toString(), product: '', qty: '', rate: '', discount: '', mrp: '' };
-    setRows([...rows, newRow]);
+    const newRow = { product: '', qty: '', rate: '', mrp: '' };
+    setRows((prevRows) => [...prevRows, newRow]);
   };
 
   const handleInputChange = (srNo, field, value) => {
@@ -110,72 +96,103 @@ const AddPurchasePage = () => {
   };
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.value === 'new') {
+    if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
     } else {
-      console.log(setSelectcustomer);
-      setFormData({ ...formData, customer: selectedOption.label });
+      formData.customerId = selectedOption.value;
+      setFormData(formData);
+      setvendorname(selectedOption.label);
+      setvendorstate(selectedOption.state);
       setIsDrawerOpen(false);
     }
   };
 
-  const handleSelectproductChange = (selectedOption, srNo) => {
-    if (selectedOption && selectedOption.value === 'new') {
+  // use for select product name from dropdown
+  const handleSelectproductChange = (selectedOption, index) => {
+    console.log(selectproduct);
+    if (selectedOption && selectedOption.label === 'Create New Product') {
       setIsproductDrawerOpen(true);
     } else {
-      const updatedRows = rows.map((row) => {
-        if (row.srNo === srNo) {
-          return { ...row, product: selectedOption.label };
+      const updatedRows = rows.map((row, rowIndex) => {
+        if (rowIndex === index) {
+          return {
+            ...row,
+            productId: selectedOption.value,
+            product: selectedOption.label,
+            rate: selectedOption.rate,
+            gstrate: selectedOption.gstrate
+          };
         }
         return row;
       });
+
       setRows(updatedRows);
-      setSelectproduct(selectedOption.label);
+      setSelectproduct(selectedOption.value);
       setIsproductDrawerOpen(false);
     }
   };
 
-  const dispatch = useDispatch();
-
+  console.log(selectvendor, companystate);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customers = await dispatch(fetchAllCustomers());
-        if (Array.isArray(customers)) {
-          const options = customers.map((customer) => ({ value: customer.id, label: customer.shortname }));
-          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+        const response = await dispatch(fetchAllVendors());
+        if (Array.isArray(response)) {
+          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname, state: vendor.state }));
+          setvendor([{ value: 'new', label: 'Create New Vendor', state: '' }, ...options]);
         }
-        const products = await dispatch(fetchAllProducts());
-        if (Array.isArray(products)) {
-          // setProduct(productResponse);
-          const options = products.map((product) => ({ value: product.id, label: product.productname }));
-          setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
-        }
-
-        if (id) {
-          const response = await dispatch(purchaseview(id));
-          const { customer, date, email, mobileno, quotation_no, quotationref, pono } = response;
-          setFormData({ customer, date, email, mobileno, quotation_no, quotationref, pono });
-
-          const purchaseItems = response.purchaseitems;
-          const updatedRows = purchaseItems.map((item, index) => ({
-            id: item.id,
-            srNo: index + 1,
-            product: item.product,
-            qty: item.qty,
-            rate: item.rate,
-            discount: item.discount,
-            mrp: item.mrp,
-            amount: item.amount
+        const productResponse = await dispatch(fetchAllProducts());
+        if (Array.isArray(productResponse)) {
+          setProductResponse(productResponse);
+          const options = productResponse.map((product) => ({
+            value: product.id,
+            label: product.productname,
+            rate: product.salesprice,
+            gstrate: product.gstrate
           }));
-
-          setRows(updatedRows);
+          setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
+        } else {
+          console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
+
+        const data = await dispatch(fetchAllCompany());
+        const datademo = data[0].state === vendorstate;
+        setCompanystate(data[0].state);
+        setGststate(datademo);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching Purchase:', error);
       }
     };
+
     fetchData();
+  }, [dispatch, vendorstate, gststate, id]);
+
+  useEffect(() => {
+    const data = async () => {
+      if (id) {
+        const response = await dispatch(Creditnoteviewdata(id));
+        console.log(response);
+        const { CreditCustomer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: CreditCustomer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
+        setSelectvendor(CreditCustomer.id);
+        setvendorstate(CreditCustomer.state);
+        setvendorname(CreditCustomer.shortname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.CreditProduct.id,
+          product: item.CreditProduct.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.rate * item.qty,
+          gstrate: item.CreditProduct.gstrate,
+          gst: item.mrp * (item.CreditProduct.gstrate / 100)
+        }));
+        setRows(updatedRows);
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+      }
+    };
+    data();
   }, [dispatch, id]);
 
   const handlePurchase = async () => {
@@ -200,7 +217,7 @@ const AddPurchasePage = () => {
         }
       } else {
         const purchaseData = {
-          customer: selectcustomer,
+          vendor: selectcustomer,
           ...formData
         };
         const createdPurchase = await dispatch(createPurchase(purchaseData));
@@ -224,7 +241,12 @@ const AddPurchasePage = () => {
       console.error('Error creating Purchase:', error);
     }
   };
-
+  const handleInvoiceDateChange = (date) => {
+    setFormData({ ...formData, invoicedate: date });
+  };
+  const handledueDateChange = (date) => {
+    setFormData({ ...formData, duedate: date });
+  };
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       {id ? (
@@ -239,117 +261,95 @@ const AddPurchasePage = () => {
 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Customer</Typography>
-          <Select color="secondary" options={customer} value={{ label: formData.customer }} onChange={handleSelectChange} />
+          <Typography variant="subtitle1">
+            Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <Select
+            color="secondary"
+            options={vendor}
+            value={{ value: formData.vendorId, label: vendorname }}
+            onChange={handleSelectChange}
+          />
         </Grid>
-        <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+        <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Mobile No.</Typography>
+          <Typography variant="subtitle1">terms</Typography>
           <input
-            placeholder="Enter Mobile number"
-            id="mobileno"
-            value={formData.mobileno}
-            onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
+            placeholder="Enter terms days"
+            id="terms"
+            value={formData.terms}
+            onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Email</Typography>
+          <Typography variant="subtitle1">Inv. No.</Typography>
           <input
-            placeholder="Enter Email"
-            id="email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            placeholder="Enter Inv. No."
+            id="invoiceno"
+            value={formData.invoiceno}
+            onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Po No.</Typography>
-          <input
-            placeholder="Enter Po No."
-            id="pono"
-            value={formData.pono}
-            onChange={(e) => setFormData({ ...formData, pono: e.target.value })}
+          <Typography variant="subtitle1">Inv. Date</Typography>
+          <DatePicker
+            selected={formData.invoicedate}
+            onChange={(date) => handleInvoiceDateChange(date)}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showTimeSelect={false}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Po Date</Typography>
-          <input
-            type="date"
-            id="date"
-            value={formData.date ? formData.date.split('T')[0] : ''}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation No.</Typography>
-          <input
-            placeholder="Enter quotation number"
-            id="quotationno"
-            value={formData.quotation_no}
-            onChange={(e) => setFormData({ ...formData, quotation_no: e.target.value })}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Quotation Ref.</Typography>
-          <input
-            placeholder="Enter reference number"
-            id="quotationref"
-            value={formData.quotationref}
-            onChange={(e) => setFormData({ ...formData, quotationref: e.target.value })}
+          <Typography variant="subtitle1">Due Date</Typography>
+          <DatePicker
+            selected={formData.duedate}
+            onChange={(date) => handledueDateChange(date)}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showTimeSelect={false}
           />
         </Grid>
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>
               <TableHead>
-                <TableCell sx={{ fontSize: '12px' }}>SR.NO.</TableCell>
                 <TableCell width={420} sx={{ fontSize: '12px' }}>
                   PRODUCT/SERVICE
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>DISC. (₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.srNo}>
-                    <TableCell>
-                      <input
-                        placeholder="Enter Sr.No."
-                        value={row.srNo}
-                        onChange={(e) => handleInputChange(row.srNo, 'srNo', e.target.value)}
-                      />
-                    </TableCell>
+                {rows.map((row, index) => (
+                  <TableRow key={index}>
                     <TableCell sx={{ padding: '5px' }}>
                       <Select
                         color="secondary"
-                        placeholder="select Product"
-                        onChange={(selectedOption) => handleSelectproductChange(selectedOption, row.srNo)}
+                        onChange={(selectedOption) => handleSelectproductChange(selectedOption, index)}
                         options={product}
-                        value={{ label: row.product }}
+                        value={{ value: row.productId, label: row.product }}
                       />
                     </TableCell>
-                    <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                    <AnchorProductDrawer
+                      open={isproductDrawerOpen}
+                      onClose={() => setIsproductDrawerOpen(false)}
+                      onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                    />
                     <TableCell>
-                      <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(row.srNo, 'qty', e.target.value)} />
+                      <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                     </TableCell>
                     <TableCell>
-                      <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(row.srNo, 'rate', e.target.value)} />
+                      <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />
                     </TableCell>
                     <TableCell>
-                      <input
-                        placeholder="Discount"
-                        value={row.discount}
-                        onChange={(e) => handleInputChange(row.srNo, 'discount', e.target.value)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <input placeholder="Amount" value={row.mrp} onChange={(e) => handleInputChange(row.srNo, 'mrp', e.target.value)} />
+                      <input placeholder="Amount" value={row.mrp} onChange={(e) => handleInputChange(index, 'mrp', e.target.value)} />
                     </TableCell>
 
                     <TableCell>
-                      <DeleteIcon onClick={() => handleDeleteRow(row.srNo, row.id)} />
+                      <DeleteIcon onClick={() => handleDeleteRow(row.id, index)} />
                     </TableCell>
                   </TableRow>
                 ))}

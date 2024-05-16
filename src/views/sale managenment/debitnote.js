@@ -1,79 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
+import { Typography, Grid, Paper, Table, TableRow, TableBody, TableHead, TableCell } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
 import AnchorTemporaryDrawer from '../../component/customeradd';
 import AnchorProductDrawer from '../../component/productadd';
-import { useDispatch } from 'react-redux';
+import { useMediaQuery } from '@mui/material';
 import {
-  createProformainvoice,
+  Debitnoteviewdata,
+  createDebitnote,
+  fetchAllCompany,
   fetchAllCustomers,
-  Proformainvoiceview,
-  updateProformainvoice,
-  // deleteProformainvoiceItem,
-  fetchproformainvoiceList,
-  fetchAllCompany
+  fetchAllProducts,
+  getallDebitnote,
+  updateDebitnote
 } from 'store/thunk';
-import { fetchAllProducts } from 'store/thunk';
-import { useNavigate, useParams } from 'react-router-dom';
-import useCan from 'views/checkpermissionvalue';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import useCan from 'views/checkpermissionvalue';
 
-const Proformainvoice = () => {
+const DebitNote = () => {
+  const { canDeleteDebitnote } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation } = useCan();
+  const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
-
-  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [formData, setFormData] = useState({
+    customerId: '',
+    debitdate: new Date(),
+    debitnoteno: '',
+    totalSgst: 0,
+    totalIgst: 0,
+    totalMrp: 0,
+    mainTotal: 0
+  });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState('');
+  const [selectcustomer, setSelectcustomer] = useState([]);
   const [customerState, setCustomerState] = useState('');
   const [customername, setCustomername] = useState('');
   const [companystate, setCompanystate] = useState('');
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  // const
   const [gststate, setGststate] = useState('');
-  const [formData, setFormData] = useState({
-    customerId: '',
-    date: new Date(),
-    ProFormaInvoice_no: '',
-    validtill: '',
-    totalSgst: 0,
-    totalIgst: 0,
-    totalMrp: 0,
-    mainTotal: 0
-  });
-  const [plusgst, setPlusgst] = useState(formData.totalSgst || formData.totalIgst || 0);
+  const [plusgst, setPlusgst] = useState(0);
   const [productResponse, setProductResponse] = useState([]);
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-
-  // manage button of addrow
-  const handleAddRow = () => {
-    const newRow = { product: '', qty: '', rate: '', mrp: '' };
-    setRows((prevRows) => [...prevRows, newRow]);
-  };
-  useEffect(() => {
-    const updateTotalQuantity = () => {
-      let total = 0;
-      rows.forEach((row) => {
-        total += parseInt(row.qty);
-      });
-      setTotalQuantity(total);
-    };
-    updateTotalQuantity();
-  }, [rows]);
-
+  {
+    console.log(companystate, selectcustomer);
+  }
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -88,6 +69,20 @@ const Proformainvoice = () => {
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
   };
 
+  const handleAddRow = () => {
+    const newRow = { product: '', qty: '', rate: '', mrp: '' };
+    setRows((prevRows) => [...prevRows, newRow]);
+  };
+  useEffect(() => {
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
+  }, [rows]);
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
@@ -151,32 +146,25 @@ const Proformainvoice = () => {
   useEffect(() => {
     const data = async () => {
       if (id) {
-        const response = await dispatch(Proformainvoiceview(id));
-        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectcustomer(customer.id);
-        setCustomerState(customer.state);
-        setCustomername(customer.shortname);
+        const response = await dispatch(Debitnoteviewdata(id));
+        const { DebitCustomer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: DebitCustomer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
+        setSelectcustomer(DebitCustomer.id);
+        setCustomerState(DebitCustomer.state);
+        setCustomername(DebitCustomer.shortname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
-          productId: item.product.id,
-          product: item.product.productname,
+          productId: item.DebitProduct.id,
+          product: item.DebitProduct.productname,
           qty: item.qty,
           rate: item.rate,
           mrp: item.rate * item.qty,
-          gstrate: item.product.gstrate,
-          gst: item.mrp * (item.product.gstrate / 100)
+          gstrate: item.DebitProduct.gstrate,
+          gst: item.mrp * (item.DebitProduct.gstrate / 100)
         }));
         setRows(updatedRows);
         const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
         setPlusgst(totalGST);
-        // setPlusgst(gst)
-        // updatedRows.forEach((row) => {
-        //   const amount = row.qty * row.rate;
-        //   row.mrp = amount;
-        //   const gstAmount = amount * (row.gstrate / 100);
-        //   setPlusgst(gstAmount);
-        // });
       }
     };
     data();
@@ -200,86 +188,8 @@ const Proformainvoice = () => {
     setSubtotal(initialSubtotal);
   }, [rows]);
 
-  useEffect(() => {
-    const data = async () => {
-      if (id) {
-        const response = await dispatch(Proformainvoiceview(id));
-        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectcustomer(customer.id);
-        setCustomerState(customer.state);
-        setCustomername(customer.accountname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.product.id,
-          product: item.product.productname,
-          qty: item.qty,
-          rate: item.rate,
-          mrp: item.qty * item.rate,
-          gstrate: item.product.gstrate,
-          gst: item.mrp * (item.product.gstrate / 100)
-        }));
-        setRows(updatedRows);
-        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-        setPlusgst(totalGST);
-      }
-    };
-    data();
-  }, [dispatch, id]);
-
-  const handleCreateQuotation = async () => {
-    try {
-      if (id) {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: Number(row.qty),
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
-        await dispatch(updateProformainvoice(id, payload, navigate));
-      } else {
-        const quotationData = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: row.qty,
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        console.log(selectcustomer);
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          quotationData.totalSgst = plusgst;
-          quotationData.totalIgst = 0;
-        } else {
-          quotationData.totalSgst = 0;
-          quotationData.totalIgst = plusgst;
-        }
-        await dispatch(createProformainvoice(quotationData, navigate));
-      }
-    } catch (error) {
-      console.error('Error creating proformainvoice:', error);
-    }
+  const handleDebitDateChange = (date) => {
+    setFormData({ ...formData, debitdate: date });
   };
 
   //manage value of input of row
@@ -334,72 +244,133 @@ const Proformainvoice = () => {
     }
   };
 
-  const handleValidTillDateChange = (date) => {
-    setFormData({ ...formData, validtill: date });
-  };
-
-  const calculateValidTillDate = (proformaInvoiceDate) => {
-    const defaultValidityPeriod = 7;
-    const validTillDate = new Date(proformaInvoiceDate);
-    validTillDate.setDate(validTillDate.getDate() + defaultValidityPeriod);
-    return validTillDate;
-  };
-
-  const handleQuotationDateChange = (date) => {
-    const newValidTill = calculateValidTillDate(date);
-    setFormData({ ...formData, date, validtill: newValidTill });
-  };
-
   useEffect(() => {
-    const initialValidTill = calculateValidTillDate(formData.date);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      validtill: initialValidTill
-    }));
-    const generateAutoQuotationNumber = async () => {
+    const data = async () => {
+      if (id) {
+        const response = await dispatch(Debitnoteviewdata(id));
+        const { DebitCustomer, debitnoteno, debitdate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: DebitCustomer.id, debitdate, debitnoteno, totalSgst, mainTotal, totalMrp, totalIgst });
+        setSelectcustomer(DebitCustomer.id);
+        setCustomerState(DebitCustomer.state);
+        setCustomername(DebitCustomer.accountname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.DebitProduct.id,
+          product: item.DebitProduct.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.qty * item.rate,
+          gstrate: item.DebitProduct.gstrate,
+          gst: item.mrp * (item.DebitProduct.gstrate / 100)
+        }));
+        setRows(updatedRows);
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+      }
+    };
+    const generateAutoDebitnoteNumber = async () => {
       if (!id) {
         try {
-          const quotationResponse = await dispatch(fetchproformainvoiceList());
-          let nextQuotationNumber = 1;
-          if (quotationResponse.length === 0) {
-            const quotationNumber = `Q-${nextQuotationNumber}`;
+          const DebitnoteResponse = await dispatch(getallDebitnote());
+          console.log(DebitnoteResponse, 'DebitnoteResponse');
+          let nextDebitnoteNumber = 1;
+          if (DebitnoteResponse.length === 0) {
+            const DebitnoteNumber = nextDebitnoteNumber;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              ProFormaInvoice_no: quotationNumber
+              debitnoteno: Number(DebitnoteNumber)
             }));
             return;
           }
-          const existingQuotationNumbers = quotationResponse.map((quotation) => {
-            const quotationNumber = quotation.ProFormaInvoice_no.split('-')[1];
-            return parseInt(quotationNumber);
+          const existingDebitnoteNumbers = DebitnoteResponse.map((Debitnote) => {
+            const DebitnoteNumber = Debitnote.debitnoteno;
+            return parseInt(DebitnoteNumber);
           });
-          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
-          if (!isNaN(maxQuotationNumber)) {
-            nextQuotationNumber = maxQuotationNumber + 1;
+          const maxDebitnoteNumber = Math.max(...existingDebitnoteNumbers);
+          if (!isNaN(maxDebitnoteNumber)) {
+            nextDebitnoteNumber = maxDebitnoteNumber + 1;
           }
 
-          const quotationNumber = `Q-${nextQuotationNumber}`;
+          const DebitnoteNumber = nextDebitnoteNumber;
           setFormData((prevFormData) => ({
             ...prevFormData,
-            ProFormaInvoice_no: quotationNumber
+            debitnoteno: Number(DebitnoteNumber)
           }));
         } catch (error) {
-          console.error('Error generating auto proformainvoice number:', error);
+          console.error('Error generating auto Debit Note number:', error);
         }
       }
     };
-    generateAutoQuotationNumber();
-  }, [dispatch, formData.date, id]);
+    generateAutoDebitnoteNumber();
+    data();
+  }, [dispatch, id]);
+
+  const handlecreateDebitnote = async () => {
+    try {
+      if (id) {
+        const payload = {
+          ...formData,
+          totalQty: totalQuantity,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            qty: Number(row.qty),
+            rate: row.rate,
+            mrp: row.mrp
+          }))
+        };
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        await dispatch(updateDebitnote(id, payload, navigate));
+      } else {
+        const payload = {
+          ...formData,
+          totalQty: totalQuantity,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            qty: row.qty,
+            rate: row.rate,
+            mrp: row.mrp
+          }))
+        };
+        console.log(selectcustomer);
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        console.log(payload, 'payload');
+        await dispatch(createDebitnote(payload, navigate));
+      }
+    } catch (error) {
+      console.error('Error creating proformainvoice:', error);
+    }
+  };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Pro Forma Invoice
+            Update Debit Note
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Pro Forma Invoice
+            Create Debit Note
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -416,44 +387,28 @@ const Proformainvoice = () => {
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Debit Note No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
-                placeholder="Enter Quotation No."
-                id="ProFormaInvoice_no"
-                value={formData.ProFormaInvoice_no}
-                onChange={(e) => setFormData({ ...formData, ProFormaInvoice_no: e.target.value })}
+                placeholder="0001"
+                id="debitnoteno"
+                value={formData.debitnoteno}
+                onChange={(e) => setFormData({ ...formData, debitnoteno: e.target.value })}
               />
             </Grid>
-
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Pro forma invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Debit Note Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.date}
-                onChange={(date) => handleQuotationDateChange(date)}
+                selected={formData.debitdate}
+                onChange={(date) => handleDebitDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formData.validtill}
-                onChange={(date) => handleValidTillDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-                minDate={formData.date}
               />
             </Grid>
           </Grid>
@@ -488,7 +443,6 @@ const Proformainvoice = () => {
                         />
                       </TableCell>
                       <AnchorProductDrawer
-                        // props={gststate}
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
@@ -502,7 +456,7 @@ const Proformainvoice = () => {
                       <TableCell id="newcs" style={{ fontSize: '16px' }}>
                         {row.mrp}
                       </TableCell>
-                      <TableCell disabled={!canDeleteProformainvoiceQuotation()}>
+                      <TableCell disabled={!canDeleteDebitnote()}>
                         <DeleteIcon
                           onClick={() => {
                             handleDeleteRow(row.id, index);
@@ -593,7 +547,7 @@ const Proformainvoice = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
+                <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
                   <button
                     id="savebtncs"
                     style={{
@@ -603,7 +557,7 @@ const Proformainvoice = () => {
                     Cancel
                   </button>
                 </Link>
-                <button id="savebtncs" onClick={handleCreateQuotation}>
+                <button id="savebtncs" onClick={handlecreateDebitnote}>
                   Save
                 </button>
               </div>
@@ -611,21 +565,12 @@ const Proformainvoice = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
+                <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button
-                  id="savebtncs"
-                  style={{
-                    marginRight: '10px'
-                  }}
-                  onClick={handleCreateQuotation}
-                >
-                  Save & Next
-                </button>
-                <button id="savebtncs" onClick={handleCreateQuotation}>
+                <button id="savebtncs" onClick={handlecreateDebitnote}>
                   Save
                 </button>
               </div>
@@ -637,4 +582,4 @@ const Proformainvoice = () => {
   );
 };
 
-export default Proformainvoice;
+export default DebitNote;

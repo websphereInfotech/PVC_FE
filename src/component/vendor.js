@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import { createVendor } from '../store/thunk';
+import { CitySelect, StateSelect } from 'react-country-state-city';
+import 'react-country-state-city/dist/react-country-state-city.css';
 
 const AnchorVendorDrawer = ({ open, onClose }) => {
   AnchorVendorDrawer.propTypes = {
@@ -16,7 +18,7 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
   const dispatch = useDispatch();
 
   // State for radio buttons
-  const [bankdetail, setBankDetail] = React.useState(true);
+  const [bankdetail, setBankDetail] = React.useState(false);
   const [creditlimit, setCreditlimit] = React.useState(false);
   // State for input fields
   const [formData, setFormData] = React.useState({
@@ -32,8 +34,8 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     address1: '',
     address2: '',
     pincode: '',
-    state: '',
-    city: '',
+    // state: '',
+    // city: '',
     country: '',
     balance: ''
   });
@@ -44,13 +46,39 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-
+  const [bankName, setBankName] = React.useState('');
+  const [accountNumber, setAccountNumber] = React.useState('');
+  const [accountType, setAccountType] = React.useState('');
+  const [ifscCode, setIfscCode] = React.useState('');
+  const [countryid, setCountryid] = React.useState(101);
+  {
+    console.log(setCountryid);
+  }
+  const [stateid, setstateid] = React.useState(0);
+  const [totalCredit, setTotalCredit] = React.useState();
+  // Function to handle bank details change
   const handleBankDetailChange = (event) => {
     setBankDetail(event.target.value === 'true' ? true : false);
+    if (!event.target.value) {
+      setBankName('');
+      setAccountNumber('');
+      setAccountType('');
+      setIfscCode('');
+    }
+  };
+  const handleCityChange = (selectedCity) => {
+    setFormData({ ...formData, city: selectedCity.name });
+  };
+
+  const handleStateChange = (selectedState) => {
+    setFormData({ ...formData, state: selectedState.name });
   };
 
   const handleCreditDetailChange = (event) => {
     setCreditlimit(event.target.value === 'true' ? true : false);
+  };
+  const handleTotalCreditChange = (event) => {
+    setTotalCredit(event.target.value);
   };
 
   const handleSave = async () => {
@@ -60,6 +88,18 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
+      if (creditlimit) {
+        vendorData.totalcreadit = totalCredit;
+      }
+      if (bankdetail) {
+        vendorData.bankdetails = {
+          accountnumber: accountNumber,
+          ifsccode: ifscCode,
+          bankname: bankName,
+          accounttype: accountType
+        };
+      }
+      console.log(vendorData, 'createVendor');
       await dispatch(createVendor(vendorData));
     } catch (error) {
       console.error('Error creating vendor:', error);
@@ -126,23 +166,17 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
-            <Typography variant="subtitle1">
-              PAN/IT/TAN No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">PAN/IT/TAN No. :</Typography>
             <input placeholder="BJXXX001" id="panno" value={formData.panno} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">GST No.</Typography>
+            <Typography variant="subtitle1">
+              GST No.:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
             <input placeholder="GSTIN452" id="gstnumber" value={formData.gstnumber} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
-          <Grid item>
-            <Typography variant="subtitle1">
-              Mode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="Enter Mode" id="mode" value={formData.mode} onChange={handleInputChange} />
-          </Grid>
           <Grid item>
             <Typography variant="subtitle1">
               Default Credit Period (In days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -170,12 +204,6 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
           <Grid item>
             <Typography variant="subtitle1">
-              Country : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="Country" id="country" value={formData.country} onChange={handleInputChange} />
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1">
               Pincode : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="395001" id="pincode" value={formData.pincode} onChange={handleInputChange} />
@@ -186,13 +214,20 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               State : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="State" id="state" value={formData.state} onChange={handleInputChange} />
+            <StateSelect
+              countryid={countryid}
+              onChange={(selectedState) => {
+                setstateid(selectedState.id);
+                handleStateChange(selectedState);
+              }}
+              placeHolder="Select State"
+            />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1">
               City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="City" id="city" value={formData.city} onChange={handleInputChange} />
+            <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder="Select City" />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
@@ -205,6 +240,40 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
+          <Grid style={{ width: '100%' }}>
+            {bankdetail && (
+              <>
+                <Grid container spacing={2} style={{ paddingTop: '16px' }}>
+                  <Grid item>
+                    <Typography variant="subtitle1">
+                      Bank Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    </Typography>
+                    <input placeholder="Enter Bank Name" value={bankName} onChange={(e) => setBankName(e.target.value)} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1">
+                      Account Number: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    </Typography>
+                    <input placeholder="Enter Account Number" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} />
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} style={{ paddingTop: '16px' }}>
+                  <Grid item>
+                    <Typography variant="subtitle1">
+                      Account Type: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    </Typography>
+                    <input placeholder="Enter Account Type" value={accountType} onChange={(e) => setAccountType(e.target.value)} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1">
+                      IFSC Code: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    </Typography>
+                    <input placeholder="Enter IFSC Code" value={ifscCode} onChange={(e) => setIfscCode(e.target.value)} />
+                  </Grid>
+                </Grid>
+              </>
+            )}
+          </Grid>
           <Grid item sx={{ margin: '8px 16px' }} md={5}>
             <Typography variant="subtitle1">
               Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -214,6 +283,16 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>
           </Grid>
+        </Grid>
+        <Grid style={{ width: '100%' }}>
+          {creditlimit && (
+            <Grid item sx={{ margin: '8px 16px' }} md={5}>
+              <Typography variant="subtitle1">
+                Total Credit: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input placeholder="Enter Total Credit" value={totalCredit} onChange={handleTotalCreditChange} />
+            </Grid>
+          )}
         </Grid>
 
         <Grid item sx={{ margin: '8px 16px' }}>

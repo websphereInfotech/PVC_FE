@@ -342,6 +342,41 @@ const useCan = () => {
     return checkPermission('Bank Account', 'view_all_bankaccount');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE
+
+  const canCreateDebitnote = () => {
+    return checkPermission('Debit Note', 'create_debitNote');
+  };
+  const canUpdateDebitnote = () => {
+    return checkPermission('Debit Note', 'update_debitNote');
+  };
+  const canDeleteDebitnote = () => {
+    return checkPermission('Debit Note', 'delete_debitNote');
+  };
+  const canViewDebitnote = () => {
+    return checkPermission('Debit Note', 'view_single_debitNote');
+  };
+  const canViwAllDebitnote = () => {
+    return checkPermission('Debit Note', 'view_all_debitNote');
+  };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE
+
+  const canCreateCreditnote = () => {
+    return checkPermission('Credit Note', 'create_creditNote');
+  };
+  const canUpdateCreditnote = () => {
+    return checkPermission('Credit Note', 'update_creditNote');
+  };
+  const canDeleteCreditnote = () => {
+    return checkPermission('Credit Note', 'delete_creditNote');
+  };
+  const canViewCreditnote = () => {
+    return checkPermission('Credit Note', 'view_single_creditNote');
+  };
+  const canViwAllCreditnote = () => {
+    return checkPermission('Credit Note', 'view_all_creditNote');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     canCreateProformainvoiceQuotation,
@@ -451,7 +486,19 @@ const useCan = () => {
     canUpdateBankaccount,
     canDeleteBankaccount,
     canViewBankaccount,
-    canViwAllBankaccount
+    canViwAllBankaccount,
+    //  DEBIT NOTE ++++++++++++++++++
+    canCreateDebitnote,
+    canUpdateDebitnote,
+    canDeleteDebitnote,
+    canViewDebitnote,
+    canViwAllDebitnote,
+    //  CREDIT NOTE ++++++++++++++++++
+    canCreateCreditnote,
+    canUpdateCreditnote,
+    canDeleteCreditnote,
+    canViewCreditnote,
+    canViwAllCreditnote
   };
 };
 
