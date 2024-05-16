@@ -7,16 +7,7 @@ import { Link } from 'react-router-dom';
 import AnchorProductDrawer from '../../component/productadd';
 import AnchorVendorDrawer from '../../component/vendor';
 import { useMediaQuery } from '@mui/material';
-import {
-  fetchAllProducts,
-  createPurchase,
-  // createPurchaseItem,
-  // purchaseview,
-  updatePurchase,
-  // updatePurchaseItem,
-  // deletePurchaseItem,
-  fetchAllVendors
-} from 'store/thunk';
+import { fetchAllProducts, createPurchaseBill, fetchAllVendors, PurchaseBillview, updatePurchaseBill } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -43,6 +34,7 @@ const Purchasebill = () => {
     invoicedate: new Date(),
     vendorId: '',
     duedate: new Date(),
+    date: new Date(),
     terms: '',
     invoiceno: '',
     totalSgst: 0,
@@ -212,22 +204,32 @@ const Purchasebill = () => {
   useEffect(() => {
     const data = async () => {
       if (id) {
-        const response = await dispatch(Creditnoteviewdata(id));
-        console.log(response);
-        const { CreditCustomer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ vendorId: CreditCustomer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectvendor(CreditCustomer.id);
-        setvendorstate(CreditCustomer.state);
-        setvendorname(CreditCustomer.shortname);
+        const response = await dispatch(PurchaseBillview(id));
+        const { purchseVendor, date, invoicedate, invoiceno, duedate, terms, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({
+          vendorId: purchseVendor.id,
+          date,
+          invoicedate,
+          invoiceno,
+          duedate,
+          terms,
+          totalSgst,
+          mainTotal,
+          totalMrp,
+          totalIgst
+        });
+        setSelectvendor(purchseVendor.id);
+        setvendorstate(purchseVendor.state);
+        setvendorname(purchseVendor.shortname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
-          productId: item.CreditProduct.id,
-          product: item.CreditProduct.productname,
+          productId: item.purchseProduct.id,
+          product: item.purchseProduct.productname,
           qty: item.qty,
           rate: item.rate,
           mrp: item.rate * item.qty,
-          gstrate: item.CreditProduct.gstrate,
-          gst: item.mrp * (item.CreditProduct.gstrate / 100)
+          gstrate: item.purchseProduct.gstrate,
+          gst: item.mrp * (item.purchseProduct.gstrate / 100)
         }));
         setRows(updatedRows);
         const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
@@ -262,7 +264,7 @@ const Purchasebill = () => {
           payload.totalSgst = 0;
           payload.totalIgst = plusgst;
         }
-        await dispatch(updatePurchase(id, payload, navigate));
+        await dispatch(updatePurchaseBill(id, payload, navigate));
       } else {
         const payload = {
           ...formData,
@@ -285,8 +287,7 @@ const Purchasebill = () => {
           payload.totalSgst = 0;
           payload.totalIgst = plusgst;
         }
-        console.log(payload, 'payload');
-        await dispatch(createPurchase(payload, navigate));
+        await dispatch(createPurchaseBill(payload, navigate));
       }
     } catch (error) {
       console.error('Error creating purchae bill:', error);
@@ -294,6 +295,9 @@ const Purchasebill = () => {
   };
   const handleInvoiceDateChange = (date) => {
     setFormData({ ...formData, invoicedate: date });
+  };
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, date: date });
   };
   const handledueDateChange = (date) => {
     setFormData({ ...formData, duedate: date });
@@ -339,6 +343,16 @@ const Purchasebill = () => {
             id="invoiceno"
             value={formData.invoiceno}
             onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Date</Typography>
+          <DatePicker
+            selected={formData.invoicedate}
+            onChange={(date) => handleDateChange(date)}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showTimeSelect={false}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
@@ -501,7 +515,7 @@ const Purchasebill = () => {
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Link to="/purchasebilllist" style={{ textDecoration: 'none' }}>
+              <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
                 <button
                   id="savebtncs"
                   style={{
@@ -519,7 +533,7 @@ const Purchasebill = () => {
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
-              <Link to="/purchasebilllist" style={{ textDecoration: 'none' }}>
+              <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
                 <button id="savebtncs">Cancel</button>
               </Link>
             </div>

@@ -187,9 +187,9 @@ export const VIEW_PURCHASEBILL_FAILURE = 'VIEW_PURCHASEBILL_FAILURE';
 export const CREATE_PURCHASEBILL_REQUEST = 'CREATE_PURCHASEBILL_REQUEST';
 export const CREATE_PURCHASEBILL_SUCCESS = 'CREATE_PURCHASEBILL_SUCCESS';
 export const CREATE_PURCHASEBILL_FAILURE = 'CREATE_PURCHASEBILL_FAILURE';
-export const CREATE_PURCHASEBILL_ITEM_REQUEST = 'CREATE_PURCHASEBILL_ITEM_REQUEST';
-export const CREATE_PURCHASEBILL_ITEM_SUCCESS = 'CREATE_PURCHASEBILL_ITEM_SUCCESS';
-export const CREATE_PURCHASEBILL_ITEM_FAILURE = 'CREATE_PURCHASEBILL_ITEM_FAILURE';
+export const UPDATE_PURCHASEBILL_REQUEST = 'UPDATE_PURCHASEBILL_REQUEST';
+export const UPDATE_PURCHASEBILL_SUCCESS = 'UPDATE_PURCHASEBILL_SUCCESS';
+export const UPDATE_PURCHASEBILL_FAILURE = 'UPDATE_PURCHASEBILL_FAILURE';
 
 // ########################################## PURCHASE RETURN ###############################################################################################
 export const FETCH_ALL_PURCHASERETURN_REQUEST = 'FETCH_ALL_PURCHASERETURN_REQUEST';
@@ -633,16 +633,16 @@ export const createPurchaseBillFailure = (error) => ({
   type: 'CREATE_PURCHASEBILL_FAILURE',
   payload: error
 });
-export const createPurchaseBillItemRequest = (data) => ({
-  type: 'CREATE_PURCHASEBILL_ITEM_REQUEST',
+export const updatePurchaseBillRequest = (data) => ({
+  type: 'UPDATE_PURCHASEBILL_REQUEST',
   payload: data
 });
-export const createPurchaseBillItemSuccess = (data) => ({
-  type: 'CREATE_PURCHASEBILL_ITEM_SUCCESS',
+export const updatePurchaseBillSuccess = (data) => ({
+  type: 'UPDATE_PURCHASEBILL_SUCCESS',
   payload: data
 });
-export const createPurchaseBillItemFailure = (error) => ({
-  type: 'CREATE_PURCHASEBILL_ITEM_FAILURE',
+export const updatePurchaseBillFailure = (error) => ({
+  type: 'UPDATE_PURCHASEBILL_FAILURE',
   payload: error
 });
 export const getAllPurchasebillRequest = (data) => ({

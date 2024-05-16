@@ -14,15 +14,13 @@ import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const columns = [
-  { id: 'billdate', label: 'Date', minWidth: 170 },
-  { id: 'billno', label: 'Bill No.', minWidth: 100 },
-  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
-  { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 170, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 170, align: 'center' }
+  { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
+  { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
+  { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
+  // { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 export default function PurchaseBillList() {
@@ -37,7 +35,6 @@ export default function PurchaseBillList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallPurchaseBill());
-        // console.log(response, '>>>>>>>>>>>>>>>>');
         setPurchasebill(response.data);
       } catch (error) {
         console.error('Error fetching purchase bill:', error);
@@ -109,10 +106,12 @@ export default function PurchaseBillList() {
                       <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(row.id)}>
                         Delete
                       </Button>
-                    ) : column.id === 'billdate' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                    ) : column.id === 'invoicedate' ? (
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'duedate' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'vendor' ? (
+                      row.purchseVendor.accountname
                     ) : (
                       row[column.id]
                     )}

@@ -104,9 +104,9 @@ const Salesinvoiceview = () => {
                       <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}
-                  <TableCell></TableCell>
-                  <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
-                  <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
+                <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
                 <TableCell></TableCell>
               </TableBody>
             </Table>
