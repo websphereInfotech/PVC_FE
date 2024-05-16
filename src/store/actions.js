@@ -190,6 +190,9 @@ export const CREATE_PURCHASEBILL_FAILURE = 'CREATE_PURCHASEBILL_FAILURE';
 export const UPDATE_PURCHASEBILL_REQUEST = 'UPDATE_PURCHASEBILL_REQUEST';
 export const UPDATE_PURCHASEBILL_SUCCESS = 'UPDATE_PURCHASEBILL_SUCCESS';
 export const UPDATE_PURCHASEBILL_FAILURE = 'UPDATE_PURCHASEBILL_FAILURE';
+export const DELETE_PURCHASEBILL_REQUEST = 'DELETE_PURCHASEBILL_REQUEST';
+export const DELETE_PURCHASEBILL_SUCCESS = 'DELETE_PURCHASEBILL_SUCCESS';
+export const DELETE_PURCHASEBILL_FAILURE = 'DELETE_PURCHASEBILL_FAILURE';
 
 // ########################################## PURCHASE RETURN ###############################################################################################
 export const FETCH_ALL_PURCHASERETURN_REQUEST = 'FETCH_ALL_PURCHASERETURN_REQUEST';
@@ -667,6 +670,18 @@ export const viewPurchasebillSuccess = (data) => ({
 });
 export const viewPurchasebillFailure = (error) => ({
   type: 'VIEW_PURCHASEBILL_FAILURE',
+  payload: error
+});
+export const deletePurchasebillRequest = (data) => ({
+  type: 'DELETE_PURCHASEBILL_REQUEST',
+  payload: data
+});
+export const deletePurchasebillSuccess = (data) => ({
+  type: 'DELETE_PURCHASEBILL_SUCCESS',
+  payload: data
+});
+export const deletePurchasebillFailure = (error) => ({
+  type: 'DELETE_PURCHASEBILL_FAILURE',
   payload: error
 });
 
