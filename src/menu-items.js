@@ -211,23 +211,29 @@ const MenuItem = () => {
             icon: icons['AccountBalanceIcon'],
             children: [
               {
-                id: 'Payment',
-                title: 'Payment',
+                id: 'Cash',
+                title: 'Cash',
                 type: 'collapse',
                 icon: icons['PaymentsIcon'],
                 children: [
                   {
-                    id: 'payment-list',
-                    title: 'Payments',
+                    id: 'payment Cash',
+                    title: 'Payment Cash',
                     type: 'item',
                     url: '/paymentlist'
+                  },
+                  {
+                    id: 'recieve cash',
+                    title: 'Recieve Cash',
+                    type: 'item',
+                    url: '/paymentrecieveList'
+                  },
+                  {
+                    id: 'ledger',
+                    title: 'Ledger',
+                    type: 'item',
+                    url: '/ledgerlist'
                   }
-                  // {
-                  //   id: 'payment-recieve',
-                  //   title: 'Payment Recieve',
-                  //   type: 'item',
-                  //   url: '/paymentrecieve'
-                  // }
                 ]
               },
               {

@@ -25,10 +25,11 @@ const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/sale
 const Salescashview = Loadable(lazy(() => import('../views/sale managenment/salescashview')));
 //
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment +++++++++++++++++++++++++++++++++++++++++++++++++++
-const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/payment')));
-const PaymentViewPage = Loadable(lazy(() => import('../views/finacial managenment/paymentview')));
-const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/paymentlist')));
-const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/paymentrecieve')));
+const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/paymentcash')));
+const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/paymencashtlist')));
+const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/paymentrecievecash')));
+const PaymentrecieveList = Loadable(lazy(() => import('../views/finacial managenment/paymentrecievecashlist')));
+const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/ledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expense +++++++++++++++++++++++++++++++++++++++++++++++++++
 const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expencelist')));
@@ -134,11 +135,12 @@ const MainRoutes = {
     { path: '/salescashview/:id', element: <Salescashview /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of paymentss +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/payment', element: <PaymentPage /> },
-    { path: '/payment/:id', element: <PaymentPage /> },
-    { path: '/paymentview/:id', element: <PaymentViewPage /> },
+    { path: '/paymentcash', element: <PaymentPage /> },
+    { path: '/paymentcash/:id', element: <PaymentPage /> },
     { path: '/paymentlist', element: <PaymentListPage /> },
     { path: '/paymentrecieve', element: <Paymentrecieve /> },
+    { path: '/paymentrecieveList', element: <PaymentrecieveList /> },
+    { path: '/ledgerlist', element: <Ledgerlist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/expenselist', element: <ExpensePage /> },

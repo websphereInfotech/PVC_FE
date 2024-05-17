@@ -32,7 +32,7 @@ const Creditnote = () => {
     org_invoicedate: new Date(),
     creditnoteNo: '',
     org_invoiceno: '',
-    LL_RR_no: '',
+    LL_RR_no: 0,
     dispatchThrough: '',
     motorVehicleNo: '',
     destination: '',

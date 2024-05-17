@@ -1,27 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
+import {
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TablePagination,
+  TableHead,
+  TableContainer,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getallPayment, paymentview } from 'store/thunk';
 
 const columns = [
-  { id: 'id', label: 'ID', align: 'center' },
-  { id: 'voucherno', label: 'Vendor', align: 'center' },
   { id: 'paymentdate', label: 'Date', align: 'center' },
-  { id: 'billno', label: 'Invoice No.', align: 'center' },
-  { id: 'mode', label: 'Mode', align: 'center' },
-  { id: 'refno', label: 'Reference', align: 'center' },
+  { id: 'voucherno', label: 'Customer', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
-  { id: 'view', label: 'View', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' }
+  { id: 'refno', label: 'Description', align: 'center' },
+  { id: 'edit', label: 'Edit', align: 'center' },
+  { id: 'delete', label: 'Delete', align: 'center' }
 ];
 
-const PaymentListPage = () => {
+const PaymentrecieveList = () => {
   const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   useEffect(() => {
     dispatch(getallPayment())
@@ -29,12 +42,12 @@ const PaymentListPage = () => {
         setPayments(data.data);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching payment recieve data:', error);
       });
   }, [dispatch]);
 
   const handleMakePayment = () => {
-    navigate('/payment');
+    navigate('/paymentrecieve');
     // console.log('Payment made');
   };
 
@@ -43,9 +56,9 @@ const PaymentListPage = () => {
     navigate(`/paymentview/${id}`);
   };
 
-  const handleUpdatePayment = (id) => {
-    // console.log('id',id);
-    navigate(`/payment/${id}`);
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+    // setSelectedId(id);
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -61,10 +74,10 @@ const PaymentListPage = () => {
     <Card style={{ width: '100%', padding: '25px' }}>
       {/* <Card style={{ width: '100%' }}> */}
       <Typography variant="h4" align="center" id="mycss">
-        Payment List
+        Recieve Payment List
       </Typography>
       <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleMakePayment}>
-        Make Payment
+        Recieve Payment
       </Button>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -82,13 +95,13 @@ const PaymentListPage = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
+                    {column.id === 'edit' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleViewPayment(payment?.id)}>
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePayment(payment?.id)}>
                         Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(payment.id)}>
+                        Delete
                       </Button>
                     ) : column.id === 'paymentdate' ? (
                       new Date(payment[column.id]).toLocaleDateString()
@@ -111,8 +124,20 @@ const PaymentListPage = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this ?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
 
-export default PaymentListPage;
+export default PaymentrecieveList;
