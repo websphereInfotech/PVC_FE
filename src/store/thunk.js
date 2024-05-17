@@ -32,6 +32,9 @@ import {
   viewProformainvoiceSuccess,
   viewProformainvoiceFailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
+  fetchAllCustomersCashRequest,
+  fetchAllCustomersCashSuccess,
+  fetchAllCustomersCashFailure,
   fetchAllCustomersRequest,
   fetchAllCustomersSuccess,
   fetchAllCustomersFailure,
@@ -39,6 +42,9 @@ import {
   createCustomerSuccess,
   createCustomerFailure,
   // PRODUCT ++++++++++++++++++++++++++++++++++
+  fetchAllProdutscashRequest,
+  fetchAllProdutscashSuccess,
+  fetchAllProdutrscashFailure,
   fetchAllProdutsRequest,
   fetchAllProdutsSuccess,
   fetchAllProdutrsFailure,
@@ -112,6 +118,22 @@ import {
   deleteSalesinvoiceRequest,
   deleteSalesinvoiceSuccess,
   deleteSalesinvoiceFailure,
+  //  SALESINVOICE ++++++++++++++++++++++
+  createSalesinvoicecashRequest,
+  createSalesinvoicecashSuccess,
+  createSalesinvoicecashFailure,
+  deleteSalesinvoicecashRequest,
+  deleteSalesinvoicecashSuccess,
+  deleteSalesinvoicecashFailure,
+  updateSalesinvoicecashRequest,
+  updateSalesinvoicecashSuccess,
+  updateSalesinvoicecashFailure,
+  getAllSalesinvoicecashRequest,
+  getAllSalesinvoicecashSuccess,
+  getAllSalesinvoicecashFailure,
+  viewSalesinvoicecashRequest,
+  viewSalesinvoicecashSuccess,
+  viewSalesinvoicecashFailure,
   // PURCHASE BILL +++++++++++++++
   createPurchaseBillRequest,
   createPurchaseBillSuccess,
@@ -128,6 +150,22 @@ import {
   deletePurchasebillRequest,
   deletePurchasebillSuccess,
   deletePurchasebillFailure,
+  // PURCHASE BILL CASH +++++++++++
+  createPurchaseBillCashRequest,
+  createPurchaseBillCashSuccess,
+  createPurchaseBillCashFailure,
+  getAllPurchasebillCashRequest,
+  getAllPurchasebillCashSuccess,
+  getAllPurchasebillCashFailure,
+  viewPurchasebillCashRequest,
+  viewPurchasebillCashSuccess,
+  viewPurchasebillCashFailure,
+  updatePurchaseBillCashRequest,
+  updatePurchaseBillCashSuccess,
+  updatePurchaseBillCashFailure,
+  deletePurchasebillCashRequest,
+  deletePurchasebillCashSuccess,
+  deletePurchasebillCashFailure,
   // EXPENSE +++++++++++++++++++++++++
   createExpenseRequest,
   createExpenseFailure,
@@ -184,6 +222,9 @@ import {
   createVendorRequest,
   createVendorSuccess,
   createVendorFailure,
+  fetchAllVendorsCashRequest,
+  fetchAllVendorsCashSuccess,
+  fetchAllVendorsCashFailure,
   fetchAllVendorsRequest,
   fetchAllVendorsSuccess,
   fetchAllVendorsFailure,
@@ -499,6 +540,20 @@ export const deleteDileveryChallan = (id) => {
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CUSTOMER ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const fetchAllCustomersCash = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllCustomersCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_customer`, config);
+      const data = response.data.data;
+      dispatch(fetchAllCustomersCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllCustomersCashFailure(error.message));
+    }
+  };
+};
 export const fetchAllCustomers = () => {
   return async (dispatch) => {
     dispatch(fetchAllCustomersRequest());
@@ -538,6 +593,20 @@ export const createCustomer = (customerData) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PRODUCT ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const fetchAllProductsCash = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllProdutscashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_product`, config);
+      const data = response.data.data;
+      dispatch(fetchAllProdutscashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllProdutrscashFailure(error.message));
+    }
+  };
+};
 export const fetchAllProducts = () => {
   return async (dispatch) => {
     dispatch(fetchAllProdutsRequest());
@@ -725,6 +794,100 @@ export const deleteSalesinvoice = (id) => {
     } catch (error) {
       toast.error(error.response.data.message);
       dispatch(deleteSalesinvoiceFailure());
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALESINVOICE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createSalesInvoiceCash = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createSalesinvoicecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_salesinvoice`, payload, config);
+      const cretesalesinvoicecash = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/salescashlist');
+        }
+      });
+      dispatch(createSalesinvoicecashSuccess(cretesalesinvoicecash));
+      return cretesalesinvoicecash;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(createSalesinvoicecashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallSalesInvoiceCash = () => {
+  return async (dispatch) => {
+    dispatch(getAllSalesinvoicecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_salesInvoice`, config);
+      const getallSalesinvoiceCash = response.data;
+      dispatch(getAllSalesinvoicecashSuccess(getallSalesinvoiceCash));
+      return getallSalesinvoiceCash;
+    } catch (error) {
+      dispatch(getAllSalesinvoicecashFailure(error.message));
+    }
+  };
+};
+export const SalesInvoiceCashview = (id) => {
+  return async (dispatch) => {
+    dispatch(viewSalesinvoicecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_salesInvoice/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewSalesinvoicecashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewSalesinvoicecashFailure(error.message));
+    }
+  };
+};
+export const updateSalesinvoiceCash = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateSalesinvoicecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_salesinvoice/${id}`, payload, config);
+      const updateSalesinvoiceCashData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/salescashlist');
+        }
+      });
+      dispatch(updateSalesinvoicecashSuccess(updateSalesinvoiceCashData));
+      return updateSalesinvoiceCashData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updateSalesinvoicecashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteSalesinvoicecash = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteSalesinvoicecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_salesInvoice/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteSalesinvoicecashSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteSalesinvoicecashFailure());
     }
   };
 };
@@ -1107,6 +1270,96 @@ export const deletePurchasebill = (id) => {
     }
   };
 };
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createPurchaseBillCash = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createPurchaseBillCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_purchasebill`, payload, config);
+      const cretepurchasebillcash = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 900,
+        onClose: () => {
+          navigate('/purchasebillcashList');
+        }
+      });
+      dispatch(createPurchaseBillCashSuccess(cretepurchasebillcash));
+      return cretepurchasebillcash;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(createPurchaseBillCashFailure(error.message));
+    }
+  };
+};
+export const getallPurchaseBillCash = () => {
+  return async (dispatch) => {
+    dispatch(getAllPurchasebillCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_purchasebill`, config);
+      const getallPurchasebillcash = response.data;
+      dispatch(getAllPurchasebillCashSuccess(getallPurchasebillcash));
+      return getallPurchasebillcash;
+    } catch (error) {
+      dispatch(getAllPurchasebillCashFailure(error.message));
+    }
+  };
+};
+export const PurchaseBillviewCash = (id) => {
+  return async (dispatch) => {
+    dispatch(viewPurchasebillCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_purchasebill/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewPurchasebillCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewPurchasebillCashFailure(error.message));
+    }
+  };
+};
+export const updatePurchaseBillCash = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseBillCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_purchasebill/${id}`, payload, config);
+      const updatePurchasebillData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 900,
+        onClose: () => {
+          navigate('/purchasebillcashList');
+        }
+      });
+      dispatch(updatePurchaseBillCashSuccess(updatePurchasebillData));
+      return updatePurchasebillData;
+    } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
+      dispatch(updatePurchaseBillCashFailure(error.message));
+    }
+  };
+};
+export const deletePurchasebillCash = (id) => {
+  return async (dispatch) => {
+    dispatch(deletePurchasebillCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_purchasebill/${id}`, config);
+      const deletePurchasebillData = response;
+      dispatch(deletePurchasebillCashSuccess(deletePurchasebillData));
+      window.location.reload();
+      return deletePurchasebillData;
+    } catch (error) {
+      dispatch(deletePurchasebillCashFailure(error.message));
+      throw error;
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ EXPENSE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createExpenseItem = (payload) => {
   return async (dispatch) => {
@@ -1409,7 +1662,20 @@ export const fetchAllVendors = () => {
     }
   };
 };
-
+export const fetchAllVendorsCash = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllVendorsCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_vandor`, config);
+      const data = response.data.data;
+      dispatch(fetchAllVendorsCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllVendorsCashFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const fetchAllCompany = () => {
   return async (dispatch) => {

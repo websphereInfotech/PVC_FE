@@ -374,6 +374,42 @@ const useCan = () => {
     return checkPermission('Credit Note', 'view_all_creditNote');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALES CASH
+
+  const canCreateSalescash = () => {
+    return checkPermission('Sales Cash', 'create_sales_cash');
+  };
+  const canUpdateSalescash = () => {
+    return checkPermission('Sales Cash', 'update_sales_cash');
+  };
+  const canDeleteSalescash = () => {
+    return checkPermission('Sales Cash', 'delete_sales_cash');
+  };
+  const canViewSalescash = () => {
+    return checkPermission('Sales Cash', 'view_sales_cash');
+  };
+  const canViwAllSalescash = () => {
+    return checkPermission('Sales Cash', 'view_all_sales_cash');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL CASH
+
+  const canCreatePurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'create_purchase_cash');
+  };
+  const canUpdatePurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'update_purchase_cash');
+  };
+  const canDeletePurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'delete_purchase_cash');
+  };
+  const canViewPurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'view_purchase_cash');
+  };
+  const canViwAllPurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'view_all_purchase_cash');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     canCreateProformainvoiceQuotation,
@@ -494,7 +530,19 @@ const useCan = () => {
     canUpdateCreditnote,
     canDeleteCreditnote,
     canViewCreditnote,
-    canViwAllCreditnote
+    canViwAllCreditnote,
+    // SALES CASH ++++++++++++++++++++
+    canCreateSalescash,
+    canUpdateSalescash,
+    canDeleteSalescash,
+    canViewSalescash,
+    canViwAllSalescash,
+    // PURCHASE BILL CASH ++++++++++++
+    canCreatePurchasebillcash,
+    canUpdatePurchasebillcash,
+    canDeletePurchasebillcash,
+    canViewPurchasebillcash,
+    canViwAllPurchasebillcash
   };
 };
 

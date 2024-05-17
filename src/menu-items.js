@@ -139,6 +139,23 @@ const MenuItem = () => {
     'view_single_purchasebill',
     'view_all_purchasebill'
   ]);
+
+  const hasAllPermissionSalesCash = checkAllPermissions('Sales Cash', [
+    'create_sales_cash',
+    'update_sales_cash',
+    'delete_sales_cash',
+    'view_sales_cash',
+    'view_all_sales_cash'
+  ]);
+
+  const hasAllPermissionPurchasebillCash = checkAllPermissions('Purchase Cash', [
+    'create_purchase_cash',
+    'update_purchase_cash',
+    'delete_purchase_cash',
+    'view_purchase_cash',
+    'view_all_purchase_cash'
+  ]);
+
   return {
     items: [
       {
@@ -249,12 +266,14 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/creditnotelist'
                   },
-                  {
-                    id: 'sales cash',
-                    title: 'Sales Cash',
-                    type: 'item'
-                    // url: '/creditnotelist'
-                  }
+                  createConfig() === 'C'
+                    ? hasAllPermissionSalesCash && {
+                        id: 'sales cash',
+                        title: 'Sales Cash',
+                        type: 'item',
+                        url: '/salescashlist'
+                      }
+                    : {}
                 ]
               },
               {
@@ -273,8 +292,16 @@ const MenuItem = () => {
                     id: 'Purchase Bill',
                     title: 'Purchase Bill',
                     type: 'item',
-                    url: '/purchasebilllist'
+                    url: '/purchasebillList'
                   },
+                  createConfig() === 'C'
+                    ? hasAllPermissionPurchasebillCash && {
+                        id: 'Purchase Bill Cash',
+                        title: 'Purchase Bill Cash',
+                        type: 'item',
+                        url: '/purchasebillcashList'
+                      }
+                    : {},
                   {
                     id: 'Purchase Return',
                     title: 'Purchase Return',
