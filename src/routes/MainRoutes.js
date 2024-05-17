@@ -19,6 +19,11 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 const Reports = Loadable(lazy(() => import('../views/reports')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of salescash +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Salescash = Loadable(lazy(() => import('../views/sale managenment/salescash')));
+const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/salescashlist')));
+const Salescashview = Loadable(lazy(() => import('../views/sale managenment/salescashview')));
+//
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment +++++++++++++++++++++++++++++++++++++++++++++++++++
 const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/payment')));
 const PaymentViewPage = Loadable(lazy(() => import('../views/finacial managenment/paymentview')));
@@ -65,6 +70,11 @@ const AddPurchasePage = Loadable(lazy(() => import('../views/purches managenment
 const Purchasebill = Loadable(lazy(() => import('../views/purches managenment/purchasebill')));
 const PurchaseBillList = Loadable(lazy(() => import('../views/purches managenment/purchasebilllist')));
 const Purchasebillview = Loadable(lazy(() => import('../views/purches managenment/purchasebillview')));
+
+// +++++++++++++++++++++++++++++++++++++++++ Routes of purchasse bill cash ++++++++++++++++++++++++++++++++++++++++++++
+const Purchasebillcash = Loadable(lazy(() => import('../views/purches managenment/purchasebillcash')));
+const Purchasebillcashlist = Loadable(lazy(() => import('../views/purches managenment/purchasebillcashlist')));
+const Purchasebillcashview = Loadable(lazy(() => import('../views/purches managenment/purchasebillcashview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase return +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Purchasereturn = Loadable(lazy(() => import('../views/purches managenment/purchasereturn')));
@@ -117,6 +127,11 @@ const MainRoutes = {
       )
     },
     { path: '/profile', element: <SamplePage /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/salescash', element: <Salescash /> },
+    { path: '/salescash/:id', element: <Salescash /> },
+    { path: '/salescashlist', element: <Salescashlist /> },
+    { path: '/salescashview/:id', element: <Salescashview /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of paymentss +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/payment', element: <PaymentPage /> },
@@ -175,6 +190,12 @@ const MainRoutes = {
     { path: '/purchasebill/:id', element: <Purchasebill /> },
     { path: '/purchasebillList', element: <PurchaseBillList /> },
     { path: '/purchasebillview/:id', element: <Purchasebillview /> },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchasebill Cash  +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/purchasebillcash', element: <Purchasebillcash /> },
+    { path: '/purchasebillcash/:id', element: <Purchasebillcash /> },
+    { path: '/purchasebillcashList', element: <Purchasebillcashlist /> },
+    { path: '/purchasebillcashview/:id', element: <Purchasebillcashview /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchasereturn +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/purchasereturn', element: <Purchasereturn /> },

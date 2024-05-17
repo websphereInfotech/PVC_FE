@@ -328,7 +328,9 @@ const Purchasebill = () => {
         </Grid>
         <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">terms</Typography>
+          <Typography variant="subtitle1">
+            terms: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
           <input
             placeholder="Enter terms days"
             id="terms"
@@ -337,7 +339,9 @@ const Purchasebill = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Inv. No.</Typography>
+          <Typography variant="subtitle1">
+            Inv. No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
           <input
             placeholder="Enter Inv. No."
             id="invoiceno"
@@ -346,7 +350,9 @@ const Purchasebill = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Date</Typography>
+          <Typography variant="subtitle1">
+            Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
           <DatePicker
             selected={formData.invoicedate}
             onChange={(date) => handleDateChange(date)}
@@ -356,7 +362,9 @@ const Purchasebill = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Inv. Date</Typography>
+          <Typography variant="subtitle1">
+            Inv. Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
           <DatePicker
             selected={formData.invoicedate}
             onChange={(date) => handleInvoiceDateChange(date)}
@@ -366,7 +374,9 @@ const Purchasebill = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Due Date</Typography>
+          <Typography variant="subtitle1">
+            Due Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
           <DatePicker
             selected={formData.duedate}
             onChange={(date) => handledueDateChange(date)}
@@ -380,11 +390,17 @@ const Purchasebill = () => {
             <Table>
               <TableHead>
                 <TableCell width={420} sx={{ fontSize: '12px' }}>
-                  PRODUCT/SERVICE
+                  PRODUCT/SERVICE <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                 </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>
+                  QTY<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>
+                  RATE (₹)<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>
+                  AMOUNT (₹)<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
               </TableHead>
               <TableBody>
