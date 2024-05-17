@@ -48,17 +48,11 @@ export const FETCH_ALL_CUSTOMERS_FAILURE = 'FETCH_ALL_CUSTOMERS_FAILURE';
 export const CREATE_CUSTOMER_REQUEST = 'CREATE_CUSTOMER_REQUEST';
 export const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS';
 export const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE';
-export const CREATE_CUSTOM_FEILD_REQUEST = 'CREATE_CUSTOM_FEILD_REQUEST';
-export const CREATE_CUSTOM_FEILD_SUCCESS = 'CREATE_CUSTOM_FEILD_SUCCESS';
-export const CREATE_CUSTOM_FEILD_FAILURE = 'CREATE_CUSTOM_FEILD_FAILURE';
 
 // ########################################## DELIVERY CHALLAN ###############################################################################################
 export const CREATE_DELIVERY_CHALLAN_REQUEST = 'CREATE_DELIVERY_CHALLAN_REQUEST';
 export const CREATE_DELIVERY_CHALLAN_SUCCESS = 'CREATE_DELIVERY_CHALLAN_SUCCESS';
 export const CREATE_DELIVERY_CHALLAN_FAILURE = 'CREATE_DELIVERY_CHALLAN_FAILURE';
-export const CREATE_DELIVERY__ITEM_REQUEST = 'CREATE_DELIVERY__ITEM_REQUEST';
-export const CREATE_DELIVERY__ITEM_SUCCESS = 'CREATE_DELIVERY__ITEM_SUCCESS';
-export const CREATE_DELIVERY__ITEM_FAILURE = 'CREATE_DELIVERY__ITEM_FAILURE';
 export const FETCH_ALL_DELIVERYCHALLAN_REQUEST = 'FETCH_ALL_DELIVERYCHALLAN_REQUEST';
 export const FETCH_ALL_DELIVERYCHALLAN_SUCCESS = 'FETCH_ALL_DELIVERYCHALLAN_SUCCESS';
 export const FETCH_ALL_DELIVERYCHALLAN_FAILURE = 'FETCH_ALL_DELIVERYCHALLAN_FAILURE';
@@ -68,9 +62,6 @@ export const VIEW_DELIVERYCHALLAN_FAILURE = 'VIEW_DELIVERYCHALLAN_FAILURE';
 export const UPDATE_DILEVERYCHALLAN_REQUEST = 'UPDATE_DILEVERYCHALLAN_REQUEST';
 export const UPDATE_DILEVERYCHALLAN_SUCCESS = 'UPDATE_DILEVERYCHALLAN_SUCCESS';
 export const UPDATE_DILEVERYCHALLAN_FAILURE = 'UPDATE_DILEVERYCHALLAN_FAILURE';
-export const UPDATE_DILEVERYCHALLAN_ITEM_REQUEST = 'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST';
-export const UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS = 'UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS';
-export const UPDATE_DILEVERYCHALLAN_ITEM_FAILURE = 'UPDATE_DILEVERYCHALLAN_ITEM_FAILURE';
 export const DELETE_DILEVERYCHALLAN_ITEM_REQUEST = 'DELETE_DILEVERYCHALLAN_ITEM_REQUEST';
 export const DELETE_DILEVERYCHALLAN_ITEM_SUCCESS = 'DELETE_DILEVERYCHALLAN_ITEM_SUCCESS';
 export const DELETE_DILEVERYCHALLAN_ITEM_FAILURE = 'DELETE_DILEVERYCHALLAN_ITEM_FAILURE';
@@ -196,9 +187,12 @@ export const VIEW_PURCHASEBILL_FAILURE = 'VIEW_PURCHASEBILL_FAILURE';
 export const CREATE_PURCHASEBILL_REQUEST = 'CREATE_PURCHASEBILL_REQUEST';
 export const CREATE_PURCHASEBILL_SUCCESS = 'CREATE_PURCHASEBILL_SUCCESS';
 export const CREATE_PURCHASEBILL_FAILURE = 'CREATE_PURCHASEBILL_FAILURE';
-export const CREATE_PURCHASEBILL_ITEM_REQUEST = 'CREATE_PURCHASEBILL_ITEM_REQUEST';
-export const CREATE_PURCHASEBILL_ITEM_SUCCESS = 'CREATE_PURCHASEBILL_ITEM_SUCCESS';
-export const CREATE_PURCHASEBILL_ITEM_FAILURE = 'CREATE_PURCHASEBILL_ITEM_FAILURE';
+export const UPDATE_PURCHASEBILL_REQUEST = 'UPDATE_PURCHASEBILL_REQUEST';
+export const UPDATE_PURCHASEBILL_SUCCESS = 'UPDATE_PURCHASEBILL_SUCCESS';
+export const UPDATE_PURCHASEBILL_FAILURE = 'UPDATE_PURCHASEBILL_FAILURE';
+export const DELETE_PURCHASEBILL_REQUEST = 'DELETE_PURCHASEBILL_REQUEST';
+export const DELETE_PURCHASEBILL_SUCCESS = 'DELETE_PURCHASEBILL_SUCCESS';
+export const DELETE_PURCHASEBILL_FAILURE = 'DELETE_PURCHASEBILL_FAILURE';
 
 // ########################################## PURCHASE RETURN ###############################################################################################
 export const FETCH_ALL_PURCHASERETURN_REQUEST = 'FETCH_ALL_PURCHASERETURN_REQUEST';
@@ -368,18 +362,6 @@ export const createCustomerFailure = (error) => ({
   type: 'CREATE_CUSTOMER_FAILURE',
   payload: error
 });
-export const createCustomFeildRequest = (data) => ({
-  type: 'CREATE_CUSTOM_FEILD_REQUEST',
-  payload: data
-});
-export const createCustomFeildSuccess = (data) => ({
-  type: 'CREATE_CUSTOM_FEILD_SUCCESS',
-  payload: data
-});
-export const createCustomFeildFailure = (error) => ({
-  type: 'CREATE_CUSTOM_FEILD_FAILURE',
-  payload: error
-});
 
 // ################################################################ DELIVERY CHALLAN ################################################################################
 export const createDeliveryChallanRequest = (data) => ({
@@ -392,18 +374,6 @@ export const createDeliveryChallanSuccess = (data) => ({
 });
 export const createDeliveryChallanFailure = (error) => ({
   type: 'CREATE_DELIVERY_CHALLAN_FAILURE',
-  payload: error
-});
-export const createDeliveryChallanItemRequest = (data) => ({
-  type: 'CREATE_DELIVERY__ITEM_REQUEST',
-  payload: data
-});
-export const createDeliveryChallanItemSuccess = (data) => ({
-  type: 'CREATE_DELIVERY__ITEM_SUCCESS',
-  payload: data
-});
-export const createDeliveryChallanItemFailure = (error) => ({
-  type: 'CREATE_DELIVERY__ITEM_FAILURE',
   payload: error
 });
 export const getAllDeliverychallanRequest = (data) => ({
@@ -440,18 +410,6 @@ export const updateDileverychallanSuccess = (data) => ({
 });
 export const updateDileverychallanFailure = (error) => ({
   type: 'UPDATE_DILEVERYCHALLAN_FAILURE',
-  payload: error
-});
-export const updateDileverychallanItemRequest = (data) => ({
-  type: 'UPDATE_DILEVERYCHALLAN_ITEM_REQUEST',
-  payload: data
-});
-export const updateDileverychallanItemSuccess = (data) => ({
-  type: 'UPDATE_DILEVERYCHALLAN_ITEM_SUCCESS',
-  payload: data
-});
-export const updateDileverychallanItemFailure = (error) => ({
-  type: 'UPDATE_DILEVERYCHALLAN_ITEM_FAILURE',
   payload: error
 });
 export const deleteDileverychallanItemRequest = (data) => ({
@@ -678,16 +636,16 @@ export const createPurchaseBillFailure = (error) => ({
   type: 'CREATE_PURCHASEBILL_FAILURE',
   payload: error
 });
-export const createPurchaseBillItemRequest = (data) => ({
-  type: 'CREATE_PURCHASEBILL_ITEM_REQUEST',
+export const updatePurchaseBillRequest = (data) => ({
+  type: 'UPDATE_PURCHASEBILL_REQUEST',
   payload: data
 });
-export const createPurchaseBillItemSuccess = (data) => ({
-  type: 'CREATE_PURCHASEBILL_ITEM_SUCCESS',
+export const updatePurchaseBillSuccess = (data) => ({
+  type: 'UPDATE_PURCHASEBILL_SUCCESS',
   payload: data
 });
-export const createPurchaseBillItemFailure = (error) => ({
-  type: 'CREATE_PURCHASEBILL_ITEM_FAILURE',
+export const updatePurchaseBillFailure = (error) => ({
+  type: 'UPDATE_PURCHASEBILL_FAILURE',
   payload: error
 });
 export const getAllPurchasebillRequest = (data) => ({
@@ -712,6 +670,18 @@ export const viewPurchasebillSuccess = (data) => ({
 });
 export const viewPurchasebillFailure = (error) => ({
   type: 'VIEW_PURCHASEBILL_FAILURE',
+  payload: error
+});
+export const deletePurchasebillRequest = (data) => ({
+  type: 'DELETE_PURCHASEBILL_REQUEST',
+  payload: data
+});
+export const deletePurchasebillSuccess = (data) => ({
+  type: 'DELETE_PURCHASEBILL_SUCCESS',
+  payload: data
+});
+export const deletePurchasebillFailure = (error) => ({
+  type: 'DELETE_PURCHASEBILL_FAILURE',
   payload: error
 });
 

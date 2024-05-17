@@ -76,10 +76,6 @@ const Deliverychallan = () => {
     setRows((prevRows) => [...prevRows, newRow]);
   };
 
-  // set form data value
-  // const handleChange = (field, value) => {
-  //   setFormData({ ...formData, [field]: value });
-  // };
   useEffect(() => {
     const updateTotalQuantity = () => {
       let total = 0;

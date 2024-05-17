@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { PurchaseBillview, getallPurchaseBill } from 'store/thunk';
+import { PurchaseBillview, deletePurchasebill, getallPurchaseBill } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,32 +12,31 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'billdate', label: 'Date', minWidth: 170 },
-  { id: 'billno', label: 'Bill No.', minWidth: 100 },
-  { id: 'vendor', label: 'Vendor', minWidth: 170, align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', minWidth: 170, align: 'center' },
-  { id: 'email', label: 'Email', minWidth: 170, align: 'center' },
-  { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 170, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 170, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 170, align: 'center' }
+  { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
+  { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
+  { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 export default function PurchaseBillList() {
+  const { canViewPurchasebill, canDeletePurchasebill, canUpdatePurchasebill, canCreatePurchasebill } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [purchasebill, setPurchasebill] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [billid, setBillid] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallPurchaseBill());
-        // console.log(response, '>>>>>>>>>>>>>>>>');
         setPurchasebill(response.data);
       } catch (error) {
         console.error('Error fetching purchase bill:', error);
@@ -61,12 +60,26 @@ export default function PurchaseBillList() {
     navigate(`/purchasebillview/${id}`);
   };
 
+  const handleUpdatePurchaseBill = (id) => {
+    dispatch(PurchaseBillview(id));
+    navigate(`/purchasebill/${id}`);
+  };
   const handleAddpuchasebill = () => {
     navigate('/purchasebill');
   };
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
+    setBillid(id);
+  };
+
+  const handleDeletePurchasebill = async () => {
+    try {
+      await dispatch(deletePurchasebill(billid));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting Bill:', error);
+    }
   };
 
   return (
@@ -74,7 +87,13 @@ export default function PurchaseBillList() {
       <Typography variant="h4" align="center" id="mycss">
         Purchase Bill List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddpuchasebill}>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: '16px' }}
+        onClick={handleAddpuchasebill}
+        disabled={!canCreatePurchasebill()}
+      >
         Create Purchase Bill
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -94,21 +113,38 @@ export default function PurchaseBillList() {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleViewPurchaseBill(row.id)}
+                        disabled={!canViewPurchasebill()}
+                      >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewPurchaseBill(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdatePurchaseBill(row.id)}
+                        disabled={!canUpdatePurchasebill()}
+                      >
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(row.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                        disabled={!canDeletePurchasebill()}
+                      >
                         Delete
                       </Button>
-                    ) : column.id === 'billdate' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                    ) : column.id === 'invoicedate' ? (
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'duedate' ? (
-                      new Date(row[column.id]).toLocaleDateString()
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'vendor' ? (
+                      row.purchseVendor.accountname
                     ) : (
                       row[column.id]
                     )}
@@ -135,7 +171,7 @@ export default function PurchaseBillList() {
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handleDeletePurchasebill} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

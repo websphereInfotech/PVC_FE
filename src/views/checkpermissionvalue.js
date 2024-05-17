@@ -278,9 +278,6 @@ const useCan = () => {
   const canDeletePurchasebill = () => {
     return checkPermission('Purchase Bill', 'delete_purchasebill');
   };
-  const canDeletePurchasebillItem = () => {
-    return checkPermission('Purchase Bill', 'delete_purchasebill_item');
-  };
   const canViewPurchasebill = () => {
     return checkPermission('Purchase Bill', 'view_single_purchasebill');
   };
@@ -465,7 +462,6 @@ const useCan = () => {
     canCreatePurchasebill,
     canUpdatePurchasebill,
     canDeletePurchasebill,
-    canDeletePurchasebillItem,
     canViewPurchasebill,
     canViewAllPurchasebill,
     // PURCHSE RETURN +++++++++++++++++

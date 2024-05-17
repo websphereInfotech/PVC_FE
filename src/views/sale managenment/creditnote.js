@@ -7,13 +7,13 @@ import AnchorTemporaryDrawer from '../../component/customeradd';
 import AnchorProductDrawer from '../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
-  Debitnoteviewdata,
-  createDebitnote,
+  Creditnoteviewdata,
+  createCreditnote,
   fetchAllCompany,
   fetchAllCustomers,
   fetchAllProducts,
-  getallDebitnote,
-  updateDebitnote
+  getallCreditnote,
+  updateCreditnote
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -22,7 +22,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/checkpermissionvalue';
 
 const Creditnote = () => {
-  const { canDeleteDebitnote } = useCan();
+  const { canDeleteCreditnote } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
@@ -79,16 +79,7 @@ const Creditnote = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
   };
-  useEffect(() => {
-    const updateTotalQuantity = () => {
-      let total = 0;
-      rows.forEach((row) => {
-        total += parseInt(row.qty);
-      });
-      setTotalQuantity(total);
-    };
-    updateTotalQuantity();
-  }, [rows]);
+
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
@@ -149,33 +140,6 @@ const Creditnote = () => {
     fetchData();
   }, [dispatch, customerState, gststate, id]);
 
-  useEffect(() => {
-    const data = async () => {
-      if (id) {
-        const response = await dispatch(Debitnoteviewdata(id));
-        const { DebitCustomer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: DebitCustomer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectcustomer(DebitCustomer.id);
-        setCustomerState(DebitCustomer.state);
-        setCustomername(DebitCustomer.shortname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.DebitProduct.id,
-          product: item.DebitProduct.productname,
-          qty: item.qty,
-          rate: item.rate,
-          mrp: item.rate * item.qty,
-          gstrate: item.DebitProduct.gstrate,
-          gst: item.mrp * (item.DebitProduct.gstrate / 100)
-        }));
-        setRows(updatedRows);
-        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-        setPlusgst(totalGST);
-      }
-    };
-    data();
-  }, [dispatch, id]);
-
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Customer') {
@@ -192,6 +156,14 @@ const Creditnote = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
+    const updateTotalQuantity = () => {
+      let total = 0;
+      rows.forEach((row) => {
+        total += parseInt(row.qty);
+      });
+      setTotalQuantity(total);
+    };
+    updateTotalQuantity();
   }, [rows]);
 
   const handleCreditDateChange = (date) => {
@@ -255,21 +227,50 @@ const Creditnote = () => {
   useEffect(() => {
     const data = async () => {
       if (id) {
-        const response = await dispatch(Debitnoteviewdata(id));
-        const { DebitCustomer, debitnoteno, debitdate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: DebitCustomer.id, debitdate, debitnoteno, totalSgst, mainTotal, totalMrp, totalIgst });
-        setSelectcustomer(DebitCustomer.id);
-        setCustomerState(DebitCustomer.state);
-        setCustomername(DebitCustomer.accountname);
+        const response = await dispatch(Creditnoteviewdata(id));
+        const {
+          CreditCustomer,
+          LL_RR_no,
+          creditdate,
+          creditnoteNo,
+          org_invoiceno,
+          org_invoicedate,
+          motorVehicleNo,
+          dispatchThrough,
+          destination,
+          totalSgst,
+          mainTotal,
+          totalMrp,
+          totalIgst
+        } = response;
+        console.log(response, 'rsponse?????????????');
+        setFormData({
+          customerId: CreditCustomer.id,
+          LL_RR_no,
+          creditdate,
+          creditnoteNo,
+          org_invoiceno,
+          org_invoicedate,
+          motorVehicleNo,
+          dispatchThrough,
+          destination,
+          totalSgst,
+          mainTotal,
+          totalMrp,
+          totalIgst
+        });
+        setSelectcustomer(CreditCustomer.id);
+        setCustomerState(CreditCustomer.state);
+        setCustomername(CreditCustomer.accountname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
-          productId: item.DebitProduct.id,
-          product: item.DebitProduct.productname,
+          productId: item.CreditProduct.id,
+          product: item.CreditProduct.productname,
           qty: item.qty,
           rate: item.rate,
           mrp: item.qty * item.rate,
-          gstrate: item.DebitProduct.gstrate,
-          gst: item.mrp * (item.DebitProduct.gstrate / 100)
+          gstrate: item.CreditProduct.gstrate,
+          gst: item.mrp * (item.CreditProduct.gstrate / 100)
         }));
         setRows(updatedRows);
         const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
@@ -279,30 +280,30 @@ const Creditnote = () => {
     const generateAutoDebitnoteNumber = async () => {
       if (!id) {
         try {
-          const DebitnoteResponse = await dispatch(getallDebitnote());
-          console.log(DebitnoteResponse, 'DebitnoteResponse');
-          let nextDebitnoteNumber = 1;
-          if (DebitnoteResponse.length === 0) {
-            const DebitnoteNumber = nextDebitnoteNumber;
+          const CreditnoteResponse = await dispatch(getallCreditnote());
+          console.log(CreditnoteResponse, 'CreditnoteResponse');
+          let nextCreditnoteNumber = 1;
+          if (CreditnoteResponse.length === 0) {
+            const CreditnoteNumber = nextCreditnoteNumber;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              debitnoteno: Number(DebitnoteNumber)
+              creditnoteNo: Number(CreditnoteNumber)
             }));
             return;
           }
-          const existingDebitnoteNumbers = DebitnoteResponse.map((Debitnote) => {
-            const DebitnoteNumber = Debitnote.debitnoteno;
-            return parseInt(DebitnoteNumber);
+          const existingCreditnoteNumbers = CreditnoteResponse.map((Creditnote) => {
+            const CreditnoteNumber = Creditnote.creditnoteNo;
+            return parseInt(CreditnoteNumber);
           });
-          const maxDebitnoteNumber = Math.max(...existingDebitnoteNumbers);
-          if (!isNaN(maxDebitnoteNumber)) {
-            nextDebitnoteNumber = maxDebitnoteNumber + 1;
+          const maxCreditnoteNumber = Math.max(...existingCreditnoteNumbers);
+          if (!isNaN(maxCreditnoteNumber)) {
+            nextCreditnoteNumber = maxCreditnoteNumber + 1;
           }
 
-          const DebitnoteNumber = nextDebitnoteNumber;
+          const CreditnoteNumber = nextCreditnoteNumber;
           setFormData((prevFormData) => ({
             ...prevFormData,
-            debitnoteno: Number(DebitnoteNumber)
+            creditnoteNo: Number(CreditnoteNumber)
           }));
         } catch (error) {
           console.error('Error generating auto Debit Note number:', error);
@@ -313,7 +314,7 @@ const Creditnote = () => {
     data();
   }, [dispatch, id]);
 
-  const handlecreateDebitnote = async () => {
+  const handlecreateCreditnote = async () => {
     try {
       if (id) {
         const payload = {
@@ -337,7 +338,7 @@ const Creditnote = () => {
           payload.totalSgst = 0;
           payload.totalIgst = plusgst;
         }
-        await dispatch(updateDebitnote(id, payload, navigate));
+        await dispatch(updateCreditnote(id, payload, navigate));
       } else {
         const payload = {
           ...formData,
@@ -362,7 +363,7 @@ const Creditnote = () => {
           payload.totalIgst = plusgst;
         }
         console.log(payload, 'payload');
-        await dispatch(createDebitnote(payload, navigate));
+        await dispatch(createCreditnote(payload, navigate));
       }
     } catch (error) {
       console.error('Error creating proformainvoice:', error);
@@ -526,7 +527,7 @@ const Creditnote = () => {
                       <TableCell id="newcs" style={{ fontSize: '16px' }}>
                         {row.mrp}
                       </TableCell>
-                      <TableCell disabled={!canDeleteDebitnote()}>
+                      <TableCell disabled={!canDeleteCreditnote()}>
                         <DeleteIcon
                           onClick={() => {
                             handleDeleteRow(row.id, index);
@@ -617,7 +618,7 @@ const Creditnote = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
+                <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
                   <button
                     id="savebtncs"
                     style={{
@@ -627,7 +628,7 @@ const Creditnote = () => {
                     Cancel
                   </button>
                 </Link>
-                <button id="savebtncs" onClick={handlecreateDebitnote}>
+                <button id="savebtncs" onClick={handlecreateCreditnote}>
                   Save
                 </button>
               </div>
@@ -635,12 +636,12 @@ const Creditnote = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
+                <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" onClick={handlecreateDebitnote}>
+                <button id="savebtncs" onClick={handlecreateCreditnote}>
                   Save
                 </button>
               </div>

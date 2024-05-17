@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Debitnoteviewdata } from 'store/thunk';
+import { Creditnoteviewdata } from 'store/thunk';
 
 const CreditnoteView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -13,7 +13,7 @@ const CreditnoteView = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    dispatch(Debitnoteviewdata(id))
+    dispatch(Creditnoteviewdata(id))
       .then((data) => {
         setData(data);
       })
@@ -35,15 +35,39 @@ const CreditnoteView = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.DebitCustomer?.accountname}</Typography>
+          <Typography variant="subtitle2">{data.CreditCustomer?.accountname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.debitdate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data.creditdate).toLocaleDateString()}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Debit Note No.</Typography>
-          <Typography variant="subtitle2">{data.debitnoteno}</Typography>
+          <Typography variant="subtitle2">{data.creditnoteNo}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Org. Invoice No.</Typography>
+          <Typography variant="subtitle2">{data.org_invoiceno}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Org. Invoice Date</Typography>
+          <Typography variant="subtitle2">{new Date(data.org_invoicedate).toLocaleDateString()}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">RR-No.</Typography>
+          <Typography variant="subtitle2">{data.LL_RR_no}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Transport</Typography>
+          <Typography variant="subtitle2">{data.dispatchThrough}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Vehical No.</Typography>
+          <Typography variant="subtitle2">{data.motorVehicleNo}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Destination</Typography>
+          <Typography variant="subtitle2">{data.destination}</Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -61,7 +85,7 @@ const CreditnoteView = () => {
                 {data.items &&
                   data.items.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.DebitProduct.productname}</TableCell>
+                      <TableCell>{item?.CreditProduct.productname}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
@@ -144,7 +168,7 @@ const CreditnoteView = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
+            <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -152,7 +176,7 @@ const CreditnoteView = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/debitnotelist" style={{ textDecoration: 'none' }}>
+            <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>

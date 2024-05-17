@@ -172,6 +172,7 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchasebill +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/purchasebill', element: <Purchasebill /> },
+    { path: '/purchasebill/:id', element: <Purchasebill /> },
     { path: '/purchasebillList', element: <PurchaseBillList /> },
     { path: '/purchasebillview/:id', element: <Purchasebillview /> },
 
