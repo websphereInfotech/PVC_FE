@@ -89,19 +89,22 @@ import {
   deleteDileverychallanItemRequest,
   deleteDileverychallanItemFailure,
   deleteDileverychallanItemSuccess,
-  //  PAYMENTS +++++++++++++++++++++++++++
-  createPaymentRequest,
-  createPaymentSuccess,
-  createPaymentFailure,
-  updatePaymentRequest,
-  updatePaymentFailure,
-  updatePaymentSuccess,
-  getallPaymentRequest,
-  getallPaymentSuccess,
-  getallPaymentFailure,
-  viewPaymentRequest,
-  viewPaymentSuccess,
-  viewPaymentFailure,
+  //  PAYMENT CASH +++++++++++++++++++++++++++
+  createPaymentCashRequest,
+  createPaymentCashSuccess,
+  createPaymentCashFailure,
+  updatePaymentCashRequest,
+  updatePaymentCashFailure,
+  updatePaymentCashSuccess,
+  getallPaymentCashRequest,
+  getallPaymentCashSuccess,
+  getallPaymentCashFailure,
+  viewPaymentCashRequest,
+  viewPaymentCashSuccess,
+  viewPaymentCashFailure,
+  deletePaymentCashRequest,
+  deletePaymentCashSuccess,
+  deletePaymentCashFailure,
   //  SALESINVOICE ++++++++++++++++++++++
   getAllSalesinvoiceRequest,
   getAllSalesinvoiceSuccess,
@@ -263,7 +266,23 @@ import {
   updateCreditnoteFailure,
   deleteCreditnoteRequest,
   deleteCreditnoteSuccess,
-  deleteCreditnoteFailure
+  deleteCreditnoteFailure,
+  // ECIEVE CASH +++++++++++++
+  createRecieveCashRequest,
+  createRecieveCashSuccess,
+  createRecieveCashFailure,
+  getAllRecieveCashRequest,
+  getAllRecieveCashSuccess,
+  getAllRecieveCashFailure,
+  viewRecieveCashRequest,
+  viewRecieveCashSuccess,
+  viewRecieveCashFailure,
+  updateRecieveCashRequest,
+  updateRecieveCashSuccess,
+  updateRecieveCashFailure,
+  deleteRecieveCashRequest,
+  deleteRecieveCashSuccess,
+  deleteRecieveCashFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -643,67 +662,100 @@ export const createProduct = (data) => {
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPayment = (formData) => {
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createPaymentCash = (formData, navigate) => {
   return async (dispatch) => {
-    dispatch(createPaymentRequest());
+    dispatch(createPaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_payment`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_paymentCash`, formData, config);
       const createdpayment = response;
-      dispatch(createPaymentSuccess(createdpayment));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/paymentcashlist');
+        }
+      });
+      dispatch(createPaymentCashSuccess(createdpayment));
       return createdpayment;
     } catch (error) {
-      dispatch(createPaymentFailure(error.message));
+      toast.error(error.response.data.message);
+      dispatch(createPaymentCashFailure(error.message));
       throw error;
     }
   };
 };
-export const getallPayment = () => {
+export const getallPaymentCash = () => {
   return async (dispatch) => {
-    dispatch(getallPaymentRequest());
+    dispatch(getallPaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_payment`, config);
-      const getallpayment = response.data;
-      dispatch(getallPaymentSuccess(getallpayment));
-      return getallpayment;
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_paymentCash`, config);
+      const getallpaymentCash = response.data;
+      dispatch(getallPaymentCashSuccess(getallpaymentCash));
+      return getallpaymentCash;
     } catch (error) {
-      dispatch(getallPaymentFailure(error.message));
+      dispatch(getallPaymentCashFailure(error.message));
       throw error;
     }
   };
 };
-export const paymentview = (id) => {
+export const paymentCashview = (id) => {
   return async (dispatch) => {
-    dispatch(viewPaymentRequest());
+    dispatch(viewPaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_payment/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_paymentCash/${id}`, config);
       const data = response.data.data;
-      dispatch(viewPaymentSuccess(data));
+      dispatch(viewPaymentCashSuccess(data));
       return data;
     } catch (error) {
-      dispatch(viewPaymentFailure(error.message));
+      dispatch(viewPaymentCashFailure(error.message));
     }
   };
 };
-export const updatePayment = (id, formData) => {
+export const updatePaymentCash = (id, formData, navigate) => {
   return async (dispatch) => {
-    dispatch(updatePaymentRequest());
+    dispatch(updatePaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_payment/${id}`, formData, config);
-      const upadtePaymentData = response;
-      dispatch(updatePaymentSuccess(upadtePaymentData));
-      return upadtePaymentData;
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_paymentCash/${id}`, formData, config);
+      const upadtePaymentCashData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/paymentcashlist');
+        }
+      });
+      dispatch(updatePaymentCashSuccess(upadtePaymentCashData));
+      return upadtePaymentCashData;
     } catch (error) {
-      dispatch(updatePaymentFailure(error.message));
-      throw error;
+      toast.error(error.response.data.message);
+      dispatch(updatePaymentCashFailure(error.message));
     }
   };
 };
-
+export const paymentCashDelete = (id) => {
+  return async (dispatch) => {
+    dispatch(deletePaymentCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_paymentCash/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deletePaymentCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(deletePaymentCashFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALESINVOICE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createSalesInvoice = (payload, navigate) => {
   return async (dispatch) => {
@@ -1352,9 +1404,16 @@ export const deletePurchasebillCash = (id) => {
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_purchasebill/${id}`, config);
       const deletePurchasebillData = response;
       dispatch(deletePurchasebillCashSuccess(deletePurchasebillData));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       window.location.reload();
       return deletePurchasebillData;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(deletePurchasebillCashFailure(error.message));
       throw error;
     }
@@ -1501,11 +1560,16 @@ export const getallPermissions = () => {
     dispatch(getAllPermissionsRequest());
     try {
       const config = createConfig();
+      const type = sessionStorage.getItem('type');
+      console.log(type, 'type');
+      const role = sessionStorage.getItem('role');
+      console.log(role, 'role');
+      // if (type === 'C' && role === 'Super Admin') {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
-      // console.log(token);
       const getallPermission = response.data.data;
       dispatch(getAllPermissionsSuccess(getallPermission));
       return getallPermission;
+      // }
     } catch (error) {
       dispatch(getAllPermissionsFailure(error.message));
     }
@@ -1599,6 +1663,9 @@ export const updateUser = (id, formData, navigate) => {
       dispatch(UpdateUserSuccess(updateUserData));
       return updateUserData;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(UpdateUserFailure(error.message));
       throw error;
     }
@@ -1619,6 +1686,9 @@ export const deleteUser = (id) => {
       window.location.reload();
       return deleteUser;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(deleteUserFailure(error.message));
       throw error;
     }
@@ -1688,6 +1758,108 @@ export const fetchAllCompany = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllCompanyFailure(error.message));
+    }
+  };
+};
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createRecievecash = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(createRecieveCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_receiveCash`, data, config);
+      const Recievedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/paymentrecieveList');
+        }
+      });
+      dispatch(createRecieveCashSuccess(Recievedata));
+      return Recievedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createRecieveCashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallRecieveCash = () => {
+  return async (dispatch) => {
+    dispatch(getAllRecieveCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_receiveCash`, config);
+      const getallRecievecash = response.data.data;
+      dispatch(getAllRecieveCashSuccess(getallRecievecash));
+      return getallRecievecash;
+    } catch (error) {
+      dispatch(getAllRecieveCashFailure(error.message));
+    }
+  };
+};
+export const viewRecieveCash = (id) => {
+  return async (dispatch) => {
+    dispatch(viewRecieveCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_receiveCash/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewRecieveCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewRecieveCashFailure(error.message));
+    }
+  };
+};
+export const updateRecieveCash = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateRecieveCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_receiveCash/${id}`, formData, config);
+      const updatRecievecashdata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/paymentrecieveList');
+        }
+      });
+      dispatch(updateRecieveCashSuccess(updatRecievecashdata));
+      return updatRecievecashdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(updateRecieveCashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteRecieveCash = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteRecieveCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_receiveCash/${id}`, config);
+      const deleteRecievecash = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteRecieveCashSuccess(deleteRecievecash));
+      window.location.reload();
+      return deleteRecievecash;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(deleteRecieveCashFailure(error.message));
+      throw error;
     }
   };
 };

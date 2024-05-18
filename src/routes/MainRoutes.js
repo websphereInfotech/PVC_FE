@@ -137,8 +137,9 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of paymentss +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/paymentcash', element: <PaymentPage /> },
     { path: '/paymentcash/:id', element: <PaymentPage /> },
-    { path: '/paymentlist', element: <PaymentListPage /> },
+    { path: '/paymentcashlist', element: <PaymentListPage /> },
     { path: '/paymentrecieve', element: <Paymentrecieve /> },
+    { path: '/paymentrecieve/:id', element: <Paymentrecieve /> },
     { path: '/paymentrecieveList', element: <PaymentrecieveList /> },
     { path: '/ledgerlist', element: <Ledgerlist /> },
 

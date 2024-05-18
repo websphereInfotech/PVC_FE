@@ -13,31 +13,41 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  // Drawer,
+  IconButton
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { getallPayment } from 'store/thunk';
+import { getallPaymentCash, paymentCashDelete, paymentCashview } from 'store/thunk';
 
 const columns = [
-  { id: 'paymentdate', label: 'Date', align: 'center' },
-  { id: 'voucherno', label: 'Vendor', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
+  { id: 'vendor', label: 'Vendor', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
-  { id: 'refno', label: 'Description', align: 'center' },
+  { id: 'description', label: 'Description', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' },
-  { id: 'delete', label: 'Delete', align: 'center' }
+  { id: 'delete', label: 'Delete', align: 'center' },
+  { id: 'ledger', label: 'Ledger', align: 'center' }
 ];
-
+const columnsnew = [
+  { id: 'vendor', label: 'Vendor', align: 'center' },
+  { id: 'fromdate', label: 'From Date', align: 'center' },
+  { id: 'todate', label: 'To Date', align: 'center' },
+  { id: 'go', label: 'Go', align: 'center' }
+];
 const PaymentListPage = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
+  const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
   useEffect(() => {
-    dispatch(getallPayment())
+    dispatch(getallPaymentCash())
       .then((data) => {
         setPayments(data.data);
       })
@@ -48,22 +58,29 @@ const PaymentListPage = () => {
 
   const handleMakePayment = () => {
     navigate('/paymentcash');
-    // console.log('Payment made');
   };
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    // setSelectedId(id);
+    setSelectedId(id);
   };
-  // const handleViewPayment = (id) => {
-  //   dispatch(paymentview(id));
-  //   navigate(`/paymentview/${id}`);
-  // };
 
-  // const handleUpdatePayment = (id) => {
-  //   // console.log('id',id);
-  //   navigate(`/payment/${id}`);
-  // };
+  const handleUpdatePayment = (id) => {
+    dispatch(paymentCashview(id));
+    navigate(`/paymentcash/${id}`);
+  };
+
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+    setSelectedPayment(null);
+  };
+
+  const handleLedgerClick = (payment) => {
+    setSelectedPayment(payment);
+    setOpenDrawer(true);
+    console.log(openDrawer);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -73,10 +90,17 @@ const PaymentListPage = () => {
     setPage(0);
   };
 
+  const handledelete = async () => {
+    try {
+      await dispatch(paymentCashDelete(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
   return (
-    // <Container>
     <Card style={{ width: '100%', padding: '25px' }}>
-      {/* <Card style={{ width: '100%' }}> */}
       <Typography variant="h4" align="center" id="mycss">
         Payment Cash List
       </Typography>
@@ -100,15 +124,21 @@ const PaymentListPage = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary">
+                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePayment(payment.id)}>
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
                       <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(payment.id)}>
                         Delete
                       </Button>
-                    ) : column.id === 'paymentdate' ? (
-                      new Date(payment[column.id]).toLocaleDateString()
+                    ) : column.id === 'ledger' ? (
+                      <Button variant="outlined" color="secondary" onClick={() => handleLedgerClick(payment, openDrawer)}>
+                        Ledger
+                      </Button>
+                    ) : column.id === 'date' ? (
+                      new Date(payment[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'vendor' ? (
+                      payment.PaymentVendor.vendorname
                     ) : (
                       payment[column.id]
                     )}
@@ -129,16 +159,61 @@ const PaymentListPage = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to delete this ?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handledelete} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { width: '500px' } }}>
+        <DialogTitle>Ledger Details</DialogTitle>
+        <DialogContent>
+          <IconButton onClick={handleCloseDrawer} style={{ position: 'absolute', right: 12, top: 5 }}>
+            <CloseIcon />
+          </IconButton>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {columnsnew.map((column) => (
+                    <TableCell key={column.id} align={column.align}>
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {selectedPayment && (
+                  <TableRow>
+                    {columnsnew.map((column) => (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.id === 'go' ? (
+                          <Button variant="outlined" color="secondary" href="/ledgerlist">
+                            Go
+                          </Button>
+                        ) : column.id === 'vendor' ? (
+                          // selectedPayment.PaymentVendor?.vendorname
+                          'demo'
+                        ) : column.id === 'fromdate' ? (
+                          // selectedPayment.fromDate
+                          'date'
+                        ) : column.id === 'todate' ? (
+                          // selectedPayment.toDate
+                          'date'
+                        ) : null}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
       </Dialog>
     </Card>
   );

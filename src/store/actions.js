@@ -73,18 +73,38 @@ export const DELETE_DILEVERYCHALLAN_ITEM_SUCCESS = 'DELETE_DILEVERYCHALLAN_ITEM_
 export const DELETE_DILEVERYCHALLAN_ITEM_FAILURE = 'DELETE_DILEVERYCHALLAN_ITEM_FAILURE';
 
 // ########################################## PAYMENT ###############################################################################################
-export const CREATE_PAYMENT_REQUEST = 'CREATE_PAYMENT_REQUEST';
-export const CREATE_PAYMENT_SUCCESS = 'CREATE_PAYMENT_SUCCESS';
-export const CREATE_PAYMENT_FAILURE = 'CREATE_PAYMENT_FAILURE';
-export const GET_ALL_PAYMENT_REQUEST = 'GET_ALL_PAYMENT_REQUEST';
-export const GET_ALL_PAYMENT_SUCCESS = 'GET_ALL_PAYMENT_SUCCESS';
-export const GET_ALL_PAYMENT_FAILURE = 'GET_ALL_PAYMENT_FAILURE';
-export const VIEW_PAYMENT_REQUEST = 'VIEW_PAYMENT_REQUEST';
-export const VIEW_PAYMENT_SUCCESS = 'VIEW_PAYMENT_SUCCESS';
-export const VIEW_PAYMENT_FAILURE = 'VIEW_PAYMENT_FAILURE';
-export const UPDATE_PAYMENT_REQUEST = 'UPDATE_PAYMENT_REQUEST';
-export const UPDATE_PAYMENT_SUCCESS = 'UPDATE_PAYMENT_SUCCESS';
-export const UPDATE_PAYMENT_FAILURE = 'UPDATE_PAYMENT_FAILURE';
+export const CREATE_PAYMENT_CASH_REQUEST = 'CREATE_PAYMENT_CASH_REQUEST';
+export const CREATE_PAYMENT_CASH_SUCCESS = 'CREATE_PAYMENT_CASH_SUCCESS';
+export const CREATE_PAYMENT_CASH_FAILURE = 'CREATE_PAYMENT_CASH_FAILURE';
+export const GET_ALL_PAYMENT_CASH_REQUEST = 'GET_ALL_PAYMENT_CASH_REQUEST';
+export const GET_ALL_PAYMENT_CASH_SUCCESS = 'GET_ALL_PAYMENT_CASH_SUCCESS';
+export const GET_ALL_PAYMENT_CASH_FAILURE = 'GET_ALL_PAYMENT_CASH_FAILURE';
+export const VIEW_PAYMENT_CASH_REQUEST = 'VIEW_PAYMENT_CASH_REQUEST';
+export const VIEW_PAYMENT_CASH_SUCCESS = 'VIEW_PAYMENT_CASH_SUCCESS';
+export const VIEW_PAYMENT_CASH_FAILURE = 'VIEW_PAYMENT_CASH_FAILURE';
+export const UPDATE_PAYMENT_CASH_REQUEST = 'UPDATE_PAYMENT_CASH_REQUEST';
+export const UPDATE_PAYMENT_CASH_SUCCESS = 'UPDATE_PAYMENT_CASH_SUCCESS';
+export const UPDATE_PAYMENT_CASH_FAILURE = 'UPDATE_PAYMENT_CASH_FAILURE';
+export const DELETE_PAYMENT_CASH_REQUEST = 'DELETE_PAYMENT_CASH_REQUEST';
+export const DELETE_PAYMENT_CASH_SUCCESS = 'DELETE_PAYMENT_CASH_SUCCESS';
+export const DELETE_PAYMENT_CASH_FAILURE = 'DELETE_PAYMENT_CASH_FAILURE';
+
+// ########################################## PAYMENT RECIEVE CASH ###############################################################################################
+export const CREATE_RECIEVE_CASH_REQUEST = 'CREATE_RECIEVE_CASH_REQUEST';
+export const CREATE_RECIEVE_CASH_SUCCESS = 'CREATE_RECIEVE_CASH_SUCCESS';
+export const CREATE_RECIEVE_CASH_FAILURE = 'CREATE_RECIEVE_CASH_FAILURE';
+export const GET_ALL_RECIEVE_CASH_REQUEST = 'GET_ALL_RECIEVE_CASH_REQUEST';
+export const GET_ALL_RECIEVE_CASH_SUCCESS = 'GET_ALL_RECIEVE_CASH_SUCCESS';
+export const GET_ALL_RECIEVE_CASH_FAILURE = 'GET_ALL_RECIEVE_CASH_FAILURE';
+export const VIEW_RECIEVE_CASH_REQUEST = 'VIEW_RECIEVE_CASH_REQUEST';
+export const VIEW_RECIEVE_CASH_SUCCESS = 'VIEW_RECIEVE_CASH_SUCCESS';
+export const VIEW_RECIEVE_CASH_FAILURE = 'VIEW_RECIEVE_CASH_FAILURE';
+export const UPDATE_RECIEVE_CASH_REQUEST = 'UPDATE_RECIEVE_CASH_REQUEST';
+export const UPDATE_RECIEVE_CASH_SUCCESS = 'UPDATE_RECIEVE_CASH_SUCCESS';
+export const UPDATE_RECIEVE_CASH_FAILURE = 'UPDATE_RECIEVE_CASH_FAILURE';
+export const DELETE_RECIEVE_CASH_REQUEST = 'DELETE_RECIEVE_CASH_REQUEST';
+export const DELETE_RECIEVE_CASH_SUCCESS = 'DELETE_RECIEVE_CASH_SUCCESS';
+export const DELETE_RECIEVE_CASH_FAILURE = 'DELETE_RECIEVE_CASH_FAILURE';
 
 // ########################################## SALES INVOICE ###############################################################################################
 export const CREATE_SALES_INVOICE_REQUEST = 'CREATE_SALES_INVOICE_REQUEST';
@@ -286,6 +306,11 @@ export const FETCH_ALL_COMPANY_REQUEST = 'FETCH_ALL_COMPANY_REQUEST';
 export const FETCH_ALL_COMPANY_SUCCESS = 'FETCH_ALL_COMPANY_SUCCESS';
 export const FETCH_ALL_COMPANY_FAILURE = 'FETCH_ALL_COMPANY_FAILURE';
 
+// ###################################################################### PAYMENT CASH #####################################################################
+// export const CREATE_PAYMENT_CASH_REQUEST = 'CREATE_PAYMENT_CASH_REQUEST';
+// export const CREATE_PAYMENT_CASH_SUCCESS = 'CREATE_PAYMENT_CASH_SUCCESS';
+// export const CREATE_PAYMENT_CASH_FAILURE = 'CREATE_PAYMENT_CASH_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -480,52 +505,64 @@ export const deleteDileverychallanItemFailure = (error) => ({
 });
 
 // ################################################################ PAYMENT ##########################################################################################
-export const createPaymentRequest = (data) => ({
-  type: 'CREATE_PAYMENT_REQUEST',
+export const createPaymentCashRequest = (data) => ({
+  type: 'CREATE_PAYMENT_CASH_REQUEST',
   payload: data
 });
-export const createPaymentSuccess = (data) => ({
-  type: 'CREATE_PAYMENT_SUCCESS',
+export const createPaymentCashSuccess = (data) => ({
+  type: 'CREATE_PAYMENT_CASH_SUCCESS',
   payload: data
 });
-export const createPaymentFailure = (error) => ({
-  type: 'CREATE_PAYMENT_FAILURE',
+export const createPaymentCashFailure = (error) => ({
+  type: 'CREATE_PAYMENT_CASH_FAILURE',
   payload: error
 });
-export const getallPaymentRequest = (data) => ({
-  type: 'GET_ALL_PAYMENT_REQUEST',
+export const getallPaymentCashRequest = (data) => ({
+  type: 'GET_ALL_PAYMENT_CASH_REQUEST',
   payload: data
 });
-export const getallPaymentSuccess = (data) => ({
-  type: 'GET_ALL_PAYMENT_SUCCESS',
+export const getallPaymentCashSuccess = (data) => ({
+  type: 'GET_ALL_PAYMENT_CASH_SUCCESS',
   payload: data
 });
-export const getallPaymentFailure = (error) => ({
-  type: 'GET_ALL_PAYMENT_FAILURE',
+export const getallPaymentCashFailure = (error) => ({
+  type: 'GET_ALL_PAYMENT_CASH_FAILURE',
   payload: error
 });
-export const viewPaymentRequest = (data) => ({
-  type: 'VIEW_PAYMENT_REQUEST',
+export const viewPaymentCashRequest = (data) => ({
+  type: 'VIEW_PAYMENT_CASH_REQUEST',
   payload: data
 });
-export const viewPaymentSuccess = (data) => ({
-  type: 'VIEW_PAYMENT_SUCCESS',
+export const viewPaymentCashSuccess = (data) => ({
+  type: 'VIEW_PAYMENT_CASH_SUCCESS',
   payload: data
 });
-export const viewPaymentFailure = (error) => ({
-  type: 'VIEW_PAYMENT_FAILURE',
+export const viewPaymentCashFailure = (error) => ({
+  type: 'VIEW_PAYMENT_CASH_FAILURE',
   payload: error
 });
-export const updatePaymentRequest = (data) => ({
-  type: 'UPDATE_PAYMENT_REQUEST',
+export const updatePaymentCashRequest = (data) => ({
+  type: 'UPDATE_PAYMENT_CASH_REQUEST',
   payload: data
 });
-export const updatePaymentSuccess = (data) => ({
-  type: 'UPDATE_PAYMENT_SUCCESS',
+export const updatePaymentCashSuccess = (data) => ({
+  type: 'UPDATE_PAYMENT_CASH_SUCCESS',
   payload: data
 });
-export const updatePaymentFailure = (error) => ({
-  type: 'UPDATE_PAYMENT_FAILURE',
+export const updatePaymentCashFailure = (error) => ({
+  type: 'UPDATE_PAYMENT_CASH_FAILURE',
+  payload: error
+});
+export const deletePaymentCashRequest = (data) => ({
+  type: 'DELETE_PAYMENT_CASH_REQUEST',
+  payload: data
+});
+export const deletePaymentCashSuccess = (data) => ({
+  type: 'DELETE_PAYMENT_CASH_SUCCESS',
+  payload: data
+});
+export const deletePaymentCashFailure = (error) => ({
+  type: 'DELETE_PAYMENT_CASH_FAILURE',
   payload: error
 });
 
@@ -1271,5 +1308,67 @@ export const viewCreditnoteSuccess = (data) => ({
 });
 export const viewCreditnoteFailure = (error) => ({
   type: 'VIEW_CREDIT_NOTE_FAILURE',
+  payload: error
+});
+// ##################################################################################### PAYMENT RECIEVE CASH ################################################################
+
+export const createRecieveCashRequest = (data) => ({
+  type: 'CREATE_RECIEVE_CASH_REQUEST',
+  payload: data
+});
+export const createRecieveCashSuccess = (data) => ({
+  type: 'CREATE_RECIEVE_CASH_SUCCESS',
+  payload: data
+});
+export const createRecieveCashFailure = (error) => ({
+  type: 'CREATE_RECIEVE_CASH_FAILURE',
+  payload: error
+});
+export const getAllRecieveCashRequest = (data) => ({
+  type: 'GET_ALL_RECIEVE_CASH_REQUEST',
+  payload: data
+});
+export const getAllRecieveCashSuccess = (data) => ({
+  type: 'GET_ALL_RECIEVE_CASH_SUCCESS',
+  payload: data
+});
+export const getAllRecieveCashFailure = (error) => ({
+  type: 'GET_ALL_RECIEVE_CASH_FAILURE',
+  payload: error
+});
+export const viewRecieveCashRequest = (data) => ({
+  type: 'VIEW_RECIEVE_CASH_REQUEST',
+  payload: data
+});
+export const viewRecieveCashSuccess = (data) => ({
+  type: 'VIEW_RECIEVE_CASH_SUCCESS',
+  payload: data
+});
+export const viewRecieveCashFailure = (error) => ({
+  type: 'VIEW_RECIEVE_CASH_FAILURE',
+  payload: error
+});
+export const updateRecieveCashRequest = (data) => ({
+  type: 'UPDATE_RECIEVE_CASH_REQUEST',
+  payload: data
+});
+export const updateRecieveCashSuccess = (data) => ({
+  type: 'UPDATE_RECIEVE_CASH_SUCCESS',
+  payload: data
+});
+export const updateRecieveCashFailure = (error) => ({
+  type: 'UPDATE_RECIEVE_CASH_FAILURE',
+  payload: error
+});
+export const deleteRecieveCashRequest = (data) => ({
+  type: 'DELETE_RECIEVE_CASH_REQUEST',
+  payload: data
+});
+export const deleteRecieveCashSuccess = (data) => ({
+  type: 'DELETE_RECIEVE_CASH_SUCCESS',
+  payload: data
+});
+export const deleteRecieveCashFailure = (error) => ({
+  type: 'DELETE_RECIEVE_CASH_FAILURE',
   payload: error
 });

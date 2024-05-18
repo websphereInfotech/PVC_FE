@@ -181,7 +181,7 @@ export default function ProformainvoiceList() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to delete this pro forma invoice?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">

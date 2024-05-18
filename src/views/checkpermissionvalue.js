@@ -410,6 +410,42 @@ const useCan = () => {
     return checkPermission('Purchase Cash', 'view_all_purchase_cash');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH
+
+  const canCreatePaymentcash = () => {
+    return checkPermission('Payment Cash', 'create_payment_Cash');
+  };
+  const canUpdatePaymentcash = () => {
+    return checkPermission('Payment Cash', 'update_payment_Cash');
+  };
+  const canDeletePaymentcash = () => {
+    return checkPermission('Payment Cash', 'delete_payment_Cash');
+  };
+  const canViewPaymentcash = () => {
+    return checkPermission('Payment Cash', 'view_payment_Cash');
+  };
+  const canViwAllPaymentcash = () => {
+    return checkPermission('Payment Cash', 'view_all_payment_Cash');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
+
+  const canCreatePaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'create_receive_Cash');
+  };
+  const canUpdatePaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'update_receive_Cash');
+  };
+  const canDeletePaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'delete_receive_Cash');
+  };
+  const canViewPaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'view_receive_Cash');
+  };
+  const canViwAllPaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'view_all_receive_Cash');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     canCreateProformainvoiceQuotation,
@@ -542,7 +578,19 @@ const useCan = () => {
     canUpdatePurchasebillcash,
     canDeletePurchasebillcash,
     canViewPurchasebillcash,
-    canViwAllPurchasebillcash
+    canViwAllPurchasebillcash,
+    //  PAYMENT CASH +++++++++++++++++
+    canCreatePaymentcash,
+    canUpdatePaymentcash,
+    canDeletePaymentcash,
+    canViewPaymentcash,
+    canViwAllPaymentcash,
+    // PAYMENT REICEVE CASH +++++++++++
+    canCreatePaymentrecievecash,
+    canUpdatePaymentrecievecash,
+    canDeletePaymentrecievecash,
+    canViewPaymentrecievecash,
+    canViwAllPaymentrecievecash
   };
 };
 

@@ -151,7 +151,7 @@ export default function UserList() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to delete this user?</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">

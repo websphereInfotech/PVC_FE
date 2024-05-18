@@ -176,7 +176,7 @@ const Salesinvoicelist = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to delete this Sale Invoice?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
