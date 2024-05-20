@@ -30,13 +30,9 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     panno: '',
     gstnumber: '',
     creditperiod: '',
-    mode: '',
     address1: '',
     address2: '',
     pincode: '',
-    // state: '',
-    // city: '',
-    country: '',
     balance: ''
   });
 

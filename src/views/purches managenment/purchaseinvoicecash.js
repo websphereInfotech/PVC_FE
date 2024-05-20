@@ -6,11 +6,11 @@ import Select from 'react-select';
 import AnchorProductDrawer from '../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
-  PurchaseBillviewCash,
-  createPurchaseBillCash,
+  PurchaseInvoiceviewCash,
+  createPurchaseInvoiceCash,
   fetchAllVendorsCash,
   fetchAllProductsCash,
-  updatePurchaseBillCash
+  updatePurchaseInvoiceCash
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -19,7 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/checkpermissionvalue';
 import AnchorVendorDrawer from 'component/vendor';
 
-const Purchasebillcash = () => {
+const Purchaseinvoicecash = () => {
   const { canDeleteSalescash } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -160,7 +160,7 @@ const Purchasebillcash = () => {
   useEffect(() => {
     const data = async () => {
       if (id) {
-        const response = await dispatch(PurchaseBillviewCash(id));
+        const response = await dispatch(PurchaseInvoiceviewCash(id));
         const { date, totalMrp, VendorPurchase } = response;
         setFormData({ date, totalMrp, vendorId: VendorPurchase.id });
         setSelectvendor(VendorPurchase.id);
@@ -194,7 +194,7 @@ const Purchasebillcash = () => {
             mrp: row.mrp
           }))
         };
-        await dispatch(updatePurchaseBillCash(id, payload, navigate));
+        await dispatch(updatePurchaseInvoiceCash(id, payload, navigate));
       } else {
         const payload = {
           ...formData,
@@ -208,7 +208,7 @@ const Purchasebillcash = () => {
           }))
         };
         console.log(selectvendor);
-        await dispatch(createPurchaseBillCash(payload, navigate));
+        await dispatch(createPurchaseInvoiceCash(payload, navigate));
       }
     } catch (error) {
       console.error('Error creating sales cash:', error);
@@ -220,11 +220,11 @@ const Purchasebillcash = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Purchase Bill Cash
+            Update Purchase Invoice Cash
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Purchase Bill Cash
+            Create Purchase Invoice Cash
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -348,7 +348,7 @@ const Purchasebillcash = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/purchasebillcashList" style={{ textDecoration: 'none' }}>
+                <Link to="/purchaseinvoicecashList" style={{ textDecoration: 'none' }}>
                   <button
                     id="savebtncs"
                     style={{
@@ -366,7 +366,7 @@ const Purchasebillcash = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/purchasebillcashList" style={{ textDecoration: 'none' }}>
+                <Link to="/purchaseinvoicecashList" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
@@ -383,4 +383,4 @@ const Purchasebillcash = () => {
   );
 };
 
-export default Purchasebillcash;
+export default Purchaseinvoicecash;

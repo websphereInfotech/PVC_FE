@@ -142,34 +142,6 @@ const PaymentPage = () => {
             </Grid>
           </Grid>
 
-          {/* <Grid item xs={12}>
-            {isMobile ? (
-              // For mobile screens, show each total on separate lines
-              <>
-                <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                  <p>AMOUNT TO CREDIT</p>
-                  <p>₹0.00</p>
-                </div>
-                <div style={{ borderBottom: '0.2px solid lightgrey', width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                  <p>AMOUNT TO APPLY</p>
-                  <p>₹0.00</p>
-                </div>
-              </>
-            ) : (
-              // For larger screens, show all totals on one line
-              <div style={{ float: 'right', width: '30%' }}>
-                <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                  <p>AMOUNT TO CREDIT</p>
-                  <p>₹0.00</p>
-                </div>
-                <div style={{ borderBottom: '0.2px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                  <p>AMOUNT TO APPLY</p>
-                  <p>₹0.00</p>
-                </div>
-              </div>
-            )}
-          </Grid> */}
-
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>

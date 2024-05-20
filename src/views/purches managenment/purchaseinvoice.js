@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom';
 import AnchorProductDrawer from '../../component/productadd';
 import AnchorVendorDrawer from '../../component/vendor';
 import { useMediaQuery } from '@mui/material';
-import { fetchAllProducts, createPurchaseBill, fetchAllVendors, PurchaseBillview, updatePurchaseBill } from 'store/thunk';
+import { fetchAllProducts, createPurchaseinvoice, fetchAllVendors, viewPurchaseinvoice, updatePurchaseinvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const Purchasebill = () => {
+const Purchaseinvoice = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -204,7 +204,7 @@ const Purchasebill = () => {
   useEffect(() => {
     const data = async () => {
       if (id) {
-        const response = await dispatch(PurchaseBillview(id));
+        const response = await dispatch(viewPurchaseinvoice(id));
         const { purchseVendor, date, invoicedate, invoiceno, duedate, terms, totalSgst, mainTotal, totalMrp, totalIgst } = response;
         setFormData({
           vendorId: purchseVendor.id,
@@ -220,7 +220,7 @@ const Purchasebill = () => {
         });
         setSelectvendor(purchseVendor.id);
         setvendorstate(purchseVendor.state);
-        setvendorname(purchseVendor.shortname);
+        setvendorname(purchseVendor.accountname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.purchseProduct.id,
@@ -264,7 +264,7 @@ const Purchasebill = () => {
           payload.totalSgst = 0;
           payload.totalIgst = plusgst;
         }
-        await dispatch(updatePurchaseBill(id, payload, navigate));
+        await dispatch(updatePurchaseinvoice(id, payload, navigate));
       } else {
         const payload = {
           ...formData,
@@ -287,7 +287,7 @@ const Purchasebill = () => {
           payload.totalSgst = 0;
           payload.totalIgst = plusgst;
         }
-        await dispatch(createPurchaseBill(payload, navigate));
+        await dispatch(createPurchaseinvoice(payload, navigate));
       }
     } catch (error) {
       console.error('Error creating purchae bill:', error);
@@ -306,11 +306,11 @@ const Purchasebill = () => {
     <Paper elevation={3} style={{ padding: '24px' }}>
       {id ? (
         <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Update Purchase Bill
+          Update Purchase Invoice
         </Typography>
       ) : (
         <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Purchase Bill
+          Create Purchase Invoice
         </Typography>
       )}
 
@@ -531,7 +531,7 @@ const Purchasebill = () => {
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
+              <Link to="/purchaseinvoiceList" style={{ textDecoration: 'none' }}>
                 <button
                   id="savebtncs"
                   style={{
@@ -549,7 +549,7 @@ const Purchasebill = () => {
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
-              <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
+              <Link to="/purchaseinvoiceList" style={{ textDecoration: 'none' }}>
                 <button id="savebtncs">Cancel</button>
               </Link>
             </div>
@@ -565,4 +565,4 @@ const Purchasebill = () => {
   );
 };
 
-export default Purchasebill;
+export default Purchaseinvoice;

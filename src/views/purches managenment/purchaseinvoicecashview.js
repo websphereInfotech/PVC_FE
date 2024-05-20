@@ -4,16 +4,16 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { PurchaseBillviewCash } from 'store/thunk';
+import { PurchaseInvoiceviewCash } from 'store/thunk';
 
-const Purchasebillcashview = () => {
+const Purchaseinvoicecashview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    dispatch(PurchaseBillviewCash(id))
+    dispatch(PurchaseInvoiceviewCash(id))
       .then((data) => {
         setData(data);
       })
@@ -25,7 +25,7 @@ const Purchasebillcashview = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Bill Cash View
+        Purchase Invoice Cash View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -91,7 +91,7 @@ const Purchasebillcashview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/purchasebillcashList" style={{ textDecoration: 'none' }}>
+            <Link to="/purchaseinvoicecashList" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -99,7 +99,7 @@ const Purchasebillcashview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/purchasebillcashList" style={{ textDecoration: 'none' }}>
+            <Link to="/purchaseinvoicecashList" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -111,4 +111,4 @@ const Purchasebillcashview = () => {
   );
 };
 
-export default Purchasebillcashview;
+export default Purchaseinvoicecashview;

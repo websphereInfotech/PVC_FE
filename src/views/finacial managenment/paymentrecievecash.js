@@ -29,7 +29,7 @@ const Paymentrecieve = () => {
     setFormData({ ...formData, date: date });
   };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+    if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;

@@ -269,20 +269,20 @@ const useCan = () => {
   };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL
-  const canCreatePurchasebill = () => {
-    return checkPermission('Purchase Bill', 'create_purchasebill');
+  const canCreatePurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'create_purchase_Invoice');
   };
-  const canUpdatePurchasebill = () => {
-    return checkPermission('Purchase Bill', 'update_purchasebill');
+  const canUpdatePurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'update_purchase_Invoice');
   };
-  const canDeletePurchasebill = () => {
-    return checkPermission('Purchase Bill', 'delete_purchasebill');
+  const canDeletePurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'delete_purchase_Invoice');
   };
-  const canViewPurchasebill = () => {
-    return checkPermission('Purchase Bill', 'view_single_purchasebill');
+  const canViewPurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'view_single_purchase_Invoice');
   };
-  const canViewAllPurchasebill = () => {
-    return checkPermission('Purchase Bill', 'view_all_purchasebill');
+  const canViewAllPurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'view_all_purchase_Invoice');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHSE RETURN
@@ -531,11 +531,11 @@ const useCan = () => {
     canViewUnit,
     canViewAllUnit,
     // PURCHSE BILL +++++++++++++++++++
-    canCreatePurchasebill,
-    canUpdatePurchasebill,
-    canDeletePurchasebill,
-    canViewPurchasebill,
-    canViewAllPurchasebill,
+    canCreatePurchaseinvoice,
+    canUpdatePurchaseinvoice,
+    canDeletePurchaseinvoice,
+    canViewPurchaseinvoice,
+    canViewAllPurchaseinvoice,
     // PURCHSE RETURN +++++++++++++++++
     canCreatePurchasereturn,
     canUpdatePurchasereturn,

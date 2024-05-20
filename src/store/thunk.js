@@ -137,38 +137,38 @@ import {
   viewSalesinvoicecashRequest,
   viewSalesinvoicecashSuccess,
   viewSalesinvoicecashFailure,
-  // PURCHASE BILL +++++++++++++++
-  createPurchaseBillRequest,
-  createPurchaseBillSuccess,
-  createPurchaseBillFailure,
-  updatePurchaseBillRequest,
-  updatePurchaseBillSuccess,
-  updatePurchaseBillFailure,
-  getAllPurchasebillRequest,
-  getAllPurchasebillSuccess,
-  getAllPurchasebillFailure,
-  viewPurchasebillRequest,
-  viewPurchasebillSuccess,
-  viewPurchasebillFailure,
-  deletePurchasebillRequest,
-  deletePurchasebillSuccess,
-  deletePurchasebillFailure,
-  // PURCHASE BILL CASH +++++++++++
-  createPurchaseBillCashRequest,
-  createPurchaseBillCashSuccess,
-  createPurchaseBillCashFailure,
-  getAllPurchasebillCashRequest,
-  getAllPurchasebillCashSuccess,
-  getAllPurchasebillCashFailure,
-  viewPurchasebillCashRequest,
-  viewPurchasebillCashSuccess,
-  viewPurchasebillCashFailure,
-  updatePurchaseBillCashRequest,
-  updatePurchaseBillCashSuccess,
-  updatePurchaseBillCashFailure,
-  deletePurchasebillCashRequest,
-  deletePurchasebillCashSuccess,
-  deletePurchasebillCashFailure,
+  // PURCHASE INVOICE +++++++++++++++
+  createPurchaseinvoiceRequest,
+  createPurchaseinvoiceSuccess,
+  createPurchaseinvoiceFailure,
+  updatePurchaseinvoiceRequest,
+  updatePurchaseinvoiceSuccess,
+  updatePurchaseinvoiceFailure,
+  getAllPurchaseinvoiceRequest,
+  getAllPurchaseinvoiceSuccess,
+  getAllPurchaseinvoiceFailure,
+  viewPurchaseinvoiceRequest,
+  viewPurchaseinvoiceSuccess,
+  viewPurchaseinvoiceFailure,
+  deletePurchaseinvoiceRequest,
+  deletePurchaseinvoiceSuccess,
+  deletePurchaseinvoiceFailure,
+  // PURCHASE INVOICE CASH +++++++++++
+  createPurchaseinvoiceCashRequest,
+  createPurchaseinvoiceCashSuccess,
+  createPurchaseinvoiceCashFailure,
+  getAllPurchaseinvoiceCashRequest,
+  getAllPurchaseinvoiceCashSuccess,
+  getAllPurchaseinvoiceCashFailure,
+  viewPurchaseinvoiceCashRequest,
+  viewPurchaseinvoiceCashSuccess,
+  viewPurchaseinvoiceCashFailure,
+  updatePurchaseinvoiceCashRequest,
+  updatePurchaseinvoiceCashSuccess,
+  updatePurchaseinvoiceCashFailure,
+  deletePurchaseinvoiceCashRequest,
+  deletePurchaseinvoiceCashSuccess,
+  deletePurchaseinvoiceCashFailure,
   // EXPENSE +++++++++++++++++++++++++
   createExpenseRequest,
   createExpenseFailure,
@@ -1234,176 +1234,181 @@ export const purchaseview = (id) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPurchaseBill = (payload, navigate) => {
+export const createPurchaseinvoice = (payload, navigate) => {
   return async (dispatch) => {
-    dispatch(createPurchaseBillRequest());
+    dispatch(createPurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchasebill`, payload, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchaseInvoice`, payload, config);
       const cretepurchasebill = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 900,
         onClose: () => {
-          navigate('/purchasebillList');
+          navigate('/purchaseinvoiceList');
         }
       });
-      dispatch(createPurchaseBillSuccess(cretepurchasebill));
+      dispatch(createPurchaseinvoiceSuccess(cretepurchasebill));
       return cretepurchasebill;
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
-      dispatch(createPurchaseBillFailure(error.message));
+      dispatch(createPurchaseinvoiceFailure(error.message));
     }
   };
 };
-export const getallPurchaseBill = () => {
+export const getallPurchaseinvoice = () => {
   return async (dispatch) => {
-    dispatch(getAllPurchasebillRequest());
+    dispatch(getAllPurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchasebill`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchaseInvoice`, config);
       const getallPurchasebill = response.data;
-      dispatch(getAllPurchasebillSuccess(getallPurchasebill));
+      dispatch(getAllPurchaseinvoiceSuccess(getallPurchasebill));
       return getallPurchasebill;
     } catch (error) {
-      dispatch(getAllPurchasebillFailure(error.message));
+      dispatch(getAllPurchaseinvoiceFailure(error.message));
     }
   };
 };
-export const PurchaseBillview = (id) => {
+export const viewPurchaseinvoice = (id) => {
   return async (dispatch) => {
-    dispatch(viewPurchasebillRequest());
+    dispatch(viewPurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchasebill/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchaseInvoice/${id}`, config);
       const data = response.data.data;
-      dispatch(viewPurchasebillSuccess(data));
+      dispatch(viewPurchaseinvoiceSuccess(data));
       return data;
     } catch (error) {
-      dispatch(viewPurchasebillFailure(error.message));
+      dispatch(viewPurchaseinvoiceFailure(error.message));
     }
   };
 };
-export const updatePurchaseBill = (id, payload, navigate) => {
+export const updatePurchaseinvoice = (id, payload, navigate) => {
   return async (dispatch) => {
-    dispatch(updatePurchaseBillRequest());
+    dispatch(updatePurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchasebill/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseInvoice/${id}`, payload, config);
       const updatePurchasebillData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 900,
         onClose: () => {
-          navigate('/purchasebillList');
+          navigate('/purchaseinvoiceList');
         }
       });
-      dispatch(updatePurchaseBillSuccess(updatePurchasebillData));
+      dispatch(updatePurchaseinvoiceSuccess(updatePurchasebillData));
       return updatePurchasebillData;
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
-      dispatch(updatePurchaseBillFailure(error.message));
+      dispatch(updatePurchaseinvoiceFailure(error.message));
     }
   };
 };
-export const deletePurchasebill = (id) => {
+export const deletePurchaseinvoice = (id) => {
   return async (dispatch) => {
-    dispatch(deletePurchasebillRequest());
+    dispatch(deletePurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchasebill/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseInvoice/${id}`, config);
       const deletePurchasebillData = response;
-      dispatch(deletePurchasebillSuccess(deletePurchasebillData));
+      dispatch(deletePurchaseinvoiceSuccess(deletePurchasebillData));
       window.location.reload();
       return deletePurchasebillData;
     } catch (error) {
-      dispatch(deletePurchasebillFailure(error.message));
+      dispatch(deletePurchaseinvoiceFailure(error.message));
       throw error;
     }
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPurchaseBillCash = (payload, navigate) => {
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE INVOICE CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createPurchaseInvoiceCash = (payload, navigate) => {
   return async (dispatch) => {
-    dispatch(createPurchaseBillCashRequest());
+    dispatch(createPurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_purchasebill`, payload, config);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/C_create_purchaseCash
+      `,
+        payload,
+        config
+      );
       const cretepurchasebillcash = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 900,
         onClose: () => {
-          navigate('/purchasebillcashList');
+          navigate('/purchaseinvoicecashList');
         }
       });
-      dispatch(createPurchaseBillCashSuccess(cretepurchasebillcash));
+      dispatch(createPurchaseinvoiceCashSuccess(cretepurchasebillcash));
       return cretepurchasebillcash;
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
-      dispatch(createPurchaseBillCashFailure(error.message));
+      dispatch(createPurchaseinvoiceCashFailure(error.message));
     }
   };
 };
-export const getallPurchaseBillCash = () => {
+export const getallPurchaseInvoiceCash = () => {
   return async (dispatch) => {
-    dispatch(getAllPurchasebillCashRequest());
+    dispatch(getAllPurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_purchasebill`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_purchaseCash`, config);
       const getallPurchasebillcash = response.data;
-      dispatch(getAllPurchasebillCashSuccess(getallPurchasebillcash));
+      dispatch(getAllPurchaseinvoiceCashSuccess(getallPurchasebillcash));
       return getallPurchasebillcash;
     } catch (error) {
-      dispatch(getAllPurchasebillCashFailure(error.message));
+      dispatch(getAllPurchaseinvoiceCashFailure(error.message));
     }
   };
 };
-export const PurchaseBillviewCash = (id) => {
+export const PurchaseInvoiceviewCash = (id) => {
   return async (dispatch) => {
-    dispatch(viewPurchasebillCashRequest());
+    dispatch(viewPurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_purchasebill/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_purchaseCash/${id}`, config);
       const data = response.data.data;
-      dispatch(viewPurchasebillCashSuccess(data));
+      dispatch(viewPurchaseinvoiceCashSuccess(data));
       return data;
     } catch (error) {
-      dispatch(viewPurchasebillCashFailure(error.message));
+      dispatch(viewPurchaseinvoiceCashFailure(error.message));
     }
   };
 };
-export const updatePurchaseBillCash = (id, payload, navigate) => {
+export const updatePurchaseInvoiceCash = (id, payload, navigate) => {
   return async (dispatch) => {
-    dispatch(updatePurchaseBillCashRequest());
+    dispatch(updatePurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_purchasebill/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_purchaseCash/${id}`, payload, config);
       const updatePurchasebillData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 900,
         onClose: () => {
-          navigate('/purchasebillcashList');
+          navigate('/purchaseinvoicecashList');
         }
       });
-      dispatch(updatePurchaseBillCashSuccess(updatePurchasebillData));
+      dispatch(updatePurchaseinvoiceCashSuccess(updatePurchasebillData));
       return updatePurchasebillData;
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
-      dispatch(updatePurchaseBillCashFailure(error.message));
+      dispatch(updatePurchaseinvoiceCashFailure(error.message));
     }
   };
 };
-export const deletePurchasebillCash = (id) => {
+export const deletePurchaseInvoiceCash = (id) => {
   return async (dispatch) => {
-    dispatch(deletePurchasebillCashRequest());
+    dispatch(deletePurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_purchasebill/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_purchaseCash/${id}`, config);
       const deletePurchasebillData = response;
-      dispatch(deletePurchasebillCashSuccess(deletePurchasebillData));
+      dispatch(deletePurchaseinvoiceCashSuccess(deletePurchasebillData));
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -1414,7 +1419,7 @@ export const deletePurchasebillCash = (id) => {
       toast.error(error.response.data.message, {
         autoClose: 1000
       });
-      dispatch(deletePurchasebillCashFailure(error.message));
+      dispatch(deletePurchaseinvoiceCashFailure(error.message));
       throw error;
     }
   };

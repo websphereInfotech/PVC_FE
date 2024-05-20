@@ -3,8 +3,6 @@ import React, { lazy } from 'react';
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
-// import Dileverychallanmain from 'views/sale managenment/dileverychallanmain';
-import Purchaseview from 'views/purches managenment/purchaseview';
 import Salesummary from 'component/reports/general reports/salesummary';
 import Saleregister from 'component/reports/general reports/saleregister';
 import Purchasesummary from 'component/reports/general reports/purchasesummary';
@@ -63,24 +61,15 @@ const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/sales
 const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/salesinvoicelist')));
 const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/salesinvoiceview')));
 
-// ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase +++++++++++++++++++++++++++++++++++++++++++++++++++
-const PurchaseOrderList = Loadable(lazy(() => import('../views/purches managenment/purchaselist')));
-const AddPurchasePage = Loadable(lazy(() => import('../views/purches managenment/purchaseadd')));
-
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase bill +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Purchasebill = Loadable(lazy(() => import('../views/purches managenment/purchasebill')));
-const PurchaseBillList = Loadable(lazy(() => import('../views/purches managenment/purchasebilllist')));
-const Purchasebillview = Loadable(lazy(() => import('../views/purches managenment/purchasebillview')));
+const Purchaseinvoice = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoice')));
+const PurchaseinvoiceList = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicelist')));
+const Purchaseinvoiceview = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoiceview')));
 
 // +++++++++++++++++++++++++++++++++++++++++ Routes of purchasse bill cash ++++++++++++++++++++++++++++++++++++++++++++
-const Purchasebillcash = Loadable(lazy(() => import('../views/purches managenment/purchasebillcash')));
-const Purchasebillcashlist = Loadable(lazy(() => import('../views/purches managenment/purchasebillcashlist')));
-const Purchasebillcashview = Loadable(lazy(() => import('../views/purches managenment/purchasebillcashview')));
-
-// ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase return +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Purchasereturn = Loadable(lazy(() => import('../views/purches managenment/purchasereturn')));
-const PurchaseReturnList = Loadable(lazy(() => import('../views/purches managenment/purchasereturnlist')));
-const Purchasereturnview = Loadable(lazy(() => import('../views/purches managenment/purchasereturnview')));
+const Purchaseinvoicecash = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicecash')));
+const Purchaseinvoicecashlist = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicecashlist')));
+const Purchaseinvoicecashview = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicecashview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
 const CompanyList = Loadable(lazy(() => import('../views/company managenment/companylist')));
@@ -182,29 +171,17 @@ const MainRoutes = {
     { path: '/creditnotelist', element: <Creditnotelist /> },
     { path: '/creditnoteview/:id', element: <CreditnoteView /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/addpurchase', element: <AddPurchasePage /> },
-    { path: '/purchaselist', element: <PurchaseOrderList /> },
-    { path: '/addpurchase/:id', element: <AddPurchasePage /> },
-    { path: '/purchaseview/:id', element: <Purchaseview /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/purchaseinvoice', element: <Purchaseinvoice /> },
+    { path: '/purchaseinvoice/:id', element: <Purchaseinvoice /> },
+    { path: '/purchaseinvoiceList', element: <PurchaseinvoiceList /> },
+    { path: '/purchaseinvoiceview/:id', element: <Purchaseinvoiceview /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchasebill +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/purchasebill', element: <Purchasebill /> },
-    { path: '/purchasebill/:id', element: <Purchasebill /> },
-    { path: '/purchasebillList', element: <PurchaseBillList /> },
-    { path: '/purchasebillview/:id', element: <Purchasebillview /> },
-
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchasebill Cash  +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/purchasebillcash', element: <Purchasebillcash /> },
-    { path: '/purchasebillcash/:id', element: <Purchasebillcash /> },
-    { path: '/purchasebillcashList', element: <Purchasebillcashlist /> },
-    { path: '/purchasebillcashview/:id', element: <Purchasebillcashview /> },
-
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchasereturn +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/purchasereturn', element: <Purchasereturn /> },
-    { path: '/purchasereturn/:id', element: <Purchasereturn /> },
-    { path: '/purchasereturnList', element: <PurchaseReturnList /> },
-    { path: '/purchasereturnview/:id', element: <Purchasereturnview /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice Cash  +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/purchaseinvoicecash', element: <Purchaseinvoicecash /> },
+    { path: '/purchaseinvoicecash/:id', element: <Purchaseinvoicecash /> },
+    { path: '/purchaseinvoicecashList', element: <Purchaseinvoicecashlist /> },
+    { path: '/purchaseinvoicecashview/:id', element: <Purchaseinvoicecashview /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/companylist', element: <CompanyList /> },

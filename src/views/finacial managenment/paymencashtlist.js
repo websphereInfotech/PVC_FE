@@ -20,6 +20,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
 import { getallPaymentCash, paymentCashDelete, paymentCashview } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -38,6 +39,7 @@ const columnsnew = [
 ];
 const PaymentListPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);

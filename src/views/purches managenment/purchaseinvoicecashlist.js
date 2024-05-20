@@ -17,9 +17,9 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { PurchaseBillviewCash, deletePurchasebillCash, getallPurchaseBillCash } from 'store/thunk';
+import { PurchaseInvoiceviewCash, deletePurchaseInvoiceCash, getallPurchaseInvoiceCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-import useCan from 'views/checkpermissionvalue';
+// import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   // { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -30,8 +30,8 @@ const columns = [
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
-const Purchasebillcashlist = () => {
-  const { canCreatePurchasebillcash, canUpdatePurchasebillcash, canViewPurchasebillcash, canDeletePurchasebillcash } = useCan();
+const Purchaseinvoicecashlist = () => {
+  // const { canCreatePurchasebillcash, canUpdatePurchasebillcash, canViewPurchasebillcash, canDeletePurchasebillcash } = useCan();
   const navigate = useNavigate();
   const [purchasebillcash, setPurchasebillcash] = useState([]);
   const [page, setPage] = useState(0);
@@ -43,7 +43,7 @@ const Purchasebillcashlist = () => {
   useEffect(() => {
     const fetchsalesinvoicecash = async () => {
       try {
-        const data = await dispatch(getallPurchaseBillCash());
+        const data = await dispatch(getallPurchaseInvoiceCash());
         setPurchasebillcash(data.data);
       } catch (error) {
         console.error('Error fetching sales invoice:', error);
@@ -63,17 +63,17 @@ const Purchasebillcashlist = () => {
   };
 
   const handleAddPurchasebillCash = () => {
-    navigate('/purchasebillcash');
+    navigate('/purchaseinvoicecash');
   };
 
   const handleUpdatePurchasebillCash = (id) => {
-    dispatch(PurchaseBillviewCash(id));
-    navigate(`/purchasebillcash/${id}`);
+    dispatch(PurchaseInvoiceviewCash(id));
+    navigate(`/purchaseinvoicecash/${id}`);
   };
 
   const handleViewPurchasebillCash = (id) => {
-    dispatch(PurchaseBillviewCash(id));
-    navigate(`/purchasebillcashview/${id}`);
+    dispatch(PurchaseInvoiceviewCash(id));
+    navigate(`/purchaseinvoicecashview/${id}`);
   };
 
   const handleDeleteConfirmation = (id) => {
@@ -83,7 +83,7 @@ const Purchasebillcashlist = () => {
 
   const handledeletesalescash = async () => {
     try {
-      await dispatch(deletePurchasebillCash(selectedId));
+      await dispatch(deletePurchaseInvoiceCash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -94,16 +94,16 @@ const Purchasebillcashlist = () => {
     // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Bill Cash List
+        Purchase Invoice Cash List
       </Typography>
       <Button
         variant="contained"
         color="secondary"
         style={{ margin: '10px' }}
         onClick={handleAddPurchasebillCash}
-        disabled={!canCreatePurchasebillcash()}
+        // disabled={!canCreatePurchasebillcash()}
       >
-        Create Purchase bill cash
+        Create Purchase invoice cash
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -125,14 +125,14 @@ const Purchasebillcashlist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canViewPurchasebillcash()}
+                        // disabled={!canViewPurchasebillcash()}
                         onClick={() => handleViewPurchasebillCash(row.id)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
-                        disabled={!canUpdatePurchasebillcash()}
+                        // disabled={!canUpdatePurchasebillcash()}
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePurchasebillCash(row.id)}
@@ -143,7 +143,7 @@ const Purchasebillcashlist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canDeletePurchasebillcash()}
+                        // disabled={!canDeletePurchasebillcash()}
                         onClick={() => handleDeleteConfirmation(row.id)}
                       >
                         Delete
@@ -173,7 +173,7 @@ const Purchasebillcashlist = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this Sales cash?</DialogContent>
+        <DialogContent>Are you sure you want to delete this purchase invoice?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
@@ -188,4 +188,4 @@ const Purchasebillcashlist = () => {
   );
 };
 
-export default Purchasebillcashlist;
+export default Purchaseinvoicecashlist;

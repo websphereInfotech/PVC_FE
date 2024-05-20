@@ -48,6 +48,7 @@ const icons = {
 const MenuItem = () => {
   const [permissions, setPermissions] = useState([]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -133,12 +134,12 @@ const MenuItem = () => {
     'delete_creditNote'
   ]);
 
-  const hasAllPermissionPurchasebill = checkAllPermissions('Purchase Bill', [
-    'create_purchasebill',
-    'update_purchasebill',
-    'delete_purchasebill',
-    'view_single_purchasebill',
-    'view_all_purchasebill'
+  const hasAllPermissionPurchaseinvoice = checkAllPermissions('Purchase Invoice', [
+    'create_purchase_Invoice',
+    'update_purchase_Invoice',
+    'delete_purchase_Invoice',
+    'view_single_purchase_Invoice',
+    'view_all_purchase_Invoice'
   ]);
 
   const hasAllPermissionSalesCash = checkAllPermissions('Sales Cash', [
@@ -149,7 +150,7 @@ const MenuItem = () => {
     'view_all_sales_cash'
   ]);
 
-  const hasAllPermissionPurchasebillCash = checkAllPermissions('Purchase Cash', [
+  const hasAllPermissionPurchaseinvoiceCash = checkAllPermissions('Purchase Cash', [
     'create_purchase_cash',
     'update_purchase_cash',
     'delete_purchase_cash',
@@ -305,32 +306,20 @@ const MenuItem = () => {
                 type: 'collapse',
                 icon: icons['ShoppingBasketIcon'],
                 children: [
-                  {
-                    id: 'Purchase Orders',
-                    title: 'Purchase Orders',
+                  hasAllPermissionPurchaseinvoice && {
+                    id: 'Purchase Invoice',
+                    title: 'Purchase Invoice',
                     type: 'item',
-                    url: '/purchaselist'
-                  },
-                  hasAllPermissionPurchasebill && {
-                    id: 'Purchase Bill',
-                    title: 'Purchase Bill',
-                    type: 'item',
-                    url: '/purchasebillList'
+                    url: '/purchaseinvoiceList'
                   },
                   createConfig() === 'C'
-                    ? hasAllPermissionPurchasebillCash && {
-                        id: 'Purchase Bill Cash',
-                        title: 'Purchase Bill Cash',
+                    ? hasAllPermissionPurchaseinvoiceCash && {
+                        id: 'Purchase Invoice Cash',
+                        title: 'Purchase Invoice Cash',
                         type: 'item',
-                        url: '/purchasebillcashList'
+                        url: '/purchaseinvoicecashList'
                       }
-                    : {},
-                  {
-                    id: 'Purchase Return',
-                    title: 'Purchase Return',
-                    type: 'item',
-                    url: '/purchasereturnList'
-                  }
+                    : {}
                 ]
               },
               {
