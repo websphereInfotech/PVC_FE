@@ -220,11 +220,11 @@ const Purchaseinvoicecash = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Purchase Invoice Cash
+            Update Purchase Cash
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Purchase Invoice Cash
+            Create Purchase Cash
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>

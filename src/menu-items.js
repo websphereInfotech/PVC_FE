@@ -314,8 +314,8 @@ const MenuItem = () => {
                   },
                   createConfig() === 'C'
                     ? hasAllPermissionPurchaseinvoiceCash && {
-                        id: 'Purchase Invoice Cash',
-                        title: 'Purchase Invoice Cash',
+                        id: 'Purchase Cash',
+                        title: 'Purchase Cash',
                         type: 'item',
                         url: '/purchaseinvoicecashList'
                       }

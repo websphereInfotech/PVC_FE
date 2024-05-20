@@ -94,7 +94,7 @@ const Purchaseinvoicecashlist = () => {
     // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Invoice Cash List
+        Purchase Cash List
       </Typography>
       <Button
         variant="contained"
@@ -103,7 +103,7 @@ const Purchaseinvoicecashlist = () => {
         onClick={handleAddPurchasebillCash}
         // disabled={!canCreatePurchasebillcash()}
       >
-        Create Purchase invoice cash
+        Create Purchase cash
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>

@@ -25,7 +25,7 @@ const Purchaseinvoicecashview = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Invoice Cash View
+        Purchase Cash View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
