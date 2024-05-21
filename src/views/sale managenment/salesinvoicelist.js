@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  // Container,
   Typography,
   Button,
   Table,
@@ -26,7 +25,6 @@ const columns = [
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
-  // { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center'  },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
