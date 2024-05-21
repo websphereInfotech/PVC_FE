@@ -155,7 +155,7 @@ const Salesinvoicelist = () => {
                     ) : column.id === 'duedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
-                      row.InvioceCustomer.shortname
+                      row.InvioceCustomer.accountname
                     ) : (
                       row[column.id]
                     )}
