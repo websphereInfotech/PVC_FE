@@ -1,61 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import {
-  // Container,
-  Typography,
-  Button,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Card,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import { viewPurchaseinvoice, deletePurchaseinvoice, getallPurchaseinvoice } from 'store/thunk';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
-  { id: 'creditdate', label: 'Date.', minWidth: 170, align: 'center' },
-  { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
+  { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
+  { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
+  { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
-const Creditnotelist = () => {
-  const { canUpdateCreditnote, canViewCreditnote, canCreateCreditnote, canDeleteCreditnote } = useCan();
+export default function PurchaseinvoiceList() {
+  const { canViewPurchaseinvoice, canDeletePurchaseinvoice, canUpdatePurchaseinvoice, canCreatePurchaseinvoice } = useCan();
   const navigate = useNavigate();
-  const [Creditnote, setCreditnote] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
   const dispatch = useDispatch();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [purchasebill, setPurchasebill] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  const [billid, setBillid] = useState(null);
 
   useEffect(() => {
-    const fetchcreditnote = async () => {
+    const fetchData = async () => {
       try {
-        const data = await dispatch(getallCreditnote());
-        data.sort((a, b) => {
-          const aNum = parseInt(a.creditnoteNo);
-          const bNum = parseInt(b.creditnoteNo);
-          return aNum - bNum;
-        });
-        setCreditnote(data);
+        const response = await dispatch(getallPurchaseinvoice());
+        setPurchasebill(response.data);
       } catch (error) {
-        console.error('Error fetching Credit note:', error);
+        console.error('Error fetching purchase bill:', error);
       }
     };
 
-    fetchcreditnote();
+    fetchData();
   }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
@@ -63,52 +51,50 @@ const Creditnotelist = () => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-  const handleAddCreditnote = () => {
-    navigate('/creditnote');
+  const handleViewPurchaseBill = (id) => {
+    dispatch(viewPurchaseinvoice(id));
+    navigate(`/purchaseinvoiceview/${id}`);
   };
 
-  const handleUpdateDebitnote = (id) => {
-    dispatch(Creditnoteviewdata(id));
-    navigate(`/creditnote/${id}`);
+  const handleUpdatePurchaseBill = (id) => {
+    dispatch(viewPurchaseinvoice(id));
+    navigate(`/purchaseinvoice/${id}`);
   };
-
-  const handleViewDebitnote = (id) => {
-    dispatch(Creditnoteviewdata(id));
-    navigate(`/creditnoteview/${id}`);
+  const handleAddpuchasebill = () => {
+    navigate('/purchaseinvoice');
   };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setSelectedId(id);
+    setBillid(id);
   };
 
-  const handleDeleteDebitnote = async () => {
+  const handleDeletePurchasebill = async () => {
     try {
-      await dispatch(deleteCreditnote(selectedId));
+      await dispatch(deletePurchaseinvoice(billid));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting Bill:', error);
     }
   };
 
   return (
-    // <Container>
-    <Card style={{ width: 'auto', padding: '20px' }}>
+    <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Credit Note List
+        Purchase Invoice List
       </Typography>
       <Button
         variant="contained"
         color="secondary"
-        style={{ margin: '10px' }}
-        onClick={handleAddCreditnote}
-        disabled={!canCreateCreditnote()}
+        style={{ margin: '16px' }}
+        onClick={handleAddpuchasebill}
+        disabled={!canCreatePurchaseinvoice()}
       >
-        Create Credit Note
+        Create Purchase Invoice
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -122,7 +108,7 @@ const Creditnotelist = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Creditnote?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {purchasebill?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -130,17 +116,17 @@ const Creditnotelist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canViewCreditnote()}
-                        onClick={() => handleViewDebitnote(row.id)}
+                        onClick={() => handleViewPurchaseBill(row.id)}
+                        disabled={!canViewPurchaseinvoice()}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
-                        disabled={!canUpdateCreditnote()}
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleUpdateDebitnote(row.id)}
+                        onClick={() => handleUpdatePurchaseBill(row.id)}
+                        disabled={!canUpdatePurchaseinvoice()}
                       >
                         Edit
                       </Button>
@@ -148,15 +134,17 @@ const Creditnotelist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        disabled={!canDeleteCreditnote()}
                         onClick={() => handleDeleteConfirmation(row.id)}
+                        disabled={!canDeletePurchaseinvoice()}
                       >
                         Delete
                       </Button>
-                    ) : column.id === 'creditdate' ? (
+                    ) : column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      row.CreditCustomer.accountname
+                    ) : column.id === 'duedate' ? (
+                      new Date(row[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'vendor' ? (
+                      row.purchseVendor.accountname
                     ) : (
                       row[column.id]
                     )}
@@ -168,9 +156,9 @@ const Creditnotelist = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[8, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={Creditnote.length || 0}
+        count={purchasebill.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -178,19 +166,16 @@ const Creditnotelist = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this Credit Note?</DialogContent>
+        <DialogContent>Are you sure you want to delete this?</DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+          <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteDebitnote} variant="contained" color="secondary">
+          <Button onClick={handleDeletePurchasebill} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
       </Dialog>
     </Card>
-    // </Container>
   );
-};
-
-export default Creditnotelist;
+}

@@ -48,6 +48,7 @@ const icons = {
 const MenuItem = () => {
   const [permissions, setPermissions] = useState([]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -132,13 +133,47 @@ const MenuItem = () => {
     'update_creditNote',
     'delete_creditNote'
   ]);
-  const hasAllPermissionPurchasebill = checkAllPermissions('Purchase Bill', [
-    'create_purchasebill',
-    'update_purchasebill',
-    'delete_purchasebill',
-    'view_single_purchasebill',
-    'view_all_purchasebill'
+
+  const hasAllPermissionPurchaseinvoice = checkAllPermissions('Purchase Invoice', [
+    'create_purchase_Invoice',
+    'update_purchase_Invoice',
+    'delete_purchase_Invoice',
+    'view_single_purchase_Invoice',
+    'view_all_purchase_Invoice'
   ]);
+
+  const hasAllPermissionSalesCash = checkAllPermissions('Sales Cash', [
+    'create_sales_cash',
+    'update_sales_cash',
+    'delete_sales_cash',
+    'view_sales_cash',
+    'view_all_sales_cash'
+  ]);
+
+  const hasAllPermissionPurchaseinvoiceCash = checkAllPermissions('Purchase Cash', [
+    'create_purchase_cash',
+    'update_purchase_cash',
+    'delete_purchase_cash',
+    'view_purchase_cash',
+    'view_all_purchase_cash'
+  ]);
+
+  const hasAllPermissionPaymentCash = checkAllPermissions('Payment Cash', [
+    'create_payment_Cash',
+    'update_payment_Cash',
+    'delete_payment_Cash',
+    'view_payment_Cash',
+    'view_all_payment_Cash'
+  ]);
+
+  const hasAllPermissionPaymentRecieveCash = checkAllPermissions('Receive Cash', [
+    'create_receive_Cash',
+    'update_receive_Cash',
+    'delete_receive_Cash',
+    'view_receive_Cash',
+    'view_all_receive_Cash'
+  ]);
+
   return {
     items: [
       {
@@ -193,26 +228,32 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['AccountBalanceIcon'],
             children: [
-              {
-                id: 'Payment',
-                title: 'Payment',
-                type: 'collapse',
-                icon: icons['PaymentsIcon'],
-                children: [
-                  {
-                    id: 'payment-list',
-                    title: 'Payments',
-                    type: 'item',
-                    url: '/paymentlist'
+              createConfig() === 'C'
+                ? {
+                    id: 'Cash',
+                    title: 'Cash',
+                    type: 'collapse',
+                    icon: icons['PaymentsIcon'],
+                    children: [
+                      createConfig() === 'C'
+                        ? hasAllPermissionPaymentCash && {
+                            id: 'payment Cash',
+                            title: 'Payment Cash',
+                            type: 'item',
+                            url: '/paymentCashlist'
+                          }
+                        : {},
+                      createConfig() === 'C'
+                        ? hasAllPermissionPaymentRecieveCash && {
+                            id: 'recieve cash',
+                            title: 'Recieve Cash',
+                            type: 'item',
+                            url: '/paymentrecieveList'
+                          }
+                        : {}
+                    ]
                   }
-                  // {
-                  //   id: 'payment-recieve',
-                  //   title: 'Payment Recieve',
-                  //   type: 'item',
-                  //   url: '/paymentrecieve'
-                  // }
-                ]
-              },
+                : {},
               {
                 id: 'sale-management',
                 title: 'Sale Management',
@@ -249,12 +290,14 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/creditnotelist'
                   },
-                  {
-                    id: 'sales cash',
-                    title: 'Sales Cash',
-                    type: 'item'
-                    // url: '/creditnotelist'
-                  }
+                  createConfig() === 'C'
+                    ? hasAllPermissionSalesCash && {
+                        id: 'sales cash',
+                        title: 'Sales Cash',
+                        type: 'item',
+                        url: '/salescashlist'
+                      }
+                    : {}
                 ]
               },
               {
@@ -263,24 +306,20 @@ const MenuItem = () => {
                 type: 'collapse',
                 icon: icons['ShoppingBasketIcon'],
                 children: [
-                  {
-                    id: 'Purchase Orders',
-                    title: 'Purchase Orders',
+                  hasAllPermissionPurchaseinvoice && {
+                    id: 'Purchase Invoice',
+                    title: 'Purchase Invoice',
                     type: 'item',
-                    url: '/purchaselist'
+                    url: '/purchaseinvoiceList'
                   },
-                  hasAllPermissionPurchasebill && {
-                    id: 'Purchase Bill',
-                    title: 'Purchase Bill',
-                    type: 'item',
-                    url: '/purchasebilllist'
-                  },
-                  {
-                    id: 'Purchase Return',
-                    title: 'Purchase Return',
-                    type: 'item',
-                    url: '/purchasereturnList'
-                  }
+                  createConfig() === 'C'
+                    ? hasAllPermissionPurchaseinvoiceCash && {
+                        id: 'Purchase Cash',
+                        title: 'Purchase Cash',
+                        type: 'item',
+                        url: '/purchaseinvoicecashList'
+                      }
+                    : {}
                 ]
               },
               {

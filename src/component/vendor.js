@@ -27,16 +27,12 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     email: '',
     contactpersonname: '',
     mobileno: '',
-    panno: '',
+    panno: Number(),
     gstnumber: '',
     creditperiod: '',
-    mode: '',
     address1: '',
     address2: '',
     pincode: '',
-    // state: '',
-    // city: '',
-    country: '',
     balance: ''
   });
 
@@ -136,9 +132,7 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
             <input placeholder="Enter Account Name" id="accountname" value={formData.accountname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">
-              Short/Alias Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">Short/Alias Name :</Typography>
             <input placeholder="Enter Short/Alias Name" id="shortname" value={formData.shortname} onChange={handleInputChange} />
           </Grid>
         </Grid>

@@ -269,20 +269,20 @@ const useCan = () => {
   };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL
-  const canCreatePurchasebill = () => {
-    return checkPermission('Purchase Bill', 'create_purchasebill');
+  const canCreatePurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'create_purchase_Invoice');
   };
-  const canUpdatePurchasebill = () => {
-    return checkPermission('Purchase Bill', 'update_purchasebill');
+  const canUpdatePurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'update_purchase_Invoice');
   };
-  const canDeletePurchasebill = () => {
-    return checkPermission('Purchase Bill', 'delete_purchasebill');
+  const canDeletePurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'delete_purchase_Invoice');
   };
-  const canViewPurchasebill = () => {
-    return checkPermission('Purchase Bill', 'view_single_purchasebill');
+  const canViewPurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'view_single_purchase_Invoice');
   };
-  const canViewAllPurchasebill = () => {
-    return checkPermission('Purchase Bill', 'view_all_purchasebill');
+  const canViewAllPurchaseinvoice = () => {
+    return checkPermission('Purchase Invoice', 'view_all_purchase_Invoice');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHSE RETURN
@@ -374,6 +374,78 @@ const useCan = () => {
     return checkPermission('Credit Note', 'view_all_creditNote');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALES CASH
+
+  const canCreateSalescash = () => {
+    return checkPermission('Sales Cash', 'create_sales_cash');
+  };
+  const canUpdateSalescash = () => {
+    return checkPermission('Sales Cash', 'update_sales_cash');
+  };
+  const canDeleteSalescash = () => {
+    return checkPermission('Sales Cash', 'delete_sales_cash');
+  };
+  const canViewSalescash = () => {
+    return checkPermission('Sales Cash', 'view_sales_cash');
+  };
+  const canViwAllSalescash = () => {
+    return checkPermission('Sales Cash', 'view_all_sales_cash');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL CASH
+
+  const canCreatePurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'create_purchase_cash');
+  };
+  const canUpdatePurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'update_purchase_cash');
+  };
+  const canDeletePurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'delete_purchase_cash');
+  };
+  const canViewPurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'view_purchase_cash');
+  };
+  const canViwAllPurchasebillcash = () => {
+    return checkPermission('Purchase Cash', 'view_all_purchase_cash');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH
+
+  const canCreatePaymentcash = () => {
+    return checkPermission('Payment Cash', 'create_payment_Cash');
+  };
+  const canUpdatePaymentcash = () => {
+    return checkPermission('Payment Cash', 'update_payment_Cash');
+  };
+  const canDeletePaymentcash = () => {
+    return checkPermission('Payment Cash', 'delete_payment_Cash');
+  };
+  const canViewPaymentcash = () => {
+    return checkPermission('Payment Cash', 'view_payment_Cash');
+  };
+  const canViwAllPaymentcash = () => {
+    return checkPermission('Payment Cash', 'view_all_payment_Cash');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
+
+  const canCreatePaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'create_receive_Cash');
+  };
+  const canUpdatePaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'update_receive_Cash');
+  };
+  const canDeletePaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'delete_receive_Cash');
+  };
+  const canViewPaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'view_receive_Cash');
+  };
+  const canViwAllPaymentrecievecash = () => {
+    return checkPermission('Receive Cash', 'view_all_receive_Cash');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     canCreateProformainvoiceQuotation,
@@ -459,11 +531,11 @@ const useCan = () => {
     canViewUnit,
     canViewAllUnit,
     // PURCHSE BILL +++++++++++++++++++
-    canCreatePurchasebill,
-    canUpdatePurchasebill,
-    canDeletePurchasebill,
-    canViewPurchasebill,
-    canViewAllPurchasebill,
+    canCreatePurchaseinvoice,
+    canUpdatePurchaseinvoice,
+    canDeletePurchaseinvoice,
+    canViewPurchaseinvoice,
+    canViewAllPurchaseinvoice,
     // PURCHSE RETURN +++++++++++++++++
     canCreatePurchasereturn,
     canUpdatePurchasereturn,
@@ -494,7 +566,31 @@ const useCan = () => {
     canUpdateCreditnote,
     canDeleteCreditnote,
     canViewCreditnote,
-    canViwAllCreditnote
+    canViwAllCreditnote,
+    // SALES CASH ++++++++++++++++++++
+    canCreateSalescash,
+    canUpdateSalescash,
+    canDeleteSalescash,
+    canViewSalescash,
+    canViwAllSalescash,
+    // PURCHASE BILL CASH ++++++++++++
+    canCreatePurchasebillcash,
+    canUpdatePurchasebillcash,
+    canDeletePurchasebillcash,
+    canViewPurchasebillcash,
+    canViwAllPurchasebillcash,
+    //  PAYMENT CASH +++++++++++++++++
+    canCreatePaymentcash,
+    canUpdatePaymentcash,
+    canDeletePaymentcash,
+    canViewPaymentcash,
+    canViwAllPaymentcash,
+    // PAYMENT REICEVE CASH +++++++++++
+    canCreatePaymentrecievecash,
+    canUpdatePaymentrecievecash,
+    canDeletePaymentrecievecash,
+    canViewPaymentrecievecash,
+    canViwAllPaymentrecievecash
   };
 };
 

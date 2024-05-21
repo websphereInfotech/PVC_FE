@@ -1,49 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { PurchaseBillview, deletePurchasebill, getallPurchaseBill } from 'store/thunk';
-import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
-import { Typography } from '@mui/material';
+import {
+  // Container,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { SalesInvoiceCashview, deleteSalesinvoicecash, getallSalesInvoiceCash } from 'store/thunk';
+import { useDispatch } from 'react-redux';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
-  { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
-  { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
+  // { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
+  { id: 'date', label: 'Date.', minWidth: 100, align: 'center' },
+  { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
-export default function PurchaseBillList() {
-  const { canViewPurchasebill, canDeletePurchasebill, canUpdatePurchasebill, canCreatePurchasebill } = useCan();
+const Salescashlist = () => {
+  const { canCreateSalescash, canUpdateSalescash, canViewSalescash, canDeleteSalescash } = useCan();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [salescash, setsalescash] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [purchasebill, setPurchasebill] = useState([]);
+  const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [billid, setBillid] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchsalesinvoicecash = async () => {
       try {
-        const response = await dispatch(getallPurchaseBill());
-        setPurchasebill(response.data);
+        const data = await dispatch(getallSalesInvoiceCash());
+        setsalescash(data.data);
       } catch (error) {
-        console.error('Error fetching purchase bill:', error);
+        console.error('Error fetching sales invoice:', error);
       }
     };
 
-    fetchData();
+    fetchsalesinvoicecash();
   }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
@@ -51,50 +58,52 @@ export default function PurchaseBillList() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleViewPurchaseBill = (id) => {
-    dispatch(PurchaseBillview(id));
-    navigate(`/purchasebillview/${id}`);
+  const handleAddSalescash = () => {
+    navigate('/salescash');
   };
 
-  const handleUpdatePurchaseBill = (id) => {
-    dispatch(PurchaseBillview(id));
-    navigate(`/purchasebill/${id}`);
+  const handleUpdateSalescash = (id) => {
+    dispatch(SalesInvoiceCashview(id));
+    navigate(`/salescash/${id}`);
   };
-  const handleAddpuchasebill = () => {
-    navigate('/purchasebill');
+
+  const handleViewsalescash = (id) => {
+    dispatch(SalesInvoiceCashview(id));
+    navigate(`/salescashview/${id}`);
   };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setBillid(id);
+    setSelectedId(id);
   };
 
-  const handleDeletePurchasebill = async () => {
+  const handledeletesalescash = async () => {
     try {
-      await dispatch(deletePurchasebill(billid));
+      await dispatch(deleteSalesinvoicecash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting Bill:', error);
+      console.error('Error deleting user:', error);
     }
   };
 
   return (
-    <Card sx={{ width: '100%', padding: '25px' }}>
+    // <Container>
+    <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Bill List
+        Sales Cash List
       </Typography>
       <Button
         variant="contained"
         color="secondary"
-        style={{ margin: '16px' }}
-        onClick={handleAddpuchasebill}
-        disabled={!canCreatePurchasebill()}
+        style={{ margin: '10px' }}
+        onClick={handleAddSalescash}
+        disabled={!canCreateSalescash()}
       >
-        Create Purchase Bill
+        Create Sales Cash
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -108,7 +117,7 @@ export default function PurchaseBillList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {purchasebill?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {salescash?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)?.map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -116,17 +125,17 @@ export default function PurchaseBillList() {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleViewPurchaseBill(row.id)}
-                        disabled={!canViewPurchasebill()}
+                        disabled={!canViewSalescash()}
+                        onClick={() => handleViewsalescash(row.id)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
+                        disabled={!canUpdateSalescash()}
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleUpdatePurchaseBill(row.id)}
-                        disabled={!canUpdatePurchasebill()}
+                        onClick={() => handleUpdateSalescash(row.id)}
                       >
                         Edit
                       </Button>
@@ -134,17 +143,15 @@ export default function PurchaseBillList() {
                       <Button
                         variant="outlined"
                         color="secondary"
+                        disabled={!canDeleteSalescash()}
                         onClick={() => handleDeleteConfirmation(row.id)}
-                        disabled={!canDeletePurchasebill()}
                       >
                         Delete
                       </Button>
-                    ) : column.id === 'invoicedate' ? (
+                    ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'duedate' ? (
-                      new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      row.purchseVendor.accountname
+                    ) : column.id === 'customer' ? (
+                      row.CashCustomer.customername
                     ) : (
                       row[column.id]
                     )}
@@ -158,24 +165,27 @@ export default function PurchaseBillList() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={purchasebill.length}
+        count={salescash.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>Are you sure you want to delete this Bill?</DialogContent>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>Are you sure you want to delete this Sales cash?</DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleDeletePurchasebill} variant="contained" color="secondary">
+          <Button onClick={handledeletesalescash} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
       </Dialog>
     </Card>
+    // </Container>
   );
-}
+};
+
+export default Salescashlist;

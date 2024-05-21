@@ -4,16 +4,16 @@ import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { PurchaseBillview } from 'store/thunk';
+import { viewPurchaseinvoice } from 'store/thunk';
 
-const Purchasebillview = () => {
+const Purchaseinvoiceview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState({});
 
   useEffect(() => {
-    dispatch(PurchaseBillview(id))
+    dispatch(viewPurchaseinvoice(id))
       .then((data) => {
         setData(data);
       })
@@ -22,16 +22,16 @@ const Purchasebillview = () => {
       });
   }, [dispatch, id]);
 
-  const subtotal = data.totalMrp ? data.totalMrp : 0;
-  const maintotal = data.mainTotal ? data.mainTotal : 0;
-  const sgst = data.totalSgst ? data.totalSgst / 2 : 0;
-  const cgst = data.totalSgst ? data.totalSgst / 2 : 0;
-  const igst = data.totalIgst ? data.totalIgst : 0;
+  const subtotal = data?.totalMrp ? data?.totalMrp : 0;
+  const maintotal = data?.mainTotal ? data?.mainTotal : 0;
+  const sgst = data?.totalSgst ? data?.totalSgst / 2 : 0;
+  const cgst = data?.totalSgst ? data?.totalSgst / 2 : 0;
+  const igst = data?.totalIgst ? data?.totalIgst : 0;
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Purchase Bill View
+        Purchase Invoice View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -66,23 +66,23 @@ const Purchasebillview = () => {
                 <TableCell width={560} sx={{ fontSize: '12px' }}>
                   PRODUCT/SERVICE
                 </TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>MRP(₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>MRP(₹)</TableCell>
               </TableHead>
               <TableBody>
-                {data.items &&
-                  data.items.map((item, index) => (
+                {data?.items &&
+                  data?.items?.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>{item?.purchseProduct?.productname}</TableCell>
-                      <TableCell>{item?.mrp}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
+                      <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}
-                <TableCell></TableCell>
                 <TableCell sx={{ fontSize: '14px', textAlign: 'right' }}>TotalQTY:</TableCell>
                 <TableCell sx={{ fontSize: '14px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableBody>
             </Table>
@@ -97,21 +97,21 @@ const Purchasebillview = () => {
                 <p>Sub Total</p>
                 <p>₹{subtotal?.toFixed(2)}</p>
               </div>
-              {data.totalSgst && (
+              {data?.totalSgst && (
                 <Grid item xs={12}>
                   <div style={{ margin: '0px' }} id="subtotalcs">
                     <p>SGST</p>
-                    <p>₹{sgst.toFixed(2)}</p>
+                    <p>₹{sgst?.toFixed(2)}</p>
                   </div>
                   <div style={{ margin: '0px' }} id="subtotalcs">
                     <p>CGST</p>
-                    <p>₹{cgst.toFixed(2)}</p>
+                    <p>₹{cgst?.toFixed(2)}</p>
                   </div>
                 </Grid>
               )}
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹{maintotal.toFixed(2)}</p>
+                <p>₹{maintotal?.toFixed(2)}</p>
               </div>
             </>
           ) : (
@@ -122,25 +122,25 @@ const Purchasebillview = () => {
                   <p>Sub Total</p>
                   <p>₹{subtotal?.toFixed(2)}</p>
                 </div>
-                {data.totalSgst ? (
+                {data?.totalSgst ? (
                   <Grid item xs={12}>
                     <div style={{ margin: '0px' }} id="subtotalcs">
                       <p>SGST</p>
-                      <p>₹{sgst.toFixed(2)}</p>
+                      <p>₹{sgst?.toFixed(2)}</p>
                     </div>
                     <div style={{ margin: '0px' }} id="subtotalcs">
                       <p>CGST</p>
-                      <p>₹{cgst.toFixed(2)}</p>
+                      <p>₹{cgst?.toFixed(2)}</p>
                     </div>
                   </Grid>
                 ) : (
                   ''
                 )}
-                {data.totalIgst ? (
+                {data?.totalIgst ? (
                   <Grid item xs={12}>
                     <div style={{ margin: '0px' }} id="subtotalcs">
                       <p>IGST</p>
-                      <p>₹{igst.toFixed(2)}</p>
+                      <p>₹{igst?.toFixed(2)}</p>
                     </div>
                   </Grid>
                 ) : (
@@ -148,7 +148,7 @@ const Purchasebillview = () => {
                 )}
                 <div style={{ margin: '0px' }} id="subtotalcs">
                   <p>Total Amt.</p>
-                  <p>₹{maintotal.toFixed(2)}</p>
+                  <p>₹{maintotal?.toFixed(2)}</p>
                 </div>
               </>
             </div>
@@ -157,7 +157,7 @@ const Purchasebillview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
+            <Link to="/purchaseinvoiceList" style={{ textDecoration: 'none' }}>
               <div>
                 <button
                   style={{
@@ -177,7 +177,7 @@ const Purchasebillview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/purchasebillList" style={{ textDecoration: 'none' }}>
+            <Link to="/purchaseinvoiceList" style={{ textDecoration: 'none' }}>
               <div>
                 <button
                   style={{
@@ -201,4 +201,4 @@ const Purchasebillview = () => {
   );
 };
 
-export default Purchasebillview;
+export default Purchaseinvoiceview;

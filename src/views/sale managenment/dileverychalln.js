@@ -252,7 +252,7 @@ const Deliverychallan = () => {
           totalQty: totalQuantity,
           items: rows.map((row) => ({
             productId: row.productId,
-            qty: Number(row.qty)
+            qty: row.qty
           }))
         };
         await dispatch(createDeliveryChallan(payload, navigate));
@@ -345,7 +345,7 @@ const Deliverychallan = () => {
                           <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                         </TableCell>
                         {console.log(totalQuantity, 'totalQuantity')}
-                        <TableCell sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <TableCell sx={{ display: 'flex', justifyContent: 'left' }}>
                           <DeleteIcon onClick={() => handleDeleteRow(index)} />
                         </TableCell>
                       </TableRow>
