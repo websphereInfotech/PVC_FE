@@ -506,9 +506,9 @@ export const createDeliveryChallan = (ChallanData, navigate) => {
       dispatch(createDeliveryChallanSuccess(createdDeliverychallan));
       return createdDeliverychallan;
     } catch (error) {
-      // toast.error(error.response.data.message,{
-      //   autoClose: 1000
-      // });
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(createDeliveryChallanFailure(error.message));
     }
   };
@@ -1573,16 +1573,10 @@ export const getallPermissions = () => {
     dispatch(getAllPermissionsRequest());
     try {
       const config = createConfig();
-      const type = sessionStorage.getItem('type');
-      console.log(type, 'type');
-      const role = sessionStorage.getItem('role');
-      console.log(role, 'role');
-      // if (type === 'C' && role === 'Super Admin') {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
       const getallPermission = response.data.data;
       dispatch(getAllPermissionsSuccess(getallPermission));
       return getallPermission;
-      // }
     } catch (error) {
       dispatch(getAllPermissionsFailure(error.message));
     }

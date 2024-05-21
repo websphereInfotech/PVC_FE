@@ -34,7 +34,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     email: '',
     contactpersonname: '',
     mobileno: '',
-    panno: null,
+    panno: Number(),
     gstnumber: '',
     creditperiod: '',
     address1: '',

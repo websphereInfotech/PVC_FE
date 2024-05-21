@@ -250,7 +250,19 @@ const MenuItem = () => {
                             type: 'item',
                             url: '/paymentrecieveList'
                           }
-                        : {}
+                        : {},
+                      {
+                        id: 'claim cash',
+                        title: 'Claim Cash',
+                        type: 'item',
+                        url: '/claimcashlist'
+                      },
+                      {
+                        id: 'recieve claim',
+                        title: 'Recieve Claim',
+                        type: 'item',
+                        url: '/recieveclaimcashlist'
+                      }
                     ]
                   }
                 : {},

@@ -18,6 +18,11 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 const Reports = Loadable(lazy(() => import('../views/reports')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/cliamcashlist')));
+const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/cliamcash')));
+const Recieveclaimcashlist = Loadable(lazy(() => import('../views/finacial managenment/recieveclaimcashlist')));
+
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salescash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salescash = Loadable(lazy(() => import('../views/sale managenment/salescash')));
 const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/salescashlist')));
@@ -118,6 +123,11 @@ const MainRoutes = {
       )
     },
     { path: '/profile', element: <SamplePage /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
+    { path: '/claimcash', element: <Cliamcashpage /> },
+    { path: '/claimcashlist', element: <Claimcashlist /> },
+    { path: '/recieveclaimcashlist', element: <Recieveclaimcashlist /> },
+
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales cash +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salescash', element: <Salescash /> },
     { path: '/salescash/:id', element: <Salescash /> },
