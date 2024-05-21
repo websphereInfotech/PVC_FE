@@ -173,7 +173,7 @@ const Purchaseinvoicecashlist = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this purchase invoice?</DialogContent>
+        <DialogContent>Are you sure you want to delete this?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel

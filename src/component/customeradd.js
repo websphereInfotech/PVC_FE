@@ -40,11 +40,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     address1: '',
     address2: '',
     pincode: '',
-    // state: '',
-    // city: '',
     country: '',
     balance: ''
-    // totalcreadit:'
   });
   const [bankName, setBankName] = React.useState('');
   const [accountNumber, setAccountNumber] = React.useState('');
@@ -234,7 +231,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
           <Typography variant="subtitle1">
             Provide bank details? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <RadioGroup row value={formData.bankdetail} onChange={handleBankDetailChange}>
+          <RadioGroup row defaultValue="false" value={formData.bankdetail} onChange={handleBankDetailChange}>
             <FormControlLabel value="true" control={<Radio />} label="Yes" />
             <FormControlLabel value="false" control={<Radio />} label="No" />
           </RadioGroup>
@@ -277,7 +274,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
           <Typography variant="subtitle1">
             Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <RadioGroup row value={formData.creditlimit} onChange={handleCreditDetailChange}>
+          <RadioGroup row defaultValue="false" value={formData.creditlimit} onChange={handleCreditDetailChange}>
             <FormControlLabel value="true" control={<Radio />} label="Yes" />
             <FormControlLabel value="false" control={<Radio />} label="No" />
           </RadioGroup>

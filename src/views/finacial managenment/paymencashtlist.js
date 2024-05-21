@@ -14,13 +14,18 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  // Drawer,
-  IconButton
+  IconButton,
+  Grid
 } from '@mui/material';
+import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { getallPaymentCash, paymentCashDelete, paymentCashview } from 'store/thunk';
+import { fetchAllVendors, getallPaymentCash, getallVendorledger, paymentCashDelete, paymentCashview } from 'store/thunk';
 import { useNavigate } from 'react-router';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Ledgerlist from './ledger';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -28,25 +33,24 @@ const columns = [
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' },
-  { id: 'delete', label: 'Delete', align: 'center' },
-  { id: 'ledger', label: 'Ledger', align: 'center' }
-];
-const columnsnew = [
-  { id: 'vendor', label: 'Vendor', align: 'center' },
-  { id: 'fromdate', label: 'From Date', align: 'center' },
-  { id: 'todate', label: 'To Date', align: 'center' },
-  { id: 'go', label: 'Go', align: 'center' }
+  { id: 'delete', label: 'Delete', align: 'center' }
 ];
 const PaymentListPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [vendorId, setvendorId] = useState(null);
+  const [vendor, setvendor] = useState([]);
+  const [vendorname, setvendorname] = useState('');
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
+  const showLedgerlist = false;
 
   useEffect(() => {
     dispatch(getallPaymentCash())
@@ -61,6 +65,30 @@ const PaymentListPage = () => {
   const handleMakePayment = () => {
     navigate('/paymentcash');
   };
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+  const handleLedger = (vendorId, formDate, toDate) => {
+    dispatch(getallVendorledger(vendorId, formDate, toDate));
+    navigate('/ledgerlist');
+    setSelectedId(vendorId);
+    sessionStorage.setItem('vendorId', vendorId);
+    setFormDate(formDate);
+    sessionStorage.setItem('formDate', formDate);
+    setToDate(toDate);
+    sessionStorage.setItem('toDate', toDate);
+  };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -74,13 +102,10 @@ const PaymentListPage = () => {
 
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
-    setSelectedPayment(null);
   };
 
-  const handleLedgerClick = (payment) => {
-    setSelectedPayment(payment);
+  const handleLedgerClick = () => {
     setOpenDrawer(true);
-    console.log(openDrawer);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -100,15 +125,50 @@ const PaymentListPage = () => {
       console.error('Error deleting user:', error);
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllVendors());
+        console.log(response);
+        if (Array.isArray(response)) {
+          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
+          setvendor([...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching Purchase:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setvendorId(selectedOption.value);
+      setvendorname(selectedOption.label);
+    }
+  };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
+      {showLedgerlist && <Ledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
         Payment Cash List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleMakePayment}>
-        Payment Cash
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '16px' }}
+          onClick={handleMakePayment}
+          disabled={!canCreatePaymentcash()}
+        >
+          Payment Cash
+        </Button>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+          Ledger
+        </Button>
+      </div>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
@@ -126,16 +186,22 @@ const PaymentListPage = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdatePayment(payment.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleUpdatePayment(payment.id)}
+                        disabled={!canUpdatePaymentcash()}
+                      >
                         Edit
                       </Button>
                     ) : column.id === 'delete' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteConfirmation(payment.id)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteConfirmation(payment.id)}
+                        disabled={!canDeletePaymentcash()}
+                      >
                         Delete
-                      </Button>
-                    ) : column.id === 'ledger' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleLedgerClick(payment, openDrawer)}>
-                        Ledger
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
@@ -172,49 +238,56 @@ const PaymentListPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { width: '500px' } }}>
-        <DialogTitle>Ledger Details</DialogTitle>
-        <DialogContent>
-          <IconButton onClick={handleCloseDrawer} style={{ position: 'absolute', right: 12, top: 5 }}>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: '450px', width: '20%' } }}>
+        <DialogTitle style={{ backgroundColor: 'white', position: 'absoulate', fontSize: '16px' }}>Ledger Details</DialogTitle>
+        <DialogContent style={{ position: 'reletive' }}>
+          <IconButton onClick={handleCloseDrawer} style={{ position: 'fixed', left: '57%', top: '27%' }}>
             <CloseIcon />
           </IconButton>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {columnsnew.map((column) => (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {selectedPayment && (
-                  <TableRow>
-                    {columnsnew.map((column) => (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.id === 'go' ? (
-                          <Button variant="outlined" color="secondary" href="/ledgerlist">
-                            Go
-                          </Button>
-                        ) : column.id === 'vendor' ? (
-                          // selectedPayment.PaymentVendor?.vendorname
-                          'demo'
-                        ) : column.id === 'fromdate' ? (
-                          // selectedPayment.fromDate
-                          'date'
-                        ) : column.id === 'todate' ? (
-                          // selectedPayment.toDate
-                          'date'
-                        ) : null}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Grid container spacing={2}>
+            <Grid item xs={12} style={{ paddingTop: '55px' }}>
+              <Typography variant="subtitle1">
+                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
+            </Grid>
+            {/* <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} /> */}
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formDate}
+                onChange={(date) => handleformDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={toDate}
+                onChange={(date) => handletoDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">action:</Typography>
+              <Button
+                onClick={() => handleLedger(vendorId, formDate, toDate)}
+                variant="contained"
+                color="secondary"
+                style={{ display: 'flex', justifyItems: 'center', padding: '8px' }}
+              >
+                Go
+              </Button>
+            </Grid>
+          </Grid>
         </DialogContent>
       </Dialog>
     </Card>

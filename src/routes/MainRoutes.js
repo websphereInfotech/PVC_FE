@@ -12,6 +12,7 @@ import Itemratecard from 'component/reports/general reports/itemratecard';
 import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
+import Customerledgerlist from 'views/finacial managenment/customerledgerlist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -131,6 +132,7 @@ const MainRoutes = {
     { path: '/paymentrecieve/:id', element: <Paymentrecieve /> },
     { path: '/paymentrecieveList', element: <PaymentrecieveList /> },
     { path: '/ledgerlist', element: <Ledgerlist /> },
+    { path: '/customerledgerlist', element: <Customerledgerlist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/expenselist', element: <ExpensePage /> },

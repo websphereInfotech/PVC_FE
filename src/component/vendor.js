@@ -27,7 +27,7 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     email: '',
     contactpersonname: '',
     mobileno: '',
-    panno: '',
+    panno: Number(),
     gstnumber: '',
     creditperiod: '',
     address1: '',

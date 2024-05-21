@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { getallVendorledger } from 'store/thunk';
+import { getallCustomerledger } from 'store/thunk';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
-  { id: 'vendor', label: 'Vendor', align: 'center', minWidth: 100 },
+  { id: 'customer', label: 'Customer', align: 'center', minWidth: 100 },
   { id: 'creditAmount', label: 'Credit', align: 'center', minWidth: 100 },
   { id: 'debitAmount', label: 'Debit', align: 'center', minWidth: 100 },
   { id: 'remainingBalance', label: 'Balance', align: 'center', minWidth: 100 },
   { id: 'openingBalance', label: 'Opening Balance', align: 'center', minWidth: 100 }
 ];
 
-const Ledgerlist = () => {
+const Customerledgerlist = () => {
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
-  const vendorId = sessionStorage.getItem('vendorId');
-  const formData = sessionStorage.getItem('formDate');
-  const toDate = sessionStorage.getItem('toDate');
+  const customerId = sessionStorage.getItem('customerId');
+  const formData = sessionStorage.getItem('customerformDate');
+  const toDate = sessionStorage.getItem('customertoDate');
+
   useEffect(() => {
-    dispatch(getallVendorledger(vendorId, formData, toDate))
+    dispatch(getallCustomerledger(customerId, formData, toDate))
       .then((data) => {
         setPayments(data.data);
       })
       .catch((error) => {
         console.error('Error fetching payment data:', error);
       });
-  }, [dispatch, vendorId, formData, toDate]);
+  }, [dispatch, customerId, formData, toDate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,7 +43,7 @@ const Ledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Ledger List
+        Customer Ledger List
       </Typography>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -60,11 +61,7 @@ const Ledgerlist = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'date'
-                      ? new Date(payment[column.id]).toLocaleDateString('en-GB')
-                      : column.id === 'vendor'
-                        ? payment.vendorData.vendorname
-                        : payment[column.id]}
+                    {column.id === 'date' ? new Date(payment[column.id]).toLocaleDateString('en-GB') : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>
@@ -85,4 +82,4 @@ const Ledgerlist = () => {
   );
 };
 
-export default Ledgerlist;
+export default Customerledgerlist;

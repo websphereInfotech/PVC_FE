@@ -282,7 +282,15 @@ import {
   updateRecieveCashFailure,
   deleteRecieveCashRequest,
   deleteRecieveCashSuccess,
-  deleteRecieveCashFailure
+  deleteRecieveCashFailure,
+  // VENDOR LEDGER +++++++++++
+  getAllvendorLedgerRequest,
+  getAllvendorLedgerSuccess,
+  getAllvendorLedgerFailure,
+  // CUSTOMER LEDGER +++++++++++
+  getAllcustomerLedgerRequest,
+  getAllcustomerLedgerSuccess,
+  getAllcustomerLedgerFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -1865,6 +1873,44 @@ export const deleteRecieveCash = (id) => {
       });
       dispatch(deleteRecieveCashFailure(error.message));
       throw error;
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++ VENDOR LEDGER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallVendorledger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllvendorLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/C_get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getallvendorledgerlist = response.data;
+      dispatch(getAllvendorLedgerSuccess(getallvendorledgerlist));
+      return getallvendorledgerlist;
+    } catch (error) {
+      dispatch(getAllvendorLedgerFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++ VENDOR LEDGER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallCustomerledger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllcustomerLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/C_get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getallcustomerledgerlist = response.data;
+      dispatch(getAllcustomerLedgerSuccess(getallcustomerledgerlist));
+      return getallcustomerledgerlist;
+    } catch (error) {
+      dispatch(getAllcustomerLedgerFailure(error.message));
     }
   };
 };
