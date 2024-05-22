@@ -1,66 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Table, TableRow, TableBody, TableHead, TableCell } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customeradd';
-import AnchorProductDrawer from '../../component/productadd';
-import { useMediaQuery } from '@mui/material';
-import {
-  Creditnoteviewdata,
-  createCreditnote,
-  fetchAllCompany,
-  fetchAllCustomers,
-  fetchAllProducts,
-  getallCreditnote,
-  updateCreditnote
-} from 'store/thunk';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
+// import { withStyles } from '@mui/styles';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import useCan from 'views/checkpermissionvalue';
+import Select from 'react-select';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import { useMediaQuery } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import AnchorTemporaryDrawer from '../../../component/customeradd';
+import {
+  fetchAllProducts,
+  fetchAllCustomers,
+  createSalesInvoice,
+  SalesInvoiceview,
+  updateSalesinvoice,
+  fetchAllCompany,
+  getallSalesInvoice,
+  fetchproformainvoiceList
+  // deleteProformainvoiceItem
+} from 'store/thunk';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import AnchorProductDrawer from 'component/productadd';
 
-const Creditnote = () => {
-  const { canDeleteCreditnote } = useCan();
-  const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const isMobile = useMediaQuery('(max-width:600px)');
+const Salesinvoice = () => {
+  const dispatch = useDispatch();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
-  const [formData, setFormData] = useState({
-    customerId: '',
-    creditdate: new Date(),
-    org_invoicedate: new Date(),
-    creditnoteNo: '',
-    org_invoiceno: '',
-    LL_RR_no: 0,
-    dispatchThrough: '',
-    motorVehicleNo: '',
-    destination: '',
-    totalSgst: 0,
-    totalIgst: 0,
-    totalMrp: 0,
-    mainTotal: 0
-  });
+  const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState([]);
-  const [customerState, setCustomerState] = useState('');
   const [customername, setCustomername] = useState('');
   const [companystate, setCompanystate] = useState('');
-  const [product, setProduct] = useState('');
-  const [selectproduct, setSelectproduct] = useState([]);
-  const [subtotal, setSubtotal] = useState(0);
+  const [customerState, setCustomerState] = useState('');
   const [gststate, setGststate] = useState('');
   const [plusgst, setPlusgst] = useState(0);
   const [productResponse, setProductResponse] = useState([]);
+  const [customer, setcustomer] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [product, setProduct] = useState([]);
+  const [selectproduct, setSelectproduct] = useState([]);
+  const [proformainvoice, setProformainvoice] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
+  const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    customerId: '',
+    destination: null,
+    dispatchThrough: null,
+    dispatchno: null,
+    deliverydate: null,
+    LL_RR_no: null,
+    motorVehicleNo: null,
+    invoiceno: null,
+    invoicedate: new Date(),
+    terms: null,
+    duedate: '',
+    proFormaId: ''
+  });
   const { id } = useParams();
-  {
-    console.log(companystate, selectcustomer);
-  }
+  const [subtotal, setSubtotal] = useState(0);
+  const navigate = useNavigate();
+
+  const handleAddRow = () => {
+    const newRow = { product: '', qty: '', rate: '', mrp: '' };
+    setRows((prevRows) => [...prevRows, newRow]);
+  };
+
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -75,12 +79,22 @@ const Creditnote = () => {
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
   };
 
-  const handleAddRow = () => {
-    const newRow = { product: '', qty: '', rate: '', mrp: '' };
-    setRows((prevRows) => [...prevRows, newRow]);
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label === 'Create New Customer') {
+      setIsDrawerOpen(true);
+    } else {
+      formData.customerId = selectedOption.value;
+      setFormData(formData);
+      setCustomername(selectedOption.label);
+      setCustomerState(selectedOption.state);
+      setIsDrawerOpen(false);
+    }
   };
 
-  // use for select product name from dropdown
+  const handleDueDateChange = (date) => {
+    setFormData({ ...formData, duedate: date });
+  };
+
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'Create New Product') {
@@ -105,7 +119,59 @@ const Creditnote = () => {
     }
   };
 
-  // called api of all product and customer for show name of them in dropdown
+  const calculateDuedate = (InvoiceDate) => {
+    const defaultValidityPeriod = 7;
+    const duedate = new Date(InvoiceDate);
+    duedate.setDate(duedate.getDate() + defaultValidityPeriod);
+    return duedate;
+  };
+
+  const handleInvoiceDateChange = (date) => {
+    const newDueDate = calculateDuedate(date);
+    setFormData({ ...formData, invoicedate: date, duedate: newDueDate });
+  };
+
+  useEffect(() => {
+    const initialDueDate = calculateDuedate(formData.invoicedate);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      duedate: initialDueDate
+    }));
+
+    const generateAutoInvoiceNumber = async () => {
+      if (!id) {
+        try {
+          const invoiceResponse = await dispatch(getallSalesInvoice());
+          let nextInvoiceNumber = 1;
+          if (invoiceResponse.data.length === 0) {
+            const InvoiceNumber = nextInvoiceNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              invoiceno: InvoiceNumber
+            }));
+            return;
+          }
+          const existingInvoiceNumbers = invoiceResponse.data.map((Invoice) => {
+            const InvoiceNumber = Invoice.invoiceno;
+            return parseInt(InvoiceNumber);
+          });
+          const maxInvoiceNumber = Math.max(...existingInvoiceNumbers);
+          if (!isNaN(maxInvoiceNumber)) {
+            nextInvoiceNumber = maxInvoiceNumber + 1;
+          }
+          const invoiceNumber = nextInvoiceNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            invoiceno: invoiceNumber
+          }));
+        } catch (error) {
+          console.error('Error generating auto Sales invoice number:', error);
+        }
+      }
+    };
+    generateAutoInvoiceNumber();
+  }, [dispatch, formData.invoicedate, id]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -136,22 +202,78 @@ const Creditnote = () => {
         console.error('Error fetching quotations:', error);
       }
     };
-
     fetchData();
-  }, [dispatch, customerState, gststate, id]);
+  }, [dispatch, companystate, customerState]);
 
-  // use for select customer name from dropdown
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
-      setIsDrawerOpen(true);
-    } else {
-      formData.customerId = selectedOption.value;
-      setFormData(formData);
-      setCustomername(selectedOption.label);
-      setCustomerState(selectedOption.state);
-      setIsDrawerOpen(false);
-    }
+  const handleproformnumber = (selectedOption) => {
+    const updatedFormData = {
+      ...formData,
+      proFormaId: selectedOption.value
+    };
+    setFormData(updatedFormData);
+    setProformainvoicelabel(selectedOption.label);
+    console.log(selectedOption);
   };
+
+  useEffect(() => {
+    const data = async () => {
+      const proformainvoiceresponse = await dispatch(fetchproformainvoiceList());
+      const options = proformainvoiceresponse.map((item) => ({
+        value: item.id,
+        label: `${item.ProFormaInvoice_no}  ${item.customer.shortname}`
+      }));
+      setProformainvoice(options);
+      if (id) {
+        const response = await dispatch(SalesInvoiceview(id));
+        const {
+          InvioceCustomer,
+          dispatchThrough,
+          motorVehicleNo,
+          LL_RR_no,
+          dispatchno,
+          destination,
+          deliverydate,
+          invoiceno,
+          invoicedate,
+          terms,
+          duedate,
+          proFormaItem
+        } = response;
+        setFormData({
+          customerId: InvioceCustomer.id,
+          dispatchThrough,
+          motorVehicleNo,
+          LL_RR_no,
+          proFormaId: proFormaItem.id,
+          dispatchno,
+          destination,
+          deliverydate,
+          invoiceno,
+          invoicedate,
+          terms,
+          duedate
+        });
+        setProformainvoicelabel(proFormaItem.ProFormaInvoice_no);
+        setSelectcustomer(InvioceCustomer.id);
+        setCustomerState(InvioceCustomer.state);
+        setCustomername(InvioceCustomer.accountname);
+        const updatedRows = response.items.map((item) => ({
+          id: item.id,
+          productId: item.InvoiceProduct.id,
+          product: item.InvoiceProduct.productname,
+          qty: item.qty,
+          rate: item.rate,
+          mrp: item.qty * item.rate,
+          gstrate: item.InvoiceProduct.gstrate,
+          gst: item.mrp * (item.InvoiceProduct.gstrate / 100)
+        }));
+        setRows(updatedRows);
+        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+        setPlusgst(totalGST);
+      }
+    };
+    data();
+  }, [dispatch, id]);
 
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
@@ -166,13 +288,60 @@ const Creditnote = () => {
     updateTotalQuantity();
   }, [rows]);
 
-  const handleCreditDateChange = (date) => {
-    setFormData({ ...formData, creditdate: date });
+  const handleSalesinvoice = async () => {
+    try {
+      console.log('data>>>>', selectcustomer, setSelectcustomer);
+      if (id) {
+        const payload = {
+          ...formData,
+          totalQty: totalQuantity,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            rate: row.rate,
+            qty: Number(row.qty),
+            mrp: row.mrp
+          }))
+        };
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        await dispatch(updateSalesinvoice(id, payload, navigate));
+      } else {
+        const payload = {
+          ...formData,
+          totalQty: totalQuantity,
+          totalMrp: subtotal,
+          mainTotal: Number(subtotal) + Number(plusgst),
+          items: rows.map((row) => ({
+            productId: row.productId,
+            mrp: row.mrp,
+            rate: row.rate,
+            qty: Number(row.qty)
+          }))
+        };
+        const gststate = companystate === customerState ? 'true' : 'false';
+        setGststate(gststate);
+        if (gststate === 'true') {
+          payload.totalSgst = plusgst;
+          payload.totalIgst = 0;
+        } else {
+          payload.totalSgst = 0;
+          payload.totalIgst = plusgst;
+        }
+        await dispatch(createSalesInvoice(payload, navigate));
+      }
+    } catch (error) {
+      console.error('Error creating Sales Invoice:', error);
+    }
   };
-  const handleInvoiceDateChange = (date) => {
-    setFormData({ ...formData, org_invoicedate: date });
-  };
-  //manage value of input of row
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
       if (rowIndex === index) {
@@ -223,165 +392,19 @@ const Creditnote = () => {
       setPlusgst(totalGST);
     }
   };
-
-  useEffect(() => {
-    const data = async () => {
-      if (id) {
-        const response = await dispatch(Creditnoteviewdata(id));
-        const {
-          CreditCustomer,
-          LL_RR_no,
-          creditdate,
-          creditnoteNo,
-          org_invoiceno,
-          org_invoicedate,
-          motorVehicleNo,
-          dispatchThrough,
-          destination,
-          totalSgst,
-          mainTotal,
-          totalMrp,
-          totalIgst
-        } = response;
-        console.log(response, 'rsponse?????????????');
-        setFormData({
-          customerId: CreditCustomer.id,
-          LL_RR_no,
-          creditdate,
-          creditnoteNo,
-          org_invoiceno,
-          org_invoicedate,
-          motorVehicleNo,
-          dispatchThrough,
-          destination,
-          totalSgst,
-          mainTotal,
-          totalMrp,
-          totalIgst
-        });
-        setSelectcustomer(CreditCustomer.id);
-        setCustomerState(CreditCustomer.state);
-        setCustomername(CreditCustomer.accountname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.CreditProduct.id,
-          product: item.CreditProduct.productname,
-          qty: item.qty,
-          rate: item.rate,
-          mrp: item.qty * item.rate,
-          gstrate: item.CreditProduct.gstrate,
-          gst: item.mrp * (item.CreditProduct.gstrate / 100)
-        }));
-        setRows(updatedRows);
-        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-        setPlusgst(totalGST);
-      }
-    };
-    const generateAutoDebitnoteNumber = async () => {
-      if (!id) {
-        try {
-          const CreditnoteResponse = await dispatch(getallCreditnote());
-          console.log(CreditnoteResponse, 'CreditnoteResponse');
-          let nextCreditnoteNumber = 1;
-          if (CreditnoteResponse.length === 0) {
-            const CreditnoteNumber = nextCreditnoteNumber;
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              creditnoteNo: Number(CreditnoteNumber)
-            }));
-            return;
-          }
-          const existingCreditnoteNumbers = CreditnoteResponse.map((Creditnote) => {
-            const CreditnoteNumber = Creditnote.creditnoteNo;
-            return parseInt(CreditnoteNumber);
-          });
-          const maxCreditnoteNumber = Math.max(...existingCreditnoteNumbers);
-          if (!isNaN(maxCreditnoteNumber)) {
-            nextCreditnoteNumber = maxCreditnoteNumber + 1;
-          }
-
-          const CreditnoteNumber = nextCreditnoteNumber;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            creditnoteNo: Number(CreditnoteNumber)
-          }));
-        } catch (error) {
-          console.error('Error generating auto Debit Note number:', error);
-        }
-      }
-    };
-    generateAutoDebitnoteNumber();
-    data();
-  }, [dispatch, id]);
-
-  const handlecreateCreditnote = async () => {
-    try {
-      if (id) {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: Number(row.qty),
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
-        await dispatch(updateCreditnote(id, payload, navigate));
-      } else {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: row.qty,
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        console.log(selectcustomer);
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
-        console.log(payload, 'payload');
-        await dispatch(createCreditnote(payload, navigate));
-      }
-    } catch (error) {
-      console.error('Error creating proformainvoice:', error);
-    }
-  };
-
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Credit Note
+            Update Sales Invoice
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Credit Note
+            Create Sales Invoice
           </Typography>
         )}
+
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
@@ -396,95 +419,122 @@ const Creditnote = () => {
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Credit Note No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
                 placeholder="0001"
-                id="creditnoteNo "
-                value={formData.creditnoteNo}
-                onChange={(e) => setFormData({ ...formData, creditnoteNo: e.target.value })}
+                id="invoiceno"
+                value={formData.invoiceno}
+                onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Credit Note Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formData.creditdate}
-                onChange={(date) => handleCreditDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Org. Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Delivery Note Date :</Typography>
               <input
-                placeholder="0001"
-                id="org_invoiceno "
-                value={formData.org_invoiceno}
-                onChange={(e) => setFormData({ ...formData, org_invoiceno: e.target.value })}
+                type="date"
+                id="deliverydate"
+                value={formData.deliverydate}
+                onChange={(e) => setFormData({ ...formData, deliverydate: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Through :</Typography>
+              <input
+                id="dispatchThrough"
+                value={formData.dispatchThrough}
+                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Destination :</Typography>
+              <input
+                placeholder="Destination"
+                id="destination"
+                value={formData.destination}
+                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">LR-RR No. :</Typography>
+              <input
+                placeholder="LR-RR No"
+                id="LL_RR_no"
+                value={formData.LL_RR_no}
+                onChange={(e) => setFormData({ ...formData, LL_RR_no: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Motor Vehical No. :</Typography>
+              <input
+                placeholder="Vehical No"
+                id="motorVehicleNo"
+                value={formData.motorVehicleNo}
+                onChange={(e) => setFormData({ ...formData, motorVehicleNo: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Doc No. :</Typography>
+              <input
+                placeholder="Enter Dispatch Doc No."
+                id="dispatchno"
+                value={formData.dispatchno}
+                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
               />
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Org. Invoice Date. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.org_invoicedate}
+                selected={formData.invoicedate}
                 onChange={(date) => handleInvoiceDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
               />
             </Grid>
+
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">RR-No. :</Typography>
-              <input
-                placeholder="0001"
-                id="LL_RR_no "
-                value={formData.LL_RR_no}
-                onChange={(e) => setFormData({ ...formData, LL_RR_no: e.target.value })}
+              <Typography variant="subtitle1">
+                Due Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formData.duedate}
+                onChange={(date) => handleDueDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+                minDate={formData.invoicedate}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Transport :</Typography>
+              <Typography variant="subtitle1">Terms (Days) :</Typography>
               <input
-                placeholder="Enter Transport"
-                id="dispatchThrough"
-                value={formData.dispatchThrough}
-                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
+                placeholder="Terms (Days)"
+                id="terms"
+                value={formData.terms}
+                onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Vehical No. :</Typography>
-              <input
-                placeholder="0001"
-                id="motorVehicleNo"
-                value={formData.motorVehicleNo}
-                onChange={(e) => setFormData({ ...formData, motorVehicleNo: e.target.value })}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">destination :</Typography>
-              <input
-                placeholder="Enter Destination"
-                id="destination"
-                value={formData.destination}
-                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+              <Typography variant="subtitle1">Pro forma invoice No. :</Typography>
+              {/* {console.log('SELECTEDOPTION', selectedOption)} */}
+              <Select
+                color="secondary"
+                options={proformainvoice}
+                value={{ value: formData.proFormaId, label: proformainvoicelabel }}
+                onChange={handleproformnumber}
               />
             </Grid>
           </Grid>
-          <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
+
+          <Grid item xs={12}>
             <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
@@ -503,9 +553,9 @@ const Creditnote = () => {
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>
-                  {rows?.map((row, index) => (
+                  {rows.map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>
+                      <TableCell sx={{ padding: '5px' }}>
                         <Select
                           color="secondary"
                           onChange={(selectedOption) => handleSelectproductChange(selectedOption, index)}
@@ -522,17 +572,13 @@ const Creditnote = () => {
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                       </TableCell>
                       <TableCell id="newcs">
-                        <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />
+                        <input placeholder="rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />
                       </TableCell>
                       <TableCell id="newcs" style={{ fontSize: '16px' }}>
                         {row.mrp}
                       </TableCell>
-                      <TableCell disabled={!canDeleteCreditnote()}>
-                        <DeleteIcon
-                          onClick={() => {
-                            handleDeleteRow(row.id, index);
-                          }}
-                        />
+                      <TableCell>
+                        <DeleteIcon onClick={() => handleDeleteRow(row.id, index)} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -618,7 +664,7 @@ const Creditnote = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
+                <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
                   <button
                     id="savebtncs"
                     style={{
@@ -628,7 +674,7 @@ const Creditnote = () => {
                     Cancel
                   </button>
                 </Link>
-                <button id="savebtncs" onClick={handlecreateCreditnote}>
+                <button id="savebtncs" onClick={handleSalesinvoice}>
                   Save
                 </button>
               </div>
@@ -636,12 +682,21 @@ const Creditnote = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
+                <Link to="/salesinvoicelist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" onClick={handlecreateCreditnote}>
+                <button
+                  id="savebtncs"
+                  style={{
+                    marginRight: '10px'
+                  }}
+                  onClick={handleSalesinvoice}
+                >
+                  Save & Next
+                </button>
+                <button id="savebtncs" onClick={handleSalesinvoice}>
                   Save
                 </button>
               </div>
@@ -653,4 +708,4 @@ const Creditnote = () => {
   );
 };
 
-export default Creditnote;
+export default Salesinvoice;

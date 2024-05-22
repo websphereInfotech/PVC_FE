@@ -174,6 +174,16 @@ const MenuItem = () => {
     'view_all_receive_Cash'
   ]);
 
+  const hasAllPermissionsClaimcash = checkAllPermissions('Claim Cash', [
+    'create_claim',
+    'update_claim',
+    'delete_claim',
+    'view_single_claim',
+    'view_myclaim'
+  ]);
+
+  const hasAllPermissionsRecieveClaimcash = checkAllPermissions('Claim Cash', ['view_reciveclaim', 'isapproved_claim']);
+
   return {
     items: [
       {
@@ -235,29 +245,25 @@ const MenuItem = () => {
                     type: 'collapse',
                     icon: icons['PaymentsIcon'],
                     children: [
-                      createConfig() === 'C'
-                        ? hasAllPermissionPaymentCash && {
-                            id: 'payment Cash',
-                            title: 'Payment Cash',
-                            type: 'item',
-                            url: '/paymentCashlist'
-                          }
-                        : {},
-                      createConfig() === 'C'
-                        ? hasAllPermissionPaymentRecieveCash && {
-                            id: 'recieve cash',
-                            title: 'Recieve Cash',
-                            type: 'item',
-                            url: '/paymentrecieveList'
-                          }
-                        : {},
-                      {
+                      hasAllPermissionPaymentCash && {
+                        id: 'payment Cash',
+                        title: 'Payment Cash',
+                        type: 'item',
+                        url: '/paymentCashlist'
+                      },
+                      hasAllPermissionPaymentRecieveCash && {
+                        id: 'recieve cash',
+                        title: 'Recieve Cash',
+                        type: 'item',
+                        url: '/paymentrecieveList'
+                      },
+                      hasAllPermissionsClaimcash && {
                         id: 'claim cash',
                         title: 'Claim Cash',
                         type: 'item',
                         url: '/claimcashlist'
                       },
-                      {
+                      hasAllPermissionsRecieveClaimcash && {
                         id: 'recieve claim',
                         title: 'Recieve Claim',
                         type: 'item',

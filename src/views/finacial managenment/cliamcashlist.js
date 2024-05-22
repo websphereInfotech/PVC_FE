@@ -13,21 +13,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  IconButton,
-  Grid
+  DialogTitle
 } from '@mui/material';
-import Select from 'react-select';
-import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { fetchAllVendorsCash, getallPaymentCash, getallVendorledger, paymentCashDelete, paymentCashview } from 'store/thunk';
+import { deleteClaimCash, viewClaimCash, viewSingleclaimCash } from 'store/thunk';
 import { useNavigate } from 'react-router';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'user', label: 'User', align: 'center', minWidth: 100 },
+  { id: 'touserId', label: 'User', align: 'center', minWidth: 100 },
   { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
   { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
   { id: 'edit', label: 'Edit', align: 'center', minWidth: 100 },
@@ -36,23 +30,17 @@ const columns = [
 const Claimcashlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
+  const { canCreateClaimcash, canUpdateClaimcash, canDeleteClaimcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [vendorId, setvendorId] = useState(null);
-  const [vendor, setvendor] = useState([]);
-  const [vendorname, setvendorname] = useState('');
-  const [toDate, setToDate] = useState(new Date());
-  const [formDate, setFormDate] = useState(new Date());
 
   useEffect(() => {
-    dispatch(getallPaymentCash())
+    dispatch(viewClaimCash())
       .then((data) => {
-        setPayments(data.data);
+        setPayments(data);
       })
       .catch((error) => {
         console.error('Error fetching payment data:', error);
@@ -62,30 +50,6 @@ const Claimcashlist = () => {
   const handleMakePayment = () => {
     navigate('/claimcash');
   };
-  const handleformDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setFormDate(formattedDate);
-  };
-  const handletoDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setToDate(formattedDate);
-  };
-  const handleLedger = (vendorId, formDate, toDate) => {
-    dispatch(getallVendorledger(vendorId, formDate, toDate));
-    navigate('/ledgerlist');
-    setSelectedId(vendorId);
-    sessionStorage.setItem('vendorId', vendorId);
-    setFormDate(formDate);
-    sessionStorage.setItem('formDate', formDate);
-    setToDate(toDate);
-    sessionStorage.setItem('toDate', toDate);
-  };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -93,12 +57,8 @@ const Claimcashlist = () => {
   };
 
   const handleUpdatePayment = (id) => {
-    dispatch(paymentCashview(id));
-    navigate(`/paymentcash/${id}`);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
+    dispatch(viewSingleclaimCash(id));
+    navigate(`/claimcash/${id}`);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -112,32 +72,10 @@ const Claimcashlist = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(paymentCashDelete(selectedId));
+      await dispatch(deleteClaimCash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);
-    }
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchAllVendorsCash());
-        if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([...options]);
-        }
-      } catch (error) {
-        console.error('Error fetching Purchase:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      setvendorId(selectedOption.value);
-      setvendorname(selectedOption.label);
     }
   };
 
@@ -152,7 +90,7 @@ const Claimcashlist = () => {
           color="secondary"
           style={{ margin: '16px' }}
           onClick={handleMakePayment}
-          disabled={!canCreatePaymentcash()}
+          disabled={!canCreateClaimcash()}
         >
           Claim Cash
         </Button>
@@ -178,7 +116,7 @@ const Claimcashlist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdatePaymentcash()}
+                        disabled={!canUpdateClaimcash()}
                       >
                         Edit
                       </Button>
@@ -187,14 +125,14 @@ const Claimcashlist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeletePaymentcash()}
+                        disabled={!canDeleteClaimcash()}
                       >
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      payment.PaymentVendor.vendorname
+                    ) : column.id === 'touserId' ? (
+                      payment.toUser?.username
                     ) : (
                       payment[column.id]
                     )}
@@ -225,58 +163,6 @@ const Claimcashlist = () => {
             Yes
           </Button>
         </DialogActions>
-      </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: '450px', width: '20%' } }}>
-        <DialogTitle style={{ backgroundColor: 'white', position: 'absoulate', fontSize: '16px' }}>Ledger Details</DialogTitle>
-        <DialogContent style={{ position: 'reletive' }}>
-          <IconButton onClick={handleCloseDrawer} style={{ position: 'fixed', left: '57%', top: '27%' }}>
-            <CloseIcon />
-          </IconButton>
-          <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '55px' }}>
-              <Typography variant="subtitle1">
-                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
-            </Grid>
-            {/* <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} /> */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">
-                From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formDate}
-                onChange={(date) => handleformDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">
-                To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={toDate}
-                onChange={(date) => handletoDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">action:</Typography>
-              <Button
-                onClick={() => handleLedger(vendorId, formDate, toDate)}
-                variant="contained"
-                color="secondary"
-                style={{ display: 'flex', justifyItems: 'center', padding: '8px' }}
-              >
-                Go
-              </Button>
-            </Grid>
-          </Grid>
-        </DialogContent>
       </Dialog>
     </Card>
   );

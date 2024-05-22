@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentCash, fetchAllVendorsCash, paymentCashview, updatePaymentCash } from 'store/thunk';
+import { createClaimcash, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorVendorDrawer from '../../component/vendor';
 import Select from 'react-select';
@@ -12,34 +12,35 @@ const Cliamcashpage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [vendorname, setvendorname] = useState('');
-  const [vendor, setvendor] = useState([]);
+  const [username, setusername] = useState('');
+  const [user, setuser] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectvendor, setSelectvendor] = useState([]);
+  // const [selectuser, setSelectuser] = useState([]);
+  const fromUserId = sessionStorage.getItem('userId');
   const [formData, setFormData] = useState({
-    vendorId: '',
+    toUserId: '',
+    fromUserId,
     amount: Number(),
     description: ''
   });
-  console.log(selectvendor);
+  // console.log(selectuser);
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
-      setIsDrawerOpen(true);
-    } else {
-      formData.vendorId = selectedOption.value;
+    if (selectedOption && selectedOption.label) {
+      formData.toUserId = selectedOption.value;
       setFormData(formData);
-      setvendorname(selectedOption.label);
+      setusername(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendorsCash());
+        const response = await dispatch(getallclaimuser());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          const options = response.map((user) => ({ value: user.id, label: user.username }));
+          setuser([...options]);
         }
       } catch (error) {
         console.error('Error fetching payment Cash:', error);
@@ -48,12 +49,13 @@ const Cliamcashpage = () => {
     const viewData = async () => {
       try {
         if (id) {
-          const response = await dispatch(paymentCashview(id));
-          const { amount, description, PaymentVendor, date } = response;
-          setFormData({ amount, description, vendorId: PaymentVendor.id, date });
+          const response = await dispatch(viewSingleclaimCash(id));
+          const { amount, description, toUser } = response;
+          console.log(response, 'response');
+          setFormData({ amount, description, toUserId: toUser.id });
 
-          setvendorname(PaymentVendor.vendorname);
-          setSelectvendor(PaymentVendor.id);
+          setusername(toUser.username);
+          setSelectuser(toUser.id);
         }
       } catch (error) {
         console.error('Error fetching payment:', error);
@@ -66,9 +68,9 @@ const Cliamcashpage = () => {
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
-        await dispatch(updatePaymentCash(id, formData, navigate));
+        await dispatch(updateClaimCash(id, formData, navigate));
       } else {
-        await dispatch(createPaymentCash(formData, navigate));
+        await dispatch(createClaimcash(formData, navigate));
       }
     } catch (error) {
       console.error('Error creating payment cash data:', error);
@@ -102,8 +104,8 @@ const Cliamcashpage = () => {
               </Typography>
               <Select
                 color="secondary"
-                options={vendor}
-                value={{ value: formData.vendorId, label: vendorname }}
+                options={user}
+                value={{ value: formData.toUserId, label: username }}
                 onChange={handleSelectChange}
               />
             </Grid>

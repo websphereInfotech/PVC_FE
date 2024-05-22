@@ -446,6 +446,30 @@ const useCan = () => {
     return checkPermission('Receive Cash', 'view_all_receive_Cash');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
+
+  const canCreateClaimcash = () => {
+    return checkPermission('Claim Cash', 'create_claim');
+  };
+  const canUpdateClaimcash = () => {
+    return checkPermission('Claim Cash', 'update_claim');
+  };
+  const canDeleteClaimcash = () => {
+    return checkPermission('Claim Cash', 'delete_claim');
+  };
+  const canViewClaimcash = () => {
+    return checkPermission('Claim Cash', 'view_single_claim');
+  };
+  const canViwAllClaimcash = () => {
+    return checkPermission('Claim Cash', 'view_myclaim');
+  };
+  const canViwAllRecieveClaimcash = () => {
+    return checkPermission('Claim Cash', 'view_reciveclaim');
+  };
+  const canIsapproveClaimcash = () => {
+    return checkPermission('Claim Cash', 'isapproved_claim');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     canCreateProformainvoiceQuotation,
@@ -590,7 +614,15 @@ const useCan = () => {
     canUpdatePaymentrecievecash,
     canDeletePaymentrecievecash,
     canViewPaymentrecievecash,
-    canViwAllPaymentrecievecash
+    canViwAllPaymentrecievecash,
+    // CLAIM CASH +++++++++++
+    canCreateClaimcash,
+    canUpdateClaimcash,
+    canDeleteClaimcash,
+    canViewClaimcash,
+    canViwAllClaimcash,
+    canViwAllRecieveClaimcash,
+    canIsapproveClaimcash
   };
 };
 
