@@ -220,7 +220,7 @@ const Salesinvoice = () => {
       const proformainvoiceresponse = await dispatch(fetchproformainvoiceList());
       const options = proformainvoiceresponse.map((item) => ({
         value: item.id,
-        label: `${item.ProFormaInvoice_no}  ${item.customer.shortname}`
+        label: `${item.ProFormaInvoice_no}  ${item.customer.accountname}`
       }));
       setProformainvoice(options);
       if (id) {

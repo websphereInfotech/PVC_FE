@@ -146,7 +146,7 @@ const Proformainvoice = () => {
         setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
         setSelectcustomer(customer.id);
         setCustomerState(customer.state);
-        setCustomername(customer.shortname);
+        setCustomername(customer.accountname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.product.id,
