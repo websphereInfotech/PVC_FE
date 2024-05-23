@@ -152,6 +152,7 @@ export default function CollapsibleTable() {
         const data = await dispatch(getallPermissions());
         const filteredPermissions = data.filter((permission) => permission.role !== 'Super Admin');
         setPermissions(filteredPermissions);
+
         const initialState = {};
         data.forEach((permission) => {
           permission?.permissions?.forEach((pre) => {
@@ -211,13 +212,17 @@ export default function CollapsibleTable() {
   //     console.error('Error updating permissions:', error);
   //   }
   // };
-  const handleCheckboxChange = async (permissionId, permissionValue) => {
+  const handleCheckboxChange = async (permissionId, permissionValue, resource) => {
+    if (resource === 'Permission') {
+      return;
+    }
     try {
       // Update selectedPermissions state
       const updatedPermissions = {
         ...selectedPermissions,
         [permissionId]: !permissionValue
       };
+
       setSelectedPermissions(updatedPermissions);
 
       // Prepare data for API update
@@ -245,15 +250,20 @@ export default function CollapsibleTable() {
   };
 
   const handleSelectAll = (resource) => {
+    if (resource === 'Permission') {
+      return;
+    }
+
     const updatedCheckbox = { ...checkbox };
     const updatedPermissions = { ...selectedPermissions };
+
     let allChecked = true;
     permissions.forEach((permission) => {
       if (permission.role === selectedUserRole) {
         permission.permissions.forEach((pre) => {
           if (pre.resource === resource) {
             pre.permissions.forEach((p) => {
-              if (!updatedCheckbox[p.id]) {
+              if (!checkbox[p.id]?.permissionValue && pre.resource !== 'permissions') {
                 allChecked = false;
               }
             });
@@ -327,6 +337,7 @@ export default function CollapsibleTable() {
                               <Box>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                   <Typography variant="h5">{pre.resource}</Typography>
+                                  {console.log('pre.resource', pre.resource)}
                                   {/* <Link
                                     style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', color: 'black' }}
                                     color="secondary"
@@ -334,6 +345,7 @@ export default function CollapsibleTable() {
                                   >
                                     Select All
                                   </Link> */}
+
                                   <Checkbox onClick={() => handleSelectAll(pre.resource)} />
                                 </div>
                                 <Table size="small" aria-label="permissions">
@@ -344,7 +356,11 @@ export default function CollapsibleTable() {
                                           {formatPermissionName(p.permission)}
                                         </Typography>
                                         <Typography>
-                                          <Checkbox checked={checkbox[p.id]} onChange={() => handleCheckboxChange(p.id, checkbox[p.id])} />
+                                          <Checkbox
+                                            checked={checkbox[p.id]}
+                                            onChange={() => handleCheckboxChange(p.id, checkbox[p.id])}
+                                            disabled={pre.resource === 'Permission'}
+                                          />
                                         </Typography>
                                       </TableRow>
                                     ))}

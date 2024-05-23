@@ -238,14 +238,14 @@ const PaymentrecieveList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: '450px', width: '20%' } }}>
-        <DialogTitle style={{ backgroundColor: 'white', position: 'absoulate', fontSize: '16px' }}>Ledger Details</DialogTitle>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: '530px', width: '20%' } }}>
+        <DialogTitle style={{ backgroundColor: 'white', position: 'absoulate', fontSize: '21px' }}>Ledger Details</DialogTitle>
         <DialogContent style={{ position: 'reletive' }}>
-          <IconButton onClick={handleCloseDrawer} style={{ position: 'fixed', left: '57%', top: '27%' }}>
+          <IconButton onClick={handleCloseDrawer} style={{ position: 'fixed', left: '57%', top: '11%' }}>
             <CloseIcon />
           </IconButton>
           <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '55px' }}>
+            <Grid item xs={12} style={{ paddingTop: '30px' }}>
               <Typography variant="subtitle1">
                 Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -280,7 +280,7 @@ const PaymentrecieveList = () => {
                 showTimeSelect={false}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Typography variant="subtitle1">action:</Typography>
               <Button
                 onClick={() => handleLedger(customerId, formDate, toDate)}
@@ -290,7 +290,15 @@ const PaymentrecieveList = () => {
               >
                 Go
               </Button>
-            </Grid>
+            </Grid> */}
+            <Button
+              onClick={() => handleLedger(customerId, formDate, toDate)}
+              variant="contained"
+              color="secondary"
+              style={{ marginTop: '50%', marginLeft: '60%' }}
+            >
+              GO
+            </Button>
           </Grid>
         </DialogContent>
       </Dialog>
