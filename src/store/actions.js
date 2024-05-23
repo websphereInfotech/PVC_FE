@@ -316,6 +316,29 @@ export const FETCH_ALL_CUSTOMER_LEDGER_REQUEST = 'FETCH_ALL_CUSTOMER_LEDGER_REQU
 export const FETCH_ALL_CUSTOMER_LEDGER_SUCCESS = 'FETCH_ALL_CUSTOMER_LEDGER_SUCCESS';
 export const FETCH_ALL_CUSTOMER_LEDGER_FAILURE = 'FETCH_ALL_CUSTOMER_LEDGER_FAILURE';
 
+// #################################################################### VENDOR LEDGER ###################################################################
+export const FETCH_ALL_CLAIM_USER_REQUEST = 'FETCH_ALL_CLAIM_USER_REQUEST';
+export const FETCH_ALL_CLAIM_USER_SUCCESS = 'FETCH_ALL_CLAIM_USER_SUCCESS';
+export const FETCH_ALL_CLAIM_USER_FAILURE = 'FETCH_ALL_CLAIM_USER_FAILURE';
+export const CREATE_CLAIM_CASH_REQUEST = 'CREATE_CLAIM_CASH_REQUEST';
+export const CREATE_CLAIM_CASH_SUCCESS = 'CREATE_CLAIM_CASH_SUCCESS';
+export const CREATE_CLAIM_CASH_FAILURE = 'CREATE_CLAIM_CASH_FAILURE';
+export const VIEW_CLAIM_CASH_REQUEST = 'VIEW_CLAIM_CASH_REQUEST';
+export const VIEW_CLAIM_CASH_SUCCESS = 'VIEW_CLAIM_CASH_SUCCESS';
+export const VIEW_CLAIM_CASH_FAILURE = 'VIEW_CLAIM_CASH_FAILURE';
+export const VIEW_SINGLE_CLAIM_CASH_REQUEST = 'VIEW_SINGLE_CLAIM_CASH_REQUEST';
+export const VIEW_SINGLE_CLAIM_CASH_SUCCESS = 'VIEW_SINGLE_CLAIM_CASH_SUCCESS';
+export const VIEW_SINGLE_CLAIM_CASH_FAILURE = 'VIEW_SINGLE_CLAIM_CASH_FAILURE';
+export const UPDATE_CLAIM_CASH_REQUEST = 'UPDATE_CLAIM_CASH_REQUEST';
+export const UPDATE_CLAIM_CASH_SUCCESS = 'UPDATE_CLAIM_CASH_SUCCESS';
+export const UPDATE_CLAIM_CASH_FAILURE = 'UPDATE_CLAIM_CASH_FAILURE';
+export const DELETE_CLAIM_CASH_REQUEST = 'DELETE_CLAIM_CASH_REQUEST';
+export const DELETE_CLAIM_CASH_SUCCESS = 'DELETE_CLAIM_CASH_SUCCESS';
+export const DELETE_CLAIM_CASH_FAILURE = 'DELETE_CLAIM_CASH_FAILURE';
+export const VIEW_RECIEVE_CLAIM_CASH_REQUEST = 'VIEW_RECIEVE_CLAIM_CASH_REQUEST';
+export const VIEW_RECIEVE_CLAIM_CASH_SUCCESS = 'VIEW_RECIEVE_CLAIM_CASH_SUCCESS';
+export const VIEW_RECIEVE_CLAIM_CASH_FAILURE = 'VIEW_RECIEVE_CLAIM_CASH_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -1401,5 +1424,91 @@ export const getAllcustomerLedgerSuccess = (data) => ({
 });
 export const getAllcustomerLedgerFailure = (error) => ({
   type: 'FETCH_ALL_CUSTOMER_LEDGER_FAILURE',
+  payload: error
+});
+
+//  ####################################################################### CUSTOMER LEDGER #####################################################
+export const getAllclaimuserRequest = (data) => ({
+  type: 'FETCH_ALL_CLAIM_USER_REQUEST',
+  payload: data
+});
+export const getAllclaimuserSuccess = (data) => ({
+  type: 'FETCH_ALL_CLAIM_USER_SUCCESS',
+  payload: data
+});
+export const getAllclaimuserFailure = (error) => ({
+  type: 'FETCH_ALL_CLAIM_USER_FAILURE',
+  payload: error
+});
+export const createClaimCashRequest = (data) => ({
+  type: 'CREATE_CLAIM_CASH_REQUEST',
+  payload: data
+});
+export const createClaimCashSuccess = (data) => ({
+  type: 'CREATE_CLAIM_CASH_SUCCESS',
+  payload: data
+});
+export const createClaimCashFailure = (error) => ({
+  type: 'CREATE_CLAIM_CASH_FAILURE',
+  payload: error
+});
+export const viewClaimCashRequest = (data) => ({
+  type: 'VIEW_CLAIM_CASH_REQUEST',
+  payload: data
+});
+export const viewClaimCashSuccess = (data) => ({
+  type: 'VIEW_CLAIM_CASH_SUCCESS',
+  payload: data
+});
+export const viewClaimCashFailure = (error) => ({
+  type: 'VIEW_CLAIM_CASH_FAILURE',
+  payload: error
+});
+export const viewsingleClaimCashRequest = (data) => ({
+  type: 'VIEW_CLAIM_CASH_REQUEST',
+  payload: data
+});
+export const viewsingleClaimCashSuccess = (data) => ({
+  type: 'VIEW_CLAIM_CASH_SUCCESS',
+  payload: data
+});
+export const viewsingleClaimCashFailure = (error) => ({
+  type: 'VIEW_CLAIM_CASH_FAILURE',
+  payload: error
+});
+export const updateClaimCashRequest = (data) => ({
+  type: 'UPDATE_CLAIM_CASH_REQUEST',
+  payload: data
+});
+export const updateClaimCashSuccess = (data) => ({
+  type: 'UPDATE_CLAIM_CASH_SUCCESS',
+  payload: data
+});
+export const updateClaimCashFailure = (error) => ({
+  type: 'UPDATE_CLAIM_CASH_FAILURE',
+  payload: error
+});
+export const deleteClaimCashRequest = (data) => ({
+  type: 'DELETE_CLAIM_CASH_REQUEST',
+  payload: data
+});
+export const deleteClaimCashSuccess = (data) => ({
+  type: 'DELETE_CLAIM_CASH_SUCCESS',
+  payload: data
+});
+export const deleteClaimCashFailure = (error) => ({
+  type: 'DELETE_CLAIM_CASH_FAILURE',
+  payload: error
+});
+export const viewRecieveClaimCashRequest = (data) => ({
+  type: 'VIEW_RECIEVE_CLAIM_CASH_REQUEST',
+  payload: data
+});
+export const viewRecieveClaimCashSuccess = (data) => ({
+  type: 'VIEW_RECIEVE_CLAIM_CASH_SUCCESS',
+  payload: data
+});
+export const viewRecieveClaimCashFailure = (error) => ({
+  type: 'VIEW_RECIEVE_CLAIM_CASH_FAILURE',
   payload: error
 });

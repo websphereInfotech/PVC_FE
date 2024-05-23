@@ -5,8 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import AnchorTemporaryDrawer from '../../component/customeradd';
-import AnchorProductDrawer from '../../component/productadd';
+import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorProductDrawer from '../../../component/productadd';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   createDeliveryChallan,
@@ -125,7 +125,7 @@ const Deliverychallan = () => {
   //use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'create new product') {
+    if (selectedOption && selectedOption.label === 'Create New Product') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {

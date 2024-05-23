@@ -5,8 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorTemporaryDrawer from '../../component/customeradd';
-import AnchorProductDrawer from '../../component/productadd';
+import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorProductDrawer from '../../../component/productadd';
 import { useDispatch } from 'react-redux';
 import {
   createProformainvoice,
@@ -146,7 +146,7 @@ const Proformainvoice = () => {
         setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
         setSelectcustomer(customer.id);
         setCustomerState(customer.state);
-        setCustomername(customer.shortname);
+        setCustomername(customer.accountname);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.product.id,

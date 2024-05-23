@@ -3,8 +3,8 @@ import { Typography, Grid, Paper, Table, TableRow, TableBody, TableHead, TableCe
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../component/customeradd';
-import AnchorProductDrawer from '../../component/productadd';
+import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
   Debitnoteviewdata,

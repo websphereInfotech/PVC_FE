@@ -18,10 +18,15 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 const Reports = Loadable(lazy(() => import('../views/reports')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/cliamcashlist')));
+const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/cliamcash')));
+const Recieveclaimcashlist = Loadable(lazy(() => import('../views/finacial managenment/recieveclaimcashlist')));
+
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salescash +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Salescash = Loadable(lazy(() => import('../views/sale managenment/salescash')));
-const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/salescashlist')));
-const Salescashview = Loadable(lazy(() => import('../views/sale managenment/salescashview')));
+const Salescash = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescash')));
+const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashlist')));
+const Salescashview = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashview')));
 //
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment +++++++++++++++++++++++++++++++++++++++++++++++++++
 const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/paymentcash')));
@@ -36,31 +41,29 @@ const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/exp
 const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managenment/expenceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/proformainvoice')));
-// const Proformainvoicemain = Loadable(lazy(() => import('../views/sale managenment/proformainvoicemain')));
-const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/proformainvoicelist')));
-const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/proformainvoiceview')));
+const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
+const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoicelist')));
+const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoiceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of delivery challan +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/dileverychalln')));
-const DileveryChallanList = Loadable(lazy(() => import('../views/sale managenment/dileverychallanlist')));
-const DileveryChallanView = Loadable(lazy(() => import('../views/sale managenment/dileverychallanview')));
+const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/Dileverychallan/dileverychalln')));
+const DileveryChallanList = Loadable(lazy(() => import('../views/sale managenment/Dileverychallan/dileverychallanlist')));
+const DileveryChallanView = Loadable(lazy(() => import('../views/sale managenment/Dileverychallan/dileverychallanview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Debit note +++++++++++++++++++++++++++++++++++++++++++++++++++
-const DebitNote = Loadable(lazy(() => import('../views/sale managenment/debitnote')));
-const Debitnotelist = Loadable(lazy(() => import('../views/sale managenment/debitnotelist')));
-const Debitnoteview = Loadable(lazy(() => import('../views/sale managenment/debitnoteview')));
+const DebitNote = Loadable(lazy(() => import('../views/sale managenment/Debit note/debitnote')));
+const Debitnotelist = Loadable(lazy(() => import('../views/sale managenment/Debit note/debitnotelist')));
+const Debitnoteview = Loadable(lazy(() => import('../views/sale managenment/Debit note/debitnoteview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Creditnote = Loadable(lazy(() => import('../views/sale managenment/creditnote')));
-const Creditnotelist = Loadable(lazy(() => import('../views/sale managenment/creditnotelist')));
-const CreditnoteView = Loadable(lazy(() => import('../views/sale managenment/creditnoteview')));
+const Creditnote = Loadable(lazy(() => import('../views/sale managenment/Credit note/creditnote')));
+const Creditnotelist = Loadable(lazy(() => import('../views/sale managenment/Credit note/creditnotelist')));
+const CreditnoteView = Loadable(lazy(() => import('../views/sale managenment/Credit note/creditnoteview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/salesinvoice')));
-// const Salesinvoicemain = Loadable(lazy(() => import('../views/sale managenment/salesinvoicemain')));
-const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/salesinvoicelist')));
-const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/salesinvoiceview')));
+const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/Sales invoice/salesinvoice')));
+const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/Sales invoice/salesinvoicelist')));
+const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/Sales invoice/salesinvoiceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase bill +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Purchaseinvoice = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoice')));
@@ -118,6 +121,12 @@ const MainRoutes = {
       )
     },
     { path: '/profile', element: <SamplePage /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
+    { path: '/claimcash', element: <Cliamcashpage /> },
+    { path: '/claimcash/:id', element: <Cliamcashpage /> },
+    { path: '/claimcashlist', element: <Claimcashlist /> },
+    { path: '/recieveclaimcashlist', element: <Recieveclaimcashlist /> },
+
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales cash +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salescash', element: <Salescash /> },
     { path: '/salescash/:id', element: <Salescash /> },

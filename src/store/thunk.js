@@ -290,7 +290,29 @@ import {
   // CUSTOMER LEDGER +++++++++++
   getAllcustomerLedgerRequest,
   getAllcustomerLedgerSuccess,
-  getAllcustomerLedgerFailure
+  getAllcustomerLedgerFailure,
+  // USER CLAIM +++++++++++
+  getAllclaimuserRequest,
+  getAllclaimuserSuccess,
+  getAllclaimuserFailure,
+  createClaimCashRequest,
+  createClaimCashSuccess,
+  createClaimCashFailure,
+  viewClaimCashRequest,
+  viewClaimCashSuccess,
+  viewClaimCashFailure,
+  updateClaimCashRequest,
+  updateClaimCashSuccess,
+  updateClaimCashFailure,
+  deleteClaimCashRequest,
+  deleteClaimCashSuccess,
+  deleteClaimCashFailure,
+  viewsingleClaimCashRequest,
+  viewsingleClaimCashSuccess,
+  viewsingleClaimCashFailure,
+  viewRecieveClaimCashRequest,
+  viewRecieveClaimCashSuccess,
+  viewRecieveClaimCashFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -319,6 +341,8 @@ export const loginAdmin = (credentials, navigate) => {
       sessionStorage.setItem('role', roletype);
       const username = decodedToken.username;
       sessionStorage.setItem('username', username);
+      const userId = decodedToken.userId;
+      sessionStorage.setItem('userId', userId);
       const userData = response.data;
       sessionStorage.setItem('user', JSON.stringify(userData));
       toast.success(response.data.message, {
@@ -506,9 +530,9 @@ export const createDeliveryChallan = (ChallanData, navigate) => {
       dispatch(createDeliveryChallanSuccess(createdDeliverychallan));
       return createdDeliverychallan;
     } catch (error) {
-      // toast.error(error.response.data.message,{
-      //   autoClose: 1000
-      // });
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(createDeliveryChallanFailure(error.message));
     }
   };
@@ -1573,16 +1597,10 @@ export const getallPermissions = () => {
     dispatch(getAllPermissionsRequest());
     try {
       const config = createConfig();
-      const type = sessionStorage.getItem('type');
-      console.log(type, 'type');
-      const role = sessionStorage.getItem('role');
-      console.log(role, 'role');
-      // if (type === 'C' && role === 'Super Admin') {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
       const getallPermission = response.data.data;
       dispatch(getAllPermissionsSuccess(getallPermission));
       return getallPermission;
-      // }
     } catch (error) {
       dispatch(getAllPermissionsFailure(error.message));
     }
@@ -1911,6 +1929,152 @@ export const getallCustomerledger = (id, formDate, toDate) => {
       return getallcustomerledgerlist;
     } catch (error) {
       dispatch(getAllcustomerLedgerFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++ CALAIM+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallclaimuser = () => {
+  return async (dispatch) => {
+    dispatch(getAllclaimuserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_ClaimUser`, config);
+      const getallclaimuserlist = response.data.data;
+      dispatch(getAllclaimuserSuccess(getallclaimuserlist));
+      return getallclaimuserlist;
+    } catch (error) {
+      dispatch(getAllclaimuserFailure(error.message));
+    }
+  };
+};
+export const createClaimcash = (formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(createClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_claim`, formData, config);
+      const Cliamdata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/claimcashlist');
+        }
+      });
+      dispatch(createClaimCashSuccess(Cliamdata));
+      return Cliamdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createClaimCashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const viewClaimCash = () => {
+  return async (dispatch) => {
+    dispatch(viewClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_myclaim`, config);
+      const data = response.data.data;
+      dispatch(viewClaimCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewClaimCashFailure(error.message));
+    }
+  };
+};
+export const viewSingleclaimCash = (id) => {
+  return async (dispatch) => {
+    dispatch(viewsingleClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_claim/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewsingleClaimCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewsingleClaimCashFailure(error.message));
+    }
+  };
+};
+export const updateClaimCash = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_claim/${id}`, formData, config);
+      const updatClaimcashdata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/claimcashlist');
+        }
+      });
+      dispatch(updateClaimCashSuccess(updatClaimcashdata));
+      return updatClaimcashdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(updateClaimCashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteClaimCash = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_claim/${id}`, config);
+      const deleteClaimcash = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteClaimCashSuccess(deleteClaimcash));
+      window.location.reload();
+      return deleteClaimcash;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(deleteClaimCashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const viewRecieveClaimCash = () => {
+  return async (dispatch) => {
+    dispatch(viewRecieveClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_reciveclaim`, config);
+      const data = response.data.data;
+      dispatch(viewRecieveClaimCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewRecieveClaimCashFailure(error.message));
+    }
+  };
+};
+export const IsStatusclaimCash = (id, toUserId, isApproved) => {
+  return async (dispatch) => {
+    dispatch(viewsingleClaimCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/isapproved_claim/${id}`, { toUserId, isApproved }, config);
+      const data = response.data.data;
+      dispatch(viewsingleClaimCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewsingleClaimCashFailure(error.message));
+      throw error;
     }
   };
 };
