@@ -211,7 +211,10 @@ export default function CollapsibleTable() {
   //     console.error('Error updating permissions:', error);
   //   }
   // };
-  const handleCheckboxChange = async (permissionId, permissionValue) => {
+  const handleCheckboxChange = async (permissionId, permissionValue, resource) => {
+    if (resource === 'Permission') {
+      return;
+    }
     try {
       // Update selectedPermissions state
       const updatedPermissions = {
@@ -327,14 +330,7 @@ export default function CollapsibleTable() {
                               <Box>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                   <Typography variant="h5">{pre.resource}</Typography>
-                                  {/* <Link
-                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', color: 'black' }}
-                                    color="secondary"
-                                    onClick={() => handleSelectAll(pre.resource)}
-                                  >
-                                    Select All
-                                  </Link> */}
-                                  <Checkbox onClick={() => handleSelectAll(pre.resource)} />
+                                  <Checkbox onClick={() => handleSelectAll(pre.resource)} disabled={pre.resource === 'Permission'} />
                                 </div>
                                 <Table size="small" aria-label="permissions">
                                   <TableBody>
@@ -344,7 +340,11 @@ export default function CollapsibleTable() {
                                           {formatPermissionName(p.permission)}
                                         </Typography>
                                         <Typography>
-                                          <Checkbox checked={checkbox[p.id]} onChange={() => handleCheckboxChange(p.id, checkbox[p.id])} />
+                                          <Checkbox
+                                            checked={checkbox[p.id]}
+                                            onChange={() => handleCheckboxChange(p.id, checkbox[p.id])}
+                                            disabled={pre.resource === 'Permission'}
+                                          />
                                         </Typography>
                                       </TableRow>
                                     ))}
