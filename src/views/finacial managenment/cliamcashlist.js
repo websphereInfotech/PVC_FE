@@ -13,12 +13,17 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton,
+  Grid
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { deleteClaimCash, viewClaimCash, viewSingleclaimCash } from 'store/thunk';
+import CloseIcon from '@mui/icons-material/Close';
+import { deleteClaimCash, viewClaimCash, viewSingleclaimCash, fetchAllClaimcashLedger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import useCan from 'views/checkpermissionvalue';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const columns = [
   { id: 'touserId', label: 'User', align: 'center', minWidth: 100 },
@@ -36,6 +41,9 @@ const Claimcashlist = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
 
   useEffect(() => {
     dispatch(viewClaimCash())
@@ -49,6 +57,34 @@ const Claimcashlist = () => {
 
   const handleMakePayment = () => {
     navigate('/claimcash');
+  };
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
+  const handleLedger = (formDate, toDate) => {
+    dispatch(fetchAllClaimcashLedger(formDate, toDate));
+    navigate('/claimcashledger');
+    setFormDate(formDate);
+    sessionStorage.setItem('ClaimformDate', formDate);
+    setToDate(toDate);
+    sessionStorage.setItem('ClaimtoDate', toDate);
   };
 
   const handleDeleteConfirmation = (id) => {
@@ -78,7 +114,9 @@ const Claimcashlist = () => {
       console.error('Error deleting user:', error);
     }
   };
-
+  const handleLedgerClick = () => {
+    setOpenDrawer(true);
+  };
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -93,6 +131,9 @@ const Claimcashlist = () => {
           disabled={!canCreateClaimcash()}
         >
           Claim Cash
+        </Button>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+          Ledger
         </Button>
       </div>
       <TableContainer>
@@ -163,6 +204,50 @@ const Claimcashlist = () => {
             Yes
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '20%' } }}>
+        <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3>Ledger Details</h3>
+          <span>
+            <IconButton onClick={handleCloseDrawer} style={{}}>
+              <CloseIcon />
+            </IconButton>
+          </span>
+        </div>
+        <DialogContent style={{ position: 'reletive' }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formDate}
+                onChange={(date) => handleformDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+                popperPlacement="bottem-start"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">
+                To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={toDate}
+                onChange={(date) => handletoDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+                popperPlacement="top-center"
+              />
+            </Grid>
+
+            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+              GO
+            </Button>
+          </Grid>
+        </DialogContent>
       </Dialog>
     </Card>
   );

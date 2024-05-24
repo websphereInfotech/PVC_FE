@@ -129,7 +129,6 @@ const PaymentListPage = () => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchAllVendorsCash());
-        console.log(response);
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
           setvendor([...options]);
@@ -238,20 +237,23 @@ const PaymentListPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: '530px', width: '20%' } }}>
-        <DialogTitle style={{ backgroundColor: 'white', position: 'absoulate', fontSize: '21px' }}>Ledger Details</DialogTitle>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '20%' } }}>
+        <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3>Ledger Details</h3>
+          <span>
+            <IconButton onClick={handleCloseDrawer} style={{}}>
+              <CloseIcon />
+            </IconButton>
+          </span>
+        </div>
         <DialogContent style={{ position: 'reletive' }}>
-          <IconButton onClick={handleCloseDrawer} style={{ position: 'fixed', left: '57%', top: '11%' }}>
-            <CloseIcon />
-          </IconButton>
           <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '30px' }}>
+            <Grid item xs={12} style={{ paddingTop: '20px' }}>
               <Typography variant="subtitle1">
                 Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
             </Grid>
-            {/* <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} /> */}
             <Grid item xs={12}>
               <Typography variant="subtitle1">
                 From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -262,6 +264,7 @@ const PaymentListPage = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
+                popperPlacement="bottem-start"
               />
             </Grid>
             <Grid item xs={12}>
@@ -274,6 +277,7 @@ const PaymentListPage = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
+                popperPlacement="top-center"
               />
             </Grid>
             {/* <Grid item xs={12}>
@@ -291,7 +295,7 @@ const PaymentListPage = () => {
               onClick={() => handleLedger(vendorId, formDate, toDate)}
               variant="contained"
               color="secondary"
-              style={{ marginTop: '50%', marginLeft: '60%' }}
+              style={{ marginLeft: '60%' }}
             >
               GO
             </Button>

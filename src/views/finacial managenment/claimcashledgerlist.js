@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { getallVendorledger } from 'store/thunk';
+import { fetchAllClaimcashLedger } from 'store/thunk';
 
 const columns = [
-  { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
-  { id: 'vendor', label: 'Vendor', align: 'center', minWidth: 100 },
+  { id: 'updatedAt', label: 'Date', align: 'center', minWidth: 100 },
+  { id: 'user', label: 'User', align: 'center', minWidth: 100 },
   { id: 'creditAmount', label: 'Credit', align: 'center', minWidth: 100 },
   { id: 'debitAmount', label: 'Debit', align: 'center', minWidth: 100 },
   { id: 'remainingBalance', label: 'Balance', align: 'center', minWidth: 100 }
 ];
 
-const Ledgerlist = () => {
+const Claimledgerlist = () => {
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
-  const vendorId = sessionStorage.getItem('vendorId');
-  const formData = sessionStorage.getItem('formDate');
-  const toDate = sessionStorage.getItem('toDate');
+  const formData = sessionStorage.getItem('ClaimformDate');
+  const toDate = sessionStorage.getItem('ClaimtoDate');
   useEffect(() => {
-    dispatch(getallVendorledger(vendorId, formData, toDate))
+    dispatch(fetchAllClaimcashLedger(formData, toDate))
       .then((data) => {
-        setPayments(data.data);
+        setPayments(data);
       })
       .catch((error) => {
         console.error('Error fetching payment data:', error);
       });
-  }, [dispatch, vendorId, formData, toDate]);
+  }, [dispatch, formData, toDate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -41,7 +40,7 @@ const Ledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Ledger List
+        Claim Cash Ledger List
       </Typography>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -59,10 +58,10 @@ const Ledgerlist = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'date'
+                    {column.id === 'updatedAt'
                       ? new Date(payment[column.id]).toLocaleDateString('en-GB')
-                      : column.id === 'vendor'
-                        ? payment.vendorData.vendorname
+                      : column.id === 'user'
+                        ? payment.username
                         : payment[column.id]}
                   </TableCell>
                 ))}
@@ -84,4 +83,4 @@ const Ledgerlist = () => {
   );
 };
 
-export default Ledgerlist;
+export default Claimledgerlist;

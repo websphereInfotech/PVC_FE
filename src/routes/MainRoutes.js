@@ -21,6 +21,7 @@ const Reports = Loadable(lazy(() => import('../views/reports')));
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/cliamcashlist')));
 const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/cliamcash')));
+const Claimledgerlist = Loadable(lazy(() => import('../views/finacial managenment/claimcashledgerlist')));
 const Recieveclaimcashlist = Loadable(lazy(() => import('../views/finacial managenment/recieveclaimcashlist')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salescash +++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -125,6 +126,7 @@ const MainRoutes = {
     { path: '/claimcash', element: <Cliamcashpage /> },
     { path: '/claimcash/:id', element: <Cliamcashpage /> },
     { path: '/claimcashlist', element: <Claimcashlist /> },
+    { path: '/claimcashledger', element: <Claimledgerlist /> },
     { path: '/recieveclaimcashlist', element: <Recieveclaimcashlist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales cash +++++++++++++++++++++++++++++++++++++++++++++++++++

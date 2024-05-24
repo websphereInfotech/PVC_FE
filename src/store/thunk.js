@@ -312,7 +312,11 @@ import {
   viewsingleClaimCashFailure,
   viewRecieveClaimCashRequest,
   viewRecieveClaimCashSuccess,
-  viewRecieveClaimCashFailure
+  viewRecieveClaimCashFailure,
+  // CLAIMCASH LEDGER ++++++++++
+  fetchAllclaimcashledgerRequest,
+  fetchAllclaimcashledgerSuccess,
+  fetchAllclaimcashledgerFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -2075,6 +2079,20 @@ export const IsStatusclaimCash = (id, toUserId, isApproved) => {
     } catch (error) {
       dispatch(viewsingleClaimCashFailure(error.message));
       throw error;
+    }
+  };
+};
+export const fetchAllClaimcashLedger = (formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(fetchAllclaimcashledgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_claim_ledger?fromDate=${formDate}&toDate=${toDate}`, config);
+      const data = response.data.data;
+      dispatch(fetchAllclaimcashledgerSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllclaimcashledgerFailure(error.message));
     }
   };
 };

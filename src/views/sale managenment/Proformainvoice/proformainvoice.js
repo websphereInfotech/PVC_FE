@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,7 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Proformainvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation } = useCan();
+  const { canDeleteProformainvoiceQuotation, canCreateCustomer } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
 
   const [totalQuantity, setTotalQuantity] = useState(0);
@@ -36,10 +36,9 @@ const Proformainvoice = () => {
   const [customerState, setCustomerState] = useState('');
   const [customername, setCustomername] = useState('');
   const [companystate, setCompanystate] = useState('');
-  const [product, setProduct] = useState('');
+  const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  // const
   const [gststate, setGststate] = useState('');
   const [formData, setFormData] = useState({
     customerId: '',
@@ -104,17 +103,24 @@ const Proformainvoice = () => {
   };
 
   // called api of all product and customer for show name of them in dropdown
+  const canCreateCustomerRef = useRef(canCreateCustomer());
+  console.log(canCreateCustomerRef.current, 'canrefcustomer');
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
-          setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          let options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
+          if (!canCreateCustomerRef.current) {
+            setcustomer([...options]);
+          } else {
+            setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          }
         }
         const productResponse = await dispatch(fetchAllProducts());
+        console.log(productResponse);
+        setProductResponse(productResponse);
         if (Array.isArray(productResponse)) {
-          setProductResponse(productResponse);
           const options = productResponse.map((product) => ({
             value: product.id,
             label: product.productname,
@@ -122,6 +128,7 @@ const Proformainvoice = () => {
             gstrate: product.gstrate
           }));
           setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
+          console.log();
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
@@ -136,7 +143,7 @@ const Proformainvoice = () => {
     };
 
     fetchData();
-  }, [dispatch, customerState, gststate, id]);
+  }, [dispatch, customerState, id]);
 
   useEffect(() => {
     const data = async () => {

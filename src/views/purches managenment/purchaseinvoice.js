@@ -354,7 +354,7 @@ const Purchaseinvoice = () => {
             Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
           <DatePicker
-            selected={formData.invoicedate}
+            selected={formData.date}
             onChange={(date) => handleDateChange(date)}
             dateFormat="dd/MM/yyyy"
             isClearable={false}
