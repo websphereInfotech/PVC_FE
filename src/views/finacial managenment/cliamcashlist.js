@@ -26,7 +26,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const columns = [
-  { id: 'touserId', label: 'User', align: 'center', minWidth: 100 },
+  { id: 'fromUserId', label: 'User', align: 'center', minWidth: 100 },
   { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
   { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
   { id: 'edit', label: 'Edit', align: 'center', minWidth: 100 },
@@ -172,8 +172,8 @@ const Claimcashlist = () => {
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'touserId' ? (
-                      payment.toUser?.username
+                    ) : column.id === 'fromUserId' ? (
+                      payment.fromUser?.username
                     ) : (
                       payment[column.id]
                     )}
