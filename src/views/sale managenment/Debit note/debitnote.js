@@ -13,6 +13,7 @@ import {
   fetchAllCustomers,
   fetchAllProducts,
   getallDebitnote,
+  getallPurchaseinvoice,
   updateDebitnote
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
@@ -30,6 +31,8 @@ const DebitNote = () => {
     customerId: '',
     debitdate: new Date(),
     debitnoteno: '',
+    pinvoiceno: '',
+    pdate: new Date(),
     totalSgst: 0,
     totalIgst: 0,
     totalMrp: 0,
@@ -49,6 +52,8 @@ const DebitNote = () => {
   const [plusgst, setPlusgst] = useState(0);
   const [productResponse, setProductResponse] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const [purchaseinvoicedata, setPurchaseinvoicedata] = useState([]);
+  const [purchasedata, setPurchasedata] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -164,6 +169,10 @@ const DebitNote = () => {
     setFormData({ ...formData, debitdate: date });
   };
 
+  const handlePurchaseDateChange = (date) => {
+    setFormData({ ...formData, pdate: date });
+  };
+
   //manage value of input of row
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
@@ -215,13 +224,33 @@ const DebitNote = () => {
       setPlusgst(totalGST);
     }
   };
-
+  const handlepurchaseinvoiceSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      const updatefromdata = {
+        ...formData,
+        invoiceId: selectedOption.value,
+        invoicedate: selectedOption.invoicedate
+      };
+      console.log(selectedOption, 'selectedOption');
+      setPurchasedata(selectedOption.label);
+      setFormData(updatefromdata);
+    }
+  };
   useEffect(() => {
     const data = async () => {
+      const purchseinvoice = await dispatch(getallPurchaseinvoice());
+      console.log(purchseinvoice.data, 'purchseinvoice');
+      const options = purchseinvoice.data.map((item) => ({
+        value: item.id,
+        label: item.invoiceno,
+        invoicedate: item.invoicedate
+      }));
+      setPurchaseinvoicedata(options);
       if (id) {
         const response = await dispatch(Debitnoteviewdata(id));
-        const { DebitCustomer, debitnoteno, debitdate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: DebitCustomer.id, debitdate, debitnoteno, totalSgst, mainTotal, totalMrp, totalIgst });
+        const { DebitCustomer,invoiceId, invoicedate,purchaseData, debitnoteno, debitdate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        setFormData({ customerId: DebitCustomer.id, debitdate, debitnoteno, invoiceId, pdate:invoicedate,totalSgst, mainTotal, totalMrp, totalIgst });
+        setPurchasedata(purchaseData.invoiceno)
         setSelectcustomer(DebitCustomer.id);
         setCustomerState(DebitCustomer.state);
         setCustomername(DebitCustomer.accountname);
@@ -378,6 +407,29 @@ const DebitNote = () => {
               <DatePicker
                 selected={formData.debitdate}
                 onChange={(date) => handleDebitDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Purchase Inv. No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select
+                color="secondary"
+                options={purchaseinvoicedata}
+                value={{ value: formData.pinvoiceno, label: purchasedata }}
+                onChange={handlepurchaseinvoiceSelectChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Purchase Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formData.pdate}
+                onChange={(date) => handlePurchaseDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}

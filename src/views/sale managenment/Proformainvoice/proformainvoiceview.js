@@ -50,7 +50,30 @@ const Proformainvoiceviewpage = () => {
           <Typography variant="subtitle1">Valid Till</Typography>
           <Typography variant="subtitle2">{new Date(data?.validtill).toLocaleDateString('es-GB')}</Typography>
         </Grid>
-
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Dispatch Through </Typography>
+          <Typography variant="subtitle2">{data.dispatchThrough}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Destination</Typography>
+          <Typography variant="subtitle2">{data.destination}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">LR-RR No.</Typography>
+          <Typography variant="subtitle2">{data.LL_RR_no}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Motor Vehical No.</Typography>
+          <Typography variant="subtitle2">{data.motorVehicleNo}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Terms</Typography>
+          <Typography variant="subtitle2">{data.terms}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Terms of delivery</Typography>
+          <Typography variant="subtitle2">{data.termsOfDelivery}</Typography>
+        </Grid>
         <Grid item xs={12}>
           <div style={{ maxHeight: '300px', overflowX: 'auto' }}>
             <Table>

@@ -21,7 +21,8 @@ const Cliamcashpage = () => {
     toUserId: '',
     fromUserId,
     amount: Number(),
-    description: ''
+    description: '',
+    purpose: ''
   });
   // console.log(selectuser);
 
@@ -50,9 +51,9 @@ const Cliamcashpage = () => {
       try {
         if (id) {
           const response = await dispatch(viewSingleclaimCash(id));
-          const { amount, description, toUser } = response;
+          const { amount, description, toUser,purpose } = response;
           console.log(response, 'response');
-          setFormData({ amount, description, toUserId: toUser.id });
+          setFormData({ amount, description, purpose,toUserId: toUser.id });
 
           setusername(toUser.username);
           setSelectuser(toUser.id);
@@ -83,7 +84,15 @@ const Cliamcashpage = () => {
       [fieldName]: value
     }));
   };
+  const handlepurposeChange = (selectedOption) => {
+    setFormData({ ...formData, purpose: selectedOption.value });
+  };
 
+  const purposeOptions = [
+    { value: 'Salary', label: 'Salary' },
+    { value: 'Advance', label: 'Advance' },
+    { value: 'Expense', label: 'Expense' }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -128,6 +137,15 @@ const Cliamcashpage = () => {
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Purpose:</Typography>
+              <Select
+                options={purposeOptions}
+                value={purposeOptions.find((option) => option.value === formData.purpose)}
+                onChange={handlepurposeChange}
               />
             </Grid>
           </Grid>

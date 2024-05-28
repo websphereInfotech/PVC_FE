@@ -59,7 +59,9 @@ export default function UserList() {
 
     fetchData();
   }, [dispatch]);
-
+  const handleaddUser = () => {
+    navigate(`/adduser`);
+  };
   const handleViewUser = (id) => {
     dispatch(Userview(id));
     navigate(`/userview/${id}`);
@@ -89,11 +91,9 @@ export default function UserList() {
       <Typography variant="h4" align="center" id="mycss">
         User List
       </Typography>
-      {/* <Link to="/adduser" style={{ textDecoration: 'none' }} disabled={!canUserCreate()}> */}
-      <Button variant="contained" href="/adduser" color="secondary" style={{ margin: '16px' }} disabled={!canUserCreate()}>
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddUser} disabled={!canUserCreate()}>
         Create USer
       </Button>
-      {/* </Link> */}
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>

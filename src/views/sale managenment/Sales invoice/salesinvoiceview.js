@@ -33,20 +33,23 @@ const Salesinvoiceview = () => {
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Pro Forma Invoice No.</Typography>
+          <Typography variant="subtitle2">{data.proFormaItem?.ProFormaInvoice_no}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Customer</Typography>
           <Typography variant="subtitle2">{data.InvioceCustomer?.accountname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Dispatch Duo No.</Typography>
-          <Typography variant="subtitle2">{data.dispatchno}</Typography>
+          <Typography variant="subtitle1">Invoice No.</Typography>
+          <Typography variant="subtitle2">{data.invoiceno}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1">Delivery Note Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.deliverydate).toLocaleDateString()}</Typography>
-        </Grid>
-
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Dispatch Through :</Typography>
+          <Typography variant="subtitle1">Invoice Date</Typography>
+          <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString()}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Dispatch Through </Typography>
           <Typography variant="subtitle2">{data.dispatchThrough}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
@@ -61,28 +64,15 @@ const Salesinvoiceview = () => {
           <Typography variant="subtitle1">Motor Vehical No.</Typography>
           <Typography variant="subtitle2">{data.motorVehicleNo}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Invoice Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString()}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.invoiceno}</Typography>
-        </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Terms (Days)</Typography>
+          <Typography variant="subtitle1">Terms</Typography>
           <Typography variant="subtitle2">{data.terms}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Due Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.duedate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle1">Terms of delivery</Typography>
+          <Typography variant="subtitle2">{data.termsOfDelivery}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Pro Forma Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.proFormaItem?.ProFormaInvoice_no}</Typography>
-        </Grid>
-
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>

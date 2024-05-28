@@ -24,7 +24,6 @@ const columns = [
   { id: 'invoiceno', label: 'Invocie No', minWidth: 170, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
-  { id: 'duedate', label: 'Due Date', minWidth: 170, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
@@ -149,8 +148,6 @@ const Salesinvoicelist = () => {
                         Delete
                       </Button>
                     ) : column.id === 'invoicedate' ? (
-                      new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'duedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.InvioceCustomer.accountname

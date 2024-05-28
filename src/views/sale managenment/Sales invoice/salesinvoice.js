@@ -47,13 +47,12 @@ const Salesinvoice = () => {
     destination: null,
     dispatchThrough: null,
     dispatchno: null,
-    deliverydate: null,
     LL_RR_no: null,
     motorVehicleNo: null,
     invoiceno: null,
     invoicedate: new Date(),
-    terms: null,
-    duedate: '',
+    termsOfDelivery: '',
+    terms: '',
     proFormaId: ''
   });
   const { id } = useParams();
@@ -91,10 +90,6 @@ const Salesinvoice = () => {
     }
   };
 
-  const handleDueDateChange = (date) => {
-    setFormData({ ...formData, duedate: date });
-  };
-
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
     if (selectedOption && selectedOption.label === 'Create New Product') {
@@ -119,25 +114,11 @@ const Salesinvoice = () => {
     }
   };
 
-  const calculateDuedate = (InvoiceDate) => {
-    const defaultValidityPeriod = 7;
-    const duedate = new Date(InvoiceDate);
-    duedate.setDate(duedate.getDate() + defaultValidityPeriod);
-    return duedate;
-  };
-
   const handleInvoiceDateChange = (date) => {
-    const newDueDate = calculateDuedate(date);
-    setFormData({ ...formData, invoicedate: date, duedate: newDueDate });
+    setFormData({ ...formData, invoicedate: date });
   };
 
   useEffect(() => {
-    const initialDueDate = calculateDuedate(formData.invoicedate);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      duedate: initialDueDate
-    }));
-
     const generateAutoInvoiceNumber = async () => {
       if (!id) {
         try {
@@ -206,21 +187,49 @@ const Salesinvoice = () => {
   }, [dispatch, companystate, customerState]);
 
   const handleproformnumber = (selectedOption) => {
+    console.log(selectedOption, 'selected');
     const updatedFormData = {
-      ...formData,
+      ...selectedOption,
       proFormaId: selectedOption.value
     };
+    setCustomername(selectedOption.customer.accountname);
+    setCustomerState(selectedOption.customer.state);
     setFormData(updatedFormData);
+    console.log(updatedFormData, 'form');
     setProformainvoicelabel(selectedOption.label);
-    console.log(selectedOption);
+    const selectedProFormaItems = selectedOption.items.map((item) => ({
+      productId: item.product.id,
+      product: item.product.productname,
+      qty: item.qty,
+      rate: item.rate,
+      mrp: item.qty * item.rate,
+      gstrate: item.product.gstrate,
+      gst: item.mrp * (item.product.gstrate / 100)
+    }));
+
+    setRows(selectedProFormaItems);
+    const totalGST = selectedProFormaItems.reduce((acc, row) => acc + row.gst, 0);
+    setPlusgst(totalGST);
   };
 
   useEffect(() => {
     const data = async () => {
       const proformainvoiceresponse = await dispatch(fetchproformainvoiceList());
+      console.log(proformainvoiceresponse, 'proformainvoiceresponse');
       const options = proformainvoiceresponse.map((item) => ({
         value: item.id,
-        label: `${item.ProFormaInvoice_no}  ${item.customer.accountname}`
+        label: `${item.ProFormaInvoice_no}  ${item.customer.accountname}`,
+        dispatchThrough: item.dispatchThrough,
+        motorVehicleNo: item.motorVehicleNo,
+        LL_RR_no: item.LL_RR_no,
+        dispatchno: item.dispatchno,
+        destination: item.destination,
+        termsOfDelivery: item.termsOfDelivery,
+        terms: item.terms,
+        customerId: item.customerId,
+        customer: item.customer,
+        invoicedate: new Date(),
+        items: item.items
       }));
       setProformainvoice(options);
       if (id) {
@@ -236,6 +245,7 @@ const Salesinvoice = () => {
           invoiceno,
           invoicedate,
           terms,
+          termsOfDelivery,
           duedate,
           proFormaItem
         } = response;
@@ -251,6 +261,7 @@ const Salesinvoice = () => {
           invoiceno,
           invoicedate,
           terms,
+          termsOfDelivery,
           duedate
         });
         setProformainvoicelabel(proFormaItem.ProFormaInvoice_no);
@@ -392,6 +403,16 @@ const Salesinvoice = () => {
       setPlusgst(totalGST);
     }
   };
+
+  const handleTermsChange = (selectedOption) => {
+    setFormData({ ...formData, terms: selectedOption.value });
+  };
+
+  const termsOptions = [
+    { value: 'Immediate', label: 'Immediate' },
+    { value: 'Advance', label: 'Advance' },
+    { value: 'Terms', label: 'Terms' }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -407,6 +428,18 @@ const Salesinvoice = () => {
 
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              {/* {console.log('SELECTEDOPTION', selectedOption)} */}
+              <Select
+                color="secondary"
+                options={proformainvoice}
+                value={{ value: formData.proFormaId, label: proformainvoicelabel }}
+                onChange={handleproformnumber}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -431,14 +464,19 @@ const Salesinvoice = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Delivery Note Date :</Typography>
-              <input
-                type="date"
-                id="deliverydate"
-                value={formData.deliverydate}
-                onChange={(e) => setFormData({ ...formData, deliverydate: e.target.value })}
+              <Typography variant="subtitle1">
+                Invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formData.invoicedate}
+                onChange={(date) => handleInvoiceDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Dispatch Through :</Typography>
               <input
@@ -447,8 +485,6 @@ const Salesinvoice = () => {
                 onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Destination :</Typography>
               <input
@@ -476,31 +512,19 @@ const Salesinvoice = () => {
                 onChange={(e) => setFormData({ ...formData, motorVehicleNo: e.target.value })}
               />
             </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Dispatch Doc No. :</Typography>
               <input
                 placeholder="Enter Dispatch Doc No."
                 id="dispatchno"
-                value={formData.dispatchno}
-                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formData.invoicedate}
-                onChange={(date) => handleInvoiceDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
+                value={formData.invoiceno}
+                onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3}>
+            {/* <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Due Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -512,24 +536,22 @@ const Salesinvoice = () => {
                 showTimeSelect={false}
                 minDate={formData.invoicedate}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Terms (Days) :</Typography>
-              <input
-                placeholder="Terms (Days)"
-                id="terms"
-                value={formData.terms}
-                onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
+              <Typography variant="subtitle1">Terms :</Typography>
+              <Select
+                options={termsOptions}
+                value={termsOptions.find((option) => option.value === formData.terms)}
+                onChange={handleTermsChange}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Pro forma invoice No. :</Typography>
-              {/* {console.log('SELECTEDOPTION', selectedOption)} */}
-              <Select
-                color="secondary"
-                options={proformainvoice}
-                value={{ value: formData.proFormaId, label: proformainvoicelabel }}
-                onChange={handleproformnumber}
+              <Typography variant="subtitle1">Terms of Delivery :</Typography>
+              <input
+                placeholder="Terms of delivery"
+                id="termsOfDelivery"
+                value={formData.termsOfDelivery}
+                onChange={(e) => setFormData({ ...formData, termsOfDelivery: e.target.value })}
               />
             </Grid>
           </Grid>
@@ -578,7 +600,7 @@ const Salesinvoice = () => {
                         {row.mrp}
                       </TableCell>
                       <TableCell>
-                        <DeleteIcon onClick={() => handleDeleteRow(row.id, index)} />
+                        <DeleteIcon onClick={() => handleDeleteRow(index)} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -687,15 +709,6 @@ const Salesinvoice = () => {
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button
-                  id="savebtncs"
-                  style={{
-                    marginRight: '10px'
-                  }}
-                  onClick={handleSalesinvoice}
-                >
-                  Save & Next
-                </button>
                 <button id="savebtncs" onClick={handleSalesinvoice}>
                   Save
                 </button>

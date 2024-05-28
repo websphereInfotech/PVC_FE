@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,9 +25,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Proformainvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation, canCreateCustomer } = useCan();
+  const { canDeleteProformainvoiceQuotation } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
-
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -44,6 +43,13 @@ const Proformainvoice = () => {
     customerId: '',
     date: new Date(),
     ProFormaInvoice_no: '',
+    destination: null,
+    dispatchThrough: null,
+    // dispatchno: null,
+    LL_RR_no: null,
+    motorVehicleNo: null,
+    termsOfDelivery: '',
+    terms: '',
     validtill: '',
     totalSgst: 0,
     totalIgst: 0,
@@ -103,22 +109,20 @@ const Proformainvoice = () => {
   };
 
   // called api of all product and customer for show name of them in dropdown
-  const canCreateCustomerRef = useRef(canCreateCustomer());
-  console.log(canCreateCustomerRef.current, 'canrefcustomer');
+  // const canCreateCustomerRef = useRef(canCreateCustomer());
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           let options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
-          if (!canCreateCustomerRef.current) {
-            setcustomer([...options]);
-          } else {
-            setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
-          }
+          setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          // if (!canCreateCustomerRef.current) {
+          //   console.log(canCreateCustomerRef.current, 'canrefcustomer');
+          //   setcustomer(options);
+          // }
         }
         const productResponse = await dispatch(fetchAllProducts());
-        console.log(productResponse);
         setProductResponse(productResponse);
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({
@@ -149,8 +153,40 @@ const Proformainvoice = () => {
     const data = async () => {
       if (id) {
         const response = await dispatch(Proformainvoiceview(id));
-        const { customer, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst } = response;
-        setFormData({ customerId: customer.id, date, ProFormaInvoice_no, validtill, totalSgst, mainTotal, totalMrp, totalIgst });
+        const {
+          customer,
+          date,
+          ProFormaInvoice_no,
+          validtill,
+          totalSgst,
+          mainTotal,
+          totalMrp,
+          totalIgst,
+          dispatchThrough,
+          motorVehicleNo,
+          LL_RR_no,
+          termsOfDelivery,
+          terms,
+          // dispatchno,
+          destination
+        } = response;
+        setFormData({
+          customerId: customer.id,
+          date,
+          ProFormaInvoice_no,
+          validtill,
+          totalSgst,
+          mainTotal,
+          totalMrp,
+          totalIgst,
+          dispatchThrough,
+          motorVehicleNo,
+          LL_RR_no,
+          termsOfDelivery,
+          terms,
+          // dispatchno,
+          destination
+        });
         setSelectcustomer(customer.id);
         setCustomerState(customer.state);
         setCustomername(customer.accountname);
@@ -361,6 +397,17 @@ const Proformainvoice = () => {
     };
     generateAutoQuotationNumber();
   }, [dispatch, formData.date, id]);
+
+  const handleTermsChange = (selectedOption) => {
+    setFormData({ ...formData, terms: selectedOption.value });
+  };
+
+  const termsOptions = [
+    { value: 'Immediate', label: 'Immediate' },
+    { value: 'Advance', label: 'Advance' },
+    { value: 'Terms', label: 'Terms' }
+  ];
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -387,8 +434,6 @@ const Proformainvoice = () => {
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-          </Grid>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -428,7 +473,72 @@ const Proformainvoice = () => {
               />
             </Grid>
           </Grid>
-
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Destination :</Typography>
+              <input
+                placeholder="Destination"
+                id="destination"
+                value={formData.destination}
+                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">LR-RR No. :</Typography>
+              <input
+                placeholder="LR-RR No"
+                id="LL_RR_no"
+                value={formData.LL_RR_no}
+                onChange={(e) => setFormData({ ...formData, LL_RR_no: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Motor Vehical No. :</Typography>
+              <input
+                placeholder="Vehical No"
+                id="motorVehicleNo"
+                value={formData.motorVehicleNo}
+                onChange={(e) => setFormData({ ...formData, motorVehicleNo: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Through :</Typography>
+              <input
+                id="dispatchThrough"
+                placeholder="Enter dispatch thourgh"
+                value={formData.dispatchThrough}
+                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            {/* <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Doc No. :</Typography>
+              <input
+                placeholder="Enter Dispatch Doc No."
+                id="dispatchno"
+                value={formData.dispatchno}
+                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
+              />
+            </Grid> */}
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Terms :</Typography>
+              <Select
+                options={termsOptions}
+                value={termsOptions.find((option) => option.value === formData.terms)}
+                onChange={handleTermsChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Terms of Delivery :</Typography>
+              <input
+                placeholder="Terms of delivery"
+                id="termsOfDelivery"
+                value={formData.termsOfDelivery}
+                onChange={(e) => setFormData({ ...formData, termsOfDelivery: e.target.value })}
+              />
+            </Grid>
+          </Grid>
           <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
             <div style={{ maxWidth: '100%' }}>
               <Table>
@@ -587,15 +697,6 @@ const Proformainvoice = () => {
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button
-                  id="savebtncs"
-                  style={{
-                    marginRight: '10px'
-                  }}
-                  onClick={handleCreateQuotation}
-                >
-                  Save & Next
-                </button>
                 <button id="savebtncs" onClick={handleCreateQuotation}>
                   Save
                 </button>

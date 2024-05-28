@@ -1,3 +1,4 @@
+import '../src/disabledtools';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -14,9 +15,11 @@ import App from 'layout/App';
 import reducer from 'store/reducer';
 import * as serviceWorker from 'serviceWorker';
 
-const store = configureStore({ reducer });
+// Toast notifications
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const store = configureStore({ reducer });
 const root = createRoot(document.getElementById('root'));
 
 // ==============================|| MAIN - REACT DOM RENDER  ||==============

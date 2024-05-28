@@ -173,7 +173,7 @@ const Claimcashlist = () => {
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'fromUserId' ? (
-                      payment.fromUser?.username
+                      payment.toUser?.username
                     ) : (
                       payment[column.id]
                     )}

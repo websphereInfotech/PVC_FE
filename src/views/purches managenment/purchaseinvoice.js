@@ -34,8 +34,6 @@ const Purchaseinvoice = () => {
     invoicedate: new Date(),
     vendorId: '',
     duedate: new Date(),
-    date: new Date(),
-    terms: '',
     invoiceno: '',
     totalSgst: 0,
     totalIgst: 0,
@@ -205,14 +203,12 @@ const Purchaseinvoice = () => {
     const data = async () => {
       if (id) {
         const response = await dispatch(viewPurchaseinvoice(id));
-        const { purchseVendor, date, invoicedate, invoiceno, duedate, terms, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        const { purchseVendor, invoicedate, invoiceno, duedate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
         setFormData({
           vendorId: purchseVendor.id,
-          date,
           invoicedate,
           invoiceno,
           duedate,
-          terms,
           totalSgst,
           mainTotal,
           totalMrp,
@@ -296,9 +292,7 @@ const Purchaseinvoice = () => {
   const handleInvoiceDateChange = (date) => {
     setFormData({ ...formData, invoicedate: date });
   };
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, date: date });
-  };
+
   const handledueDateChange = (date) => {
     setFormData({ ...formData, duedate: date });
   };
@@ -327,17 +321,7 @@ const Purchaseinvoice = () => {
           />
         </Grid>
         <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">
-            terms: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-          </Typography>
-          <input
-            placeholder="Enter terms days"
-            id="terms"
-            value={formData.terms}
-            onChange={(e) => setFormData({ ...formData, terms: e.target.value })}
-          />
-        </Grid>
+
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">
             Inv. No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -349,18 +333,7 @@ const Purchaseinvoice = () => {
             onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">
-            Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-          </Typography>
-          <DatePicker
-            selected={formData.date}
-            onChange={(date) => handleDateChange(date)}
-            dateFormat="dd/MM/yyyy"
-            isClearable={false}
-            showTimeSelect={false}
-          />
-        </Grid>
+
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">
             Inv. Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

@@ -13,8 +13,21 @@ import {
   MenuItem
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core';
 import { IsStatusclaimCash, viewRecieveClaimCash } from 'store/thunk';
 import useCan from 'views/checkpermissionvalue';
+
+const useStyles = makeStyles(() => ({
+  pending: {
+    color: 'blue'
+  },
+  approve: {
+    color: '#228B22'
+  },
+  reject: {
+    color: 'red'
+  }
+}));
 
 const columns = [
   { id: 'user', label: 'User', align: 'center', minWidth: 100 },
@@ -24,6 +37,7 @@ const columns = [
 ];
 
 const Recieveclaimcashlist = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { canIsapproveClaimcash } = useCan();
   const [payments, setPayments] = useState([]);
@@ -99,15 +113,21 @@ const Recieveclaimcashlist = () => {
                           value={statuses[payment.id]}
                           onChange={(event) => handleStatusChange(payment.id, event)}
                         >
-                          <MenuItem value="Pending">Pending</MenuItem>
-                          <MenuItem value="Approve">Approve</MenuItem>
-                          <MenuItem value="Reject">Reject</MenuItem>
+                          <MenuItem value="Pending" className={classes.pending}>
+                            Pending
+                          </MenuItem>
+                          <MenuItem value="Approve" className={classes.approve}>
+                            Approve
+                          </MenuItem>
+                          <MenuItem value="Reject" className={classes.reject}>
+                            Reject
+                          </MenuItem>
                         </Select>
                       ) : (
-                        statuses[payment.id]
+                        <span className={classes[statuses[payment.id].toLowerCase()]}>{statuses[payment.id]}</span>
                       )
                     ) : column.id === 'user' ? (
-                      payment.toUser.username
+                      payment.fromUser.username
                     ) : (
                       payment[column.id]
                     )}
