@@ -8,12 +8,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 import AnchorTemporaryDrawer from 'component/customeradd';
+import useCan from 'views/checkpermissionvalue';
 
 const Paymentrecieve = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { canCreateCustomer } = useCan();
   const [customername, setcustomername] = useState('');
   const [customer, setcustomer] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -24,7 +26,12 @@ const Paymentrecieve = () => {
     amount: Number(),
     description: ''
   });
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  useEffect(() => {
+    setCanCreateCustomerValue(canCreateCustomer());
+  }, [canCreateCustomer]);
   console.log(selectcustomer);
+
   const handleDateChange = (date) => {
     setFormData({ ...formData, date: date });
   };
@@ -58,14 +65,19 @@ const Paymentrecieve = () => {
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          if (!canCreateCustomerValue) {
+            setcustomer(options);
+          }
         }
       } catch (error) {
         console.error('Error fetching recieve cash:', error);
       }
     };
     fetchData();
-    fetchCustomerData();
-  }, [dispatch, id]);
+    if (canCreateCustomerValue !== null) {
+      fetchCustomerData();
+    }
+  }, [dispatch, id, canCreateCustomerValue]);
 
   const handlecreatepayment = async () => {
     try {

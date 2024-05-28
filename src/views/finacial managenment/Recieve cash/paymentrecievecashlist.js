@@ -14,56 +14,63 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
-  Grid
+  Grid,
+  IconButton
 } from '@mui/material';
-import Select from 'react-select';
+
 import CloseIcon from '@mui/icons-material/Close';
+import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { fetchAllVendorsCash, getallPaymentCash, getallVendorledger, paymentCashDelete, paymentCashview } from 'store/thunk';
-import { useNavigate } from 'react-router';
+import { deleteRecieveCash, fetchAllCustomersCash, getallCustomerledger, getallRecieveCash, viewRecieveCash } from 'store/thunk';
+import useCan from 'views/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Ledgerlist from './ledger';
-import useCan from 'views/checkpermissionvalue';
+import Customerledgerlist from '../Claim cash/customerledgerlist';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
-  { id: 'vendor', label: 'Vendor', align: 'center' },
+  { id: 'customer', label: 'Customer', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' },
   { id: 'delete', label: 'Delete', align: 'center' }
 ];
-const PaymentListPage = () => {
-  const dispatch = useDispatch();
+
+const PaymentrecieveList = () => {
+  const { canCreatePaymentrecievecash, canUpdatePaymentrecievecash, canDeletePaymentrecievecash } = useCan();
   const navigate = useNavigate();
-  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
-  const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const dispatch = useDispatch();
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [vendorId, setvendorId] = useState(null);
-  const [vendor, setvendor] = useState([]);
-  const [vendorname, setvendorname] = useState('');
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [customerId, setcustomerId] = useState(null);
+  const [customer, setcustomer] = useState([]);
+  const [customername, setcustomername] = useState('');
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
   const showLedgerlist = false;
 
   useEffect(() => {
-    dispatch(getallPaymentCash())
+    dispatch(getallRecieveCash())
       .then((data) => {
-        setPayments(data.data);
+        setPayments(data);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching payment recieve data:', error);
       });
   }, [dispatch]);
 
   const handleMakePayment = () => {
-    navigate('/paymentcash');
+    navigate('/paymentrecieve');
+  };
+
+  const handleUpdatePayment = (id) => {
+    dispatch(viewRecieveCash(id));
+    navigate(`/paymentrecieve/${id}`);
   };
   const handleformDateChange = (date) => {
     const year = date.getFullYear();
@@ -79,27 +86,20 @@ const PaymentListPage = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setToDate(formattedDate);
   };
-  const handleLedger = (vendorId, formDate, toDate) => {
-    dispatch(getallVendorledger(vendorId, formDate, toDate));
-    navigate('/ledgerlist');
-    setSelectedId(vendorId);
-    sessionStorage.setItem('vendorId', vendorId);
+  const handleLedger = (customerId, formDate, toDate) => {
+    dispatch(getallCustomerledger(customerId, formDate, toDate));
+    navigate('/customerledgerlist');
+    setSelectedId(customerId);
+    sessionStorage.setItem('customerId', customerId);
     setFormDate(formDate);
-    sessionStorage.setItem('formDate', formDate);
+    sessionStorage.setItem('customerformDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('toDate', toDate);
+    sessionStorage.setItem('customertoDate', toDate);
   };
-
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
     setSelectedId(id);
   };
-
-  const handleUpdatePayment = (id) => {
-    dispatch(paymentCashview(id));
-    navigate(`/paymentcash/${id}`);
-  };
-
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
@@ -107,7 +107,28 @@ const PaymentListPage = () => {
   const handleLedgerClick = () => {
     setOpenDrawer(true);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomersCash());
+        console.log(response);
+        if (Array.isArray(response)) {
+          const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
+          setcustomer([...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching Purchase:', error);
+      }
+    };
 
+    fetchData();
+  }, [dispatch]);
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setcustomerId(selectedOption.value);
+      setcustomername(selectedOption.label);
+    }
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -119,40 +140,19 @@ const PaymentListPage = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(paymentCashDelete(selectedId));
+      await dispatch(deleteRecieveCash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchAllVendorsCash());
-        if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([...options]);
-        }
-      } catch (error) {
-        console.error('Error fetching Purchase:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      setvendorId(selectedOption.value);
-      setvendorname(selectedOption.label);
-    }
-  };
 
   return (
+    // <Container>
     <Card style={{ width: '100%', padding: '25px' }}>
-      {showLedgerlist && <Ledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
+      {showLedgerlist && <Customerledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
-        Payment Cash List
+        Recieve Payment List
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
@@ -160,14 +160,15 @@ const PaymentListPage = () => {
           color="secondary"
           style={{ margin: '16px' }}
           onClick={handleMakePayment}
-          disabled={!canCreatePaymentcash()}
+          disabled={!canCreatePaymentrecievecash()}
         >
-          Payment Cash
+          Recieve Payment
         </Button>
         <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
           Ledger
         </Button>
       </div>
+
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
@@ -189,7 +190,7 @@ const PaymentListPage = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdatePaymentcash()}
+                        disabled={!canUpdatePaymentrecievecash()}
                       >
                         Edit
                       </Button>
@@ -198,14 +199,14 @@ const PaymentListPage = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeletePaymentcash()}
+                        disabled={!canDeletePaymentrecievecash()}
                       >
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      payment.PaymentVendor.vendorname
+                    ) : column.id === 'customer' ? (
+                      payment.ReceiveCustomer.customername
                     ) : (
                       payment[column.id]
                     )}
@@ -250,9 +251,14 @@ const PaymentListPage = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} style={{ paddingTop: '20px' }}>
               <Typography variant="subtitle1">
-                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={customer}
+                value={{ value: customerId, label: customername }}
+                onChange={handleSelectChange}
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
@@ -264,7 +270,7 @@ const PaymentListPage = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                popperPlacement="bottem-start"
+                popperPlacement="bottom-start"
               />
             </Grid>
             <Grid item xs={12}>
@@ -283,16 +289,16 @@ const PaymentListPage = () => {
             {/* <Grid item xs={12}>
               <Typography variant="subtitle1">action:</Typography>
               <Button
-                onClick={() => handleLedger(vendorId, formDate, toDate)}
+                onClick={() => handleLedger(customerId, formDate, toDate)}
                 variant="contained"
                 color="secondary"
-                style={{ display: 'flex', justifyItems: 'end', padding: '8px' }}
+                style={{ display: 'flex', justifyItems: 'center', padding: '8px' }}
               >
                 Go
               </Button>
             </Grid> */}
             <Button
-              onClick={() => handleLedger(vendorId, formDate, toDate)}
+              onClick={() => handleLedger(customerId, formDate, toDate)}
               variant="contained"
               color="secondary"
               style={{ marginLeft: '60%' }}
@@ -306,4 +312,4 @@ const PaymentListPage = () => {
   );
 };
 
-export default PaymentListPage;
+export default PaymentrecieveList;

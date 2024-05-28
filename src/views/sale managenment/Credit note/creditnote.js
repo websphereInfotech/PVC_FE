@@ -22,7 +22,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/checkpermissionvalue';
 
 const Creditnote = () => {
-  const { canDeleteCreditnote } = useCan();
+  const { canDeleteCreditnote, canCreateCustomer, canCreateProduct } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
@@ -61,6 +61,13 @@ const Creditnote = () => {
   {
     console.log(companystate, selectcustomer);
   }
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateCustomer, canCreateProduct]);
+
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -113,6 +120,9 @@ const Creditnote = () => {
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
           setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          if (!canCreateCustomerValue) {
+            setcustomer(options);
+          }
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
@@ -124,6 +134,9 @@ const Creditnote = () => {
             gstrate: product.gstrate
           }));
           setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
@@ -137,8 +150,10 @@ const Creditnote = () => {
       }
     };
 
-    fetchData();
-  }, [dispatch, customerState, gststate, id]);
+    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, customerState, gststate, id, canCreateCustomerValue, canCreateProductvalue]);
 
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {

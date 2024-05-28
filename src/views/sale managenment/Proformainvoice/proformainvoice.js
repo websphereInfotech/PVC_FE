@@ -13,7 +13,6 @@ import {
   fetchAllCustomers,
   Proformainvoiceview,
   updateProformainvoice,
-  // deleteProformainvoiceItem,
   fetchproformainvoiceList,
   fetchAllCompany
 } from 'store/thunk';
@@ -25,7 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Proformainvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation } = useCan();
+  const { canDeleteProformainvoiceQuotation, canCreateCustomer, canCreateProduct } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -62,7 +61,12 @@ const Proformainvoice = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateCustomer, canCreateProduct]);
   // manage button of addrow
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
@@ -107,23 +111,25 @@ const Proformainvoice = () => {
       setIsproductDrawerOpen(false);
     }
   };
-
-  // called api of all product and customer for show name of them in dropdown
-  // const canCreateCustomerRef = useRef(canCreateCustomer());
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
-          let options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
+          let options = response.map((customer) => ({
+            value: customer.id,
+            label: customer.accountname,
+            state: customer.state
+          }));
           setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
-          // if (!canCreateCustomerRef.current) {
-          //   console.log(canCreateCustomerRef.current, 'canrefcustomer');
-          //   setcustomer(options);
-          // }
+          if (!canCreateCustomerValue) {
+            setcustomer(options);
+          }
         }
+
         const productResponse = await dispatch(fetchAllProducts());
         setProductResponse(productResponse);
+
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({
             value: product.id,
@@ -132,7 +138,9 @@ const Proformainvoice = () => {
             gstrate: product.gstrate
           }));
           setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
-          console.log();
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
@@ -146,8 +154,10 @@ const Proformainvoice = () => {
       }
     };
 
-    fetchData();
-  }, [dispatch, customerState, id]);
+    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, customerState, id, canCreateCustomerValue, canCreateProductvalue]);
 
   useEffect(() => {
     const data = async () => {
@@ -484,6 +494,15 @@ const Proformainvoice = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Through :</Typography>
+              <input
+                id="dispatchThrough"
+                placeholder="Enter dispatch thourgh"
+                value={formData.dispatchThrough}
+                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">LR-RR No. :</Typography>
               <input
                 placeholder="LR-RR No"
@@ -499,15 +518,6 @@ const Proformainvoice = () => {
                 id="motorVehicleNo"
                 value={formData.motorVehicleNo}
                 onChange={(e) => setFormData({ ...formData, motorVehicleNo: e.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Dispatch Through :</Typography>
-              <input
-                id="dispatchThrough"
-                placeholder="Enter dispatch thourgh"
-                value={formData.dispatchThrough}
-                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
               />
             </Grid>
           </Grid>

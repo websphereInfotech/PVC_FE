@@ -20,7 +20,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/checkpermissionvalue';
 
 const Salescash = () => {
-  const { canDeleteSalescash } = useCan();
+  const { canDeleteSalescash, canCreateCustomer, canCreateProduct } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
@@ -36,13 +36,19 @@ const Salescash = () => {
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  // const [totalQuantity, setTotalQuantity] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   {
     console.log(selectcustomer);
   }
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateCustomer, canCreateProduct]);
+
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -89,6 +95,9 @@ const Salescash = () => {
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          if (!canCreateCustomerValue) {
+            setcustomer(options);
+          }
         }
         const productResponse = await dispatch(fetchAllProductsCash());
         if (Array.isArray(productResponse)) {
@@ -97,6 +106,9 @@ const Salescash = () => {
             label: product.productname
           }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProductsCash returned an unexpected response:', productResponse);
         }
@@ -105,8 +117,10 @@ const Salescash = () => {
       }
     };
 
-    fetchData();
-  }, [dispatch, id]);
+    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, id, canCreateCustomerValue, canCreateProductvalue]);
 
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {

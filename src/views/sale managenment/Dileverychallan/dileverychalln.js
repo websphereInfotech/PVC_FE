@@ -8,42 +8,15 @@ import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../../component/customeradd';
 import AnchorProductDrawer from '../../../component/productadd';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  createDeliveryChallan,
-  // createDeliveryChallanItem,
-  // deleteDileveryChallan,
-  getallDeliverychallan,
-  updateDileveryChallan
-  // updateDileveryChallanItem
-} from 'store/thunk';
+import { createDeliveryChallan, getallDeliverychallan, updateDileveryChallan } from 'store/thunk';
 import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
 import { Link } from 'react-router-dom';
-// Custom styled input component
-// const StyledInput = withStyles((theme) => ({
-//   root: {
-//     'label + &': {
-//       marginTop: theme.spacing(3)
-//     }
-//   },
-//   input: {
-//     borderRadius: 4,
-//     position: 'relative',
-//     backgroundColor: theme.palette.common.white,
-//     border: '1px solid #ced4da',
-//     fontSize: 16,
-//     width: '100%',
-//     padding: '10px 12px',
-//     transition: theme.transitions.create(['border-color', 'box-shadow']),
-//     '&:focus': {
-//       boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
-//       borderColor: theme.palette.secondary.main
-//     }
-//   }
-// }))(InputBase);
+
 import { Deliverychallanview } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import useCan from 'views/checkpermissionvalue';
 
 const Deliverychallan = () => {
   const { id } = useParams();
@@ -51,7 +24,7 @@ const Deliverychallan = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { canCreateCustomer, canCreateProduct } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
@@ -66,7 +39,12 @@ const Deliverychallan = () => {
     date: new Date(),
     challanno: ''
   });
-
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateCustomer, canCreateProduct]);
   // to add multiple row for product item
   const handleAddRow = () => {
     const newRow = {
@@ -155,6 +133,9 @@ const Deliverychallan = () => {
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
           setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          if (!canCreateCustomerValue) {
+            setcustomer(options);
+          }
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
@@ -164,6 +145,9 @@ const Deliverychallan = () => {
             label: product.productname
           }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
@@ -171,8 +155,10 @@ const Deliverychallan = () => {
         console.error('Error fetching quotations:', error);
       }
     };
-    fetchData();
-  }, [dispatch, id]);
+    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, id, canCreateCustomerValue, canCreateProductvalue]);
 
   useEffect(() => {
     const data = async () => {

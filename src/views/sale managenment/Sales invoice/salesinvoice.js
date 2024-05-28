@@ -22,10 +22,12 @@ import {
 } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorProductDrawer from 'component/productadd';
+import useCan from 'views/checkpermissionvalue';
 
 const Salesinvoice = () => {
   const dispatch = useDispatch();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
+  const { canCreateCustomer, canCreateProduct } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customername, setCustomername] = useState('');
@@ -58,6 +60,12 @@ const Salesinvoice = () => {
   const { id } = useParams();
   const [subtotal, setSubtotal] = useState(0);
   const navigate = useNavigate();
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateCustomer, canCreateProduct]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
@@ -160,6 +168,9 @@ const Salesinvoice = () => {
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
           setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          if (!canCreateCustomerValue) {
+            setcustomer(options);
+          }
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
@@ -171,6 +182,9 @@ const Salesinvoice = () => {
             gstrate: product.gstrate
           }));
           setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
@@ -183,8 +197,10 @@ const Salesinvoice = () => {
         console.error('Error fetching quotations:', error);
       }
     };
-    fetchData();
-  }, [dispatch, companystate, customerState]);
+    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, companystate, customerState, canCreateCustomerValue, canCreateProductvalue]);
 
   const handleproformnumber = (selectedOption) => {
     console.log(selectedOption, 'selected');
@@ -478,14 +494,6 @@ const Salesinvoice = () => {
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Dispatch Through :</Typography>
-              <input
-                id="dispatchThrough"
-                value={formData.dispatchThrough}
-                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Destination :</Typography>
               <input
                 placeholder="Destination"
@@ -494,6 +502,15 @@ const Salesinvoice = () => {
                 onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
               />
             </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Dispatch Through :</Typography>
+              <input
+                id="dispatchThrough"
+                value={formData.dispatchThrough}
+                onChange={(e) => setFormData({ ...formData, dispatchThrough: e.target.value })}
+              />
+            </Grid>
+
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">LR-RR No. :</Typography>
               <input

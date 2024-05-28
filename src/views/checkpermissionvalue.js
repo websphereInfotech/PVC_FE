@@ -209,6 +209,23 @@ const useCan = () => {
     return checkPermission('Customer', 'view_all_customer');
   };
 
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR
+  const canCreateVendor = () => {
+    return checkPermission('Vendor', 'create_vendor');
+  };
+  const canUpdateVendor = () => {
+    return checkPermission('Vendor', 'update_vendor');
+  };
+  const canDeleteVendor = () => {
+    return checkPermission('Vendor', 'delete_vandor');
+  };
+  const canViewVendor = () => {
+    return checkPermission('Vendor', 'view_vendor');
+  };
+  const canViewAllVendor = () => {
+    return checkPermission('Vendor', 'view_all_vandor');
+  };
+
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PRODUCT
   const canCreateProduct = () => {
     return checkPermission('Product', 'create_product');
@@ -533,6 +550,12 @@ const useCan = () => {
     canDeleteCustomeFeild,
     canViewCustomer,
     canViewAllCustomer,
+    //  VENDOR ++++++++++++++++++++++++
+    canCreateVendor,
+    canUpdateVendor,
+    canDeleteVendor,
+    canViewVendor,
+    canViewAllVendor,
     // PRODUCT ++++++++++++++++++++++++
     canCreateProduct,
     canUpdateProduct,

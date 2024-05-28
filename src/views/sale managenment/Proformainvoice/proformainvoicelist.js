@@ -77,7 +77,9 @@ export default function ProformainvoiceList() {
     dispatch(Proformainvoiceview(id));
     navigate(`/proformainvoiceviewpage/${id}`);
   };
-
+  const handleaddproforma = () => {
+    navigate('/proformainvoice');
+  };
   //use for edit button passed id of data
   const handleUpdateQuotation = (id) => {
     dispatch(Proformainvoiceview(id));
@@ -106,7 +108,7 @@ export default function ProformainvoiceList() {
       {/* <Link to="/qutation" style={{ textDecoration: 'none' }}> */}
       <Button
         variant="contained"
-        href="/proformainvoice"
+        onClick={handleaddproforma}
         color="secondary"
         style={{ margin: '10px' }}
         disabled={!canCreateProformainvoiceQuotation()}

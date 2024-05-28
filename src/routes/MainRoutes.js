@@ -12,17 +12,17 @@ import Itemratecard from 'component/reports/general reports/itemratecard';
 import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
-import Customerledgerlist from 'views/finacial managenment/customerledgerlist';
+import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 const Reports = Loadable(lazy(() => import('../views/reports')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/cliamcashlist')));
-const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/cliamcash')));
-const Claimledgerlist = Loadable(lazy(() => import('../views/finacial managenment/claimcashledgerlist')));
-const Recieveclaimcashlist = Loadable(lazy(() => import('../views/finacial managenment/recieveclaimcashlist')));
+const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcashlist')));
+const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcash')));
+const Claimledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/claimcashledgerlist')));
+const Recieveclaimcashlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/recieveclaimcashlist')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salescash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Salescash = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescash')));
@@ -30,11 +30,11 @@ const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/Sale
 const Salescashview = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashview')));
 //
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment +++++++++++++++++++++++++++++++++++++++++++++++++++
-const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/paymentcash')));
-const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/paymencashtlist')));
-const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/paymentrecievecash')));
-const PaymentrecieveList = Loadable(lazy(() => import('../views/finacial managenment/paymentrecievecashlist')));
-const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/ledger')));
+const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymentcash')));
+const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymencashtlist')));
+const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecash')));
+const PaymentrecieveList = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecashlist')));
+const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/ledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expense +++++++++++++++++++++++++++++++++++++++++++++++++++
 const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expencelist')));
@@ -67,14 +67,14 @@ const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/S
 const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/Sales invoice/salesinvoiceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase bill +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Purchaseinvoice = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoice')));
-const PurchaseinvoiceList = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicelist')));
-const Purchaseinvoiceview = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoiceview')));
+const Purchaseinvoice = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice/purchaseinvoice')));
+const PurchaseinvoiceList = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice/purchaseinvoicelist')));
+const Purchaseinvoiceview = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice/purchaseinvoiceview')));
 
 // +++++++++++++++++++++++++++++++++++++++++ Routes of purchasse bill cash ++++++++++++++++++++++++++++++++++++++++++++
-const Purchaseinvoicecash = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicecash')));
-const Purchaseinvoicecashlist = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicecashlist')));
-const Purchaseinvoicecashview = Loadable(lazy(() => import('../views/purches managenment/purchaseinvoicecashview')));
+const Purchaseinvoicecash = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice cash/purchaseinvoicecash')));
+const Purchaseinvoicecashlist = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice cash/purchaseinvoicecashlist')));
+const Purchaseinvoicecashview = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice cash/purchaseinvoicecashview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
 const CompanyList = Loadable(lazy(() => import('../views/company managenment/companylist')));

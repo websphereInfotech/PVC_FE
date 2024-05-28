@@ -4,17 +4,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorProductDrawer from '../../component/productadd';
-import AnchorVendorDrawer from '../../component/vendor';
+import AnchorProductDrawer from '../../../component/productadd';
+import AnchorVendorDrawer from '../../../component/vendor';
 import { useMediaQuery } from '@mui/material';
 import { fetchAllProducts, createPurchaseinvoice, fetchAllVendors, viewPurchaseinvoice, updatePurchaseinvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import useCan from 'views/checkpermissionvalue';
 
 const Purchaseinvoice = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
+  const { canCreateVendor, canCreateProduct } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -34,7 +36,7 @@ const Purchaseinvoice = () => {
     invoicedate: new Date(),
     vendorId: '',
     duedate: new Date(),
-    invoiceno: '',
+    invoiceno: Number(),
     totalSgst: 0,
     totalIgst: 0,
     totalMrp: 0,
@@ -43,6 +45,12 @@ const Purchaseinvoice = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateVendorValue(canCreateVendor());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateVendor, canCreateProduct]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
@@ -172,6 +180,9 @@ const Purchaseinvoice = () => {
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname, state: vendor.state }));
           setvendor([{ value: 'new', label: 'Create New Vendor', state: '' }, ...options]);
+          if (!canCreateVendorValue) {
+            setvendor(options);
+          }
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
@@ -183,6 +194,9 @@ const Purchaseinvoice = () => {
             gstrate: product.gstrate
           }));
           setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
@@ -196,8 +210,10 @@ const Purchaseinvoice = () => {
       }
     };
 
-    fetchData();
-  }, [dispatch, vendorstate, gststate, id]);
+    if (canCreateVendorValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, vendorstate, canCreateVendorValue, canCreateProductvalue, gststate, id]);
 
   useEffect(() => {
     const data = async () => {
@@ -269,7 +285,7 @@ const Purchaseinvoice = () => {
           mainTotal: Number(subtotal) + Number(plusgst),
           items: rows.map((row) => ({
             productId: row.productId,
-            qty: row.qty,
+            qty: Number(row.qty),
             rate: row.rate,
             mrp: row.mrp
           }))

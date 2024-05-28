@@ -2,50 +2,46 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentCash, fetchAllVendorsCash, paymentCashview, updatePaymentCash } from 'store/thunk';
+import { createClaimcash, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import AnchorVendorDrawer from '../../component/vendor';
+import AnchorVendorDrawer from '../../../component/vendor';
 import Select from 'react-select';
 
-const PaymentPage = () => {
+const Cliamcashpage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [vendorname, setvendorname] = useState('');
-  const [vendor, setvendor] = useState([]);
+  const [username, setusername] = useState('');
+  const [user, setuser] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectvendor, setSelectvendor] = useState([]);
+  // const [selectuser, setSelectuser] = useState([]);
+  const fromUserId = sessionStorage.getItem('userId');
   const [formData, setFormData] = useState({
-    vendorId: '',
-    date: new Date(),
+    toUserId: '',
+    fromUserId,
     amount: Number(),
-    description: ''
+    description: '',
+    purpose: ''
   });
-  console.log(selectvendor);
+  // console.log(selectuser);
 
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, date: date });
-  };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
-      setIsDrawerOpen(true);
-    } else {
-      formData.vendorId = selectedOption.value;
+    if (selectedOption && selectedOption.label) {
+      formData.toUserId = selectedOption.value;
       setFormData(formData);
-      setvendorname(selectedOption.label);
+      setusername(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendorsCash());
+        const response = await dispatch(getallclaimuser());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          const options = response.map((user) => ({ value: user.id, label: user.username }));
+          setuser([...options]);
         }
       } catch (error) {
         console.error('Error fetching payment Cash:', error);
@@ -54,12 +50,13 @@ const PaymentPage = () => {
     const viewData = async () => {
       try {
         if (id) {
-          const response = await dispatch(paymentCashview(id));
-          const { amount, description, PaymentVendor, date } = response;
-          setFormData({ amount, description, vendorId: PaymentVendor.id, date });
+          const response = await dispatch(viewSingleclaimCash(id));
+          const { amount, description, toUser, purpose } = response;
+          console.log(response, 'response');
+          setFormData({ amount, description, purpose, toUserId: toUser.id });
 
-          setvendorname(PaymentVendor.vendorname);
-          setSelectvendor(PaymentVendor.id);
+          setusername(toUser.username);
+          setSelectuser(toUser.id);
         }
       } catch (error) {
         console.error('Error fetching payment:', error);
@@ -72,9 +69,9 @@ const PaymentPage = () => {
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
-        await dispatch(updatePaymentCash(id, formData, navigate));
+        await dispatch(updateClaimCash(id, formData, navigate));
       } else {
-        await dispatch(createPaymentCash(formData, navigate));
+        await dispatch(createClaimcash(formData, navigate));
       }
     } catch (error) {
       console.error('Error creating payment cash data:', error);
@@ -87,35 +84,37 @@ const PaymentPage = () => {
       [fieldName]: value
     }));
   };
+  const handlepurposeChange = (selectedOption) => {
+    setFormData({ ...formData, purpose: selectedOption.value });
+  };
 
+  const purposeOptions = [
+    { value: 'Salary', label: 'Salary' },
+    { value: 'Advance', label: 'Advance' },
+    { value: 'Expense', label: 'Expense' }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Payment Cash
+            Update Cliam Cash
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Payment Cash
+            Cliam Cash
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker id="date" selected={formData.date} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                User : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={vendor}
-                value={{ value: formData.vendorId, label: vendorname }}
+                options={user}
+                value={{ value: formData.toUserId, label: username }}
                 onChange={handleSelectChange}
               />
             </Grid>
@@ -140,12 +139,21 @@ const PaymentPage = () => {
                 onChange={(e) => handleInputChange('description', e.target.value)}
               />
             </Grid>
+
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Purpose:</Typography>
+              <Select
+                options={purposeOptions}
+                value={purposeOptions.find((option) => option.value === formData.purpose)}
+                onChange={handlepurposeChange}
+              />
+            </Grid>
           </Grid>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/claimcashlist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
                 <button id="savebtncs" onClick={handlecreatePaymentCash}>
@@ -156,7 +164,7 @@ const PaymentPage = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/claimcashlist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
@@ -173,4 +181,4 @@ const PaymentPage = () => {
   );
 };
 
-export default PaymentPage;
+export default Cliamcashpage;

@@ -3,7 +3,7 @@ import { Typography, Grid, Paper, Table, TableRow, TableBody, TableHead, TableCe
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
-import AnchorProductDrawer from '../../component/productadd';
+import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
   PurchaseInvoiceviewCash,
@@ -20,7 +20,7 @@ import useCan from 'views/checkpermissionvalue';
 import AnchorVendorDrawer from 'component/vendor';
 
 const Purchaseinvoicecash = () => {
-  const { canDeleteSalescash } = useCan();
+  const { canDeleteSalescash, canCreateVendor, canCreateProduct } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
@@ -36,7 +36,12 @@ const Purchaseinvoicecash = () => {
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  // const [totalQuantity, setTotalQuantity] = useState(0);
+  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  useEffect(() => {
+    setCanCreateVendorValue(canCreateVendor());
+    setCanCreateProductvalue(canCreateProduct());
+  }, [canCreateVendor, canCreateProduct]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -89,6 +94,9 @@ const Purchaseinvoicecash = () => {
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
           setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          if (!canCreateVendorValue) {
+            setvendor(options);
+          }
         }
         const productResponse = await dispatch(fetchAllProductsCash());
         if (Array.isArray(productResponse)) {
@@ -97,6 +105,9 @@ const Purchaseinvoicecash = () => {
             label: product.productname
           }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
+          if (!canCreateProductvalue) {
+            setProduct(options);
+          }
         } else {
           console.error('fetchAllProductsCash returned an unexpected response:', productResponse);
         }
@@ -104,9 +115,10 @@ const Purchaseinvoicecash = () => {
         console.error('Error fetching sales cash:', error);
       }
     };
-
-    fetchData();
-  }, [dispatch, id]);
+    if (canCreateVendorValue !== null || canCreateProductvalue !== null) {
+      fetchData();
+    }
+  }, [dispatch, id, canCreateVendorValue, canCreateProductvalue]);
 
   // use for select vendor name from dropdown
   const handleSelectChange = (selectedOption) => {
