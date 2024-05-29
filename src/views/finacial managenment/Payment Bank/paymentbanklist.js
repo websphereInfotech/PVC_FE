@@ -17,39 +17,45 @@ import {
   IconButton,
   Grid
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
-import { deleteClaimCash, viewClaimCash, viewSingleclaimCash, fetchAllClaimcashLedger } from 'store/thunk';
+import { useDispatch } from 'react-redux';
+import { fetchAllVendorsCash, getallPaymentCash, getallVendorledger, paymentCashDelete, paymentCashview } from 'store/thunk';
 import { useNavigate } from 'react-router';
-import useCan from 'views/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Ledgerlist from '../Claim cash/ledger';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
-  { id: 'fromUserId', label: 'Request', align: 'center', minWidth: 100 },
-  { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
-  { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
-  { id: 'purpose', label: 'purpose', align: 'center', minWidth: 100 },
-  { id: 'edit', label: 'Edit', align: 'center', minWidth: 100 },
-  { id: 'delete', label: 'Delete', align: 'center', minWidth: 100 }
+  { id: 'date', label: 'Date', align: 'center' },
+  { id: 'vendor', label: 'Vendor', align: 'center' },
+  { id: 'amount', label: 'Amount', align: 'center' },
+  { id: 'description', label: 'Description', align: 'center' },
+  { id: 'edit', label: 'Edit', align: 'center' },
+  { id: 'delete', label: 'Delete', align: 'center' }
 ];
-const Claimcashlist = () => {
+const Paymentbanklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreateClaimcash, canUpdateClaimcash, canDeleteClaimcash } = useCan();
+  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [vendorId, setvendorId] = useState(null);
+  const [vendor, setvendor] = useState([]);
+  const [vendorname, setvendorname] = useState('');
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
+  const showLedgerlist = false;
 
   useEffect(() => {
-    dispatch(viewClaimCash())
+    dispatch(getallPaymentCash())
       .then((data) => {
-        setPayments(data);
+        setPayments(data.data);
       })
       .catch((error) => {
         console.error('Error fetching payment data:', error);
@@ -57,12 +63,8 @@ const Claimcashlist = () => {
   }, [dispatch]);
 
   const handleMakePayment = () => {
-    navigate('/claimcash');
+    navigate('/paymentcash');
   };
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
-  };
-
   const handleformDateChange = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -70,7 +72,6 @@ const Claimcashlist = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setFormDate(formattedDate);
   };
-
   const handletoDateChange = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -78,14 +79,15 @@ const Claimcashlist = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setToDate(formattedDate);
   };
-
-  const handleLedger = (formDate, toDate) => {
-    dispatch(fetchAllClaimcashLedger(formDate, toDate));
-    navigate('/claimcashledger');
+  const handleLedger = (vendorId, formDate, toDate) => {
+    dispatch(getallVendorledger(vendorId, formDate, toDate));
+    navigate('/ledgerlist');
+    setSelectedId(vendorId);
+    sessionStorage.setItem('vendorId', vendorId);
     setFormDate(formDate);
-    sessionStorage.setItem('ClaimformDate', formDate);
+    sessionStorage.setItem('formDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('ClaimtoDate', toDate);
+    sessionStorage.setItem('toDate', toDate);
   };
 
   const handleDeleteConfirmation = (id) => {
@@ -94,8 +96,16 @@ const Claimcashlist = () => {
   };
 
   const handleUpdatePayment = (id) => {
-    dispatch(viewSingleclaimCash(id));
-    navigate(`/claimcash/${id}`);
+    dispatch(paymentCashview(id));
+    navigate(`/paymentcash/${id}`);
+  };
+
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+
+  const handleLedgerClick = () => {
+    setOpenDrawer(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -109,19 +119,40 @@ const Claimcashlist = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(deleteClaimCash(selectedId));
+      await dispatch(paymentCashDelete(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);
     }
   };
-  const handleLedgerClick = () => {
-    setOpenDrawer(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllVendorsCash());
+        if (Array.isArray(response)) {
+          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
+          setvendor([...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching Purchase:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setvendorId(selectedOption.value);
+      setvendorname(selectedOption.label);
+    }
   };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
+      {showLedgerlist && <Ledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
-        Claim Cash List
+        Payment Bank List
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
@@ -129,9 +160,9 @@ const Claimcashlist = () => {
           color="secondary"
           style={{ margin: '16px' }}
           onClick={handleMakePayment}
-          disabled={!canCreateClaimcash()}
+          disabled={!canCreatePaymentcash()}
         >
-          Claim Cash
+          Payment Bank
         </Button>
         <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
           Ledger
@@ -158,7 +189,7 @@ const Claimcashlist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdateClaimcash()}
+                        disabled={!canUpdatePaymentcash()}
                       >
                         Edit
                       </Button>
@@ -167,14 +198,14 @@ const Claimcashlist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeleteClaimcash()}
+                        disabled={!canDeletePaymentcash()}
                       >
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'fromUserId' ? (
-                      payment.toUser?.username
+                    ) : column.id === 'vendor' ? (
+                      payment.PaymentVendor.vendorname
                     ) : (
                       payment[column.id]
                     )}
@@ -217,6 +248,12 @@ const Claimcashlist = () => {
         </div>
         <DialogContent style={{ position: 'reletive' }}>
           <Grid container spacing={2}>
+            <Grid item xs={12} style={{ paddingTop: '20px' }}>
+              <Typography variant="subtitle1">
+                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
                 From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -243,8 +280,23 @@ const Claimcashlist = () => {
                 popperPlacement="top-center"
               />
             </Grid>
-
-            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+            {/* <Grid item xs={12}>
+              <Typography variant="subtitle1">action:</Typography>
+              <Button
+                onClick={() => handleLedger(vendorId, formDate, toDate)}
+                variant="contained"
+                color="secondary"
+                style={{ display: 'flex', justifyItems: 'end', padding: '8px' }}
+              >
+                Go
+              </Button>
+            </Grid> */}
+            <Button
+              onClick={() => handleLedger(vendorId, formDate, toDate)}
+              variant="contained"
+              color="secondary"
+              style={{ marginLeft: '60%' }}
+            >
               GO
             </Button>
           </Grid>
@@ -254,4 +306,4 @@ const Claimcashlist = () => {
   );
 };
 
-export default Claimcashlist;
+export default Paymentbanklist;

@@ -2,46 +2,59 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createClaimcash, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
+import { createPaymentCash, fetchAllVendorsCash, paymentCashview, updatePaymentCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import AnchorVendorDrawer from '../../../component/vendor';
 import Select from 'react-select';
+import useCan from 'views/checkpermissionvalue';
 
-const Cliamcashpage = () => {
+const Paymentbank = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [username, setusername] = useState('');
-  const [user, setuser] = useState([]);
+  const { canCreateVendor } = useCan();
+  const [vendorname, setvendorname] = useState('');
+  const [vendor, setvendor] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  // const [selectuser, setSelectuser] = useState([]);
-  const fromUserId = sessionStorage.getItem('userId');
+  const [selectvendor, setSelectvendor] = useState([]);
   const [formData, setFormData] = useState({
-    toUserId: '',
-    fromUserId,
+    vendorId: '',
+    date: new Date(),
     amount: Number(),
-    description: '',
-    purpose: ''
+    description: ''
   });
-  // console.log(selectuser);
+  console.log(selectvendor);
+  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  useEffect(() => {
+    setCanCreateVendorValue(canCreateVendor());
+  }, [canCreateVendor]);
 
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, date: date });
+  };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      formData.toUserId = selectedOption.value;
+    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+      setIsDrawerOpen(true);
+    } else {
+      formData.vendorId = selectedOption.value;
       setFormData(formData);
-      setusername(selectedOption.label);
+      setvendorname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(getallclaimuser());
+        const response = await dispatch(fetchAllVendorsCash());
         if (Array.isArray(response)) {
-          const options = response.map((user) => ({ value: user.id, label: user.username }));
-          setuser([...options]);
+          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
+          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+        }
+        if (!canCreateVendorValue) {
+          setvendor(options);
         }
       } catch (error) {
         console.error('Error fetching payment Cash:', error);
@@ -50,28 +63,29 @@ const Cliamcashpage = () => {
     const viewData = async () => {
       try {
         if (id) {
-          const response = await dispatch(viewSingleclaimCash(id));
-          const { amount, description, toUser, purpose } = response;
-          console.log(response, 'response');
-          setFormData({ amount, description, purpose, toUserId: toUser.id });
+          const response = await dispatch(paymentCashview(id));
+          const { amount, description, PaymentVendor, date } = response;
+          setFormData({ amount, description, vendorId: PaymentVendor.id, date });
 
-          setusername(toUser.username);
-          setSelectuser(toUser.id);
+          setvendorname(PaymentVendor.vendorname);
+          setSelectvendor(PaymentVendor.id);
         }
       } catch (error) {
         console.error('Error fetching payment:', error);
       }
     };
+    if (canCreateVendorValue !== null) {
+      fetchData();
+    }
     viewData();
-    fetchData();
-  }, [dispatch, id]);
+  }, [dispatch, id, canCreateVendorValue]);
 
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
-        await dispatch(updateClaimCash(id, formData, navigate));
+        await dispatch(updatePaymentCash(id, formData, navigate));
       } else {
-        await dispatch(createClaimcash(formData, navigate));
+        await dispatch(createPaymentCash(formData, navigate));
       }
     } catch (error) {
       console.error('Error creating payment cash data:', error);
@@ -84,37 +98,35 @@ const Cliamcashpage = () => {
       [fieldName]: value
     }));
   };
-  const handlepurposeChange = (selectedOption) => {
-    setFormData({ ...formData, purpose: selectedOption.value });
-  };
 
-  const purposeOptions = [
-    { value: 'Salary', label: 'Salary' },
-    { value: 'Advance', label: 'Advance' },
-    { value: 'Expense', label: 'Expense' }
-  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Cliam Cash
+            Update Payment Bank
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Cliam Cash
+            Payment Bank
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                User : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker id="date" selected={formData.date} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={user}
-                value={{ value: formData.toUserId, label: username }}
+                options={vendor}
+                value={{ value: formData.vendorId, label: vendorname }}
                 onChange={handleSelectChange}
               />
             </Grid>
@@ -139,23 +151,12 @@ const Cliamcashpage = () => {
                 onChange={(e) => handleInputChange('description', e.target.value)}
               />
             </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Purpose: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select
-                options={purposeOptions}
-                value={purposeOptions.find((option) => option.value === formData.purpose)}
-                onChange={handlepurposeChange}
-              />
-            </Grid>
           </Grid>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/claimcashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
                 <button id="savebtncs" onClick={handlecreatePaymentCash}>
@@ -166,7 +167,7 @@ const Cliamcashpage = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/claimcashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
@@ -183,4 +184,4 @@ const Cliamcashpage = () => {
   );
 };
 
-export default Cliamcashpage;
+export default Paymentbank;

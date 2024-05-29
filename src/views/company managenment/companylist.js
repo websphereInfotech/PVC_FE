@@ -1,137 +1,181 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Container,
+  // Container,
   Typography,
   Button,
   Table,
   TableBody,
   TableRow,
   TableCell,
-  IconButton,
   Card,
-  Pagination,
+  TableContainer,
+  TableHead,
+  TablePagination,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { Companyview, fetchAllCompany } from 'store/thunk';
+import { useDispatch } from 'react-redux';
+// import useCan from 'views/checkpermissionvalue';
+
+const columns = [
+  { id: 'companyname', label: 'Company Name', minWidth: 100, align: 'center' },
+  { id: 'email', label: 'Email.', minWidth: 100, align: 'center' },
+  { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center' },
+  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
+  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+];
 
 const CompanyList = () => {
+  // const { canUpdateDebitnote, canViewDebitnote, canCreateDebitnote, canDeleteDebitnote } = useCan();
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const [rowsPerPage] = useState(1);
-  const [deleteCompanyId, setDeleteCompanyId] = useState(null);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [Company, setCompany] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const dispatch = useDispatch();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  // const [selectedId, setSelectedId] = useState(null);
 
-  const companies = [
-    {
-      id: 1,
-      companyName: 'ABC Inc.',
-      contactNo: '1234567890',
-      email: 'abc@example.com',
-      contactPersonName: 'John Doe',
-      address: '123 Main St',
-      website: 'www.abc.com'
-    },
-    {
-      id: 2,
-      companyName: 'XYZ Corp.',
-      contactNo: '9876543210',
-      email: 'xyz@example.com',
-      contactPersonName: 'Jane Smith',
-      address: '456 Elm St',
-      website: 'www.xyz.com'
-    }
-  ];
+  useEffect(() => {
+    const fetchCompany = async () => {
+      try {
+        const data = await dispatch(fetchAllCompany());
+        console.log(data, 'data');
+        setCompany(data);
+      } catch (error) {
+        console.error('Error fetching company:', error);
+      }
+    };
 
-  const handleAddCompany = () => {
-    navigate('/addcompany');
-  };
+    fetchCompany();
+  }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleDeleteCompany = (companyId) => {
-    setDeleteCompanyId(companyId);
-    setOpenDeleteDialog(true);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
-  const handleConfirmDelete = () => {
-    // Delete logic goes here
-    console.log('Deleting company with id:', deleteCompanyId);
-    setOpenDeleteDialog(false);
+  const handleAddCompany = () => {
+    navigate('/addcompany');
   };
 
-  const handleCancelDelete = () => {
-    setDeleteCompanyId(null);
-    setOpenDeleteDialog(false);
+  const handlecompanyupdate = (id) => {
+    dispatch(Companyview(id));
+    navigate(`/addcompany/${id}`);
+  };
+
+  const handlecompanyview = (id) => {
+    dispatch(Companyview(id));
+    navigate(`/companyview/${id}`);
+  };
+
+  const handleDeleteConfirmation = () => {
+    setOpenConfirmation(true);
+    // setSelectedId(id);
+  };
+
+  const handlecompanydelete = async () => {
+    try {
+      // await dispatch(deleteDebitnote(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
   return (
-    <Container>
-      <Card style={{ padding: '25px' }}>
-        <Typography variant="h4" align="center" id="mycss">
-          Company List
-        </Typography>
-        <Button variant="contained" color="secondary" style={{ mb: 2, margin: '10px' }} onClick={handleAddCompany}>
-          Add Company
-        </Button>
-        <Table>
-          <TableRow>
-            <TableCell variant="head">Company Name</TableCell>
-            <TableCell variant="head">Contact No</TableCell>
-            <TableCell variant="head">Email Id</TableCell>
-            <TableCell variant="head">Contact Person Name</TableCell>
-            <TableCell variant="head">Address</TableCell>
-            <TableCell variant="head">Website</TableCell>
-            <TableCell variant="head">Action</TableCell>
-          </TableRow>
-          <TableBody>
-            {companies.slice((page - 1) * rowsPerPage, page * rowsPerPage).map((company) => (
-              <TableRow key={company.id}>
-                <TableCell>{company.companyName}</TableCell>
-                <TableCell>{company.contactNo}</TableCell>
-                <TableCell>{company.email}</TableCell>
-                <TableCell>{company.contactPersonName}</TableCell>
-                <TableCell>{company.address}</TableCell>
-                <TableCell>{company.website}</TableCell>
-                <TableCell>
-                  <IconButton color="inherit">
-                    <VisibilityIcon />
-                    <EditIcon />
-                    <DeleteIcon onClick={() => handleDeleteCompany(company.id)} />
-                  </IconButton>
+    // <Container>
+    <Card style={{ width: 'auto', padding: '20px' }}>
+      <Typography variant="h4" align="center" id="mycss">
+        Company List
+      </Typography>
+      <Button variant="contained" color="secondary" style={{ mb: 2, margin: '10px' }} onClick={handleAddCompany}>
+        Add Company
+      </Button>
+      <TableContainer sx={{ maxHeight: 500 }}>
+        <Table style={{ border: '1px solid lightgrey' }}>
+          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  {column.label}
                 </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Company?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+              <TableRow key={index}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.id === 'view' ? (
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        // disabled={!canViewDebitnote()}
+                        onClick={() => handlecompanyview(row.id)}
+                      >
+                        View
+                      </Button>
+                    ) : column.id === 'edit' ? (
+                      <Button
+                        // disabled={!canUpdateDebitnote()}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handlecompanyupdate(row.id)}
+                      >
+                        Edit
+                      </Button>
+                    ) : column.id === 'delete' ? (
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        // disabled={!canDeleteDebitnote()}
+                        onClick={() => handleDeleteConfirmation(row.id)}
+                      >
+                        Delete
+                      </Button>
+                    ) : (
+                      row[column.id]
+                    )}
+                  </TableCell>
+                ))}
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </Card>
-      <Pagination
-        count={Math.ceil(companies.length / rowsPerPage)}
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[8, 25, 100]}
+        component="div"
+        count={Company.length || 0}
+        rowsPerPage={rowsPerPage}
         page={page}
-        onChange={handleChangePage}
-        style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Dialog open={openDeleteDialog} onClose={handleCancelDelete}>
-        <DialogTitle>Delete Company</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Are you sure you want to delete this company?</DialogContentText>
-        </DialogContent>
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>Are you sure you want to delete this Company?</DialogContent>
         <DialogActions>
-          <Button onClick={handleCancelDelete}>No</Button>
-          <Button onClick={handleConfirmDelete} autoFocus>
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button onClick={handlecompanydelete} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+    </Card>
+    // </Container>
   );
 };
 

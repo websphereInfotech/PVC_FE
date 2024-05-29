@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const columns = [
-  { id: 'user', label: 'User', align: 'center', minWidth: 100 },
+  { id: 'user', label: 'Sender', align: 'center', minWidth: 100 },
   { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
   { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
   { id: 'status', label: 'Status', align: 'center', minWidth: 100 }

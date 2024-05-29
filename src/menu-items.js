@@ -273,6 +273,20 @@ const MenuItem = () => {
                   }
                 : {},
               {
+                id: 'Payment',
+                title: 'Payment',
+                type: 'collapse',
+                icon: icons['PaymentsIcon'],
+                children: [
+                  {
+                    id: 'payment Bank',
+                    title: 'Payment Bank',
+                    type: 'item',
+                    url: '/paymentbanklist'
+                  }
+                ]
+              },
+              {
                 id: 'sale-management',
                 title: 'Sale Management',
                 type: 'collapse',

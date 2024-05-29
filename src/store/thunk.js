@@ -232,9 +232,37 @@ import {
   fetchAllVendorsSuccess,
   fetchAllVendorsFailure,
   //  COMPANY ++++++++++++++++++++++++
+  CreateCompanyRequest,
+  CreateCompanySuccess,
+  CreateCompanyFailure,
+  ViewCompanyRequest,
+  ViewCompanySuccess,
+  ViewCompanyFailure,
+  UpdateCompanyRequest,
+  UpdateCompanySuccess,
+  UpdateCompanyFailure,
+  DeleteCompanyRequest,
+  DeleteCompanySuccess,
+  DeleteCompanyFailure,
   fetchAllCompanyRequest,
   fetchAllCompanySuccess,
   fetchAllCompanyFailure,
+  //  COMPANY BANK ++++++++++++++++++++++++
+  CreateCompanyBankRequest,
+  CreateCompanyBankSuccess,
+  CreateCompanyBankFailure,
+  ViewCompanyBankRequest,
+  ViewCompanyBankSuccess,
+  ViewCompanyBankFailure,
+  UpdateCompanyBankRequest,
+  UpdateCompanyBankSuccess,
+  UpdateCompanyBankFailure,
+  DeleteCompanyBankRequest,
+  DeleteCompanyBankSuccess,
+  DeleteCompanyBankFailure,
+  fetchAllCompanyBankRequest,
+  fetchAllCompanyBankSuccess,
+  fetchAllCompanyBankFailure,
   // DEBIT NOTE+++++++++++++++++++++
   createDebitnoteRequest,
   createDebitnoteSuccess,
@@ -316,7 +344,23 @@ import {
   // CLAIMCASH LEDGER ++++++++++
   fetchAllclaimcashledgerRequest,
   fetchAllclaimcashledgerSuccess,
-  fetchAllclaimcashledgerFailure
+  fetchAllclaimcashledgerFailure,
+  // PAYMENT BANK +++++++++++++
+  createPaymentbankRequest,
+  createPaymentbankSuccess,
+  createPaymentbankFailure,
+  ViewsinglepaymentbankRequest,
+  ViewsinglepaymentbankSuccess,
+  ViewsinglepaymentbankFailure,
+  updatepaymentbankRequest,
+  updatepaymentbankSuccess,
+  updatepaymentbankFailure,
+  deletepaymentbankRequest,
+  deletepaymentbankSuccess,
+  deletepaymentbankFailure,
+  fetchallpaymentbankRequest,
+  fetchallpaymentbankSuccess,
+  fetchallpaymentbankFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -1782,6 +1826,87 @@ export const fetchAllVendorsCash = () => {
   };
 };
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createCompany = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_company`, data, config);
+      const Companydata = response;
+      dispatch(CreateCompanySuccess(Companydata));
+      return Companydata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateCompanyFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateCompany = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_company/${id}`, formData, config);
+      const updateCompanyData = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/companylist');
+        }
+      });
+      dispatch(UpdateCompanySuccess(updateCompanyData));
+      return updateCompanyData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateCompanyFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const Companyview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_company/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewCompanySuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewCompanyFailure(error.message));
+    }
+  };
+};
+export const deleteCompany = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_company/${id}`, config);
+      const deletecompany = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteCompanySuccess(deletecompany));
+      window.location.reload();
+      return deletecompany;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteCompanyFailure(error.message));
+      throw error;
+    }
+  };
+};
 export const fetchAllCompany = () => {
   return async (dispatch) => {
     dispatch(fetchAllCompanyRequest());
@@ -1796,6 +1921,111 @@ export const fetchAllCompany = () => {
     }
   };
 };
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createCompanyBank = (bankdetails, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreateCompanyBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_company_bankDetails`, bankdetails, config);
+      const Companybankdata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/companylist');
+        }
+      });
+      dispatch(CreateCompanyBankSuccess(Companybankdata));
+      return Companybankdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateCompanyBankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateCompanyBank = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateCompanyBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_company_bankDetails/${id}`, formData, config);
+      const updateCompanyBankData = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/companylist');
+        }
+      });
+      dispatch(UpdateCompanyBankSuccess(updateCompanyBankData));
+      return updateCompanyBankData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateCompanyBankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const CompanyBankview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewCompanyBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_company_bankDetails/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewCompanyBankSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewCompanyBankFailure(error.message));
+    }
+  };
+};
+export const deleteCompanyBank = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteCompanyBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_company_bankDetails/${id}`, config);
+      const deleteCompanybank = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteCompanyBankSuccess(deleteCompanybank));
+      window.location.reload();
+      return deleteCompanybank;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteCompanyBankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllCompanyBank = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllCompanyBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_company_bankDetails`, config);
+      const data = response.data.data;
+      dispatch(fetchAllCompanyBankSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllCompanyBankFailure(error.message));
+    }
+  };
+};
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createRecievecash = (data, navigate) => {
   return async (dispatch) => {
@@ -2093,6 +2323,109 @@ export const fetchAllClaimcashLedger = (formDate, toDate) => {
       return data;
     } catch (error) {
       dispatch(fetchAllclaimcashledgerFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createPaymentBank = (formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(createPaymentbankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_payment_bank`, formData, config);
+      const Paymentbank = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/paymentbanklist');
+        }
+      });
+      dispatch(createPaymentbankSuccess(Paymentbank));
+      return Paymentbank;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createPaymentbankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const viewSinglePaymentBank = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewsinglepaymentbankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_payment_bank/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewsinglepaymentbankSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(ViewsinglepaymentbankFailure(error.message));
+    }
+  };
+};
+export const updatePaymentbank = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updatepaymentbankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_payment_bank/${id}`, formData, config);
+      const updatpaymentbankdata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/paymentbanklist');
+        }
+      });
+      dispatch(updatepaymentbankSuccess(updatpaymentbankdata));
+      return updatpaymentbankdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(updatepaymentbankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deletePaymentbank = (id) => {
+  return async (dispatch) => {
+    dispatch(deletepaymentbankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_payment_bank/${id}`, config);
+      const deletepaymentbank = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deletepaymentbankSuccess(deletepaymentbank));
+      window.location.reload();
+      return deletepaymentbank;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(deletepaymentbankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getAllPaymentbank = () => {
+  return async (dispatch) => {
+    dispatch(fetchallpaymentbankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_payment_bank`, config);
+      const data = response.data.data;
+      dispatch(fetchallpaymentbankSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchallpaymentbankFailure(error.message));
     }
   };
 };

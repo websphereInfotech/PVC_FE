@@ -29,13 +29,16 @@ const Salescash = Loadable(lazy(() => import('../views/sale managenment/Sales ca
 const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashlist')));
 const Salescashview = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashview')));
 //
-// ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment +++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment cash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymentcash')));
 const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymencashtlist')));
 const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecash')));
 const PaymentrecieveList = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecashlist')));
 const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/ledger')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment bank ++++++++++++++++++++++++++++++++++++++++++++++++
+const Paymentbank = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbank')));
+const Paymentbanklist = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbanklist')));
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expense +++++++++++++++++++++++++++++++++++++++++++++++++++
 const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expencelist')));
 const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/expenceadd')));
@@ -79,6 +82,7 @@ const Purchaseinvoicecashview = Loadable(lazy(() => import('../views/purches man
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
 const CompanyList = Loadable(lazy(() => import('../views/company managenment/companylist')));
 const AddCompanyForm = Loadable(lazy(() => import('../views/company managenment/addcompany')));
+const CompanyviewPage = Loadable(lazy(() => import('../views/company managenment/companyview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 const ProductionListPage = Loadable(lazy(() => import('../views/production managenment/productionlist')));
@@ -135,7 +139,7 @@ const MainRoutes = {
     { path: '/salescashlist', element: <Salescashlist /> },
     { path: '/salescashview/:id', element: <Salescashview /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of paymentss +++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/paymentcash', element: <PaymentPage /> },
     { path: '/paymentcash/:id', element: <PaymentPage /> },
     { path: '/paymentcashlist', element: <PaymentListPage /> },
@@ -144,6 +148,10 @@ const MainRoutes = {
     { path: '/paymentrecieveList', element: <PaymentrecieveList /> },
     { path: '/ledgerlist', element: <Ledgerlist /> },
     { path: '/customerledgerlist', element: <Customerledgerlist /> },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/paymentbank', element: <Paymentbank /> },
+    { path: '/paymentbanklist', element: <Paymentbanklist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/expenselist', element: <ExpensePage /> },
@@ -198,7 +206,9 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/companylist', element: <CompanyList /> },
+    { path: '/companyview/:id', element: <CompanyviewPage /> },
     { path: '/addcompany', element: <AddCompanyForm /> },
+    { path: '/addcompany/:id', element: <AddCompanyForm /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/productionlist', element: <ProductionListPage /> },

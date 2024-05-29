@@ -301,11 +301,6 @@ export const FETCH_ALL_VENDORS_CASH_REQUEST = 'FETCH_ALL_VENDORS_CASH_REQUEST';
 export const FETCH_ALL_VENDORS_CASH_SUCCESS = 'FETCH_ALL_VENDORS_CASH_SUCCESS';
 export const FETCH_ALL_VENDORS_CASH_FAILURE = 'FETCH_ALL_VENDORS_CASH_FAILURE';
 
-// ###################################################################### COMPANY #####################################################################
-export const FETCH_ALL_COMPANY_REQUEST = 'FETCH_ALL_COMPANY_REQUEST';
-export const FETCH_ALL_COMPANY_SUCCESS = 'FETCH_ALL_COMPANY_SUCCESS';
-export const FETCH_ALL_COMPANY_FAILURE = 'FETCH_ALL_COMPANY_FAILURE';
-
 // #################################################################### VENDOR LEDGER ###################################################################
 export const FETCH_ALL_VENDOR_LEDGER_REQUEST = 'FETCH_ALL_VENDOR_LEDGER_REQUEST';
 export const FETCH_ALL_VENDOR_LEDGER_SUCCESS = 'FETCH_ALL_VENDOR_LEDGER_SUCCESS';
@@ -343,6 +338,57 @@ export const DELETE_CLAIM_CASH_FAILURE = 'DELETE_CLAIM_CASH_FAILURE';
 export const VIEW_RECIEVE_CLAIM_CASH_REQUEST = 'VIEW_RECIEVE_CLAIM_CASH_REQUEST';
 export const VIEW_RECIEVE_CLAIM_CASH_SUCCESS = 'VIEW_RECIEVE_CLAIM_CASH_SUCCESS';
 export const VIEW_RECIEVE_CLAIM_CASH_FAILURE = 'VIEW_RECIEVE_CLAIM_CASH_FAILURE';
+
+// #################################################################### PAYMENT BANK ###################################################################
+export const CREATE_PAYMENT_BANK_REQUEST = 'CREATE_PAYMENT_BANK_REQUEST';
+export const CREATE_PAYMENT_BANK_SUCCESS = 'CREATE_PAYMENT_BANK_SUCCESS';
+export const CREATE_PAYMENT_BANK_FAILURE = 'CREATE_PAYMENT_BANK_FAILURE';
+export const VIEW_PAYMENT_BANK_REQUEST = 'VIEW_PAYMENT_BANK_REQUEST';
+export const VIEW_PAYMENT_BANK_SUCCESS = 'VIEW_PAYMENT_BANK_SUCCESS';
+export const VIEW_PAYMENT_BANK_FAILURE = 'VIEW_PAYMENT_BANK_FAILURE';
+export const UPADTE_PAYMENT_BANK_REQUEST = 'UPADTE_PAYMENT_BANK_REQUEST';
+export const UPADTE_PAYMENT_BANK_SUCCESS = 'UPADTE_PAYMENT_BANK_SUCCESS';
+export const UPADTE_PAYMENT_BANK_FAILURE = 'UPADTE_PAYMENT_BANK_FAILURE';
+export const DELETE_PAYMENT_BANK_REQUEST = 'DELETE_PAYMENT_BANK_REQUEST';
+export const DELETE_PAYMENT_BANK_SUCCESS = 'DELETE_PAYMENT_BANK_SUCCESS';
+export const DELETE_PAYMENT_BANK_FAILURE = 'DELETE_PAYMENT_BANK_FAILURE';
+export const FETCH_ALL_PAYMENT_BANK_REQUEST = 'FETCH_ALL_PAYMENT_BANK_REQUEST';
+export const FETCH_ALL_PAYMENT_BANK_SUCCESS = 'FETCH_ALL_PAYMENT_BANK_SUCCESS';
+export const FETCH_ALL_PAYMENT_BANK_FAILURE = 'FETCH_ALL_PAYMENT_BANK_FAILURE';
+
+// #################################################################### COMAPNY BANK ###################################################################
+export const CREATE_COMPANY_BANK_REQUEST = 'CREATE_COMPANY_BANK_REQUEST';
+export const CREATE_COMPANY_BANK_SUCCESS = 'CREATE_COMPANY_BANK_SUCCESS';
+export const CREATE_COMPANY_BANK_FAILURE = 'CREATE_COMPANY_BANK_FAILURE';
+export const UPDATE_COMPANY_BANK_REQUEST = 'UPDATE_COMPANY_BANK_REQUEST';
+export const UPDATE_COMPANY_BANK_SUCCESS = 'UPDATE_COMPANY_BANK_SUCCESS';
+export const UPDATE_COMPANY_BANK_FAILURE = 'UPDATE_COMPANY_BANK_FAILURE';
+export const VIEW_COMPANY_BANK_REQUEST = 'VIEW_COMPANY_BANK_REQUEST';
+export const VIEW_COMPANY_BANK_SUCCESS = 'VIEW_COMPANY_BANK_SUCCESS';
+export const VIEW_COMPANY_BANK_FAILURE = 'VIEW_COMPANY_BANK_FAILURE';
+export const DELETE_COMPANY_BANK_REQUEST = 'DELETE_COMPANY_BANK_REQUEST';
+export const DELETE_COMPANY_BANK_SUCCESS = 'DELETE_COMPANY_BANK_SUCCESS';
+export const DELETE_COMPANY_BANK_FAILURE = 'DELETE_COMPANY_BANK_FAILURE';
+export const FETCH_ALL_COMPANY_BANK_REQUEST = 'FETCH_ALL_COMPANY_BANK_REQUEST';
+export const FETCH_ALL_COMPANY_BANK_SUCCESS = 'FETCH_ALL_COMPANY_BANK_SUCCESS';
+export const FETCH_ALL_COMPANY_BANK_FAILURE = 'FETCH_ALL_COMPANY_BANK_FAILURE';
+
+// #################################################################### COMAPNY ###################################################################
+export const CREATE_COMPANY_REQUEST = 'CREATE_COMPANY_REQUEST';
+export const CREATE_COMPANY_SUCCESS = 'CREATE_COMPANY_SUCCESS';
+export const CREATE_COMPANY_FAILURE = 'CREATE_COMPANY_FAILURE';
+export const UPDATE_COMPANY_REQUEST = 'UPDATE_COMPANY_REQUEST';
+export const UPDATE_COMPANY_SUCCESS = 'UPDATE_COMPANY_SUCCESS';
+export const UPDATE_COMPANY_FAILURE = 'UPDATE_COMPANY_FAILURE';
+export const VIEW_COMPANY_REQUEST = 'VIEW_COMPANY_REQUEST';
+export const VIEW_COMPANY_SUCCESS = 'VIEW_COMPANY_SUCCESS';
+export const VIEW_COMPANY_FAILURE = 'VIEW_COMPANY_FAILURE';
+export const DELETE_COMPANY_REQUEST = 'DELETE_COMPANY_REQUEST';
+export const DELETE_COMPANY_SUCCESS = 'DELETE_COMPANY_SUCCESS';
+export const DELETE_COMPANY_FAILURE = 'DELETE_COMPANY_FAILURE';
+export const FETCH_ALL_COMPANY_REQUEST = 'FETCH_ALL_COMPANY_REQUEST';
+export const FETCH_ALL_COMPANY_SUCCESS = 'FETCH_ALL_COMPANY_SUCCESS';
+export const FETCH_ALL_COMPANY_FAILURE = 'FETCH_ALL_COMPANY_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -1206,6 +1252,50 @@ export const fetchAllVendorsCashFailure = (error) => ({
 });
 
 // +++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++
+export const CreateCompanyRequest = () => ({
+  type: 'CREATE_COMPANY_REQUEST'
+});
+export const CreateCompanySuccess = (data) => ({
+  type: 'CREATE_COMPANY_SUCCESS',
+  payload: data
+});
+export const CreateCompanyFailure = (error) => ({
+  type: 'CREATE_COMPANY_FAILURE',
+  payload: error
+});
+export const ViewCompanyRequest = () => ({
+  type: 'VIEW_COMPANY_REQUEST'
+});
+export const ViewCompanySuccess = (data) => ({
+  type: 'VIEW_COMPANY_SUCCESS',
+  payload: data
+});
+export const ViewCompanyFailure = (error) => ({
+  type: 'VIEW_COMPANY_FAILURE',
+  payload: error
+});
+export const UpdateCompanyRequest = () => ({
+  type: 'UPDATE_COMPANY_REQUEST'
+});
+export const UpdateCompanySuccess = (data) => ({
+  type: 'UPDATE_COMPANY_SUCCESS',
+  payload: data
+});
+export const UpdateCompanyFailure = (error) => ({
+  type: 'UPDATE_COMPANY_FAILURE',
+  payload: error
+});
+export const DeleteCompanyRequest = () => ({
+  type: 'DELETE_COMPANY_REQUEST'
+});
+export const DeleteCompanySuccess = (data) => ({
+  type: 'DELETE_COMPANY_SUCCESS',
+  payload: data
+});
+export const DeleteCompanyFailure = (error) => ({
+  type: 'DELETE_COMPANY_FAILURE',
+  payload: error
+});
 export const fetchAllCompanyRequest = () => ({
   type: 'FETCH_ALL_COMPANY_REQUEST'
 });
@@ -1215,6 +1305,63 @@ export const fetchAllCompanySuccess = (data) => ({
 });
 export const fetchAllCompanyFailure = (error) => ({
   type: 'FETCH_ALL_COMPANY_FAILURE',
+  payload: error
+});
+
+// +++++++++++++++++++++++++++++++++++++++++++++++ COMPANY BANK ++++++++++++++++++++++++++++++++++++
+export const CreateCompanyBankRequest = () => ({
+  type: 'CREATE_COMPANY_BANK_REQUEST'
+});
+export const CreateCompanyBankSuccess = (data) => ({
+  type: 'CREATE_COMPANY_BANK_SUCCESS',
+  payload: data
+});
+export const CreateCompanyBankFailure = (error) => ({
+  type: 'CREATE_COMPANY_BANK_FAILURE',
+  payload: error
+});
+export const ViewCompanyBankRequest = () => ({
+  type: 'VIEW_COMPANY_BANK_REQUEST'
+});
+export const ViewCompanyBankSuccess = (data) => ({
+  type: 'VIEW_COMPANY_BANK_SUCCESS',
+  payload: data
+});
+export const ViewCompanyBankFailure = (error) => ({
+  type: 'VIEW_COMPANY_BANK_FAILURE',
+  payload: error
+});
+export const UpdateCompanyBankRequest = () => ({
+  type: 'UPDATE_COMPANY_BANK_REQUEST'
+});
+export const UpdateCompanyBankSuccess = (data) => ({
+  type: 'UPDATE_COMPANY_BANK_SUCCESS',
+  payload: data
+});
+export const UpdateCompanyBankFailure = (error) => ({
+  type: 'UPDATE_COMPANY_BANK_FAILURE',
+  payload: error
+});
+export const DeleteCompanyBankRequest = () => ({
+  type: 'DELETE_COMPANY_BANK_REQUEST'
+});
+export const DeleteCompanyBankSuccess = (data) => ({
+  type: 'DELETE_COMPANY_BANK_SUCCESS',
+  payload: data
+});
+export const DeleteCompanyBankFailure = (error) => ({
+  type: 'DELETE_COMPANY_BANK_FAILURE',
+  payload: error
+});
+export const fetchAllCompanyBankRequest = () => ({
+  type: 'FETCH_ALL_COMPANY_BANK_REQUEST'
+});
+export const fetchAllCompanyBankSuccess = (data) => ({
+  type: 'FETCH_ALL_COMPANY_BANK_SUCCESS',
+  payload: data
+});
+export const fetchAllCompanyBankFailure = (error) => ({
+  type: 'FETCH_ALL_COMPANY_BANK_FAILURE',
   payload: error
 });
 
@@ -1530,3 +1677,127 @@ export const fetchAllclaimcashledgerFailure = (error) => ({
   type: 'FETCH_ALL_USER_LEDGER_FAILURE',
   payload: error
 });
+
+//  ####################################################################### PAYMENT BANK #####################################################
+export const createPaymentbankRequest = (data) => ({
+  type: 'CREATE_PAYMENT_BANK_REQUEST',
+  payload: data
+});
+export const createPaymentbankSuccess = (data) => ({
+  type: 'CREATE_PAYMENT_BANK_SUCCESS',
+  payload: data
+});
+export const createPaymentbankFailure = (error) => ({
+  type: 'CREATE_PAYMENT_BANK_FAILURE',
+  payload: error
+});
+export const ViewsinglepaymentbankRequest = (data) => ({
+  type: 'VIEW_PAYMENT_BANK_REQUEST',
+  payload: data
+});
+export const ViewsinglepaymentbankSuccess = (data) => ({
+  type: 'VIEW_PAYMENT_BANK_SUCCESS',
+  payload: data
+});
+export const ViewsinglepaymentbankFailure = (error) => ({
+  type: 'VIEW_PAYMENT_BANK_FAILURE',
+  payload: error
+});
+export const updatepaymentbankRequest = (data) => ({
+  type: 'UPDATE_PAYMENT_BANK_REQUEST',
+  payload: data
+});
+export const updatepaymentbankSuccess = (data) => ({
+  type: 'UPDATE_PAYMENT_BANK_SUCCESS',
+  payload: data
+});
+export const updatepaymentbankFailure = (error) => ({
+  type: 'UPDATE_PAYMENT_BANK_FAILURE',
+  payload: error
+});
+export const deletepaymentbankRequest = (data) => ({
+  type: 'DELETE_PAYMENT_BANK_REQUEST',
+  payload: data
+});
+export const deletepaymentbankSuccess = (data) => ({
+  type: 'DELETE_PAYMENT_BANK_SUCCESS',
+  payload: data
+});
+export const deletepaymentbankFailure = (error) => ({
+  type: 'DELETE_PAYMENT_BANK_FAILURE',
+  payload: error
+});
+export const fetchallpaymentbankRequest = (data) => ({
+  type: 'FETCH_ALL_PAYMENT_BANK_REQUEST',
+  payload: data
+});
+export const fetchallpaymentbankSuccess = (data) => ({
+  type: 'FETCH_ALL_PAYMENT_BANK_SUCCESS',
+  payload: data
+});
+export const fetchallpaymentbankFailure = (error) => ({
+  type: 'FETCH_ALL_PAYMENT_BANK_FAILURE',
+  payload: error
+});
+
+//  ####################################################################### PAYMENT BANK #####################################################
+// export const createPaymentbankRequest = (data) => ({
+//   type: 'CREATE_PAYMENT_BANK_REQUEST',
+//   payload: data
+// });
+// export const createPaymentbankSuccess = (data) => ({
+//   type: 'CREATE_PAYMENT_BANK_SUCCESS',
+//   payload: data
+// });
+// export const createPaymentbankFailure = (error) => ({
+//   type: 'CREATE_PAYMENT_BANK_FAILURE',
+//   payload: error
+// });
+// export const ViewsinglepaymentbankRequest = (data) => ({
+//   type: 'VIEW_PAYMENT_BANK_REQUEST',
+//   payload: data
+// });
+// export const ViewsinglepaymentbankSuccess = (data) => ({
+//   type: 'VIEW_PAYMENT_BANK_SUCCESS',
+//   payload: data
+// });
+// export const ViewsinglepaymentbankFailure = (error) => ({
+//   type: 'VIEW_PAYMENT_BANK_FAILURE',
+//   payload: error
+// });
+// export const updatepaymentbankRequest = (data) => ({
+//   type: 'UPDATE_PAYMENT_BANK_REQUEST',
+//   payload: data
+// });
+// export const updatepaymentbankSuccess = (data) => ({
+//   type: 'UPDATE_PAYMENT_BANK_SUCCESS',
+//   payload: data
+// });
+// export const updatepaymentbankFailure = (error) => ({
+//   type: 'UPDATE_PAYMENT_BANK_FAILURE',
+//   payload: error
+// });
+// export const deletepaymentbankRequest = (data) => ({
+//   type: 'DELETE_PAYMENT_BANK_REQUEST',
+//   payload: data
+// });
+// export const deletepaymentbankSuccess = (data) => ({
+//   type: 'DELETE_PAYMENT_BANK_SUCCESS',
+//   payload: data
+// });
+// export const deletepaymentbankFailure = (error) => ({
+//   type: 'DELETE_PAYMENT_BANK_FAILURE',
+//   payload: error
+// });
+// export const fetchallpaymentbankRequest = (data) => ({
+//   type: 'FETCH_ALL_PAYMENT_BANK_REQUEST',
+//   payload: data
+// });
+// export const fetchallpaymentbankSuccess = (data) => ({
+//   type: 'FETCH_ALL_PAYMENT_BANK_SUCCESS',
+//   payload: data
+// });
+// export const fetchallpaymentbankFailure = (error) => ({
+//   type: 'FETCH_ALL_PAYMENT_BANK_FAILURE',
+//   payload: error
+// });
