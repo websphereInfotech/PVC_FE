@@ -1948,20 +1948,13 @@ export const createCompanyBank = (bankdetails, navigate) => {
     }
   };
 };
-export const updateCompanyBank = (id, formData, navigate) => {
+export const updateCompanyBank = (id, formData) => {
   return async (dispatch) => {
     dispatch(UpdateCompanyBankRequest());
     try {
       const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_company_bankDetails/${id}`, formData, config);
       const updateCompanyBankData = response.data.data;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
-        onClose: () => {
-          navigate('/companylist');
-        }
-      });
       dispatch(UpdateCompanyBankSuccess(updateCompanyBankData));
       return updateCompanyBankData;
     } catch (error) {

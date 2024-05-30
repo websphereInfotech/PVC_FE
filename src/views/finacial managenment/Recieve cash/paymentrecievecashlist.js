@@ -32,6 +32,8 @@ const columns = [
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'customer', label: 'Customer', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
+  { id: 'createdBy', label: 'Create By', align: 'center' },
+  { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' },
   { id: 'delete', label: 'Delete', align: 'center' }
@@ -207,6 +209,10 @@ const PaymentrecieveList = () => {
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       payment.ReceiveCustomer.customername
+                    ) : column.id === 'updatedBy' ? (
+                      payment.receiveUpdate?.username
+                    ) : column.id === 'createdBy' ? (
+                      payment.receiveCreate?.username
                     ) : (
                       payment[column.id]
                     )}

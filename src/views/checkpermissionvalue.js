@@ -463,6 +463,60 @@ const useCan = () => {
     return checkPermission('Receive Cash', 'view_all_receive_Cash');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK
+
+  const canCreatePaymentBank = () => {
+    return checkPermission('Payment Bank', 'create_payment_bank');
+  };
+  const canUpdatePaymentBank = () => {
+    return checkPermission('Payment Bank', 'update_payment_bank');
+  };
+  const canDeletePaymentBank = () => {
+    return checkPermission('Payment Bank', 'delete_payment_bank');
+  };
+  const canViewPaymentBank = () => {
+    return checkPermission('Payment Bank', 'view_payment_bank');
+  };
+  const canViwAllPaymentBank = () => {
+    return checkPermission('Payment Bank', 'view_all_payment_bank');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY
+
+  const canCreateCompany = () => {
+    return checkPermission('Company', 'create_company');
+  };
+  const canUpdateCompany = () => {
+    return checkPermission('Company', 'update_company');
+  };
+  const canDeleteCompany = () => {
+    return checkPermission('Company', 'delete_company');
+  };
+  const canViewCompany = () => {
+    return checkPermission('Company', 'view_single_company');
+  };
+  const canViwAllCompany = () => {
+    return checkPermission('Company', 'view_all_company');
+  };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY BANK
+
+  const canCreateCompanyBank = () => {
+    return checkPermission('Company Bank Details', 'create_company_bankDetails');
+  };
+  const canUpdateCompanyBank = () => {
+    return checkPermission('Company Bank Details', 'update_company_bankDetails');
+  };
+  const canDeleteCompanyBank = () => {
+    return checkPermission('Company Bank Details', 'delete_company_bankDetails');
+  };
+  const canViewCompanyBank = () => {
+    return checkPermission('Company Bank Details', 'view_company_bankDetails');
+  };
+  const canViwAllCompanyBank = () => {
+    return checkPermission('Company Bank Details', 'view_all_company_bankDetails');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreateClaimcash = () => {
@@ -645,7 +699,25 @@ const useCan = () => {
     canViewClaimcash,
     canViwAllClaimcash,
     canViwAllRecieveClaimcash,
-    canIsapproveClaimcash
+    canIsapproveClaimcash,
+    // PAYMENT BANK ++++++++++++
+    canCreatePaymentBank,
+    canUpdatePaymentBank,
+    canDeletePaymentBank,
+    canViewPaymentBank,
+    canViwAllPaymentBank,
+    // COMPANY ++++++++++++++++++
+    canCreateCompany,
+    canUpdateCompany,
+    canDeleteCompany,
+    canViewCompany,
+    canViwAllCompany,
+    // COMPANY BANK DETAILS +++++++
+    canCreateCompanyBank,
+    canUpdateCompanyBank,
+    canDeleteCompanyBank,
+    canViewCompanyBank,
+    canViwAllCompanyBank
   };
 };
 

@@ -19,19 +19,21 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { PurchaseInvoiceviewCash, deletePurchaseInvoiceCash, getallPurchaseInvoiceCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-// import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/checkpermissionvalue';
 
 const columns = [
   // { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
   { id: 'date', label: 'Date.', minWidth: 100, align: 'center' },
   { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
+  { id: 'createdBy', label: 'Create By', align: 'center' },
+  { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
 ];
 
 const Purchaseinvoicecashlist = () => {
-  // const { canCreatePurchasebillcash, canUpdatePurchasebillcash, canViewPurchasebillcash, canDeletePurchasebillcash } = useCan();
+  const { canCreatePurchasebillcash, canUpdatePurchasebillcash, canViewPurchasebillcash, canDeletePurchasebillcash } = useCan();
   const navigate = useNavigate();
   const [purchasebillcash, setPurchasebillcash] = useState([]);
   const [page, setPage] = useState(0);
@@ -46,7 +48,7 @@ const Purchaseinvoicecashlist = () => {
         const data = await dispatch(getallPurchaseInvoiceCash());
         setPurchasebillcash(data.data);
       } catch (error) {
-        console.error('Error fetching sales invoice:', error);
+        console.error('Error fetching purchase invoice cash:', error);
       }
     };
 
@@ -101,7 +103,7 @@ const Purchaseinvoicecashlist = () => {
         color="secondary"
         style={{ margin: '10px' }}
         onClick={handleAddPurchasebillCash}
-        // disabled={!canCreatePurchasebillcash()}
+        disabled={!canCreatePurchasebillcash()}
       >
         Create Purchase cash
       </Button>
@@ -125,14 +127,14 @@ const Purchaseinvoicecashlist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        // disabled={!canViewPurchasebillcash()}
+                        disabled={!canViewPurchasebillcash()}
                         onClick={() => handleViewPurchasebillCash(row.id)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
-                        // disabled={!canUpdatePurchasebillcash()}
+                        disabled={!canUpdatePurchasebillcash()}
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePurchasebillCash(row.id)}
@@ -143,7 +145,7 @@ const Purchaseinvoicecashlist = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        // disabled={!canDeletePurchasebillcash()}
+                        disabled={!canDeletePurchasebillcash()}
                         onClick={() => handleDeleteConfirmation(row.id)}
                       >
                         Delete
@@ -152,6 +154,10 @@ const Purchaseinvoicecashlist = () => {
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'vendor' ? (
                       row.VendorPurchase.vendorname
+                    ) : column.id === 'updatedBy' ? (
+                      row.purchaseUpdateUser?.username
+                    ) : column.id === 'createdBy' ? (
+                      row.purchaseCreateUser?.username
                     ) : (
                       row[column.id]
                     )}

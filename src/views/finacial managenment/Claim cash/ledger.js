@@ -19,6 +19,7 @@ const Ledgerlist = () => {
   const vendorId = sessionStorage.getItem('vendorId');
   const formData = sessionStorage.getItem('formDate');
   const toDate = sessionStorage.getItem('toDate');
+
   useEffect(() => {
     dispatch(getallVendorledger(vendorId, formData, toDate))
       .then((data) => {
@@ -58,7 +59,11 @@ const Ledgerlist = () => {
             {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment) => (
               <TableRow key={payment.id}>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align}>
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ color: (column.id === 'creditAmount' && 'green') || (column.id === 'debitAmount' && 'red') }}
+                  >
                     {column.id === 'date'
                       ? new Date(payment[column.id]).toLocaleDateString('en-GB')
                       : column.id === 'vendor'

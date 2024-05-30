@@ -9,7 +9,6 @@ const columns = [
   { id: 'creditAmount', label: 'Credit', align: 'center', minWidth: 100 },
   { id: 'debitAmount', label: 'Debit', align: 'center', minWidth: 100 },
   { id: 'remainingBalance', label: 'Balance', align: 'center', minWidth: 100 }
-  // { id: 'openingBalance', label: 'Opening Balance', align: 'center', minWidth: 100 }
 ];
 
 const Customerledgerlist = () => {
@@ -60,7 +59,11 @@ const Customerledgerlist = () => {
             {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment) => (
               <TableRow key={payment.id}>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align={column.align}>
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ color: (column.id === 'creditAmount' && '00CE00') || (column.id === 'debitAmount' && 'red') }}
+                  >
                     {column.id === 'date' ? new Date(payment[column.id]).toLocaleDateString('en-GB') : payment[column.id]}
                   </TableCell>
                 ))}

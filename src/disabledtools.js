@@ -16,8 +16,8 @@ const detectDevTools = () => {
 
   setInterval(() => {
     devtools.isOpen = false;
-    console.log(element);
-    console.clear();
+    // console.log(element);
+    // console.clear();
   }, 1000);
 
   setInterval(() => {

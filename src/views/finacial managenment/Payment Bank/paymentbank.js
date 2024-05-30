@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentCash, fetchAllVendorsCash, paymentCashview, updatePaymentCash } from 'store/thunk';
+import { createPaymentBank, fetchAllCompanyBank, fetchAllVendors, updatePaymentbank, viewSinglePaymentBank } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,16 +17,22 @@ const Paymentbank = () => {
   const { id } = useParams();
   const { canCreateVendor } = useCan();
   const [vendorname, setvendorname] = useState('');
+  const [companyname, setcompanyname] = useState('');
   const [vendor, setvendor] = useState([]);
+  const [account, setAccount] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectvendor, setSelectvendor] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
   const [formData, setFormData] = useState({
     vendorId: '',
-    date: new Date(),
+    paymentdate: new Date(),
     amount: Number(),
-    description: ''
+    referance: '',
+    mode: '',
+    accountId: '',
+    voucherno: ''
   });
-  console.log(selectvendor);
+  console.log(selectvendor, selectaccount);
   const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
   useEffect(() => {
     setCanCreateVendorValue(canCreateVendor());
@@ -45,16 +51,29 @@ const Paymentbank = () => {
       setIsDrawerOpen(false);
     }
   };
+  const handleSelectAccountChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      formData.accountId = selectedOption.value;
+      setFormData(formData);
+      setcompanyname(selectedOption.label);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendorsCash());
+        const response = await dispatch(fetchAllVendors());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
+          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
           setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
         }
         if (!canCreateVendorValue) {
           setvendor(options);
+        }
+        const responsecompany = await dispatch(fetchAllCompanyBank());
+        if (Array.isArray(responsecompany)) {
+          const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
+          setAccount(options);
         }
       } catch (error) {
         console.error('Error fetching payment Cash:', error);
@@ -63,12 +82,21 @@ const Paymentbank = () => {
     const viewData = async () => {
       try {
         if (id) {
-          const response = await dispatch(paymentCashview(id));
-          const { amount, description, PaymentVendor, date } = response;
-          setFormData({ amount, description, vendorId: PaymentVendor.id, date });
-
-          setvendorname(PaymentVendor.vendorname);
-          setSelectvendor(PaymentVendor.id);
+          const response = await dispatch(viewSinglePaymentBank(id));
+          const { voucherno, mode, referance, amount, paymentBank, paymentData, paymentdate } = response;
+          setFormData({
+            voucherno,
+            mode,
+            referance,
+            amount,
+            vendorId: paymentData.id,
+            accountId: paymentBank.id,
+            paymentdate
+          });
+          setcompanyname(paymentBank.accountname);
+          setvendorname(paymentData.accountname);
+          setSelectaccount(paymentBank.id);
+          setSelectvendor(paymentData.id);
         }
       } catch (error) {
         console.error('Error fetching payment:', error);
@@ -83,12 +111,12 @@ const Paymentbank = () => {
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
-        await dispatch(updatePaymentCash(id, formData, navigate));
+        await dispatch(updatePaymentbank(id, formData, navigate));
       } else {
-        await dispatch(createPaymentCash(formData, navigate));
+        await dispatch(createPaymentBank(formData, navigate));
       }
     } catch (error) {
-      console.error('Error creating payment cash data:', error);
+      console.error('Error creating payment bank data:', error);
     }
   };
 
@@ -98,7 +126,22 @@ const Paymentbank = () => {
       [fieldName]: value
     }));
   };
+  const handlePaymentChange = (selectedOption) => {
+    setFormData({ ...formData, mode: selectedOption.value });
+  };
 
+  const Options = [
+    { value: 'Cheque', label: 'Cheque' },
+    { value: 'Net Banking', label: 'Net Banking' },
+    { value: 'Cash', label: 'Cash' },
+    { value: 'UPI', label: 'UPI' },
+    { value: 'IMPS', label: 'IMPS' },
+    { value: 'NEFT', label: 'NEFT' },
+    { value: 'RTGS', label: 'RTGS' },
+    { value: 'Debit card', label: 'Debit card' },
+    { value: 'Credit card', label: 'Credit card' },
+    { value: 'Other', label: 'Other' }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -117,7 +160,7 @@ const Paymentbank = () => {
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <DatePicker id="date" selected={formData.date} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
+              <DatePicker id="date" selected={formData.paymentdate} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
@@ -133,6 +176,39 @@ const Paymentbank = () => {
             <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
+                Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select
+                color="secondary"
+                options={account}
+                value={{ value: formData.accountId, label: companyname }}
+                onChange={handleSelectAccountChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Voucher No.:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="Enter voucherno"
+                id="voucherno"
+                value={formData.voucherno}
+                onChange={(e) => handleInputChange('voucherno', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Referance :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="Enter referance"
+                id="referance"
+                value={formData.referance}
+                onChange={(e) => handleInputChange('referance', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
@@ -142,21 +218,19 @@ const Paymentbank = () => {
                 onChange={(e) => handleInputChange('amount', e.target.value)}
               />
             </Grid>
+
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">description :</Typography>
-              <input
-                placeholder="Enter description"
-                id="description"
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-              />
+              <Typography variant="subtitle1">
+                Mode :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select options={Options} value={Options.find((option) => option.value === formData.mode)} onChange={handlePaymentChange} />
             </Grid>
           </Grid>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentbanklist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
                 <button id="savebtncs" onClick={handlecreatePaymentCash}>
@@ -167,7 +241,7 @@ const Paymentbank = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentbanklist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>

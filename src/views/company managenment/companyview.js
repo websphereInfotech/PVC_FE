@@ -19,7 +19,7 @@ import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Companyview, createCompanyBank, updateCompanyBank } from 'store/thunk';
+import { Companyview, createCompanyBank, deleteCompanyBank, updateCompanyBank } from 'store/thunk';
 
 const CompanyviewPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -28,6 +28,8 @@ const CompanyviewPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const [selectedBank, setSelectedBank] = useState(null);
   const [bankdata, setBankdata] = useState({
     accountname: '',
@@ -42,7 +44,7 @@ const CompanyviewPage = () => {
   };
 
   const handleClickOpen = () => {
-    setSelectedBank(null); // Reset selectedBank to null when adding a new bank detail
+    setSelectedBank(null);
     setBankdata({
       accountname: '',
       bankname: '',
@@ -81,7 +83,8 @@ const CompanyviewPage = () => {
         ...bankdata
       };
       if (selectedBank) {
-        await dispatch(updateCompanyBank(selectedBank, bankdetails, navigate));
+        await dispatch(updateCompanyBank(selectedBank, bankdetails));
+        window.location.reload();
       } else {
         await dispatch(createCompanyBank(bankdetails, navigate));
       }
@@ -89,7 +92,19 @@ const CompanyviewPage = () => {
       console.error('Error updating or creating bank details:', error);
     }
   };
+  const handleDeleteConfirmation = (id) => {
+    setOpenConfirmation(true);
+    setSelectedId(id);
+  };
 
+  const handleDeleteBank = async () => {
+    try {
+      await dispatch(deleteCompanyBank(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -166,7 +181,7 @@ const CompanyviewPage = () => {
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button variant="outlined" color="secondary">
+                        <Button onClick={() => handleDeleteConfirmation(bank.id)} variant="outlined" color="secondary">
                           Delete
                         </Button>
                       </TableCell>
@@ -234,6 +249,18 @@ const CompanyviewPage = () => {
             </Button>
             <Button onClick={handleSave} id="savebtncs" variant="outlined">
               Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+          <DialogTitle>Confirmation</DialogTitle>
+          <DialogContent>Are you sure you want to delete this Bank?</DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+              Cancel
+            </Button>
+            <Button onClick={handleDeleteBank} color="secondary" variant="contained">
+              Yes
             </Button>
           </DialogActions>
         </Dialog>

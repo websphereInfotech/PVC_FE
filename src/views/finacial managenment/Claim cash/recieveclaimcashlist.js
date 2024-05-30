@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     color: 'blue'
   },
   approve: {
-    color: '#228B22'
+    color: '#00CE00'
   },
   reject: {
     color: 'red'

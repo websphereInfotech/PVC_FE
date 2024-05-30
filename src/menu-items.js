@@ -184,6 +184,22 @@ const MenuItem = () => {
 
   const hasAllPermissionsRecieveClaimcash = checkAllPermissions('Claim Cash', ['view_reciveclaim', 'isapproved_claim']);
 
+  const hasAllPermissionsPaymentBank = checkAllPermissions('Payment Bank', [
+    'create_payment_bank',
+    'update_payment_bank',
+    'view_payment_bank',
+    'view_all_payment_bank',
+    'delete_payment_bank'
+  ]);
+
+  const hasAllPermissionsCompany = checkAllPermissions('Company', [
+    'create_company',
+    'update_company',
+    'delete_company',
+    'view_all_company',
+    'view_single_company'
+  ]);
+
   return {
     items: [
       {
@@ -278,7 +294,7 @@ const MenuItem = () => {
                 type: 'collapse',
                 icon: icons['PaymentsIcon'],
                 children: [
-                  {
+                  hasAllPermissionsPaymentBank && {
                     id: 'payment Bank',
                     title: 'Payment Bank',
                     type: 'item',
@@ -444,13 +460,13 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['StoreIcon'],
             children: [
-              {
-                id: 'Company Profile',
-                title: 'Company Profile',
-                type: 'item',
-                url: '/profile'
-              },
-              {
+              // {
+              //   id: 'Company Profile',
+              //   title: 'Company Profile',
+              //   type: 'item',
+              //   url: '/profile'
+              // },
+              hasAllPermissionsCompany && {
                 id: 'Company',
                 title: 'Company',
                 type: 'item',

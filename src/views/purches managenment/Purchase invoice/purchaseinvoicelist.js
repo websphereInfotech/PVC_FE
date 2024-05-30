@@ -18,6 +18,8 @@ const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
   { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
+  { id: 'createdBy', label: 'Create By', align: 'center' },
+  { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
@@ -145,6 +147,10 @@ export default function PurchaseinvoiceList() {
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'vendor' ? (
                       row.purchseVendor.accountname
+                    ) : column.id === 'updatedBy' ? (
+                      row.salesUpdateUser?.username
+                    ) : column.id === 'createdBy' ? (
+                      row.salesCreateUser?.username
                     ) : (
                       row[column.id]
                     )}

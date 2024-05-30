@@ -19,9 +19,9 @@ const columns = [
   { id: 'ProFormaInvoice_no', label: 'No.', align: 'center' },
   { id: 'customer', label: 'Customer', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
-  // { id: 'mobileno', label: 'Mobile No.', align: 'center' },
-  // { id: 'email', label: 'Email', align: 'center' },
   { id: 'validtill', label: 'Valid Till', align: 'center' },
+  { id: 'createdBy', label: 'Create By', align: 'center' },
+  { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'view', label: 'View', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' },
   { id: 'delete', label: 'Delete', align: 'center' }
@@ -163,6 +163,10 @@ export default function ProformainvoiceList() {
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.customer.accountname
+                    ) : column.id === 'updatedBy' ? (
+                      row.proUpdateUser?.username
+                    ) : column.id === 'createdBy' ? (
+                      row.proCreateUser?.username
                     ) : (
                       row[column.id]
                     )}

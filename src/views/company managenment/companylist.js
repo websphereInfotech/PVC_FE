@@ -17,7 +17,7 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Companyview, fetchAllCompany } from 'store/thunk';
+import { Companyview, deleteCompany, fetchAllCompany } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 // import useCan from 'views/checkpermissionvalue';
 
@@ -38,7 +38,7 @@ const CompanyList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  // const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     const fetchCompany = async () => {
@@ -77,14 +77,14 @@ const CompanyList = () => {
     navigate(`/companyview/${id}`);
   };
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    // setSelectedId(id);
+    setSelectedId(id);
   };
 
   const handlecompanydelete = async () => {
     try {
-      // await dispatch(deleteDebitnote(selectedId));
+      await dispatch(deleteCompany(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
       console.error('Error deleting user:', error);

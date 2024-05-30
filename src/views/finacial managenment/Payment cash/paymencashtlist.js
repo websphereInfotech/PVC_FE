@@ -31,6 +31,8 @@ const columns = [
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'vendor', label: 'Vendor', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
+  { id: 'createdBy', label: 'Create By', align: 'center' },
+  { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'edit', label: 'Edit', align: 'center' },
   { id: 'delete', label: 'Delete', align: 'center' }
@@ -206,6 +208,10 @@ const PaymentListPage = () => {
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'vendor' ? (
                       payment.PaymentVendor.vendorname
+                    ) : column.id === 'updatedBy' ? (
+                      payment.paymentUpdate?.username
+                    ) : column.id === 'createdBy' ? (
+                      payment.paymentCreate?.username
                     ) : (
                       payment[column.id]
                     )}

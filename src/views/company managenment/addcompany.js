@@ -35,6 +35,7 @@ const AddCompanyForm = () => {
   const emailRef = React.useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   React.useEffect(() => {
     if (id) {
       const fetchCompanyData = async () => {
@@ -51,6 +52,7 @@ const AddCompanyForm = () => {
             city: company.city,
             state: company.state
           });
+          console.log('Retrieved company data:', company);
         } catch (error) {
           console.error('Error fetching company data:', error);
         }
@@ -58,6 +60,15 @@ const AddCompanyForm = () => {
       fetchCompanyData();
     }
   }, [id, dispatch]);
+
+  const handleCityChange = (selectedCity) => {
+    setFormData({ ...formData, city: selectedCity.name });
+  };
+
+  const handleStateChange = (selectedState) => {
+    setFormData({ ...formData, state: selectedState.name });
+  };
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     if (['accountname', 'bankname', 'accountnumber', 'ifsccode', 'branch'].includes(id)) {
@@ -74,13 +85,7 @@ const AddCompanyForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleCityChange = (selectedCity) => {
-    setFormData({ ...formData, city: selectedCity.name });
-  };
 
-  const handleStateChange = (selectedState) => {
-    setFormData({ ...formData, state: selectedState.name });
-  };
   const handleSave = async () => {
     try {
       const data = {
@@ -88,15 +93,16 @@ const AddCompanyForm = () => {
       };
       if (id) {
         await dispatch(updateCompany(id, data, navigate));
+      } else {
+        const companydata = await dispatch(createCompany(data));
+        console.log(companydata, 'companydata');
+        const bankdetails = {
+          companyId: companydata.data.data.id,
+          ...bankdata
+        };
+        console.log(bankdetails, 'bankdata');
+        await dispatch(createCompanyBank(bankdetails, navigate));
       }
-      const companydata = await dispatch(createCompany(data));
-      console.log(companydata, 'companydata');
-      const bankdetails = {
-        companyId: companydata.data.data.id,
-        ...bankdata
-      };
-      console.log(bankdetails, 'bankdata');
-      await dispatch(createCompanyBank(bankdetails, navigate));
     } catch (error) {
       console.error('Error creating company:', error);
     }
@@ -104,9 +110,16 @@ const AddCompanyForm = () => {
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
-        <Typography variant="h4" align="center" gutterBottom id="mycss">
-          Create Account
-        </Typography>
+        {id ? (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Upadate Account
+          </Typography>
+        ) : (
+          <Typography variant="h4" align="center" gutterBottom id="mycss">
+            Create Account
+          </Typography>
+        )}
+
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={4}>
@@ -196,21 +209,30 @@ const AddCompanyForm = () => {
               </Typography>
               <StateSelect
                 countryid={countryid}
+                // defaultValue={formData.state}
                 onChange={(selectedState) => {
                   setstateid(selectedState.id);
                   handleStateChange(selectedState);
                 }}
-                placeHolder="Select State"
+                placeHolder={formData.state}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="subtitle1">
                 City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder="Select City" />
+              <CitySelect
+                // value={formData.city}
+                countryid={countryid}
+                stateid={stateid}
+                onChange={handleCityChange}
+                placeHolder={formData.city}
+              />
             </Grid>
           </Grid>
-          {id && (
+          {id ? (
+            ''
+          ) : (
             <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'end', justifyItems: 'center' }}>
               <button id="buttoncs" style={{ width: '150px' }} onClick={handleClickOpen}>
                 Add Bank Details

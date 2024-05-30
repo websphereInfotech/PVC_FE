@@ -151,6 +151,7 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/paymentbank', element: <Paymentbank /> },
+    { path: '/paymentbank/:id', element: <Paymentbank /> },
     { path: '/paymentbanklist', element: <Paymentbanklist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++

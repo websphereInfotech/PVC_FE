@@ -58,11 +58,13 @@ const Claimledgerlist = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'updatedAt'
-                      ? new Date(payment[column.id]).toLocaleDateString('en-GB')
-                      : column.id === 'user'
-                        ? payment.username
-                        : payment[column.id]}
+                    <span style={{ color: column.id === 'creditAmount' ? '#00CE00' : column.id === 'debitAmount' ? 'red' : 'inherit' }}>
+                      {column.id === 'updatedAt'
+                        ? new Date(payment[column.id]).toLocaleDateString('en-GB')
+                        : column.id === 'user'
+                          ? payment.username
+                          : payment[column.id]}
+                    </span>
                   </TableCell>
                 ))}
               </TableRow>
