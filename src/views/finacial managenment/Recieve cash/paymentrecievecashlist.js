@@ -62,7 +62,7 @@ const PaymentrecieveList = () => {
         setPayments(data);
       })
       .catch((error) => {
-        console.error('Error fetching payment recieve data:', error);
+        console.error('Error fetching payment recieve cash data:', error);
       });
   }, [dispatch]);
 
@@ -119,7 +119,7 @@ const PaymentrecieveList = () => {
           setcustomer([...options]);
         }
       } catch (error) {
-        console.error('Error fetching Purchase:', error);
+        console.error('Error fetching payment recieve cash:', error);
       }
     };
 

@@ -48,7 +48,7 @@ const Salescashlist = () => {
         const data = await dispatch(getallSalesInvoiceCash());
         setsalescash(data.data);
       } catch (error) {
-        console.error('Error fetching sales invoice:', error);
+        console.error('Error fetching sales cash:', error);
       }
     };
 
@@ -88,7 +88,7 @@ const Salescashlist = () => {
       await dispatch(deleteSalesinvoicecash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting sales cash:', error);
     }
   };
 

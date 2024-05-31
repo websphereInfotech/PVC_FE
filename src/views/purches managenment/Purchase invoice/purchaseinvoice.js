@@ -206,7 +206,7 @@ const Purchaseinvoice = () => {
         setCompanystate(data[0].state);
         setGststate(datademo);
       } catch (error) {
-        console.error('Error fetching Purchase:', error);
+        console.error('Error fetching purchase invoice:', error);
       }
     };
 
@@ -302,7 +302,7 @@ const Purchaseinvoice = () => {
         await dispatch(createPurchaseinvoice(payload, navigate));
       }
     } catch (error) {
-      console.error('Error creating purchae bill:', error);
+      console.error('Error creating purchae invoice:', error);
     }
   };
   const handleInvoiceDateChange = (date) => {

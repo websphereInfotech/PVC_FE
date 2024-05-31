@@ -3,7 +3,7 @@ import React from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
-  Button,
+  // Button,
   Chip,
   ClickAwayListener,
   Fade,
@@ -25,7 +25,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // assets
 import QueryBuilderTwoToneIcon from '@mui/icons-material/QueryBuilderTwoTone';
-import NotificationsNoneTwoToneIcon from '@mui/icons-material/NotificationsNoneTwoTone';
+// import NotificationsNoneTwoToneIcon from '@mui/icons-material/NotificationsNoneTwoTone';
 
 import User1 from 'assets/images/users/avatar-1.jpg';
 import User2 from 'assets/images/users/avatar-2.jpg';
@@ -39,9 +39,9 @@ const NotificationSection = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+  // const handleToggle = () => {
+  //   setOpen((prevOpen) => !prevOpen);
+  // };
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -55,12 +55,12 @@ const NotificationSection = () => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
-    prevOpen.current = open;
+    // prevOpen.current = open;
   }, [open]);
 
   return (
     <>
-      <Button
+      {/* <Button
         sx={{
           minWidth: { sm: 50, xs: 35 }
         }}
@@ -70,9 +70,9 @@ const NotificationSection = () => {
         aria-label="Notification"
         onClick={handleToggle}
         color="inherit"
-      >
-        <NotificationsNoneTwoToneIcon sx={{ fontSize: '1.5rem' }} />
-      </Button>
+      > */}
+      {/* <NotificationsNoneTwoToneIcon sx={{ fontSize: '1.5rem' }} /> */}
+      {/* </Button> */}
       <Popper
         placement="bottom-end"
         open={open}

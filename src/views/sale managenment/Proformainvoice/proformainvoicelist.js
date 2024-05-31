@@ -54,7 +54,7 @@ export default function ProformainvoiceList() {
         });
         setQuotations(response);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching proformainvoice:', error);
       }
     };
 
@@ -96,7 +96,7 @@ export default function ProformainvoiceList() {
       await dispatch(deleteProformainvoice(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting proformainvoice:', error);
     }
   };
 

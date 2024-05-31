@@ -52,7 +52,7 @@ const Claimcashlist = () => {
         setPayments(data);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching cliam cash data:', error);
       });
   }, [dispatch]);
 
@@ -112,7 +112,7 @@ const Claimcashlist = () => {
       await dispatch(deleteClaimCash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting cliam cash data:', error);
     }
   };
   const handleLedgerClick = () => {

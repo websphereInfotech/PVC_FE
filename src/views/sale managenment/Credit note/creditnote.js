@@ -146,7 +146,7 @@ const Creditnote = () => {
         setCompanystate(data[0].state);
         setGststate(datademo);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching credit note:', error);
       }
     };
 
@@ -381,7 +381,7 @@ const Creditnote = () => {
         await dispatch(createCreditnote(payload, navigate));
       }
     } catch (error) {
-      console.error('Error creating proformainvoice:', error);
+      console.error('Error creating credit note:', error);
     }
   };
 

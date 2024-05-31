@@ -92,7 +92,7 @@ const DileveryChallanList = () => {
       await dispatch(deleteDileveryChallan(selectedUserId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting delivery challan:', error);
     }
   };
 

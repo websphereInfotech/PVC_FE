@@ -60,7 +60,7 @@ const Paymentbanklist = () => {
         setPayments(data);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching payment bank data:', error);
       });
   }, [dispatch]);
 
@@ -124,7 +124,7 @@ const Paymentbanklist = () => {
       await dispatch(deletePaymentbank(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting pyament bank:', error);
     }
   };
   useEffect(() => {
@@ -136,7 +136,7 @@ const Paymentbanklist = () => {
           setvendor([...options]);
         }
       } catch (error) {
-        console.error('Error fetching Purchase:', error);
+        console.error('Error fetching payment bank:', error);
       }
     };
 

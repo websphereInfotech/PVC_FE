@@ -102,7 +102,7 @@ const CompanyviewPage = () => {
       await dispatch(deleteCompanyBank(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting bank details:', error);
     }
   };
   return (

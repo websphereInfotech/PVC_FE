@@ -10,7 +10,13 @@ import {
   TableHead,
   TableContainer,
   Select,
-  MenuItem
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
@@ -33,6 +39,7 @@ const columns = [
   { id: 'user', label: 'Sender', align: 'center', minWidth: 100 },
   { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
   { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
+  { id: 'purpose', label: 'Purpose', align: 'center', minWidth: 100 },
   { id: 'status', label: 'Status', align: 'center', minWidth: 100 }
 ];
 
@@ -44,6 +51,8 @@ const Recieveclaimcashlist = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [statuses, setStatuses] = useState({});
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
 
   useEffect(() => {
     dispatch(viewRecieveClaimCash())
@@ -56,7 +65,7 @@ const Recieveclaimcashlist = () => {
         setStatuses(initialStatuses);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching recieve cliam cash data:', error);
       });
   }, [dispatch]);
 
@@ -71,16 +80,43 @@ const Recieveclaimcashlist = () => {
 
   const handleStatusChange = (paymentId, event) => {
     const newStatus = event.target.value;
-    const isApproved = newStatus === 'Approve';
+    if (newStatus === 'Approve') {
+      setSelectedPaymentId(paymentId);
+      setDialogOpen(true);
+    } else {
+      const isApproved = newStatus === 'Approve';
+      dispatch(IsStatusclaimCash(paymentId, payments.find((p) => p.id === paymentId).toUserId, isApproved))
+        .then(() => {
+          setStatuses({
+            ...statuses,
+            [paymentId]: newStatus
+          });
+        })
+        .catch((error) => {
+          console.error('Error updating recieve cliam cash status:', error);
+        });
+    }
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setSelectedPaymentId(null);
+  };
+
+  const handleDialogConfirm = () => {
+    const paymentId = selectedPaymentId;
+    const isApproved = true;
     dispatch(IsStatusclaimCash(paymentId, payments.find((p) => p.id === paymentId).toUserId, isApproved))
       .then(() => {
         setStatuses({
           ...statuses,
-          [paymentId]: newStatus
+          [paymentId]: 'Approve'
         });
+        handleDialogClose();
       })
       .catch((error) => {
-        console.error('Error updating payment status:', error);
+        console.error('Error updating  recieve cliam cash status:', error);
+        handleDialogClose();
       });
   };
 
@@ -147,6 +183,21 @@ const Recieveclaimcashlist = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Confirm Approval</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to approve this payment?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="secondary" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleDialogConfirm} color="secondary" variant="outlined">
+            Approve
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

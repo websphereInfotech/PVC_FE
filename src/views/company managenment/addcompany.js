@@ -95,12 +95,10 @@ const AddCompanyForm = () => {
         await dispatch(updateCompany(id, data, navigate));
       } else {
         const companydata = await dispatch(createCompany(data));
-        console.log(companydata, 'companydata');
         const bankdetails = {
           companyId: companydata.data.data.id,
           ...bankdata
         };
-        console.log(bankdetails, 'bankdata');
         await dispatch(createCompanyBank(bankdetails, navigate));
       }
     } catch (error) {

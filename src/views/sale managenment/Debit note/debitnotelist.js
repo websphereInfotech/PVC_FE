@@ -51,7 +51,7 @@ const Debitnotelist = () => {
         });
         setDebitnote(data);
       } catch (error) {
-        console.error('Error fetching sales invoice:', error);
+        console.error('Error fetching debit note:', error);
       }
     };
 
@@ -91,7 +91,7 @@ const Debitnotelist = () => {
       await dispatch(deleteDebitnote(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting debit note:', error);
     }
   };
 

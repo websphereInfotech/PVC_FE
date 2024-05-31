@@ -18,7 +18,7 @@ const Purchaseinvoicecashview = () => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching purchase bill cash data:', error);
+        console.error('Error fetching purchase invoice cash data:', error);
       });
   }, [dispatch, id]);
 

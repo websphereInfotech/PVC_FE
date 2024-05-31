@@ -87,7 +87,7 @@ const CompanyList = () => {
       await dispatch(deleteCompany(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting company:', error);
     }
   };
 

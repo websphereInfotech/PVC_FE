@@ -60,7 +60,7 @@ const PaymentListPage = () => {
         setPayments(data.data);
       })
       .catch((error) => {
-        console.error('Error fetching payment data:', error);
+        console.error('Error fetching payment cash data:', error);
       });
   }, [dispatch]);
 
@@ -124,7 +124,7 @@ const PaymentListPage = () => {
       await dispatch(paymentCashDelete(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting payment cash:', error);
     }
   };
   useEffect(() => {
@@ -136,7 +136,7 @@ const PaymentListPage = () => {
           setvendor([...options]);
         }
       } catch (error) {
-        console.error('Error fetching Purchase:', error);
+        console.error('Error fetching payment cash:', error);
       }
     };
 

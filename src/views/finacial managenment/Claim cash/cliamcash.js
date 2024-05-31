@@ -15,7 +15,6 @@ const Cliamcashpage = () => {
   const [username, setusername] = useState('');
   const [user, setuser] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  // const [selectuser, setSelectuser] = useState([]);
   const fromUserId = sessionStorage.getItem('userId');
   const [formData, setFormData] = useState({
     toUserId: '',
@@ -24,7 +23,6 @@ const Cliamcashpage = () => {
     description: '',
     purpose: ''
   });
-  // console.log(selectuser);
 
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label) {
@@ -44,7 +42,7 @@ const Cliamcashpage = () => {
           setuser([...options]);
         }
       } catch (error) {
-        console.error('Error fetching payment Cash:', error);
+        console.error('Error fetching cliam Cash:', error);
       }
     };
     const viewData = async () => {
@@ -59,7 +57,7 @@ const Cliamcashpage = () => {
           setSelectuser(toUser.id);
         }
       } catch (error) {
-        console.error('Error fetching payment:', error);
+        console.error('Error fetching cliam:', error);
       }
     };
     viewData();
@@ -74,7 +72,7 @@ const Cliamcashpage = () => {
         await dispatch(createClaimcash(formData, navigate));
       }
     } catch (error) {
-      console.error('Error creating payment cash data:', error);
+      console.error('Error creating cliam cash data:', error);
     }
   };
 

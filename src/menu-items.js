@@ -299,6 +299,12 @@ const MenuItem = () => {
                     title: 'Payment Bank',
                     type: 'item',
                     url: '/paymentbanklist'
+                  },
+                  {
+                    id: 'recieve Bank',
+                    title: 'Recieve Bank',
+                    type: 'item',
+                    // url: '/paymentbanklist'
                   }
                 ]
               },
@@ -450,7 +456,7 @@ const MenuItem = () => {
           }
         ]
       },
-      {
+      hasAllPermissionsCompany && {
         type: 'group',
         icon: icons['StoreIcon'],
         children: [
@@ -466,7 +472,7 @@ const MenuItem = () => {
               //   type: 'item',
               //   url: '/profile'
               // },
-              hasAllPermissionsCompany && {
+              {
                 id: 'Company',
                 title: 'Company',
                 type: 'item',

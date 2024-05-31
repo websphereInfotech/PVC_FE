@@ -18,7 +18,7 @@ const Debitnoteview = () => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching sales invoice data:', error);
+        console.error('Error fetching debit note data:', error);
       });
   }, [dispatch, id]);
   const subtotal = data.totalMrp ? data.totalMrp : 0;

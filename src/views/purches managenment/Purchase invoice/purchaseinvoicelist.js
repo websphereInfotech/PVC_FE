@@ -41,7 +41,7 @@ export default function PurchaseinvoiceList() {
         const response = await dispatch(getallPurchaseinvoice());
         setPurchasebill(response.data);
       } catch (error) {
-        console.error('Error fetching purchase bill:', error);
+        console.error('Error fetching purchase invoice:', error);
       }
     };
 
@@ -80,7 +80,7 @@ export default function PurchaseinvoiceList() {
       await dispatch(deletePurchaseinvoice(billid));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting Bill:', error);
+      console.error('Error deleting purchase invoice:', error);
     }
   };
 

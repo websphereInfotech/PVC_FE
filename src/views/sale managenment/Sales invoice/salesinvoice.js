@@ -194,7 +194,7 @@ const Salesinvoice = () => {
         setCompanystate(data[0].state);
         setGststate(datademo);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching sales invoice:', error);
       }
     };
     if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
@@ -317,7 +317,7 @@ const Salesinvoice = () => {
 
   const handleSalesinvoice = async () => {
     try {
-      console.log('data>>>>', selectcustomer, setSelectcustomer);
+      console.log(selectcustomer, setSelectcustomer);
       if (id) {
         const payload = {
           ...formData,

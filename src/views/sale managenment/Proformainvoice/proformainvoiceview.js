@@ -19,7 +19,7 @@ const Proformainvoiceviewpage = () => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching quotation data:', error);
+        console.error('Error fetching proforminvoice data:', error);
       });
   }, [dispatch, id]);
   const subtotal = data.totalMrp ? data.totalMrp : 0;

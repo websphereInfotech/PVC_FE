@@ -112,7 +112,7 @@ const Purchaseinvoicecash = () => {
           console.error('fetchAllProductsCash returned an unexpected response:', productResponse);
         }
       } catch (error) {
-        console.error('Error fetching sales cash:', error);
+        console.error('Error fetching purchase invoice cash:', error);
       }
     };
     if (canCreateVendorValue !== null || canCreateProductvalue !== null) {
@@ -223,7 +223,7 @@ const Purchaseinvoicecash = () => {
         await dispatch(createPurchaseInvoiceCash(payload, navigate));
       }
     } catch (error) {
-      console.error('Error creating sales cash:', error);
+      console.error('Error creating purchase invoice cash:', error);
     }
   };
 

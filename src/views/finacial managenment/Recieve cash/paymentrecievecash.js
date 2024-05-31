@@ -70,7 +70,7 @@ const Paymentrecieve = () => {
           }
         }
       } catch (error) {
-        console.error('Error fetching recieve cash:', error);
+        console.error('Error fetching payment recieve cash:', error);
       }
     };
     fetchData();
@@ -87,7 +87,7 @@ const Paymentrecieve = () => {
         await dispatch(createRecievecash(formData, navigate));
       }
     } catch (error) {
-      console.error('Error creating payment recieve data:', error);
+      console.error('Error creating payment recieve cash data:', error);
     }
   };
 

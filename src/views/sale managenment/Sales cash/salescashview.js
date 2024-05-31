@@ -18,7 +18,7 @@ const Salescashview = () => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching sales invoice data:', error);
+        console.error('Error fetching sales cash data:', error);
       });
   }, [dispatch, id]);
   return (

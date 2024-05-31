@@ -152,7 +152,7 @@ const Deliverychallan = () => {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching delivery challan:', error);
       }
     };
     if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
@@ -168,7 +168,6 @@ const Deliverychallan = () => {
         const { DeliveryCustomer, date, challanno } = response;
         console.log(response.DeliveryCustomer, 'response');
         setFormData({ customerId: DeliveryCustomer.id, date, challanno });
-        // console.log(formData,'formdata');
         setSelectcustomer(DeliveryCustomer.id);
         setCustomername(DeliveryCustomer.accountname);
         const updatedRows = response.items.map((item) => ({
@@ -245,7 +244,7 @@ const Deliverychallan = () => {
         console.log(selectcustomer, 'Deliverychallan');
       }
     } catch (error) {
-      console.error('Error creating Deliverychallan:', error);
+      console.error('Error creating delivery challan:', error);
     }
   };
 

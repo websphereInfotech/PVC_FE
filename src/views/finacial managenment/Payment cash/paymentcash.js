@@ -57,7 +57,7 @@ const PaymentPage = () => {
           setvendor(options);
         }
       } catch (error) {
-        console.error('Error fetching payment Cash:', error);
+        console.error('Error fetching payment cash:', error);
       }
     };
     const viewData = async () => {
@@ -71,7 +71,7 @@ const PaymentPage = () => {
           setSelectvendor(PaymentVendor.id);
         }
       } catch (error) {
-        console.error('Error fetching payment:', error);
+        console.error('Error fetching payment cash:', error);
       }
     };
     if (canCreateVendorValue !== null) {

@@ -18,7 +18,7 @@ const CreditnoteView = () => {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error fetching sales invoice data:', error);
+        console.error('Error fetching credit note data:', error);
       });
   }, [dispatch, id]);
 

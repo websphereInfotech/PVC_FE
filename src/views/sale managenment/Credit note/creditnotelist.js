@@ -91,7 +91,7 @@ const Creditnotelist = () => {
       await dispatch(deleteCreditnote(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting credit note:', error);
     }
   };
 

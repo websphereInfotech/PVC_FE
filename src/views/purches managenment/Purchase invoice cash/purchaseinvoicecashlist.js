@@ -88,7 +88,7 @@ const Purchaseinvoicecashlist = () => {
       await dispatch(deletePurchaseInvoiceCash(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting purchase invoice cash:', error);
     }
   };
 

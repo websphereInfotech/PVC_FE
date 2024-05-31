@@ -145,7 +145,7 @@ const DebitNote = () => {
         setCompanystate(data[0].state);
         setGststate(datademo);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching debit note:', error);
       }
     };
 
@@ -246,7 +246,6 @@ const DebitNote = () => {
         invoiceId: selectedOption.value,
         invoicedate: selectedOption.invoicedate
       };
-      console.log(selectedOption, 'selectedOption');
       setPurchasedata(selectedOption.label);
       setFormData(updatefromdata);
     }
@@ -254,7 +253,6 @@ const DebitNote = () => {
   useEffect(() => {
     const data = async () => {
       const purchseinvoice = await dispatch(getallPurchaseinvoice());
-      console.log(purchseinvoice.data, 'purchseinvoice');
       const options = purchseinvoice.data.map((item) => ({
         value: item.id,
         label: item.invoiceno,
@@ -299,7 +297,6 @@ const DebitNote = () => {
       if (!id) {
         try {
           const DebitnoteResponse = await dispatch(getallDebitnote());
-          console.log(DebitnoteResponse, 'DebitnoteResponse');
           let nextDebitnoteNumber = 1;
           if (DebitnoteResponse.length === 0) {
             const DebitnoteNumber = nextDebitnoteNumber;
@@ -384,7 +381,7 @@ const DebitNote = () => {
         await dispatch(createDebitnote(payload, navigate));
       }
     } catch (error) {
-      console.error('Error creating proformainvoice:', error);
+      console.error('Error creating debit note:', error);
     }
   };
 

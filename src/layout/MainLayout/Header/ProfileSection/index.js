@@ -8,7 +8,7 @@ import { Fade, Button, ClickAwayListener, Paper, Popper, List, ListItemText, Lis
 // import PersonTwoToneIcon from '@mui/icons-material/PersonTwoTone';
 // import DraftsTwoToneIcon from '@mui/icons-material/DraftsTwoTone';
 // import LockOpenTwoTone from '@mui/icons-material/LockOpenTwoTone';
-// import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone';
 import { useDispatch } from 'react-redux';
@@ -21,13 +21,13 @@ import useCan from 'views/checkpermissionvalue';
 const ProfileSection = () => {
   const theme = useTheme();
   const { canUserLogout } = useCan();
-  // const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
-  // const handleListItemClick = (event, index) => {
-  //   setSelectedIndex(index);
-  // };
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -103,13 +103,13 @@ const ProfileSection = () => {
                     borderRadius: '10px'
                   }}
                 >
-                  {/* <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
+                  <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
                     <ListItemIcon>
                       <SettingsTwoToneIcon />
                     </ListItemIcon>
                     <ListItemText secondary="Settings" />
                   </ListItemButton>
-                  <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
+                  {/* <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
                     <ListItemIcon>
                       <PersonTwoToneIcon />
                     </ListItemIcon>

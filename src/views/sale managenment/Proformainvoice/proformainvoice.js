@@ -150,7 +150,7 @@ const Proformainvoice = () => {
         setCompanystate(data[0].state);
         setGststate(datademo);
       } catch (error) {
-        console.error('Error fetching quotations:', error);
+        console.error('Error fetching proformainvoice:', error);
       }
     };
 
