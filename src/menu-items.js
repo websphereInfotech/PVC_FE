@@ -200,6 +200,14 @@ const MenuItem = () => {
     'view_single_company'
   ]);
 
+  const hasAllPermissionPaymentRecieveBank = checkAllPermissions('Receive Bank', [
+    'create_receive_bank',
+    'update_receive_bank',
+    'delete_receive_bank',
+    'view_receive_bank',
+    'get_all_receive_bank'
+  ]);
+
   return {
     items: [
       {
@@ -300,11 +308,11 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/paymentbanklist'
                   },
-                  {
+                  hasAllPermissionPaymentRecieveBank && {
                     id: 'recieve Bank',
                     title: 'Recieve Bank',
                     type: 'item',
-                    // url: '/paymentbanklist'
+                    url: '/paymentrecievebanklist'
                   }
                 ]
               },

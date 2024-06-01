@@ -481,6 +481,24 @@ const useCan = () => {
     return checkPermission('Payment Bank', 'view_all_payment_bank');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT Recieve BANK
+
+  const canCreatePaymentRecieveBank = () => {
+    return checkPermission('Receive Bank', 'create_receive_bank');
+  };
+  const canUpdatePaymentRecieveBank = () => {
+    return checkPermission('Receive Bank', 'update_receive_bank');
+  };
+  const canDeletePaymentRecieveBank = () => {
+    return checkPermission('Receive Bank', 'delete_receive_bank');
+  };
+  const canViewPaymentRecieveBank = () => {
+    return checkPermission('Receive Bank', 'view_receive_bank');
+  };
+  const canViwAllPaymentRecieveBank = () => {
+    return checkPermission('Receive Bank', 'get_all_receive_bank');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY
 
   const canCreateCompany = () => {
@@ -706,6 +724,12 @@ const useCan = () => {
     canDeletePaymentBank,
     canViewPaymentBank,
     canViwAllPaymentBank,
+    // PAYMENT RECIEVE BANK +++++
+    canCreatePaymentRecieveBank,
+    canUpdatePaymentRecieveBank,
+    canDeletePaymentRecieveBank,
+    canViewPaymentRecieveBank,
+    canViwAllPaymentRecieveBank,
     // COMPANY ++++++++++++++++++
     canCreateCompany,
     canUpdateCompany,

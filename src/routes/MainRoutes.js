@@ -12,6 +12,7 @@ import Itemratecard from 'component/reports/general reports/itemratecard';
 import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
+import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
@@ -39,6 +40,11 @@ const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Cla
 // ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment bank ++++++++++++++++++++++++++++++++++++++++++++++++
 const Paymentbank = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbank')));
 const Paymentbanklist = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbanklist')));
+
+// ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment recieve bank ++++++++++++++++++++++++++++++++++++++++++++++++
+const Paymentrecievebank = Loadable(lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentrecievebank')));
+const Paymentrecievebanklist = Loadable(lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentrecievebanklist')));
+
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expense +++++++++++++++++++++++++++++++++++++++++++++++++++
 const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expencelist')));
 const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/expenceadd')));
@@ -127,32 +133,37 @@ const MainRoutes = {
     },
     { path: '/profile', element: <SamplePage /> },
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
-    { path: '/claimcash', element: <Cliamcashpage /> },
-    { path: '/claimcash/:id', element: <Cliamcashpage /> },
-    { path: '/claimcashlist', element: <Claimcashlist /> },
-    { path: '/claimcashledger', element: <Claimledgerlist /> },
-    { path: '/recieveclaimcashlist', element: <Recieveclaimcashlist /> },
+    { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} /> },
+    { path: '/claimcash/:id', element: <ProtectedRoute element={Cliamcashpage} /> },
+    { path: '/claimcashlist', element: <ProtectedRoute element={Claimcashlist} /> },
+    { path: '/claimcashledger', element: <ProtectedRoute element={Claimledgerlist} /> },
+    { path: '/recieveclaimcashlist', element: <ProtectedRoute element={Recieveclaimcashlist} /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales cash +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/salescash', element: <Salescash /> },
-    { path: '/salescash/:id', element: <Salescash /> },
-    { path: '/salescashlist', element: <Salescashlist /> },
-    { path: '/salescashview/:id', element: <Salescashview /> },
+    { path: '/salescash', element: <ProtectedRoute element={Salescash} /> },
+    { path: '/salescash/:id', element: <ProtectedRoute element={Salescash} /> },
+    { path: '/salescashlist', element: <ProtectedRoute element={Salescashlist} /> },
+    { path: '/salescashview/:id', element: <ProtectedRoute element={Salescashview} /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/paymentcash', element: <PaymentPage /> },
-    { path: '/paymentcash/:id', element: <PaymentPage /> },
-    { path: '/paymentcashlist', element: <PaymentListPage /> },
-    { path: '/paymentrecieve', element: <Paymentrecieve /> },
-    { path: '/paymentrecieve/:id', element: <Paymentrecieve /> },
-    { path: '/paymentrecieveList', element: <PaymentrecieveList /> },
-    { path: '/ledgerlist', element: <Ledgerlist /> },
-    { path: '/customerledgerlist', element: <Customerledgerlist /> },
+    { path: '/paymentcash', element: <ProtectedRoute element={PaymentPage} /> },
+    { path: '/paymentcash/:id', element: <ProtectedRoute element={PaymentPage} /> },
+    { path: '/paymentcashlist', element: <ProtectedRoute element={PaymentListPage} /> },
+    { path: '/paymentrecieve', element: <ProtectedRoute element={Paymentrecieve} /> },
+    { path: '/paymentrecieve/:id', element: <ProtectedRoute element={Paymentrecieve} /> },
+    { path: '/paymentrecieveList', element: <ProtectedRoute element={PaymentrecieveList} /> },
+    { path: '/ledgerlist', element: <ProtectedRoute element={Ledgerlist} /> },
+    { path: '/customerledgerlist', element: <ProtectedRoute element={Customerledgerlist} /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments bank +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/paymentbank', element: <Paymentbank /> },
     { path: '/paymentbank/:id', element: <Paymentbank /> },
     { path: '/paymentbanklist', element: <Paymentbanklist /> },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments recieve bank +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/paymentrecievebank', element: <Paymentrecievebank /> },
+    { path: '/paymentrecievebank/:id', element: <Paymentrecievebank /> },
+    { path: '/paymentrecievebanklist', element: <Paymentrecievebanklist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/expenselist', element: <ExpensePage /> },
@@ -164,13 +175,11 @@ const MainRoutes = {
     { path: '/proformainvoice', element: <Proformainvoice /> },
     { path: '/proformainvoice/:id', element: <Proformainvoice /> },
     { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
-    // { path: '/proformainvoicemain', element: <Proformainvoicemain /> },
     { path: '/proformainvoiceviewpage/:id', element: <Proformainvoiceviewpage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesinvoice', element: <Salesinvoice /> },
     { path: '/salesinvoice/:id', element: <Salesinvoice /> },
-    // { path: '/salesinvoicemain', element: <Salesinvoicemain /> },
     { path: '/salesinvoicelist', element: <Salesinvoicelist /> },
     { path: '/salesinvoiceview/:id', element: <Salesinvoiceview /> },
 
@@ -179,7 +188,6 @@ const MainRoutes = {
     { path: '/deliverychallan/:id', element: <Deliverychallan /> },
     { path: '/deliverychallanlist', element: <DileveryChallanList /> },
     { path: '/deliverychallanview/:id', element: <DileveryChallanView /> },
-    // { path: '/deliverychallanmain', element: <Dileverychallanmain /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/debitnote', element: <DebitNote /> },
@@ -200,10 +208,10 @@ const MainRoutes = {
     { path: '/purchaseinvoiceview/:id', element: <Purchaseinvoiceview /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice Cash  +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/purchaseinvoicecash', element: <Purchaseinvoicecash /> },
-    { path: '/purchaseinvoicecash/:id', element: <Purchaseinvoicecash /> },
-    { path: '/purchaseinvoicecashList', element: <Purchaseinvoicecashlist /> },
-    { path: '/purchaseinvoicecashview/:id', element: <Purchaseinvoicecashview /> },
+    { path: '/purchaseinvoicecash', element: <ProtectedRoute element={Purchaseinvoicecash} /> },
+    { path: '/purchaseinvoicecash/:id', element: <ProtectedRoute element={Purchaseinvoicecash} /> },
+    { path: '/purchaseinvoicecashList', element: <ProtectedRoute element={Purchaseinvoicecashlist} /> },
+    { path: '/purchaseinvoicecashview/:id', element: <ProtectedRoute element={Purchaseinvoicecashview} /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/companylist', element: <CompanyList /> },

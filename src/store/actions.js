@@ -356,6 +356,23 @@ export const FETCH_ALL_PAYMENT_BANK_REQUEST = 'FETCH_ALL_PAYMENT_BANK_REQUEST';
 export const FETCH_ALL_PAYMENT_BANK_SUCCESS = 'FETCH_ALL_PAYMENT_BANK_SUCCESS';
 export const FETCH_ALL_PAYMENT_BANK_FAILURE = 'FETCH_ALL_PAYMENT_BANK_FAILURE';
 
+// #################################################################### PAYMENT RECIEVE BANK ###################################################################
+export const CREATE_PAYMENT_RECIEVE_BANK_REQUEST = 'CREATE_PAYMENT_RECIEVE_BANK_REQUEST';
+export const CREATE_PAYMENT_RECIEVE_BANK_SUCCESS = 'CREATE_PAYMENT_RECIEVE_BANK_SUCCESS';
+export const CREATE_PAYMENT_RECIEVE_BANK_FAILURE = 'CREATE_PAYMENT_RECIEVE_BANK_FAILURE';
+export const VIEW_PAYMENT_RECIEVE_BANK_REQUEST = 'VIEW_PAYMENT_RECIEVE_BANK_REQUEST';
+export const VIEW_PAYMENT_RECIEVE_BANK_SUCCESS = 'VIEW_PAYMENT_RECIEVE_BANK_SUCCESS';
+export const VIEW_PAYMENT_RECIEVE_BANK_FAILURE = 'VIEW_PAYMENT_RECIEVE_BANK_FAILURE';
+export const UPADTE_PAYMENT_RECIEVE_BANK_REQUEST = 'UPADTE_PAYMENT_RECIEVE_BANK_REQUEST';
+export const UPADTE_PAYMENT_RECIEVE_BANK_SUCCESS = 'UPADTE_PAYMENT_RECIEVE_BANK_SUCCESS';
+export const UPADTE_PAYMENT_RECIEVE_BANK_FAILURE = 'UPADTE_PAYMENT_RECIEVE_BANK_FAILURE';
+export const DELETE_PAYMENT_RECIEVE_BANK_REQUEST = 'DELETE_PAYMENT_RECIEVE_BANK_REQUEST';
+export const DELETE_PAYMENT_RECIEVE_BANK_SUCCESS = 'DELETE_PAYMENT_RECIEVE_BANK_SUCCESS';
+export const DELETE_PAYMENT_RECIEVE_BANK_FAILURE = 'DELETE_PAYMENT_RECIEVE_BANK_FAILURE';
+export const FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST';
+export const FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS';
+export const FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE';
+
 // #################################################################### COMAPNY BANK ###################################################################
 export const CREATE_COMPANY_BANK_REQUEST = 'CREATE_COMPANY_BANK_REQUEST';
 export const CREATE_COMPANY_BANK_SUCCESS = 'CREATE_COMPANY_BANK_SUCCESS';
@@ -1741,63 +1758,63 @@ export const fetchallpaymentbankFailure = (error) => ({
 });
 
 //  ####################################################################### PAYMENT BANK #####################################################
-// export const createPaymentbankRequest = (data) => ({
-//   type: 'CREATE_PAYMENT_BANK_REQUEST',
-//   payload: data
-// });
-// export const createPaymentbankSuccess = (data) => ({
-//   type: 'CREATE_PAYMENT_BANK_SUCCESS',
-//   payload: data
-// });
-// export const createPaymentbankFailure = (error) => ({
-//   type: 'CREATE_PAYMENT_BANK_FAILURE',
-//   payload: error
-// });
-// export const ViewsinglepaymentbankRequest = (data) => ({
-//   type: 'VIEW_PAYMENT_BANK_REQUEST',
-//   payload: data
-// });
-// export const ViewsinglepaymentbankSuccess = (data) => ({
-//   type: 'VIEW_PAYMENT_BANK_SUCCESS',
-//   payload: data
-// });
-// export const ViewsinglepaymentbankFailure = (error) => ({
-//   type: 'VIEW_PAYMENT_BANK_FAILURE',
-//   payload: error
-// });
-// export const updatepaymentbankRequest = (data) => ({
-//   type: 'UPDATE_PAYMENT_BANK_REQUEST',
-//   payload: data
-// });
-// export const updatepaymentbankSuccess = (data) => ({
-//   type: 'UPDATE_PAYMENT_BANK_SUCCESS',
-//   payload: data
-// });
-// export const updatepaymentbankFailure = (error) => ({
-//   type: 'UPDATE_PAYMENT_BANK_FAILURE',
-//   payload: error
-// });
-// export const deletepaymentbankRequest = (data) => ({
-//   type: 'DELETE_PAYMENT_BANK_REQUEST',
-//   payload: data
-// });
-// export const deletepaymentbankSuccess = (data) => ({
-//   type: 'DELETE_PAYMENT_BANK_SUCCESS',
-//   payload: data
-// });
-// export const deletepaymentbankFailure = (error) => ({
-//   type: 'DELETE_PAYMENT_BANK_FAILURE',
-//   payload: error
-// });
-// export const fetchallpaymentbankRequest = (data) => ({
-//   type: 'FETCH_ALL_PAYMENT_BANK_REQUEST',
-//   payload: data
-// });
-// export const fetchallpaymentbankSuccess = (data) => ({
-//   type: 'FETCH_ALL_PAYMENT_BANK_SUCCESS',
-//   payload: data
-// });
-// export const fetchallpaymentbankFailure = (error) => ({
-//   type: 'FETCH_ALL_PAYMENT_BANK_FAILURE',
-//   payload: error
-// });
+export const createPaymentRecievebankRequest = (data) => ({
+  type: 'CREATE_PAYMENT_RECIEVE_BANK_REQUEST',
+  payload: data
+});
+export const createPaymentRecievebankSuccess = (data) => ({
+  type: 'CREATE_PAYMENT_RECIEVE_BANK_SUCCESS',
+  payload: data
+});
+export const createPaymentRecievebankFailure = (error) => ({
+  type: 'CREATE_PAYMENT_RECIEVE_BANK_FAILURE',
+  payload: error
+});
+export const ViewsinglepaymentrecievebankRequest = (data) => ({
+  type: 'VIEW_PAYMENT_RECIEVE_BANK_REQUEST',
+  payload: data
+});
+export const ViewsinglepaymentrecievebankSuccess = (data) => ({
+  type: 'VIEW_PAYMENT_RECIEVE_BANK_SUCCESS',
+  payload: data
+});
+export const ViewsinglepaymentrecievebankFailure = (error) => ({
+  type: 'VIEW_PAYMENT_RECIEVE_BANK_FAILURE',
+  payload: error
+});
+export const updatepaymentrecievebankRequest = (data) => ({
+  type: 'UPDATE_PAYMENT_RECIEVE_BANK_REQUEST',
+  payload: data
+});
+export const updatepaymentrecievebankSuccess = (data) => ({
+  type: 'UPDATE_PAYMENT_RECIEVE_BANK_SUCCESS',
+  payload: data
+});
+export const updatepaymentrecievebankFailure = (error) => ({
+  type: 'UPDATE_PAYMENT_RECIEVE_BANK_FAILURE',
+  payload: error
+});
+export const deletepaymentrecievebankRequest = (data) => ({
+  type: 'DELETE_PAYMENT_RECIEVE_BANK_REQUEST',
+  payload: data
+});
+export const deletepaymentrecievebankSuccess = (data) => ({
+  type: 'DELETE_PAYMENT_RECIEVE_BANK_SUCCESS',
+  payload: data
+});
+export const deletepaymentrecievebankFailure = (error) => ({
+  type: 'DELETE_PAYMENT_RECIEVE_BANK_FAILURE',
+  payload: error
+});
+export const fetchallpaymentrecievebankRequest = (data) => ({
+  type: 'FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST',
+  payload: data
+});
+export const fetchallpaymentrecievebankSuccess = (data) => ({
+  type: 'FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS',
+  payload: data
+});
+export const fetchallpaymentrecievebankFailure = (error) => ({
+  type: 'FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE',
+  payload: error
+});

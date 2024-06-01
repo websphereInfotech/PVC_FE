@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Grid, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 
 // project import
 import SearchSection from './SearchSection';
@@ -13,12 +13,23 @@ import { drawerWidth } from 'config.js';
 
 // assets
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import { useDispatch } from 'react-redux';
+import { fetchAllCompany } from 'store/thunk';
 // import logo from 'assets/images/logo.svg';
 
 // ==============================|| HEADER ||============================== //
 
 const Header = ({ drawerToggle }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const [companyname, setCompanyname] = useState('');
+  useEffect(() => {
+    const fetchdata = async () => {
+      const data = await dispatch(fetchAllCompany());
+      setCompanyname(data[1].companyname);
+    };
+    fetchdata();
+  }, [dispatch]);
 
   return (
     <>
@@ -41,6 +52,7 @@ const Header = ({ drawerToggle }) => {
               size="large"
             >
               <MenuTwoToneIcon sx={{ fontSize: '1.5rem' }} />
+              <Typography style={{ marginLeft: '10px' }}>{companyname}</Typography>
             </IconButton>
           </Grid>
         </Grid>

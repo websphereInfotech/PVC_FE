@@ -20,14 +20,17 @@ import { useNavigate } from 'react-router-dom';
 import { Companyview, deleteCompany, fetchAllCompany } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 // import useCan from 'views/checkpermissionvalue';
+import Switch from '@mui/material/Switch';
 
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const columns = [
   { id: 'companyname', label: 'Company Name', minWidth: 100, align: 'center' },
   { id: 'email', label: 'Email.', minWidth: 100, align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' },
+  { id: 'action', label: 'Action', minWidth: 100, align: 'center' }
 ];
 
 const CompanyList = () => {
@@ -44,7 +47,6 @@ const CompanyList = () => {
     const fetchCompany = async () => {
       try {
         const data = await dispatch(fetchAllCompany());
-        console.log(data, 'data');
         setCompany(data);
       } catch (error) {
         console.error('Error fetching company:', error);
@@ -143,6 +145,8 @@ const CompanyList = () => {
                       >
                         Delete
                       </Button>
+                    ) : column.id === 'action' ? (
+                      <Switch {...label} color="success" />
                     ) : (
                       row[column.id]
                     )}
@@ -156,7 +160,7 @@ const CompanyList = () => {
       <TablePagination
         rowsPerPageOptions={[8, 25, 100]}
         component="div"
-        count={Company.length || 0}
+        count={Company?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

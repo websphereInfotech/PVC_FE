@@ -20,6 +20,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Companyview, createCompanyBank, deleteCompanyBank, updateCompanyBank } from 'store/thunk';
+import { toast } from 'react-toastify';
 
 const CompanyviewPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -86,7 +87,14 @@ const CompanyviewPage = () => {
         await dispatch(updateCompanyBank(selectedBank, bankdetails));
         window.location.reload();
       } else {
-        await dispatch(createCompanyBank(bankdetails, navigate));
+        const response = await dispatch(createCompanyBank(bankdetails, navigate));
+        toast.success(response.data.message, {
+          icon: <img src={require('../../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000,
+          onClose: () => {
+            navigate('/companylist');
+          }
+        });
       }
     } catch (error) {
       console.error('Error updating or creating bank details:', error);

@@ -6,6 +6,7 @@ import { createCompany, createCompanyBank, Companyview, updateCompany } from 'st
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddCompanyForm = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -35,6 +36,7 @@ const AddCompanyForm = () => {
   const emailRef = React.useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const [companyid, setCompanyid] = React.useState(null);
 
   React.useEffect(() => {
     if (id) {
@@ -86,25 +88,63 @@ const AddCompanyForm = () => {
     setOpen(false);
   };
 
+  // const handleSave = async () => {
+  //   try {
+  //     const data = {
+  //       ...formData
+  //     };
+  //     if (id) {
+  //       await dispatch(updateCompany(id, data, navigate));
+  //     } else {
+  //       const companydata = await dispatch(createCompany(data));
+  //       setCompanyid(companydata.data.data.id);
+  //       if (bankdata) {
+  //         const bankdetails = {
+  //           companyId: companyid,
+  //           ...bankdata
+  //         };
+  //         await dispatch(createCompanyBank(bankdetails, navigate));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error creating company:', error);
+  //   }
+  // };
+  const isBankDataComplete = () => {
+    return Object.values(bankdata).every((value) => value.trim() !== '');
+  };
+
   const handleSave = async () => {
     try {
       const data = {
         ...formData
       };
+
       if (id) {
         await dispatch(updateCompany(id, data, navigate));
       } else {
         const companydata = await dispatch(createCompany(data));
-        const bankdetails = {
-          companyId: companydata.data.data.id,
-          ...bankdata
-        };
-        await dispatch(createCompanyBank(bankdetails, navigate));
+        console.log(companydata.data.message, 'companydata');
+        toast.success(companydata.data.message, {
+          icon: <img src={require('../../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000,
+          onClose: () => {
+            navigate('/companylist');
+          }
+        });
+        if (isBankDataComplete()) {
+          const bankdetails = {
+            companyId: companydata.data.data.id,
+            ...bankdata
+          };
+          await dispatch(createCompanyBank(bankdetails, navigate));
+        }
       }
     } catch (error) {
       console.error('Error creating company:', error);
     }
   };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>

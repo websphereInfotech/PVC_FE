@@ -2,29 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentBank, fetchAllCompanyBank, fetchAllVendors, updatePaymentbank, viewSinglePaymentBank } from 'store/thunk';
+import {
+  createPaymentRecieveBank,
+  fetchAllCompanyBank,
+  fetchAllCustomers,
+  updatePaymentRecievebank,
+  viewSinglePaymentRecieveBank
+} from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import AnchorVendorDrawer from '../../../component/vendor';
+import AnchorTemporaryDrawer from '../../../component/customeradd';
 import Select from 'react-select';
 import useCan from 'views/checkpermissionvalue';
 
-const Paymentbank = () => {
+const Paymentrecievebank = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateVendor } = useCan();
-  const [vendorname, setvendorname] = useState('');
+  const { canCreateCustomer } = useCan();
+  const [customername, setcustomername] = useState('');
   const [companyname, setcompanyname] = useState('');
-  const [vendor, setvendor] = useState([]);
+  const [customer, setcustomer] = useState([]);
   const [account, setAccount] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectvendor, setSelectvendor] = useState([]);
+  const [selectcustomer, setSelectcustomer] = useState([]);
   const [selectaccount, setSelectaccount] = useState([]);
   const [formData, setFormData] = useState({
-    vendorId: '',
+    customerId: '',
     paymentdate: new Date(),
     amount: Number(),
     referance: '',
@@ -32,22 +38,22 @@ const Paymentbank = () => {
     accountId: '',
     voucherno: ''
   });
-  console.log(selectvendor, selectaccount);
-  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  console.log(selectcustomer, selectaccount);
+  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
   useEffect(() => {
-    setCanCreateVendorValue(canCreateVendor());
-  }, [canCreateVendor]);
+    setCanCreateCustomerValue(canCreateCustomer());
+  }, [canCreateCustomer]);
 
   const handleDateChange = (date) => {
     setFormData({ ...formData, paymentdate: date });
   };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+    if (selectedOption && selectedOption.label === 'Create New Customer') {
       setIsDrawerOpen(true);
     } else {
-      formData.vendorId = selectedOption.value;
+      formData.customerId = selectedOption.value;
       setFormData(formData);
-      setvendorname(selectedOption.label);
+      setcustomername(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
@@ -62,13 +68,13 @@ const Paymentbank = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendors());
+        const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
+          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
         }
-        if (!canCreateVendorValue) {
-          setvendor(options);
+        if (!canCreateCustomerValue) {
+          setcustomer(options);
         }
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
@@ -76,44 +82,44 @@ const Paymentbank = () => {
           setAccount(options);
         }
       } catch (error) {
-        console.error('Error fetching payment bank:', error);
+        console.error('Error fetching payment recieve bank:', error);
       }
     };
     const viewData = async () => {
       try {
         if (id) {
-          const response = await dispatch(viewSinglePaymentBank(id));
-          const { voucherno, mode, referance, amount, paymentBank, paymentData, paymentdate } = response;
+          const response = await dispatch(viewSinglePaymentRecieveBank(id));
+          const { voucherno, mode, referance, amount, receiveBank, customerBank, paymentdate } = response;
           setFormData({
             voucherno,
             mode,
             referance,
             amount,
-            vendorId: paymentData.id,
-            accountId: paymentBank.id,
+            customerId: customerBank.id,
+            accountId: receiveBank.id,
             paymentdate
           });
-          setcompanyname(paymentBank.accountname);
-          setvendorname(paymentData.accountname);
-          setSelectaccount(paymentBank.id);
-          setSelectvendor(paymentData.id);
+          setcompanyname(receiveBank.accountname);
+          setcustomername(customerBank.accountname);
+          setSelectaccount(receiveBank.id);
+          setSelectcustomer(customerBank.id);
         }
       } catch (error) {
-        console.error('Error fetching payment bank:', error);
+        console.error('Error fetching payment recieve bank:', error);
       }
     };
-    if (canCreateVendorValue !== null) {
+    if (canCreateCustomerValue !== null) {
       fetchData();
     }
     viewData();
-  }, [dispatch, id, canCreateVendorValue]);
+  }, [dispatch, id, canCreateCustomerValue]);
 
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
-        await dispatch(updatePaymentbank(id, formData, navigate));
+        await dispatch(updatePaymentRecievebank(id, formData, navigate));
       } else {
-        await dispatch(createPaymentBank(formData, navigate));
+        await dispatch(createPaymentRecieveBank(formData, navigate));
       }
     } catch (error) {
       console.error('Error creating payment bank data:', error);
@@ -147,11 +153,11 @@ const Paymentbank = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Payment Bank
+            Update Payment Receive Bank
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Payment Bank
+            Payment Receive Bank
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -164,16 +170,16 @@ const Paymentbank = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={vendor}
-                value={{ value: formData.vendorId, label: vendorname }}
+                options={customer}
+                value={{ value: formData.customerId, label: customername }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -230,7 +236,7 @@ const Paymentbank = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/paymentbanklist" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentrecievebanklist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
                 <button id="savebtncs" onClick={handlecreatePaymentCash}>
@@ -241,7 +247,7 @@ const Paymentbank = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/paymentbanklist" style={{ textDecoration: 'none' }}>
+                <Link to="/paymentrecievebanklist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
@@ -258,4 +264,4 @@ const Paymentbank = () => {
   );
 };
 
-export default Paymentbank;
+export default Paymentrecievebank;
