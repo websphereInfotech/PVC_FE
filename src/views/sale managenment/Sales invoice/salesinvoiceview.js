@@ -46,7 +46,7 @@ const Salesinvoiceview = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Invoice Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data.invoicedate).toLocaleDateString('en-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Dispatch Through </Typography>

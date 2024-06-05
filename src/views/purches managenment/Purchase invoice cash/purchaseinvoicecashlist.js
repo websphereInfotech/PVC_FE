@@ -107,7 +107,7 @@ const Purchaseinvoicecashlist = () => {
       >
         Create Purchase cash
       </Button>
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>

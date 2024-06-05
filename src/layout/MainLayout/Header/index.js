@@ -14,7 +14,7 @@ import { drawerWidth } from 'config.js';
 // assets
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { useDispatch } from 'react-redux';
-import { fetchAllCompany } from 'store/thunk';
+import { fetchuserwiseCompany } from 'store/thunk';
 // import logo from 'assets/images/logo.svg';
 
 // ==============================|| HEADER ||============================== //
@@ -22,13 +22,25 @@ import { fetchAllCompany } from 'store/thunk';
 const Header = ({ drawerToggle }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [companyname, setCompanyname] = useState('');
+  const [name, setname] = useState('');
   useEffect(() => {
-    const fetchdata = async () => {
-      const data = await dispatch(fetchAllCompany());
-      setCompanyname(data[1].companyname);
+    const fetchCompany = async () => {
+      try {
+        const response = await dispatch(fetchuserwiseCompany());
+        console.log(response.companies, 'default');
+        const defaultCompany = response.companies.find((company) => company.P_companyUser.setDefault === true);
+        if (defaultCompany) {
+          setname(defaultCompany.companyname);
+          console.log('Default Company Name:', defaultCompany.companyname);
+        } else {
+          console.log('No default company found');
+        }
+      } catch (error) {
+        console.error('Error fetching company:', error);
+      }
     };
-    fetchdata();
+
+    fetchCompany();
   }, [dispatch]);
 
   return (
@@ -52,7 +64,7 @@ const Header = ({ drawerToggle }) => {
               size="large"
             >
               <MenuTwoToneIcon sx={{ fontSize: '1.5rem' }} />
-              <Typography style={{ marginLeft: '10px' }}>{companyname}</Typography>
+              <Typography style={{ marginLeft: '10px' }}>{name}</Typography>
             </IconButton>
           </Grid>
         </Grid>

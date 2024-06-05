@@ -43,20 +43,16 @@ const Purchaseinvoiceview = () => {
           <Typography variant="subtitle2">{data?.invoiceno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('en-GB')}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Terms (Days)</Typography>
           <Typography variant="subtitle2">{data?.terms}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Due Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.duedate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data?.duedate).toLocaleDateString('en-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Inv. Date</Typography>
-          <Typography variant="subtitle2">{new Date(data?.invoicedate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data?.invoicedate).toLocaleDateString('en-GB')}</Typography>
         </Grid>
 
         <Grid item xs={12}>

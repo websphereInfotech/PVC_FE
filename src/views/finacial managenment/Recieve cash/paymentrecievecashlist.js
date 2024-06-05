@@ -17,7 +17,6 @@ import {
   Grid,
   IconButton
 } from '@mui/material';
-
 import CloseIcon from '@mui/icons-material/Close';
 import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
@@ -113,7 +112,6 @@ const PaymentrecieveList = () => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchAllCustomersCash());
-        console.log(response);
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
           setcustomer([...options]);

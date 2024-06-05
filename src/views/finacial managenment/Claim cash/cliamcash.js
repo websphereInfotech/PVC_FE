@@ -38,7 +38,8 @@ const Cliamcashpage = () => {
       try {
         const response = await dispatch(getallclaimuser());
         if (Array.isArray(response)) {
-          const options = response.map((user) => ({ value: user.id, label: user.username }));
+          console.log(response, 'res');
+          const options = response.map((user) => ({ value: user.users.id, label: user.users.username }));
           setuser([...options]);
         }
       } catch (error) {

@@ -50,7 +50,8 @@ export default function UserList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallusers());
-        const filteredData = response.filter((user) => user.role !== 'Super Admin');
+        console.log(response[0]);
+        const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
         setData(filteredData);
       } catch (error) {
         console.error('Error fetching User:', error);
@@ -80,7 +81,8 @@ export default function UserList() {
       await dispatch(deleteUser(selectedUserId));
       setOpenConfirmation(false);
       const response = await dispatch(getallusers());
-      const filteredData = response.filter((user) => user.role !== 'Super Admin');
+      console.log(response.users);
+      const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
       setData(filteredData);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -94,7 +96,7 @@ export default function UserList() {
       <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddUser} disabled={!canUserCreate()}>
         Create USer
       </Button>
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>

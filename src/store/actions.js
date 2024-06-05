@@ -406,6 +406,9 @@ export const DELETE_COMPANY_FAILURE = 'DELETE_COMPANY_FAILURE';
 export const FETCH_ALL_COMPANY_REQUEST = 'FETCH_ALL_COMPANY_REQUEST';
 export const FETCH_ALL_COMPANY_SUCCESS = 'FETCH_ALL_COMPANY_SUCCESS';
 export const FETCH_ALL_COMPANY_FAILURE = 'FETCH_ALL_COMPANY_FAILURE';
+export const SET_DEFAULT_COMPANY_REQUEST = 'SET_DEFAULT_COMPANY_REQUEST';
+export const SET_DEFAULT_COMPANY_SUCCESS = 'SET_DEFAULT_COMPANY_SUCCESS';
+export const SET_DEFAULT_COMPANY_FAILURE = 'SET_DEFAULT_COMPANY_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -1322,6 +1325,17 @@ export const fetchAllCompanySuccess = (data) => ({
 });
 export const fetchAllCompanyFailure = (error) => ({
   type: 'FETCH_ALL_COMPANY_FAILURE',
+  payload: error
+});
+export const setDefaultCompanyRequest = () => ({
+  type: 'SET_DEFAULT_COMPANY_REQUEST'
+});
+export const setDefaultCompanySuccess = (data) => ({
+  type: 'SET_DEFAULT_COMPANY_SUCCESS',
+  payload: data
+});
+export const setDefaultCompanyFailure = (error) => ({
+  type: 'SET_DEFAULT_COMPANY_FAILURE',
   payload: error
 });
 

@@ -17,7 +17,7 @@ import {
   DialogTitle
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Companyview, deleteCompany, fetchAllCompany } from 'store/thunk';
+import { Companyview, deleteCompany, fetchuserwiseCompany, setDefaultCompany } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 // import useCan from 'views/checkpermissionvalue';
 import Switch from '@mui/material/Switch';
@@ -46,15 +46,48 @@ const CompanyList = () => {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        const data = await dispatch(fetchAllCompany());
-        setCompany(data);
+        const data = await dispatch(fetchuserwiseCompany());
+        console.log(data, 'data');
+        setCompany(data.companies);
       } catch (error) {
         console.error('Error fetching company:', error);
       }
     };
-
+    // const setdefaultCompany = async () => {
+    //   try {
+    //     const data = await dispatch(setDefaultCompany());
+    //     console.log(data, 'data');
+    //     // setDefaultCompany(data);
+    //   } catch (error) {
+    //     console.error('Error fetching company:', error);
+    //   }
+    // };
     fetchCompany();
+    // setdefaultCompany();
   }, [dispatch]);
+
+  // const handlesetcompany = async (id) => {
+  //   try {
+  //     const data = await dispatch(setDefaultCompany(id));
+  //     console.log(data, 'data');
+  //     setDefaultCompany(data);
+  //   } catch (error) {
+  //     console.error('Error fetching company:', error);
+  //   }
+  // };
+
+  const handlesetcompany = async (id) => {
+    try {
+      const data = await dispatch(setDefaultCompany(id));
+      window.location.reload();
+      console.log(data, 'data');
+      setCompany((prevCompanies) =>
+        prevCompanies.map((company) => (company.id === id ? { ...company, setDefault: true } : { ...company, setDefault: false }))
+      );
+    } catch (error) {
+      console.error('Error setting default company:', error);
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -146,7 +179,7 @@ const CompanyList = () => {
                         Delete
                       </Button>
                     ) : column.id === 'action' ? (
-                      <Switch {...label} color="success" />
+                      <Switch {...label} color="success" checked={row.P_companyUser.setDefault} onChange={() => handlesetcompany(row.id)} />
                     ) : (
                       row[column.id]
                     )}

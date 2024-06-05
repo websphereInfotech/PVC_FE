@@ -14,7 +14,7 @@ const columns = [
 const Claimledgerlist = () => {
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const dispatch = useDispatch();
   const formData = sessionStorage.getItem('ClaimformDate');
   const toDate = sessionStorage.getItem('ClaimtoDate');
@@ -73,7 +73,7 @@ const Claimledgerlist = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[15, 25, 100]}
         component="div"
         count={payments?.length || 0}
         rowsPerPage={rowsPerPage}

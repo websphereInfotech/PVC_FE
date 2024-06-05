@@ -247,6 +247,9 @@ import {
   fetchAllCompanyRequest,
   fetchAllCompanySuccess,
   fetchAllCompanyFailure,
+  setDefaultCompanyRequest,
+  setDefaultCompanySuccess,
+  setDefaultCompanyFailure,
   //  COMPANY BANK ++++++++++++++++++++++++
   CreateCompanyBankRequest,
   CreateCompanyBankSuccess,
@@ -1937,7 +1940,36 @@ export const fetchAllCompany = () => {
     }
   };
 };
-
+export const fetchuserwiseCompany = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_userTOComapny`, config);
+      const data = response.data.data;
+      dispatch(fetchAllCompanySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllCompanyFailure(error.message));
+    }
+  };
+};
+export const setDefaultCompany = (id) => {
+  return async (dispatch) => {
+    dispatch(setDefaultCompanyRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/set_default_comapny/${id}`, config);
+      const data = response.data.data;
+      const token = response.data.token;
+      sessionStorage.setItem('token', token);
+      dispatch(setDefaultCompanySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(setDefaultCompanyFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createCompanyBank = (bankdetails) => {
   return async (dispatch) => {
