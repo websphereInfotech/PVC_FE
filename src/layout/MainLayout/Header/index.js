@@ -27,11 +27,11 @@ const Header = ({ drawerToggle }) => {
     const fetchCompany = async () => {
       try {
         const response = await dispatch(fetchuserwiseCompany());
-        console.log(response.companies, 'default');
-        const defaultCompany = response.companies.find((company) => company.P_companyUser.setDefault === true);
+        const defaultCompany = response.find((company) => company.setDefault === true);
+        // console.log(defaultCompany, 'default');
         if (defaultCompany) {
-          setname(defaultCompany.companyname);
-          console.log('Default Company Name:', defaultCompany.companyname);
+          setname(defaultCompany.companies.companyname);
+          // console.log('Default Company Name:', defaultCompany.companyname);
         } else {
           console.log('No default company found');
         }

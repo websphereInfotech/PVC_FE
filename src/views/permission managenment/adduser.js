@@ -38,6 +38,7 @@ const User = () => {
       try {
         if (id) {
           const response = await dispatch(Userview(id));
+          console.log(response);
           const { username, role, email, mobileno, salary, password, confirmpassword } = response;
           setFormData({ username, role, email, mobileno, salary, password, confirmpassword });
         }

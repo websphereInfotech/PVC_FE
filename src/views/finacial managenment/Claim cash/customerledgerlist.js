@@ -62,9 +62,13 @@ const Customerledgerlist = () => {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ color: (column.id === 'creditAmount' && '00CE00') || (column.id === 'debitAmount' && 'red') }}
+                    style={{ color: (column.id === 'creditAmount' && 'green') || (column.id === 'debitAmount' && 'red') }}
                   >
-                    {column.id === 'date' ? new Date(payment[column.id]).toLocaleDateString('en-GB') : payment[column.id]}
+                    {column.id === 'date'
+                      ? new Date(payment[column.id]).toLocaleDateString('en-GB')
+                      : column.id === 'customer'
+                        ? payment.customerData.customername
+                        : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>

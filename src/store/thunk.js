@@ -2352,7 +2352,10 @@ export const fetchAllClaimcashLedger = (formDate, toDate) => {
     dispatch(fetchAllclaimcashledgerRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_claim_ledger?fromDate=${formDate}&toDate=${toDate}`, config);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/view_claimBalance_ledger?fromDate=${formDate}&toDate=${toDate}`,
+        config
+      );
       const data = response.data.data;
       dispatch(fetchAllclaimcashledgerSuccess(data));
       return data;

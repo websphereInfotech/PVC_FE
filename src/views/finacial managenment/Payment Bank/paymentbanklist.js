@@ -13,17 +13,17 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
-  // IconButton,
-  // Grid
+  DialogTitle,
+  IconButton,
+  Grid
 } from '@mui/material';
 // import Select from 'react-select';
-// import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
 import { deletePaymentbank, fetchAllVendors, getAllPaymentbank, viewSinglePaymentBank } from 'store/thunk';
 import { useNavigate } from 'react-router';
-// import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 // import Ledgerlist from '../Claim cash/ledger';
 import useCan from 'views/checkpermissionvalue';
 
@@ -46,12 +46,12 @@ const Paymentbanklist = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  // const [openDrawer, setOpenDrawer] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   // const [vendorId, setvendorId] = useState(null);
   // const [vendor, setvendor] = useState([]);
   // const [vendorname, setvendorname] = useState('');
-  // const [toDate, setToDate] = useState(new Date());
-  // const [formDate, setFormDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
   // const showLedgerlist = false;
 
   useEffect(() => {
@@ -67,30 +67,28 @@ const Paymentbanklist = () => {
   const handleMakePayment = () => {
     navigate('/paymentbank');
   };
-  // const handleformDateChange = (date) => {
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, '0');
-  //   const day = String(date.getDate()).padStart(2, '0');
-  //   const formattedDate = `${year}-${month}-${day}`;
-  //   setFormDate(formattedDate);
-  // };
-  // const handletoDateChange = (date) => {
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, '0');
-  //   const day = String(date.getDate()).padStart(2, '0');
-  //   const formattedDate = `${year}-${month}-${day}`;
-  //   setToDate(formattedDate);
-  // };
-  // const handleLedger = (vendorId, formDate, toDate) => {
-  //   dispatch(getallVendorledger(vendorId, formDate, toDate));
-  //   navigate('/ledgerlist');
-  //   setSelectedId(vendorId);
-  //   sessionStorage.setItem('vendorId', vendorId);
-  //   setFormDate(formDate);
-  //   sessionStorage.setItem('formDate', formDate);
-  //   setToDate(toDate);
-  //   sessionStorage.setItem('toDate', toDate);
-  // };
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+  const handleLedger = (formDate, toDate) => {
+    dispatch(getallVendorledger(formDate, toDate));
+    // navigate('/ledgerlist');
+    setFormDate(formDate);
+    sessionStorage.setItem('formDate', formDate);
+    setToDate(toDate);
+    sessionStorage.setItem('toDate', toDate);
+  };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -102,13 +100,13 @@ const Paymentbanklist = () => {
     navigate(`/paymentbank/${id}`);
   };
 
-  // const handleCloseDrawer = () => {
-  //   setOpenDrawer(false);
-  // };
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
 
-  // const handleLedgerClick = () => {
-  //   setOpenDrawer(true);
-  // };
+  const handleLedgerClick = () => {
+    setOpenDrawer(true);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -166,9 +164,9 @@ const Paymentbanklist = () => {
         >
           Payment Bank
         </Button>
-        {/* <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
           Ledger
-        </Button> */}
+        </Button>
       </div>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -245,7 +243,7 @@ const Paymentbanklist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '20%' } }}>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '20%' } }}>
         <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>Ledger Details</h3>
           <span>
@@ -256,12 +254,12 @@ const Paymentbanklist = () => {
         </div>
         <DialogContent style={{ position: 'reletive' }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '20px' }}>
-              <Typography variant="subtitle1">
+            {/* <Grid item xs={12} style={{ paddingTop: '20px' }}> */}
+            {/* <Typography variant="subtitle1">
                 Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <Typography variant="subtitle1">
                 From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -288,17 +286,12 @@ const Paymentbanklist = () => {
                 popperPlacement="top-center"
               />
             </Grid>
-            <Button
-              onClick={() => handleLedger(vendorId, formDate, toDate)}
-              variant="contained"
-              color="secondary"
-              style={{ marginLeft: '60%' }}
-            >
+            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
               GO
             </Button>
           </Grid>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </Card>
   );
 };

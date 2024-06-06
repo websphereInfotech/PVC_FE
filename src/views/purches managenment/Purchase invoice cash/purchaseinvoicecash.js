@@ -314,7 +314,7 @@ const Purchaseinvoicecash = () => {
                       <TableCell disabled={!canDeleteSalescash()}>
                         <DeleteIcon
                           onClick={() => {
-                            handleDeleteRow(row.id, index);
+                            handleDeleteRow(index);
                           }}
                         />
                       </TableCell>

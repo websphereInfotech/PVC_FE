@@ -73,9 +73,8 @@ const Creditnote = () => {
     const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
 
-    const deletedGstAmount = deletedRow.mrp * (deletedRow.gstrate / 100);
-    const newPlusgst = plusgst - deletedGstAmount;
-    setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+    const newPlusgst = plusgst - plusgst;
+    setPlusgst(newPlusgst);
 
     const deletedAmount = deletedRow.mrp;
     const newSubtotal = subtotal - deletedAmount;
@@ -545,7 +544,7 @@ const Creditnote = () => {
                       <TableCell disabled={!canDeleteCreditnote()}>
                         <DeleteIcon
                           onClick={() => {
-                            handleDeleteRow(row.id, index);
+                            handleDeleteRow(index);
                           }}
                         />
                       </TableCell>

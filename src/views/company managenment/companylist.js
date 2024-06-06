@@ -47,8 +47,7 @@ const CompanyList = () => {
     const fetchCompany = async () => {
       try {
         const data = await dispatch(fetchuserwiseCompany());
-        console.log(data, 'data');
-        setCompany(data.companies);
+        setCompany(data);
       } catch (error) {
         console.error('Error fetching company:', error);
       }
@@ -149,6 +148,7 @@ const CompanyList = () => {
           <TableBody>
             {Company?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
+                {/* {console.log(row, 'row')} */}
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
@@ -156,7 +156,7 @@ const CompanyList = () => {
                         variant="outlined"
                         color="secondary"
                         // disabled={!canViewDebitnote()}
-                        onClick={() => handlecompanyview(row.id)}
+                        onClick={() => handlecompanyview(row.companyId)}
                       >
                         View
                       </Button>
@@ -165,7 +165,7 @@ const CompanyList = () => {
                         // disabled={!canUpdateDebitnote()}
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handlecompanyupdate(row.id)}
+                        onClick={() => handlecompanyupdate(row.companyId)}
                       >
                         Edit
                       </Button>
@@ -174,12 +174,18 @@ const CompanyList = () => {
                         variant="outlined"
                         color="secondary"
                         // disabled={!canDeleteDebitnote()}
-                        onClick={() => handleDeleteConfirmation(row.id)}
+                        onClick={() => handleDeleteConfirmation(row.companyId)}
                       >
                         Delete
                       </Button>
                     ) : column.id === 'action' ? (
-                      <Switch {...label} color="success" checked={row.P_companyUser.setDefault} onChange={() => handlesetcompany(row.id)} />
+                      <Switch {...label} color="success" checked={row.setDefault} onChange={() => handlesetcompany(row.companyId)} />
+                    ) : column.id === 'companyname' ? (
+                      row.companies.companyname
+                    ) : column.id === 'email' ? (
+                      row.companies.email
+                    ) : column.id === 'mobileno' ? (
+                      row.companies.mobileno
                     ) : (
                       row[column.id]
                     )}
