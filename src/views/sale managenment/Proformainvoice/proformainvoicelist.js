@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'ProFormaInvoice_no', label: 'No.', align: 'center' },

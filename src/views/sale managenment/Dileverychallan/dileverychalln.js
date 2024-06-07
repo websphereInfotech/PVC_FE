@@ -16,7 +16,7 @@ import { Deliverychallanview } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Deliverychallan = () => {
   const { id } = useParams();

@@ -355,6 +355,9 @@ export const DELETE_PAYMENT_BANK_FAILURE = 'DELETE_PAYMENT_BANK_FAILURE';
 export const FETCH_ALL_PAYMENT_BANK_REQUEST = 'FETCH_ALL_PAYMENT_BANK_REQUEST';
 export const FETCH_ALL_PAYMENT_BANK_SUCCESS = 'FETCH_ALL_PAYMENT_BANK_SUCCESS';
 export const FETCH_ALL_PAYMENT_BANK_FAILURE = 'FETCH_ALL_PAYMENT_BANK_FAILURE';
+export const PAYMENT_BANK_LEDGER_REQUEST = 'PAYMENT_BANK_LEDGER_REQUEST';
+export const PAYMENT_BANK_LEDGER_SUCCESS = 'PAYMENT_BANK_LEDGER_SUCCESS';
+export const PAYMENT_BANK_LEDGER_FAILURE = 'PAYMENT_BANK_LEDGER_FAILURE';
 
 // #################################################################### PAYMENT RECIEVE BANK ###################################################################
 export const CREATE_PAYMENT_RECIEVE_BANK_REQUEST = 'CREATE_PAYMENT_RECIEVE_BANK_REQUEST';
@@ -372,6 +375,9 @@ export const DELETE_PAYMENT_RECIEVE_BANK_FAILURE = 'DELETE_PAYMENT_RECIEVE_BANK_
 export const FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST';
 export const FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS';
 export const FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE';
+export const PAYMENT_RECIEVE_BANK_LEDGER_REQUEST = 'PAYMENT_RECIEVE_BANK_LEDGER_REQUEST';
+export const PAYMENT_RECIEVE_BANK_LEDGER_SUCCESS = 'PAYMENT_RECIEVE_BANK_LEDGER_SUCCESS';
+export const PAYMENT_RECIEVE_BANK_LEDGER_FAILURE = 'PAYMENT_RECIEVE_BANK_LEDGER_FAILURE';
 
 // #################################################################### COMAPNY BANK ###################################################################
 export const CREATE_COMPANY_BANK_REQUEST = 'CREATE_COMPANY_BANK_REQUEST';
@@ -1770,6 +1776,17 @@ export const fetchallpaymentbankFailure = (error) => ({
   type: 'FETCH_ALL_PAYMENT_BANK_FAILURE',
   payload: error
 });
+export const PaymentBankLedgerRequest = () => ({
+  type: 'PAYMENT_BANK_LEDGER_REQUEST'
+});
+export const PaymentBankLedgerSuccess = (data) => ({
+  type: 'PAYMENT_BANK_LEDGER_SUCCESS',
+  payload: data
+});
+export const PaymentBankLedgerFailure = (error) => ({
+  type: 'PAYMENT_BANK_LEDGER_FAILURE',
+  payload: error
+});
 
 //  ####################################################################### PAYMENT BANK #####################################################
 export const createPaymentRecievebankRequest = (data) => ({
@@ -1830,5 +1847,16 @@ export const fetchallpaymentrecievebankSuccess = (data) => ({
 });
 export const fetchallpaymentrecievebankFailure = (error) => ({
   type: 'FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE',
+  payload: error
+});
+export const PaymentrecieveBankLedgerRequest = () => ({
+  type: 'PAYMENT_RECIEVE_BANK_LEDGER_REQUEST'
+});
+export const PaymentrecieveBankLedgerSuccess = (data) => ({
+  type: 'PAYMENT_RECIEVE_BANK_LEDGER_SUCCESS',
+  payload: data
+});
+export const PaymentrecieveBankLedgerFailure = (error) => ({
+  type: 'PAYMENT_RECIEVE_BANK_LEDGER_FAILURE',
   payload: error
 });

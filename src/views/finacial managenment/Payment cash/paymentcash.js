@@ -8,7 +8,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AnchorVendorDrawer from '../../../component/vendor';
 import Select from 'react-select';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const PaymentPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');

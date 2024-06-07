@@ -14,7 +14,7 @@ import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { logoutAdmin } from 'store/thunk';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 // ==============================|| PROFILE SECTION ||============================== //
 

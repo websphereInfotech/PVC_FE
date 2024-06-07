@@ -18,7 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'invoiceno', label: 'Invocie No', minWidth: 170, align: 'center' },

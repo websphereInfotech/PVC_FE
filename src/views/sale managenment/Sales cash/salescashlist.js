@@ -19,7 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { SalesInvoiceCashview, deleteSalesinvoicecash, getallSalesInvoiceCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   // { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },

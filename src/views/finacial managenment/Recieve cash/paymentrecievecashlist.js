@@ -22,7 +22,7 @@ import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteRecieveCash, fetchAllCustomersCash, getallCustomerledger, getallRecieveCash, viewRecieveCash } from 'store/thunk';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Customerledgerlist from '../Claim cash/customerledgerlist';
@@ -39,7 +39,8 @@ const columns = [
 ];
 
 const PaymentrecieveList = () => {
-  const { canCreatePaymentrecievecash, canUpdatePaymentrecievecash, canDeletePaymentrecievecash } = useCan();
+  const { canCreatePaymentrecievecash, canUpdatePaymentrecievecash, canDeletePaymentrecievecash, canViwAllPaymentrecievecashLedger } =
+    useCan();
   const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
@@ -164,7 +165,13 @@ const PaymentrecieveList = () => {
         >
           Recieve Payment
         </Button>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '16px' }}
+          onClick={handleLedgerClick}
+          disabled={!canViwAllPaymentrecievecashLedger()}
+        >
           Ledger
         </Button>
       </div>

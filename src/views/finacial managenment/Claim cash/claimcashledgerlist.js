@@ -60,7 +60,7 @@ const Claimledgerlist = () => {
                   <TableCell key={column.id} align={column.align}>
                     <span style={{ color: column.id === 'creditAmount' ? '#00CE00' : column.id === 'debitAmount' ? 'red' : 'inherit' }}>
                       {column.id === 'updatedAt'
-                        ? new Date(payment[column.id]).toLocaleDateString('en-GB')
+                        ? new Date(payment.date).toLocaleDateString('en-GB')
                         : column.id === 'user'
                           ? payment.username
                           : payment[column.id]}

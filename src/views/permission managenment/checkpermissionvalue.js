@@ -208,6 +208,9 @@ const useCan = () => {
   const canViewAllCustomer = () => {
     return checkPermission('Customer', 'view_all_customer');
   };
+  const canViewAllCustomerLedger = () => {
+    return checkPermission('Customer Ledger', 'View_customer_Ledger');
+  };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR
   const canCreateVendor = () => {
@@ -225,7 +228,9 @@ const useCan = () => {
   const canViewAllVendor = () => {
     return checkPermission('Vendor', 'view_all_vandor');
   };
-
+  const canViewAllVendorLedger = () => {
+    return checkPermission('Vendor Ledger', 'View_vendor_Ledger');
+  };
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PRODUCT
   const canCreateProduct = () => {
     return checkPermission('Product', 'create_product');
@@ -444,7 +449,9 @@ const useCan = () => {
   const canViwAllPaymentcash = () => {
     return checkPermission('Payment Cash', 'view_all_payment_Cash');
   };
-
+  const canViwAllPaymentcashLedger = () => {
+    return checkPermission('Vendor Ledger Cash', 'View_Cash_vendor_Ledger');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreatePaymentrecievecash = () => {
@@ -461,6 +468,9 @@ const useCan = () => {
   };
   const canViwAllPaymentrecievecash = () => {
     return checkPermission('Receive Cash', 'view_all_receive_Cash');
+  };
+  const canViwAllPaymentrecievecashLedger = () => {
+    return checkPermission('Customer Ledger Cash', 'View_Cash_customer_Ledger');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK
@@ -558,6 +568,9 @@ const useCan = () => {
   const canIsapproveClaimcash = () => {
     return checkPermission('Claim Cash', 'isapproved_claim');
   };
+  const canViwAllClaimcashLedger = () => {
+    return checkPermission('Claim Cash', 'view_claimBalance_ledger');
+  };
 
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
@@ -622,12 +635,14 @@ const useCan = () => {
     canDeleteCustomeFeild,
     canViewCustomer,
     canViewAllCustomer,
+    canViewAllCustomerLedger,
     //  VENDOR ++++++++++++++++++++++++
     canCreateVendor,
     canUpdateVendor,
     canDeleteVendor,
     canViewVendor,
     canViewAllVendor,
+    canViewAllVendorLedger,
     // PRODUCT ++++++++++++++++++++++++
     canCreateProduct,
     canUpdateProduct,
@@ -704,12 +719,14 @@ const useCan = () => {
     canDeletePaymentcash,
     canViewPaymentcash,
     canViwAllPaymentcash,
+    canViwAllPaymentcashLedger,
     // PAYMENT REICEVE CASH +++++++++++
     canCreatePaymentrecievecash,
     canUpdatePaymentrecievecash,
     canDeletePaymentrecievecash,
     canViewPaymentrecievecash,
     canViwAllPaymentrecievecash,
+    canViwAllPaymentrecievecashLedger,
     // CLAIM CASH +++++++++++
     canCreateClaimcash,
     canUpdateClaimcash,
@@ -718,6 +735,7 @@ const useCan = () => {
     canViwAllClaimcash,
     canViwAllRecieveClaimcash,
     canIsapproveClaimcash,
+    canViwAllClaimcashLedger,
     // PAYMENT BANK ++++++++++++
     canCreatePaymentBank,
     canUpdatePaymentBank,

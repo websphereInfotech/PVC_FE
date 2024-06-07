@@ -19,7 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { Companyview, deleteCompany, fetchuserwiseCompany, setDefaultCompany } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-// import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 import Switch from '@mui/material/Switch';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -34,7 +34,7 @@ const columns = [
 ];
 
 const CompanyList = () => {
-  // const { canUpdateDebitnote, canViewDebitnote, canCreateDebitnote, canDeleteDebitnote } = useCan();
+  const { canCreateCompany, canUpdateCompany, canViewCompany, canDeleteCompany } = useCan();
   const navigate = useNavigate();
   const [Company, setCompany] = useState([]);
   const [page, setPage] = useState(0);
@@ -131,7 +131,13 @@ const CompanyList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Company List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ mb: 2, margin: '10px' }} onClick={handleAddCompany}>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ mb: 2, margin: '10px' }}
+        onClick={handleAddCompany}
+        disabled={!canCreateCompany()}
+      >
         Add Company
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -148,21 +154,20 @@ const CompanyList = () => {
           <TableBody>
             {Company?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index}>
-                {/* {console.log(row, 'row')} */}
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'view' ? (
                       <Button
                         variant="outlined"
                         color="secondary"
-                        // disabled={!canViewDebitnote()}
+                        disabled={!canViewCompany()}
                         onClick={() => handlecompanyview(row.companyId)}
                       >
                         View
                       </Button>
                     ) : column.id === 'edit' ? (
                       <Button
-                        // disabled={!canUpdateDebitnote()}
+                        disabled={!canUpdateCompany()}
                         variant="outlined"
                         color="secondary"
                         onClick={() => handlecompanyupdate(row.companyId)}
@@ -173,7 +178,7 @@ const CompanyList = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        // disabled={!canDeleteDebitnote()}
+                        disabled={!canDeleteCompany()}
                         onClick={() => handleDeleteConfirmation(row.companyId)}
                       >
                         Delete

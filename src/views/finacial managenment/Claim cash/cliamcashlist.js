@@ -21,7 +21,7 @@ import { useDispatch } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { deleteClaimCash, viewClaimCash, viewSingleclaimCash, fetchAllClaimcashLedger } from 'store/thunk';
 import { useNavigate } from 'react-router';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -36,7 +36,7 @@ const columns = [
 const Claimcashlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreateClaimcash, canUpdateClaimcash, canDeleteClaimcash } = useCan();
+  const { canCreateClaimcash, canUpdateClaimcash, canDeleteClaimcash, canViwAllClaimcashLedger } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
@@ -133,7 +133,13 @@ const Claimcashlist = () => {
         >
           Claim Cash
         </Button>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '16px' }}
+          onClick={handleLedgerClick}
+          disabled={!canViwAllClaimcashLedger()}
+        >
           Ledger
         </Button>
       </div>

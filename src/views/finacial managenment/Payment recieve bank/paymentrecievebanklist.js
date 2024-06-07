@@ -17,15 +17,21 @@ import {
   IconButton,
   Grid
 } from '@mui/material';
-// import Select from 'react-select';
+import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { deletePaymentRecievebank, getAllPaymentRecievebank, viewSinglePaymentRecieveBank } from 'store/thunk';
+import {
+  deletePaymentRecievebank,
+  fetchAllCustomers,
+  getAllPaymentRecievebank,
+  getAllPaymentRecievebankLedger,
+  viewSinglePaymentRecieveBank
+} from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import Ledgerlist from '../Claim cash/ledger';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
+import Paymentbankrecieveledgerlist from './paymentbankrecieveledgerlist';
 
 const columns = [
   { id: 'paymentdate', label: 'Date', align: 'center' },
@@ -40,19 +46,19 @@ const columns = [
 const Paymentrecievebanklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentBank, canUpdatePaymentBank, canDeletePaymentBank } = useCan();
+  const { canCreatePaymentRecieveBank, canUpdatePaymentRecieveBank, canDeletePaymentRecieveBank } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  // const [vendorId, setvendorId] = useState(null);
-  // const [vendor, setvendor] = useState([]);
-  // const [vendorname, setvendorname] = useState('');
+  const [customerId, setcustomerId] = useState(null);
+  const [customer, setcustomer] = useState([]);
+  const [customername, setcustomername] = useState('');
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
-  // const showLedgerlist = false;
+  const showLedgerlist = false;
 
   useEffect(() => {
     dispatch(getAllPaymentRecievebank())
@@ -81,12 +87,15 @@ const Paymentrecievebanklist = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setToDate(formattedDate);
   };
-  const handleLedger = (formDate, toDate) => {
-    dispatch(getallVendorledger(formDate, toDate));
+  const handleLedger = (customerId, formDate, toDate) => {
+    dispatch(getAllPaymentRecievebankLedger(customerId, formDate, toDate));
+    navigate('/paymentrecievebankledgerlist');
+    setcustomerId(customerId);
+    sessionStorage.setItem('PRcustomerId', customerId);
     setFormDate(formDate);
-    sessionStorage.setItem('formDate', formDate);
+    sessionStorage.setItem('PRformDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('toDate', toDate);
+    sessionStorage.setItem('PRtoDate', toDate);
   };
 
   const handleDeleteConfirmation = (id) => {
@@ -124,32 +133,33 @@ const Paymentrecievebanklist = () => {
       console.error('Error deleting pyament recieve bank:', error);
     }
   };
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await dispatch(fetchAllVendors());
-  //       if (Array.isArray(response)) {
-  //         const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
-  //         setvendor([...options]);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching payment bank:', error);
-  //     }
-  //   };
 
-  //   fetchData();
-  // }, [dispatch]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllCustomers());
+        if (Array.isArray(response)) {
+          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
+          setcustomer([...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching payment bank:', error);
+      }
+    };
 
-  // const handleSelectChange = (selectedOption) => {
-  //   if (selectedOption && selectedOption.label) {
-  //     setvendorId(selectedOption.value);
-  //     setvendorname(selectedOption.label);
-  //   }
-  // };
+    fetchData();
+  }, [dispatch]);
+
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setcustomerId(selectedOption.value);
+      setcustomername(selectedOption.label);
+    }
+  };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
-      {/* {showLedgerlist && <Ledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />} */}
+      {showLedgerlist && <Paymentbankrecieveledgerlist customerId={customerId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
         Payment Recieve Bank List
       </Typography>
@@ -159,7 +169,7 @@ const Paymentrecievebanklist = () => {
           color="secondary"
           style={{ margin: '16px' }}
           onClick={handleMakePayment}
-          disabled={!canCreatePaymentBank()}
+          disabled={!canCreatePaymentRecieveBank()}
         >
           Payment Recieve Bank
         </Button>
@@ -188,7 +198,7 @@ const Paymentrecievebanklist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdatePaymentBank()}
+                        disabled={!canUpdatePaymentRecieveBank()}
                       >
                         Edit
                       </Button>
@@ -197,7 +207,7 @@ const Paymentrecievebanklist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeletePaymentBank()}
+                        disabled={!canDeletePaymentRecieveBank()}
                       >
                         Delete
                       </Button>
@@ -253,12 +263,17 @@ const Paymentrecievebanklist = () => {
         </div>
         <DialogContent style={{ position: 'reletive' }}>
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} style={{ paddingTop: '20px' }}>
+            <Grid item xs={12} style={{ paddingTop: '20px' }}>
               <Typography variant="subtitle1">
-                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
-            </Grid> */}
+              <Select
+                color="secondary"
+                options={customer}
+                value={{ value: customerId, label: customername }}
+                onChange={handleSelectChange}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
                 From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -285,7 +300,12 @@ const Paymentrecievebanklist = () => {
                 popperPlacement="bottem-center"
               />
             </Grid>
-            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+            <Button
+              onClick={() => handleLedger(customerId, formDate, toDate)}
+              variant="contained"
+              color="secondary"
+              style={{ marginLeft: '60%' }}
+            >
               GO
             </Button>
           </Grid>

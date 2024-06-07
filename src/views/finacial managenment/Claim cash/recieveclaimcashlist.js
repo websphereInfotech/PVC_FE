@@ -21,7 +21,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { IsStatusclaimCash, viewRecieveClaimCash } from 'store/thunk';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const useStyles = makeStyles(() => ({
   pending: {

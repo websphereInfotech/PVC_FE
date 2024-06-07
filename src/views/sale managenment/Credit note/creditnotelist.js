@@ -19,7 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },

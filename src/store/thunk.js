@@ -364,6 +364,9 @@ import {
   fetchallpaymentbankRequest,
   fetchallpaymentbankSuccess,
   fetchallpaymentbankFailure,
+  PaymentBankLedgerRequest,
+  PaymentBankLedgerSuccess,
+  PaymentBankLedgerFailure,
   //  PAYMENT RECIEVE BANK
   createPaymentRecievebankRequest,
   createPaymentRecievebankSuccess,
@@ -379,7 +382,10 @@ import {
   deletepaymentrecievebankFailure,
   fetchallpaymentrecievebankRequest,
   fetchallpaymentrecievebankSuccess,
-  fetchallpaymentrecievebankFailure
+  fetchallpaymentrecievebankFailure,
+  PaymentrecieveBankLedgerRequest,
+  PaymentrecieveBankLedgerSuccess,
+  PaymentrecieveBankLedgerFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -2467,6 +2473,23 @@ export const getAllPaymentbank = () => {
     }
   };
 };
+export const getAllPaymentbankLedger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(PaymentBankLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const data = response.data.data;
+      dispatch(PaymentBankLedgerSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(PaymentBankLedgerFailure(error.message));
+    }
+  };
+};
 
 // +++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPaymentRecieveBank = (formData, navigate) => {
@@ -2567,6 +2590,23 @@ export const getAllPaymentRecievebank = () => {
       return data;
     } catch (error) {
       dispatch(fetchallpaymentrecievebankFailure(error.message));
+    }
+  };
+};
+export const getAllPaymentRecievebankLedger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(PaymentrecieveBankLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const data = response.data.data;
+      dispatch(PaymentrecieveBankLedgerSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(PaymentrecieveBankLedgerFailure(error.message));
     }
   };
 };

@@ -22,7 +22,7 @@ import {
 } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorProductDrawer from 'component/productadd';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Salesinvoice = () => {
   const dispatch = useDispatch();

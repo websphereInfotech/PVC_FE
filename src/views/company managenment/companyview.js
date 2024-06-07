@@ -21,9 +21,11 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Companyview, createCompanyBank, deleteCompanyBank, updateCompanyBank } from 'store/thunk';
 import { toast } from 'react-toastify';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const CompanyviewPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank } = useCan();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -156,7 +158,7 @@ const CompanyviewPage = () => {
           <Typography variant="subtitle2">{data?.city}</Typography>
         </Grid>
         <Grid item container style={{ display: 'flex', justifyContent: 'end', justifyItems: 'center' }}>
-          <button id="buttoncs" style={{ width: '150px' }} onClick={handleClickOpen}>
+          <button id="buttoncs" style={{ width: '150px' }} onClick={handleClickOpen} disabled={!canCreateCompanyBank()}>
             Add Bank Details
           </button>
         </Grid>
@@ -184,12 +186,17 @@ const CompanyviewPage = () => {
                       <TableCell>{bank.ifsccode}</TableCell>
                       <TableCell>{bank.branch}</TableCell>
                       <TableCell>
-                        <Button variant="outlined" color="secondary" onClick={() => handleEdit(index)}>
+                        <Button variant="outlined" color="secondary" onClick={() => handleEdit(index)} disabled={!canUpdateCompanyBank()}>
                           Edit
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button onClick={() => handleDeleteConfirmation(bank.id)} variant="outlined" color="secondary">
+                        <Button
+                          onClick={() => handleDeleteConfirmation(bank.id)}
+                          variant="outlined"
+                          color="secondary"
+                          disabled={!canDeleteCompanyBank()}
+                        >
                           Delete
                         </Button>
                       </TableCell>

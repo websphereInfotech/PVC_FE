@@ -17,15 +17,15 @@ import {
   IconButton,
   Grid
 } from '@mui/material';
-// import Select from 'react-select';
+import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { deletePaymentbank, fetchAllVendors, getAllPaymentbank, viewSinglePaymentBank } from 'store/thunk';
+import { deletePaymentbank, fetchAllVendors, getAllPaymentbank, viewSinglePaymentBank, getAllPaymentbankLedger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import Ledgerlist from '../Claim cash/ledger';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
+import Paymentbankledgerlist from './paymentbankledgerlist';
 
 const columns = [
   { id: 'paymentdate', label: 'Date', align: 'center' },
@@ -37,6 +37,7 @@ const columns = [
   { id: 'edit', label: 'Edit', align: 'center' },
   { id: 'delete', label: 'Delete', align: 'center' }
 ];
+
 const Paymentbanklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,12 +48,12 @@ const Paymentbanklist = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  // const [vendorId, setvendorId] = useState(null);
-  // const [vendor, setvendor] = useState([]);
-  // const [vendorname, setvendorname] = useState('');
+  const [vendorId, setVendorId] = useState(null);
+  const [vendor, setVendor] = useState([]);
+  const [vendorName, setVendorName] = useState('');
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
-  // const showLedgerlist = false;
+  const showLedgerlist = false;
 
   useEffect(() => {
     dispatch(getAllPaymentbank())
@@ -67,27 +68,36 @@ const Paymentbanklist = () => {
   const handleMakePayment = () => {
     navigate('/paymentbank');
   };
-  const handleformDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
+
+  const handleFormDateChange = (date) => {
+    const formattedDate = formatDate(date);
     setFormDate(formattedDate);
   };
-  const handletoDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
+
+  const handleToDateChange = (date) => {
+    const formattedDate = formatDate(date);
     setToDate(formattedDate);
   };
-  const handleLedger = (formDate, toDate) => {
-    dispatch(getallVendorledger(formDate, toDate));
-    // navigate('/ledgerlist');
+
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setVendorId(selectedOption.value);
+      setVendorName(selectedOption.label);
+    }
+  };
+
+  const handleLedger = (vendorId, formDate, toDate) => {
+    dispatch(getAllPaymentbankLedger(vendorId, formDate, toDate));
+    console.log(vendorId, 'PvendorId');
+    console.log(formDate, 'PformDate');
+    console.log(toDate, 'PtoDate');
+    navigate('/paymentbankledgerlist');
+    setVendorId(vendorId);
+    sessionStorage.setItem('PbankvendorId', vendorId);
     setFormDate(formDate);
-    sessionStorage.setItem('formDate', formDate);
+    sessionStorage.setItem('PformDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('toDate', toDate);
+    sessionStorage.setItem('PtoDate', toDate);
   };
 
   const handleDeleteConfirmation = (id) => {
@@ -117,21 +127,22 @@ const Paymentbanklist = () => {
     setPage(0);
   };
 
-  const handledelete = async () => {
+  const handleDelete = async () => {
     try {
       await dispatch(deletePaymentbank(selectedId));
       setOpenConfirmation(false);
     } catch (error) {
-      console.error('Error deleting pyament bank:', error);
+      console.error('Error deleting payment bank:', error);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchAllVendors());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
-          setvendor([...options]);
+          setVendor([...options]);
         }
       } catch (error) {
         console.error('Error fetching payment bank:', error);
@@ -141,16 +152,16 @@ const Paymentbanklist = () => {
     fetchData();
   }, [dispatch]);
 
-  // const handleSelectChange = (selectedOption) => {
-  //   if (selectedOption && selectedOption.label) {
-  //     setvendorId(selectedOption.value);
-  //     setvendorname(selectedOption.label);
-  //   }
-  // };
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
-      {/* {showLedgerlist && <Ledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />} */}
+      {showLedgerlist && <Paymentbankledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
         Payment Bank List
       </Typography>
@@ -238,7 +249,7 @@ const Paymentbanklist = () => {
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handledelete} variant="contained" color="secondary">
+          <Button onClick={handleDelete} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -252,25 +263,25 @@ const Paymentbanklist = () => {
             </IconButton>
           </span>
         </div>
-        <DialogContent style={{ position: 'reletive' }}>
+        <DialogContent style={{ position: 'relative' }}>
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} style={{ paddingTop: '20px' }}> */}
-            {/* <Typography variant="subtitle1">
+            <Grid item xs={12} style={{ paddingTop: '20px' }}>
+              <Typography variant="subtitle1">
                 Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
-            </Grid> */}
+              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorName }} onChange={handleSelectChange} />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
                 From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formDate}
-                onChange={(date) => handleformDateChange(date)}
+                selected={new Date(formDate)}
+                onChange={(date) => handleFormDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                popperPlacement="bottem-start"
+                popperPlacement="bottom-start"
               />
             </Grid>
             <Grid item xs={12}>
@@ -278,15 +289,20 @@ const Paymentbanklist = () => {
                 To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={toDate}
-                onChange={(date) => handletoDateChange(date)}
+                selected={new Date(toDate)}
+                onChange={(date) => handleToDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
                 popperPlacement="top-center"
               />
             </Grid>
-            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+            <Button
+              onClick={() => handleLedger(vendorId, formDate, toDate)}
+              variant="contained"
+              color="secondary"
+              style={{ marginLeft: '60%' }}
+            >
               GO
             </Button>
           </Grid>

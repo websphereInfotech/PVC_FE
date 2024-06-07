@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { getallCustomerledger } from 'store/thunk';
+import { getAllPaymentbankLedger } from 'store/thunk';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
-  { id: 'customer', label: 'Customer', align: 'center', minWidth: 100 },
+  { id: 'vendor', label: 'Vendor', align: 'center', minWidth: 100 },
   { id: 'creditAmount', label: 'Credit', align: 'center', minWidth: 100 },
   { id: 'debitAmount', label: 'Debit', align: 'center', minWidth: 100 },
   { id: 'remainingBalance', label: 'Balance', align: 'center', minWidth: 100 }
 ];
 
-const Customerledgerlist = () => {
+const Paymentbankledgerlist = () => {
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
-  const customerId = sessionStorage.getItem('customerId');
-  const formData = sessionStorage.getItem('customerformDate');
-  const toDate = sessionStorage.getItem('customertoDate');
+  const vendorId = sessionStorage.getItem('PbankvendorId');
+  const formData = sessionStorage.getItem('PformDate');
+  const toDate = sessionStorage.getItem('PtoDate');
 
   useEffect(() => {
-    dispatch(getallCustomerledger(customerId, formData, toDate))
+    dispatch(getAllPaymentbankLedger(vendorId, formData, toDate))
       .then((data) => {
-        setPayments(data.data);
+        console.log(data, 'paymentbank');
+        setPayments(data);
       })
       .catch((error) => {
-        console.error('Error fetching customer ledger data:', error);
+        console.error('Error fetching vendor ledger data:', error);
       });
-  }, [dispatch, customerId, formData, toDate]);
+  }, [dispatch, vendorId, formData, toDate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,7 +43,7 @@ const Customerledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Customer Ledger List
+        Payment Bank Ledger List
       </Typography>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -66,8 +67,8 @@ const Customerledgerlist = () => {
                   >
                     {column.id === 'date'
                       ? new Date(payment[column.id]).toLocaleDateString('en-GB')
-                      : column.id === 'customer'
-                        ? payment.customerData.customername
+                      : column.id === 'vendor'
+                        ? payment.vendorData.accountname
                         : payment[column.id]}
                   </TableCell>
                 ))}
@@ -89,4 +90,4 @@ const Customerledgerlist = () => {
   );
 };
 
-export default Customerledgerlist;
+export default Paymentbankledgerlist;

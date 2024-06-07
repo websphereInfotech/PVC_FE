@@ -25,7 +25,7 @@ import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Ledgerlist from '../Claim cash/ledger';
-import useCan from 'views/checkpermissionvalue';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -40,7 +40,7 @@ const columns = [
 const PaymentListPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
+  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash, canViwAllPaymentcashLedger } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
@@ -166,7 +166,13 @@ const PaymentListPage = () => {
         >
           Payment Cash
         </Button>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '16px' }}
+          onClick={handleLedgerClick}
+          disabled={!canViwAllPaymentcashLedger()}
+        >
           Ledger
         </Button>
       </div>
