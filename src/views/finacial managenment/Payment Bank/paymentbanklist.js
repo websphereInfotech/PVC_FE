@@ -41,7 +41,7 @@ const columns = [
 const Paymentbanklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentBank, canUpdatePaymentBank, canDeletePaymentBank } = useCan();
+  const { canCreatePaymentBank, canUpdatePaymentBank, canDeletePaymentBank, canViewAllVendorLedger } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
@@ -175,7 +175,13 @@ const Paymentbanklist = () => {
         >
           Payment Bank
         </Button>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleLedgerClick}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '16px' }}
+          onClick={handleLedgerClick}
+          disabled={!canViewAllVendorLedger()}
+        >
           Ledger
         </Button>
       </div>

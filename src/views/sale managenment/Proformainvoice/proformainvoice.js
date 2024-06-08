@@ -521,17 +521,10 @@ const Proformainvoice = () => {
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            {/* <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Dispatch Doc No. :</Typography>
-              <input
-                placeholder="Enter Dispatch Doc No."
-                id="dispatchno"
-                value={formData.dispatchno}
-                onChange={(e) => setFormData({ ...formData, dispatchno: e.target.value })}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Terms :</Typography>
+              <Typography variant="subtitle1">
+                Terms : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <Select
                 options={termsOptions}
                 value={termsOptions.find((option) => option.value === formData.terms)}

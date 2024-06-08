@@ -19,7 +19,7 @@ const AuthenticationRoutes = {
       element: <AuthLogin />
     },
     {
-      path: '/404',
+      path: '*',
       element: <NotFound />
     },
     {

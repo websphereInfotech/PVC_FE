@@ -212,7 +212,9 @@ const CompanyviewPage = () => {
           <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography variant="subtitle1">Account Name</Typography>
+                <Typography variant="subtitle1">
+                  Account Name:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
                 <input
                   id="accountname"
                   placeholder="Account Name"
@@ -221,7 +223,9 @@ const CompanyviewPage = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subtitle1">IFSC Code</Typography>
+                <Typography variant="subtitle1">
+                  IFSC Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
                 <input
                   placeholder="IFSC Code"
                   id="ifsccode"
@@ -230,7 +234,9 @@ const CompanyviewPage = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subtitle1">Branch</Typography>
+                <Typography variant="subtitle1">
+                  Branch:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
                 <input
                   placeholder="Branch"
                   id="branch"
@@ -239,7 +245,9 @@ const CompanyviewPage = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subtitle1">Bank Name</Typography>
+                <Typography variant="subtitle1">
+                  Bank Name:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
                 <input
                   placeholder="Bank Name"
                   id="bankname"
@@ -248,7 +256,9 @@ const CompanyviewPage = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="subtitle1">Account Number</Typography>
+                <Typography variant="subtitle1">
+                  Account Number:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
                 <input
                   placeholder="Account Number"
                   id="accountnumber"

@@ -221,6 +221,9 @@ import {
   deleteUserRequest,
   deleteUserSuccess,
   deleteUserFailure,
+  getUserBalanceRequest,
+  getUserBalanceSuccess,
+  getUserBalanceFailure,
   // VENDOR ++++++++++++++++++++++++++
   createVendorRequest,
   createVendorSuccess,
@@ -1795,6 +1798,20 @@ export const deleteUser = (id) => {
       });
       dispatch(deleteUserFailure(error.message));
       throw error;
+    }
+  };
+};
+export const getuserbalance = () => {
+  return async (dispatch) => {
+    dispatch(getUserBalanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_user_balance`, config);
+      const getallUsers = response.data.data;
+      dispatch(getUserBalanceSuccess(getallUsers));
+      return getallUsers;
+    } catch (error) {
+      dispatch(getUserBalanceFailure(error.message));
     }
   };
 };

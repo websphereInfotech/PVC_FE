@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
-import { IsStatusclaimCash, viewRecieveClaimCash } from 'store/thunk';
+import { IsStatusclaimCash, getuserbalance, viewRecieveClaimCash } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const useStyles = makeStyles(() => ({
@@ -36,10 +36,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const columns = [
+  { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
   { id: 'user', label: 'Sender', align: 'center', minWidth: 100 },
   { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
   { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
   { id: 'purpose', label: 'Purpose', align: 'center', minWidth: 100 },
+  { id: 'statusdate', label: 'Status Date', align: 'center', minWidth: 100 },
   { id: 'status', label: 'Status', align: 'center', minWidth: 100 }
 ];
 
@@ -53,20 +55,28 @@ const Recieveclaimcashlist = () => {
   const [statuses, setStatuses] = useState({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [balance, setbalance] = useState(null);
 
   useEffect(() => {
-    dispatch(viewRecieveClaimCash())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const data = await dispatch(viewRecieveClaimCash());
         setPayments(data);
         const initialStatuses = data.reduce((acc, payment) => {
           acc[payment.id] = payment.isApproved === null ? 'Pending' : payment.isApproved ? 'Approve' : 'Reject';
           return acc;
         }, {});
         setStatuses(initialStatuses);
-      })
-      .catch((error) => {
-        console.error('Error fetching recieve cliam cash data:', error);
-      });
+      } catch (error) {
+        console.error('Error fetching receive claim cash data:', error);
+      }
+    };
+    const balancedata = async () => {
+      const balancedata = await dispatch(getuserbalance());
+      setbalance(balancedata.balance);
+    };
+    fetchData();
+    balancedata();
   }, [dispatch]);
 
   const handleChangePage = (event, newPage) => {
@@ -81,8 +91,26 @@ const Recieveclaimcashlist = () => {
   const handleStatusChange = (paymentId, event) => {
     const newStatus = event.target.value;
     if (newStatus === 'Approve') {
-      setSelectedPaymentId(paymentId);
-      setDialogOpen(true);
+      const newStatus = event.target.value;
+      if (newStatus === 'Approve') {
+        const payment = payments.find((p) => p.id === paymentId);
+        const isApproved = newStatus === 'Approve';
+        if (balance < payment.amount) {
+          setSelectedPaymentId(paymentId);
+          setDialogOpen(true);
+        } else {
+          dispatch(IsStatusclaimCash(paymentId, payment.toUserId, isApproved))
+            .then(() => {
+              setStatuses({
+                ...statuses,
+                [paymentId]: newStatus
+              });
+            })
+            .catch((error) => {
+              console.error('Error updating recieve claim cash status:', error);
+            });
+        }
+      }
     } else {
       const isApproved = newStatus === 'Approve';
       dispatch(IsStatusclaimCash(paymentId, payments.find((p) => p.id === paymentId).toUserId, isApproved))
@@ -164,6 +192,8 @@ const Recieveclaimcashlist = () => {
                       )
                     ) : column.id === 'user' ? (
                       payment.fromUser.username
+                    ) : column.id === 'date' ? (
+                      new Date(payment.updatedAt).toLocaleDateString('en-GB')
                     ) : (
                       payment[column.id]
                     )}
@@ -187,7 +217,9 @@ const Recieveclaimcashlist = () => {
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>Confirm Approval</DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to approve this payment?</DialogContentText>
+          <DialogContentText>
+            Are you sure you want to approve this payment <br></br> because your balance is {balance}?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} color="secondary" variant="outlined">

@@ -62,7 +62,7 @@ const Claimledgerlist = () => {
                       {column.id === 'updatedAt'
                         ? new Date(payment.date).toLocaleDateString('en-GB')
                         : column.id === 'user'
-                          ? payment.username
+                          ? payment.name
                           : payment[column.id]}
                     </span>
                   </TableCell>

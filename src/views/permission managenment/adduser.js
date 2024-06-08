@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux';
 
 const User = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    firstName: '',
+    lastName: '',
     mobileno: '',
     email: '',
     role: '',
@@ -40,7 +41,8 @@ const User = () => {
           const response = await dispatch(Userview(id));
           console.log(response);
           const { username, role, email, mobileno, salary, password, confirmpassword } = response;
-          setFormData({ username, role, email, mobileno, salary, password, confirmpassword });
+          const [firstName, lastName] = username.split(' ');
+          setFormData({ firstName, lastName, role, email, mobileno, salary, password, confirmpassword });
         }
       } catch (error) {
         console.error('Error creating user:', error);
@@ -52,10 +54,14 @@ const User = () => {
   // handle use for create user and update user
   const handleCreateUser = async () => {
     try {
+      const { firstName, lastName, ...rest } = formData;
+      const data = {
+        ...rest,
+        username: `${firstName} ${lastName}`
+      };
       if (id) {
-        await dispatch(updateUser(id, formData, navigate));
+        await dispatch(updateUser(id, data, navigate));
       } else {
-        const data = { ...formData };
         await dispatch(createuser(data, navigate));
       }
     } catch (error) {
@@ -77,17 +83,27 @@ const User = () => {
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                User Name :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                First Name :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
-                placeholder="Enter Name"
-                value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                placeholder="Enter First Name"
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Last Name :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="Enter Last Name"
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Mobile No. :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -98,7 +114,7 @@ const User = () => {
                 onChange={(e) => setFormData({ ...formData, mobileno: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Email: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -111,7 +127,7 @@ const User = () => {
             </Grid>
           </Grid>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Role: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -124,7 +140,7 @@ const User = () => {
             </Grid>
             {!id && (
               <>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Typography variant="subtitle1">
                     Password: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </Typography>
@@ -136,7 +152,7 @@ const User = () => {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Typography variant="subtitle1">
                     Confirm Password: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </Typography>
@@ -150,7 +166,7 @@ const User = () => {
                 </Grid>
               </>
             )}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Basic Salary: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>

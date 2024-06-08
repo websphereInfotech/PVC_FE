@@ -26,10 +26,13 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const columns = [
+  { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
   { id: 'fromUserId', label: 'Request', align: 'center', minWidth: 100 },
   { id: 'amount', label: 'Amount', align: 'center', minWidth: 100 },
   { id: 'description', label: 'Description', align: 'center', minWidth: 100 },
   { id: 'purpose', label: 'purpose', align: 'center', minWidth: 100 },
+  { id: 'statusdate', label: 'Status Date', align: 'center', minWidth: 100 },
+  { id: 'isApproved', label: 'Status', align: 'center', minWidth: 100 },
   { id: 'edit', label: 'Edit', align: 'center', minWidth: 100 },
   { id: 'delete', label: 'Delete', align: 'center', minWidth: 100 }
 ];
@@ -164,7 +167,7 @@ const Claimcashlist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdateClaimcash()}
+                        disabled={!canUpdateClaimcash() || payment.isApproved === true || payment.isApproved === false}
                       >
                         Edit
                       </Button>
@@ -173,14 +176,18 @@ const Claimcashlist = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeleteClaimcash()}
+                        disabled={!canDeleteClaimcash() || payment.isApproved === true || payment.isApproved === false}
                       >
                         Delete
                       </Button>
                     ) : column.id === 'date' ? (
-                      new Date(payment[column.id]).toLocaleDateString('en-GB')
+                      new Date(payment.updatedAt).toLocaleDateString('en-GB')
                     ) : column.id === 'fromUserId' ? (
                       payment.toUser?.username
+                    ) : column.id === 'isApproved' ? (
+                      <span style={{ color: payment.isApproved === true ? '#00CE00' : payment.isApproved === false ? 'red' : 'blue' }}>
+                        {payment.isApproved === true ? 'Approve' : payment.isApproved === false ? 'Reject' : 'Pending'}
+                      </span>
                     ) : (
                       payment[column.id]
                     )}

@@ -288,6 +288,9 @@ export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
 export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
+export const GET_USER_BALANCE_REQUEST = 'GET_USER_BALANCE_REQUEST';
+export const GET_USER_BALANCE_SUCCESS = 'GET_USER_BALANCE_SUCCESS';
+export const GET_USER_BALANCE_FAILURE = 'GET_USER_BALANCE_FAILURE';
 
 // ########################################################################### VENDOR ###############################################################
 
@@ -1240,7 +1243,18 @@ export const deleteUserFailure = (error) => ({
   type: 'DELETE_USER_FAILURE',
   payload: error
 });
-
+export const getUserBalanceRequest = (data) => ({
+  type: 'GET_USER_BALANCE_REQUEST',
+  payload: data
+});
+export const getUserBalanceSuccess = (data) => ({
+  type: 'GET_USER_BALANCE_SUCCESS',
+  payload: data
+});
+export const getUserBalanceFailure = (error) => ({
+  type: 'GET_USER_BALANCE_FAILURE',
+  payload: error
+});
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createVendorRequest = (data) => ({
   type: 'CREATE_VENDOR_REQUEST',
