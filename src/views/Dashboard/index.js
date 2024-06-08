@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -12,7 +12,7 @@ import RevenuChartCard from './RevenuChartCard';
 import RevenuChartCardData from './chart/revenu-chart';
 import ReportCard from './ReportCard';
 import { gridSpacing } from 'config.js';
-
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 // assets
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
@@ -20,6 +20,8 @@ import MonetizationOnTwoTone from '@mui/icons-material/MonetizationOnTwoTone';
 import DescriptionTwoTone from '@mui/icons-material/DescriptionTwoTone';
 import ThumbUpAltTwoTone from '@mui/icons-material/ThumbUpAltTwoTone';
 import BadgeIcon from '@mui/icons-material/Badge';
+import { useDispatch } from 'react-redux';
+import { getCompanyBankBalance, getCompanyCashBalance } from 'store/thunk';
 // import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
 
 // custom style
@@ -39,29 +41,53 @@ const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)
 
 const Default = () => {
   const theme = useTheme();
-
+  const dispatch = useDispatch();
+  const [balance, setBalance] = useState(0);
+  const [Cbalance, setCBalance] = useState(0);
+  useEffect(() => {
+    const fetchbankbalance = async () => {
+      try {
+        const data = await dispatch(getCompanyBankBalance());
+        console.log(data, 'data');
+        setBalance(data.balance);
+      } catch (error) {
+        console.log(error, 'fetch bank balance of company');
+      }
+    };
+    const fetchcashbalance = async () => {
+      try {
+        const data = await dispatch(getCompanyCashBalance());
+        console.log(data, 'data');
+        setCBalance(data.balance);
+      } catch (error) {
+        console.log(error, 'fetch bank balance of company');
+      }
+    };
+    fetchbankbalance();
+    fetchcashbalance();
+  });
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
-              primary="$30200"
-              secondary="Total Revenue"
+              primary={balance}
+              secondary="Total Bank Balance"
               color={theme.palette.warning.main}
-              footerData="10% changes on profit"
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
+              footerData="Balance Of Company In Bank"
+              iconPrimary={CurrencyRupeeIcon}
+              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
-              primary="145"
-              secondary="Total Employees"
+              primary={Cbalance}
+              secondary="Total Cash Balance"
               color={theme.palette.error.main}
-              footerData="28% employee growth"
-              iconPrimary={BadgeIcon}
-              iconFooter={TrendingDownIcon}
+              footerData="Balance Of Company In Cash"
+              iconPrimary={CurrencyRupeeIcon}
+              // iconFooter={TrendingDownIcon}
             />
           </Grid>
           <Grid item lg={4} sm={8} xs={12}>

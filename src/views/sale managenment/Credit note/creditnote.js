@@ -9,9 +9,9 @@ import { useMediaQuery } from '@mui/material';
 import {
   Creditnoteviewdata,
   createCreditnote,
-  fetchAllCompany,
   fetchAllCustomers,
   fetchAllProducts,
+  fetchuserwiseCompany,
   getallCreditnote,
   updateCreditnote
 } from 'store/thunk';
@@ -72,10 +72,8 @@ const Creditnote = () => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
-
-    const newPlusgst = plusgst - plusgst;
+    const newPlusgst = plusgst - deletedRow.gst;
     setPlusgst(newPlusgst);
-
     const deletedAmount = deletedRow.mrp;
     const newSubtotal = subtotal - deletedAmount;
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
@@ -94,16 +92,24 @@ const Creditnote = () => {
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
         if (rowIndex === index) {
+          const newMrp = row.qty * selectedOption.rate;
+          const newGst = newMrp * (selectedOption.gstrate / 100);
           return {
             ...row,
             productId: selectedOption.value,
             product: selectedOption.label,
             rate: selectedOption.rate,
-            gstrate: selectedOption.gstrate
+            mrp: newMrp,
+            gstrate: selectedOption.gstrate,
+            gst: newGst
           };
         }
         return row;
       });
+
+      const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setPlusgst(totalGST);
+      console.log(selectedOption, 'row');
 
       setRows(updatedRows);
       setSelectproduct(selectedOption.value);
@@ -140,10 +146,15 @@ const Creditnote = () => {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
 
-        const data = await dispatch(fetchAllCompany());
-        const datademo = data[0].state === customerState;
-        setCompanystate(data[0].state);
-        setGststate(datademo);
+        const data = await dispatch(fetchuserwiseCompany());
+        const defaultCompany = data.find((company) => company.setDefault === true);
+        if (defaultCompany) {
+          setCompanystate(defaultCompany.companies.state);
+          const isGstState = defaultCompany.companies.state === customerState;
+          setGststate(isGstState);
+        } else {
+          console.error('No default company found');
+        }
       } catch (error) {
         console.error('Error fetching credit note:', error);
       }
@@ -186,58 +197,6 @@ const Creditnote = () => {
   const handleInvoiceDateChange = (date) => {
     setFormData({ ...formData, org_invoicedate: date });
   };
-  //manage value of input of row
-  const handleInputChange = (index, field, value) => {
-    const updatedRows = rows.map((row, rowIndex) => {
-      if (rowIndex === index) {
-        return { ...row, [field]: value };
-      }
-      return row;
-    });
-
-    setRows(updatedRows);
-    let total = 0;
-    rows.forEach((row) => {
-      total += parseInt(row.qty);
-    });
-    setTotalQuantity(total);
-
-    updatedRows.forEach((row) => {
-      const amount = row.qty * row.rate;
-      row.mrp = amount;
-      const gstAmount = row.mrp * (row.gstrate / 100);
-      row.gst = gstAmount;
-    });
-
-    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
-    setSubtotal(newSubtotal);
-    if (id && gststate) {
-      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        totalSgst: newPlusgst
-      }));
-    } else {
-      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        totalIgst: newPlusgst
-      }));
-    }
-    setRows(updatedRows);
-
-    const rowId = rows[index];
-    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
-    if (selectedProduct) {
-      const updatedRowsWithGST = updatedRows.map((row) => {
-        const gstAmount = row.mrp * (row.gstrate / 100);
-        return { ...row, gst: gstAmount };
-      });
-      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
-      setPlusgst(totalGST);
-    }
-  };
-
   useEffect(() => {
     const data = async () => {
       if (id) {
@@ -257,7 +216,6 @@ const Creditnote = () => {
           totalMrp,
           totalIgst
         } = response;
-        console.log(response, 'rsponse?????????????');
         setFormData({
           customerId: CreditCustomer.id,
           LL_RR_no,
@@ -327,6 +285,57 @@ const Creditnote = () => {
     generateAutoDebitnoteNumber();
     data();
   }, [dispatch, id]);
+  //manage value of input of row
+  const handleInputChange = (index, field, value) => {
+    const updatedRows = rows.map((row, rowIndex) => {
+      if (rowIndex === index) {
+        return { ...row, [field]: value };
+      }
+      return row;
+    });
+
+    setRows(updatedRows);
+    let total = 0;
+    rows.forEach((row) => {
+      total += parseInt(row.qty);
+    });
+    setTotalQuantity(total);
+
+    updatedRows.forEach((row) => {
+      const amount = row.qty * row.rate;
+      row.mrp = amount;
+      const gstAmount = row.mrp * (row.gstrate / 100);
+      row.gst = gstAmount;
+    });
+
+    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(newSubtotal);
+    if (id && gststate) {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalSgst: newPlusgst
+      }));
+    } else {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalIgst: newPlusgst
+      }));
+    }
+    setRows(updatedRows);
+
+    const rowId = rows[index];
+    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
+    if (selectedProduct) {
+      const updatedRowsWithGST = updatedRows.map((row) => {
+        const gstAmount = row.mrp * (row.gstrate / 100);
+        return { ...row, gst: gstAmount };
+      });
+      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
+      setPlusgst(totalGST);
+    }
+  };
 
   const handlecreateCreditnote = async () => {
     try {
@@ -340,9 +349,10 @@ const Creditnote = () => {
             productId: row.productId,
             qty: Number(row.qty),
             rate: row.rate,
-            mrp: row.mrp
+            mrp: row.qty * row.rate
           }))
         };
+        console.log(payload, 'payload');
         const gststate = companystate === customerState ? 'true' : 'false';
         setGststate(gststate);
         if (gststate === 'true') {

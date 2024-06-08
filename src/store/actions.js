@@ -291,6 +291,9 @@ export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 export const GET_USER_BALANCE_REQUEST = 'GET_USER_BALANCE_REQUEST';
 export const GET_USER_BALANCE_SUCCESS = 'GET_USER_BALANCE_SUCCESS';
 export const GET_USER_BALANCE_FAILURE = 'GET_USER_BALANCE_FAILURE';
+export const CHECK_USER_REQUEST = 'CHECK_USER_REQUEST';
+export const CHECK_USER_SUCCESS = 'CHECK_USER_SUCCESS';
+export const CHECK_USER_FAILURE = 'CHECK_USER_FAILURE';
 
 // ########################################################################### VENDOR ###############################################################
 
@@ -398,6 +401,12 @@ export const DELETE_COMPANY_BANK_FAILURE = 'DELETE_COMPANY_BANK_FAILURE';
 export const FETCH_ALL_COMPANY_BANK_REQUEST = 'FETCH_ALL_COMPANY_BANK_REQUEST';
 export const FETCH_ALL_COMPANY_BANK_SUCCESS = 'FETCH_ALL_COMPANY_BANK_SUCCESS';
 export const FETCH_ALL_COMPANY_BANK_FAILURE = 'FETCH_ALL_COMPANY_BANK_FAILURE';
+export const COMPANY_BANK_BALANCE_REQUEST = 'COMPANY_BANK_BALANCE_REQUEST';
+export const COMPANY_BANK_BALANCE_SUCCESS = 'COMPANY_BANK_BALANCE_SUCCESS';
+export const COMPANY_BANK_BALANCE_FAILURE = 'COMPANY_BANK_BALANCE_FAILURE';
+export const COMPANY_CASH_BALANCE_REQUEST = 'COMPANY_CASH_BALANCE_REQUEST';
+export const COMPANY_CASH_BALANCE_SUCCESS = 'COMPANY_CASH_BALANCE_SUCCESS';
+export const COMPANY_CASH_BALANCE_FAILURE = 'COMPANY_CASH_BALANCE_FAILURE';
 
 // #################################################################### COMAPNY ###################################################################
 export const CREATE_COMPANY_REQUEST = 'CREATE_COMPANY_REQUEST';
@@ -1255,6 +1264,18 @@ export const getUserBalanceFailure = (error) => ({
   type: 'GET_USER_BALANCE_FAILURE',
   payload: error
 });
+export const CheckUserRequest = (data) => ({
+  type: 'CHECK_USER_REQUEST',
+  payload: data
+});
+export const CheckUserSuccess = (data) => ({
+  type: 'CHECK_USER_SUCCESS',
+  payload: data
+});
+export const CheckUserFailure = (error) => ({
+  type: 'CHECK_USER_FAILURE',
+  payload: error
+});
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createVendorRequest = (data) => ({
   type: 'CREATE_VENDOR_REQUEST',
@@ -1358,7 +1379,28 @@ export const setDefaultCompanyFailure = (error) => ({
   type: 'SET_DEFAULT_COMPANY_FAILURE',
   payload: error
 });
-
+export const CompanyBankBalanceRequest = () => ({
+  type: 'COMPANY_BANK_BALANCE_REQUEST'
+});
+export const CompanyBankBalanceSuccess = (data) => ({
+  type: 'COMPANY_BANK_BALANCE_SUCCESS',
+  payload: data
+});
+export const CompanyBankBalanceFailure = (error) => ({
+  type: 'COMPANY_BANK_BALANCE_FAILURE',
+  payload: error
+});
+export const CompanyCashBalanceRequest = () => ({
+  type: 'COMPANY_CASH_BALANCE_REQUEST'
+});
+export const CompanyCashBalanceSuccess = (data) => ({
+  type: 'COMPANY_CASH_BALANCE_SUCCESS',
+  payload: data
+});
+export const CompanyCashBalanceFailure = (error) => ({
+  type: 'COMPANY_CASH_BALANCE_FAILURE',
+  payload: error
+});
 // +++++++++++++++++++++++++++++++++++++++++++++++ COMPANY BANK ++++++++++++++++++++++++++++++++++++
 export const CreateCompanyBankRequest = () => ({
   type: 'CREATE_COMPANY_BANK_REQUEST'

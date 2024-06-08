@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { IsStatusclaimCash, getuserbalance, viewRecieveClaimCash } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+// import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles(() => ({
   pending: {
@@ -56,7 +57,7 @@ const Recieveclaimcashlist = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
   const [balance, setbalance] = useState(null);
-
+  // const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -194,6 +195,12 @@ const Recieveclaimcashlist = () => {
                       payment.fromUser.username
                     ) : column.id === 'date' ? (
                       new Date(payment.updatedAt).toLocaleDateString('en-GB')
+                    ) : column.id === 'statusdate' ? (
+                      payment.date ? (
+                        new Date(payment.date).toLocaleDateString('en-GB')
+                      ) : (
+                        '-'
+                      )
                     ) : (
                       payment[column.id]
                     )}

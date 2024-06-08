@@ -27,8 +27,8 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     itemgroup: '',
     itemcategory: '',
     unit: '',
-    salesprice: '',
-    purchaseprice: '',
+    salesprice: Number(),
+    purchaseprice: Number(),
     HSNcode: '',
     gstrate: ''
   });

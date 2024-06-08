@@ -25,6 +25,8 @@ const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
   { id: 'debitdate', label: 'Date.', minWidth: 100, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
+  { id: 'createdBy', label: 'Created By', minWidth: 100, align: 'center' },
+  { id: 'updatedBy', label: 'Updated By', minWidth: 100, align: 'center' },
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }

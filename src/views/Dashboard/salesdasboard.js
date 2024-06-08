@@ -88,7 +88,7 @@ const salesdasboard = () => {
                       footerData={[
                         {
                           value: '$4230',
-                          label: 'Total Revenue'
+                          label: 'Total Bank Balance'
                         },
                         {
                           value: '321',

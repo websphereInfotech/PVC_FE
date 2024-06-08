@@ -9,7 +9,7 @@ import { useMediaQuery } from '@mui/material';
 import {
   Debitnoteviewdata,
   createDebitnote,
-  fetchAllCompany,
+  fetchuserwiseCompany,
   fetchAllCustomers,
   fetchAllProducts,
   getallDebitnote,
@@ -71,10 +71,8 @@ const DebitNote = () => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
-
-    const newPlusgst = plusgst - plusgst;
+    const newPlusgst = plusgst - deletedRow.gst;
     setPlusgst(newPlusgst);
-
     const deletedAmount = deletedRow.mrp;
     const newSubtotal = subtotal - deletedAmount;
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
@@ -93,16 +91,24 @@ const DebitNote = () => {
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
         if (rowIndex === index) {
+          const newMrp = row.qty * selectedOption.rate;
+          const newGst = newMrp * (selectedOption.gstrate / 100);
           return {
             ...row,
             productId: selectedOption.value,
             product: selectedOption.label,
             rate: selectedOption.rate,
-            gstrate: selectedOption.gstrate
+            mrp: newMrp,
+            gstrate: selectedOption.gstrate,
+            gst: newGst
           };
         }
         return row;
       });
+
+      const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setPlusgst(totalGST);
+      console.log(selectedOption, 'row');
 
       setRows(updatedRows);
       setSelectproduct(selectedOption.value);
@@ -139,10 +145,16 @@ const DebitNote = () => {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
 
-        const data = await dispatch(fetchAllCompany());
-        const datademo = data[0].state === customerState;
-        setCompanystate(data[0].state);
-        setGststate(datademo);
+        const data = await dispatch(fetchuserwiseCompany());
+        const defaultCompany = data.find((company) => company.setDefault === true);
+        console.log(defaultCompany.companies.state, 'defaultcompany');
+        if (defaultCompany) {
+          setCompanystate(defaultCompany.companies.state);
+          const isGstState = defaultCompany.companies.state === customerState;
+          setGststate(isGstState);
+        } else {
+          console.error('No default company found');
+        }
       } catch (error) {
         console.error('Error fetching debit note:', error);
       }

@@ -7,7 +7,15 @@ import { Link } from 'react-router-dom';
 import AnchorProductDrawer from '../../../component/productadd';
 import AnchorVendorDrawer from '../../../component/vendor';
 import { useMediaQuery } from '@mui/material';
-import { fetchAllProducts, createPurchaseinvoice, fetchAllVendors, viewPurchaseinvoice, updatePurchaseinvoice } from 'store/thunk';
+import {
+  fetchAllProducts,
+  createPurchaseinvoice,
+  fetchAllVendors,
+  viewPurchaseinvoice,
+  updatePurchaseinvoice,
+  getallPurchaseinvoice,
+  fetchuserwiseCompany
+} from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -36,7 +44,7 @@ const Purchaseinvoice = () => {
     invoicedate: new Date(),
     vendorId: '',
     duedate: new Date(),
-    invoiceno: Number(),
+    invoiceno: '',
     totalSgst: 0,
     totalIgst: 0,
     totalMrp: 0,
@@ -112,10 +120,8 @@ const Purchaseinvoice = () => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
     setRows(updatedRows);
-
-    const newPlusgst = plusgst - plusgst;
+    const newPlusgst = plusgst - deletedRow.gst;
     setPlusgst(newPlusgst);
-
     const deletedAmount = deletedRow.mrp;
     const newSubtotal = subtotal - deletedAmount;
     setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
@@ -141,16 +147,24 @@ const Purchaseinvoice = () => {
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
         if (rowIndex === index) {
+          const newMrp = row.qty * selectedOption.rate;
+          const newGst = newMrp * (selectedOption.gstrate / 100);
           return {
             ...row,
             productId: selectedOption.value,
             product: selectedOption.label,
             rate: selectedOption.rate,
-            gstrate: selectedOption.gstrate
+            mrp: newMrp,
+            gstrate: selectedOption.gstrate,
+            gst: newGst
           };
         }
         return row;
       });
+
+      const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setPlusgst(totalGST);
+      console.log(selectedOption, 'row');
 
       setRows(updatedRows);
       setSelectproduct(selectedOption.value);
@@ -199,11 +213,16 @@ const Purchaseinvoice = () => {
         } else {
           console.error('fetchAllProducts returned an unexpected response:', productResponse);
         }
-
-        const data = await dispatch(fetchAllCompany());
-        const datademo = data[0].state === vendorstate;
-        setCompanystate(data[0].state);
-        setGststate(datademo);
+        const data = await dispatch(fetchuserwiseCompany());
+        const defaultCompany = data.find((company) => company.setDefault === true);
+        console.log(defaultCompany.companies.state, 'defaultcompany');
+        if (defaultCompany) {
+          setCompanystate(defaultCompany.companies.state);
+          const isGstState = defaultCompany.companies.state === customerState;
+          setGststate(isGstState);
+        } else {
+          console.error('No default company found');
+        }
       } catch (error) {
         console.error('Error fetching purchase invoice:', error);
       }
@@ -247,6 +266,40 @@ const Purchaseinvoice = () => {
         setPlusgst(totalGST);
       }
     };
+    const generateAutoPurchaseinvoiceNumber = async () => {
+      if (!id) {
+        try {
+          const PurchaseinvoiceResponse = await dispatch(getallPurchaseinvoice());
+          console.log(PurchaseinvoiceResponse.data, 'PurchaseinvoiceResponse');
+          let nextPurchaseinvoiceNumber = 1;
+          if (PurchaseinvoiceResponse.data.length === 0) {
+            const PurchaseinvoiceNumber = nextPurchaseinvoiceNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              invoiceno: Number(PurchaseinvoiceNumber)
+            }));
+            return;
+          }
+          const existingPurchaseinvoiceNumbers = PurchaseinvoiceResponse.data.map((Purchaseinvoice) => {
+            const PurchaseinvoiceNumber = Purchaseinvoice.invoiceno;
+            return parseInt(PurchaseinvoiceNumber);
+          });
+          const maxPurchaseinvoiceNumber = Math.max(...existingPurchaseinvoiceNumbers);
+          if (!isNaN(maxPurchaseinvoiceNumber)) {
+            nextPurchaseinvoiceNumber = maxPurchaseinvoiceNumber + 1;
+          }
+
+          const PurchaseinvoiceNumber = nextPurchaseinvoiceNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            invoiceno: Number(PurchaseinvoiceNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto Debit Note number:', error);
+        }
+      }
+    };
+    generateAutoPurchaseinvoiceNumber();
     data();
   }, [dispatch, id]);
 

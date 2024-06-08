@@ -182,6 +182,12 @@ const Claimcashlist = () => {
                       </Button>
                     ) : column.id === 'date' ? (
                       new Date(payment.updatedAt).toLocaleDateString('en-GB')
+                    ) : column.id === 'statusdate' ? (
+                      payment.date ? (
+                        new Date(payment.date).toLocaleDateString('en-GB')
+                      ) : (
+                        '-'
+                      )
                     ) : column.id === 'fromUserId' ? (
                       payment.toUser?.username
                     ) : column.id === 'isApproved' ? (

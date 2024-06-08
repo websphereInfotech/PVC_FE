@@ -23,7 +23,7 @@ const Paymentrecieve = () => {
   const [formData, setFormData] = useState({
     customerId: '',
     date: new Date(),
-    amount: Number(),
+    amount: 0,
     description: ''
   });
   const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
@@ -94,7 +94,7 @@ const Paymentrecieve = () => {
   const handleInputChange = (fieldName, value) => {
     setFormData((prevState) => ({
       ...prevState,
-      [fieldName]: value
+      [fieldName]: fieldName === 'amount' ? Number(value) : value
     }));
   };
 

@@ -32,7 +32,7 @@ const Paymentrecievebank = () => {
   const [formData, setFormData] = useState({
     customerId: '',
     paymentdate: new Date(),
-    amount: Number(),
+    amount: 0,
     referance: '',
     mode: '',
     accountId: '',
@@ -126,10 +126,16 @@ const Paymentrecievebank = () => {
     }
   };
 
+  // const handleInputChange = (fieldName, value) => {
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [fieldName]: value
+  //   }));
+  // };
   const handleInputChange = (fieldName, value) => {
     setFormData((prevState) => ({
       ...prevState,
-      [fieldName]: value
+      [fieldName]: fieldName === 'amount' ? Number(value) : value
     }));
   };
   const handlePaymentChange = (selectedOption) => {
@@ -219,6 +225,7 @@ const Paymentrecievebank = () => {
               </Typography>
               <input
                 placeholder="Enter Amount"
+                // type="number"
                 id="amount"
                 value={formData.amount}
                 onChange={(e) => handleInputChange('amount', e.target.value)}

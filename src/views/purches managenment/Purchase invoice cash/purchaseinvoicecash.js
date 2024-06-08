@@ -192,7 +192,7 @@ const Purchaseinvoicecash = () => {
     data();
   }, [dispatch, id]);
 
-  const handlecreateDebitnote = async () => {
+  const handlecreatePurchaseinvoicecash = async () => {
     try {
       if (id) {
         const payload = {
@@ -370,7 +370,7 @@ const Purchaseinvoicecash = () => {
                     Cancel
                   </button>
                 </Link>
-                <button id="savebtncs" onClick={handlecreateDebitnote}>
+                <button id="savebtncs" onClick={handlecreatePurchaseinvoicecash}>
                   Save
                 </button>
               </div>
@@ -383,7 +383,7 @@ const Purchaseinvoicecash = () => {
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" onClick={handlecreateDebitnote}>
+                <button id="savebtncs" onClick={handlecreatePurchaseinvoicecash}>
                   Save
                 </button>
               </div>

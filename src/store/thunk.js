@@ -224,6 +224,9 @@ import {
   getUserBalanceRequest,
   getUserBalanceSuccess,
   getUserBalanceFailure,
+  // CheckUserRequest,
+  // CheckUserSuccess,
+  // CheckUserFailure,
   // VENDOR ++++++++++++++++++++++++++
   createVendorRequest,
   createVendorSuccess,
@@ -253,6 +256,12 @@ import {
   setDefaultCompanyRequest,
   setDefaultCompanySuccess,
   setDefaultCompanyFailure,
+  CompanyBankBalanceRequest,
+  CompanyBankBalanceSuccess,
+  CompanyBankBalanceFailure,
+  CompanyCashBalanceRequest,
+  CompanyCashBalanceSuccess,
+  CompanyCashBalanceFailure,
   //  COMPANY BANK ++++++++++++++++++++++++
   CreateCompanyBankRequest,
   CreateCompanyBankSuccess,
@@ -1815,6 +1824,7 @@ export const getuserbalance = () => {
     }
   };
 };
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createVendor = (vendorData) => {
   return async (dispatch) => {
@@ -1990,6 +2000,34 @@ export const setDefaultCompany = (id) => {
       return data;
     } catch (error) {
       dispatch(setDefaultCompanyFailure(error.message));
+    }
+  };
+};
+export const getCompanyBankBalance = () => {
+  return async (dispatch) => {
+    dispatch(CompanyBankBalanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_company_balance`, config);
+      const data = response.data.data;
+      dispatch(CompanyBankBalanceSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(CompanyBankBalanceFailure(error.message));
+    }
+  };
+};
+export const getCompanyCashBalance = () => {
+  return async (dispatch) => {
+    dispatch(CompanyCashBalanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_company_cash_balance`, config);
+      const data = response.data.data;
+      dispatch(CompanyCashBalanceSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(CompanyCashBalanceFailure(error.message));
     }
   };
 };
@@ -2363,6 +2401,7 @@ export const IsStatusclaimCash = (id, toUserId, isApproved) => {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/isapproved_claim/${id}`, { toUserId, isApproved }, config);
       const data = response.data.data;
       dispatch(viewsingleClaimCashSuccess(data));
+      window.location.reload();
       return data;
     } catch (error) {
       dispatch(viewsingleClaimCashFailure(error.message));
