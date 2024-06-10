@@ -294,6 +294,9 @@ export const GET_USER_BALANCE_FAILURE = 'GET_USER_BALANCE_FAILURE';
 export const CHECK_USER_REQUEST = 'CHECK_USER_REQUEST';
 export const CHECK_USER_SUCCESS = 'CHECK_USER_SUCCESS';
 export const CHECK_USER_FAILURE = 'CHECK_USER_FAILURE';
+export const ADD_USER_REQUEST = 'ADD_USER_REQUEST';
+export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
+export const ADD_USER_FAILURE = 'ADD_USER_FAILURE';
 
 // ########################################################################### VENDOR ###############################################################
 
@@ -1274,6 +1277,18 @@ export const CheckUserSuccess = (data) => ({
 });
 export const CheckUserFailure = (error) => ({
   type: 'CHECK_USER_FAILURE',
+  payload: error
+});
+export const addUserRequest = (data) => ({
+  type: 'ADD_USER_REQUEST',
+  payload: data
+});
+export const addUserSuccess = (data) => ({
+  type: 'ADD_USER_SUCCESS',
+  payload: data
+});
+export const addUserFailure = (error) => ({
+  type: 'ADD_USER_FAILURE',
   payload: error
 });
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

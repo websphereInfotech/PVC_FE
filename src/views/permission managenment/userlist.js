@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { deleteUser, getallusers, Userview } from 'store/thunk';
+import { Checkuser, deleteUser, getallusers, Userview, Adduser } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
@@ -34,13 +34,15 @@ export default function UserList() {
   const [data, setData] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [newUser, setNewUser] = useState({ mobileNo: '', email: '' });
+  const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
+  const [userid, setUserid] = useState(null);
 
-  // use for change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  //use for how many row show in page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -50,7 +52,6 @@ export default function UserList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallusers());
-        console.log(response[0]);
         const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
         setData(filteredData);
       } catch (error) {
@@ -60,17 +61,21 @@ export default function UserList() {
 
     fetchData();
   }, [dispatch]);
-  const handleaddUser = () => {
-    navigate(`/adduser`);
+
+  const handleAddUser = () => {
+    setOpenCreateDialog(true);
   };
+
   const handleViewUser = (id) => {
     dispatch(Userview(id));
     navigate(`/userview/${id}`);
   };
+
   const handleUpdateUser = (id) => {
     dispatch(Userview(id));
     navigate(`/updateuser/${id}`);
   };
+
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
     setSelectedUserId(id);
@@ -81,20 +86,50 @@ export default function UserList() {
       await dispatch(deleteUser(selectedUserId));
       setOpenConfirmation(false);
       const response = await dispatch(getallusers());
-      console.log(response.users);
       const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
       setData(filteredData);
     } catch (error) {
       console.error('Error deleting user:', error);
     }
   };
+
+  const handleCheckUserSubmit = async () => {
+    try {
+      const response = await dispatch(Checkuser(newUser));
+      console.log(response.data.data, 'RESPONSE');
+      setUserid(response.data.data.id);
+      if (response.status === 200) {
+        setOpenAddConfirmation(true);
+      }
+    } catch (error) {
+      console.error('Error checking user:', error);
+      navigate('/adduser');
+    } finally {
+      setOpenCreateDialog(false);
+    }
+    setOpenCreateDialog(false);
+  };
+
+  const handleConfirmAddUser = async () => {
+    try {
+      await dispatch(Adduser(userid));
+      setOpenAddConfirmation(false);
+      const response = await dispatch(getallusers());
+      const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
+      setData(filteredData);
+    } catch (error) {
+      console.error('Error adding user:', error);
+      setOpenAddConfirmation(false);
+    }
+  };
+
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         User List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddUser} disabled={!canUserCreate()}>
-        Create USer
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddUser} disabled={!canUserCreate()}>
+        Add User
       </Button>
       <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -152,6 +187,39 @@ export default function UserList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Dialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)}>
+        <DialogTitle>Create User</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Mobile no.:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <input type="text" onChange={(e) => setNewUser({ ...newUser, mobileNo: e.target.value })} />
+          <Typography>
+            Email:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <input type="email" onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenCreateDialog(false)} color="secondary" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleCheckUserSubmit} color="secondary" variant="outlined">
+            Next
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openAddConfirmation} onClose={() => setOpenAddConfirmation(false)}>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>Are you sure you want to add this user to the company?</DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => setOpenAddConfirmation(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleConfirmAddUser} color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to delete this user?</DialogContent>

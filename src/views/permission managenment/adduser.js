@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { Userview, createuser, updateUser } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const User = () => {
   const [formData, setFormData] = useState({
@@ -59,6 +60,14 @@ const User = () => {
         ...rest,
         username: `${firstName} ${lastName}`
       };
+      if (!firstName) {
+        toast.error('required field: Frist Name', { autoClose: 1000 });
+        return;
+      }
+      if (!lastName) {
+        toast.error('required field: Last Name', { autoClose: 1000 });
+        return;
+      }
       if (id) {
         await dispatch(updateUser(id, data, navigate));
       } else {

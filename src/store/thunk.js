@@ -224,9 +224,12 @@ import {
   getUserBalanceRequest,
   getUserBalanceSuccess,
   getUserBalanceFailure,
-  // CheckUserRequest,
-  // CheckUserSuccess,
-  // CheckUserFailure,
+  CheckUserRequest,
+  CheckUserSuccess,
+  CheckUserFailure,
+  addUserRequest,
+  addUserSuccess,
+  addUserFailure,
   // VENDOR ++++++++++++++++++++++++++
   createVendorRequest,
   createVendorSuccess,
@@ -1824,7 +1827,42 @@ export const getuserbalance = () => {
     }
   };
 };
-
+export const Checkuser = (data) => {
+  return async (dispatch) => {
+    dispatch(CheckUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/check_user`, data, config);
+      const userData = response;
+      dispatch(CheckUserSuccess(userData));
+      return userData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CheckUserFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const Adduser = (userid) => {
+  return async (dispatch) => {
+    dispatch(addUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/add_user/${userid}`, config);
+      const userData = response;
+      dispatch(addUserSuccess(userData));
+      return userData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(addUserFailure(error.message));
+      throw error;
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createVendor = (vendorData) => {
   return async (dispatch) => {
