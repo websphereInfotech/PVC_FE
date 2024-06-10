@@ -410,6 +410,9 @@ export const COMPANY_BANK_BALANCE_FAILURE = 'COMPANY_BANK_BALANCE_FAILURE';
 export const COMPANY_CASH_BALANCE_REQUEST = 'COMPANY_CASH_BALANCE_REQUEST';
 export const COMPANY_CASH_BALANCE_SUCCESS = 'COMPANY_CASH_BALANCE_SUCCESS';
 export const COMPANY_CASH_BALANCE_FAILURE = 'COMPANY_CASH_BALANCE_FAILURE';
+export const COMPANY_BANK_LEDGER_REQUEST = 'COMPANY_BANK_LEDGER_REQUEST';
+export const COMPANY_BANK_LEDGER_SUCCESS = 'COMPANY_BANK_LEDGER_SUCCESS';
+export const COMPANY_BANK_LEDGER_FAILURE = 'COMPANY_BANK_LEDGER_FAILURE';
 
 // #################################################################### COMAPNY ###################################################################
 export const CREATE_COMPANY_REQUEST = 'CREATE_COMPANY_REQUEST';
@@ -1472,7 +1475,17 @@ export const fetchAllCompanyBankFailure = (error) => ({
   type: 'FETCH_ALL_COMPANY_BANK_FAILURE',
   payload: error
 });
-
+export const CompanyBankLedgerRequest = () => ({
+  type: 'COMPANY_BANK_LEDGER_REQUEST'
+});
+export const CompanyBankLedgerSuccess = (data) => ({
+  type: 'COMPANY_BANK_LEDGER_SUCCESS',
+  payload: data
+});
+export const CompanyBankLedgerFailure = (error) => ({
+  type: 'COMPANY_BANK_LEDGER_FAILURE',
+  payload: error
+});
 // ##################################################################################### DEBIT NOTE ################################################################
 
 export const createDebitnoteRequest = (data) => ({

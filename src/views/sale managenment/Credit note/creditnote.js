@@ -337,56 +337,89 @@ const Creditnote = () => {
     }
   };
 
+  // const handlecreateCreditnote = async () => {
+  //   try {
+  //     if (id) {
+  //       const payload = {
+  //         ...formData,
+  //         totalQty: totalQuantity,
+  //         totalMrp: subtotal,
+  //         mainTotal: Number(subtotal) + Number(plusgst),
+  //         items: rows.map((row) => ({
+  //           productId: row.productId,
+  //           qty: Number(row.qty),
+  //           rate: row.rate,
+  //           mrp: row.qty * row.rate
+  //         }))
+  //       };
+  //       console.log(payload, 'payload');
+  //       const gststate = companystate === customerState ? 'true' : 'false';
+  //       setGststate(gststate);
+  //       if (gststate === 'true') {
+  //         payload.totalSgst = plusgst;
+  //         payload.totalIgst = 0;
+  //       } else {
+  //         payload.totalSgst = 0;
+  //         payload.totalIgst = plusgst;
+  //       }
+  //       await dispatch(updateCreditnote(id, payload, navigate));
+  //     } else {
+  //       const payload = {
+  //         ...formData,
+  //         totalQty: totalQuantity,
+  //         totalMrp: subtotal,
+  //         mainTotal: Number(subtotal) + Number(plusgst),
+  //         items: rows.map((row) => ({
+  //           productId: row.productId,
+  //           qty: row.qty,
+  //           rate: row.rate,
+  //           mrp: row.mrp
+  //         }))
+  //       };
+  //       console.log(selectcustomer);
+  //       const gststate = companystate === customerState ? 'true' : 'false';
+  //       setGststate(gststate);
+  //       if (gststate === 'true') {
+  //         payload.totalSgst = plusgst;
+  //         payload.totalIgst = 0;
+  //       } else {
+  //         payload.totalSgst = 0;
+  //         payload.totalIgst = plusgst;
+  //       }
+  //       console.log(payload, 'payload');
+  //       await dispatch(createCreditnote(payload, navigate));
+  //     }
+  //   } catch (error) {
+  //     console.error('Error creating credit note:', error);
+  //   }
+  // };
   const handlecreateCreditnote = async () => {
     try {
+      const payload = {
+        ...formData,
+        totalQty: totalQuantity,
+        totalMrp: parseFloat(subtotal),
+        mainTotal: parseFloat(subtotal) + parseFloat(plusgst),
+        items: rows.map((row) => ({
+          productId: row.productId,
+          qty: parseFloat(row.qty),
+          rate: parseFloat(row.rate),
+          mrp: parseFloat(row.qty) * parseFloat(row.rate)
+        }))
+      };
+
+      const gststate = companystate === customerState ? 'true' : 'false';
+      if (gststate === 'true') {
+        payload.totalSgst = parseFloat(plusgst);
+        payload.totalIgst = 0;
+      } else {
+        payload.totalSgst = 0;
+        payload.totalIgst = parseFloat(plusgst);
+      }
+
       if (id) {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: Number(row.qty),
-            rate: row.rate,
-            mrp: row.qty * row.rate
-          }))
-        };
-        console.log(payload, 'payload');
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
         await dispatch(updateCreditnote(id, payload, navigate));
       } else {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: row.qty,
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        console.log(selectcustomer);
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
-        console.log(payload, 'payload');
         await dispatch(createCreditnote(payload, navigate));
       }
     } catch (error) {

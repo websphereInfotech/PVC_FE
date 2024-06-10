@@ -188,7 +188,9 @@ export default function ProformainvoiceList() {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this pro forma invoice?</DialogContent>
+        <DialogContent>
+          Are you sure you want to delete this pro forma invoice<br></br> beacuse some sales invoice created by this pro forma invoice?
+        </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel

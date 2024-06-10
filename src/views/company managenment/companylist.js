@@ -52,28 +52,8 @@ const CompanyList = () => {
         console.error('Error fetching company:', error);
       }
     };
-    // const setdefaultCompany = async () => {
-    //   try {
-    //     const data = await dispatch(setDefaultCompany());
-    //     console.log(data, 'data');
-    //     // setDefaultCompany(data);
-    //   } catch (error) {
-    //     console.error('Error fetching company:', error);
-    //   }
-    // };
     fetchCompany();
-    // setdefaultCompany();
   }, [dispatch]);
-
-  // const handlesetcompany = async (id) => {
-  //   try {
-  //     const data = await dispatch(setDefaultCompany(id));
-  //     console.log(data, 'data');
-  //     setDefaultCompany(data);
-  //   } catch (error) {
-  //     console.error('Error fetching company:', error);
-  //   }
-  // };
 
   const handlesetcompany = async (id) => {
     try {

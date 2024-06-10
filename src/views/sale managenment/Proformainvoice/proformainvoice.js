@@ -256,53 +256,31 @@ const Proformainvoice = () => {
 
   const handleCreateQuotation = async () => {
     try {
+      const payload = {
+        ...formData,
+        totalQty: totalQuantity,
+        totalMrp: subtotal,
+        mainTotal: Number(subtotal) + Number(plusgst),
+        items: rows.map((row) => ({
+          productId: row.productId,
+          qty: Number(row.qty),
+          rate: row.rate,
+          mrp: row.mrp
+        }))
+      };
+      const gststate = companystate === customerState ? 'true' : 'false';
+      if (gststate === 'true') {
+        payload.totalSgst = plusgst;
+        payload.totalIgst = 0;
+      } else {
+        payload.totalSgst = 0;
+        payload.totalIgst = plusgst;
+      }
       if (id) {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: Number(row.qty),
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
         await dispatch(updateProformainvoice(id, payload, navigate));
       } else {
-        const quotationData = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: row.qty,
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
         console.log(selectcustomer);
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          quotationData.totalSgst = plusgst;
-          quotationData.totalIgst = 0;
-        } else {
-          quotationData.totalSgst = 0;
-          quotationData.totalIgst = plusgst;
-        }
-        await dispatch(createProformainvoice(quotationData, navigate));
+        await dispatch(createProformainvoice(payload, navigate));
       }
     } catch (error) {
       console.error('Error creating proformainvoice:', error);

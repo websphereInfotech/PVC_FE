@@ -281,6 +281,9 @@ import {
   fetchAllCompanyBankRequest,
   fetchAllCompanyBankSuccess,
   fetchAllCompanyBankFailure,
+  CompanyBankLedgerRequest,
+  CompanyBankLedgerSuccess,
+  CompanyBankLedgerFailure,
   // DEBIT NOTE+++++++++++++++++++++
   createDebitnoteRequest,
   createDebitnoteSuccess,
@@ -2156,6 +2159,23 @@ export const fetchAllCompanyBank = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllCompanyBankFailure(error.message));
+    }
+  };
+};
+export const CompanyBankLedger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(CompanyBankLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/view_company_bankLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const data = response.data.data;
+      dispatch(CompanyBankLedgerSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(CompanyBankLedgerFailure(error.message));
     }
   };
 };

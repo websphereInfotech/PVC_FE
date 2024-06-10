@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,6 +13,8 @@ import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Checkuser, deleteUser, getallusers, Userview, Adduser } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'username', label: 'User Name', align: 'center' },
@@ -20,9 +22,7 @@ const columns = [
   { id: 'email', label: 'Email', align: 'center' },
   { id: 'role', label: 'Role', align: 'center' },
   { id: 'salary', label: 'Basic Salary', align: 'center' },
-  { id: 'view', label: 'View', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' },
-  { id: 'delete', label: 'Delete', align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 export default function UserList() {
@@ -35,7 +35,7 @@ export default function UserList() {
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
-  const [newUser, setNewUser] = useState({ mobileNo: '', email: '' });
+  const [newUser, setNewUser] = useState({ mobileno: '', email: '' });
   const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
   const [userid, setUserid] = useState(null);
 
@@ -147,23 +147,54 @@ export default function UserList() {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleViewUser(row.id)} disabled={!canUserView()}>
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button variant="outlined" color="secondary" onClick={() => handleUpdateUser(row.id)} disabled={!canUserUpdate()}>
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteConfirmation(row.id)}
-                        disabled={!canUserDelete()}
-                      >
-                        Delete
-                      </Button>
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUserView() ? 'Blue' : 'gray',
+                            color: canUserView() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUserView() && { opacity: 1 }),
+                            ...(!canUserView() && { opacity: 0.5 }),
+                            ...(!canUserView() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewUser(row.id)}
+                          disabled={!canUserView()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUserUpdate() ? 'green' : 'gray',
+                            color: canUserUpdate() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUserUpdate() && { opacity: 1 }),
+                            ...(!canUserUpdate() && { opacity: 0.5 }),
+                            ...(!canUserUpdate() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateUser(row.id)}
+                          disabled={!canUserUpdate()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUserDelete() ? 'Red' : 'gray',
+                            color: canUserDelete() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUserDelete() && { opacity: 1 }),
+                            ...(!canUserDelete() && { opacity: 0.5 }),
+                            ...(!canUserDelete() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canUserDelete()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
                     ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString()
                     ) : column.id === 'validtill' ? (
@@ -193,7 +224,7 @@ export default function UserList() {
           <Typography>
             Mobile no.:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <input type="text" onChange={(e) => setNewUser({ ...newUser, mobileNo: e.target.value })} />
+          <input type="text" onChange={(e) => setNewUser({ ...newUser, mobileno: e.target.value })} />
           <Typography>
             Email:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>

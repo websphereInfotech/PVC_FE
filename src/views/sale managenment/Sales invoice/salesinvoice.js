@@ -329,52 +329,30 @@ const Salesinvoice = () => {
 
   const handleSalesinvoice = async () => {
     try {
-      console.log(selectcustomer, setSelectcustomer);
+      console.log(selectcustomer);
+      const payload = {
+        ...formData,
+        totalQty: totalQuantity,
+        totalMrp: subtotal,
+        mainTotal: Number(subtotal) + Number(plusgst),
+        items: rows.map((row) => ({
+          productId: row.productId,
+          rate: row.rate,
+          qty: Number(row.qty),
+          mrp: row.mrp
+        }))
+      };
+      const gststate = companystate === customerState ? 'true' : 'false';
+      if (gststate === 'true') {
+        payload.totalSgst = plusgst;
+        payload.totalIgst = 0;
+      } else {
+        payload.totalSgst = 0;
+        payload.totalIgst = plusgst;
+      }
       if (id) {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            rate: row.rate,
-            qty: Number(row.qty),
-            mrp: row.mrp
-          }))
-        };
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
         await dispatch(updateSalesinvoice(id, payload, navigate));
       } else {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            mrp: row.mrp,
-            rate: row.rate,
-            qty: Number(row.qty)
-          }))
-        };
-        const gststate = companystate === customerState ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
         await dispatch(createSalesInvoice(payload, navigate));
       }
     } catch (error) {

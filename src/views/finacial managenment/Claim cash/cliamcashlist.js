@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Delete, Edit } from '@mui/icons-material';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
@@ -33,8 +34,7 @@ const columns = [
   { id: 'purpose', label: 'purpose', align: 'center', minWidth: 100 },
   { id: 'statusdate', label: 'Status Date', align: 'center', minWidth: 100 },
   { id: 'isApproved', label: 'Status', align: 'center', minWidth: 100 },
-  { id: 'edit', label: 'Edit', align: 'center', minWidth: 100 },
-  { id: 'delete', label: 'Delete', align: 'center', minWidth: 100 }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 const Claimcashlist = () => {
   const dispatch = useDispatch();
@@ -162,24 +162,40 @@ const Claimcashlist = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'edit' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdateClaimcash() || payment.isApproved === true || payment.isApproved === false}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeleteClaimcash() || payment.isApproved === true || payment.isApproved === false}
-                      >
-                        Delete
-                      </Button>
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateClaimcash() ? 'green' : 'gray',
+                            color: canUpdateClaimcash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateClaimcash() && !payment.isApproved && { opacity: 1 }),
+                            ...(canUpdateClaimcash() && (payment.isApproved === true || payment.isApproved === false) && { opacity: 0.5 }),
+                            ...(canUpdateClaimcash() &&
+                              (payment.isApproved === true || payment.isApproved === false) && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdatePayment(payment.id)}
+                          disabled={!canUpdateClaimcash() || payment.isApproved === true || payment.isApproved === false}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteClaimcash() ? 'Red' : 'gray',
+                            color: canDeleteClaimcash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteClaimcash() && { opacity: 1 }),
+                            ...(!canDeleteClaimcash() && { opacity: 0.5 }),
+                            ...(!canDeleteClaimcash() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(payment.id)}
+                          disabled={!canDeleteClaimcash()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
                     ) : column.id === 'date' ? (
                       new Date(payment.updatedAt).toLocaleDateString('en-GB')
                     ) : column.id === 'statusdate' ? (
@@ -225,7 +241,7 @@ const Claimcashlist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '20%' } }}>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
         <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>Ledger Details</h3>
           <span>
@@ -234,7 +250,7 @@ const Claimcashlist = () => {
             </IconButton>
           </span>
         </div>
-        <DialogContent style={{ position: 'reletive' }}>
+        <DialogContent style={{ zIndex: 9999 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="subtitle1">
@@ -246,7 +262,7 @@ const Claimcashlist = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                popperPlacement="bottem-start"
+                // popperPlacement="bottem-start"
               />
             </Grid>
             <Grid item xs={12}>
@@ -259,7 +275,7 @@ const Claimcashlist = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                popperPlacement="top-center"
+                // popperPlacement="top-center"
               />
             </Grid>
 

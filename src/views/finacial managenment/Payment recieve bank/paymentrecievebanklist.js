@@ -258,7 +258,7 @@ const Paymentrecievebanklist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '20%' } }}>
+      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
         <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>Ledger Details</h3>
           <span>
@@ -267,7 +267,7 @@ const Paymentrecievebanklist = () => {
             </IconButton>
           </span>
         </div>
-        <DialogContent style={{ position: 'reletive' }}>
+        <DialogContent style={{ zIndex: 9999 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} style={{ paddingTop: '20px' }}>
               <Typography variant="subtitle1">
@@ -290,7 +290,6 @@ const Paymentrecievebanklist = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                popperPlacement="bottem-start"
               />
             </Grid>
             <Grid item xs={12}>
@@ -303,7 +302,6 @@ const Paymentrecievebanklist = () => {
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
-                popperPlacement="bottem-center"
               />
             </Grid>
             <Button

@@ -159,6 +159,10 @@ const Creditnotelist = () => {
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.CreditCustomer.accountname
+                    ) : column.id === 'createdBy' ? (
+                      row.creditCreateUser?.username
+                    ) : column.id === 'updatedBy' ? (
+                      row.creditUpdateUser?.username
                     ) : (
                       row[column.id]
                     )}

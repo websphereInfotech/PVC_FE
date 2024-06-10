@@ -92,6 +92,7 @@ const Purchaseinvoicecashview = Loadable(lazy(() => import('../views/purches man
 const CompanyList = Loadable(lazy(() => import('../views/company managenment/companylist')));
 const AddCompanyForm = Loadable(lazy(() => import('../views/company managenment/addcompany')));
 const CompanyviewPage = Loadable(lazy(() => import('../views/company managenment/companyview')));
+const Singlebankledgerlist = Loadable(lazy(() => import('../views/company managenment/singlebankledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 const ProductionListPage = Loadable(lazy(() => import('../views/production managenment/productionlist')));
@@ -223,6 +224,7 @@ const MainRoutes = {
     { path: '/companyview/:id', element: <CompanyviewPage /> },
     { path: '/addcompany', element: <AddCompanyForm /> },
     { path: '/addcompany/:id', element: <AddCompanyForm /> },
+    { path: '/singlebankledger', element: <Singlebankledgerlist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/productionlist', element: <ProductionListPage /> },

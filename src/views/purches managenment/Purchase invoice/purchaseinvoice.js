@@ -218,7 +218,7 @@ const Purchaseinvoice = () => {
         console.log(defaultCompany.companies.state, 'defaultcompany');
         if (defaultCompany) {
           setCompanystate(defaultCompany.companies.state);
-          const isGstState = defaultCompany.companies.state === customerState;
+          const isGstState = defaultCompany.companies.state === vendorstate;
           setGststate(isGstState);
         } else {
           console.error('No default company found');
@@ -306,57 +306,93 @@ const Purchaseinvoice = () => {
   console.log(selectvendor);
   const handlePurchase = async () => {
     try {
+      const payload = {
+        ...formData,
+        totalQty: totalQuantity,
+        totalMrp: subtotal,
+        mainTotal: Number(subtotal) + Number(plusgst),
+        items: rows.map((row) => ({
+          productId: row.productId,
+          qty: Number(row.qty),
+          rate: row.rate,
+          mrp: row.mrp
+        }))
+      };
+
+      const gstState = companystate === vendorstate ? 'true' : 'false';
+      if (gstState === 'true') {
+        payload.totalSgst = plusgst / 2;
+        payload.totalCgst = plusgst / 2;
+        payload.totalIgst = 0;
+      } else {
+        payload.totalSgst = 0;
+        payload.totalCgst = 0;
+        payload.totalIgst = plusgst;
+      }
+
       if (id) {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: Number(row.qty),
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        const gststate = companystate === vendorstate ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
         await dispatch(updatePurchaseinvoice(id, payload, navigate));
       } else {
-        const payload = {
-          ...formData,
-          totalQty: totalQuantity,
-          totalMrp: subtotal,
-          mainTotal: Number(subtotal) + Number(plusgst),
-          items: rows.map((row) => ({
-            productId: row.productId,
-            qty: Number(row.qty),
-            rate: row.rate,
-            mrp: row.mrp
-          }))
-        };
-        const gststate = companystate === vendorstate ? 'true' : 'false';
-        setGststate(gststate);
-        if (gststate === 'true') {
-          payload.totalSgst = plusgst;
-          payload.totalIgst = 0;
-        } else {
-          payload.totalSgst = 0;
-          payload.totalIgst = plusgst;
-        }
         await dispatch(createPurchaseinvoice(payload, navigate));
       }
     } catch (error) {
-      console.error('Error creating purchae invoice:', error);
+      console.error('Error creating purchase invoice:', error);
     }
   };
+
+  // const handlePurchase = async () => {
+  //   try {
+  //     if (id) {
+  //       const payload = {
+  //         ...formData,
+  //         totalQty: totalQuantity,
+  //         totalMrp: subtotal,
+  //         mainTotal: Number(subtotal) + Number(plusgst),
+  //         items: rows.map((row) => ({
+  //           productId: row.productId,
+  //           qty: Number(row.qty),
+  //           rate: row.rate,
+  //           mrp: row.mrp
+  //         }))
+  //       };
+  //       const gststate = companystate === vendorstate ? 'true' : 'false';
+  //       setGststate(gststate);
+  //       if (gststate === 'true') {
+  //         payload.totalSgst = plusgst;
+  //         payload.totalIgst = 0;
+  //       } else {
+  //         payload.totalSgst = 0;
+  //         payload.totalIgst = plusgst;
+  //       }
+  //       await dispatch(updatePurchaseinvoice(id, payload, navigate));
+  //     } else {
+  //       const payload = {
+  //         ...formData,
+  //         totalQty: totalQuantity,
+  //         totalMrp: subtotal,
+  //         mainTotal: Number(subtotal) + Number(plusgst),
+  //         items: rows.map((row) => ({
+  //           productId: row.productId,
+  //           qty: Number(row.qty),
+  //           rate: row.rate,
+  //           mrp: row.mrp
+  //         }))
+  //       };
+  //       const gststate = companystate === vendorstate ? 'true' : 'false';
+  //       setGststate(gststate);
+  //       if (gststate === 'true') {
+  //         payload.totalSgst = plusgst;
+  //         payload.totalIgst = 0;
+  //       } else {
+  //         payload.totalSgst = 0;
+  //         payload.totalIgst = plusgst;
+  //       }
+  //       await dispatch(createPurchaseinvoice(payload, navigate));
+  //     }
+  //   } catch (error) {
+  //     console.error('Error creating purchae invoice:', error);
+  //   }
+  // };
   const handleInvoiceDateChange = (date) => {
     setFormData({ ...formData, invoicedate: date });
   };
@@ -553,7 +589,7 @@ const Purchaseinvoice = () => {
               ) : (
                 <div id="subtotalcs">
                   <p>IGST</p>
-                  <p>₹{plusgst.toFixed(2)}</p>
+                  <p>₹{parseFloat(plusgst).toFixed(2)}</p>
                 </div>
               )}
               <div

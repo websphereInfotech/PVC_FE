@@ -24,7 +24,9 @@
 .css-15bg8is-MuiButtonBase-root-MuiListItemButton-root {
   margin-bottom: 0px;
 }
-
+.css-s9izhf-MuiPaper-root-MuiDialog-paper {
+  overflow-y: visible !important;
+}
 .css-hyum1k-MuiToolbar-root {
   background-color: #425466;
   color: white;
@@ -89,9 +91,9 @@
 //   border-left: 0.2px solid lightgrey;
 // }
 .css-qbdosj-Input {
-width: 213px;
+  width: 213px;
 }
-#date{
+#date {
   width: 125%;
   border: 1px solid #ced4da;
   padding: 10px;
@@ -108,7 +110,7 @@ width: 213px;
 }
 @media screen and (min-width: 601px) {
   #date {
-    width: 110%; 
+    width: 110%;
   }
 }
 input {
@@ -210,7 +212,7 @@ input {
   // text-align: center;
 }
 .css-davpi6-MuiPaper-root-MuiDrawer-paper {
-overflow-x: hidden;
+  overflow-x: hidden;
 }
 .scrollhost::-webkit-scrollbar {
   display: none;

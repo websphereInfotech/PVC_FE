@@ -13,20 +13,29 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  IconButton
 } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Companyview, createCompanyBank, deleteCompanyBank, updateCompanyBank } from 'store/thunk';
+import { CompanyBankLedger, Companyview, createCompanyBank, deleteCompanyBank, updateCompanyBank } from 'store/thunk';
 import { toast } from 'react-toastify';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import CloseIcon from '@mui/icons-material/Close';
+import Singlebankledgerlist from './singlebankledger';
 
 const CompanyviewPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank } = useCan();
   const [open, setOpen] = useState(false);
+  const [openLedger, setOpenLedger] = useState(false);
+  const [ledgerBankId, setLedgerBankId] = useState(null);
+  const [formDate, setFormDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -41,6 +50,7 @@ const CompanyviewPage = () => {
     ifsccode: '',
     branch: ''
   });
+  const showLedgerlist = false;
 
   const handleInputChange = (field, value) => {
     setBankdata({ ...bankdata, [field]: value });
@@ -60,6 +70,41 @@ const CompanyviewPage = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleLedgerClose = () => {
+    setOpenLedger(false);
+    setLedgerBankId(null);
+  };
+
+  const handleOpenLedgerDialog = (bankId) => {
+    setLedgerBankId(bankId);
+    setOpenLedger(true);
+  };
+
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
+  const handleViewLedger = async () => {
+    await dispatch(CompanyBankLedger(ledgerBankId, formDate, toDate));
+    sessionStorage.setItem('Cbankid', ledgerBankId);
+    sessionStorage.setItem('CformDate', formDate);
+    sessionStorage.setItem('CtoDate', toDate);
+    navigate('/singlebankledger');
+    handleLedgerClose();
   };
 
   useEffect(() => {
@@ -102,6 +147,7 @@ const CompanyviewPage = () => {
       console.error('Error updating or creating bank details:', error);
     }
   };
+
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
     setSelectedId(id);
@@ -115,8 +161,10 @@ const CompanyviewPage = () => {
       console.error('Error deleting bank details:', error);
     }
   };
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
+      {showLedgerlist && <Singlebankledgerlist ledgerBankId={ledgerBankId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
         Company View
       </Typography>
@@ -175,6 +223,7 @@ const CompanyviewPage = () => {
                     <TableCell>Branch</TableCell>
                     <TableCell>Edit</TableCell>
                     <TableCell>Delete</TableCell>
+                    <TableCell>Ledger</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -198,6 +247,11 @@ const CompanyviewPage = () => {
                           disabled={!canDeleteCompanyBank()}
                         >
                           Delete
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button onClick={() => handleOpenLedgerDialog(bank.id)} variant="outlined" color="secondary">
+                          Ledger
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -276,6 +330,47 @@ const CompanyviewPage = () => {
               Save
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog open={openLedger} onClose={handleLedgerClose} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
+          <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h3>Ledger Details</h3>
+            <span>
+              <IconButton onClick={handleLedgerClose}>
+                <CloseIcon />
+              </IconButton>
+            </span>
+          </div>
+          <DialogContent style={{ zIndex: 9999 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1">
+                  From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
+                <DatePicker
+                  selected={formDate}
+                  onChange={(date) => handleformDateChange(date)}
+                  dateFormat="dd/MM/yyyy"
+                  isClearable={false}
+                  showTimeSelect={false}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1">
+                  To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                </Typography>
+                <DatePicker
+                  selected={toDate}
+                  onChange={(date) => handletoDateChange(date)}
+                  dateFormat="dd/MM/yyyy"
+                  isClearable={false}
+                  showTimeSelect={false}
+                />
+              </Grid>
+              <Button onClick={handleViewLedger} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+                GO
+              </Button>
+            </Grid>
+          </DialogContent>
         </Dialog>
         <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
           <DialogTitle>Confirmation</DialogTitle>

@@ -159,6 +159,10 @@ const Debitnotelist = () => {
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.DebitCustomer.accountname
+                    ) : column.id === 'createdBy' ? (
+                      row.debitCreateUser?.username
+                    ) : column.id === 'updatedBy' ? (
+                      row.debitUpdateUser?.username
                     ) : (
                       row[column.id]
                     )}
