@@ -26,6 +26,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import Paymentbankledgerlist from './paymentbankledgerlist';
+import { Delete, Edit } from '@mui/icons-material';
 
 const columns = [
   { id: 'paymentdate', label: 'Date', align: 'center' },
@@ -34,8 +35,7 @@ const columns = [
   { id: 'account', label: 'Company', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' },
-  { id: 'delete', label: 'Delete', align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const Paymentbanklist = () => {
@@ -201,25 +201,58 @@ const Paymentbanklist = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'edit' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdatePaymentBank()}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeletePaymentBank()}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'paymentdate' ? (
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdatePaymentBank() ? 'green' : 'gray',
+                            color: canUpdatePaymentBank() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdatePaymentBank() && { opacity: 1 }),
+                            ...(!canUpdatePaymentBank() && { opacity: 0.5 }),
+                            ...(!canUpdatePaymentBank() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdatePayment(payment.id)}
+                          disabled={!canUpdatePaymentBank()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeletePaymentBank() ? 'Red' : 'gray',
+                            color: canDeletePaymentBank() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeletePaymentBank() && { opacity: 1 }),
+                            ...(!canDeletePaymentBank() && { opacity: 0.5 }),
+                            ...(!canDeletePaymentBank() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(payment.id)}
+                          disabled={!canDeletePaymentBank()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // <Button
+                    //   variant="outlined"
+                    //   color="secondary"
+                    //   onClick={() => handleUpdatePayment(payment.id)}
+                    //   disabled={!canUpdatePaymentBank()}
+                    // >
+                    //   Edit
+                    // </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleDeleteConfirmation(payment.id)}
+                    //     disabled={!canDeletePaymentBank()}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'paymentdate' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'vendor' ? (
                       payment.paymentData.accountname

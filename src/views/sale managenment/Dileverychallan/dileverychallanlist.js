@@ -14,20 +14,21 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Deliverychallanview, getallDeliverychallan, deleteDileveryChallan } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'challanno', label: 'Challan No', minWidth: 100, align: 'center' },
   { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+  { id: 'action', label: 'Action', minWidth: 100, align: 'center' }
 ];
 
 const DileveryChallanList = () => {
@@ -127,34 +128,82 @@ const DileveryChallanList = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewDeliverychallan()}
-                        onClick={() => handleViewDeliverychallan(order.id)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdateDeliverychallan(order.id)}
-                        disabled={!canUpdateDeliverychallan()}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteConfirmation(order.id)}
-                        disabled={!canDeleteDeliverychallan()}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'date' ? (
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewDeliverychallan() ? 'Blue' : 'gray',
+                            color: canViewDeliverychallan() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewDeliverychallan() && { opacity: 1 }),
+                            ...(!canViewDeliverychallan() && { opacity: 0.5 }),
+                            ...(!canViewDeliverychallan() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewDeliverychallan(order.id)}
+                          disabled={!canViewDeliverychallan()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateDeliverychallan() ? 'green' : 'gray',
+                            color: canUpdateDeliverychallan() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateDeliverychallan() && { opacity: 1 }),
+                            ...(!canUpdateDeliverychallan() && { opacity: 0.5 }),
+                            ...(!canUpdateDeliverychallan() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateDeliverychallan(order.id)}
+                          disabled={!canUpdateDeliverychallan()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteDeliverychallan() ? 'Red' : 'gray',
+                            color: canDeleteDeliverychallan() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteDeliverychallan() && { opacity: 1 }),
+                            ...(!canDeleteDeliverychallan() && { opacity: 0.5 }),
+                            ...(!canDeleteDeliverychallan() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(order.id)}
+                          disabled={!canDeleteDeliverychallan()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // <Button
+                    //   variant="outlined"
+                    //   color="secondary"
+                    //   disabled={!canViewDeliverychallan()}
+                    //   onClick={() => handleViewDeliverychallan(order.id)}
+                    // >
+                    //   View
+                    // </Button>
+                    // column.id === 'edit' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleUpdateDeliverychallan(order.id)}
+                    //     disabled={!canUpdateDeliverychallan()}
+                    //   >
+                    //     Edit
+                    //   </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleDeleteConfirmation(order.id)}
+                    //     disabled={!canDeleteDeliverychallan()}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       order.DeliveryCustomer.accountname

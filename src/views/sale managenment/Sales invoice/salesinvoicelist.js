@@ -13,12 +13,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'invoiceno', label: 'Invocie No', minWidth: 170, align: 'center' },
@@ -26,13 +29,11 @@ const columns = [
   { id: 'invoicedate', label: 'Date.', minWidth: 170, align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const Salesinvoicelist = () => {
-  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice } = useCan();
+  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
   const navigate = useNavigate();
   const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
@@ -103,7 +104,13 @@ const Salesinvoicelist = () => {
       <Typography variant="h4" align="center" id="mycss">
         Sales Invoice List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddSalesinvoice}>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: '10px' }}
+        onClick={handleAddSalesinvoice}
+        disabled={!canCreateSalesinvoice()}
+      >
         Create Sales Invoice
       </Button>
       <TableContainer sx={{ maxHeight: 700 }}>
@@ -122,34 +129,82 @@ const Salesinvoicelist = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewalesinvoice()}
-                        onClick={() => handleViewsalesinvoice(row.id)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        disabled={!canUpdateSalesinvoice()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdateSalesInvoice(row.id)}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canDeleteSalesinvoice()}
-                        onClick={() => handleDeleteConfirmation(row.id)}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'invoicedate' ? (
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewalesinvoice() ? 'Blue' : 'gray',
+                            color: canViewalesinvoice() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewalesinvoice() && { opacity: 1 }),
+                            ...(!canViewalesinvoice() && { opacity: 0.5 }),
+                            ...(!canViewalesinvoice() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewsalesinvoice(row.id)}
+                          disabled={!canViewalesinvoice()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateSalesinvoice() ? 'green' : 'gray',
+                            color: canUpdateSalesinvoice() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateSalesinvoice() && { opacity: 1 }),
+                            ...(!canUpdateSalesinvoice() && { opacity: 0.5 }),
+                            ...(!canUpdateSalesinvoice() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateSalesInvoice(row.id)}
+                          disabled={!canUpdateSalesinvoice()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteSalesinvoice() ? 'Red' : 'gray',
+                            color: canDeleteSalesinvoice() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteSalesinvoice() && { opacity: 1 }),
+                            ...(!canDeleteSalesinvoice() && { opacity: 0.5 }),
+                            ...(!canDeleteSalesinvoice() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeleteSalesinvoice()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // <Button
+                    //   variant="outlined"
+                    //   color="secondary"
+                    //   disabled={!canViewalesinvoice()}
+                    //   onClick={() => handleViewsalesinvoice(row.id)}
+                    // >
+                    //   View
+                    // </Button>
+                    //  column.id === 'edit' ? (
+                    //   <Button
+                    //     disabled={!canUpdateSalesinvoice()}
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleUpdateSalesInvoice(row.id)}
+                    //   >
+                    //     Edit
+                    //   </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     disabled={!canDeleteSalesinvoice()}
+                    //     onClick={() => handleDeleteConfirmation(row.id)}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.InvioceCustomer.accountname

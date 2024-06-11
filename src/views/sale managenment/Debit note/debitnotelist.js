@@ -14,12 +14,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -27,9 +30,7 @@ const columns = [
   { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
   { id: 'createdBy', label: 'Created By', minWidth: 100, align: 'center' },
   { id: 'updatedBy', label: 'Updated By', minWidth: 100, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const Debitnotelist = () => {
@@ -128,34 +129,82 @@ const Debitnotelist = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewDebitnote()}
-                        onClick={() => handleViewDebitnote(row.id)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        disabled={!canUpdateDebitnote()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdateDebitnote(row.id)}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canDeleteDebitnote()}
-                        onClick={() => handleDeleteConfirmation(row.id)}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'debitdate' ? (
+                    {column.id === 'action' ? (
+                      // <Button
+                      //   variant="outlined"
+                      //   color="secondary"
+                      //   disabled={!canViewDebitnote()}
+                      //   onClick={() => handleViewDebitnote(row.id)}
+                      // >
+                      //   View
+                      // </Button>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewDebitnote() ? 'Blue' : 'gray',
+                            color: canViewDebitnote() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewDebitnote() && { opacity: 1 }),
+                            ...(!canViewDebitnote() && { opacity: 0.5 }),
+                            ...(!canViewDebitnote() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewDebitnote(row.id)}
+                          disabled={!canViewDebitnote()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateDebitnote() ? 'green' : 'gray',
+                            color: canUpdateDebitnote() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateDebitnote() && { opacity: 1 }),
+                            ...(!canUpdateDebitnote() && { opacity: 0.5 }),
+                            ...(!canUpdateDebitnote() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateDebitnote(row.id)}
+                          disabled={!canUpdateDebitnote()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteDebitnote() ? 'Red' : 'gray',
+                            color: canDeleteDebitnote() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteDebitnote() && { opacity: 1 }),
+                            ...(!canDeleteDebitnote() && { opacity: 0.5 }),
+                            ...(!canDeleteDebitnote() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeleteDebitnote()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // column.id === 'edit' ? (
+                    //   <Button
+                    //     disabled={!canUpdateDebitnote()}
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleUpdateDebitnote(row.id)}
+                    //   >
+                    //     Edit
+                    //   </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     disabled={!canDeleteDebitnote()}
+                    //     onClick={() => handleDeleteConfirmation(row.id)}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'debitdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.DebitCustomer.accountname

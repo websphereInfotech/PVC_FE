@@ -26,6 +26,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Customerledgerlist from '../Claim cash/customerledgerlist';
+import { Delete, Edit } from '@mui/icons-material';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -34,8 +35,7 @@ const columns = [
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' },
-  { id: 'delete', label: 'Delete', align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const PaymentrecieveList = () => {
@@ -192,25 +192,58 @@ const PaymentrecieveList = () => {
               <TableRow key={payment.id}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'edit' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdatePayment(payment.id)}
-                        disabled={!canUpdatePaymentrecievecash()}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteConfirmation(payment.id)}
-                        disabled={!canDeletePaymentrecievecash()}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'date' ? (
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdatePaymentrecievecash() ? 'green' : 'gray',
+                            color: canUpdatePaymentrecievecash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdatePaymentrecievecash() && { opacity: 1 }),
+                            ...(!canUpdatePaymentrecievecash() && { opacity: 0.5 }),
+                            ...(!canUpdatePaymentrecievecash() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdatePayment(payment.id)}
+                          disabled={!canUpdatePaymentrecievecash()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeletePaymentrecievecash() ? 'Red' : 'gray',
+                            color: canDeletePaymentrecievecash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeletePaymentrecievecash() && { opacity: 1 }),
+                            ...(!canDeletePaymentrecievecash() && { opacity: 0.5 }),
+                            ...(!canDeletePaymentrecievecash() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeletePaymentrecievecash()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // <Button
+                    //   variant="outlined"
+                    //   color="secondary"
+                    //   onClick={() => handleUpdatePayment(payment.id)}
+                    //   disabled={!canUpdatePaymentrecievecash()}
+                    // >
+                    //   Edit
+                    // </Button>
+                    // column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleDeleteConfirmation(payment.id)}
+                    //     disabled={!canDeletePaymentrecievecash()}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       payment.ReceiveCustomer.customername

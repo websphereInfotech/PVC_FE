@@ -14,12 +14,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
@@ -27,9 +30,7 @@ const columns = [
   { id: 'customer', label: 'Customer', minWidth: 170, align: 'center' },
   { id: 'createdBy', label: 'Created By', minWidth: 100, align: 'center' },
   { id: 'updatedBy', label: 'Updated By', minWidth: 100, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const Creditnotelist = () => {
@@ -73,12 +74,12 @@ const Creditnotelist = () => {
     navigate('/creditnote');
   };
 
-  const handleUpdateDebitnote = (id) => {
+  const handleUpdateCreditnote = (id) => {
     dispatch(Creditnoteviewdata(id));
     navigate(`/creditnote/${id}`);
   };
 
-  const handleViewDebitnote = (id) => {
+  const handleViewCreditnote = (id) => {
     dispatch(Creditnoteviewdata(id));
     navigate(`/creditnoteview/${id}`);
   };
@@ -128,34 +129,82 @@ const Creditnotelist = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewCreditnote()}
-                        onClick={() => handleViewDebitnote(row.id)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        disabled={!canUpdateCreditnote()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdateDebitnote(row.id)}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canDeleteCreditnote()}
-                        onClick={() => handleDeleteConfirmation(row.id)}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'creditdate' ? (
+                    {column.id === 'action' ? (
+                      // <Button
+                      //   variant="outlined"
+                      //   color="secondary"
+                      //   disabled={!canViewCreditnote()}
+                      //   onClick={() => handleViewDebitnote(row.id)}
+                      // >
+                      //   View
+                      // </Button>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewCreditnote() ? 'Blue' : 'gray',
+                            color: canViewCreditnote() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewCreditnote() && { opacity: 1 }),
+                            ...(!canViewCreditnote() && { opacity: 0.5 }),
+                            ...(!canViewCreditnote() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewCreditnote(row.id)}
+                          disabled={!canViewCreditnote()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateCreditnote() ? 'green' : 'gray',
+                            color: canUpdateCreditnote() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateCreditnote() && { opacity: 1 }),
+                            ...(!canUpdateCreditnote() && { opacity: 0.5 }),
+                            ...(!canUpdateCreditnote() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateCreditnote(row.id)}
+                          disabled={!canUpdateCreditnote()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteCreditnote() ? 'Red' : 'gray',
+                            color: canDeleteCreditnote() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteCreditnote() && { opacity: 1 }),
+                            ...(!canDeleteCreditnote() && { opacity: 0.5 }),
+                            ...(!canDeleteCreditnote() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeleteCreditnote()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // column.id === 'edit' ? (
+                    //   <Button
+                    //     disabled={!canUpdateCreditnote()}
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleUpdateDebitnote(row.id)}
+                    //   >
+                    //     Edit
+                    //   </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     disabled={!canDeleteCreditnote()}
+                    //     onClick={() => handleDeleteConfirmation(row.id)}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'creditdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.CreditCustomer.accountname

@@ -14,12 +14,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SalesInvoiceCashview, deleteSalesinvoicecash, getallSalesInvoiceCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   // { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -27,9 +30,7 @@ const columns = [
   { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const Salescashlist = () => {
@@ -123,34 +124,82 @@ const Salescashlist = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewSalescash()}
-                        onClick={() => handleViewsalescash(row.id)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        disabled={!canUpdateSalescash()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdateSalescash(row.id)}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canDeleteSalescash()}
-                        onClick={() => handleDeleteConfirmation(row.id)}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'date' ? (
+                    {column.id === 'action' ? (
+                      // <Button
+                      //   variant="outlined"
+                      //   color="secondary"
+                      //   disabled={!canViewSalescash()}
+                      //   onClick={() => handleViewsalescash(row.id)}
+                      // >
+                      //   View
+                      // </Button>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewSalescash() ? 'Blue' : 'gray',
+                            color: canViewSalescash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewSalescash() && { opacity: 1 }),
+                            ...(!canViewSalescash() && { opacity: 0.5 }),
+                            ...(!canViewSalescash() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewsalescash(row.id)}
+                          disabled={!canViewSalescash()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateSalescash() ? 'green' : 'gray',
+                            color: canUpdateSalescash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateSalescash() && { opacity: 1 }),
+                            ...(!canUpdateSalescash() && { opacity: 0.5 }),
+                            ...(!canUpdateSalescash() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateSalescash(row.id)}
+                          disabled={!canUpdateSalescash()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteSalescash() ? 'Red' : 'gray',
+                            color: canDeleteSalescash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteSalescash() && { opacity: 1 }),
+                            ...(!canDeleteSalescash() && { opacity: 0.5 }),
+                            ...(!canDeleteSalescash() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeleteSalescash()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : //  column.id === 'edit' ? (
+                    //   <Button
+                    //     disabled={!canUpdateSalescash()}
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleUpdateSalescash(row.id)}
+                    //   >
+                    //     Edit
+                    //   </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     disabled={!canDeleteSalescash()}
+                    //     onClick={() => handleDeleteConfirmation(row.id)}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.CashCustomer.customername

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Proformainvoiceview, fetchproformainvoiceList, deleteProformainvoice } from 'store/thunk';
-import { Card, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,6 +13,8 @@ import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
+import { Delete, Edit } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
@@ -22,9 +24,7 @@ const columns = [
   { id: 'validtill', label: 'Valid Till', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
-  { id: 'view', label: 'View', align: 'center' },
-  { id: 'edit', label: 'Edit', align: 'center' },
-  { id: 'delete', label: 'Delete', align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 export default function ProformainvoiceList() {
@@ -132,34 +132,82 @@ export default function ProformainvoiceList() {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewProformainvoiceQuotation()}
-                        onClick={() => handleViewQuotation(row.id)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        disabled={!canUpdateProformainvoiceQuotation()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleUpdateQuotation(row.id)}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        disabled={!canDeProformainvoiceQuotation()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteConfirmation(row.id)}
-                      >
-                        Delete
-                      </Button>
-                    ) : column.id === 'date' || column.id === 'validtill' ? (
+                    {column.id === 'action' ? (
+                      // <Button
+                      //   variant="outlined"
+                      //   color="secondary"
+                      //   disabled={!canViewProformainvoiceQuotation()}
+                      //   onClick={() => handleViewQuotation(row.id)}
+                      // >
+                      //   View
+                      // </Button>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewProformainvoiceQuotation() ? 'Blue' : 'gray',
+                            color: canViewProformainvoiceQuotation() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewProformainvoiceQuotation() && { opacity: 1 }),
+                            ...(!canViewProformainvoiceQuotation() && { opacity: 0.5 }),
+                            ...(!canViewProformainvoiceQuotation() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewQuotation(row.id)}
+                          disabled={!canViewProformainvoiceQuotation()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateProformainvoiceQuotation() ? 'green' : 'gray',
+                            color: canUpdateProformainvoiceQuotation() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateProformainvoiceQuotation() && { opacity: 1 }),
+                            ...(!canUpdateProformainvoiceQuotation() && { opacity: 0.5 }),
+                            ...(!canUpdateProformainvoiceQuotation() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateQuotation(row.id)}
+                          disabled={!canUpdateProformainvoiceQuotation()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeProformainvoiceQuotation() ? 'Red' : 'gray',
+                            color: canDeProformainvoiceQuotation() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeProformainvoiceQuotation() && { opacity: 1 }),
+                            ...(!canDeProformainvoiceQuotation() && { opacity: 0.5 }),
+                            ...(!canDeProformainvoiceQuotation() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeProformainvoiceQuotation()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : // column.id === 'edit' ? (
+                    //   <Button
+                    //     disabled={!canUpdateProformainvoiceQuotation()}
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleUpdateQuotation(row.id)}
+                    //   >
+                    //     Edit
+                    //   </Button>
+                    // ) : column.id === 'delete' ? (
+                    //   <Button
+                    //     disabled={!canDeProformainvoiceQuotation()}
+                    //     variant="outlined"
+                    //     color="secondary"
+                    //     onClick={() => handleDeleteConfirmation(row.id)}
+                    //   >
+                    //     Delete
+                    //   </Button>
+                    // ) :
+                    column.id === 'date' || column.id === 'validtill' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       row.customer.accountname
