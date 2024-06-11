@@ -2168,7 +2168,7 @@ export const CompanyBankLedger = (id, formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/view_company_bankLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/view_single_bankLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
       const data = response.data.data;

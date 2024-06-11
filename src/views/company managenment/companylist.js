@@ -14,13 +14,16 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Companyview, deleteCompany, fetchuserwiseCompany, setDefaultCompany } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import Switch from '@mui/material/Switch';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { Delete, Edit } from '@mui/icons-material';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const columns = [
@@ -30,7 +33,7 @@ const columns = [
   { id: 'view', label: 'View', minWidth: 100, align: 'center' },
   { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
   { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 100, align: 'center' }
+  { id: 'action', label: 'Action', minWidth: 200, align: 'center' }
 ];
 
 const CompanyList = () => {
@@ -145,32 +148,62 @@ const CompanyList = () => {
                       >
                         View
                       </Button>
-                    ) : column.id === 'edit' ? (
-                      <Button
-                        disabled={!canUpdateCompany()}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handlecompanyupdate(row.companyId)}
-                      >
-                        Edit
-                      </Button>
-                    ) : column.id === 'delete' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canDeleteCompany()}
-                        onClick={() => handleDeleteConfirmation(row.companyId)}
-                      >
-                        Delete
-                      </Button>
                     ) : column.id === 'action' ? (
-                      <Switch {...label} color="success" checked={row.setDefault} onChange={() => handlesetcompany(row.companyId)} />
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewCompany() ? 'Blue' : 'gray',
+                            color: canViewCompany() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewCompany() && { opacity: 1 }),
+                            ...(!canViewCompany() && { opacity: 0.5 }),
+                            ...(!canViewCompany() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handlecompanyview(row.companyId)}
+                          disabled={!canViewCompany()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateCompany() ? 'green' : 'gray',
+                            color: canUpdateCompany() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateCompany() && { opacity: 1 }),
+                            ...(!canUpdateCompany() && { opacity: 0.5 }),
+                            ...(!canUpdateCompany() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handlecompanyupdate(row.companyId)}
+                          disabled={!canUpdateCompany()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteCompany() ? 'Red' : 'gray',
+                            color: canDeleteCompany() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteCompany() && { opacity: 1 }),
+                            ...(!canDeleteCompany() && { opacity: 0.5 }),
+                            ...(!canDeleteCompany() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canDeleteCompany()}
+                          onClick={() => handleDeleteConfirmation(row.companyId)}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+
+                        <Switch {...label} color="success" checked={row.setDefault} onChange={() => handlesetcompany(row.companyId)} />
+                      </div>
                     ) : column.id === 'companyname' ? (
-                      row.companies.companyname
+                      row.companies?.companyname
                     ) : column.id === 'email' ? (
-                      row.companies.email
+                      row.companies?.email
                     ) : column.id === 'mobileno' ? (
-                      row.companies.mobileno
+                      row.companies?.mobileno
                     ) : (
                       row[column.id]
                     )}

@@ -544,7 +544,9 @@ const useCan = () => {
   const canViwAllCompanyBank = () => {
     return checkPermission('Company Bank Details', 'view_all_company_bankDetails');
   };
-
+  const canViewCompanyBankLedger = () => {
+    return checkPermission('Company Bank Details', 'view_single_bankLedger');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreateClaimcash = () => {
@@ -759,7 +761,8 @@ const useCan = () => {
     canUpdateCompanyBank,
     canDeleteCompanyBank,
     canViewCompanyBank,
-    canViwAllCompanyBank
+    canViwAllCompanyBank,
+    canViewCompanyBankLedger
   };
 };
 

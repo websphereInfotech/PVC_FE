@@ -27,10 +27,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CloseIcon from '@mui/icons-material/Close';
 import Singlebankledgerlist from './singlebankledger';
-
+import { Delete, Edit } from '@mui/icons-material';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 const CompanyviewPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank } = useCan();
+  const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank, canViewCompanyBankLedger } = useCan();
   const [open, setOpen] = useState(false);
   const [openLedger, setOpenLedger] = useState(false);
   const [ledgerBankId, setLedgerBankId] = useState(null);
@@ -216,43 +217,70 @@ const CompanyviewPage = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Account Name</TableCell>
-                    <TableCell>Bank Name</TableCell>
-                    <TableCell>Account Number</TableCell>
-                    <TableCell>IFSC Code</TableCell>
-                    <TableCell>Branch</TableCell>
-                    <TableCell>Edit</TableCell>
-                    <TableCell>Delete</TableCell>
-                    <TableCell>Ledger</TableCell>
+                    <TableCell align="center">Account Name</TableCell>
+                    <TableCell align="center">Bank Name</TableCell>
+                    <TableCell align="center">Account Number</TableCell>
+                    <TableCell align="center">IFSC Code</TableCell>
+                    <TableCell align="center">Branch</TableCell>
+                    <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.comapnyBank.map((bank, index) => (
                     <TableRow key={index}>
-                      <TableCell>{bank.accountname}</TableCell>
-                      <TableCell>{bank.bankname}</TableCell>
-                      <TableCell>{bank.accountnumber}</TableCell>
-                      <TableCell>{bank.ifsccode}</TableCell>
-                      <TableCell>{bank.branch}</TableCell>
+                      <TableCell align="center">{bank.accountname}</TableCell>
+                      <TableCell align="center">{bank.bankname}</TableCell>
+                      <TableCell align="center">{bank.accountnumber}</TableCell>
+                      <TableCell align="center">{bank.ifsccode}</TableCell>
+                      <TableCell align="center">{bank.branch}</TableCell>
                       <TableCell>
-                        <Button variant="outlined" color="secondary" onClick={() => handleEdit(index)} disabled={!canUpdateCompanyBank()}>
-                          Edit
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          onClick={() => handleDeleteConfirmation(bank.id)}
-                          variant="outlined"
-                          color="secondary"
-                          disabled={!canDeleteCompanyBank()}
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <Button onClick={() => handleOpenLedgerDialog(bank.id)} variant="outlined" color="secondary">
-                          Ledger
-                        </Button>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                          <IconButton
+                            sizeSmall
+                            style={{
+                              backgroundColor: canUpdateCompanyBank() ? 'green' : 'gray',
+                              color: canUpdateCompanyBank() ? 'white' : 'white',
+                              borderRadius: 0.8,
+                              ...(canUpdateCompanyBank() && { opacity: 1 }),
+                              ...(!canUpdateCompanyBank() && { opacity: 0.5 }),
+                              ...(!canUpdateCompanyBank() && { backgroundColor: 'gray' })
+                            }}
+                            onClick={() => handleEdit(index)}
+                            disabled={!canUpdateCompanyBank()}
+                          >
+                            <Edit style={{ fontSize: '16px' }} />
+                          </IconButton>
+                          <IconButton
+                            sizeSmall
+                            style={{
+                              backgroundColor: canDeleteCompanyBank() ? 'Red' : 'gray',
+                              color: canDeleteCompanyBank() ? 'white' : 'white',
+                              borderRadius: 0.8,
+                              ...(canDeleteCompanyBank() && { opacity: 1 }),
+                              ...(!canDeleteCompanyBank() && { opacity: 0.5 }),
+                              ...(!canDeleteCompanyBank() && { backgroundColor: 'gray' })
+                            }}
+                            onClick={() => handleDeleteConfirmation(bank.id)}
+                            disabled={!canDeleteCompanyBank()}
+                          >
+                            <Delete style={{ fontSize: '16px' }} />
+                          </IconButton>
+                          <IconButton
+                            sizeSmall
+                            style={{
+                              backgroundColor: canViewCompanyBankLedger() ? 'blue' : 'gray',
+                              color: canViewCompanyBankLedger() ? 'white' : 'white',
+                              borderRadius: 0.8,
+                              ...(canViewCompanyBankLedger() && { opacity: 1 }),
+                              ...(!canViewCompanyBankLedger() && { opacity: 0.5 }),
+                              ...(!canViewCompanyBankLedger() && { backgroundColor: 'gray' })
+                            }}
+                            onClick={() => handleOpenLedgerDialog(bank.id)}
+                            disabled={!canViewCompanyBankLedger()}
+                          >
+                            <AccountBalanceWalletIcon style={{ fontSize: '16px' }} />
+                          </IconButton>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

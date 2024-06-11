@@ -5,7 +5,6 @@ import { CompanyBankLedger } from 'store/thunk';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
-  { id: 'customer', label: 'Customer', align: 'center', minWidth: 100 },
   { id: 'creditAmount', label: 'Credit', align: 'center', minWidth: 100 },
   { id: 'debitAmount', label: 'Debit', align: 'center', minWidth: 100 },
   { id: 'remainingBalance', label: 'Balance', align: 'center', minWidth: 100 }
@@ -65,11 +64,7 @@ const Singlebankledgerlist = () => {
                     align={column.align}
                     style={{ color: (column.id === 'creditAmount' && '#00CE00') || (column.id === 'debitAmount' && 'red') }}
                   >
-                    {column.id === 'date'
-                      ? new Date(payment[column.id]).toLocaleDateString('en-GB')
-                      : column.id === 'customer'
-                        ? payment.customerData.accountname
-                        : payment[column.id]}
+                    {column.id === 'date' ? new Date(payment[column.id]).toLocaleDateString('en-GB') : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>
