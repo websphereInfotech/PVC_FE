@@ -67,9 +67,13 @@ const Paymentbankrecieveledgerlist = () => {
                   >
                     {column.id === 'date'
                       ? new Date(payment[column.id]).toLocaleDateString('en-GB')
-                      : column.id === 'customer'
-                        ? payment.customerData.accountname
-                        : payment[column.id]}
+                      : column.id === 'creditAmount' || column.id === 'debitAmount'
+                        ? payment[column.id] !== 0
+                          ? payment[column.id]
+                          : '-'
+                        : column.id === 'customer'
+                          ? payment.customerData.accountname
+                          : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>

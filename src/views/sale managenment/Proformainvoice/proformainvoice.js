@@ -76,12 +76,20 @@ const Proformainvoice = () => {
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
+
+    if (deletedRow.mrp) {
+      const deletedAmount = parseFloat(deletedRow.mrp);
+      const newSubtotal = subtotal - deletedAmount;
+      setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
+    }
+
+    if (deletedRow.gst) {
+      const deletedGST = parseFloat(deletedRow.gst);
+      const newPlusgst = plusgst - deletedGST;
+      setPlusgst(newPlusgst < 0 ? 0 : newPlusgst);
+    }
+
     setRows(updatedRows);
-    const newPlusgst = plusgst - deletedRow.gst;
-    setPlusgst(newPlusgst);
-    const deletedAmount = deletedRow.mrp;
-    const newSubtotal = subtotal - deletedAmount;
-    setSubtotal(newSubtotal < 0 ? 0 : newSubtotal);
   };
 
   // use for select product name from dropdown

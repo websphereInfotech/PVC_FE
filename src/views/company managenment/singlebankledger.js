@@ -64,7 +64,13 @@ const Singlebankledgerlist = () => {
                     align={column.align}
                     style={{ color: (column.id === 'creditAmount' && '#00CE00') || (column.id === 'debitAmount' && 'red') }}
                   >
-                    {column.id === 'date' ? new Date(payment[column.id]).toLocaleDateString('en-GB') : payment[column.id]}
+                    {column.id === 'date'
+                      ? new Date(payment[column.id]).toLocaleDateString('en-GB')
+                      : column.id === 'creditAmount' || column.id === 'debitAmount'
+                        ? payment[column.id] !== 0
+                          ? payment[column.id]
+                          : '-'
+                        : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>

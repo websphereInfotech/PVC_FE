@@ -576,6 +576,7 @@ const useCan = () => {
 
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
+    checkPermission,
     canCreateProformainvoiceQuotation,
     canUpdateProformainvoiceQuotation,
     canDeleteProformainvoiceQuotation,
