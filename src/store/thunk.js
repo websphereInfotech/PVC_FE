@@ -31,6 +31,9 @@ import {
   viewProformainvoiceRequest,
   viewProformainvoiceSuccess,
   viewProformainvoiceFailure,
+  getCountSalesinvoiceRequst,
+  getCountSalesinvoicesuccess,
+  getCountSalesinvoicefailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersCashRequest,
   fetchAllCustomersCashSuccess,
@@ -585,6 +588,21 @@ export const deleteProformainvoice = (id) => {
     } catch (error) {
       toast.error(error.response.data.message);
       dispatch(deleteProformainvoiceFailure());
+    }
+  };
+};
+export const getCountsalesinvoice = (id) => {
+  return async (dispatch) => {
+    dispatch(getCountSalesinvoiceRequst());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/count_salesInvoice/${id}`, config);
+      const data = response.data;
+      dispatch(getCountSalesinvoicesuccess());
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(getCountSalesinvoicefailure());
     }
   };
 };

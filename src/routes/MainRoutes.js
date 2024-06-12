@@ -178,9 +178,22 @@ const MainRoutes = {
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotations +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/proformainvoice', element: <Proformainvoice /> },
+    { path: '/proformainvoice', element: <Proformainvoice />  },
     { path: '/proformainvoice/:id', element: <Proformainvoice /> },
     { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
+    // {
+    //   path: '/proformainvoice',
+    //   element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="create_ProFormaInvoice" />
+    // },
+    // {
+    //   path: '/proformainvoice/:id',
+    //   element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="update_ProFormaInvoice" />
+    // },
+
+    // {
+    //   path: '/proformainvoiceList',
+    //   element: <ProtectedRoute element={ProformainvoiceList} resource="ProFormaInvoice" permissionName="get_all_ProFormaInvoice" />
+    // },
     { path: '/proformainvoiceviewpage/:id', element: <Proformainvoiceviewpage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++

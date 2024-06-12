@@ -30,9 +30,6 @@ const columns = [
   { id: 'companyname', label: 'Company Name', minWidth: 100, align: 'center' },
   { id: 'email', label: 'Email.', minWidth: 100, align: 'center' },
   { id: 'mobileno', label: 'Mobile No.', minWidth: 100, align: 'center' },
-  { id: 'view', label: 'View', minWidth: 100, align: 'center' },
-  { id: 'edit', label: 'Edit', minWidth: 100, align: 'center' },
-  { id: 'delete', label: 'Delete', minWidth: 100, align: 'center' },
   { id: 'action', label: 'Action', minWidth: 200, align: 'center' }
 ];
 

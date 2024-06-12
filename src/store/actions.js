@@ -32,6 +32,9 @@ export const UPDATE_PRO_FORMA_INVOICE_FAILURE = 'UPDATE_PRO_FORMA_INVOICE_FAILUR
 export const VIEW_PRO_FORMA_INVOICE_REQUEST = 'VIEW_PRO_FORMA_INVOICE_REQUEST';
 export const VIEW_PRO_FORMA_INVOICE_SUCCESS = 'VIEW_PRO_FORMA_INVOICE_SUCCESS';
 export const VIEW_PRO_FORMA_INVOICE_FAILURE = 'VIEW_PRO_FORMA_INVOICE_FAILURE';
+export const GET_COUNT_SALES_INVOICE_REQUEST = 'GET_COUNT_SALES_INVOICE_REQUEST';
+export const GET_COUNT_SALES_INVOICE_SUCCESS = 'GET_COUNT_SALES_INVOICE_SUCCESS';
+export const GET_COUNT_SALES_INVOICE_FAILURE = 'GET_COUNT_SALES_INVOICE_FAILURE';
 
 // ########################################## PRODUCT ###############################################################################################
 export const FETCH_ALL_PRODUCTS_CASH_REQUEST = 'FETCH_ALL_PRODUCTS_CASH_REQUEST';
@@ -526,6 +529,19 @@ export const updateProformainvoicesuccess = (data) => ({
 });
 export const updateProformainvoicefailure = (error) => ({
   type: 'UPDATE_PRO_FORMA_INVOICE_FAILURE',
+  payload: error
+});
+
+export const getCountSalesinvoiceRequst = (data) => ({
+  type: 'GET_COUNT_SALES_INVOICE_REQUEST',
+  payload: data
+});
+export const getCountSalesinvoicesuccess = (data) => ({
+  type: 'GET_COUNT_SALES_INVOICE_SUCCESS',
+  payload: data
+});
+export const getCountSalesinvoicefailure = (error) => ({
+  type: 'GET_COUNT_SALES_INVOICE_FAILURE',
   payload: error
 });
 
