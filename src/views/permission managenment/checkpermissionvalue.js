@@ -26,11 +26,18 @@ const useCan = () => {
     const rolePermissions = permissions?.find((role) => role.role === userRole);
     if (rolePermissions) {
       const permission = rolePermissions?.permissions?.find((res) => res.resource === resource);
-      if (permission) {
-        return permission.permissions.some((perm) => perm.permission === permissionName && perm.permissionValue === true);
+      if (permission?.permissions?.length) {
+        const is = permission.permissions.find((perm) => perm.permission === permissionName);
+        if (is) {
+          return is?.permissionValue;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
       }
     }
-    return false;
+    return true;
   };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ QOUTATION
@@ -50,7 +57,7 @@ const useCan = () => {
     return checkPermission('ProFormaInvoice', 'view_single_ProFormaInvoice');
   };
   const canViewAllProformainvoiceQuotation = () => {
-    return checkPermission('ProFormaInvoice', 'get_all_ProFormaInvoice');
+    return checkPermission('ProFormaInvoice', 'view_all_ProFormaInvoice');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN

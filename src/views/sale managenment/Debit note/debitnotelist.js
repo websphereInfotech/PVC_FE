@@ -233,7 +233,7 @@ const Debitnotelist = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this Sale Invoice?</DialogContent>
+        <DialogContent>Are you sure you want to delete this Debit note?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel

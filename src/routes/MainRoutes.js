@@ -14,8 +14,6 @@ import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
-import Proformainvoice from 'views/sale managenment/Proformainvoice/proformainvoice';
-// import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -56,7 +54,7 @@ const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/exp
 const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managenment/expenceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
-// const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
+const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
 const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoicelist')));
 const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoiceview')));
 
@@ -139,39 +137,99 @@ const MainRoutes = {
     },
     { path: '/profile', element: <SamplePage /> },
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
-    { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} /> },
-    { path: '/claimcash/:id', element: <ProtectedRoute element={Cliamcashpage} /> },
-    { path: '/claimcashlist', element: <ProtectedRoute element={Claimcashlist} /> },
-    { path: '/claimcashledger', element: <ProtectedRoute element={Claimledgerlist} /> },
-    { path: '/recieveclaimcashlist', element: <ProtectedRoute element={Recieveclaimcashlist} /> },
+    { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="create_claim" /> },
+    { path: '/claimcash/:id', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="update_claim" /> },
+    { path: '/claimcashlist', element: <ProtectedRoute element={Claimcashlist} resource="Claim Cash" permissionName="view_myclaim" /> },
+    {
+      path: '/claimcashledger',
+      element: <ProtectedRoute element={Claimledgerlist} resource="Claim Cash" permissionName="view_claimBalance_ledger" />
+    },
+    {
+      path: '/recieveclaimcashlist',
+      element: <ProtectedRoute element={Recieveclaimcashlist} resource="Claim Cash" permissionName="view_reciveclaim" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales cash +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/salescash', element: <ProtectedRoute element={Salescash} /> },
-    { path: '/salescash/:id', element: <ProtectedRoute element={Salescash} /> },
-    { path: '/salescashlist', element: <ProtectedRoute element={Salescashlist} /> },
-    { path: '/salescashview/:id', element: <ProtectedRoute element={Salescashview} /> },
+    { path: '/salescash', element: <ProtectedRoute element={Salescash} resource="Sales Cash" permissionName="create_sales_cash" /> },
+    { path: '/salescash/:id', element: <ProtectedRoute element={Salescash} resource="Sales Cash" permissionName="update_sales_cash" /> },
+    {
+      path: '/salescashlist',
+      element: <ProtectedRoute element={Salescashlist} resource="Sales Cash" permissionName="view_all_sales_cash" />
+    },
+    {
+      path: '/salescashview/:id',
+      element: <ProtectedRoute element={Salescashview} resource="Sales Cash" permissionName="view_sales_cash" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/paymentcash', element: <ProtectedRoute element={PaymentPage} /> },
-    { path: '/paymentcash/:id', element: <ProtectedRoute element={PaymentPage} /> },
-    { path: '/paymentcashlist', element: <ProtectedRoute element={PaymentListPage} /> },
-    { path: '/paymentrecieve', element: <ProtectedRoute element={Paymentrecieve} /> },
-    { path: '/paymentrecieve/:id', element: <ProtectedRoute element={Paymentrecieve} /> },
-    { path: '/paymentrecieveList', element: <ProtectedRoute element={PaymentrecieveList} /> },
-    { path: '/ledgerlist', element: <ProtectedRoute element={Ledgerlist} /> },
-    { path: '/customerledgerlist', element: <ProtectedRoute element={Customerledgerlist} /> },
+    {
+      path: '/paymentcash',
+      element: <ProtectedRoute element={PaymentPage} resource="Payment Cash" permissionName="create_payment_Cash" />
+    },
+    {
+      path: '/paymentcash/:id',
+      element: <ProtectedRoute element={PaymentPage} resource="Payment Cash" permissionName="update_payment_Cash" />
+    },
+    {
+      path: '/paymentcashlist',
+      element: <ProtectedRoute element={PaymentListPage} resource="Payment Cash" permissionName="view_all_payment_Cash" />
+    },
+    {
+      path: '/paymentrecieve',
+      element: <ProtectedRoute element={Paymentrecieve} resource="Receive Cash" permissionName="create_receive_Cash" />
+    },
+    {
+      path: '/paymentrecieve/:id',
+      element: <ProtectedRoute element={Paymentrecieve} resource="Receive Cash" permissionName="update_receive_Cash" />
+    },
+    {
+      path: '/paymentrecieveList',
+      element: <ProtectedRoute element={PaymentrecieveList} resource="Receive Cash" permissionName="view_all_receive_Cash" />
+    },
+    {
+      path: '/ledgerlist',
+      element: <ProtectedRoute element={Ledgerlist} resource="Vendor Ledger Cash" permissionName="View_Cash_vendor_Ledger" />
+    },
+    {
+      path: '/customerledgerlist',
+      element: <ProtectedRoute element={Customerledgerlist} resource="Customer Ledger Cash" permissionName="View_Cash_customer_Ledger" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments bank +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/paymentbank', element: <Paymentbank /> },
-    { path: '/paymentbank/:id', element: <Paymentbank /> },
-    { path: '/paymentbanklist', element: <Paymentbanklist /> },
-    { path: '/paymentbankledgerlist', element: <Paymentbankledgerlist /> },
+    {
+      path: '/paymentbank',
+      element: <ProtectedRoute element={Paymentbank} resource="Payment Bank" permissionName="create_payment_bank" />
+    },
+    {
+      path: '/paymentbank/:id',
+      element: <ProtectedRoute element={Paymentbank} resource="Payment Bank" permissionName="update_payment_bank" />
+    },
+    {
+      path: '/paymentbanklist',
+      element: <ProtectedRoute element={Paymentbanklist} resource="Payment Bank" permissionName="view_all_payment_bank" />
+    },
+    {
+      path: '/paymentbankledgerlist',
+      element: <ProtectedRoute element={Paymentbankledgerlist} resource="Vendor Ledger" permissionName="View_vendor_Ledger" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments recieve bank +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/paymentrecievebank', element: <Paymentrecievebank /> },
-    { path: '/paymentrecievebank/:id', element: <Paymentrecievebank /> },
-    { path: '/paymentrecievebanklist', element: <Paymentrecievebanklist /> },
-    { path: '/paymentrecievebankledgerlist', element: <Paymentbankrecieveledgerlist /> },
+    {
+      path: '/paymentrecievebank',
+      element: <ProtectedRoute element={Paymentrecievebank} resource="Receive Bank" permissionName="create_receive_bank" />
+    },
+    {
+      path: '/paymentrecievebank/:id',
+      element: <ProtectedRoute element={Paymentrecievebank} resource="Receive Bank" permissionName="update_receive_bank" />
+    },
+    {
+      path: '/paymentrecievebanklist',
+      element: <ProtectedRoute element={Paymentrecievebanklist} resource="Receive Bank" permissionName="get_all_receive_bank" />
+    },
+    {
+      path: '/paymentrecievebankledgerlist',
+      element: <ProtectedRoute element={Paymentbankrecieveledgerlist} resource="Customer Ledger" permissionName="View_customer_Ledger" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/expenselist', element: <ExpensePage /> },
@@ -180,66 +238,135 @@ const MainRoutes = {
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotations +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/proformainvoice', element: <Proformainvoice /> },
-    { path: '/proformainvoice/:id', element: <Proformainvoice /> },
-    { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
-    // {
-    //   path: '/proformainvoice',
-    //   element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="create_ProFormaInvoice" />
-    // },
-    // {
-    //   path: '/proformainvoice/:id',
-    //   element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="update_ProFormaInvoice" />
-    // },
+    // { path: '/proformainvoice', element: <Proformainvoice /> },
+    // { path: '/proformainvoice/:id', element: <Proformainvoice /> },
+    // { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
+    {
+      path: '/proformainvoice',
+      element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="create_ProFormaInvoice" />
+    },
+    {
+      path: '/proformainvoice/:id',
+      element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="update_ProFormaInvoice" />
+    },
 
-    // {
-    //   path: '/proformainvoiceList',
-    //   element: <ProtectedRoute element={ProformainvoiceList} resource="ProFormaInvoice" permissionName="get_all_ProFormaInvoice" />
-    // },
-    { path: '/proformainvoiceviewpage/:id', element: <Proformainvoiceviewpage /> },
+    {
+      path: '/proformainvoiceList',
+      element: <ProtectedRoute element={ProformainvoiceList} resource="ProFormaInvoice" permissionName="view_all_ProFormaInvoice" />
+    },
+    {
+      path: '/proformainvoiceviewpage/:id',
+      element: <ProtectedRoute element={Proformainvoiceviewpage} resource="ProFormaInvoice" permissionName="view_single_ProFormaInvoice" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of salesinvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/salesinvoice', element: <Salesinvoice /> },
-    { path: '/salesinvoice/:id', element: <Salesinvoice /> },
-    { path: '/salesinvoicelist', element: <Salesinvoicelist /> },
-    { path: '/salesinvoiceview/:id', element: <Salesinvoiceview /> },
+    {
+      path: '/salesinvoice',
+      element: <ProtectedRoute element={Salesinvoice} resource="Sales Invoice" permissionName="create_salesinvoice" />
+    },
+    {
+      path: '/salesinvoice/:id',
+      element: <ProtectedRoute element={Salesinvoice} resource="Sales Invoice" permissionName="update_salesInvoice" />
+    },
+    {
+      path: '/salesinvoicelist',
+      element: <ProtectedRoute element={Salesinvoicelist} resource="Sales Invoice" permissionName="view_all_salesInvoice" />
+    },
+    {
+      path: '/salesinvoiceview/:id',
+      element: <ProtectedRoute element={Salesinvoiceview} resource="Sales Invoice" permissionName="view_single_salesInvoice" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of deliverychallan +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/deliverychallan', element: <Deliverychallan /> },
-    { path: '/deliverychallan/:id', element: <Deliverychallan /> },
-    { path: '/deliverychallanlist', element: <DileveryChallanList /> },
-    { path: '/deliverychallanview/:id', element: <DileveryChallanView /> },
+    {
+      path: '/deliverychallan',
+      element: <ProtectedRoute element={Deliverychallan} resource="Delivery Challan" permissionName="create_deliverychallan" />
+    },
+    {
+      path: '/deliverychallan/:id',
+      element: <ProtectedRoute element={Deliverychallan} resource="Delivery Challan" permissionName="update_deliverychallan" />
+    },
+    {
+      path: '/deliverychallanlist',
+      element: <ProtectedRoute element={DileveryChallanList} resource="Delivery Challan" permissionName="view_all_deliverychallan" />
+    },
+    {
+      path: '/deliverychallanview/:id',
+      element: <ProtectedRoute element={DileveryChallanView} resource="Delivery Challan" permissionName="view_single_deliverychallan" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/debitnote', element: <DebitNote /> },
-    { path: '/debitnote/:id', element: <DebitNote /> },
-    { path: '/debitnotelist', element: <Debitnotelist /> },
-    { path: '/debitnoteview/:id', element: <Debitnoteview /> },
+    { path: '/debitnote', element: <ProtectedRoute element={DebitNote} resource="Debit Note" permissionName="create_debitNote" /> },
+    { path: '/debitnote/:id', element: <ProtectedRoute element={DebitNote} resource="Debit Note" permissionName="update_debitNote" /> },
+    {
+      path: '/debitnotelist',
+      element: <ProtectedRoute element={Debitnotelist} resource="Debit Note" permissionName="view_all_debitNote" />
+    },
+    {
+      path: '/debitnoteview/:id',
+      element: <ProtectedRoute element={Debitnoteview} resource="Debit Note" permissionName="view_single_debitNote" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/creditnote', element: <Creditnote /> },
-    { path: '/creditnote/:id', element: <Creditnote /> },
-    { path: '/creditnotelist', element: <Creditnotelist /> },
-    { path: '/creditnoteview/:id', element: <CreditnoteView /> },
+    { path: '/creditnote', element: <ProtectedRoute element={Creditnote} resource="Credit Note" permissionName="create_creditNote" /> },
+    { path: '/creditnote/:id', element: <ProtectedRoute element={Creditnote} resource="Credit Note" permissionName="update_creditNote" /> },
+    {
+      path: '/creditnotelist',
+      element: <ProtectedRoute element={Creditnotelist} resource="Credit Note" permissionName="view_all_creditNote" />
+    },
+    {
+      path: '/creditnoteview/:id',
+      element: <ProtectedRoute element={CreditnoteView} resource="Credit Note" permissionName="view_single_creditNote" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/purchaseinvoice', element: <Purchaseinvoice /> },
-    { path: '/purchaseinvoice/:id', element: <Purchaseinvoice /> },
-    { path: '/purchaseinvoiceList', element: <PurchaseinvoiceList /> },
-    { path: '/purchaseinvoiceview/:id', element: <Purchaseinvoiceview /> },
+    {
+      path: '/purchaseinvoice',
+      element: <ProtectedRoute element={Purchaseinvoice} resource="Purchase Invoice" permissionName="create_purchase_Invoice" />
+    },
+    {
+      path: '/purchaseinvoice/:id',
+      element: <ProtectedRoute element={Purchaseinvoice} resource="Purchase Invoice" permissionName="update_purchase_Invoice" />
+    },
+    {
+      path: '/purchaseinvoiceList',
+      element: <ProtectedRoute element={PurchaseinvoiceList} resource="Purchase Invoice" permissionName="view_all_purchase_Invoice" />
+    },
+    {
+      path: '/purchaseinvoiceview/:id',
+      element: <ProtectedRoute element={Purchaseinvoiceview} resource="Purchase Invoice" permissionName="view_single_purchase_Invoice" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice Cash  +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/purchaseinvoicecash', element: <ProtectedRoute element={Purchaseinvoicecash} /> },
-    { path: '/purchaseinvoicecash/:id', element: <ProtectedRoute element={Purchaseinvoicecash} /> },
-    { path: '/purchaseinvoicecashList', element: <ProtectedRoute element={Purchaseinvoicecashlist} /> },
-    { path: '/purchaseinvoicecashview/:id', element: <ProtectedRoute element={Purchaseinvoicecashview} /> },
+    {
+      path: '/purchaseinvoicecash',
+      element: <ProtectedRoute element={Purchaseinvoicecash} resource="Purchase Cash" permissionName="create_purchase_cash" />
+    },
+    {
+      path: '/purchaseinvoicecash/:id',
+      element: <ProtectedRoute element={Purchaseinvoicecash} resource="Purchase Cash" permissionName="update_purchase_cash" />
+    },
+    {
+      path: '/purchaseinvoicecashList',
+      element: <ProtectedRoute element={Purchaseinvoicecashlist} resource="Purchase Cash" permissionName="view_all_purchase_cash" />
+    },
+    {
+      path: '/purchaseinvoicecashview/:id',
+      element: <ProtectedRoute element={Purchaseinvoicecashview} resource="Purchase Cash" permissionName="view_purchase_cash" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of company +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/companylist', element: <CompanyList /> },
-    { path: '/companyview/:id', element: <CompanyviewPage /> },
-    { path: '/addcompany', element: <AddCompanyForm /> },
-    { path: '/addcompany/:id', element: <AddCompanyForm /> },
-    { path: '/singlebankledger', element: <Singlebankledgerlist /> },
+    { path: '/companylist', element: <ProtectedRoute element={CompanyList} resource="Company" permissionName="view_all_company" /> },
+    {
+      path: '/companyview/:id',
+      element: <ProtectedRoute element={CompanyviewPage} resource="Company" permissionName="view_single_company" />
+    },
+    { path: '/addcompany', element: <ProtectedRoute element={AddCompanyForm} resource="Company" permissionName="create_company" /> },
+    { path: '/addcompany/:id', element: <ProtectedRoute element={AddCompanyForm} resource="Company" permissionName="update_company" /> },
+    {
+      path: '/singlebankledger',
+      element: <ProtectedRoute element={Singlebankledgerlist} resource="Company Bank Details" permissionName="view_single_bankLedger" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/productionlist', element: <ProductionListPage /> },

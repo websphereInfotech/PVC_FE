@@ -48,7 +48,6 @@ const Default = () => {
     const fetchbankbalance = async () => {
       try {
         const data = await dispatch(getCompanyBankBalance());
-        console.log(data, 'data');
         setBalance(data.balance);
       } catch (error) {
         console.log(error, 'fetch bank balance of company');
@@ -57,7 +56,6 @@ const Default = () => {
     const fetchcashbalance = async () => {
       try {
         const data = await dispatch(getCompanyCashBalance());
-        console.log(data, 'data');
         setCBalance(data.balance);
       } catch (error) {
         console.log(error, 'fetch bank balance of company');
