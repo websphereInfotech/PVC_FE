@@ -111,29 +111,33 @@ const Salesinvoiceview = () => {
                 <p>Sub Total</p>
                 <p>₹{subtotal?.toFixed(2)}</p>
               </div>
-              {data.totalSgst && (
+              {data?.totalSgst ? (
                 <Grid item xs={12}>
                   <div style={{ margin: '0px' }} id="subtotalcs">
                     <p>SGST</p>
-                    <p>₹{sgst.toFixed(2)}</p>
+                    <p>₹{sgst?.toFixed(2)}</p>
                   </div>
                   <div style={{ margin: '0px' }} id="subtotalcs">
                     <p>CGST</p>
-                    <p>₹{cgst.toFixed(2)}</p>
+                    <p>₹{cgst?.toFixed(2)}</p>
                   </div>
                 </Grid>
+              ) : (
+                ''
               )}
-              {/* {data.totalIgst && (
+              {data?.totalIgst ? (
                 <Grid item xs={12}>
                   <div style={{ margin: '0px' }} id="subtotalcs">
                     <p>IGST</p>
-                    <p>₹{igst.toFixed(2)}</p>
+                    <p>₹{igst?.toFixed(2)}</p>
                   </div>
                 </Grid>
-              )} */}
+              ) : (
+                ''
+              )}
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
-                <p>₹{maintotal.toFixed(2)}</p>
+                <p>₹{maintotal?.toFixed(2)}</p>
               </div>
             </>
           ) : (

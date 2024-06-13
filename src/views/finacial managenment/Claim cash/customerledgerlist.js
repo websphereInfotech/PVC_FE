@@ -70,9 +70,11 @@ const Customerledgerlist = () => {
                         ? payment[column.id] !== 0
                           ? payment[column.id]
                           : '-'
-                        : column.id === 'customer'
-                          ? payment.customerData.customername
-                          : payment[column.id]}
+                        : column.id === 'remainingBalance'
+                          ? parseFloat(payment.remainingBalance).toFixed(2)
+                          : column.id === 'customer'
+                            ? payment.customerData.customername
+                            : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>

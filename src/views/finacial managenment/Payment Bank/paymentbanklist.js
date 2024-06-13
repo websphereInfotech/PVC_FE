@@ -15,7 +15,9 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Grid
+  Grid,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
@@ -39,6 +41,8 @@ const columns = [
 ];
 
 const Paymentbanklist = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { canCreatePaymentBank, canUpdatePaymentBank, canDeletePaymentBank, canViewAllVendorLedger } = useCan();
@@ -293,7 +297,18 @@ const Paymentbanklist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
+      <Dialog
+        open={openDrawer}
+        onClose={handleCloseDrawer}
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+      >
         <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>Ledger Details</h3>
           <span>

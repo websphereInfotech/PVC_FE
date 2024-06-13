@@ -23,6 +23,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Purchaseinvoice = () => {
+  const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const { canCreateVendor, canCreateProduct } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -470,7 +471,7 @@ const Purchaseinvoice = () => {
             showTimeSelect={false}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
           <div style={{ maxWidth: '100%' }}>
             <Table>
               <TableHead>

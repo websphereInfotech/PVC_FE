@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, InputAdornment } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { Checkuser, deleteUser, getallusers, Userview, Adduser } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
@@ -96,7 +98,6 @@ export default function UserList() {
   const handleCheckUserSubmit = async () => {
     try {
       const response = await dispatch(Checkuser(newUser));
-      console.log(response.data.data, 'RESPONSE');
       setUserid(response.data.data.id);
       if (response.status === 200) {
         setOpenAddConfirmation(true);
@@ -108,6 +109,7 @@ export default function UserList() {
       setOpenCreateDialog(false);
     }
     setOpenCreateDialog(false);
+    setNewUser({ mobileno: '', email: '' });
   };
 
   const handleConfirmAddUser = async () => {
@@ -218,27 +220,96 @@ export default function UserList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Dialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)}>
+      <Dialog
+        open={openCreateDialog}
+        onClose={() => setOpenCreateDialog(false)}
+        PaperProps={{
+          style: {
+            width: '400px'
+          }
+        }}
+      >
+        <DialogTitle>Create User</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" sx={{ marginBottom: '8px' }}>
+            Mobile no.:<span style={{ color: 'red', fontWeight: 'bold' }}>&#42;</span>
+          </Typography>
+          <TextField
+            size="small"
+            fullWidth
+            variant="outlined"
+            color="secondary"
+            value={newUser.mobileno}
+            onChange={(e) => setNewUser({ ...newUser, mobileno: e.target.value })}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle phone number visibility" edge="end" size="small">
+                    <PhoneIcon />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+          <Typography variant="body1" sx={{ marginTop: '16px', marginBottom: '8px' }}>
+            Email:<span style={{ color: 'red', fontWeight: 'bold' }}>&#42;</span>
+          </Typography>
+          <TextField
+            size="small"
+            fullWidth
+            variant="outlined"
+            value={newUser.email}
+            color="secondary"
+            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle email visibility" edge="end" size="large">
+                    <EmailIcon />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenCreateDialog(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button onClick={handleCheckUserSubmit} color="secondary" variant="contained">
+            Next
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* <Dialog
+        open={openCreateDialog}
+        onClose={() => setOpenCreateDialog(false)}
+        PaperProps={{
+          style: {
+            width: '400px'
+          }
+        }}
+      >
         <DialogTitle>Create User</DialogTitle>
         <DialogContent>
           <Typography>
             Mobile no.:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <input type="text" onChange={(e) => setNewUser({ ...newUser, mobileno: e.target.value })} />
+          <input width={'350px'} type="text" onChange={(e) => setNewUser({ ...newUser, mobileno: e.target.value })} />
           <Typography>
             Email:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
           <input type="email" onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenCreateDialog(false)} color="secondary" variant="outlined">
+          <Button onClick={() => setOpenCreateDialog(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleCheckUserSubmit} color="secondary" variant="outlined">
+          <Button onClick={handleCheckUserSubmit} color="secondary" variant="contained">
             Next
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
       <Dialog open={openAddConfirmation} onClose={() => setOpenAddConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to add this user to the company?</DialogContent>

@@ -43,7 +43,7 @@ const Paymentbankledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Payment Bank Ledger List
+        Vendor Ledger List
       </Typography>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -73,7 +73,9 @@ const Paymentbankledgerlist = () => {
                           : '-'
                         : column.id === 'vendor'
                           ? payment.vendorData.accountname
-                          : payment[column.id]}
+                          : column.id === 'remainingBalance'
+                            ? parseFloat(payment.remainingBalance).toFixed(2)
+                            : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>

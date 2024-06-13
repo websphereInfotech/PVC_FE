@@ -42,7 +42,7 @@ const Ledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Ledger List
+        Vendor Ledger List
       </Typography>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -62,7 +62,7 @@ const Ledgerlist = () => {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ color: (column.id === 'creditAmount' && 'green') || (column.id === 'debitAmount' && 'red') }}
+                    style={{ color: (column.id === 'creditAmount' && '#00CE00') || (column.id === 'debitAmount' && 'red') }}
                   >
                     {column.id === 'date'
                       ? new Date(payment[column.id]).toLocaleDateString('en-GB')
@@ -70,9 +70,11 @@ const Ledgerlist = () => {
                         ? payment[column.id] !== 0
                           ? payment[column.id]
                           : '-'
-                        : column.id === 'vendor'
-                          ? payment.vendorData.vendorname
-                          : payment[column.id]}
+                        : column.id === 'remainingBalance'
+                          ? parseFloat(payment.remainingBalance).toFixed(2)
+                          : column.id === 'vendor'
+                            ? payment.vendorData.vendorname
+                            : payment[column.id]}
                   </TableCell>
                 ))}
               </TableRow>

@@ -195,7 +195,6 @@ const Proformainvoice = () => {
           LL_RR_no,
           termsOfDelivery,
           terms,
-          // dispatchno,
           destination
         } = response;
         setFormData({
@@ -212,7 +211,6 @@ const Proformainvoice = () => {
           LL_RR_no,
           termsOfDelivery,
           terms,
-          // dispatchno,
           destination
         });
         setSelectcustomer(customer.id);
@@ -606,12 +604,12 @@ const Proformainvoice = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
+                <div id="subtotalcs">
+                  <p>Sub Total</p>
+                  <p>₹{subtotal}</p>
+                </div>
                 {gststate ? (
                   <>
-                    <div id="subtotalcs">
-                      <p>Sub Total</p>
-                      <p>₹{subtotal}</p>
-                    </div>
                     <div id="subtotalcs">
                       <p>SGST</p>
                       <p>₹{(plusgst / 2).toFixed(2)}</p>

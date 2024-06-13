@@ -64,7 +64,6 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     //   console.log(selectedOption.value, 'valueIGST');
     //   setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
     // }
-    console.log(formData, 'selectedGST');
   };
 
   const handleSave = async () => {
@@ -77,7 +76,6 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         lowstock,
         cess
       };
-      console.log(data, 'data');
       await dispatch(createProduct(data));
     } catch (error) {
       console.error('Error creating Product', error);

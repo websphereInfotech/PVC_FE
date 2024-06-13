@@ -15,7 +15,8 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Grid
+  Grid,
+  useMediaQuery
 } from '@mui/material';
 import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
@@ -33,6 +34,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import Paymentbankrecieveledgerlist from './paymentbankrecieveledgerlist';
 import { Delete, Edit } from '@mui/icons-material';
+import { useTheme } from '@emotion/react';
 
 const columns = [
   { id: 'paymentdate', label: 'Date', align: 'center' },
@@ -44,6 +46,8 @@ const columns = [
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const Paymentrecievebanklist = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { canCreatePaymentRecieveBank, canUpdatePaymentRecieveBank, canDeletePaymentRecieveBank, canViewAllCustomerLedger } = useCan();
@@ -291,8 +295,19 @@ const Paymentrecievebanklist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
-        <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Dialog
+        open={openDrawer}
+        onClose={handleCloseDrawer}
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+      >
+        <div style={{ display: 'flex', padding: '0px 20px', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>Ledger Details</h3>
           <span>
             <IconButton onClick={handleCloseDrawer} style={{}}>

@@ -14,6 +14,8 @@ import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
+import Proformainvoice from 'views/sale managenment/Proformainvoice/proformainvoice';
+// import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -54,7 +56,7 @@ const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/exp
 const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managenment/expenceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
-const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
+// const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
 const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoicelist')));
 const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoiceview')));
 
@@ -117,8 +119,8 @@ const Generalmain = Loadable(lazy(() => import('../views/general managenment/gen
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
 
+// const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
-
 const MainRoutes = {
   path: '/',
   element: (
@@ -178,7 +180,7 @@ const MainRoutes = {
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotations +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/proformainvoice', element: <Proformainvoice />  },
+    { path: '/proformainvoice', element: <Proformainvoice /> },
     { path: '/proformainvoice/:id', element: <Proformainvoice /> },
     { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
     // {

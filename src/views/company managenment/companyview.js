@@ -14,7 +14,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton
+  IconButton,
+  useTheme
 } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -30,6 +31,8 @@ import Singlebankledgerlist from './singlebankledger';
 import { Delete, Edit } from '@mui/icons-material';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 const CompanyviewPage = () => {
+  const theme = useTheme();
+  const isMobiledialog = useMediaQuery(theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank, canViewCompanyBankLedger } = useCan();
   const [open, setOpen] = useState(false);
@@ -359,7 +362,18 @@ const CompanyviewPage = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        <Dialog open={openLedger} onClose={handleLedgerClose} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
+        <Dialog
+          open={openLedger}
+          onClose={handleLedgerClose}
+          PaperProps={{
+            style: {
+              height: 'auto',
+              width: isMobiledialog ? '90%' : '18%',
+              margin: isMobiledialog ? '0' : 'auto',
+              maxWidth: isMobiledialog ? '80%' : 'none'
+            }
+          }}
+        >
           <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3>Ledger Details</h3>
             <span>

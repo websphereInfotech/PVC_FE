@@ -19,6 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Deliverychallan = () => {
+  const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { id } = useParams();
   console.log(id, 'id');
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -300,7 +301,7 @@ const Deliverychallan = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
             <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>

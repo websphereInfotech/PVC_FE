@@ -15,7 +15,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  IconButton
+  IconButton,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Select from 'react-select';
@@ -39,6 +41,8 @@ const columns = [
 ];
 
 const PaymentrecieveList = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { canCreatePaymentrecievecash, canUpdatePaymentrecievecash, canDeletePaymentrecievecash, canViwAllPaymentrecievecashLedger } =
     useCan();
   const navigate = useNavigate();
@@ -219,7 +223,7 @@ const PaymentrecieveList = () => {
                             ...(!canDeletePaymentrecievecash() && { opacity: 0.5 }),
                             ...(!canDeletePaymentrecievecash() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleDeleteConfirmation(row.id)}
+                          onClick={() => handleDeleteConfirmation(payment.id)}
                           disabled={!canDeletePaymentrecievecash()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
@@ -282,7 +286,18 @@ const PaymentrecieveList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDrawer} onClose={handleCloseDrawer} PaperProps={{ style: { height: 'auto', width: '15%' } }}>
+      <Dialog
+        open={openDrawer}
+        onClose={handleCloseDrawer}
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+      >
         <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>Ledger Details</h3>
           <span>

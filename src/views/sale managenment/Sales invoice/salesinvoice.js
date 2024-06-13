@@ -25,6 +25,7 @@ import AnchorProductDrawer from 'component/productadd';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Salesinvoice = () => {
+  const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
   const { canCreateCustomer, canCreateProduct } = useCan();
@@ -572,7 +573,7 @@ const Salesinvoice = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
             <div style={{ maxWidth: '100%' }}>
               <Table>
                 <TableHead>
@@ -635,12 +636,12 @@ const Salesinvoice = () => {
             {isMobile ? (
               // For mobile screens, show each total on separate lines
               <>
+                <div id="subtotalcs">
+                  <p>Sub Total</p>
+                  <p>₹{subtotal}</p>
+                </div>
                 {gststate ? (
                   <>
-                    <div id="subtotalcs">
-                      <p>Sub Total</p>
-                      <p>₹{subtotal}</p>
-                    </div>
                     <div id="subtotalcs">
                       <p>SGST</p>
                       <p>₹{(plusgst / 2).toFixed(2)}</p>

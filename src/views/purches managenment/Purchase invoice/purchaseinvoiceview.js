@@ -89,7 +89,7 @@ const Purchaseinvoiceview = () => {
                 <p>Sub Total</p>
                 <p>₹{subtotal?.toFixed(2)}</p>
               </div>
-              {data?.totalSgst && (
+              {data?.totalSgst ? (
                 <Grid item xs={12}>
                   <div style={{ margin: '0px' }} id="subtotalcs">
                     <p>SGST</p>
@@ -100,6 +100,18 @@ const Purchaseinvoiceview = () => {
                     <p>₹{cgst?.toFixed(2)}</p>
                   </div>
                 </Grid>
+              ) : (
+                ''
+              )}
+              {data?.totalIgst ? (
+                <Grid item xs={12}>
+                  <div style={{ margin: '0px' }} id="subtotalcs">
+                    <p>IGST</p>
+                    <p>₹{igst?.toFixed(2)}</p>
+                  </div>
+                </Grid>
+              ) : (
+                ''
               )}
               <div style={{ margin: '0px' }} id="subtotalcs">
                 <p>Total Amt.</p>
