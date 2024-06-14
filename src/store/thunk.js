@@ -57,6 +57,12 @@ import {
   deleteProductSuccess,
   deleteProductRequest,
   deleteProductFailure,
+  viewProductRequest,
+  viewProductSuccess,
+  viewProductFailure,
+  updateProductRequest,
+  updateProductSuccess,
+  updateProductFailure,
   // PURCHASE +++++++++++++++++++++++++++++++
   viewPurchaseRequest,
   viewPurchaseSuccess,
@@ -410,11 +416,6 @@ import {
   PaymentrecieveBankLedgerRequest,
   PaymentrecieveBankLedgerSuccess,
   PaymentrecieveBankLedgerFailure,
-  viewProductSuccess,
-  viewProductFailure,
-  updateProductRequest,
-  updateProductSuccess,
-  updateProductFailure,
   deleteCustomerRequest,
   deleteCustomerSuccess,
   deleteCustomerFailure,
@@ -819,7 +820,7 @@ export const updateCustomer = (id, customerData) => {
       const upadteCustomerData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
+        autoClose: 1000
       });
       window.location.reload();
       dispatch(updateCustomerSuccess(upadteCustomerData));
@@ -901,7 +902,7 @@ export const DeleteProduct = (id) => {
 };
 export const viewProduct = (id) => {
   return async (dispatch) => {
-    dispatch(viewProductSuccess());
+    dispatch(viewProductRequest());
     try {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_product/${id}`, config);
@@ -922,7 +923,7 @@ export const updateProduct = (id, data) => {
       const upadteProductData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
+        autoClose: 1000
       });
       window.location.reload();
       dispatch(updateProductSuccess(upadteProductData));
@@ -2108,7 +2109,7 @@ export const updateVendor = (id, vendorData) => {
       const upadteCustomerData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
+        autoClose: 1000
       });
       window.location.reload();
       dispatch(updateVendorSuccess(upadteCustomerData));

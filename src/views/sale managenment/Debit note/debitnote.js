@@ -352,6 +352,7 @@ const DebitNote = () => {
     try {
       const payload = {
         ...formData,
+        invoicedate: formData.pdate,
         totalQty: totalQuantity,
         totalMrp: subtotal,
         mainTotal: Number(subtotal) + Number(plusgst),

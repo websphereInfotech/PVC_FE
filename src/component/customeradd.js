@@ -64,8 +64,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, 
-      [id]:id === 'mobileno'? Number(value): value });
+    setFormData({ ...formData, [id]: id === 'mobileno' ? Number(value) : value });
   };
 
   const handleCityChange = (selectedCity) => {

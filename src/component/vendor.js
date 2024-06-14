@@ -106,20 +106,8 @@ const AnchorVendorDrawer = ({ open, onClose, id }) => {
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
-      if (creditlimit) {
-        vendorData.totalcreadit = totalCredit;
-      }
-      if (bankdetail) {
-        vendorData.bankdetails = {
-          accountnumber: accountNumber,
-          ifsccode: ifscCode,
-          bankname: bankName,
-          accounttype: accountType
-        };
-      }
-      
-      if(id) {
-        await dispatch(updateVendor(id,vendorData));
+      if (id) {
+        await dispatch(updateVendor(id, vendorData));
       } else {
         await dispatch(createVendor(vendorData));
       }

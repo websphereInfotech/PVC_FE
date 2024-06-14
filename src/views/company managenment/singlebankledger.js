@@ -42,7 +42,7 @@ const Singlebankledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-       Company Bank Ledger List
+        Company Bank Ledger List
       </Typography>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>

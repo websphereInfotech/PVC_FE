@@ -1138,42 +1138,42 @@ export const fetchAllProdutrscashFailure = (error) => ({
   type: 'FETCH_ALL_PRODUCTS_FAILURE',
   payload: error
 });
-export  const deleteProductRequest =(data) => ({
+export const deleteProductRequest = (data) => ({
   type: 'DELETE_PRODUCT_REQUEST',
   payload: data
 });
 export const deleteProductSuccess = (data) => ({
-  type:'DELETE_PRODUCT_SUCCESS',
+  type: 'DELETE_PRODUCT_SUCCESS',
   payload: data
 });
 export const deleteProductFailure = (error) => ({
-  type:'DELETE_PRODUCT_FAILURE',
-  payload:error
-})
-export  const viewProductRequest =(data) => ({
+  type: 'DELETE_PRODUCT_FAILURE',
+  payload: error
+});
+export const viewProductRequest = (data) => ({
   type: 'VIEW_PRODUCT_REQUEST',
   payload: data
 });
 export const viewProductSuccess = (data) => ({
-  type:'VIEW_PRODUCT_SUCCESS',
+  type: 'VIEW_PRODUCT_SUCCESS',
   payload: data
 });
 export const viewProductFailure = (error) => ({
-  type:'VIEW_PRODUCT_FAILURE',
-  payload:error
-})
-export  const updateProductRequest =(data) => ({
+  type: 'VIEW_PRODUCT_FAILURE',
+  payload: error
+});
+export const updateProductRequest = (data) => ({
   type: 'UPDATE_PRODUCT_REQUEST',
   payload: data
 });
 export const updateProductSuccess = (data) => ({
-  type:'UPDATE_PRODUCT_SUCCESS',
+  type: 'UPDATE_PRODUCT_SUCCESS',
   payload: data
 });
 export const updateProductFailure = (error) => ({
-  type:'UPDATE_PRODUCT_FAILURE',
-  payload:error
-})
+  type: 'UPDATE_PRODUCT_FAILURE',
+  payload: error
+});
 // ################################################################ EXPENSE #############################################################################
 
 export const createExpenseRequest = (data) => ({

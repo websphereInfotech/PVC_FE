@@ -229,24 +229,7 @@ const PaymentrecieveList = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : // <Button
-                    //   variant="outlined"
-                    //   color="secondary"
-                    //   onClick={() => handleUpdatePayment(payment.id)}
-                    //   disabled={!canUpdatePaymentrecievecash()}
-                    // >
-                    //   Edit
-                    // </Button>
-                    // column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleDeleteConfirmation(payment.id)}
-                    //     disabled={!canDeletePaymentrecievecash()}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
+                    ) : 
                     column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
@@ -306,7 +289,7 @@ const PaymentrecieveList = () => {
             </IconButton>
           </span>
         </div>
-        <DialogContent style={{ zIndex: 9999 }}>
+        <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12} style={{ paddingTop: '20px' }}>
               <Typography variant="subtitle1">

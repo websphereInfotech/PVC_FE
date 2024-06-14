@@ -221,14 +221,13 @@ const Deliverychallan = () => {
   //call craete and update deliverychallan and deliverychallan items
   const handlecreatedeliverychallan = async () => {
     try {
-      console.log(id, 'updateid');
       if (id) {
         const payload = {
           ...formData,
           totalQty: totalQuantity,
           items: rows.map((row) => ({
             productId: row.productId,
-            qty: row.qty
+            qty: Number(row.qty)
           }))
         };
         dispatch(updateDileveryChallan(id, payload, navigate));
@@ -238,7 +237,7 @@ const Deliverychallan = () => {
           totalQty: totalQuantity,
           items: rows.map((row) => ({
             productId: row.productId,
-            qty: row.qty
+            qty: Number(row.qty)
           }))
         };
         await dispatch(createDeliveryChallan(payload, navigate));

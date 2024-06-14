@@ -382,7 +382,7 @@ const CompanyviewPage = () => {
               </IconButton>
             </span>
           </div>
-          <DialogContent style={{ zIndex: 9999 }}>
+          <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="subtitle1">

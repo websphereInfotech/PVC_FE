@@ -208,6 +208,30 @@ const MenuItem = () => {
     'get_all_receive_bank'
   ]);
 
+  const hasAllPermissionsProduct = checkAllPermissions('Product', [
+    'create_product',
+    'update_product',
+    'delete_product',
+    'view_single_product',
+    'view_all_product'
+  ]);
+
+  const hasAllPermissionsCustomer = checkAllPermissions('Customer', [
+    'create_customer',
+    'update_customer',
+    'delete_customer',
+    'view_single_customer',
+    'view_all_customer'
+  ]);
+
+  const hasAllPermissionsVendor = checkAllPermissions('Vendor', [
+    'create_vendor',
+    'update_vendor',
+    'delete_vandor',
+    'view_vendor',
+    'view_all_vandor'
+  ]);
+
   return {
     items: [
       {
@@ -505,13 +529,13 @@ const MenuItem = () => {
                 title: 'Total Stoke',
                 type: 'item',
                 url: '/stockmain'
-              },
-              {
-                id: 'Report',
-                title: 'Report',
-                type: 'item',
-                url: '/productionreport'
               }
+              // {
+              //   id: 'Report',
+              //   title: 'Report',
+              //   type: 'item',
+              //   url: '/productionreport'
+              // }
             ]
           }
         ]
@@ -531,13 +555,13 @@ const MenuItem = () => {
                 title: 'Machine Inventory',
                 type: 'item',
                 url: '/machineinventory'
-              },
-              {
-                id: 'Report',
-                title: 'Report',
-                type: 'item',
-                url: '/productionreport'
               }
+              // {
+              //   id: 'Report',
+              //   title: 'Report',
+              //   type: 'item',
+              //   url: '/productionreport'
+              // }
             ]
           }
         ]
@@ -564,51 +588,51 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/stokegeneral'
               },
-              {
+              hasAllPermissionsProduct && {
                 id: 'Product List',
                 title: "Product's",
                 type: 'item',
                 url: '/productlist'
               },
-              {
+              hasAllPermissionsCustomer && {
                 id: 'Customer',
                 title: "Customer's",
                 type: 'item',
                 url: '/customerlist'
               },
-              {
+              hasAllPermissionsVendor && {
                 id: 'Vendor',
                 title: "Vendor's",
                 type: 'item',
                 url: '/vendorlist'
+              },
+              {
+                id: 'Report',
+                title: 'Report',
+                type: 'item',
+                url: '/reports'
               }
             ]
           }
         ]
-      },
-      {
-        id: 'support',
-        title: 'Support',
-        type: 'group',
-        icon: icons['ContactSupportOutlinedIcon'],
-        children: [
-          // {
-          //   id: 'disabled-menu',
-          //   title: 'Disabled Menu',
-          //   type: 'item',
-          //   url: '#',
-          //   icon: icons['BlockOutlinedIcon'],
-          //   disabled: true
-          // },
-          {
-            id: 'Report',
-            title: 'Report',
-            type: 'item',
-            url: '/reports',
-            icon: icons['HelpOutlineOutlinedIcon']
-          }
-        ]
       }
+      // {
+      //   id: 'support',
+      //   title: 'Support',
+      //   type: 'group',
+      //   icon: icons['ContactSupportOutlinedIcon'],
+      //   children: [
+      //     // {
+      //     //   id: 'disabled-menu',
+      //     //   title: 'Disabled Menu',
+      //     //   type: 'item',
+      //     //   url: '#',
+      //     //   icon: icons['BlockOutlinedIcon'],
+      //     //   disabled: true
+      //     // },
+
+      //   ]
+      // }
     ]
   };
 };

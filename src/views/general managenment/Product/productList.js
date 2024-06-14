@@ -18,22 +18,24 @@ import {
 } from '@mui/material';
 
 import AnchorProductDrawer from 'component/productadd';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch } from 'react-redux';
 import { DeleteProduct, fetchAllProducts, viewProduct } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'productname', label: 'Product Name', align: 'center' },
   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
   { id: 'gstrate', label: 'GST Rate', align: 'center' },
   { id: 'salesprice', label: 'Sales Price', align: 'center' },
-  { id: 'action', label: 'Action', align: 'center' },
-  // { id: 'delete', label: 'Delete', align: 'center' }
+  { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const ProductList = () => {
-  const {canUpdateProduct,canDeleteProduct}= useCan();
+  const { canUpdateProduct, canDeleteProduct, canViewProduct } = useCan();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [products, setProduct] = useState([]);
   const [page, setPage] = useState(0);
@@ -41,7 +43,7 @@ const ProductList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedProduct,setSelectedProduct] = useState();
+  const [selectedProduct, setSelectedProduct] = useState();
 
   useEffect(() => {
     dispatch(fetchAllProducts())
@@ -58,9 +60,14 @@ const ProductList = () => {
     setSelectedId(id);
   };
 
+  const handleProductview = (id) => {
+    dispatch(viewProduct(id));
+    navigate(`/productview/${id}`);
+  };
+
   const handleUpdateProduct = (id) => {
     setIsDrawerOpen(true);
-    setSelectedProduct(id)
+    setSelectedProduct(id);
     dispatch(viewProduct(id));
   };
 
@@ -104,56 +111,71 @@ const ProductList = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
-                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                       <IconButton
-                         sizeSmall
-                         style={{
-                           backgroundColor: canUpdateProduct() ? 'green' : 'gray',
-                           color: canUpdateProduct() ? 'white' : 'white',
-                           borderRadius: 0.8,
-                           ...(canUpdateProduct() && { opacity: 1 }),
-                           ...(!canUpdateProduct() && { opacity: 0.5 }),
-                           ...(!canUpdateProduct() && { backgroundColor: 'gray' })
-                         }}
-                         onClick={() => handleUpdateProduct(product.id)}
-                         disabled={!canUpdateProduct()}
-                       >
-                         <Edit style={{ fontSize: '16px' }} />
-                       </IconButton>
-                       <IconButton
-                         sizeSmall
-                         style={{
-                           backgroundColor: canDeleteProduct() ? 'Red' : 'gray',
-                           color: canDeleteProduct() ? 'white' : 'white',
-                           borderRadius: 0.8,
-                           ...(canDeleteProduct() && { opacity: 1 }),
-                           ...(!canDeleteProduct() && { opacity: 0.5 }),
-                           ...(!canDeleteProduct() && { backgroundColor: 'gray' })
-                         }}
-                         onClick={() => handleDeleteConfirmation(product.id)}
-                         disabled={!canDeleteProduct()}
-                       >
-                         <Delete style={{ fontSize: '16px' }} />
-                       </IconButton>
-                     </div>
-                    //   <Button
-                    //   disabled={!canUpdateProduct()}
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleUpdatePayment(product.id)}
-                    //   >
-                    //     Edit
-                    //   </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //   disabled={!canDeleteProduct()}
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleDeleteConfirmation(product.id)}
-                    //   >
-                    //     Delete
-                    //   </Button>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewProduct() ? 'Blue' : 'gray',
+                            color: canViewProduct() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewProduct() && { opacity: 1 }),
+                            ...(!canViewProduct() && { opacity: 0.5 }),
+                            ...(!canViewProduct() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleProductview(product.id)}
+                          disabled={!canViewProduct()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateProduct() ? 'green' : 'gray',
+                            color: canUpdateProduct() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateProduct() && { opacity: 1 }),
+                            ...(!canUpdateProduct() && { opacity: 0.5 }),
+                            ...(!canUpdateProduct() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateProduct(product.id)}
+                          disabled={!canUpdateProduct()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteProduct() ? 'Red' : 'gray',
+                            color: canDeleteProduct() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteProduct() && { opacity: 1 }),
+                            ...(!canDeleteProduct() && { opacity: 0.5 }),
+                            ...(!canDeleteProduct() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(product.id)}
+                          disabled={!canDeleteProduct()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
                     ) : (
+                      //   <Button
+                      //   disabled={!canUpdateProduct()}
+                      //     variant="outlined"
+                      //     color="secondary"
+                      //     onClick={() => handleUpdatePayment(product.id)}
+                      //   >
+                      //     Edit
+                      //   </Button>
+                      // ) : column.id === 'delete' ? (
+                      //   <Button
+                      //   disabled={!canDeleteProduct()}
+                      //     variant="outlined"
+                      //     color="secondary"
+                      //     onClick={() => handleDeleteConfirmation(product.id)}
+                      //   >
+                      //     Delete
+                      //   </Button>
                       product[column.id]
                     )}
                   </TableCell>
@@ -184,7 +206,7 @@ const ProductList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AnchorProductDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id ={selectedProduct} />
+      <AnchorProductDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id={selectedProduct} />
     </Card>
   );
 };

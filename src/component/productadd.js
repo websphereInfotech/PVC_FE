@@ -35,9 +35,9 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
   });
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ 
-      ...formData, 
-      [id]: id === 'HSNcode' ? Number(value) : value 
+    setFormData({
+      ...formData,
+      [id]: id === 'HSNcode' ? Number(value) : value
     });
   };
   const handleItem = (e) => {
@@ -93,7 +93,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
   };
   const handleSave = async () => {
     try {
-           const data = {
+      const data = {
         ...formData,
         itemtype,
         openingstock,
@@ -106,7 +106,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
       } else {
         await dispatch(createProduct(data));
       }
-      // onClose(); 
+      // onClose();
     } catch (error) {
       console.error('Error creating Product', error);
     }
@@ -198,7 +198,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">
               HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>{' '}
             </Typography>
-            {console.log("formData.HSNcode>>>>>>>>>>>",formData.HSNcode)}
+            {console.log('formData.HSNcode>>>>>>>>>>>', formData.HSNcode)}
             <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
         </Grid>

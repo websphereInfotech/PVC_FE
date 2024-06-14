@@ -101,17 +101,24 @@ export default function UserList() {
       setUserid(response.data.data.id);
       if (response.status === 200) {
         setOpenAddConfirmation(true);
+        setOpenCreateDialog(false);
+        setNewUser({ mobileno: '', email: '' });
       }
     } catch (error) {
-      console.error('Error checking user:', error);
-      navigate('/adduser');
-    } finally {
-      setOpenCreateDialog(false);
+      console.error('Error checking user:', error.response.status);
+      if (error.response && error.response.status === 404) {
+        navigate('/adduser');
+        setOpenCreateDialog(false);
+        setNewUser({ mobileno: '', email: '' });
+      } else {
+        setOpenCreateDialog(true);
+      }
     }
+  };
+  const handlecancle = () => {
     setOpenCreateDialog(false);
     setNewUser({ mobileno: '', email: '' });
   };
-
   const handleConfirmAddUser = async () => {
     try {
       await dispatch(Adduser(userid));
@@ -273,7 +280,7 @@ export default function UserList() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenCreateDialog(false)} color="secondary" variant="contained">
+          <Button onClick={handlecancle} color="secondary" variant="contained">
             Cancel
           </Button>
           <Button onClick={handleCheckUserSubmit} color="secondary" variant="contained">

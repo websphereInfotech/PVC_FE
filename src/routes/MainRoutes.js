@@ -109,14 +109,23 @@ const User = Loadable(lazy(() => import('../views/permission managenment/adduser
 const UserList = Loadable(lazy(() => import('../views/permission managenment/userlist')));
 const Userviewpage = Loadable(lazy(() => import('../views/permission managenment/userview')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++ Product ++++++++++++++++++++++++++++++++++++++++
+const ProductList = Loadable(lazy(() => import('../views/general managenment/Product/productList')));
+const Productview = Loadable(lazy(() => import('../views/general managenment/Product/productview')));
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++ Customer ++++++++++++++++++++++++++++++++++++++++++++++++
+const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/customerlist')));
+const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/customerview')));
+
+// +++++++++++++++++++++++++++++++++++++++++++++++ Vendor +++++++++++++++++++++++++++++++++++++
+const VendorList = Loadable(lazy(() => import('../views/general managenment/Vendor/vendorlist')));
+const Vendorview = Loadable(lazy(() => import('../views/general managenment/Vendor/vendorview')));
+
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
-const ProductList = Loadable(lazy(() => import('../views/general managenment/productList')));
-const CustomerList = Loadable(lazy(() => import('../views/general managenment/customerlist')));
-const VendorList = Loadable(lazy(() => import('../views/general managenment/vendorlist')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
 
@@ -371,7 +380,23 @@ const MainRoutes = {
       element: <ProtectedRoute element={Singlebankledgerlist} resource="Company Bank Details" permissionName="view_single_bankLedger" />
     },
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++ Product edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/productlist', element: <ProtectedRoute element={ProductList} resource="Product" permissionName="view_all_product" /> },
+    { path: '/productview/:id', element: <ProtectedRoute element={Productview} resource="Product" permissionName="view_single_product" /> },
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++ Customer edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/customerlist', element: <ProtectedRoute element={CustomerList} resource="Customer" permissionName="view_all_customer" /> },
+    {
+      path: '/customerview/:id',
+      element: <ProtectedRoute element={Customerview} resource="Customer" permissionName="view_single_customer" />
+    },
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/vendorlist', element: <ProtectedRoute element={VendorList} resource="Vendor" permissionName="view_all_vandor" /> },
+    { path: '/vendorview/:id', element: <ProtectedRoute element={Vendorview} resource="Vendor" permissionName="view_vendor" /> },
+
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
+
     { path: '/productionlist', element: <ProductionListPage /> },
     { path: '/addproduction', element: <AddProductionPage /> },
     { path: '/products', element: <Product /> },
@@ -393,9 +418,6 @@ const MainRoutes = {
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },
-    { path: '/productlist', element: <ProductList /> },
-    { path: '/customerlist', element: <CustomerList/>},
-    { path: '/vendorlist', element: <VendorList/>},
     { path: '/stokegeneral', element: <Stokegeneral /> },
     { path: '/reports', element: <Reports /> },
 

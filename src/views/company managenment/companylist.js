@@ -136,16 +136,7 @@ const CompanyList = () => {
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'view' ? (
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        disabled={!canViewCompany()}
-                        onClick={() => handlecompanyview(row.companyId)}
-                      >
-                        View
-                      </Button>
-                    ) : column.id === 'action' ? (
+                    {column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
