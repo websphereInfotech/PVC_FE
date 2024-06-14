@@ -114,6 +114,9 @@ const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee mana
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
+const ProductList = Loadable(lazy(() => import('../views/general managenment/productList')));
+const CustomerList = Loadable(lazy(() => import('../views/general managenment/customerlist')));
+const VendorList = Loadable(lazy(() => import('../views/general managenment/vendorlist')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
 
@@ -261,6 +264,9 @@ const MainRoutes = {
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },
+    { path: '/productlist', element: <ProductList /> },
+    { path: '/customerlist', element: <CustomerList/>},
+    { path: '/vendorlist', element: <VendorList/>},
     { path: '/stokegeneral', element: <Stokegeneral /> },
     { path: '/reports', element: <Reports /> },
 

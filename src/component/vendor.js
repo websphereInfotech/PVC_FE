@@ -5,14 +5,15 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
-import { createVendor } from '../store/thunk';
+import { createVendor, updateVendor, viewVendor } from '../store/thunk';
 import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 
-const AnchorVendorDrawer = ({ open, onClose }) => {
+const AnchorVendorDrawer = ({ open, onClose, id }) => {
   AnchorVendorDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    id: PropTypes.string
   };
 
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
     shortname: '',
     email: '',
     contactpersonname: '',
-    mobileno: '',
+    mobileno: Number(),
     panno: Number(),
     gstnumber: '',
     creditperiod: '',
@@ -76,7 +77,28 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
   const handleTotalCreditChange = (event) => {
     setTotalCredit(event.target.value);
   };
-
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(viewVendor(id));
+        setFormData({ ...response });
+        setBankDetail(response.bankdetail);
+        setCreditlimit(response.creditlimit);
+        setTotalCredit(response.totalcreadit);
+        if (response.v_bankdetails) {
+          setBankName(response.v_bankdetails.bankname);
+          setAccountNumber(response.v_bankdetails.accountnumber);
+          setAccountType(response.v_bankdetails.accounttype);
+          setIfscCode(response.v_bankdetails.ifsccode);
+        }
+      } catch (error) {
+        console.log('Error fetching Product', error);
+      }
+    };
+    if (id) {
+      fetchData();
+    }
+  }, [id, dispatch]);
   const handleSave = async () => {
     try {
       const vendorData = {
@@ -95,8 +117,12 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
           accounttype: accountType
         };
       }
-      console.log(vendorData, 'createVendor');
-      await dispatch(createVendor(vendorData));
+      
+      if(id) {
+        await dispatch(updateVendor(id,vendorData));
+      } else {
+        await dispatch(createVendor(vendorData));
+      }
     } catch (error) {
       console.error('Error creating vendor:', error);
     }
@@ -214,14 +240,14 @@ const AnchorVendorDrawer = ({ open, onClose }) => {
                 setstateid(selectedState.id);
                 handleStateChange(selectedState);
               }}
-              placeHolder="Select State"
+              placeHolder={formData.state}
             />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1">
               City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder="Select City" />
+            <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder={formData.city} />
           </Grid>
         </Grid>
         <Grid container spacing={2} style={{ paddingTop: '16px' }}>
