@@ -54,6 +54,9 @@ import {
   createProductRequest,
   createProductFailure,
   createProductSuccess,
+  deleteProductSuccess,
+  deleteProductRequest,
+  deleteProductFailure,
   // PURCHASE +++++++++++++++++++++++++++++++
   viewPurchaseRequest,
   viewPurchaseSuccess,
@@ -406,7 +409,30 @@ import {
   fetchallpaymentrecievebankFailure,
   PaymentrecieveBankLedgerRequest,
   PaymentrecieveBankLedgerSuccess,
-  PaymentrecieveBankLedgerFailure
+  PaymentrecieveBankLedgerFailure,
+  viewProductSuccess,
+  viewProductFailure,
+  updateProductRequest,
+  updateProductSuccess,
+  updateProductFailure,
+  deleteCustomerRequest,
+  deleteCustomerSuccess,
+  deleteCustomerFailure,
+  viewCustomerRequest,
+  viewCustomerSuccess,
+  viewCustomerFailure,
+  updateCustomerRequest,
+  updateCustomerSuccess,
+  updateCustomerFailure,
+  deleteVendorRequest,
+  deleteVendorSuccess,
+  deleteVendorFailure,
+  viewVendorRequest,
+  viewVendorSuccess,
+  viewVendorFailure,
+  updateVendorRequest,
+  updateVendorSuccess,
+  updateVendorFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -751,7 +777,59 @@ export const createCustomer = (customerData) => {
     }
   };
 };
-
+export const DeleteCustomer = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteCustomerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customer/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteCustomerSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(deleteCustomerFailure(error.message));
+    }
+  };
+};
+export const viewCustomer = (id) => {
+  return async (dispatch) => {
+    dispatch(viewCustomerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_customer/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewCustomerSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewCustomerFailure(error.message));
+    }
+  };
+};
+export const updateCustomer = (id, customerData) => {
+  return async (dispatch) => {
+    dispatch(updateCustomerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_customer/${id}`, customerData, config);
+      const upadteCustomerData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+      });
+      window.location.reload();
+      dispatch(updateCustomerSuccess(upadteCustomerData));
+      return upadteCustomerData;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(updateCustomerFailure(error.message));
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PRODUCT ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const fetchAllProductsCash = () => {
   return async (dispatch) => {
@@ -802,7 +880,59 @@ export const createProduct = (data) => {
     }
   };
 };
-
+export const DeleteProduct = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteProductRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_product/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteProductSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(deleteProductFailure(error.message));
+    }
+  };
+};
+export const viewProduct = (id) => {
+  return async (dispatch) => {
+    dispatch(viewProductSuccess());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_product/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewProductSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewProductFailure(error.message));
+    }
+  };
+};
+export const updateProduct = (id, data) => {
+  return async (dispatch) => {
+    dispatch(updateProductRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_product/${id}`, data, config);
+      const upadteProductData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+      });
+      window.location.reload();
+      dispatch(updateProductSuccess(upadteProductData));
+      return upadteProductData;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(updateProductFailure(error.message));
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPaymentCash = (formData, navigate) => {
   return async (dispatch) => {
@@ -1933,6 +2063,59 @@ export const fetchAllVendorsCash = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllVendorsCashFailure(error.message));
+    }
+  };
+};
+export const DeleteVendor = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteVendorRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_vandor/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      window.location.reload();
+      dispatch(deleteVendorSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(deleteVendorFailure(error.message));
+    }
+  };
+};
+export const viewVendor = (id) => {
+  return async (dispatch) => {
+    dispatch(viewVendorRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_vendor/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewVendorSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewVendorFailure(error.message));
+    }
+  };
+};
+export const updateVendor = (id, vendorData) => {
+  return async (dispatch) => {
+    dispatch(updateVendorRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_vendor/${id}`, vendorData, config);
+      const upadteCustomerData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+      });
+      window.location.reload();
+      dispatch(updateVendorSuccess(upadteCustomerData));
+      return upadteCustomerData;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(updateVendorFailure(error.message));
     }
   };
 };

@@ -46,6 +46,15 @@ export const FETCH_ALL_PRODUCTS_FAILURE = 'FETCH_ALL_PRODUCTS_FAILURE';
 export const CREATE_PRODUCT_REQUEST = 'CREATE_PRODUCT_REQUEST';
 export const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS';
 export const CREATE_PRODUCT_FAILURE = 'CREATE_PRODUCT_FAILURE';
+export const DELETE_PRODUCT_REQUEST = 'DELETE_PRODUCT_REQUEST';
+export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS';
+export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE';
+export const VIEW_PRODUCT_REQUEST = 'VIEW_PRODUCT_REQUEST';
+export const VIEW_PRODUCT_SUCCESS = 'VIEW_PRODUCT_SUCCESS';
+export const VIEW_PRODUCT_FAILURE = 'VIEW_PRODUCT_FAILURE';
+export const UPDATE_PRODUCT_REQUEST = 'UPDATE_PRODUCT_REQUEST';
+export const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS';
+export const UPDATE_PRODUCT_FAILURE = 'UPDATE_PRODUCT_FAILURE';
 
 // ########################################## CUSTOMER ###############################################################################################
 export const FETCH_ALL_CUSTOMERS_CASH_REQUEST = 'FETCH_ALL_CUSTOMERS_CASH_REQUEST';
@@ -57,6 +66,15 @@ export const FETCH_ALL_CUSTOMERS_FAILURE = 'FETCH_ALL_CUSTOMERS_FAILURE';
 export const CREATE_CUSTOMER_REQUEST = 'CREATE_CUSTOMER_REQUEST';
 export const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS';
 export const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE';
+export const UPDATE_CUSTOMER_REQUEST = 'UPDATE_CUSTOMER_REQUEST';
+export const UPDATE_CUSTOMER_SUCCESS = 'UPDATE_CUSTOMER_SUCCESS';
+export const UPDATE_CUSTOMER_FAILURE = 'UPDATE_CUSTOMER_FAILURE';
+export const DELETE_CUSTOMER_REQUEST = 'DELETE_CUSTOMER_REQUEST';
+export const DELETE_CUSTOMER_SUCCESS = 'DELETE_CUSTOMER_SUCCESS';
+export const DELETE_CUSTOMER_FAILURE = 'DELETE_CUSTOMER_FAILURE';
+export const VIEW_CUSTOMER_REQUEST = 'VIEW_CUSTOMER_REQUEST';
+export const VIEW_CUSTOMER_SUCCESS = 'VIEW_CUSTOMER_SUCCESS';
+export const VIEW_CUSTOMER_FAILURE = 'VIEW_CUSTOMER_FAILURE';
 
 // ########################################## DELIVERY CHALLAN ###############################################################################################
 export const CREATE_DELIVERY_CHALLAN_REQUEST = 'CREATE_DELIVERY_CHALLAN_REQUEST';
@@ -306,6 +324,15 @@ export const ADD_USER_FAILURE = 'ADD_USER_FAILURE';
 export const CREATE_VENDOR_REQUEST = 'CREATE_VENDOR_REQUEST';
 export const CREATE_VENDOR_SUCCESS = 'CREATE_VENDOR_SUCCESS';
 export const CREATE_VENDOR_FAILURE = 'CREATE_VENDOR_FAILURE';
+export const VIEW_VENDOR_REQUEST = 'VIEW_VENDOR_REQUEST';
+export const VIEW_VENDOR_SUCCESS = 'VIEW_VENDOR_SUCCESS';
+export const VIEW_VENDOR_FAILURE = 'VIEW_VENDOR_FAILURE';
+export const DELETE_VENDOR_REQUEST = 'DELETE_VENDOR_REQUEST';
+export const DELETE_VENDOR_SUCCESS = 'DELETE_VENDOR_SUCCESS';
+export const DELETE_VENDOR_FAILURE = 'DELETE_VENDOR_FAILURE';
+export const UPDATE_VENDOR_REQUEST = 'UPDATE_VENDOR_REQUEST';
+export const UPDATE_VENDOR_SUCCESS = 'UPDATE_VENDOR_SUCCESS';
+export const UPDATE_VENDOR_FAILURE = 'UPDATE_VENDOR_FAILURE';
 export const FETCH_ALL_VENDORS_REQUEST = 'FETCH_ALL_VENDORS_REQUEST';
 export const FETCH_ALL_VENDORS_SUCCESS = 'FETCH_ALL_VENDORS_SUCCESS';
 export const FETCH_ALL_VENDORS_FAILURE = 'FETCH_ALL_VENDORS_FAILURE';
@@ -578,6 +605,42 @@ export const createCustomerSuccess = (data) => ({
 });
 export const createCustomerFailure = (error) => ({
   type: 'CREATE_CUSTOMER_FAILURE',
+  payload: error
+});
+export const deleteCustomerRequest = (data) => ({
+  type: 'DELETE_CUSTOMER_REQUEST',
+  payload: data
+});
+export const deleteCustomerSuccess = (data) => ({
+  type: 'DELETE_CUSTOMER_SUCCESS',
+  payload: data
+});
+export const deleteCustomerFailure = (error) => ({
+  type: 'DELETE_CUSTOMER_FAILURE',
+  payload: error
+});
+export const viewCustomerRequest = (data) => ({
+  type: 'VIEW_CUSTOMER_REQUEST',
+  payload: data
+});
+export const viewCustomerSuccess = (data) => ({
+  type: 'VIEW_CUSTOMER_SUCCESS',
+  payload: data
+});
+export const viewCustomerFailure = (error) => ({
+  type: 'VIEW_CUSTOMER_FAILURE',
+  payload: error
+});
+export const updateCustomerRequest = (data) => ({
+  type: 'UPDATE_CUSTOMER_REQUEST',
+  payload: data
+});
+export const updateCustomerSuccess = (data) => ({
+  type: 'UPDATE_CUSTOMER_SUCCESS',
+  payload: data
+});
+export const updateCustomerFailure = (error) => ({
+  type: 'UPDATE_CUSTOMER_FAILURE',
   payload: error
 });
 
@@ -1075,7 +1138,42 @@ export const fetchAllProdutrscashFailure = (error) => ({
   type: 'FETCH_ALL_PRODUCTS_FAILURE',
   payload: error
 });
-
+export  const deleteProductRequest =(data) => ({
+  type: 'DELETE_PRODUCT_REQUEST',
+  payload: data
+});
+export const deleteProductSuccess = (data) => ({
+  type:'DELETE_PRODUCT_SUCCESS',
+  payload: data
+});
+export const deleteProductFailure = (error) => ({
+  type:'DELETE_PRODUCT_FAILURE',
+  payload:error
+})
+export  const viewProductRequest =(data) => ({
+  type: 'VIEW_PRODUCT_REQUEST',
+  payload: data
+});
+export const viewProductSuccess = (data) => ({
+  type:'VIEW_PRODUCT_SUCCESS',
+  payload: data
+});
+export const viewProductFailure = (error) => ({
+  type:'VIEW_PRODUCT_FAILURE',
+  payload:error
+})
+export  const updateProductRequest =(data) => ({
+  type: 'UPDATE_PRODUCT_REQUEST',
+  payload: data
+});
+export const updateProductSuccess = (data) => ({
+  type:'UPDATE_PRODUCT_SUCCESS',
+  payload: data
+});
+export const updateProductFailure = (error) => ({
+  type:'UPDATE_PRODUCT_FAILURE',
+  payload:error
+})
 // ################################################################ EXPENSE #############################################################################
 
 export const createExpenseRequest = (data) => ({
@@ -1321,6 +1419,42 @@ export const createVendorSuccess = (data) => ({
 });
 export const createVendorFailure = (error) => ({
   type: 'CREATE_VENDOR_FAILURE',
+  payload: error
+});
+export const viewVendorRequest = (data) => ({
+  type: 'VIEW_VENDOR_REQUEST',
+  payload: data
+});
+export const viewVendorSuccess = (data) => ({
+  type: 'VIEW_VENDOR_SUCCESS',
+  payload: data
+});
+export const viewVendorFailure = (error) => ({
+  type: 'VIEW_VENDOR_FAILURE',
+  payload: error
+});
+export const deleteVendorRequest = (data) => ({
+  type: 'DELETE_VENDOR_REQUEST',
+  payload: data
+});
+export const deleteVendorSuccess = (data) => ({
+  type: 'DELETE_VENDOR_SUCCESS',
+  payload: data
+});
+export const deleteVendorFailure = (error) => ({
+  type: 'DELETE_VENDOR_FAILURE',
+  payload: error
+});
+export const updateVendorRequest = (data) => ({
+  type: 'UPDATE_VENDOR_REQUEST',
+  payload: data
+});
+export const updateVendorSuccess = (data) => ({
+  type: 'UPDATE_VENDOR_SUCCESS',
+  payload: data
+});
+export const updateVendorFailure = (error) => ({
+  type: 'UPDATE_VENDOR_FAILURE',
   payload: error
 });
 export const fetchAllVendorsRequest = () => ({

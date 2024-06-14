@@ -563,6 +563,24 @@ const MenuItem = () => {
                 title: 'Stoke general',
                 type: 'item',
                 url: '/stokegeneral'
+              },
+              {
+                id: 'Product List',
+                title: "Product's",
+                type: 'item',
+                url: '/productlist'
+              },
+              {
+                id: 'Customer',
+                title: "Customer's",
+                type: 'item',
+                url: '/customerlist'
+              },
+              {
+                id: 'Vendor',
+                title: "Vendor's",
+                type: 'item',
+                url: '/vendorlist'
               }
             ]
           }

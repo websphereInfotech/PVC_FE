@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import Select from 'react-select';
-import { createProduct } from 'store/thunk';
+import { createProduct, updateProduct, viewProduct } from 'store/thunk';
 
-const AnchorProductDrawer = ({ open, onClose }) => {
+const AnchorProductDrawer = ({ open, onClose, id }) => {
   AnchorProductDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    id: PropTypes.string
   };
   const dispatch = useDispatch();
   const [itemtype, setItemType] = React.useState('Product');
@@ -29,12 +30,15 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     unit: '',
     salesprice: Number(),
     purchaseprice: Number(),
-    HSNcode: '',
+    HSNcode: 0,
     gstrate: ''
   });
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData({ 
+      ...formData, 
+      [id]: id === 'HSNcode' ? Number(value) : value 
+    });
   };
   const handleItem = (e) => {
     setItemType(e.target.value);
@@ -51,7 +55,28 @@ const AnchorProductDrawer = ({ open, onClose }) => {
   const handleCess = (e) => {
     setCess(e.target.value === 'true' ? true : false);
   };
-
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(viewProduct(id));
+          const productData = response;
+          // console.log('Product Data:', productData);
+          setFormData({ ...productData });
+          setOpeningStock(productData.openingstock);
+          setNagativeQty(productData.nagativeqty);
+          setLowStock(productData.lowstock);
+          setCess(productData.cess);
+          setItemType(productData.itemtype);
+        }
+      } catch (error) {
+        console.error('Error fetching Product', error);
+      }
+    };
+    if (id) {
+      fetchData();
+    }
+  }, [id, dispatch]);
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);
     setFormData({ ...formData, gstrate: selectedOption.value });
@@ -64,11 +89,11 @@ const AnchorProductDrawer = ({ open, onClose }) => {
     //   console.log(selectedOption.value, 'valueIGST');
     //   setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
     // }
+    // console.log(formData, 'selectedGST');
   };
-
   const handleSave = async () => {
     try {
-      const data = {
+           const data = {
         ...formData,
         itemtype,
         openingstock,
@@ -76,7 +101,12 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         lowstock,
         cess
       };
-      await dispatch(createProduct(data));
+      if (id) {
+        await dispatch(updateProduct(id, data));
+      } else {
+        await dispatch(createProduct(data));
+      }
+      // onClose(); 
     } catch (error) {
       console.error('Error creating Product', error);
     }
@@ -113,7 +143,8 @@ const AnchorProductDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               Item Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <RadioGroup row defaultValue="Product" value={formData.itemtype} onChange={handleItem}>
+            {/* <RadioGroup row defaultValue="Product" value={formData.itemtype} onChange={handleItem}> */}
+            <RadioGroup row defaultValue="Product" value={itemtype} onChange={handleItem}>
               <FormControlLabel value="Product" control={<Radio />} label="Product" />
               <FormControlLabel value="Service" control={<Radio />} label="Service" />
             </RadioGroup>
@@ -154,7 +185,12 @@ const AnchorProductDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               GST Rate(%):<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <Select options={GST} value={{ label: selectedGST }} onChange={handleGSTChange} />
+            {/* <Select options={GST} value={{ label: selectedGST }} onChange={handleGSTChange} /> */}
+            <Select
+              options={GST}
+              value={formData.gstrate ? { label: `GST ${formData.gstrate}%`, value: formData.gstrate } : { label: selectedGST }}
+              onChange={handleGSTChange}
+            />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
@@ -162,6 +198,7 @@ const AnchorProductDrawer = ({ open, onClose }) => {
             <Typography variant="subtitle1">
               HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>{' '}
             </Typography>
+            {console.log("formData.HSNcode>>>>>>>>>>>",formData.HSNcode)}
             <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
         </Grid>
@@ -213,7 +250,9 @@ const AnchorProductDrawer = ({ open, onClose }) => {
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }} sm={6}>
             <Typography variant="subtitle1">Cess Enable</Typography>
-            <RadioGroup row defaultValue="No" value={formData.cess} onChange={handleCess}>
+            {/* <RadioGroup row defaultValue="No" value={formData.cess} onChange={handleCess}> */}
+            <RadioGroup row defaultValue="No" value={cess} onChange={handleCess}>
+              {console.log('productData.cess>>>>>>>>>>>>>', formData.cess)}
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>

@@ -7,15 +7,16 @@ import { useDispatch } from 'react-redux';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
-import { createCustomer } from '../store/thunk';
+import { createCustomer, updateCustomer, viewCustomer } from '../store/thunk';
 import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 // import PlacesAutocomplete from 'react-places-autocomplete';
 
-const AnchorTemporaryDrawer = ({ open, onClose }) => {
+const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
   AnchorTemporaryDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    id: PropTypes.string
   };
 
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
     shortname: '',
     email: '',
     contactpersonname: '',
-    mobileno: '',
+    mobileno: Number(),
     panno: '',
     gstnumber: '',
     creditperiod: '',
@@ -63,7 +64,8 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData({ ...formData, 
+      [id]:id === 'mobileno'? Number(value): value });
   };
 
   const handleCityChange = (selectedCity) => {
@@ -79,7 +81,28 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
   const handleTotalCreditChange = (event) => {
     setTotalCredit(event.target.value);
   };
-
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(viewCustomer(id));
+        setFormData({ ...response });
+        setBankDetail(response.bankdetail);
+        setCreditlimit(response.creditlimit);
+        setTotalCredit(response.totalcreadit);
+        if (response.bankdetails) {
+          setBankName(response.bankdetails.bankname);
+          setAccountNumber(response.bankdetails.accountnumber);
+          setAccountType(response.bankdetails.accounttype);
+          setIfscCode(response.bankdetails.ifsccode);
+        }
+      } catch (error) {
+        console.log('Error fetching Product', error);
+      }
+    };
+    if (id) {
+      fetchData();
+    }
+  }, [id, dispatch]);
   const handleSave = async () => {
     try {
       const customerData = {
@@ -99,7 +122,11 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
         };
       }
       console.log(customerData, 'customerData');
-      await dispatch(createCustomer(customerData));
+      if (id) {
+        await dispatch(updateCustomer(id, customerData));
+      } else {
+        await dispatch(createCustomer(customerData));
+      }
     } catch (error) {
       console.error('Error creating customer:', error);
     }
@@ -217,14 +244,14 @@ const AnchorTemporaryDrawer = ({ open, onClose }) => {
                 setstateid(selectedState.id);
                 handleStateChange(selectedState);
               }}
-              placeHolder="Select State"
+              placeHolder={formData.state}
             />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1">
               City : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder="Select City" />
+            <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder={formData.city} />
           </Grid>
         </Grid>
         <Grid item sx={{ margin: '8px 16px' }} style={{ paddingTop: '16px' }} md={5}>
