@@ -38,7 +38,7 @@ const Deliverychallan = () => {
   const [formData, setFormData] = useState({
     customerId: '',
     date: new Date(),
-    challanno: ''
+    challanno: 0
   });
   const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
@@ -140,7 +140,6 @@ const Deliverychallan = () => {
         }
         const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
-          // setProductResponse(productResponse);
           const options = productResponse.map((product) => ({
             value: product.id,
             label: product.productname
@@ -224,6 +223,7 @@ const Deliverychallan = () => {
       if (id) {
         const payload = {
           ...formData,
+          challanno: formData.challanno,
           totalQty: totalQuantity,
           items: rows.map((row) => ({
             productId: row.productId,

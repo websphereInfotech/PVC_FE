@@ -229,8 +229,7 @@ const PaymentrecieveList = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : 
-                    column.id === 'date' ? (
+                    ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'customer' ? (
                       payment.ReceiveCustomer.customername
