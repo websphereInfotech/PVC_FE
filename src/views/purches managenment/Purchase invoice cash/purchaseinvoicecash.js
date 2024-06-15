@@ -200,6 +200,7 @@ const Purchaseinvoicecash = () => {
           // totalQty: totalQuantity,
           totalMrp: subtotal,
           items: rows.map((row) => ({
+            id: row.id || null,
             productId: row.productId,
             qty: Number(row.qty),
             rate: row.rate,
@@ -213,6 +214,7 @@ const Purchaseinvoicecash = () => {
           // totalQty: totalQuantity,
           totalMrp: subtotal,
           items: rows.map((row) => ({
+            id: row.id || null,
             productId: row.productId,
             qty: Number(row.qty),
             rate: row.rate,

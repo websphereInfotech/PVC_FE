@@ -226,6 +226,7 @@ const Deliverychallan = () => {
           challanno: formData.challanno,
           totalQty: totalQuantity,
           items: rows.map((row) => ({
+            id: row.id || null,
             productId: row.productId,
             qty: Number(row.qty)
           }))

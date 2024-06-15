@@ -321,6 +321,7 @@ const Purchaseinvoice = () => {
         totalMrp: subtotal,
         mainTotal: Number(subtotal) + Number(plusgst),
         items: rows.map((row) => ({
+          id: row.id || null,
           productId: row.productId,
           qty: Number(row.qty),
           rate: row.rate,

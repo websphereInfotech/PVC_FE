@@ -111,6 +111,19 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
       console.error('Error creating Product', error);
     }
   };
+  const handleUnitChange = (selectedOption) => {
+    setFormData({ ...formData, unit: selectedOption.value });
+  };
+  const unitOptions = [
+    { value: 'kg', label: 'Kilogram (kg)' },
+    { value: 'g', label: 'Gram (g)' },
+    { value: 't', label: 'Tonne (metric ton)' },
+    { value: 'lb', label: 'Pound (lb)' },
+    { value: 'm', label: 'Meter (m)' },
+    { value: 'mm', label: 'millimeter (mm)' },
+    { value: 'cm', label: 'centimeter (cm)' },
+    { value: 'in', label: ' inch (in)' }
+  ];
 
   const GST = [
     { value: '5', label: 'GST 5%' },
@@ -179,8 +192,13 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">
               Unit : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="YR-OTHERS" id="unit" value={formData.unit} onChange={handleInputChange} />
+            <Select
+              options={unitOptions}
+              value={formData.unit ? { label: formData.unit.toUpperCase(), value: formData.unit } : null}
+              onChange={handleUnitChange}
+            />
           </Grid>
+
           <Grid item>
             <Typography variant="subtitle1">
               GST Rate(%):<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -252,7 +270,6 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">Cess Enable</Typography>
             {/* <RadioGroup row defaultValue="No" value={formData.cess} onChange={handleCess}> */}
             <RadioGroup row defaultValue="No" value={cess} onChange={handleCess}>
-              {console.log('productData.cess>>>>>>>>>>>>>', formData.cess)}
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>

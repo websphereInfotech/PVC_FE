@@ -63,28 +63,6 @@ import {
   updateProductRequest,
   updateProductSuccess,
   updateProductFailure,
-  // PURCHASE +++++++++++++++++++++++++++++++
-  viewPurchaseRequest,
-  viewPurchaseSuccess,
-  viewPurchaseFailure,
-  createPurchaseRequest,
-  createPrchaseSuccess,
-  createPurchaseFailure,
-  createPurchaseItemRequest,
-  createPrchaseItemSuccess,
-  createPurchaseItemFailure,
-  fetchAllPurchaseRequest,
-  fetchAllPurchaseSuccess,
-  fetchAllPurchaseFailure,
-  updatePurchaseRequst,
-  updatePurchasefailure,
-  updatePurchasesuccess,
-  updatePurchaseItemRequst,
-  updatePurchaseItemfailure,
-  updatePurchaseItemsuccess,
-  deletePurchaseItemRequest,
-  deletePurchaseItemFailure,
-  deletePurchaseItemSuccess,
   //  DELIVERYCHALLAN +++++++++++++++++++++++
   createDeliveryChallanRequest,
   createDeliveryChallanSuccess,
@@ -513,7 +491,7 @@ export const fetchproformainvoiceList = () => {
     dispatch(fetchProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_ProFormaInvoice`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/profromainvoice/get_all_ProFormaInvoice`, config);
       const data = await response.data.data;
       dispatch(fetchProformainvoiceSuccess(data));
       return data;
@@ -528,7 +506,7 @@ export const createProformainvoice = (quotationData, navigate) => {
     dispatch(createProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_ProFormaInvoice`, quotationData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/profromainvoice/create_ProFormaInvoice`, quotationData, config);
       const createdQuotation = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -551,7 +529,7 @@ export const updateProformainvoice = (id, formData, navigate) => {
     dispatch(updateProformainvoiceRequst());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_ProFormaInvoice/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/profromainvoice/update_ProFormaInvoice/${id}`, formData, config);
       const updateQuotationData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -573,7 +551,7 @@ export const deleteProformainvoiceItem = (id) => {
     dispatch(deleteProformainvoiceItemRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_ProFormaInvoiceItem/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/profromainvoice/delete_ProFormaInvoiceItem/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -590,7 +568,7 @@ export const Proformainvoiceview = (id) => {
     dispatch(viewProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_ProFormaInvoice/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/profromainvoice/view_single_ProFormaInvoice/${id}`, config);
       const data = response.data.data;
       dispatch(viewProformainvoiceSuccess(data));
       return data;
@@ -605,7 +583,7 @@ export const deleteProformainvoice = (id) => {
     dispatch(deleteProformainvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_ProFormaInvoice/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/profromainvoice/delete_ProFormaInvoice/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -623,7 +601,7 @@ export const getCountsalesinvoice = (id) => {
     dispatch(getCountSalesinvoiceRequst());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/count_salesInvoice/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/profromainvoice/count_salesInvoice/${id}`, config);
       const data = response.data;
       dispatch(getCountSalesinvoicesuccess());
       return data;
@@ -639,7 +617,7 @@ export const getallDeliverychallan = () => {
     dispatch(getAllDeliverychallanRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_deliverychallan`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/deliverychallan/get_all_deliverychallan`, config);
       const getallDeliverychallan = response.data.data;
       dispatch(getAllDeliverychallanSuccess(getallDeliverychallan));
       return getallDeliverychallan;
@@ -653,7 +631,7 @@ export const createDeliveryChallan = (ChallanData, navigate) => {
     dispatch(createDeliveryChallanRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_deliverychallan`, ChallanData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/deliverychallan/create_deliverychallan`, ChallanData, config);
       const createdDeliverychallan = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -678,7 +656,7 @@ export const Deliverychallanview = (id) => {
     dispatch(viewDeliverychallanRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_deliverychallan/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/deliverychallan/view_deliverychallan/${id}`, config);
       const data = response.data.data;
       dispatch(viewDeliverychallanSuccess(data));
       return data;
@@ -692,7 +670,11 @@ export const updateDileveryChallan = (id, ChallanData, navigate) => {
     dispatch(updateDileverychallanRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_deliverychallan/${id}`, ChallanData, config);
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/deliverychallan/update_deliverychallan/${id}`,
+        ChallanData,
+        config
+      );
       const updateChallanData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -714,7 +696,7 @@ export const deleteDileveryChallan = (id) => {
     dispatch(deleteDileverychallanItemRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_deliverychallan/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/deliverychallan/delete_deliverychallan/${id}`, config);
       const deleteChallanItem = response;
       dispatch(deleteDileverychallanItemSuccess(deleteChallanItem));
       window.location.reload();
@@ -732,7 +714,7 @@ export const fetchAllCustomersCash = () => {
     dispatch(fetchAllCustomersCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_customer`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/C_get_all_customer`, config);
       const data = response.data.data;
       dispatch(fetchAllCustomersCashSuccess(data));
       return data;
@@ -746,7 +728,7 @@ export const fetchAllCustomers = () => {
     dispatch(fetchAllCustomersRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_customer`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/get_all_customer`, config);
       const data = response.data.data;
       dispatch(fetchAllCustomersSuccess(data));
       return data;
@@ -760,7 +742,7 @@ export const createCustomer = (customerData) => {
     dispatch(createCustomerRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_customer`, customerData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/customer/create_customer`, customerData, config);
       const createdCustomer = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -783,7 +765,7 @@ export const DeleteCustomer = (id) => {
     dispatch(deleteCustomerRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_customer/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/customer/delete_customer/${id}`, config);
       const data = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -802,7 +784,7 @@ export const viewCustomer = (id) => {
     dispatch(viewCustomerRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_customer/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/view_customer/${id}`, config);
       const data = response.data.data;
       dispatch(viewCustomerSuccess(data));
       return data;
@@ -816,7 +798,7 @@ export const updateCustomer = (id, customerData) => {
     dispatch(updateCustomerRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_customer/${id}`, customerData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/customer/update_customer/${id}`, customerData, config);
       const upadteCustomerData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -837,7 +819,7 @@ export const fetchAllProductsCash = () => {
     dispatch(fetchAllProdutscashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_product`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/C_get_all_product`, config);
       const data = response.data.data;
       dispatch(fetchAllProdutscashSuccess(data));
       return data;
@@ -851,7 +833,7 @@ export const fetchAllProducts = () => {
     dispatch(fetchAllProdutsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_product`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/get_all_product`, config);
       const data = response.data.data;
       dispatch(fetchAllProdutsSuccess(data));
       return data;
@@ -865,7 +847,7 @@ export const createProduct = (data) => {
     dispatch(createProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_product`, data, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/product/create_product`, data, config);
       const createProductData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -886,7 +868,7 @@ export const DeleteProduct = (id) => {
     dispatch(deleteProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_product/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/product/delete_product/${id}`, config);
       const data = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -905,7 +887,7 @@ export const viewProduct = (id) => {
     dispatch(viewProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_product/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/view_product/${id}`, config);
       const data = response.data.data;
       dispatch(viewProductSuccess(data));
       return data;
@@ -919,7 +901,7 @@ export const updateProduct = (id, data) => {
     dispatch(updateProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_product/${id}`, data, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/product/update_product/${id}`, data, config);
       const upadteProductData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -940,7 +922,7 @@ export const createPaymentCash = (formData, navigate) => {
     dispatch(createPaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_paymentCash`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/payment/C_create_paymentCash`, formData, config);
       const createdpayment = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -963,7 +945,7 @@ export const getallPaymentCash = () => {
     dispatch(getallPaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_paymentCash`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/payment/C_get_all_paymentCash`, config);
       const getallpaymentCash = response.data;
       dispatch(getallPaymentCashSuccess(getallpaymentCash));
       return getallpaymentCash;
@@ -978,7 +960,7 @@ export const paymentCashview = (id) => {
     dispatch(viewPaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_paymentCash/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/payment/C_view_paymentCash/${id}`, config);
       const data = response.data.data;
       dispatch(viewPaymentCashSuccess(data));
       return data;
@@ -992,7 +974,7 @@ export const updatePaymentCash = (id, formData, navigate) => {
     dispatch(updatePaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_paymentCash/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/C_update_paymentCash/${id}`, formData, config);
       const upadtePaymentCashData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1014,7 +996,7 @@ export const paymentCashDelete = (id) => {
     dispatch(deletePaymentCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_paymentCash/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/payment/C_delete_paymentCash/${id}`, config);
       const data = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1034,7 +1016,7 @@ export const createSalesInvoice = (payload, navigate) => {
     dispatch(createSalesinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_salesinvoice`, payload, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/salesinvoice/create_salesinvoice`, payload, config);
       const cretesalesinvoice = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1057,7 +1039,7 @@ export const getallSalesInvoice = () => {
     dispatch(getAllSalesinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_salesInvoice`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/get_all_salesInvoice`, config);
       const getallSalesinvoice = response.data;
       dispatch(getAllSalesinvoiceSuccess(getallSalesinvoice));
       return getallSalesinvoice;
@@ -1071,7 +1053,7 @@ export const SalesInvoiceview = (id) => {
     dispatch(viewSalesinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_salesInvoice/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/view_salesInvoice/${id}`, config);
       const data = response.data.data;
       dispatch(viewSalesinvoiceSuccess(data));
       return data;
@@ -1085,7 +1067,7 @@ export const updateSalesinvoice = (id, payload, navigate) => {
     dispatch(updateSalesinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_salesInvoice/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/salesinvoice/update_salesInvoice/${id}`, payload, config);
       const updateSalesinvoiceData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1108,7 +1090,7 @@ export const deleteSalesinvoice = (id) => {
     dispatch(deleteSalesinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_salesInvoice/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/salesinvoice/delete_salesInvoice/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -1128,7 +1110,7 @@ export const createSalesInvoiceCash = (payload, navigate) => {
     dispatch(createSalesinvoicecashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_salesinvoice`, payload, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_create_salesinvoice`, payload, config);
       const cretesalesinvoicecash = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1151,7 +1133,7 @@ export const getallSalesInvoiceCash = () => {
     dispatch(getAllSalesinvoicecashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_salesInvoice`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_get_all_salesInvoice`, config);
       const getallSalesinvoiceCash = response.data;
       dispatch(getAllSalesinvoicecashSuccess(getallSalesinvoiceCash));
       return getallSalesinvoiceCash;
@@ -1165,7 +1147,7 @@ export const SalesInvoiceCashview = (id) => {
     dispatch(viewSalesinvoicecashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_salesInvoice/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_view_salesInvoice/${id}`, config);
       const data = response.data.data;
       dispatch(viewSalesinvoicecashSuccess(data));
       return data;
@@ -1179,7 +1161,7 @@ export const updateSalesinvoiceCash = (id, payload, navigate) => {
     dispatch(updateSalesinvoicecashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_salesinvoice/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_update_salesinvoice/${id}`, payload, config);
       const updateSalesinvoiceCashData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1202,7 +1184,7 @@ export const deleteSalesinvoicecash = (id) => {
     dispatch(deleteSalesinvoicecashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_salesInvoice/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_delete_salesInvoice/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -1222,7 +1204,7 @@ export const createDebitnote = (payload, navigate) => {
     dispatch(createDebitnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_debitNote`, payload, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/debitnote/create_debitNote`, payload, config);
       const createDebitnote = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1244,7 +1226,7 @@ export const getallDebitnote = () => {
     dispatch(getAllDebitnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_debitNote`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/get_all_debitNote`, config);
       const getallDebitnote = response.data.data;
       dispatch(getAllDebitnoteSuccess(getallDebitnote));
       return getallDebitnote;
@@ -1258,7 +1240,7 @@ export const Debitnoteviewdata = (id) => {
     dispatch(viewDebitnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_debitNote/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/view_single_debitNote/${id}`, config);
       const data = response.data.data;
       dispatch(viewDebitnoteSuccess(data));
       return data;
@@ -1272,7 +1254,7 @@ export const updateDebitnote = (id, payload, navigate) => {
     dispatch(updateDebitnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_debitNote/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/debitnote/update_debitNote/${id}`, payload, config);
       const updateDebitnoteData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1294,7 +1276,7 @@ export const deleteDebitnote = (id) => {
     dispatch(deleteDebitnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_debitNote/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/debitnote/delete_debitNote/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -1314,7 +1296,7 @@ export const createCreditnote = (payload, navigate) => {
     dispatch(createCreditnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_creditNote`, payload, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/creditnote/create_creditNote`, payload, config);
       const createCreditnote = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1336,7 +1318,7 @@ export const getallCreditnote = () => {
     dispatch(getAllCreditnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_creditNote`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/get_all_creditNote`, config);
       const getallCreditnote = response.data.data;
       dispatch(getAllCreditnoteSuccess(getallCreditnote));
       return getallCreditnote;
@@ -1350,7 +1332,7 @@ export const Creditnoteviewdata = (id) => {
     dispatch(viewCreditnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_creditNote/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/view_single_creditNote/${id}`, config);
       const data = response.data.data;
       dispatch(viewCreditnoteSuccess(data));
       return data;
@@ -1364,7 +1346,7 @@ export const updateCreditnote = (id, payload, navigate) => {
     dispatch(updateCreditnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_creditNote/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/creditnote/update_creditNote/${id}`, payload, config);
       const updateCreditnoteData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1386,7 +1368,7 @@ export const deleteCreditnote = (id) => {
     dispatch(deleteCreditnoteRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_creditNote/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/creditnote/delete_creditNote/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -1400,118 +1382,13 @@ export const deleteCreditnote = (id) => {
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPurchase = (purchaseData) => {
-  return async (dispatch) => {
-    dispatch(createPurchaseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchase`, purchaseData, config);
-      const cretepurchase = response;
-      dispatch(createPrchaseSuccess(cretepurchase));
-      return cretepurchase;
-    } catch (error) {
-      dispatch(createPurchaseFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createPurchaseItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createPurchaseItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchaseitem`, payload, config);
-      const createdPurchaseitems = response;
-      dispatch(createPrchaseItemSuccess(createdPurchaseitems));
-      return createdPurchaseitems;
-    } catch (error) {
-      dispatch(createPurchaseItemFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const updatePurchase = (id, formData) => {
-  return async (dispatch) => {
-    dispatch(updatePurchaseRequst());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchase/${id}`, formData, config);
-      const updatePurchaseData = response;
-      dispatch(updatePurchasesuccess(updatePurchaseData));
-      return updatePurchaseData;
-    } catch (error) {
-      dispatch(updatePurchasefailure(error.message));
-      throw error;
-    }
-  };
-};
-export const updatePurchaseItem = (itemid, updateItemData) => {
-  return async (dispatch) => {
-    dispatch(updatePurchaseItemRequst());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseitem/${itemid}`, updateItemData, config);
-      const updatePurchaseItemData = response;
-      dispatch(updatePurchaseItemsuccess(updatePurchaseItemData));
-      return updatePurchaseItemData;
-    } catch (error) {
-      dispatch(updatePurchaseItemfailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deletePurchaseItem = (id) => {
-  return async (dispatch) => {
-    dispatch(deletePurchaseItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseitem/${id}`, config);
-      const deletePurchaseItemData = response;
-      dispatch(deletePurchaseItemSuccess(deletePurchaseItemData));
-      return deletePurchaseItemData;
-    } catch (error) {
-      dispatch(deletePurchaseItemFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const getallPurchase = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllPurchaseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchase`, config);
-      const getallpayment = response.data;
-      dispatch(fetchAllPurchaseSuccess(getallpayment));
-      return getallpayment;
-    } catch (error) {
-      dispatch(fetchAllPurchaseFailure(error.message));
-    }
-  };
-};
-export const purchaseview = (id) => {
-  return async (dispatch) => {
-    dispatch(viewPurchaseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchase/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewPurchaseSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewPurchaseFailure(error.message));
-    }
-  };
-};
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPurchaseinvoice = (payload, navigate) => {
   return async (dispatch) => {
     dispatch(createPurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_purchaseInvoice`, payload, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/create_purchaseInvoice`, payload, config);
       const cretepurchasebill = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1533,7 +1410,7 @@ export const getallPurchaseinvoice = () => {
     dispatch(getAllPurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchaseInvoice`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/get_all_purchaseInvoice`, config);
       const getallPurchasebill = response.data;
       dispatch(getAllPurchaseinvoiceSuccess(getallPurchasebill));
       return getallPurchasebill;
@@ -1547,7 +1424,7 @@ export const viewPurchaseinvoice = (id) => {
     dispatch(viewPurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchaseInvoice/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/view_purchaseInvoice/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchaseinvoiceSuccess(data));
       return data;
@@ -1561,7 +1438,7 @@ export const updatePurchaseinvoice = (id, payload, navigate) => {
     dispatch(updatePurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_purchaseInvoice/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/update_purchaseInvoice/${id}`, payload, config);
       const updatePurchasebillData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1583,7 +1460,7 @@ export const deletePurchaseinvoice = (id) => {
     dispatch(deletePurchaseinvoiceRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_purchaseInvoice/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/delete_purchaseInvoice/${id}`, config);
       const deletePurchasebillData = response;
       dispatch(deletePurchaseinvoiceSuccess(deletePurchasebillData));
       window.location.reload();
@@ -1602,7 +1479,7 @@ export const createPurchaseInvoiceCash = (payload, navigate) => {
     try {
       const config = createConfig();
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/C_create_purchaseCash
+        `${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_create_purchaseCash
       `,
         payload,
         config
@@ -1628,7 +1505,7 @@ export const getallPurchaseInvoiceCash = () => {
     dispatch(getAllPurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_purchaseCash`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_get_all_purchaseCash`, config);
       const getallPurchasebillcash = response.data;
       dispatch(getAllPurchaseinvoiceCashSuccess(getallPurchasebillcash));
       return getallPurchasebillcash;
@@ -1642,7 +1519,7 @@ export const PurchaseInvoiceviewCash = (id) => {
     dispatch(viewPurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_purchaseCash/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_view_purchaseCash/${id}`, config);
       const data = response.data.data;
       dispatch(viewPurchaseinvoiceCashSuccess(data));
       return data;
@@ -1656,7 +1533,7 @@ export const updatePurchaseInvoiceCash = (id, payload, navigate) => {
     dispatch(updatePurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_purchaseCash/${id}`, payload, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_update_purchaseCash/${id}`, payload, config);
       const updatePurchasebillData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1678,7 +1555,7 @@ export const deletePurchaseInvoiceCash = (id) => {
     dispatch(deletePurchaseinvoiceCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_purchaseCash/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_delete_purchaseCash/${id}`, config);
       const deletePurchasebillData = response;
       dispatch(deletePurchaseinvoiceCashSuccess(deletePurchasebillData));
       toast.success(response.data.message, {
@@ -1837,7 +1714,7 @@ export const getallPermissions = () => {
     dispatch(getAllPermissionsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_permissions`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/permission/get_all_permissions`, config);
       const getallPermission = response.data.data;
       dispatch(getAllPermissionsSuccess(getallPermission));
       return getallPermission;
@@ -1851,7 +1728,7 @@ export const updatePermission = (data) => {
     dispatch(updatePermissionsRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_permissions`, data, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/permission/update_permissions`, data, config);
       const updatePermissionData = response.data.data;
       dispatch(updatePermissionsSuccess(updatePermissionData));
       return updatePermissionData;
@@ -2021,7 +1898,7 @@ export const createVendor = (vendorData) => {
     dispatch(createVendorRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_vendor`, vendorData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/vendor/create_vendor`, vendorData, config);
       const createdVendor = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2044,7 +1921,7 @@ export const fetchAllVendors = () => {
     dispatch(fetchAllVendorsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_vandor`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/get_all_vandor`, config);
       const data = response.data.data;
       dispatch(fetchAllVendorsSuccess(data));
       return data;
@@ -2058,7 +1935,7 @@ export const fetchAllVendorsCash = () => {
     dispatch(fetchAllVendorsCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_vandor`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/C_get_all_vandor`, config);
       const data = response.data.data;
       dispatch(fetchAllVendorsCashSuccess(data));
       return data;
@@ -2072,7 +1949,7 @@ export const DeleteVendor = (id) => {
     dispatch(deleteVendorRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_vandor/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/vendor/delete_vandor/${id}`, config);
       const data = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2091,7 +1968,7 @@ export const viewVendor = (id) => {
     dispatch(viewVendorRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_vendor/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/view_vendor/${id}`, config);
       const data = response.data.data;
       dispatch(viewVendorSuccess(data));
       return data;
@@ -2105,7 +1982,7 @@ export const updateVendor = (id, vendorData) => {
     dispatch(updateVendorRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_vendor/${id}`, vendorData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/vendor/update_vendor/${id}`, vendorData, config);
       const upadteCustomerData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2126,7 +2003,7 @@ export const createCompany = (data) => {
     dispatch(CreateCompanyRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_company`, data, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/company/create_company`, data, config);
       const Companydata = response;
       dispatch(CreateCompanySuccess(Companydata));
       return Companydata;
@@ -2144,7 +2021,7 @@ export const updateCompany = (id, formData, navigate) => {
     dispatch(UpdateCompanyRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_company/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/company/update_company/${id}`, formData, config);
       const updateCompanyData = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2169,7 +2046,7 @@ export const Companyview = (id) => {
     dispatch(ViewCompanyRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_company/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/view_single_company/${id}`, config);
       const data = response.data.data;
       dispatch(ViewCompanySuccess(data));
       return data;
@@ -2184,7 +2061,7 @@ export const deleteCompany = (id) => {
     dispatch(DeleteCompanyRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_company/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/company/delete_company/${id}`, config);
       const deletecompany = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2207,7 +2084,7 @@ export const fetchAllCompany = () => {
     dispatch(fetchAllCompanyRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_company`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/get_all_company`, config);
       const data = response.data.data;
       dispatch(fetchAllCompanySuccess(data));
       return data;
@@ -2235,7 +2112,7 @@ export const setDefaultCompany = (id) => {
     dispatch(setDefaultCompanyRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/set_default_comapny/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/set_default_comapny/${id}`, config);
       const data = response.data.data;
       const token = response.data.token;
       sessionStorage.setItem('token', token);
@@ -2251,7 +2128,7 @@ export const getCompanyBankBalance = () => {
     dispatch(CompanyBankBalanceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_company_balance`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/view_company_balance`, config);
       const data = response.data.data;
       dispatch(CompanyBankBalanceSuccess(data));
       return data;
@@ -2265,7 +2142,7 @@ export const getCompanyCashBalance = () => {
     dispatch(CompanyCashBalanceRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_company_cash_balance`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/company/view_company_cash_balance`, config);
       const data = response.data.data;
       dispatch(CompanyCashBalanceSuccess(data));
       return data;
@@ -2280,7 +2157,7 @@ export const createCompanyBank = (bankdetails) => {
     dispatch(CreateCompanyBankRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_company_bankDetails`, bankdetails, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/companybank/create_company_bankDetails`, bankdetails, config);
       const Companybankdata = response;
 
       dispatch(CreateCompanyBankSuccess(Companybankdata));
@@ -2299,7 +2176,7 @@ export const updateCompanyBank = (id, formData) => {
     dispatch(UpdateCompanyBankRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_company_bankDetails/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/companybank/update_company_bankDetails/${id}`, formData, config);
       const updateCompanyBankData = response.data.data;
       dispatch(UpdateCompanyBankSuccess(updateCompanyBankData));
       return updateCompanyBankData;
@@ -2317,7 +2194,7 @@ export const CompanyBankview = (id) => {
     dispatch(ViewCompanyBankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_company_bankDetails/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/companybank/view_company_bankDetails/${id}`, config);
       const data = response.data.data;
       dispatch(ViewCompanyBankSuccess(data));
       return data;
@@ -2332,7 +2209,7 @@ export const deleteCompanyBank = (id) => {
     dispatch(DeleteCompanyBankRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_company_bankDetails/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/companybank/delete_company_bankDetails/${id}`, config);
       const deleteCompanybank = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2355,7 +2232,7 @@ export const fetchAllCompanyBank = () => {
     dispatch(fetchAllCompanyBankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_company_bankDetails`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/companybank/view_all_company_bankDetails`, config);
       const data = response.data.data;
       dispatch(fetchAllCompanyBankSuccess(data));
       return data;
@@ -2370,7 +2247,7 @@ export const CompanyBankLedger = (id, formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/view_single_bankLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/companybank/view_single_bankLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
       const data = response.data.data;
@@ -2388,7 +2265,7 @@ export const createRecievecash = (data, navigate) => {
     dispatch(createRecieveCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/C_create_receiveCash`, data, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/receive/C_create_receiveCash`, data, config);
       const Recievedata = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2413,7 +2290,7 @@ export const getallRecieveCash = () => {
     dispatch(getAllRecieveCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_get_all_receiveCash`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/receive/C_get_all_receiveCash`, config);
       const getallRecievecash = response.data.data;
       dispatch(getAllRecieveCashSuccess(getallRecievecash));
       return getallRecievecash;
@@ -2427,7 +2304,7 @@ export const viewRecieveCash = (id) => {
     dispatch(viewRecieveCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/C_view_receiveCash/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/receive/C_view_receiveCash/${id}`, config);
       const data = response.data.data;
       dispatch(viewRecieveCashSuccess(data));
       return data;
@@ -2441,7 +2318,7 @@ export const updateRecieveCash = (id, formData, navigate) => {
     dispatch(updateRecieveCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/C_update_receiveCash/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/receive/C_update_receiveCash/${id}`, formData, config);
       const updatRecievecashdata = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2466,7 +2343,7 @@ export const deleteRecieveCash = (id) => {
     dispatch(deleteRecieveCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/C_delete_receiveCash/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/receive/C_delete_receiveCash/${id}`, config);
       const deleteRecievecash = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2492,7 +2369,7 @@ export const getallVendorledger = (id, formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/C_get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/vendorledger/C_get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
       const getallvendorledgerlist = response.data;
@@ -2511,7 +2388,7 @@ export const getallCustomerledger = (id, formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/C_get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/customerledger/C_get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
       const getallcustomerledgerlist = response.data;
@@ -2529,7 +2406,7 @@ export const getallclaimuser = () => {
     dispatch(getAllclaimuserRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_ClaimUser`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/get_all_ClaimUser`, config);
       const getallclaimuserlist = response.data.data;
       dispatch(getAllclaimuserSuccess(getallclaimuserlist));
       return getallclaimuserlist;
@@ -2543,7 +2420,7 @@ export const createClaimcash = (formData, navigate) => {
     dispatch(createClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_claim`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/claim/create_claim`, formData, config);
       const Cliamdata = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2568,7 +2445,7 @@ export const viewClaimCash = () => {
     dispatch(viewClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_myclaim`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_myclaim`, config);
       const data = response.data.data;
       dispatch(viewClaimCashSuccess(data));
       return data;
@@ -2582,7 +2459,7 @@ export const viewSingleclaimCash = (id) => {
     dispatch(viewsingleClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_single_claim/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_single_claim/${id}`, config);
       const data = response.data.data;
       dispatch(viewsingleClaimCashSuccess(data));
       return data;
@@ -2596,7 +2473,7 @@ export const updateClaimCash = (id, formData, navigate) => {
     dispatch(updateClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_claim/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/claim/update_claim/${id}`, formData, config);
       const updatClaimcashdata = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2621,7 +2498,7 @@ export const deleteClaimCash = (id) => {
     dispatch(deleteClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_claim/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/claim/delete_claim/${id}`, config);
       const deleteClaimcash = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2644,7 +2521,7 @@ export const viewRecieveClaimCash = () => {
     dispatch(viewRecieveClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_reciveclaim`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_reciveclaim`, config);
       const data = response.data.data;
       dispatch(viewRecieveClaimCashSuccess(data));
       return data;
@@ -2658,7 +2535,7 @@ export const IsStatusclaimCash = (id, toUserId, isApproved) => {
     dispatch(viewsingleClaimCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/isapproved_claim/${id}`, { toUserId, isApproved }, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/claim/isapproved_claim/${id}`, { toUserId, isApproved }, config);
       const data = response.data.data;
       dispatch(viewsingleClaimCashSuccess(data));
       window.location.reload();
@@ -2675,7 +2552,7 @@ export const fetchAllClaimcashLedger = (formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/view_claimBalance_ledger?fromDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/claim/view_claimBalance_ledger?fromDate=${formDate}&toDate=${toDate}`,
         config
       );
       const data = response.data.data;
@@ -2693,7 +2570,7 @@ export const createPaymentBank = (formData, navigate) => {
     dispatch(createPaymentbankRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_payment_bank`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/payment/create_payment_bank`, formData, config);
       const Paymentbank = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2718,7 +2595,7 @@ export const viewSinglePaymentBank = (id) => {
     dispatch(ViewsinglepaymentbankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_payment_bank/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/payment/view_payment_bank/${id}`, config);
       const data = response.data.data;
       dispatch(ViewsinglepaymentbankSuccess(data));
       return data;
@@ -2732,7 +2609,7 @@ export const updatePaymentbank = (id, formData, navigate) => {
     dispatch(updatepaymentbankRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_payment_bank/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/update_payment_bank/${id}`, formData, config);
       const updatpaymentbankdata = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2757,7 +2634,7 @@ export const deletePaymentbank = (id) => {
     dispatch(deletepaymentbankRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_payment_bank/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/payment/delete_payment_bank/${id}`, config);
       const deletepaymentbank = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2780,7 +2657,7 @@ export const getAllPaymentbank = () => {
     dispatch(fetchallpaymentbankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_payment_bank`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/payment/view_all_payment_bank`, config);
       const data = response.data.data;
       dispatch(fetchallpaymentbankSuccess(data));
       return data;
@@ -2795,7 +2672,7 @@ export const getAllPaymentbankLedger = (id, formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/vendorledger/get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
       const data = response.data.data;
@@ -2813,7 +2690,7 @@ export const createPaymentRecieveBank = (formData, navigate) => {
     dispatch(createPaymentRecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_receive_bank`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/recive/create_receive_bank`, formData, config);
       const Paymentrecievebank = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2838,7 +2715,7 @@ export const viewSinglePaymentRecieveBank = (id) => {
     dispatch(ViewsinglepaymentrecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_receive_bank/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/recive/view_receive_bank/${id}`, config);
       const data = response.data.data;
       dispatch(ViewsinglepaymentrecievebankSuccess(data));
       return data;
@@ -2852,7 +2729,7 @@ export const updatePaymentRecievebank = (id, formData, navigate) => {
     dispatch(updatepaymentrecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_receive_bank/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/receive/update_receive_bank/${id}`, formData, config);
       const updatpaymentbankdata = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2877,7 +2754,7 @@ export const deletePaymentRecievebank = (id) => {
     dispatch(deletepaymentrecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_receive_bank/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/receive/delete_receive_bank/${id}`, config);
       const deletepaymentbank = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2900,7 +2777,7 @@ export const getAllPaymentRecievebank = () => {
     dispatch(fetchallpaymentrecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_receive_bank`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/receive/get_all_receive_bank`, config);
       const data = response.data.data;
       dispatch(fetchallpaymentrecievebankSuccess(data));
       return data;
@@ -2915,7 +2792,7 @@ export const getAllPaymentRecievebankLedger = (id, formDate, toDate) => {
     try {
       const config = createConfig();
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/customerledger/get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
       const data = response.data.data;

@@ -195,29 +195,6 @@ export const VIEW_CREDIT_NOTE_REQUEST = 'VIEW_CREDIT_NOTE_REQUEST';
 export const VIEW_CREDIT_NOTE_SUCCESS = 'VIEW_CREDIT_NOTE_SUCCESS';
 export const VIEW_CREDIT_NOTE_FAILURE = 'VIEW_CREDIT_NOTE_FAILURE';
 
-// ########################################## PURCHASE ###############################################################################################
-export const VIEW_PURCHASE_REQUEST = 'VIEW_PURCHASE_REQUEST';
-export const VIEW_PURCHASE_SUCCESS = 'VIEW_PURCHASE_SUCCESS';
-export const VIEW_PURCHASE_FAILURE = 'VIEW_PURCHASE_FAILURE';
-export const CREATE_PURCHASE_REQUEST = 'CREATE_PURCHASE_REQUEST';
-export const CREATE_PURCHASE_SUCCESS = 'CREATE_PURCHASE_SUCCESS';
-export const CREATE_PURCHASE_FAILURE = 'CREATE_PURCHASE_FAILURE';
-export const CREATE_PURCHASE_ITEM_REQUEST = 'CREATE_PURCHASE_ITEM_REQUEST';
-export const CREATE_PURCHASE_ITEM_SUCCESS = 'CREATE_PURCHASE_ITEM_SUCCESS';
-export const CREATE_PURCHASE_ITEM_FAILURE = 'CREATE_PURCHASE_ITEM_FAILURE';
-export const UPDATE_PURCHASE_REQUEST = 'UPDATE_PURCHASE_REQUEST';
-export const UPDATE_PURCHASE_SUCCESS = 'UPDATE_PURCHASE_SUCCESS';
-export const UPDATE_PURCHASE_FAILURE = 'UPDATE_PURCHASE_FAILURE';
-export const UPDATE_PURCHASE_ITEM_REQUEST = 'UPDATE_PURCHASE_ITEM_REQUEST';
-export const UPDATE_PURCHASE_ITEM_SUCCESS = 'UPDATE_PURCHASE_ITEM_SUCCESS';
-export const UPDATE_PURCHASE_ITEM_FAILURE = 'UPDATE_PURCHASE_ITEM_FAILURE';
-export const DELETE_PURCHASE_ITEM_REQUEST = 'DELETE_PURCHASE_ITEM_REQUEST';
-export const DELETE_PURCHASE_ITEM_SUCCESS = 'DELETE_PURCHASE_ITEM_SUCCESS';
-export const DELETE_PURCHASE_ITEM_FAILURE = 'DELETE_PURCHASE_ITEM_FAILURE';
-export const FETCH_ALL_PURCHASE_REQUEST = 'FETCH_ALL_PURCHASE_REQUEST';
-export const FETCH_ALL_PURCHASE_SUCCESS = 'FETCH_ALL_PURCHASE_SUCCESS';
-export const FETCH_ALL_PURCHASE_FAILURE = 'FETCH_ALL_PURCHASE_FAILURE';
-
 // ########################################## EXPENSE ###############################################################################################
 export const CREATE_EXPENCE_REQUEST = 'CREATE_EXPENCE_REQUEST';
 export const CREATE_EXPENSE_SUCCESS = 'CREATE_EXPENSE_SUCCESS';
@@ -891,91 +868,6 @@ export const viewSalesinvoicecashSuccess = (data) => ({
 });
 export const viewSalesinvoicecashFailure = (error) => ({
   type: 'VIEW_SALES_INVOICE_CASH_FAILURE',
-  payload: error
-});
-
-// ############################################################################# PURCHASE ############################################################################
-export const createPurchaseRequest = (data) => ({
-  type: 'CREATE_PURCHASE_REQUEST',
-  payload: data
-});
-export const createPrchaseSuccess = (data) => ({
-  type: 'CREATE_PURCHASE_SUCCESS',
-  payload: data
-});
-export const createPurchaseFailure = (error) => ({
-  type: 'CREATE_PURCHASE_FAILURE',
-  payload: error
-});
-export const createPurchaseItemRequest = (data) => ({
-  type: 'CREATE_PURCHASE_ITEM_REQUEST',
-  payload: data
-});
-export const createPrchaseItemSuccess = (data) => ({
-  type: 'CREATE_PURCHASE_ITEM_SUCCESS',
-  payload: data
-});
-export const createPurchaseItemFailure = (error) => ({
-  type: 'CREATE_PURCHASE_ITEM_FAILURE',
-  payload: error
-});
-export const fetchAllPurchaseRequest = () => ({
-  type: 'FETCH_ALL_PURCHASE_REQUEST'
-});
-export const fetchAllPurchaseSuccess = (data) => ({
-  type: 'FETCH_ALL_PURCHASE_SUCCESS',
-  payload: data
-});
-export const fetchAllPurchaseFailure = (error) => ({
-  type: 'FETCH_ALL_PURCHASE_FAILURE',
-  payload: error
-});
-export const viewPurchaseRequest = (data) => ({
-  type: 'VIEW_PURCHASE_REQUEST',
-  payload: data
-});
-export const viewPurchaseSuccess = (data) => ({
-  type: 'VIEW_PURCHASE_SUCCESS',
-  payload: data
-});
-export const viewPurchaseFailure = (error) => ({
-  type: 'VIEW_PURCHASE_FAILURE',
-  payload: error
-});
-export const updatePurchaseRequst = (data) => ({
-  type: 'UPDATE_PURCHASE_REQUEST',
-  payload: data
-});
-export const updatePurchasesuccess = (data) => ({
-  type: 'UPDATE_PURCHASE_SUCCESS',
-  payload: data
-});
-export const updatePurchasefailure = (error) => ({
-  type: 'UPDATE_PURCHASE_FAILURE',
-  payload: error
-});
-export const updatePurchaseItemRequst = (data) => ({
-  type: 'UPDATE_PURCHASE_ITEM_REQUEST',
-  payload: data
-});
-export const updatePurchaseItemsuccess = (data) => ({
-  type: 'UPDATE_PURCHASE_ITEM_SUCCESS',
-  payload: data
-});
-export const updatePurchaseItemfailure = (error) => ({
-  type: 'UPDATE_PURCHASE_ITEM_FAILURE',
-  payload: error
-});
-export const deletePurchaseItemRequest = (data) => ({
-  type: 'DELETE_PURCHASE_ITEM_REQUEST',
-  payload: data
-});
-export const deletePurchaseItemSuccess = (data) => ({
-  type: 'DELETE_PURCHASE_ITEM_SUCCESS',
-  payload: data
-});
-export const deletePurchaseItemFailure = (error) => ({
-  type: 'DELETE_PURCHASE_ITEM_FAILURE',
   payload: error
 });
 

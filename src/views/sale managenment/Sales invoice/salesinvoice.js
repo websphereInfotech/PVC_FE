@@ -344,6 +344,7 @@ const Salesinvoice = () => {
         totalMrp: subtotal,
         mainTotal: Number(subtotal) + Number(plusgst),
         items: rows.map((row) => ({
+          id: row.id || null,
           productId: row.productId,
           rate: row.rate,
           qty: Number(row.qty),

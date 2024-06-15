@@ -48,24 +48,6 @@ const customizationReducer = (state = getInitialState(), action) => {
         ...state,
         navType: action.navType
       };
-    // case actionTypes.FETCH_QUOTATION_REQUEST:
-    //   return {
-    //     ...state,
-    //     loadingQuotations: true,
-    //     errorQuotations: null
-    //   };
-    // case actionTypes.FETCH_QUOTATION_SUCCESS:
-    //   return {
-    //     ...state,
-    //     loadingQuotations: false,
-    //     quotations: action.payload
-    //   };
-    // case actionTypes.FETCH_QUOTATION_FAILURE:
-    //   return {
-    //     ...state,
-    //     loadingQuotations: false,
-    //     errorQuotations: action.payload
-    //   };
     case actionTypes.LOGIN_REQUEST:
       return {
         ...state,
@@ -91,13 +73,6 @@ const customizationReducer = (state = getInitialState(), action) => {
         ...state,
         isAuthenticated: false,
         user: null
-      };
-    case actionTypes.VIEW_PURCHASE_SUCCESS:
-      return {
-        ...state,
-        isAuthenticated: true,
-        purchase: action.payload,
-        error: null
       };
     case actionTypes.FETCH_ALL_PERMISSIONS_SUCCESS:
       return {
