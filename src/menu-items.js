@@ -232,6 +232,8 @@ const MenuItem = () => {
     'view_all_vandor'
   ]);
 
+  const hasAllPermissionsBom = checkAllPermissions('Bom', ['create_bom', 'update_bom', 'delete_bom', 'view_bom', 'view_all_bom']);
+
   return {
     items: [
       {
@@ -429,29 +431,29 @@ const MenuItem = () => {
         icon: icons['ProductionQuantityLimitsIcon'],
         children: [
           {
-            id: 'auth',
+            id: 'Production Management',
             title: 'Production Management',
             type: 'collapse',
             icon: icons['ProductionQuantityLimitsIcon'],
             children: [
-              {
+              hasAllPermissionsBom && {
                 id: 'production',
-                title: 'Production',
+                title: 'Bill Of Material',
                 type: 'item',
-                url: '/productionlist'
-              },
-              {
-                id: 'product',
-                title: 'Product',
-                type: 'item',
-                url: '/products'
-              },
-              {
-                id: 'Report',
-                title: 'Report',
-                type: 'item',
-                url: '/productionreport'
+                url: '/billofmateriallist'
               }
+              // {
+              //   id: 'product',
+              //   title: 'Product',
+              //   type: 'item',
+              //   url: '/products'
+              // },
+              // {
+              //   id: 'Report',
+              //   title: 'Report',
+              //   type: 'item',
+              //   url: '/productionreport'
+              // }
             ]
           }
         ]

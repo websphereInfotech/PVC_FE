@@ -214,9 +214,8 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item>
             <Typography variant="subtitle1">
-              HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>{' '}
+              HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            {console.log('formData.HSNcode>>>>>>>>>>>', formData.HSNcode)}
             <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
         </Grid>
