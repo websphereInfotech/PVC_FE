@@ -15,7 +15,7 @@ const Paymentbank = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateVendor } = useCan();
+  const { canCreateVendor, canViwAllCompanyBank } = useCan();
   const [vendorname, setvendorname] = useState('');
   const [companyname, setcompanyname] = useState('');
   const [vendor, setvendor] = useState([]);
@@ -52,7 +52,7 @@ const Paymentbank = () => {
     }
   };
   const handleSelectAccountChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
+    if (selectedOption && selectedOption.label && !canViwAllCompanyBank()) {
       formData.accountId = selectedOption.value;
       setFormData(formData);
       setcompanyname(selectedOption.label);

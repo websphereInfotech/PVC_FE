@@ -38,7 +38,7 @@ const Billofmateriallist = () => {
   const navigate = useNavigate();
   const [bom, setBom] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -102,7 +102,7 @@ const Billofmateriallist = () => {
       <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddBom} disabled={!canCreateBom()}>
         Create BOM
       </Button>
-      <TableContainer sx={{ maxHeight: 500 }}>
+      <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
             <TableRow>
@@ -183,7 +183,7 @@ const Billofmateriallist = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[8, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={bom.length || 0}
         rowsPerPage={rowsPerPage}

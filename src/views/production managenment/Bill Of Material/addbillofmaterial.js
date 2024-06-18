@@ -253,11 +253,7 @@ const Addbillofmaterial = () => {
             <Typography variant="subtitle1">
               QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input
-              placeholder="Description"
-              value={formData.qty}
-              onChange={(e) => setFormData({ ...formData, qty: Number(e.target.value) })}
-            />
+            <input placeholder="Description" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
           </Grid>
         </Grid>
 

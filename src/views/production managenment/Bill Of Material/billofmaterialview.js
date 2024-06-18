@@ -15,7 +15,6 @@ const Bomview = () => {
   useEffect(() => {
     dispatch(viewSingleBom(bomId))
       .then((data) => {
-        console.log(data, 'dataBOM>>>>>>>>>>>>>>>>>');
         setData(data);
       })
       .catch((error) => {

@@ -14,6 +14,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     onClose: PropTypes.func.isRequired,
     id: PropTypes.string
   };
+
   const dispatch = useDispatch();
   const [itemtype, setItemType] = React.useState('Product');
   const [openingstock, setOpeningStock] = React.useState(true);
@@ -28,40 +29,52 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     itemgroup: '',
     itemcategory: '',
     unit: '',
-    salesprice: Number(),
-    purchaseprice: Number(),
+    salesprice: 0,
+    purchaseprice: 0,
     HSNcode: 0,
-    gstrate: ''
+    gstrate: '',
+    lowStockQty: null
   });
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData({
-      ...formData,
-      [id]: id === 'HSNcode' ? Number(value) : value
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: id === 'HSNcode' || id === 'salesprice' || id === 'purchaseprice' ? Number(value) : value
+    }));
   };
+
   const handleItem = (e) => {
     setItemType(e.target.value);
   };
+
   const handleOpeningStock = (e) => {
-    setOpeningStock(e.target.value === 'true' ? true : false);
+    setOpeningStock(e.target.value === 'true');
   };
+
   const handleNegativeQty = (e) => {
-    setNagativeQty(e.target.value === 'true' ? true : false);
+    setNagativeQty(e.target.value === 'true');
   };
+
   const handleLowStock = (e) => {
-    setLowStock(e.target.value === 'true' ? true : false);
+    const isLowStock = e.target.value === 'true';
+    setLowStock(isLowStock);
+    setFormData((prevData) => ({
+      ...prevData,
+      lowStockQty: isLowStock ? prevData.lowStockQty : null
+    }));
   };
+
   const handleCess = (e) => {
-    setCess(e.target.value === 'true' ? true : false);
+    setCess(e.target.value === 'true');
   };
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         if (id) {
           const response = await dispatch(viewProduct(id));
           const productData = response;
-          // console.log('Product Data:', productData);
           setFormData({ ...productData });
           setOpeningStock(productData.openingstock);
           setNagativeQty(productData.nagativeqty);
@@ -77,20 +90,12 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
       fetchData();
     }
   }, [id, dispatch]);
+
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);
     setFormData({ ...formData, gstrate: selectedOption.value });
-    // if (props === true) {
-    //   // formData.SGST=selectedOption.value
-    //   console.log(selectedOption.value, 'valueSGST');
-    //   setFormData({ ...formData, SGST: selectedOption.value, IGST: '0' });
-    // } else if (props === false) {
-    //   // formData.IGST = selectedOption.value
-    //   console.log(selectedOption.value, 'valueIGST');
-    //   setFormData({ ...formData, IGST: selectedOption.value, SGST: '0' });
-    // }
-    // console.log(formData, 'selectedGST');
   };
+
   const handleSave = async () => {
     try {
       const data = {
@@ -106,14 +111,15 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
       } else {
         await dispatch(createProduct(data));
       }
-      // onClose();
     } catch (error) {
       console.error('Error creating Product', error);
     }
   };
+
   const handleUnitChange = (selectedOption) => {
     setFormData({ ...formData, unit: selectedOption.value });
   };
+
   const unitOptions = [
     { value: 'kg', label: 'Kilogram (kg)' },
     { value: 'g', label: 'Gram (g)' },
@@ -122,7 +128,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     { value: 'm', label: 'Meter (m)' },
     { value: 'mm', label: 'millimeter (mm)' },
     { value: 'cm', label: 'centimeter (cm)' },
-    { value: 'in', label: ' inch (in)' }
+    { value: 'in', label: 'inch (in)' }
   ];
 
   const GST = [
@@ -131,6 +137,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     { value: '18', label: 'GST 18%' },
     { value: '28', label: 'GST 28%' }
   ];
+
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Paper
@@ -156,7 +163,6 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">
               Item Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            {/* <RadioGroup row defaultValue="Product" value={formData.itemtype} onChange={handleItem}> */}
             <RadioGroup row defaultValue="Product" value={itemtype} onChange={handleItem}>
               <FormControlLabel value="Product" control={<Radio />} label="Product" />
               <FormControlLabel value="Service" control={<Radio />} label="Service" />
@@ -170,8 +176,6 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             </Typography>
             <input placeholder="Enter Product" id="productname" value={formData.productname} onChange={handleInputChange} />
           </Grid>
-          {/* </Grid>
-        <Grid container spacing={2} sx={{ margin: '1px' }}> */}
           <Grid item>
             <Typography variant="subtitle1">Product Description</Typography>
             <input placeholder="Enter Product" id="description" value={formData.description} onChange={handleInputChange} />
@@ -198,12 +202,10 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
               onChange={handleUnitChange}
             />
           </Grid>
-
           <Grid item>
             <Typography variant="subtitle1">
               GST Rate(%):<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            {/* <Select options={GST} value={{ label: selectedGST }} onChange={handleGSTChange} /> */}
             <Select
               options={GST}
               value={formData.gstrate ? { label: `GST ${formData.gstrate}%`, value: formData.gstrate } : { label: selectedGST }}
@@ -216,13 +218,13 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">
               HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="235645" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
+            <input placeholder="Enter HSN Code" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
-          <Grid item sx={{ margin: '0px 0px' }}>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">
-              Do you want to add batch wise<br></br>
+              Would you like to add batch wise<br></br>
               opening stock?
             </Typography>
             <RadioGroup row defaultValue="No" value={openingstock} onChange={handleOpeningStock}>
@@ -249,6 +251,22 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <FormControlLabel value="true" control={<Radio />} label="Yes" />
             <FormControlLabel value="false" control={<Radio />} label="No" />
           </RadioGroup>
+          {lowstock === true ? (
+            <Grid container sx={{ margin: '0px' }}>
+              {console.log(formData, 'formdataaaaaaaaaaaaaaaaaa>>>>>>>>>>>>>>>>>>>')}
+              <Grid item sm={6}>
+                <Typography variant="subtitle1">Low Stock Quantity:</Typography>
+                <input
+                  placeholder="Enter Low Stock Quantity"
+                  id="lowStockQty"
+                  value={formData.lowStockQty || ''}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            </Grid>
+          ) : (
+            ''
+          )}
         </Grid>
 
         <Grid container spacing={2} sx={{ margin: '0px' }}>
@@ -267,7 +285,6 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }} sm={6}>
             <Typography variant="subtitle1">Cess Enable</Typography>
-            {/* <RadioGroup row defaultValue="No" value={formData.cess} onChange={handleCess}> */}
             <RadioGroup row defaultValue="No" value={cess} onChange={handleCess}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />

@@ -2705,7 +2705,7 @@ export const createPaymentRecieveBank = (formData, navigate) => {
     dispatch(createPaymentRecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/recive/create_receive_bank`, formData, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/receive/create_receive_bank`, formData, config);
       const Paymentrecievebank = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2730,7 +2730,7 @@ export const viewSinglePaymentRecieveBank = (id) => {
     dispatch(ViewsinglepaymentrecievebankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/recive/view_receive_bank/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/receive/view_receive_bank/${id}`, config);
       const data = response.data.data;
       dispatch(ViewsinglepaymentrecievebankSuccess(data));
       return data;
