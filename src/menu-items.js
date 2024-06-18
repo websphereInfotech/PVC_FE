@@ -531,6 +531,11 @@ const MenuItem = () => {
                 title: 'Total Stoke',
                 type: 'item',
                 url: '/stockmain'
+              }, {
+                id: 'Stoke',
+                title: 'Low Stoke',
+                type: 'item',
+                url: '/lowstock'
               }
               // {
               //   id: 'Report',

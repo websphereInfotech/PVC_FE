@@ -128,6 +128,7 @@ const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee 
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
+const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
@@ -428,9 +429,10 @@ const MainRoutes = {
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },
     { path: '/stokegeneral', element: <Stokegeneral /> },
+    { path: '/lowstock', element: <LowStock /> },
     { path: '/reports', element: <Reports /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++Routes of reports +++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesummary', element: <Salesummary /> },
     { path: '/saleregister', element: <Saleregister /> },
     { path: '/purchasesummary', element: <Purchasesummary /> },
