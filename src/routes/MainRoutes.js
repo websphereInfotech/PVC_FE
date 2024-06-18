@@ -95,8 +95,9 @@ const CompanyviewPage = Loadable(lazy(() => import('../views/company managenment
 const Singlebankledgerlist = Loadable(lazy(() => import('../views/company managenment/singlebankledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
-const ProductionListPage = Loadable(lazy(() => import('../views/production managenment/productionlist')));
-const AddProductionPage = Loadable(lazy(() => import('../views/production managenment/addproduction')));
+const Billofmateriallist = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmateriallist')));
+const Addbillofmaterial = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/addbillofmaterial')));
+const Bomview = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmaterialview')));
 const Product = Loadable(lazy(() => import('../views/production managenment/product')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -398,8 +399,16 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    { path: '/productionlist', element: <ProductionListPage /> },
-    { path: '/addproduction', element: <AddProductionPage /> },
+    { path: '/billofmateriallist', element: <ProtectedRoute element={Billofmateriallist} resource="Bom" permissionName="view_all_bom" /> },
+    { path: '/addbillofmaterial', element: <ProtectedRoute element={Addbillofmaterial} resource="Bom" permissionName="create_bom" /> },
+    {
+      path: '/addbillofmaterial/:bomId',
+      element: <ProtectedRoute element={Addbillofmaterial} resource="Bom" permissionName="update_bom" />
+    },
+    {
+      path: '/billofmaterialview/:bomId',
+      element: <ProtectedRoute element={Bomview} resource="Bom" permissionName="view_bom" />
+    },
     { path: '/products', element: <Product /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -408,10 +417,10 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
     { path: '/permission', element: <Permission /> },
-    { path: '/adduser', element: <User /> },
-    { path: '/updateuser/:id', element: <User /> },
-    { path: '/userlist', element: <UserList /> },
-    { path: '/userview/:id', element: <Userviewpage /> },
+    { path: '/adduser', element: <ProtectedRoute element={User} resource="Login" permissionName="create_user" /> },
+    { path: '/updateuser/:id', element: <ProtectedRoute element={User} resource="Login" permissionName="update_user" /> },
+    { path: '/userlist', element: <ProtectedRoute element={UserList} resource="Login" permissionName="view_all_user" /> },
+    { path: '/userview/:id', element: <ProtectedRoute element={Userviewpage} resource="Login" permissionName="view_user" /> },
 
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },

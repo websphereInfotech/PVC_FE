@@ -44,6 +44,15 @@ import {
   createCustomerRequest,
   createCustomerSuccess,
   createCustomerFailure,
+  deleteCustomerRequest,
+  deleteCustomerSuccess,
+  deleteCustomerFailure,
+  viewCustomerRequest,
+  viewCustomerSuccess,
+  viewCustomerFailure,
+  updateCustomerRequest,
+  updateCustomerSuccess,
+  updateCustomerFailure,
   // PRODUCT ++++++++++++++++++++++++++++++++++
   fetchAllProdutscashRequest,
   fetchAllProdutscashSuccess,
@@ -230,6 +239,15 @@ import {
   fetchAllVendorsRequest,
   fetchAllVendorsSuccess,
   fetchAllVendorsFailure,
+  deleteVendorRequest,
+  deleteVendorSuccess,
+  deleteVendorFailure,
+  viewVendorRequest,
+  viewVendorSuccess,
+  viewVendorFailure,
+  updateVendorRequest,
+  updateVendorSuccess,
+  updateVendorFailure,
   //  COMPANY ++++++++++++++++++++++++
   CreateCompanyRequest,
   CreateCompanySuccess,
@@ -375,7 +393,7 @@ import {
   PaymentBankLedgerRequest,
   PaymentBankLedgerSuccess,
   PaymentBankLedgerFailure,
-  //  PAYMENT RECIEVE BANK
+  //  PAYMENT RECIEVE BANK +++++++++++++++
   createPaymentRecievebankRequest,
   createPaymentRecievebankSuccess,
   createPaymentRecievebankFailure,
@@ -394,24 +412,21 @@ import {
   PaymentrecieveBankLedgerRequest,
   PaymentrecieveBankLedgerSuccess,
   PaymentrecieveBankLedgerFailure,
-  deleteCustomerRequest,
-  deleteCustomerSuccess,
-  deleteCustomerFailure,
-  viewCustomerRequest,
-  viewCustomerSuccess,
-  viewCustomerFailure,
-  updateCustomerRequest,
-  updateCustomerSuccess,
-  updateCustomerFailure,
-  deleteVendorRequest,
-  deleteVendorSuccess,
-  deleteVendorFailure,
-  viewVendorRequest,
-  viewVendorSuccess,
-  viewVendorFailure,
-  updateVendorRequest,
-  updateVendorSuccess,
-  updateVendorFailure
+  // BILL OF MATERIAL ++++++++++++++
+  getAllBomRequest,
+  getAllBomSuccess,
+  getAllBomFailure,
+  createBomRequest,
+  createBomSuccess,
+  createBomFailure,
+  viewBomRequest,
+  viewBomSuccess,
+  viewBomFailure,
+  updateBomRequest,
+  updateBomSuccess,
+  deleteBomRequest,
+  deleteBomSuccess,
+  deleteBomFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -2800,6 +2815,109 @@ export const getAllPaymentRecievebankLedger = (id, formDate, toDate) => {
       return data;
     } catch (error) {
       dispatch(PaymentrecieveBankLedgerFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createBom = (formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(createBomRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/bom/create_bom`, formData, config);
+      const Bom = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/billofmateriallist');
+        }
+      });
+      dispatch(createBomSuccess(Bom));
+      return Bom;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(createBomFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const viewSingleBom = (id) => {
+  return async (dispatch) => {
+    dispatch(viewBomRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/bom/view_bom/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewBomSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewBomFailure(error.message));
+    }
+  };
+};
+export const updateBom = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateBomRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/bom/update_bom/${id}`, formData, config);
+      const updateBom = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/billofmateriallist');
+        }
+      });
+      dispatch(updateBomSuccess(updateBom));
+      return updateBom;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(updateBomFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteBom = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteBomRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/bom/delete_bom/${id}`, config);
+      const deleteBom = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteBomSuccess(deleteBom));
+      window.location.reload();
+      return deleteBom;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(deleteBomFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getAllBom = () => {
+  return async (dispatch) => {
+    dispatch(getAllBomRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/bom/view_all_bom`, config);
+      const data = response.data.data;
+      dispatch(getAllBomSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllBomFailure(error.message));
     }
   };
 };

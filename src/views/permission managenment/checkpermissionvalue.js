@@ -263,34 +263,6 @@ const useCan = () => {
     return checkPermission('Item Group', 'view_all_itemgroup');
   };
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM CATEGORY
-  const canCreateItemcategory = () => {
-    return checkPermission('Item Category', 'create_itemcategory');
-  };
-  const canUpdateItemcategory = () => {
-    return checkPermission('Item Category', 'update_itemcategory');
-  };
-  const canViewItemcategory = () => {
-    return checkPermission('Item Category', 'view_single_itemcategory');
-  };
-  const canViewAllItemcategory = () => {
-    return checkPermission('Item Category', 'view_all_itemcategory');
-  };
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ UNIT
-  const canCreateUnit = () => {
-    return checkPermission('Unit', 'create_unit');
-  };
-  const canUpdateUnit = () => {
-    return checkPermission('Unit', 'update_unit');
-  };
-  const canViewUnit = () => {
-    return checkPermission('Unit', 'view_single_unit');
-  };
-  const canViewAllUnit = () => {
-    return checkPermission('Unit', 'view_all_unit');
-  };
-
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL
   const canCreatePurchaseinvoice = () => {
     return checkPermission('Purchase Invoice', 'create_purchase_Invoice');
@@ -581,6 +553,24 @@ const useCan = () => {
     return checkPermission('Claim Cash', 'view_claimBalance_ledger');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ BILL OF MATERIAL
+
+  const canCreateBom = () => {
+    return checkPermission('Bom', 'create_bom');
+  };
+  const canUpdateBom = () => {
+    return checkPermission('Bom', 'update_bom');
+  };
+  const canDeleteBom = () => {
+    return checkPermission('Bom', 'delete_bom');
+  };
+  const canViewBom = () => {
+    return checkPermission('Bom', 'view_bom');
+  };
+  const canViwAllBom = () => {
+    return checkPermission('Bom', 'view_all_bom');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -662,16 +652,6 @@ const useCan = () => {
     canUpdateItemgroup,
     canViewItemgroup,
     canViewAllItemgroup,
-    // ITEM CATEGORY ++++++++++++++++++
-    canCreateItemcategory,
-    canUpdateItemcategory,
-    canViewItemcategory,
-    canViewAllItemcategory,
-    // UNIT +++++++++++++++++++++++++++
-    canCreateUnit,
-    canUpdateUnit,
-    canViewUnit,
-    canViewAllUnit,
     // PURCHSE BILL +++++++++++++++++++
     canCreatePurchaseinvoice,
     canUpdatePurchaseinvoice,
@@ -770,7 +750,13 @@ const useCan = () => {
     canDeleteCompanyBank,
     canViewCompanyBank,
     canViwAllCompanyBank,
-    canViewCompanyBankLedger
+    canViewCompanyBankLedger,
+    // BILL OF MATERIAL +++++++++
+    canCreateBom,
+    canUpdateBom,
+    canDeleteBom,
+    canViewBom,
+    canViwAllBom
   };
 };
 

@@ -441,6 +441,23 @@ export const SET_DEFAULT_COMPANY_REQUEST = 'SET_DEFAULT_COMPANY_REQUEST';
 export const SET_DEFAULT_COMPANY_SUCCESS = 'SET_DEFAULT_COMPANY_SUCCESS';
 export const SET_DEFAULT_COMPANY_FAILURE = 'SET_DEFAULT_COMPANY_FAILURE';
 
+// #################################################################### BILL OF MATERIAL ###################################################################
+export const CREATE_BOM_REQUEST = 'CREATE_BOM_REQUEST';
+export const CREATE_BOM_SUCCESS = 'CREATE_BOM_SUCCESS';
+export const CREATE_BOM_FAILURE = 'CREATE_BOM_FAILURE';
+export const UPDATE_BOM_REQUEST = 'UPDATE_BOM_REQUEST';
+export const UPDATE_BOM_SUCCESS = 'UPDATE_BOM_SUCCESS';
+export const UPDATE_BOM_FAILURE = 'UPDATE_BOM_FAILURE';
+export const VIEW_BOM_REQUEST = 'VIEW_BOM_REQUEST';
+export const VIEW_BOM_SUCCESS = 'VIEW_BOM_SUCCESS';
+export const VIEW_BOM_FAILURE = 'VIEW_BOM_FAILURE';
+export const DELETE_BOM_REQUEST = 'DELETE_BOM_REQUEST';
+export const DELETE_BOM_SUCCESS = 'DELETE_BOM_SUCCESS';
+export const DELETE_BOM_FAILURE = 'DELETE_BOM_FAILURE';
+export const FETCH_ALL_BOM_REQUEST = 'FETCH_ALL_BOM_REQUEST';
+export const FETCH_ALL_BOM_SUCCESS = 'FETCH_ALL_BOM_SUCCESS';
+export const FETCH_ALL_BOM_FAILURE = 'FETCH_ALL_BOM_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -1984,5 +2001,67 @@ export const PaymentrecieveBankLedgerSuccess = (data) => ({
 });
 export const PaymentrecieveBankLedgerFailure = (error) => ({
   type: 'PAYMENT_RECIEVE_BANK_LEDGER_FAILURE',
+  payload: error
+});
+
+//  ####################################################################### BILL OF MATERIAL #####################################################
+export const getAllBomRequest = (data) => ({
+  type: 'FETCH_ALL_BOM_REQUEST',
+  payload: data
+});
+export const getAllBomSuccess = (data) => ({
+  type: 'FETCH_ALL_BOM_SUCCESS',
+  payload: data
+});
+export const getAllBomFailure = (error) => ({
+  type: 'FETCH_ALL_BOM_FAILURE',
+  payload: error
+});
+export const createBomRequest = (data) => ({
+  type: 'CREATE_BOM_REQUEST',
+  payload: data
+});
+export const createBomSuccess = (data) => ({
+  type: 'CREATE_BOM_SUCCESS',
+  payload: data
+});
+export const createBomFailure = (error) => ({
+  type: 'CREATE_BOM_FAILURE',
+  payload: error
+});
+export const viewBomRequest = (data) => ({
+  type: 'VIEW_BOM_REQUEST',
+  payload: data
+});
+export const viewBomSuccess = (data) => ({
+  type: 'VIEW_BOM_SUCCESS',
+  payload: data
+});
+export const viewBomFailure = (error) => ({
+  type: 'VIEW_BOM_FAILURE',
+  payload: error
+});
+export const updateBomRequest = (data) => ({
+  type: 'UPDATE_BOM_REQUEST',
+  payload: data
+});
+export const updateBomSuccess = (data) => ({
+  type: 'UPDATE_BOM_SUCCESS',
+  payload: data
+});
+export const updateBomFailure = (error) => ({
+  type: 'UPDATE_BOM_FAILURE',
+  payload: error
+});
+export const deleteBomRequest = (data) => ({
+  type: 'DELETE_BOM_REQUEST',
+  payload: data
+});
+export const deleteBomSuccess = (data) => ({
+  type: 'DELETE_BOM_SUCCESS',
+  payload: data
+});
+export const deleteBomFailure = (error) => ({
+  type: 'DELETE_BOM_FAILURE',
   payload: error
 });
