@@ -3119,6 +3119,7 @@ export const getAllStoke = () => {
       return data;
     } catch (error) {
       dispatch(getAllStokeFailure(error.message));
+      throw error;
     }
   };
 };

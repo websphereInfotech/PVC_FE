@@ -86,11 +86,14 @@ const LowStock = () => {
         const data = await dispatch(getAllStoke());
         setStoke(data);
       } catch (error) {
-        console.error('Error fetching stoke', error);
+        if(error.response.status === 401) {
+          navigate('/')
+        }
+        console.error('fetching data of stoke', error);
       }
     };
-    fetchStoke();
-  }, [dispatch]);
+    datastoke();
+  }, [dispatch,navigate]);
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
