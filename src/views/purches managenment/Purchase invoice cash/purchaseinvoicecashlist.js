@@ -49,12 +49,15 @@ const Purchaseinvoicecashlist = () => {
         const data = await dispatch(getallPurchaseInvoiceCash());
         setPurchasebillcash(data.data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching purchase invoice cash:', error);
       }
     };
 
     fetchsalesinvoicecash();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

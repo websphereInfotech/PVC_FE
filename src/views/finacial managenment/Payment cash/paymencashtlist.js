@@ -64,9 +64,12 @@ const PaymentListPage = () => {
         setPayments(data.data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching payment cash data:', error);
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleMakePayment = () => {
     navigate('/paymentcash');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { fetchAllClaimcashLedger } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'updatedAt', label: 'Date', align: 'center', minWidth: 100 },
@@ -16,17 +17,22 @@ const Claimledgerlist = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formData = sessionStorage.getItem('ClaimformDate');
   const toDate = sessionStorage.getItem('ClaimtoDate');
+
   useEffect(() => {
     dispatch(fetchAllClaimcashLedger(formData, toDate))
       .then((data) => {
         setPayments(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching cliam cash ledger data:', error);
       });
-  }, [dispatch, formData, toDate]);
+  }, [dispatch, formData, toDate, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

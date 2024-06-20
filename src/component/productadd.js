@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import Select from 'react-select';
 import { createProduct, updateProduct, viewProduct } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const AnchorProductDrawer = ({ open, onClose, id }) => {
   AnchorProductDrawer.propTypes = {
@@ -16,6 +17,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
   };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [itemtype, setItemType] = React.useState('Product');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
@@ -109,11 +111,14 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
       };
       console.log(data, 'DATA');
       if (id) {
-        await dispatch(updateProduct(id, data));
+        await dispatch(updateProduct(id, data, navigate));
       } else {
-        await dispatch(createProduct(data));
+        await dispatch(createProduct(data, navigate));
       }
     } catch (error) {
+      // if (error.response.status === 401) {
+      //   navigate('/');
+      // }
       console.error('Error creating Product', error);
     }
   };

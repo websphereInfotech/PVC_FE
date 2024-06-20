@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Paper, Table, TableRow, TableCell, TableHead } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { viewVendor } from 'store/thunk';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 const Customerview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
   const [bankDetails, setBankDetails] = useState(null);
@@ -28,9 +29,12 @@ const Customerview = () => {
         }
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching User data:', error);
       });
-  }, [dispatch, id]);
+  }, [dispatch, id,navigate]);
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>

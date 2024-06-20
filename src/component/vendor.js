@@ -8,6 +8,7 @@ import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@m
 import { createVendor, updateVendor, viewVendor } from '../store/thunk';
 import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
+import { useNavigate } from 'react-router';
 
 const AnchorVendorDrawer = ({ open, onClose, id }) => {
   AnchorVendorDrawer.propTypes = {
@@ -17,6 +18,7 @@ const AnchorVendorDrawer = ({ open, onClose, id }) => {
   };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // State for radio buttons
   const [bankdetail, setBankDetail] = React.useState(false);
@@ -107,9 +109,9 @@ const AnchorVendorDrawer = ({ open, onClose, id }) => {
         creditlimit: creditlimit
       };
       if (id) {
-        await dispatch(updateVendor(id, vendorData));
+        await dispatch(updateVendor(id, vendorData, navigate));
       } else {
-        await dispatch(createVendor(vendorData));
+        await dispatch(createVendor(vendorData, navigate));
       }
     } catch (error) {
       console.error('Error creating vendor:', error);

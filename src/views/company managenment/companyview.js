@@ -117,9 +117,12 @@ const CompanyviewPage = () => {
         setData(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching Company data:', error);
       });
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
 
   const handleEdit = (id) => {
     const bank = data.comapnyBank[id];

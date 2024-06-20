@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { SalesInvoiceCashview } from 'store/thunk';
@@ -9,6 +9,7 @@ import { SalesInvoiceCashview } from 'store/thunk';
 const Salescashview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
 
@@ -18,9 +19,12 @@ const Salescashview = () => {
         setData(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching sales cash data:', error);
       });
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">

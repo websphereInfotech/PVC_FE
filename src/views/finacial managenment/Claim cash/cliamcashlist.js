@@ -59,9 +59,12 @@ const Claimcashlist = () => {
         setPayments(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching cliam cash data:', error);
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleMakePayment = () => {
     navigate('/claimcash');

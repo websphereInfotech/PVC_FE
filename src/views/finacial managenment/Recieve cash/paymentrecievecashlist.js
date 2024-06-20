@@ -66,9 +66,12 @@ const PaymentrecieveList = () => {
         setPayments(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching payment recieve cash data:', error);
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleMakePayment = () => {
     navigate('/paymentrecieve');

@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { IsStatusclaimCash, getuserbalance, viewRecieveClaimCash } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { useNavigate } from 'react-router';
 // import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles(() => ({
@@ -49,6 +50,7 @@ const columns = [
 const Recieveclaimcashlist = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { canIsapproveClaimcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
@@ -69,6 +71,9 @@ const Recieveclaimcashlist = () => {
         }, {});
         setStatuses(initialStatuses);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching receive claim cash data:', error);
       }
     };
@@ -78,7 +83,7 @@ const Recieveclaimcashlist = () => {
     };
     fetchData();
     balancedata();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

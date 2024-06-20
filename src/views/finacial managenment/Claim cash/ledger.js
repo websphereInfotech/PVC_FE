@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { getallVendorledger } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
@@ -12,10 +13,11 @@ const columns = [
 ];
 
 const Ledgerlist = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const dispatch = useDispatch();
   const vendorId = sessionStorage.getItem('vendorId');
   const formData = sessionStorage.getItem('formDate');
   const toDate = sessionStorage.getItem('toDate');
@@ -26,9 +28,12 @@ const Ledgerlist = () => {
         setPayments(data.data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching vendor ledger data:', error);
       });
-  }, [dispatch, vendorId, formData, toDate]);
+  }, [dispatch, vendorId, formData, toDate, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

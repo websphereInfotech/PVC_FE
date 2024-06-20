@@ -50,6 +50,9 @@ const CustomerList = () => {
         setCustomer(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching product data:', error);
       });
   }, [dispatch]);

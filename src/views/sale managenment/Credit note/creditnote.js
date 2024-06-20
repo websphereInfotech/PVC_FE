@@ -207,54 +207,61 @@ const Creditnote = () => {
   };
   useEffect(() => {
     const data = async () => {
-      if (id) {
-        const response = await dispatch(Creditnoteviewdata(id));
-        const {
-          CreditCustomer,
-          LL_RR_no,
-          creditdate,
-          creditnoteNo,
-          org_invoiceno,
-          org_invoicedate,
-          motorVehicleNo,
-          dispatchThrough,
-          destination,
-          totalSgst,
-          mainTotal,
-          totalMrp,
-          totalIgst
-        } = response;
-        setFormData({
-          customerId: CreditCustomer.id,
-          LL_RR_no,
-          creditdate,
-          creditnoteNo,
-          org_invoiceno,
-          org_invoicedate,
-          motorVehicleNo,
-          dispatchThrough,
-          destination,
-          totalSgst,
-          mainTotal,
-          totalMrp,
-          totalIgst
-        });
-        setSelectcustomer(CreditCustomer.id);
-        setCustomerState(CreditCustomer.state);
-        setCustomername(CreditCustomer.accountname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.CreditProduct.id,
-          product: item.CreditProduct.productname,
-          qty: item.qty,
-          rate: item.rate,
-          mrp: item.qty * item.rate,
-          gstrate: item.CreditProduct.gstrate,
-          gst: item.mrp * (item.CreditProduct.gstrate / 100)
-        }));
-        setRows(updatedRows);
-        const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-        setPlusgst(totalGST);
+      try {
+        if (id) {
+          const response = await dispatch(Creditnoteviewdata(id));
+          const {
+            CreditCustomer,
+            LL_RR_no,
+            creditdate,
+            creditnoteNo,
+            org_invoiceno,
+            org_invoicedate,
+            motorVehicleNo,
+            dispatchThrough,
+            destination,
+            totalSgst,
+            mainTotal,
+            totalMrp,
+            totalIgst
+          } = response;
+          setFormData({
+            customerId: CreditCustomer.id,
+            LL_RR_no,
+            creditdate,
+            creditnoteNo,
+            org_invoiceno,
+            org_invoicedate,
+            motorVehicleNo,
+            dispatchThrough,
+            destination,
+            totalSgst,
+            mainTotal,
+            totalMrp,
+            totalIgst
+          });
+          setSelectcustomer(CreditCustomer.id);
+          setCustomerState(CreditCustomer.state);
+          setCustomername(CreditCustomer.accountname);
+          const updatedRows = response.items.map((item) => ({
+            id: item.id,
+            productId: item.CreditProduct.id,
+            product: item.CreditProduct.productname,
+            qty: item.qty,
+            rate: item.rate,
+            mrp: item.qty * item.rate,
+            gstrate: item.CreditProduct.gstrate,
+            gst: item.mrp * (item.CreditProduct.gstrate / 100)
+          }));
+          setRows(updatedRows);
+          const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+          setPlusgst(totalGST);
+        }
+      } catch (error) {
+        console.log(error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       }
     };
     const generateAutoDebitnoteNumber = async () => {
@@ -292,7 +299,7 @@ const Creditnote = () => {
     };
     generateAutoDebitnoteNumber();
     data();
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
   //manage value of input of row
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {

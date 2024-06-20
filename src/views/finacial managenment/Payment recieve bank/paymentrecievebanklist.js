@@ -70,9 +70,12 @@ const Paymentrecievebanklist = () => {
         setPayments(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching payment recieve bank data:', error);
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleMakePayment = () => {
     navigate('/paymentrecievebank');

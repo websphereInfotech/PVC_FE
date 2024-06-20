@@ -13,9 +13,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useDispatch } from 'react-redux';
 import { getallPermissions, updatePermission } from 'store/thunk';
+import { useNavigate } from 'react-router';
 // import { Link } from 'react-router-dom';
 
 export default function CollapsibleTable() {
+  const navigate = useNavigate();
   const [openRows, setOpenRows] = React.useState([]);
   const [permissions, setPermissions] = React.useState([]);
   const [selectedUserRole, setSelectedUserRole] = React.useState(null);
@@ -42,11 +44,13 @@ export default function CollapsibleTable() {
         });
         setCheckbox(initialState);
       } catch (error) {
-        console.error('Error fetching Permissions:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   // open dropdown of row [role like super admin]
   const toggleRow = (index, userRole) => {
