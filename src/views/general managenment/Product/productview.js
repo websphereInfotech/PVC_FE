@@ -17,7 +17,6 @@ const Productview = () => {
   useEffect(() => {
     dispatch(viewProduct(id))
       .then((data) => {
-        console.log(data, 'response');
         setData(data);
       })
       .catch((error) => {

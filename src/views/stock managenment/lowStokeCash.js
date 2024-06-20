@@ -17,27 +17,22 @@ import {
   DialogTitle,
   IconButton
 } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
-// import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
-// import { useDispatch } from 'react-redux';
-// import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { getAllStokecash, updateStokeCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-// import { getallSalesInvoice } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
-  //   { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
-  // { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
-  { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
+  { id: 'stock', label: 'Stoke', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const LowStockCash = () => {
+  const { canUpdateStokeCash, canViewStokeCash } = useCan();
   const [stoke, setStoke] = useState();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -97,7 +92,7 @@ const LowStockCash = () => {
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Stock In Cash List
+        Stoke In Cash List
       </Typography>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -119,34 +114,30 @@ const LowStockCash = () => {
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
-                          style={{ backgroundColor: 'blue', color: 'white', borderRadius: 0.8 }}
-                          // style={{
-                          //   backgroundColor: canViewalesinvoice() ? 'Blue' : 'gray',
-                          //   color: canViewalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canViewalesinvoice() && { opacity: 1 }),
-                          //   ...(!canViewalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canViewalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleViewsalesinvoice(row.id)}
-                          // disabled={!canViewalesinvoice()}
+                          style={{
+                            backgroundColor: canViewStokeCash() ? 'Blue' : 'gray',
+                            color: canViewStokeCash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewStokeCash() && { opacity: 1 }),
+                            ...(!canViewStokeCash() && { opacity: 0.5 }),
+                            ...(!canViewStokeCash() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canViewStokeCash()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
-                          style={{ backgroundColor: 'green', color: 'white', borderRadius: 0.8 }}
                           onClick={() => handleOpenDialog(row, row.id)}
-                          // style={{
-                          //   backgroundColor: canUpdateSalesinvoice() ? 'green' : 'gray',
-                          //   color: canUpdateSalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canUpdateSalesinvoice() && { opacity: 1 }),
-                          //   ...(!canUpdateSalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canUpdateSalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleUpdateSalesInvoice(row.id)}
-                          // disabled={!canUpdateSalesinvoice()}
+                          style={{
+                            backgroundColor: canUpdateStokeCash() ? 'green' : 'gray',
+                            color: canUpdateStokeCash() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateStokeCash() && { opacity: 1 }),
+                            ...(!canUpdateStokeCash() && { opacity: 0.5 }),
+                            ...(!canUpdateStokeCash() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canUpdateStokeCash()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>

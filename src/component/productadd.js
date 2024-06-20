@@ -109,16 +109,12 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         lowstock,
         cess
       };
-      console.log(data, 'DATA');
       if (id) {
         await dispatch(updateProduct(id, data, navigate));
       } else {
         await dispatch(createProduct(data, navigate));
       }
     } catch (error) {
-      // if (error.response.status === 401) {
-      //   navigate('/');
-      // }
       console.error('Error creating Product', error);
     }
   };
@@ -266,7 +262,6 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
           </RadioGroup>
           {lowstock === true ? (
             <Grid container sx={{ margin: '0px' }}>
-              {console.log(formData, 'formdataaaaaaaaaaaaaaaaaa>>>>>>>>>>>>>>>>>>>')}
               <Grid item sm={6}>
                 <Typography variant="subtitle1">Low Stock Quantity:</Typography>
                 <input

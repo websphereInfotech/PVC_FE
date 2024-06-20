@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {  viewSingleStoke } from 'store/thunk';
+import { viewSingleStoke } from 'store/thunk';
 
 const LowStockView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -16,7 +16,6 @@ const LowStockView = () => {
   useEffect(() => {
     dispatch(viewSingleStoke(id))
       .then((data) => {
-        console.log("data",data);
         setData(data);
       })
       .catch((error) => {

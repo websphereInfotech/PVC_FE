@@ -19,19 +19,21 @@ import {
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { getAllStoke, updateStoke,viewSingleStoke } from 'store/thunk';
+import { getAllStoke, updateStoke, viewSingleStoke } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
   { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
-  { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
+  { id: 'stock', label: 'Stoke', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const LowStock = () => {
+  const { canUpdateStoke, canViewStoke } = useCan();
   const [stoke, setStoke] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -77,7 +79,7 @@ const LowStock = () => {
   const handleViewLowStock = (id) => {
     dispatch(viewSingleStoke(id));
     navigate(`/lowstockview/${id}`);
-  }
+  };
   useEffect(() => {
     const fetchStoke = async () => {
       try {
@@ -93,7 +95,7 @@ const LowStock = () => {
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Stock List
+        Stoke List
       </Typography>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -113,27 +115,32 @@ const LowStock = () => {
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                        
                         <IconButton
                           sizeSmall
-                          style={{ backgroundColor: 'blue', color: 'white', borderRadius: 0.8 }}
-                          // style={{
-                          //   backgroundColor: canViewalesinvoice() ? 'Blue' : 'gray',
-                          //   color: canViewalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canViewalesinvoice() && { opacity: 1 }),
-                          //   ...(!canViewalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canViewalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleViewLowStock()}
-                          // disabled={!canViewalesinvoice()}
+                          style={{
+                            backgroundColor: canViewStoke() ? 'Blue' : 'gray',
+                            color: canViewStoke() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewStoke() && { opacity: 1 }),
+                            ...(!canViewStoke() && { opacity: 0.5 }),
+                            ...(!canViewStoke() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canViewStoke()}
                           onClick={() => handleViewLowStock(row.id)}
                         >
-                          <RemoveRedEyeIcon style={{ fontSize: '16px' }}  />
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
-                          style={{ backgroundColor: 'green', color: 'white', borderRadius: 0.8 }}
+                          style={{
+                            backgroundColor: canUpdateStoke() ? 'green' : 'gray',
+                            color: canUpdateStoke() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateStoke() && { opacity: 1 }),
+                            ...(!canUpdateStoke() && { opacity: 0.5 }),
+                            ...(!canUpdateStoke() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canUpdateStoke()}
                           onClick={() => handleOpenDialog(row, row.id)}
                         >
                           <Edit style={{ fontSize: '16px' }} />
