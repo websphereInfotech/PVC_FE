@@ -14,6 +14,7 @@ import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
+// import LowStockView from '../views/stock managenment/lowStockView';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -125,6 +126,7 @@ const Vendorview = Loadable(lazy(() => import('../views/general managenment/Vend
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++
 const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
 const LowStockCash = Loadable(lazy(() => import('../views/stock managenment/lowStokeCash')));
+const LowStockView = Loadable(lazy(() => import('../views/stock managenment/lowStockView')));
 
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
@@ -416,6 +418,8 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/lowstock', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
+    // { path: '/lowstockview', element:<LowStockView/> },
+    { path: '/lowstockview/:id', element: <ProtectedRoute element={LowStockView} resource="Stock" permissionName="view_product_stock" /> },
     {
       path: '/lowstockcash',
       element: <ProtectedRoute element={LowStockCash} resource="Stock Cash" permissionName="view_all_product_cash_stock" />

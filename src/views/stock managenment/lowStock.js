@@ -22,8 +22,9 @@ import {
 // import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { getAllStoke } from 'store/thunk';
+import { getAllStoke, viewSingleStoke } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 // import { getallSalesInvoice } from 'store/thunk';
 
 const columns = [
@@ -40,6 +41,7 @@ const LowStock = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log('setStoke', setStoke);
 
   const handleChangePage = (event, newPage) => {
@@ -51,6 +53,10 @@ const LowStock = () => {
     setPage(0);
   };
 
+  const handleViewLowStock = (id) => {
+    dispatch(viewSingleStoke(id));
+    navigate(`/lowstockview/${id}`);
+  }
   useEffect(() => {
     const datastoke = async () => {
       try {
@@ -97,10 +103,11 @@ const LowStock = () => {
                           //   ...(!canViewalesinvoice() && { opacity: 0.5 }),
                           //   ...(!canViewalesinvoice() && { backgroundColor: 'gray' })
                           // }}
-                          // onClick={() => handleViewsalesinvoice(row.id)}
+                          // onClick={() => handleViewLowStock()}
                           // disabled={!canViewalesinvoice()}
+                          onClick={() => handleViewLowStock(row.id)}
                         >
-                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }}  />
                         </IconButton>
                         <IconButton
                           sizeSmall
