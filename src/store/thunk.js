@@ -431,7 +431,22 @@ import {
   // STOKE ++++++++++++++++++++++++++
   getAllStokeRequest,
   getAllStokeSuccess,
-  getAllStokeFailure
+  getAllStokeFailure,
+  viewStokeRequest,
+  viewStokeSuccess,
+  viewStokeFailure,
+  updateStokeRequest,
+  updateStokeSuccess,
+  updateStokeFailure,
+  getAllStokeCashRequest,
+  getAllStokeCashSuccess,
+  getAllStokeCashFailure,
+  viewStokeCashRequest,
+  viewStokeCashSuccess,
+  viewStokeCashFailure,
+  updateStokeCashRequest,
+  updateStokeCashSuccess,
+  updateStokeCashFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -3103,6 +3118,106 @@ export const getAllStoke = () => {
       return data;
     } catch (error) {
       dispatch(getAllStokeFailure(error.message));
+    }
+  };
+};
+export const viewSingleStoke = (id) => {
+  return async (dispatch) => {
+    dispatch(viewStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_product_stock/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewStokeFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateStoke = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/update_product_stock/${id}`, formData, config);
+      const updateStoke = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/lowstock');
+        }
+      });
+      dispatch(updateStokeSuccess(updateStoke));
+      return updateStoke;
+    } catch (error) {
+      dispatch(updateStokeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const getAllStokecash = () => {
+  return async (dispatch) => {
+    dispatch(getAllStokeCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_all_product_stock`, config);
+      const data = response.data.data;
+      dispatch(getAllStokeCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllStokeCashFailure(error.message));
+    }
+  };
+};
+export const viewSingleStokeCash = (id) => {
+  return async (dispatch) => {
+    dispatch(viewStokeCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_product_stock/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewStokeCashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewStokeCashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateStokeCash = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateStokeCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/update_product_stock/${id}`, formData, config);
+      const updateStoke = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/lowstockcash');
+        }
+      });
+      dispatch(updateStokeCashSuccess(updateStoke));
+      return updateStoke;
+    } catch (error) {
+      dispatch(updateStokeCashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };

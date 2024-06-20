@@ -462,6 +462,21 @@ export const FETCH_ALL_BOM_FAILURE = 'FETCH_ALL_BOM_FAILURE';
 export const FETCH_ALL_STOKE_REQUEST = 'FETCH_ALL_STOKE_REQUEST';
 export const FETCH_ALL_STOKE_SUCCESS = 'FETCH_ALL_STOKE_SUCCESS';
 export const FETCH_ALL_STOKE_FAILURE = 'FETCH_ALL_STOKE_FAILURE';
+export const VIEW_STOKE_REQUEST = 'VIEW_STOKE_REQUEST';
+export const VIEW_STOKE_SUCCESS = 'VIEW_STOKE_SUCCESS';
+export const VIEW_STOKE_FAILURE = 'VIEW_STOKE_FAILURE';
+export const UPDATE_STOKE_REQUEST = 'UPDATE_STOKE_REQUEST';
+export const UPDATE_STOKE_SUCCESS = 'UPDATE_STOKE_SUCCESS';
+export const UPDATE_STOKE_FAILURE = 'UPDATE_STOKE_FAILURE';
+export const FETCH_ALL_STOKE_CASH_REQUEST = 'FETCH_ALL_STOKE_CASH_REQUEST';
+export const FETCH_ALL_STOKE_CASH_SUCCESS = 'FETCH_ALL_STOKE_CASH_SUCCESS';
+export const FETCH_ALL_STOKE_CASH_FAILURE = 'FETCH_ALL_STOKE_CASH_FAILURE';
+export const VIEW_STOKE_CASH_REQUEST = 'VIEW_STOKE_CASH_REQUEST';
+export const VIEW_STOKE_CASH_SUCCESS = 'VIEW_STOKE_CASH_SUCCESS';
+export const VIEW_STOKE_CASH_FAILURE = 'VIEW_STOKE_CASH_FAILURE';
+export const UPDATE_STOKE_CASH_REQUEST = 'UPDATE_STOKE_CASH_REQUEST';
+export const UPDATE_STOKE_CASH_SUCCESS = 'UPDATE_STOKE_CASH_SUCCESS';
+export const UPDATE_STOKE_CASH_FAILURE = 'UPDATE_STOKE_CASH_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -2081,5 +2096,65 @@ export const getAllStokeSuccess = (data) => ({
 });
 export const getAllStokeFailure = (error) => ({
   type: 'FETCH_ALL_STOKE_FAILURE',
+  payload: error
+});
+export const viewStokeRequest = (data) => ({
+  type: 'VIEW_STOKE_REQUEST',
+  payload: data
+});
+export const viewStokeSuccess = (data) => ({
+  type: 'VIEW_STOKE_SUCCESS',
+  payload: data
+});
+export const viewStokeFailure = (error) => ({
+  type: 'VIEW_STOKE_FAILURE',
+  payload: error
+});
+export const updateStokeRequest = (data) => ({
+  type: 'UPDATE_STOKE_REQUEST',
+  payload: data
+});
+export const updateStokeSuccess = (data) => ({
+  type: 'UPDATE_STOKE_SUCCESS',
+  payload: data
+});
+export const updateStokeFailure = (error) => ({
+  type: 'UPDATE_STOKE_FAILURE',
+  payload: error
+});
+export const getAllStokeCashRequest = (data) => ({
+  type: 'FETCH_ALL_STOKE_CASH_REQUEST',
+  payload: data
+});
+export const getAllStokeCashSuccess = (data) => ({
+  type: 'FETCH_ALL_STOKE_CASH_SUCCESS',
+  payload: data
+});
+export const getAllStokeCashFailure = (error) => ({
+  type: 'FETCH_ALL_STOKE_CASH_FAILURE',
+  payload: error
+});
+export const viewStokeCashRequest = (data) => ({
+  type: 'VIEW_STOKE_CASH_REQUEST',
+  payload: data
+});
+export const viewStokeCashSuccess = (data) => ({
+  type: 'VIEW_STOKE_CASH_SUCCESS',
+  payload: data
+});
+export const viewStokeCashFailure = (error) => ({
+  type: 'VIEW_STOKE_CASH_FAILURE',
+  payload: error
+});
+export const updateStokeCashRequest = (data) => ({
+  type: 'UPDATE_STOKE_CASH_REQUEST',
+  payload: data
+});
+export const updateStokeCashSuccess = (data) => ({
+  type: 'UPDATE_STOKE_CASH_SUCCESS',
+  payload: data
+});
+export const updateStokeCashFailure = (error) => ({
+  type: 'UPDATE_STOKE_CASH_FAILURE',
   payload: error
 });

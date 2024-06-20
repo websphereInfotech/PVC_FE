@@ -573,6 +573,27 @@ const useCan = () => {
     return checkPermission('Bom', 'view_all_bom');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE
+
+  const canViewAllStoke = () => {
+    return checkPermission('Stock', 'view_all_product_stock');
+  };
+  const canViewStoke = () => {
+    return checkPermission('Stock', 'view_product_stock');
+  };
+  const canUpdateStoke = () => {
+    return checkPermission('Stock', 'update_product_stock');
+  };
+  const canViewAllStokeCash = () => {
+    return checkPermission('Stock Cash', 'view_all_product_cash_stock');
+  };
+  const canViewStokeCash = () => {
+    return checkPermission('Stock Cash', 'view_product_cash_stock');
+  };
+  const canUpdateStokeCash = () => {
+    return checkPermission('Stock Cash', 'update_product_cash_stock');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -759,7 +780,14 @@ const useCan = () => {
     canUpdateBom,
     canDeleteBom,
     canViewBom,
-    canViwAllBom
+    canViwAllBom,
+    //  STOKE +++++++++++++++++++
+    canViewAllStoke,
+    canViewStoke,
+    canUpdateStoke,
+    canViewAllStokeCash,
+    canViewStokeCash,
+    canUpdateStokeCash
   };
 };
 

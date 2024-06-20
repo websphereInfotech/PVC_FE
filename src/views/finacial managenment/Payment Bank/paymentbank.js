@@ -52,7 +52,8 @@ const Paymentbank = () => {
     }
   };
   const handleSelectAccountChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label && !canViwAllCompanyBank()) {
+    console.log(selectedOption,'OPTIONS');
+    if (selectedOption && selectedOption.label || !canViwAllCompanyBank()) {
       formData.accountId = selectedOption.value;
       setFormData(formData);
       setcompanyname(selectedOption.label);
@@ -83,6 +84,7 @@ const Paymentbank = () => {
       try {
         if (id) {
           const response = await dispatch(viewSinglePaymentBank(id));
+          console.log(response,'response');
           const { voucherno, mode, referance, amount, paymentBank, paymentData, paymentdate } = response;
           setFormData({
             voucherno,

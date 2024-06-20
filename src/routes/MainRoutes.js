@@ -122,13 +122,16 @@ const Customerview = Loadable(lazy(() => import('../views/general managenment/Cu
 const VendorList = Loadable(lazy(() => import('../views/general managenment/Vendor/vendorlist')));
 const Vendorview = Loadable(lazy(() => import('../views/general managenment/Vendor/vendorview')));
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++
+const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
+const LowStockCash = Loadable(lazy(() => import('../views/stock managenment/lowStokeCash')));
+
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
-const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
@@ -412,8 +415,11 @@ const MainRoutes = {
     { path: '/products', element: <Product /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/stock', element: <StockManagement /> },
-    { path: '/stockmain', element: <Stockmain /> },
+    { path: '/lowstock', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
+    {
+      path: '/lowstockcash',
+      element: <ProtectedRoute element={LowStockCash} resource="Stock Cash" permissionName="view_all_product_cash_stock" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
     { path: '/permission', element: <Permission /> },
@@ -422,6 +428,8 @@ const MainRoutes = {
     { path: '/userlist', element: <ProtectedRoute element={UserList} resource="Login" permissionName="view_all_user" /> },
     { path: '/userview/:id', element: <ProtectedRoute element={Userviewpage} resource="Login" permissionName="view_user" /> },
 
+    { path: '/stock', element: <StockManagement /> },
+    { path: '/stockmain', element: <Stockmain /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
@@ -429,7 +437,6 @@ const MainRoutes = {
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },
     { path: '/stokegeneral', element: <Stokegeneral /> },
-    { path: '/lowstock', element: <LowStock /> },
     { path: '/reports', element: <Reports /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++

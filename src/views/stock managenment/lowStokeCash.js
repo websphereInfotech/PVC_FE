@@ -22,25 +22,24 @@ import {
 // import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { getAllStoke } from 'store/thunk';
+import { getAllStokecash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 // import { getallSalesInvoice } from 'store/thunk';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
-  { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
+  //   { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
   // { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
-const LowStock = () => {
+const LowStockCash = () => {
   const [stoke, setStoke] = useState();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
-  console.log('setStoke', setStoke);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -54,7 +53,8 @@ const LowStock = () => {
   useEffect(() => {
     const datastoke = async () => {
       try {
-        const data = await dispatch(getAllStoke());
+        const data = await dispatch(getAllStokecash());
+        console.log(data, 'datacashstoke');
         setStoke(data);
       } catch (error) {
         console.error('fetching data of stoke', error);
@@ -66,7 +66,7 @@ const LowStock = () => {
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Stock List
+        Stock In Cash List
       </Typography>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -165,11 +165,9 @@ const LowStock = () => {
                     column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'product' ? (
-                      row.productStock.productname
-                    ) : column.id === 'hsncode' ? (
-                      row.productStock.HSNcode
+                      row.productCashStock.productname
                     ) : column.id === 'lowstock' ? (
-                      row.productStock.lowStockQty
+                      row.productCashStock?.lowStockQty
                     ) : column.id === 'stock' ? (
                       row.qty
                     ) : (
@@ -207,4 +205,4 @@ const LowStock = () => {
   );
 };
 
-export default LowStock;
+export default LowStockCash;
