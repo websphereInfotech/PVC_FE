@@ -56,18 +56,21 @@ const LowStock = () => {
   const handleViewLowStock = (id) => {
     dispatch(viewSingleStoke(id));
     navigate(`/lowstockview/${id}`);
-  }
+  };
   useEffect(() => {
     const datastoke = async () => {
       try {
         const data = await dispatch(getAllStoke());
         setStoke(data);
       } catch (error) {
+        if(error.response.status === 401) {
+          navigate('/')
+        }
         console.error('fetching data of stoke', error);
       }
     };
     datastoke();
-  }, [dispatch]);
+  }, [dispatch,navigate]);
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
@@ -107,7 +110,7 @@ const LowStock = () => {
                           // disabled={!canViewalesinvoice()}
                           onClick={() => handleViewLowStock(row.id)}
                         >
-                          <RemoveRedEyeIcon style={{ fontSize: '16px' }}  />
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
