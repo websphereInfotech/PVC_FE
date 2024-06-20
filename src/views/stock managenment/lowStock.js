@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Typography,
-  //   Button,
   Table,
   TableBody,
   TableRow,
@@ -18,14 +17,11 @@ import {
   IconButton,
   Grid
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-// import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
-// import { useDispatch } from 'react-redux';
-// import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { getAllStoke, updateStoke } from 'store/thunk';
+import { getAllStoke, updateStoke,viewSingleStoke } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
@@ -43,6 +39,7 @@ const LowStock = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -77,6 +74,10 @@ const LowStock = () => {
     }
   };
 
+  const handleViewLowStock = (id) => {
+    dispatch(viewSingleStoke(id));
+    navigate(`/lowstockview/${id}`);
+  }
   useEffect(() => {
     const fetchStoke = async () => {
       try {
@@ -112,8 +113,23 @@ const LowStock = () => {
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                        <IconButton sizeSmall style={{ backgroundColor: 'blue', color: 'white', borderRadius: 0.8 }}>
-                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        
+                        <IconButton
+                          sizeSmall
+                          style={{ backgroundColor: 'blue', color: 'white', borderRadius: 0.8 }}
+                          // style={{
+                          //   backgroundColor: canViewalesinvoice() ? 'Blue' : 'gray',
+                          //   color: canViewalesinvoice() ? 'white' : 'white',
+                          //   borderRadius: 0.8,
+                          //   ...(canViewalesinvoice() && { opacity: 1 }),
+                          //   ...(!canViewalesinvoice() && { opacity: 0.5 }),
+                          //   ...(!canViewalesinvoice() && { backgroundColor: 'gray' })
+                          // }}
+                          // onClick={() => handleViewLowStock()}
+                          // disabled={!canViewalesinvoice()}
+                          onClick={() => handleViewLowStock(row.id)}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }}  />
                         </IconButton>
                         <IconButton
                           sizeSmall
