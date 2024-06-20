@@ -55,7 +55,7 @@ const CustomerList = () => {
         }
         console.error('Error fetching product data:', error);
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);

@@ -65,7 +65,7 @@ export default function UserList() {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleAddUser = () => {
     setOpenCreateDialog(true);

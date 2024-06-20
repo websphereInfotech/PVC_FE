@@ -34,7 +34,7 @@ const Customerview = () => {
         }
         console.error('Error fetching User data:', error);
       });
-  }, [dispatch, id,navigate]);
+  }, [dispatch, id, navigate]);
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>

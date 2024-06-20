@@ -56,7 +56,7 @@ const CompanyList = () => {
       }
     };
     fetchCompany();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handlesetcompany = async (id) => {
     try {

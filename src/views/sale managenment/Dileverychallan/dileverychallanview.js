@@ -20,12 +20,12 @@ const DileveryChallanView = () => {
         setData(data);
       })
       .catch((error) => {
-        if(error.response.status === 401) {
-          navigate('/')
+        if (error.response.status === 401) {
+          navigate('/');
         }
         console.error('Error fetching delivery challan data:', error);
       });
-  }, [dispatch, id]);
+  }, [dispatch, navigate, id]);
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
