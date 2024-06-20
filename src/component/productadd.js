@@ -33,14 +33,15 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     purchaseprice: 0,
     HSNcode: 0,
     gstrate: '',
-    lowStockQty: null
+    lowStockQty: null,
+    weight: 0
   });
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [id]: id === 'HSNcode' || id === 'salesprice' || id === 'purchaseprice' ? Number(value) : value
+      [id]: id === 'HSNcode' || id === 'salesprice' || id === 'purchaseprice' || id === 'weight' ? Number(value) : value
     }));
   };
 
@@ -75,7 +76,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         if (id) {
           const response = await dispatch(viewProduct(id));
           const productData = response;
-          setFormData({ ...productData });
+          setFormData({ ...productData, weight: productData.weight });
           setOpeningStock(productData.openingstock);
           setNagativeQty(productData.nagativeqty);
           setLowStock(productData.lowstock);
@@ -106,6 +107,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         lowstock,
         cess
       };
+      console.log(data, 'DATA');
       if (id) {
         await dispatch(updateProduct(id, data));
       } else {
@@ -170,29 +172,29 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">
               Product : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="Enter Product" id="productname" value={formData.productname} onChange={handleInputChange} />
           </Grid>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">Product Description</Typography>
             <input placeholder="Enter Product" id="description" value={formData.description} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">Item Group</Typography>
             <input placeholder="Enter Group" id="itemgroup" value={formData.itemgroup} onChange={handleInputChange} />
           </Grid>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">Item Category</Typography>
             <input placeholder="Enter Category" id="itemcategory" value={formData.itemcategory} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">
               Unit : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
@@ -202,7 +204,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
               onChange={handleUnitChange}
             />
           </Grid>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">
               GST Rate(%):<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
@@ -214,11 +216,17 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
-          <Grid item>
+          <Grid item sm={6}>
             <Typography variant="subtitle1">
               HSN Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="Enter HSN Code" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
+          </Grid>
+          <Grid item sm={6}>
+            <Typography variant="subtitle1">
+              Weight:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>

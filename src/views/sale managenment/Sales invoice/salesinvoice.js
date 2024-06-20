@@ -43,7 +43,7 @@ const Salesinvoice = () => {
   const [selectproduct, setSelectproduct] = useState([]);
   const [proformainvoice, setProformainvoice] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
-  const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
+  // const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
     customerId: '',
@@ -56,7 +56,7 @@ const Salesinvoice = () => {
     invoicedate: new Date(),
     termsOfDelivery: '',
     terms: '',
-    proFormaId: ''
+    proFormaNo: ''
   });
   const { id } = useParams();
   const [subtotal, setSubtotal] = useState(0);
@@ -128,8 +128,6 @@ const Salesinvoice = () => {
       // Move the total GST calculation outside the map function
       const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
       setPlusgst(totalGST);
-      console.log(selectedOption, 'row');
-
       setRows(updatedRows);
       setSelectproduct(selectedOption.value);
       setIsproductDrawerOpen(false);
@@ -173,7 +171,7 @@ const Salesinvoice = () => {
       }
     };
     generateAutoInvoiceNumber();
-  }, [dispatch, formData.invoicedate, id]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -205,7 +203,6 @@ const Salesinvoice = () => {
 
         const data = await dispatch(fetchuserwiseCompany());
         const defaultCompany = data.find((company) => company.setDefault === true);
-        console.log(defaultCompany.companies.state, 'defaultcompany');
         if (defaultCompany) {
           setCompanystate(defaultCompany.companies.state);
           const isGstState = defaultCompany.companies.state === customerState;
@@ -226,13 +223,12 @@ const Salesinvoice = () => {
     console.log(selectedOption, 'selected');
     const updatedFormData = {
       ...selectedOption,
-      proFormaId: selectedOption.value
+      proFormaNo: selectedOption.value
     };
     setCustomername(selectedOption.customer.accountname);
     setCustomerState(selectedOption.customer.state);
-    setFormData(updatedFormData);
+    setFormData({ ...updatedFormData, invoiceno: formData.invoiceno, dispatchno: formData.invoiceno });
     console.log(updatedFormData, 'form');
-    setProformainvoicelabel(selectedOption.label);
     const selectedProFormaItems = selectedOption.items.map((item) => ({
       productId: item.product.id,
       product: item.product.productname,
@@ -251,9 +247,8 @@ const Salesinvoice = () => {
   useEffect(() => {
     const data = async () => {
       const proformainvoiceresponse = await dispatch(fetchproformainvoiceList());
-      console.log(proformainvoiceresponse, 'proformainvoiceresponse');
       const options = proformainvoiceresponse.map((item) => ({
-        value: item.id,
+        value: item.ProFormaInvoice_no,
         label: `${item.ProFormaInvoice_no}  ${item.customer.accountname}`,
         dispatchThrough: item.dispatchThrough,
         motorVehicleNo: item.motorVehicleNo,
@@ -275,7 +270,7 @@ const Salesinvoice = () => {
           dispatchThrough,
           motorVehicleNo,
           LL_RR_no,
-          dispatchno,
+          // dispatchno,
           destination,
           deliverydate,
           invoiceno,
@@ -283,15 +278,14 @@ const Salesinvoice = () => {
           terms,
           termsOfDelivery,
           duedate,
-          proFormaItem
+          proFormaNo
         } = response;
         setFormData({
           customerId: InvioceCustomer.id,
           dispatchThrough,
           motorVehicleNo,
           LL_RR_no,
-          proFormaId: proFormaItem.id,
-          dispatchno,
+          proFormaNo,
           destination,
           deliverydate,
           invoiceno,
@@ -300,7 +294,6 @@ const Salesinvoice = () => {
           termsOfDelivery,
           duedate
         });
-        setProformainvoicelabel(proFormaItem.ProFormaInvoice_no);
         setSelectcustomer(InvioceCustomer.id);
         setCustomerState(InvioceCustomer.state);
         setCustomername(InvioceCustomer.accountname);
@@ -340,6 +333,7 @@ const Salesinvoice = () => {
       console.log(selectcustomer);
       const payload = {
         ...formData,
+        dispatchno: formData.invoiceno,
         totalQty: totalQuantity,
         totalMrp: subtotal,
         mainTotal: Number(subtotal) + Number(plusgst),
@@ -444,14 +438,11 @@ const Salesinvoice = () => {
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              {/* {console.log('SELECTEDOPTION', selectedOption)} */}
+              <Typography variant="subtitle1">Pro forma invoice No. :</Typography>
               <Select
                 color="secondary"
                 options={proformainvoice}
-                value={{ value: formData.proFormaId, label: proformainvoicelabel }}
+                value={{ value: formData.proFormaNo, label: formData.proFormaNo }}
                 onChange={handleproformnumber}
               />
             </Grid>
@@ -532,27 +523,8 @@ const Salesinvoice = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">Dispatch Doc No. :</Typography>
-              <input
-                placeholder="Enter Dispatch Doc No."
-                id="dispatchno"
-                value={formData.invoiceno}
-                onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
-              />
+              <input placeholder="Enter Dispatch Doc No." id="dispatchno" value={formData.invoiceno} />
             </Grid>
-
-            {/* <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Due Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formData.duedate}
-                onChange={(date) => handleDueDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-                minDate={formData.invoicedate}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Terms : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

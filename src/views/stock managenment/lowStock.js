@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   //   Button,
@@ -22,37 +22,24 @@ import {
 // import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { getAllStoke } from 'store/thunk';
+import { useDispatch } from 'react-redux';
 // import { getallSalesInvoice } from 'store/thunk';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
   { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
-  { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
+  // { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
-const initialData = [
-  {
-    product: 'Product A',
-    hsncode: '123456',
-    date: new Date().toLocaleDateString('en-GB'),
-    stock: 10,
-    lowstock: 5
-  },
-  {
-    product: 'Product B',
-    hsncode: '654321',
-    date: new Date().toLocaleDateString('en-GB'),
-    stock: 2,
-    lowstock: 1
-  }
-];
+
 const LowStock = () => {
-  const [stoke, setStoke] = useState(initialData);
+  const [stoke, setStoke] = useState();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   console.log('setStoke', setStoke);
 
   const handleChangePage = (event, newPage) => {
@@ -64,10 +51,23 @@ const LowStock = () => {
     setPage(0);
   };
 
+  useEffect(() => {
+    const datastoke = async () => {
+      try {
+        const data = await dispatch(getAllStoke());
+        console.log(data, 'setdata');
+        setStoke(data);
+      } catch (error) {
+        console.error('fetching data of stoke', error);
+      }
+    };
+    datastoke();
+  }, [dispatch]);
+
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Low Stock List
+        Stock List
       </Typography>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -165,13 +165,15 @@ const LowStock = () => {
                     // ) :
                     column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
+                    ) : column.id === 'product' ? (
+                      row.productStock.productname
+                    ) : column.id === 'hsncode' ? (
+                      row.productStock.HSNcode
+                    ) : column.id === 'lowstock' ? (
+                      row.productStock.lowStockQty
+                    ) : column.id === 'stock' ? (
+                      row.qty
                     ) : (
-                      //   ) : column.id === 'customer' ? (
-                      //     row.InvioceCustomer.accountname
-                      //   ) : column.id === 'updatedBy' ? (
-                      //     row.updateUser?.username
-                      //   ) : column.id === 'createdBy' ? (
-                      //     row.createUser?.username
                       row[column.id]
                     )}
                   </TableCell>

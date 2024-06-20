@@ -77,12 +77,14 @@ const useCan = () => {
     return checkPermission('Login', 'create_user');
   };
   const canUserDelete = () => {
-    return checkPermission('Login', 'delete_user');
+    return checkPermission('Login', 'remove_company');
   };
   const canUserViewAll = () => {
     return checkPermission('Login', 'view_all_user');
   };
-
+  const canUserViewAllCompany = () => {
+    return checkPermission('Login', 'view_all_JoinComapny');
+  };
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERY CHALLAN
   const canCreateDeliverychallan = () => {
     return checkPermission('Delivery Challan', 'create_deliverychallan');
@@ -588,6 +590,7 @@ const useCan = () => {
     canUserCreate,
     canUserDelete,
     canUserViewAll,
+    canUserViewAllCompany,
     // DELIVERY CHALLAN +++++++++++++++
     canCreateDeliverychallan,
     canUpdateDeliverychallan,

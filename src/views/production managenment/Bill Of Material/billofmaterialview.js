@@ -37,8 +37,8 @@ const Bomview = () => {
           <Typography variant="subtitle2">{new Date(data.date).toLocaleDateString('en-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Description</Typography>
-          <Typography variant="subtitle2">{data.description}</Typography>
+          <Typography variant="subtitle1">weight</Typography>
+          <Typography variant="subtitle2">{data.weight}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Product</Typography>
@@ -57,7 +57,6 @@ const Bomview = () => {
                   PRODUCT/SERVICE
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
-                <TableCell sx={{ fontSize: '12px' }}>WASTAGE</TableCell>
               </TableHead>
               <TableBody>
                 {data.bomItems &&
@@ -65,7 +64,6 @@ const Bomview = () => {
                     <TableRow key={index}>
                       <TableCell>{item?.bomItemsProduct?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
-                      <TableCell>{item?.wastage}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>

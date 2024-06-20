@@ -25,9 +25,9 @@ import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
-  { id: 'bomNo', label: 'No.', align: 'center' },
+  { id: 'bomNo', label: 'Betch No.', align: 'center' },
   { id: 'date', label: 'Date.', align: 'center' },
-  { id: 'description', label: 'Description', align: 'center' },
+  // { id: 'weight', label: 'Weight', align: 'center' },
   { id: 'createdBy', label: 'Created By', align: 'center' },
   { id: 'updatedBy', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }

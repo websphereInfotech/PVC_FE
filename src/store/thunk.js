@@ -31,9 +31,9 @@ import {
   viewProformainvoiceRequest,
   viewProformainvoiceSuccess,
   viewProformainvoiceFailure,
-  getCountSalesinvoiceRequst,
-  getCountSalesinvoicesuccess,
-  getCountSalesinvoicefailure,
+  // getCountSalesinvoiceRequst,
+  // getCountSalesinvoicesuccess,
+  // getCountSalesinvoicefailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersCashRequest,
   fetchAllCustomersCashSuccess,
@@ -426,7 +426,11 @@ import {
   updateBomSuccess,
   deleteBomRequest,
   deleteBomSuccess,
-  deleteBomFailure
+  deleteBomFailure,
+  // STOKE ++++++++++++++++++++++++++
+  getAllStokeRequest,
+  getAllStokeSuccess,
+  getAllStokeFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -611,21 +615,21 @@ export const deleteProformainvoice = (id) => {
     }
   };
 };
-export const getCountsalesinvoice = (id) => {
-  return async (dispatch) => {
-    dispatch(getCountSalesinvoiceRequst());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/profromainvoice/count_salesInvoice/${id}`, config);
-      const data = response.data;
-      dispatch(getCountSalesinvoicesuccess());
-      return data;
-    } catch (error) {
-      toast.error(error.response.data.message);
-      dispatch(getCountSalesinvoicefailure());
-    }
-  };
-};
+// export const getCountsalesinvoice = (id) => {
+//   return async (dispatch) => {
+//     dispatch(getCountSalesinvoiceRequst());
+//     try {
+//       const config = createConfig();
+//       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/profromainvoice/count_salesInvoice/${id}`, config);
+//       const data = response.data;
+//       dispatch(getCountSalesinvoicesuccess());
+//       return data;
+//     } catch (error) {
+//       toast.error(error.response.data.message);
+//       dispatch(getCountSalesinvoicefailure());
+//     }
+//   };
+// };
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERYCHALLAN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallDeliverychallan = () => {
   return async (dispatch) => {
@@ -889,8 +893,8 @@ export const DeleteProduct = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteProductSuccess(data));
+      window.location.reload();
       return data;
     } catch (error) {
       dispatch(deleteProductFailure(error.message));
@@ -922,8 +926,8 @@ export const updateProduct = (id, data) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(updateProductSuccess(upadteProductData));
+      window.location.reload();
       return upadteProductData;
     } catch (error) {
       toast.error(error.response.data.message);
@@ -1839,7 +1843,7 @@ export const deleteUser = (id) => {
     dispatch(deleteUserRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_user/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/remove_company/${id}`, config);
       const deleteUser = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2918,6 +2922,22 @@ export const getAllBom = () => {
       return data;
     } catch (error) {
       dispatch(getAllBomFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getAllStoke = () => {
+  return async (dispatch) => {
+    dispatch(getAllStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_all_product_stock`, config);
+      const data = response.data.data;
+      dispatch(getAllStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllStokeFailure(error.message));
     }
   };
 };

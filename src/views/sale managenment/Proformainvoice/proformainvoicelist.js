@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Proformainvoiceview, fetchproformainvoiceList, deleteProformainvoice, getCountsalesinvoice } from 'store/thunk';
+import { Proformainvoiceview, fetchproformainvoiceList, deleteProformainvoice } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -38,7 +38,6 @@ export default function ProformainvoiceList() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [salesinvoice, setsalesinvoice] = useState(0);
   const [quotations, setQuotations] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -89,8 +88,6 @@ export default function ProformainvoiceList() {
   const handleDeleteConfirmation = async (id) => {
     setOpenConfirmation(true);
     setSelectedId(id);
-    const count = await dispatch(getCountsalesinvoice(id));
-    setsalesinvoice(count.data);
   };
 
   const handleDeleteQuotation = async () => {
@@ -211,9 +208,7 @@ export default function ProformainvoiceList() {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>
-          Are you sure you want to delete this pro forma invoice<br></br> beacuse {salesinvoice} invoice created by this pro forma invoice?
-        </DialogContent>
+        <DialogContent>Are you sure you want to delete this pro forma invoice?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel

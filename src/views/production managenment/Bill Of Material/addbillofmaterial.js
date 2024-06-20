@@ -20,10 +20,11 @@ const Addbillofmaterial = () => {
   const [formData, setFormData] = useState({
     bomNo: 0,
     date: new Date(),
-    description: '',
+    weight: '',
     productId: '',
     qty: 0
   });
+  const [productname, setProductname] = useState('');
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [productOptions, setProductOptions] = useState([]);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
@@ -35,7 +36,7 @@ const Addbillofmaterial = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { bomId } = useParams();
-  console.log(bomId, 'id');
+
   const handleDeleteRow = async (index) => {
     const updatedRows = rows.filter((_, rowIndex) => rowIndex !== index);
     setRows(updatedRows);
@@ -55,24 +56,33 @@ const Addbillofmaterial = () => {
           return {
             ...row,
             productId: selectedOption.value,
-            productname: selectedOption.label
+            productname: selectedOption.label,
+            weight: selectedOption.weight
           };
         }
         return row;
       });
+      console.log(selectedOption, 'selectedOption');
       setRows(updatedRows);
       setIsproductDrawerOpen(false);
     }
   };
 
   const handleProductDrawerSelect = (selectedOption) => {
-    const newRow = {
-      productId: selectedOption.value,
-      productname: selectedOption.label
-    };
+    if (selectedOption && selectedOption.label === 'Create New Product') {
+      setIsproductDrawerOpen(true);
+    } else {
+      console.log(selectedOption, 'OPTIONS');
+      setProductname(selectedOption.label);
+      setFormData({
+        ...formData,
+        productId: selectedOption.value,
+        weight: selectedOption.weight
+      });
 
-    setRows((prevRows) => [...prevRows, newRow]);
-    setIsproductDrawerOpen(false);
+      setIsproductDrawerOpen(false);
+    }
+    // }
   };
 
   useEffect(() => {
@@ -82,7 +92,8 @@ const Addbillofmaterial = () => {
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({
             value: product.id,
-            label: product.productname
+            label: product.productname,
+            weight: product.weight
           }));
           setProductOptions([{ value: 'new', label: 'Create New Product' }, ...options]);
           if (!canCreateProductvalue) {
@@ -110,7 +121,7 @@ const Addbillofmaterial = () => {
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
       if (rowIndex === index) {
-        const numericValue = field === 'qty' || field === 'wastage' ? Number(value) : value;
+        const numericValue = field === 'qty' ? Number(value) : value;
         return { ...row, [field]: numericValue };
       }
       return row;
@@ -122,14 +133,14 @@ const Addbillofmaterial = () => {
     const fetchData = async () => {
       if (bomId) {
         const response = await dispatch(viewSingleBom(bomId));
-        const { bomNo, description, date, bomProduct, qty } = response;
-        setFormData({ date, bomNo, description, qty, productId: bomProduct.id });
+        const { bomNo, date, bomProduct, qty } = response;
+        setProductname(bomProduct.productname);
+        setFormData({ date, bomNo, weight: bomProduct.weight, qty, productId: bomProduct.id });
         const updatedRows = response.bomItems.map((item) => ({
           id: item.id,
           productId: item.bomItemsProduct.id,
           productname: item.bomItemsProduct.productname,
-          qty: item.qty,
-          wastage: item.wastage
+          qty: item.qty
         }));
         setRows(updatedRows);
       }
@@ -178,8 +189,7 @@ const Addbillofmaterial = () => {
         items: rows.map((row) => ({
           id: row.id || null,
           productId: row.productId,
-          qty: row.qty,
-          wastage: row.wastage
+          qty: row.qty
         }))
       };
       if (bomId) {
@@ -207,7 +217,7 @@ const Addbillofmaterial = () => {
         <Grid container spacing={2} style={{ marginBottom: '16px' }}>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
-              No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              Betch No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="No." value={formData.bomNo} onChange={(e) => setFormData({ ...formData, bomNo: e.target.value })} />
           </Grid>
@@ -225,35 +235,35 @@ const Addbillofmaterial = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
-              Description : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              Weight : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input
-              placeholder="Description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Enter Weight"
+              value={formData.weight}
+              onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
-              Product : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              Product Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <Select
               color="secondary"
-              onChange={(selectedOption) => setFormData({ ...formData, productId: selectedOption.value })}
+              onChange={(selectedOption) => handleProductDrawerSelect(selectedOption)}
               options={productOptions}
-              value={productOptions.find((option) => option.value === formData.productId) || ''}
+              value={{ value: formData.productId, label: productname }}
             />
             <AnchorProductDrawer
               open={isproductDrawerOpen}
               onClose={() => setIsproductDrawerOpen(false)}
-              onSelectProduct={handleProductDrawerSelect}
+              onSelectProduct={(selectedOption) => handleProductDrawerSelect(selectedOption)}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
               QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="Description" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
+            <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
           </Grid>
         </Grid>
 
@@ -263,12 +273,11 @@ const Addbillofmaterial = () => {
               <TableHead>
                 <TableRow>
                   <TableCell width={500} sx={{ fontSize: '12px' }}>
-                    PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    MATERIAL PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>WASTAGE :</TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableRow>
               </TableHead>
@@ -290,13 +299,6 @@ const Addbillofmaterial = () => {
                     />
                     <TableCell id="newcs">
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
-                    </TableCell>
-                    <TableCell id="newcs">
-                      <input
-                        placeholder="wastage"
-                        value={row.wastage}
-                        onChange={(e) => handleInputChange(index, 'wastage', e.target.value)}
-                      />
                     </TableCell>
                     <TableCell>
                       <DeleteIcon

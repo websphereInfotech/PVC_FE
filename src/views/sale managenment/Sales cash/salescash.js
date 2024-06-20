@@ -205,7 +205,7 @@ const Salescash = () => {
             id: row.id || null,
             productId: row.productId,
             qty: Number(row.qty),
-            rate: row.rate,
+            rate: Number(row.rate),
             mrp: row.mrp
           }))
         };
@@ -218,7 +218,7 @@ const Salescash = () => {
           items: rows.map((row) => ({
             productId: row.productId,
             qty: Number(row.qty),
-            rate: row.rate,
+            rate: Number(row.rate),
             mrp: row.mrp
           }))
         };

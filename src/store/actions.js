@@ -32,9 +32,9 @@ export const UPDATE_PRO_FORMA_INVOICE_FAILURE = 'UPDATE_PRO_FORMA_INVOICE_FAILUR
 export const VIEW_PRO_FORMA_INVOICE_REQUEST = 'VIEW_PRO_FORMA_INVOICE_REQUEST';
 export const VIEW_PRO_FORMA_INVOICE_SUCCESS = 'VIEW_PRO_FORMA_INVOICE_SUCCESS';
 export const VIEW_PRO_FORMA_INVOICE_FAILURE = 'VIEW_PRO_FORMA_INVOICE_FAILURE';
-export const GET_COUNT_SALES_INVOICE_REQUEST = 'GET_COUNT_SALES_INVOICE_REQUEST';
-export const GET_COUNT_SALES_INVOICE_SUCCESS = 'GET_COUNT_SALES_INVOICE_SUCCESS';
-export const GET_COUNT_SALES_INVOICE_FAILURE = 'GET_COUNT_SALES_INVOICE_FAILURE';
+// export const GET_COUNT_SALES_INVOICE_REQUEST = 'GET_COUNT_SALES_INVOICE_REQUEST';
+// export const GET_COUNT_SALES_INVOICE_SUCCESS = 'GET_COUNT_SALES_INVOICE_SUCCESS';
+// export const GET_COUNT_SALES_INVOICE_FAILURE = 'GET_COUNT_SALES_INVOICE_FAILURE';
 
 // ########################################## PRODUCT ###############################################################################################
 export const FETCH_ALL_PRODUCTS_CASH_REQUEST = 'FETCH_ALL_PRODUCTS_CASH_REQUEST';
@@ -458,6 +458,11 @@ export const FETCH_ALL_BOM_REQUEST = 'FETCH_ALL_BOM_REQUEST';
 export const FETCH_ALL_BOM_SUCCESS = 'FETCH_ALL_BOM_SUCCESS';
 export const FETCH_ALL_BOM_FAILURE = 'FETCH_ALL_BOM_FAILURE';
 
+// ###################################################################### STOKE #####################################################################
+export const FETCH_ALL_STOKE_REQUEST = 'FETCH_ALL_STOKE_REQUEST';
+export const FETCH_ALL_STOKE_SUCCESS = 'FETCH_ALL_STOKE_SUCCESS';
+export const FETCH_ALL_STOKE_FAILURE = 'FETCH_ALL_STOKE_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -553,18 +558,18 @@ export const updateProformainvoicefailure = (error) => ({
   payload: error
 });
 
-export const getCountSalesinvoiceRequst = (data) => ({
-  type: 'GET_COUNT_SALES_INVOICE_REQUEST',
-  payload: data
-});
-export const getCountSalesinvoicesuccess = (data) => ({
-  type: 'GET_COUNT_SALES_INVOICE_SUCCESS',
-  payload: data
-});
-export const getCountSalesinvoicefailure = (error) => ({
-  type: 'GET_COUNT_SALES_INVOICE_FAILURE',
-  payload: error
-});
+// export const getCountSalesinvoiceRequst = (data) => ({
+//   type: 'GET_COUNT_SALES_INVOICE_REQUEST',
+//   payload: data
+// });
+// export const getCountSalesinvoicesuccess = (data) => ({
+//   type: 'GET_COUNT_SALES_INVOICE_SUCCESS',
+//   payload: data
+// });
+// export const getCountSalesinvoicefailure = (error) => ({
+//   type: 'GET_COUNT_SALES_INVOICE_FAILURE',
+//   payload: error
+// });
 
 // ################################################################ CUSTOMERS ##################################################################################
 export const fetchAllCustomersCashRequest = () => ({
@@ -2063,5 +2068,18 @@ export const deleteBomSuccess = (data) => ({
 });
 export const deleteBomFailure = (error) => ({
   type: 'DELETE_BOM_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE +++++++++
+export const getAllStokeRequest = (data) => ({
+  type: 'FETCH_ALL_STOKE_REQUEST',
+  payload: data
+});
+export const getAllStokeSuccess = (data) => ({
+  type: 'FETCH_ALL_STOKE_SUCCESS',
+  payload: data
+});
+export const getAllStokeFailure = (error) => ({
+  type: 'FETCH_ALL_STOKE_FAILURE',
   payload: error
 });
