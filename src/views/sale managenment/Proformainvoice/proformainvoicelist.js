@@ -55,11 +55,14 @@ export default function ProformainvoiceList() {
         });
         setQuotations(response);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching proformainvoice:', error);
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   // use for change page
   const handleChangePage = (event, newPage) => {

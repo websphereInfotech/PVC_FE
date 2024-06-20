@@ -51,9 +51,12 @@ const ProductList = () => {
         setProduct(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching product data:', error);
       });
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);

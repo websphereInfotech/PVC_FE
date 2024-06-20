@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { viewSingleBom } from 'store/thunk';
@@ -9,6 +9,7 @@ import { viewSingleBom } from 'store/thunk';
 const Bomview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { bomId } = useParams();
   const [data, setData] = useState({});
 
@@ -19,9 +20,12 @@ const Bomview = () => {
         setData(data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching bom data:', error);
       });
-  }, [dispatch, bomId]);
+  }, [dispatch, bomId, navigate]);
 
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>

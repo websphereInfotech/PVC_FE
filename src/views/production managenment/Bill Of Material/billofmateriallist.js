@@ -49,12 +49,15 @@ const Billofmateriallist = () => {
         const data = await dispatch(getAllBom());
         setBom(data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching Bom:', error);
       }
     };
 
     fetchBom();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

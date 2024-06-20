@@ -12,10 +12,10 @@ const columns = [
 ];
 
 const Paymentbankrecieveledgerlist = () => {
+  const dispatch = useDispatch();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const dispatch = useDispatch();
   const customerId = sessionStorage.getItem('PRcustomerId');
   const formData = sessionStorage.getItem('PRformDate');
   const toDate = sessionStorage.getItem('PRtoDate');

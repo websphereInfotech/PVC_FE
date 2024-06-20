@@ -10,6 +10,7 @@ import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@m
 import { createCustomer, updateCustomer, viewCustomer } from '../store/thunk';
 import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
+import { useNavigate } from 'react-router';
 // import PlacesAutocomplete from 'react-places-autocomplete';
 
 const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
@@ -20,6 +21,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
   };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // State for radio buttons
   const [bankdetail, setBankDetail] = React.useState(false);
@@ -122,9 +124,9 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
       }
       console.log(customerData, 'customerData');
       if (id) {
-        await dispatch(updateCustomer(id, customerData));
+        await dispatch(updateCustomer(id, customerData, navigate));
       } else {
-        await dispatch(createCustomer(customerData));
+        await dispatch(createCustomer(customerData, navigate));
       }
     } catch (error) {
       console.error('Error creating customer:', error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TablePagination, TableHead, TableContainer } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { getallCustomerledger } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
@@ -12,10 +13,11 @@ const columns = [
 ];
 
 const Customerledgerlist = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const dispatch = useDispatch();
   const customerId = sessionStorage.getItem('customerId');
   const formData = sessionStorage.getItem('customerformDate');
   const toDate = sessionStorage.getItem('customertoDate');
@@ -26,9 +28,12 @@ const Customerledgerlist = () => {
         setPayments(data.data);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching customer ledger data:', error);
       });
-  }, [dispatch, customerId, formData, toDate]);
+  }, [dispatch, customerId, formData, toDate, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

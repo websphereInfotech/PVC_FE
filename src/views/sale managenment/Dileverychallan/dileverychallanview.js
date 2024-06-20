@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Deliverychallanview } from 'store/thunk';
@@ -9,6 +9,7 @@ import { Deliverychallanview } from 'store/thunk';
 const DileveryChallanView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
 
@@ -19,6 +20,9 @@ const DileveryChallanView = () => {
         setData(data);
       })
       .catch((error) => {
+        if(error.response.status === 401) {
+          navigate('/')
+        }
         console.error('Error fetching delivery challan data:', error);
       });
   }, [dispatch, id]);

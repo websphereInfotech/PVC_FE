@@ -54,12 +54,15 @@ const Creditnotelist = () => {
         });
         setCreditnote(data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching Credit note:', error);
       }
     };
 
     fetchcreditnote();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

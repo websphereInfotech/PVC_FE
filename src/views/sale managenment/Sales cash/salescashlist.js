@@ -49,12 +49,15 @@ const Salescashlist = () => {
         const data = await dispatch(getallSalesInvoiceCash());
         setsalescash(data.data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching sales cash:', error);
       }
     };
 
     fetchsalesinvoicecash();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

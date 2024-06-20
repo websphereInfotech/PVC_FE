@@ -41,12 +41,15 @@ export default function PurchaseinvoiceList() {
         const response = await dispatch(getallPurchaseinvoice());
         setPurchasebill(response.data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching purchase invoice:', error);
       }
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

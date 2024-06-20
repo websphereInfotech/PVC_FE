@@ -54,12 +54,15 @@ const Debitnotelist = () => {
         });
         setDebitnote(data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching debit note:', error);
       }
     };
 
     fetchDebitNote();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

@@ -49,11 +49,14 @@ const DileveryChallanList = () => {
         setdeliverychallan(data);
       } catch (error) {
         console.error('Error fetching delivery challan:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       }
     };
 
     fetchDeliverychallan();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   // set pagination to change page
   const handleChangePage = (event, newPage) => {

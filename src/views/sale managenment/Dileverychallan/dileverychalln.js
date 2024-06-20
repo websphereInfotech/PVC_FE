@@ -162,21 +162,28 @@ const Deliverychallan = () => {
 
   useEffect(() => {
     const data = async () => {
-      if (id) {
-        console.log(id, 'viewid');
-        const response = await dispatch(Deliverychallanview(id));
-        const { DeliveryCustomer, date, challanno } = response;
-        console.log(response.DeliveryCustomer, 'response');
-        setFormData({ customerId: DeliveryCustomer.id, date, challanno });
-        setSelectcustomer(DeliveryCustomer.id);
-        setCustomername(DeliveryCustomer.accountname);
-        const updatedRows = response.items.map((item) => ({
-          id: item.id,
-          productId: item.DeliveryProduct.id,
-          product: item.DeliveryProduct.productname,
-          qty: item.qty
-        }));
-        setRows(updatedRows);
+      try {
+        if (id) {
+          console.log(id, 'viewid');
+          const response = await dispatch(Deliverychallanview(id));
+          const { DeliveryCustomer, date, challanno } = response;
+          console.log(response.DeliveryCustomer, 'response');
+          setFormData({ customerId: DeliveryCustomer.id, date, challanno });
+          setSelectcustomer(DeliveryCustomer.id);
+          setCustomername(DeliveryCustomer.accountname);
+          const updatedRows = response.items.map((item) => ({
+            id: item.id,
+            productId: item.DeliveryProduct.id,
+            product: item.DeliveryProduct.productname,
+            qty: item.qty
+          }));
+          setRows(updatedRows);
+        }
+      } catch (error) {
+        console.error('Error fetching delivery challan view:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       }
     };
 
@@ -215,7 +222,7 @@ const Deliverychallan = () => {
 
     generateAutoChallanNumber();
     data();
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
 
   //call craete and update deliverychallan and deliverychallan items
   const handlecreatedeliverychallan = async () => {

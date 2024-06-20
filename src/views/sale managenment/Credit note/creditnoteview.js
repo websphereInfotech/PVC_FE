@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Creditnoteviewdata } from 'store/thunk';
@@ -9,6 +9,7 @@ import { Creditnoteviewdata } from 'store/thunk';
 const CreditnoteView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
 
@@ -19,8 +20,11 @@ const CreditnoteView = () => {
       })
       .catch((error) => {
         console.error('Error fetching credit note data:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       });
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
 
   const subtotal = data.totalMrp ? data.totalMrp : 0;
   const maintotal = data.mainTotal ? data.mainTotal : 0;

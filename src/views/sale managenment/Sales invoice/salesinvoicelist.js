@@ -35,10 +35,10 @@ const columns = [
 const Salesinvoicelist = () => {
   const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [salesinvoice, setsalesinvoice] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -53,12 +53,15 @@ const Salesinvoicelist = () => {
         });
         setsalesinvoice(data.data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error fetching sales invoice:', error);
       }
     };
 
     fetchSalesinvoice();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
