@@ -10,38 +10,39 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  //   Dialog,
-  //   DialogActions,
-  //   DialogContent,
-  //   DialogTitle,
-  IconButton
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  IconButton,
+  Grid
 } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 // import { useDispatch } from 'react-redux';
 // import useCan from 'views/permission managenment/checkpermissionvalue';
-import { Delete, Edit } from '@mui/icons-material';
+import { Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { getAllStoke } from 'store/thunk';
+import { getAllStoke, updateStoke } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-// import { getallSalesInvoice } from 'store/thunk';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
   { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
-  // { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
   { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const LowStock = () => {
-  const [stoke, setStoke] = useState();
+  const [stoke, setStoke] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const dispatch = useDispatch();
-  console.log('setStoke', setStoke);
-
+  const navigate = useNavigate();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -51,16 +52,41 @@ const LowStock = () => {
     setPage(0);
   };
 
+  const handleOpenDialog = (row) => {
+    setSelectedRow(row);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedRow(null);
+  };
+
+  const handleSave = async () => {
+    try {
+      const paylod = {
+        productId: selectedRow.id,
+        qty: selectedRow.qty
+      };
+      await dispatch(updateStoke(selectedRow.id, paylod, navigate));
+      const updatedData = await dispatch(getAllStoke());
+      setStoke(updatedData);
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Error updating stoke', error);
+    }
+  };
+
   useEffect(() => {
-    const datastoke = async () => {
+    const fetchStoke = async () => {
       try {
         const data = await dispatch(getAllStoke());
         setStoke(data);
       } catch (error) {
-        console.error('fetching data of stoke', error);
+        console.error('Error fetching stoke', error);
       }
     };
-    datastoke();
+    fetchStoke();
   }, [dispatch]);
 
   return (
@@ -86,83 +112,18 @@ const LowStock = () => {
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                        <IconButton
-                          sizeSmall
-                          style={{ backgroundColor: 'blue', color: 'white', borderRadius: 0.8 }}
-                          // style={{
-                          //   backgroundColor: canViewalesinvoice() ? 'Blue' : 'gray',
-                          //   color: canViewalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canViewalesinvoice() && { opacity: 1 }),
-                          //   ...(!canViewalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canViewalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleViewsalesinvoice(row.id)}
-                          // disabled={!canViewalesinvoice()}
-                        >
+                        <IconButton sizeSmall style={{ backgroundColor: 'blue', color: 'white', borderRadius: 0.8 }}>
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{ backgroundColor: 'green', color: 'white', borderRadius: 0.8 }}
-                          // style={{
-                          //   backgroundColor: canUpdateSalesinvoice() ? 'green' : 'gray',
-                          //   color: canUpdateSalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canUpdateSalesinvoice() && { opacity: 1 }),
-                          //   ...(!canUpdateSalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canUpdateSalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleUpdateSalesInvoice(row.id)}
-                          // disabled={!canUpdateSalesinvoice()}
+                          onClick={() => handleOpenDialog(row, row.id)}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{ backgroundColor: 'red', color: 'white', borderRadius: 0.8 }}
-                          // style={{
-                          //   backgroundColor: canDeleteSalesinvoice() ? 'Red' : 'gray',
-                          //   color: canDeleteSalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canDeleteSalesinvoice() && { opacity: 1 }),
-                          //   ...(!canDeleteSalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canDeleteSalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleDeleteConfirmation(row.id)}
-                          // disabled={!canDeleteSalesinvoice()}
-                        >
-                          <Delete style={{ fontSize: '16px' }} />
-                        </IconButton>
                       </div>
-                    ) : // <Button
-                    //   variant="outlined"
-                    //   color="secondary"
-                    //   disabled={!canViewalesinvoice()}
-                    //   onClick={() => handleViewsalesinvoice(row.id)}
-                    // >
-                    //   View
-                    // </Button>
-                    //  column.id === 'edit' ? (
-                    //   <Button
-                    //     disabled={!canUpdateSalesinvoice()}
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleUpdateSalesInvoice(row.id)}
-                    //   >
-                    //     Edit
-                    //   </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     disabled={!canDeleteSalesinvoice()}
-                    //     onClick={() => handleDeleteConfirmation(row.id)}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'invoicedate' ? (
+                    ) : column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'product' ? (
                       row.productStock.productname
@@ -191,18 +152,38 @@ const LowStock = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {/* <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
-          <DialogTitle>Confirmation</DialogTitle>
-          <DialogContent>Are you sure you want to delete this Sale Invoice?</DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
-              Cancel
-            </Button>
-            <Button onClick={handleDeleteSalesInvoice} variant="contained" color="secondary">
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog> */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Edit Stock</DialogTitle>
+        <DialogContent>
+          <Grid item container spacing={2}>
+            <Grid item sm={6}>
+              <Typography variant="subtitle1">
+                Product Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                value={selectedRow?.productStock.productname || ''}
+                onChange={(e) =>
+                  setSelectedRow({ ...selectedRow, productStock: { ...selectedRow.productStock.id, productname: e.target.value } })
+                }
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <Typography variant="subtitle1">
+                Product QTY: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input value={selectedRow?.qty || ''} onChange={(e) => setSelectedRow({ ...selectedRow, qty: e.target.value })} />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="secondary" id="savebtncs" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="secondary" id="savebtncs" variant="outlined">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

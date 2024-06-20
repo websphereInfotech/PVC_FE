@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Typography,
-  //   Button,
+  Button,
   Table,
   TableBody,
   TableRow,
@@ -10,20 +10,22 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  //   Dialog,
-  //   DialogActions,
-  //   DialogContent,
-  //   DialogTitle,
+  Grid,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton
 } from '@mui/material';
 // import { useNavigate } from 'react-router-dom';
 // import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 // import { useDispatch } from 'react-redux';
 // import useCan from 'views/permission managenment/checkpermissionvalue';
-import { Delete, Edit } from '@mui/icons-material';
+import { Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { getAllStokecash } from 'store/thunk';
+import { getAllStokecash, updateStokeCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 // import { getallSalesInvoice } from 'store/thunk';
 
 const columns = [
@@ -39,7 +41,10 @@ const LowStockCash = () => {
   const [stoke, setStoke] = useState();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -50,18 +55,44 @@ const LowStockCash = () => {
     setPage(0);
   };
 
+  const handleOpenDialog = (row) => {
+    setSelectedRow(row);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedRow(null);
+  };
+
+  const handleSave = async () => {
+    try {
+      const paylod = {
+        productId: selectedRow.id,
+        qty: selectedRow.qty
+      };
+      await dispatch(updateStokeCash(selectedRow.id, paylod, navigate));
+      const updatedData = await dispatch(getAllStokecash());
+      setStoke(updatedData);
+      handleCloseDialog();
+    } catch (error) {
+      console.error('Error updating stoke', error);
+    }
+  };
   useEffect(() => {
     const datastoke = async () => {
       try {
         const data = await dispatch(getAllStokecash());
-        console.log(data, 'datacashstoke');
         setStoke(data);
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('fetching data of stoke', error);
       }
     };
     datastoke();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
@@ -105,6 +136,7 @@ const LowStockCash = () => {
                         <IconButton
                           sizeSmall
                           style={{ backgroundColor: 'green', color: 'white', borderRadius: 0.8 }}
+                          onClick={() => handleOpenDialog(row, row.id)}
                           // style={{
                           //   backgroundColor: canUpdateSalesinvoice() ? 'green' : 'gray',
                           //   color: canUpdateSalesinvoice() ? 'white' : 'white',
@@ -118,22 +150,22 @@ const LowStockCash = () => {
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
-                        <IconButton
+                        {/* <IconButton
                           sizeSmall
                           style={{ backgroundColor: 'red', color: 'white', borderRadius: 0.8 }}
-                          // style={{
-                          //   backgroundColor: canDeleteSalesinvoice() ? 'Red' : 'gray',
-                          //   color: canDeleteSalesinvoice() ? 'white' : 'white',
-                          //   borderRadius: 0.8,
-                          //   ...(canDeleteSalesinvoice() && { opacity: 1 }),
-                          //   ...(!canDeleteSalesinvoice() && { opacity: 0.5 }),
-                          //   ...(!canDeleteSalesinvoice() && { backgroundColor: 'gray' })
-                          // }}
-                          // onClick={() => handleDeleteConfirmation(row.id)}
-                          // disabled={!canDeleteSalesinvoice()}
+                          style={{
+                            backgroundColor: canDeleteSalesinvoice() ? 'Red' : 'gray',
+                            color: canDeleteSalesinvoice() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteSalesinvoice() && { opacity: 1 }),
+                            ...(!canDeleteSalesinvoice() && { opacity: 0.5 }),
+                            ...(!canDeleteSalesinvoice() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(row.id)}
+                          disabled={!canDeleteSalesinvoice()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
-                        </IconButton>
+                        </IconButton> */}
                       </div>
                     ) : // <Button
                     //   variant="outlined"
@@ -201,6 +233,38 @@ const LowStockCash = () => {
             </Button>
           </DialogActions>
         </Dialog> */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Edit Stock</DialogTitle>
+        <DialogContent>
+          <Grid item container spacing={2}>
+            <Grid item sm={6}>
+              <Typography variant="subtitle1">
+                Product Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                value={selectedRow?.productCashStock?.productname || ''}
+                onChange={(e) =>
+                  setSelectedRow({ ...selectedRow, productStock: { ...selectedRow.productCashStock.id, productname: e.target.value } })
+                }
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <Typography variant="subtitle1">
+                Product QTY: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input value={selectedRow?.qty || ''} onChange={(e) => setSelectedRow({ ...selectedRow, qty: e.target.value })} />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="secondary" id="savebtncs" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="secondary" id="savebtncs" variant="outlined">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

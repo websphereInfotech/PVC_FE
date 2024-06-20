@@ -1588,6 +1588,7 @@ export const deletePurchaseinvoice = (id) => {
       window.location.reload();
       return deletePurchasebillData;
     } catch (error) {
+      toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(deletePurchaseinvoiceFailure(error.message));
       throw error;
     }
@@ -3175,6 +3176,7 @@ export const getAllStokecash = () => {
       return data;
     } catch (error) {
       dispatch(getAllStokeCashFailure(error.message));
+      throw error;
     }
   };
 };
@@ -3198,7 +3200,7 @@ export const updateStokeCash = (id, formData, navigate) => {
     dispatch(updateStokeCashRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/update_product_stock/${id}`, formData, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/C_update_product_stock/${id}`, formData, config);
       const updateStoke = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
