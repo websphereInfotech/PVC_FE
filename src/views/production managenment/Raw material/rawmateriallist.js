@@ -1,0 +1,213 @@
+import React, { useEffect, useState } from 'react';
+import {
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TablePagination,
+  TableHead,
+  TableContainer,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton
+} from '@mui/material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { useDispatch } from 'react-redux';
+import { DeleteRawmaterial, fetchAllRawmaterial, viewRawmaterial } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Delete, Edit } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
+import RawMaterialDrawer from 'component/rawmaterialadd';
+
+const columns = [
+  { id: 'productname', label: 'Product Name', align: 'center' },
+  { id: 'HSNcode', label: 'HSN Code', align: 'center' },
+  { id: 'gstrate', label: 'GST Rate', align: 'center' },
+  { id: 'salesprice', label: 'Sales Price', align: 'center' },
+  { id: 'lowStockQty', label: 'low Stock Qty', align: 'center' },
+  { id: 'action', label: 'Action', align: 'center' }
+];
+
+const Rawmateriallist = () => {
+  const { canUpdateRawmaterial, canDeleteRawmaterial, canViewRawmaterial, canCreateRawmaterial } = useCan();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [products, setProduct] = useState([]);
+  const [page, setPage] = useState(0);
+  const [selectedId, setSelectedId] = useState(null);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState();
+
+  useEffect(() => {
+    dispatch(fetchAllRawmaterial())
+      .then((data) => {
+        setProduct(data);
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
+        console.error('Error fetching product data:', error);
+      });
+  }, [dispatch, navigate]);
+
+  const handleDeleteConfirmation = (id) => {
+    setOpenConfirmation(true);
+    setSelectedId(id);
+  };
+
+  const handleRawmaterial = (id) => {
+    dispatch(viewRawmaterial(id));
+    navigate(`/rawmaterialview/${id}`);
+  };
+
+  const handleUpdateRawmaterial = (id) => {
+    setIsDrawerOpen(true);
+    setSelectedProduct(id);
+    dispatch(viewRawmaterial(id));
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleAddRawmaterial = () => {
+    setIsDrawerOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await dispatch(DeleteRawmaterial(selectedId));
+      setOpenConfirmation(false);
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
+  return (
+    <Card style={{ width: '100%', padding: '25px' }}>
+      <Typography variant="h4" align="center" id="mycss">
+        Raw Material List
+      </Typography>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ margin: '10px' }}
+        onClick={handleAddRawmaterial}
+        disabled={!canCreateRawmaterial()}
+      >
+        Create Raw Material
+      </Button>
+      <TableContainer>
+        <Table style={{ border: '1px solid lightgrey' }}>
+          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
+              <TableRow key={product.id}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewRawmaterial() ? 'Blue' : 'gray',
+                            color: canViewRawmaterial() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewRawmaterial() && { opacity: 1 }),
+                            ...(!canViewRawmaterial() && { opacity: 0.5 }),
+                            ...(!canViewRawmaterial() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleRawmaterial(product.id)}
+                          disabled={!canViewRawmaterial()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateRawmaterial() ? 'green' : 'gray',
+                            color: canUpdateRawmaterial() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateRawmaterial() && { opacity: 1 }),
+                            ...(!canUpdateRawmaterial() && { opacity: 0.5 }),
+                            ...(!canUpdateRawmaterial() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleUpdateRawmaterial(product.id)}
+                          disabled={!canUpdateRawmaterial()}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDeleteRawmaterial() ? 'Red' : 'gray',
+                            color: canDeleteRawmaterial() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDeleteRawmaterial() && { opacity: 1 }),
+                            ...(!canDeleteRawmaterial() && { opacity: 0.5 }),
+                            ...(!canDeleteRawmaterial() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleDeleteConfirmation(product.id)}
+                          disabled={!canDeleteRawmaterial()}
+                        >
+                          <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      product[column.id]
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={products?.length || 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>Are you sure you want to delete this?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} variant="contained" color="secondary">
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <RawMaterialDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id={selectedProduct} />
+    </Card>
+  );
+};
+
+export default Rawmateriallist;

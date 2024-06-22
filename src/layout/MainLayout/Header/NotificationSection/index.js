@@ -3,34 +3,25 @@ import React from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
-  // Button,
-  Chip,
+  Button,
   ClickAwayListener,
   Fade,
   Grid,
   Paper,
   Popper,
-  Avatar,
-  List,
-  ListItemAvatar,
-  ListItemText,
-  ListSubheader,
-  ListItemSecondaryAction,
   Typography,
-  ListItemButton
+  ListItem,
+  List,
+  ListItemText,
+  ListItemSecondaryAction,
+  Divider
 } from '@mui/material';
 
-// third party
-import PerfectScrollbar from 'react-perfect-scrollbar';
-
-// assets
-import QueryBuilderTwoToneIcon from '@mui/icons-material/QueryBuilderTwoTone';
-// import NotificationsNoneTwoToneIcon from '@mui/icons-material/NotificationsNoneTwoTone';
-
-import User1 from 'assets/images/users/avatar-1.jpg';
-import User2 from 'assets/images/users/avatar-2.jpg';
-import User3 from 'assets/images/users/avatar-3.jpg';
-import User4 from 'assets/images/users/avatar-4.jpg';
+import NotificationsNoneTwoToneIcon from '@mui/icons-material/NotificationsNoneTwoTone';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { getAllNotification } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 // ==============================|| NOTIFICATION ||============================== //
 
@@ -38,10 +29,32 @@ const NotificationSection = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const [notifications, setNotifications] = React.useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { canViewAllNotification } = useCan();
 
-  // const handleToggle = () => {
-  //   setOpen((prevOpen) => !prevOpen);
-  // };
+  React.useEffect(() => {
+    const datanotification = async () => {
+      try {
+        const value = 'true';
+        const data = await dispatch(getAllNotification(value));
+        setNotifications(data);
+      } catch (error) {
+        console.log(error, 'fetching notification');
+      }
+    };
+    datanotification();
+  }, [dispatch]);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handlenotification = () => {
+    navigate('/notification');
+    setOpen(false);
+  };
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -55,24 +68,42 @@ const NotificationSection = () => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
-    // prevOpen.current = open;
+    prevOpen.current = open;
   }, [open]);
+
+  const calculateTimeDifference = (timestamp) => {
+    const now = new Date();
+    const updatedAt = new Date(timestamp);
+    const differenceInMinutes = Math.floor((now - updatedAt) / (1000 * 60));
+
+    if (differenceInMinutes < 60) {
+      return `${differenceInMinutes} min`;
+    } else if (differenceInMinutes < 1440) {
+      const hours = Math.floor(differenceInMinutes / 60);
+      return `${hours} hour${hours > 1 ? 's' : ''}`;
+    } else {
+      const days = Math.floor(differenceInMinutes / 1440);
+      return `${days} day${days > 1 ? 's' : ''}`;
+    }
+  };
 
   return (
     <>
-      {/* <Button
-        sx={{
-          minWidth: { sm: 50, xs: 35 }
-        }}
-        ref={anchorRef}
-        aria-controls={open ? 'menu-list-grow' : undefined}
-        aria-haspopup="true"
-        aria-label="Notification"
-        onClick={handleToggle}
-        color="inherit"
-      > */}
-      {/* <NotificationsNoneTwoToneIcon sx={{ fontSize: '1.5rem' }} /> */}
-      {/* </Button> */}
+      {canViewAllNotification() === true && (
+        <Button
+          sx={{
+            minWidth: { sm: 50, xs: 35 }
+          }}
+          ref={anchorRef}
+          aria-controls={open ? 'menu-list-grow' : undefined}
+          aria-haspopup="true"
+          aria-label="Notification"
+          onClick={handleToggle}
+          color="inherit"
+        >
+          <NotificationsNoneTwoToneIcon sx={{ fontSize: '1.5rem' }} />
+        </Button>
+      )}
       <Popper
         placement="bottom-end"
         open={open}
@@ -90,7 +121,7 @@ const NotificationSection = () => {
           {
             name: 'preventOverflow',
             options: {
-              altAxis: true // false by default
+              altAxis: true
             }
           }
         ]}
@@ -109,122 +140,43 @@ const NotificationSection = () => {
                     borderRadius: '10px'
                   }}
                 >
-                  <PerfectScrollbar style={{ height: 320, overflowX: 'hidden' }}>
-                    <ListSubheader disableSticky>
-                      <Chip size="small" color="primary" label="New" />
-                    </ListSubheader>
-                    <ListItemButton alignItemsFlexStart sx={{ pt: 0 }}>
-                      <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography variant="subtitle1">John Doe</Typography>}
-                        secondary={<Typography variant="subtitle2">New ticket Added</Typography>}
-                      />
-                      <ListItemSecondaryAction sx={{ top: 22 }}>
-                        <Grid container justifyContent="flex-end">
-                          <Grid item>
-                            <QueryBuilderTwoToneIcon
-                              sx={{
-                                fontSize: '0.75rem',
-                                mr: 0.5,
-                                color: theme.palette.grey[400]
-                              }}
+                  {notifications.map((notification) => (
+                    <>
+                      <ListItem key={notification.id} alignItems="flex-start" sx={{ paddingTop: '0px' }}>
+                        <Grid container alignItems="flex-start">
+                          <Grid item sm={10} justifyContent="flex-start">
+                            <ListItemText
+                              primary={
+                                <Typography variant="body2" color="textSecondary">
+                                  {notification.notification}
+                                </Typography>
+                              }
                             />
                           </Grid>
-                          <Grid item>
-                            <Typography variant="caption" display="block" gutterBottom sx={{ color: theme.palette.grey[400] }}>
-                              now
-                            </Typography>
+                          <Grid item sm={2} container justifyContent="flex-end">
+                            <ListItemSecondaryAction>
+                              <Grid alignItems="end">
+                                <Typography
+                                  // alignItems="end"
+                                  variant="caption"
+                                  color="textSecondary"
+                                  sx={{ color: theme.palette.grey[400] }}
+                                >
+                                  {calculateTimeDifference(notification.updatedAt)}
+                                </Typography>
+                              </Grid>
+                            </ListItemSecondaryAction>
                           </Grid>
                         </Grid>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <ListSubheader disableSticky>
-                      <Chip size="small" variant="outlined" label="EARLIER" />
-                    </ListSubheader>
-                    <ListItemButton alignItemsFlexStart sx={{ pt: 0 }}>
-                      <ListItemAvatar>
-                        <Avatar alt="Joseph William" src={User2} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography variant="subtitle1">Joseph William</Typography>}
-                        secondary={<Typography variant="subtitle2">Purchase a new product</Typography>}
-                      />
-                      <ListItemSecondaryAction sx={{ top: 20 }}>
-                        <Grid container justifyContent="flex-end">
-                          <Grid item>
-                            <QueryBuilderTwoToneIcon
-                              sx={{
-                                fontSize: '0.75rem',
-                                mr: 0.5,
-                                color: theme.palette.grey[400]
-                              }}
-                            />
-                          </Grid>
-                          <Grid item>
-                            <Typography variant="caption" display="block" gutterBottom sx={{ color: theme.palette.grey[400] }}>
-                              10 min
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <ListItemButton alignItemsFlexStart>
-                      <ListItemAvatar>
-                        <Avatar alt="Sara Soudein" src={User3} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography variant="subtitle1">Sara Soudein</Typography>}
-                        secondary={<Typography variant="subtitle2">Currently Login</Typography>}
-                      />
-                      <ListItemSecondaryAction sx={{ top: 30 }}>
-                        <Grid container justifyContent="flex-end">
-                          <Grid item>
-                            <QueryBuilderTwoToneIcon
-                              sx={{
-                                fontSize: '0.75rem',
-                                mr: 0.5,
-                                color: theme.palette.grey[400]
-                              }}
-                            />
-                          </Grid>
-                          <Grid item>
-                            <Typography variant="caption" display="block" gutterBottom sx={{ color: theme.palette.grey[400] }}>
-                              12 min
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                    <ListItemButton alignItemsFlexStart>
-                      <ListItemAvatar>
-                        <Avatar alt="Sepha Wilon" src={User4} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={<Typography variant="subtitle1">Sepha Wilon</Typography>}
-                        secondary={<Typography variant="subtitle2">Purchase a new product</Typography>}
-                      />
-                      <ListItemSecondaryAction sx={{ top: 30 }}>
-                        <Grid container justifyContent="flex-end">
-                          <Grid item>
-                            <QueryBuilderTwoToneIcon
-                              sx={{
-                                fontSize: '0.75rem',
-                                mr: 0.5,
-                                color: theme.palette.grey[400]
-                              }}
-                            />
-                          </Grid>
-                          <Grid item>
-                            <Typography variant="caption" display="block" gutterBottom sx={{ color: theme.palette.grey[400] }}>
-                              30 min
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </ListItemSecondaryAction>
-                    </ListItemButton>
-                  </PerfectScrollbar>
+                      </ListItem>
+                      <Divider orientation="horizontal" flexItem />
+                    </>
+                  ))}
+                  <div style={{ display: 'flex', justifyContent: 'end' }}>
+                    <Button style={{ padding: '6px 10px' }} color="secondary" onClick={handlenotification}>
+                      View All
+                    </Button>
+                  </div>
                 </List>
               </ClickAwayListener>
             </Paper>

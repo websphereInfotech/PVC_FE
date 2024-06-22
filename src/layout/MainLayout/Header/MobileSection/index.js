@@ -6,18 +6,19 @@ import { useMediaQuery, AppBar, ClickAwayListener, IconButton, Grow, Paper, Popp
 
 // project import
 // import SearchSection from '../SearchSection';
-// import NotificationSection from '../NotificationSection';
+import NotificationSection from '../NotificationSection';
 import ProfileSection from '../ProfileSection';
 
 // assets
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 // ==============================|| MOBILE SECTION ||============================== //
 
 const MobileSection = () => {
   const theme = useTheme();
   const matchMobile = useMediaQuery(theme.breakpoints.down('mobile'));
-
+  const { canViewAllNotification } = useCan();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -89,7 +90,7 @@ const MobileSection = () => {
                     <Toolbar>
                       <Grid container direction="row" justifyContent={matchMobile ? 'space-between' : 'flex-end'} alignItems="center">
                         {/* <SearchSection theme="dark" /> */}
-                        {/* <NotificationSection /> */}
+                        {!canViewAllNotification() && <NotificationSection />}
                         <ProfileSection />
                       </Grid>
                     </Toolbar>

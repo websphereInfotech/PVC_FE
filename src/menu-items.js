@@ -234,6 +234,14 @@ const MenuItem = () => {
 
   const hasAllPermissionsBom = checkAllPermissions('Bom', ['create_bom', 'update_bom', 'delete_bom', 'view_bom', 'view_all_bom']);
 
+  const hasAllPermissionsRawmaterial = checkAllPermissions('Raw Material', [
+    'create_raw_material',
+    'update_raw_material',
+    'delete_raw_material',
+    'view_single_raw_material',
+    'view_all_raw_material'
+  ]);
+
   return {
     items: [
       {
@@ -441,13 +449,19 @@ const MenuItem = () => {
                 title: 'Bill Of Material',
                 type: 'item',
                 url: '/billofmateriallist'
+              },
+              hasAllPermissionsProduct && {
+                id: 'Product List',
+                title: 'Product',
+                type: 'item',
+                url: '/productlist'
+              },
+              hasAllPermissionsRawmaterial && {
+                id: 'Raw Material List',
+                title: 'Raw Material',
+                type: 'item',
+                url: '/rawmateriallist'
               }
-              // {
-              //   id: 'product',
-              //   title: 'Product',
-              //   type: 'item',
-              //   url: '/products'
-              // },
               // {
               //   id: 'Report',
               //   title: 'Report',
@@ -528,19 +542,19 @@ const MenuItem = () => {
             children: [
               {
                 id: 'Stoke',
-                title: 'Total Stoke',
+                title: 'Total Stock',
                 type: 'item',
                 url: '/stockmain'
               },
               {
                 id: 'Stoke',
-                title: 'Low Stoke',
+                title: 'Low Stock',
                 type: 'item',
                 url: '/lowstock'
               },
               createConfig() === 'C' && {
                 id: 'Stoke',
-                title: 'Low Stoke Cash',
+                title: 'Low Stock Cash',
                 type: 'item',
                 url: '/lowstockcash'
               }
@@ -595,12 +609,6 @@ const MenuItem = () => {
                 title: 'Stoke general',
                 type: 'item',
                 url: '/stokegeneral'
-              },
-              hasAllPermissionsProduct && {
-                id: 'Product List',
-                title: "Product's",
-                type: 'item',
-                url: '/productlist'
               },
               hasAllPermissionsCustomer && {
                 id: 'Customer',

@@ -9,7 +9,7 @@ const SearchSection = () => {
   return (
     <Box>
       <Box>
-        <Typography>Hey, {username}</Typography>
+        <Typography sx={{ padding: '8px 10px' }}>Hey, {username}</Typography>
       </Box>
     </Box>
   );

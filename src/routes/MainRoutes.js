@@ -14,6 +14,7 @@ import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
+import Pagenotification from 'component/notification';
 // import LowStockView from '../views/stock managenment/lowStockView';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
@@ -112,9 +113,12 @@ const UserList = Loadable(lazy(() => import('../views/permission managenment/use
 const Userviewpage = Loadable(lazy(() => import('../views/permission managenment/userview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++ Product ++++++++++++++++++++++++++++++++++++++++
-const ProductList = Loadable(lazy(() => import('../views/general managenment/Product/productList')));
-const Productview = Loadable(lazy(() => import('../views/general managenment/Product/productview')));
+const ProductList = Loadable(lazy(() => import('../views/production managenment/Product/productList')));
+const Productview = Loadable(lazy(() => import('../views/production managenment/Product/productview')));
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++ Raw material product ++++++++++++++++++++++++++++++++++++
+const Rawmateriallist = Loadable(lazy(() => import('../views/production managenment/Raw material/rawmateriallist')));
+const Rawmaterialview = Loadable(lazy(() => import('../views/production managenment/Raw material/rawmaterialview')));
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Customer ++++++++++++++++++++++++++++++++++++++++++++++++
 const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/customerlist')));
 const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/customerview')));
@@ -391,6 +395,16 @@ const MainRoutes = {
     { path: '/productlist', element: <ProtectedRoute element={ProductList} resource="Product" permissionName="view_all_product" /> },
     { path: '/productview/:id', element: <ProtectedRoute element={Productview} resource="Product" permissionName="view_single_product" /> },
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++ Raw material product edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/rawmateriallist',
+      element: <ProtectedRoute element={Rawmateriallist} resource="Raw Material" permissionName="view_all_raw_material" />
+    },
+    {
+      path: '/rawmaterialview/:id',
+      element: <ProtectedRoute element={Rawmaterialview} resource="Raw Material" permissionName="view_single_raw_material" />
+    },
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++ Customer edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/customerlist', element: <ProtectedRoute element={CustomerList} resource="Customer" permissionName="view_all_customer" /> },
     {
@@ -418,7 +432,6 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/lowstock', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
-    // { path: '/lowstockview', element:<LowStockView/> },
     { path: '/lowstockview/:id', element: <ProtectedRoute element={LowStockView} resource="Stock" permissionName="view_product_stock" /> },
     {
       path: '/lowstockcash',
@@ -432,6 +445,10 @@ const MainRoutes = {
     { path: '/userlist', element: <ProtectedRoute element={UserList} resource="Login" permissionName="view_all_user" /> },
     { path: '/userview/:id', element: <ProtectedRoute element={Userviewpage} resource="Login" permissionName="view_user" /> },
 
+    {
+      path: '/notification',
+      element: <ProtectedRoute element={Pagenotification} resource="Notification" permissionName="view_all_notification" />
+    },
     { path: '/stock', element: <StockManagement /> },
     { path: '/stockmain', element: <Stockmain /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },

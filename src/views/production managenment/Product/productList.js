@@ -35,7 +35,7 @@ const columns = [
 ];
 
 const ProductList = () => {
-  const { canUpdateProduct, canDeleteProduct, canViewProduct } = useCan();
+  const { canUpdateProduct, canDeleteProduct, canViewProduct, canCreateProduct } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [products, setProduct] = useState([]);
@@ -84,6 +84,10 @@ const ProductList = () => {
     setPage(0);
   };
 
+  const handleAddProduct = () => {
+    setIsDrawerOpen(true);
+  };
+
   const handleDelete = async () => {
     try {
       await dispatch(DeleteProduct(selectedId));
@@ -98,6 +102,9 @@ const ProductList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Product List
       </Typography>
+      <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateProduct()}>
+        Create Product
+      </Button>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>

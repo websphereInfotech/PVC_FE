@@ -32,9 +32,6 @@ export const UPDATE_PRO_FORMA_INVOICE_FAILURE = 'UPDATE_PRO_FORMA_INVOICE_FAILUR
 export const VIEW_PRO_FORMA_INVOICE_REQUEST = 'VIEW_PRO_FORMA_INVOICE_REQUEST';
 export const VIEW_PRO_FORMA_INVOICE_SUCCESS = 'VIEW_PRO_FORMA_INVOICE_SUCCESS';
 export const VIEW_PRO_FORMA_INVOICE_FAILURE = 'VIEW_PRO_FORMA_INVOICE_FAILURE';
-// export const GET_COUNT_SALES_INVOICE_REQUEST = 'GET_COUNT_SALES_INVOICE_REQUEST';
-// export const GET_COUNT_SALES_INVOICE_SUCCESS = 'GET_COUNT_SALES_INVOICE_SUCCESS';
-// export const GET_COUNT_SALES_INVOICE_FAILURE = 'GET_COUNT_SALES_INVOICE_FAILURE';
 
 // ########################################## PRODUCT ###############################################################################################
 export const FETCH_ALL_PRODUCTS_CASH_REQUEST = 'FETCH_ALL_PRODUCTS_CASH_REQUEST';
@@ -55,6 +52,26 @@ export const VIEW_PRODUCT_FAILURE = 'VIEW_PRODUCT_FAILURE';
 export const UPDATE_PRODUCT_REQUEST = 'UPDATE_PRODUCT_REQUEST';
 export const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS';
 export const UPDATE_PRODUCT_FAILURE = 'UPDATE_PRODUCT_FAILURE';
+
+// ########################################## CUSTOMER ###############################################################################################
+export const FETCH_ALL_RAWMATERIAL_CASH_REQUEST = 'FETCH_ALL_RAWMATERIAL_CASH_REQUEST';
+export const FETCH_ALL_RAWMATERIAL_CASH_SUCCESS = 'FETCH_ALL_RAWMATERIAL_CASH_SUCCESS';
+export const FETCH_ALL_RAWMATERIAL_CASH_FAILURE = 'FETCH_ALL_RAWMATERIAL_CASH_FAILURE';
+export const FETCH_ALL_RAWMATERIAL_REQUEST = 'FETCH_ALL_RAWMATERIAL_REQUEST';
+export const FETCH_ALL_RAWMATERIAL_SUCCESS = 'FETCH_ALL_RAWMATERIAL_SUCCESS';
+export const FETCH_ALL_RAWMATERIAL_FAILURE = 'FETCH_ALL_RAWMATERIAL_FAILURE';
+export const CREATE_RAWMATERIAL_REQUEST = 'CREATE_RAWMATERIAL_REQUEST';
+export const CREATE_RAWMATERIAL_SUCCESS = 'CREATE_RAWMATERIAL_SUCCESS';
+export const CREATE_RAWMATERIAL_FAILURE = 'CREATE_RAWMATERIAL_FAILURE';
+export const DELETE_RAWMATERIAL_REQUEST = 'DELETE_RAWMATERIAL_REQUEST';
+export const DELETE_RAWMATERIAL_SUCCESS = 'DELETE_RAWMATERIAL_SUCCESS';
+export const DELETE_RAWMATERIAL_FAILURE = 'DELETE_RAWMATERIAL_FAILURE';
+export const VIEW_RAWMATERIAL_REQUEST = 'VIEW_RAWMATERIAL_REQUEST';
+export const VIEW_RAWMATERIAL_SUCCESS = 'VIEW_RAWMATERIAL_SUCCESS';
+export const VIEW_RAWMATERIAL_FAILURE = 'VIEW_RAWMATERIAL_FAILURE';
+export const UPDATE_RAWMATERIAL_REQUEST = 'UPDATE_RAWMATERIAL_REQUEST';
+export const UPDATE_RAWMATERIAL_SUCCESS = 'UPDATE_RAWMATERIAL_SUCCESS';
+export const UPDATE_RAWMATERIAL_FAILURE = 'UPDATE_RAWMATERIAL_FAILURE';
 
 // ########################################## CUSTOMER ###############################################################################################
 export const FETCH_ALL_CUSTOMERS_CASH_REQUEST = 'FETCH_ALL_CUSTOMERS_CASH_REQUEST';
@@ -478,6 +495,11 @@ export const UPDATE_STOKE_CASH_REQUEST = 'UPDATE_STOKE_CASH_REQUEST';
 export const UPDATE_STOKE_CASH_SUCCESS = 'UPDATE_STOKE_CASH_SUCCESS';
 export const UPDATE_STOKE_CASH_FAILURE = 'UPDATE_STOKE_CASH_FAILURE';
 
+// ###################################################################### STOKE #####################################################################
+export const FETCH_ALL_NOTIFICATION_REQUEST = 'FETCH_ALL_NOTIFICATION_REQUEST';
+export const FETCH_ALL_NOTIFICATION_SUCCESS = 'FETCH_ALL_NOTIFICATION_SUCCESS';
+export const FETCH_ALL_NOTIFICATION_FAILURE = 'FETCH_ALL_NOTIFICATION_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -501,7 +523,7 @@ export const logoutFailure = (error) => ({
   type: 'LOGOUT_FAILURE',
   payload: error
 });
-// #################################################################### PRO_FORMA_INVOICE ###################################################################################
+// #################################################################### PRO_FORMA_INVOICE ################################################################
 export const fetchProformainvoiceRequest = () => ({
   type: 'FETCH_PRO_FORMA_INVOICE_REQUEST'
 });
@@ -572,19 +594,6 @@ export const updateProformainvoicefailure = (error) => ({
   type: 'UPDATE_PRO_FORMA_INVOICE_FAILURE',
   payload: error
 });
-
-// export const getCountSalesinvoiceRequst = (data) => ({
-//   type: 'GET_COUNT_SALES_INVOICE_REQUEST',
-//   payload: data
-// });
-// export const getCountSalesinvoicesuccess = (data) => ({
-//   type: 'GET_COUNT_SALES_INVOICE_SUCCESS',
-//   payload: data
-// });
-// export const getCountSalesinvoicefailure = (error) => ({
-//   type: 'GET_COUNT_SALES_INVOICE_FAILURE',
-//   payload: error
-// });
 
 // ################################################################ CUSTOMERS ##################################################################################
 export const fetchAllCustomersCashRequest = () => ({
@@ -782,7 +791,7 @@ export const deletePaymentCashFailure = (error) => ({
   payload: error
 });
 
-// ##################################################################################### SALES INVOICE ################################################################
+// ##################################################################################### SALES INVOICE #####################################################
 
 export const createSalesinvoiceRequest = (data) => ({
   type: 'CREATE_SALES_INVOICE_REQUEST',
@@ -845,7 +854,7 @@ export const viewSalesinvoiceFailure = (error) => ({
   payload: error
 });
 
-// ##################################################################################### SALES INVOICE CASH ################################################################
+// ##################################################################################### SALES INVOICE CASH ####################################
 
 export const createSalesinvoicecashRequest = (data) => ({
   type: 'CREATE_SALES_INVOICE_CASH_REQUEST',
@@ -1103,6 +1112,79 @@ export const updateProductFailure = (error) => ({
   type: 'UPDATE_PRODUCT_FAILURE',
   payload: error
 });
+
+// ############################################################################# RAW MATERIAL #################################################################
+export const createRawmaterialRequest = (data) => ({
+  type: 'CREATE_RAWMATERIAL_REQUEST',
+  payload: data
+});
+export const createRawmaterialSuccess = (data) => ({
+  type: 'CREATE_RAWMATERIAL_SUCCESS',
+  payload: data
+});
+export const createRawmaterialFailure = (error) => ({
+  type: 'CREATE_RAWMATERIAL_FAILURE',
+  payload: error
+});
+export const fetchAllRawmaterialRequest = () => ({
+  type: 'FETCH_ALL_RAWMATERIAL_REQUEST'
+});
+export const fetchAllRawmaterialSuccess = (data) => ({
+  type: 'FETCH_ALL_RAWMATERIAL_SUCCESS',
+  payload: data
+});
+export const fetchAllRawmaterialFailure = (error) => ({
+  type: 'FETCH_ALL_RAWMATERIAL_FAILURE',
+  payload: error
+});
+export const fetchAllRawmaterialcashRequest = () => ({
+  type: 'FETCH_ALL_RAWMATERIAL_CASH_REQUEST'
+});
+export const fetchAllRawmaterialcashSuccess = (data) => ({
+  type: 'FETCH_ALL_RAWMATERIAL_CASH_SUCCESS',
+  payload: data
+});
+export const fetchAllRawmaterialcashFailure = (error) => ({
+  type: 'FETCH_ALL_RAWMATERIAL_CASH_FAILURE',
+  payload: error
+});
+export const deleteRawmaterialRequest = (data) => ({
+  type: 'DELETE_RAWMATERIAL_REQUEST',
+  payload: data
+});
+export const deleteRawmaterialSuccess = (data) => ({
+  type: 'DELETE_RAWMATERIAL_SUCCESS',
+  payload: data
+});
+export const deleteRawmaterialFailure = (error) => ({
+  type: 'DELETE_RAWMATERIAL_FAILURE',
+  payload: error
+});
+export const viewRawmaterialRequest = (data) => ({
+  type: 'VIEW_RAWMATERIAL_REQUEST',
+  payload: data
+});
+export const viewRawmaterialSuccess = (data) => ({
+  type: 'VIEW_RAWMATERIAL_SUCCESS',
+  payload: data
+});
+export const viewRawmaterialFailure = (error) => ({
+  type: 'VIEW_RAWMATERIAL_FAILURE',
+  payload: error
+});
+export const updateRawmaterialRequest = (data) => ({
+  type: 'UPDATE_RAWMATERIAL_REQUEST',
+  payload: data
+});
+export const updateRawmaterialSuccess = (data) => ({
+  type: 'UPDATE_RAWMATERIAL_SUCCESS',
+  payload: data
+});
+export const updateRawmaterialFailure = (error) => ({
+  type: 'UPDATE_RAWMATERIAL_FAILURE',
+  payload: error
+});
+
 // ################################################################ EXPENSE #############################################################################
 
 export const createExpenseRequest = (data) => ({
@@ -1690,7 +1772,7 @@ export const viewCreditnoteFailure = (error) => ({
   type: 'VIEW_CREDIT_NOTE_FAILURE',
   payload: error
 });
-// ##################################################################################### PAYMENT RECIEVE CASH ################################################################
+// ##################################################################################### PAYMENT RECIEVE CASH ######################################################
 
 export const createRecieveCashRequest = (data) => ({
   type: 'CREATE_RECIEVE_CASH_REQUEST',
@@ -2156,5 +2238,19 @@ export const updateStokeCashSuccess = (data) => ({
 });
 export const updateStokeCashFailure = (error) => ({
   type: 'UPDATE_STOKE_CASH_FAILURE',
+  payload: error
+});
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification +++++++++++++++++
+export const getAllNotificationRequest = (data) => ({
+  type: 'FETCH_ALL_NOTIFICATION_REQUEST',
+  payload: data
+});
+export const getAllNotificationSuccess = (data) => ({
+  type: 'FETCH_ALL_NOTIFICATION_SUCCESS',
+  payload: data
+});
+export const getAllNotificationFailure = (error) => ({
+  type: 'FETCH_ALL_NOTIFICATION_FAILURE',
   payload: error
 });

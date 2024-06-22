@@ -5,15 +5,16 @@ import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
-import { createBom, fetchAllProducts, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
+import { createBom, fetchAllProducts, fetchAllRawmaterial, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import RawMaterialDrawer from 'component/rawmaterialadd';
 
 const Addbillofmaterial = () => {
-  const { canCreateProduct } = useCan();
+  const { canCreateRawmaterial, canCreateProduct } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: 0, wastage: 0 }]);
@@ -27,11 +28,14 @@ const Addbillofmaterial = () => {
   const [productname, setProductname] = useState('');
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [productOptions, setProductOptions] = useState([]);
+  const [rawmaterialoption, setRawmaterialoptions] = useState([]);
+  const [canCreateRawmaterialvalue, setCanCreateRawmaterialvalue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
 
   useEffect(() => {
+    setCanCreateRawmaterialvalue(canCreateRawmaterial());
     setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateProduct]);
+  }, [canCreateRawmaterial, canCreateProduct]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,7 +52,7 @@ const Addbillofmaterial = () => {
   };
 
   const handleSelectProductChange = (selectedOption, rowIndex) => {
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create Raw Material') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, index) => {
@@ -99,6 +103,18 @@ const Addbillofmaterial = () => {
           if (!canCreateProductvalue) {
             setProductOptions(options);
           }
+          const rawmaterialresponse = await dispatch(fetchAllRawmaterial());
+          if (Array.isArray(rawmaterialresponse)) {
+            const options = rawmaterialresponse.map((product) => ({
+              value: product.id,
+              label: product.productname,
+              weight: product.weight
+            }));
+            setRawmaterialoptions([{ value: 'new', label: 'Create Raw Material' }, ...options]);
+            if (!canCreateRawmaterialvalue) {
+              setRawmaterialoptions(options);
+            }
+          }
         } else {
           console.error('fetchAllProductsCash returned an unexpected response:', productResponse);
         }
@@ -106,10 +122,10 @@ const Addbillofmaterial = () => {
         console.error('Error fetching products:', error);
       }
     };
-    if (canCreateProductvalue !== null) {
+    if (canCreateRawmaterialvalue !== null || canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, canCreateProductvalue]);
+  }, [dispatch, canCreateRawmaterialvalue, canCreateProductvalue]);
 
   const handleDateChange = (date) => {
     setFormData((prevFormData) => ({
@@ -273,7 +289,7 @@ const Addbillofmaterial = () => {
               <TableHead>
                 <TableRow>
                   <TableCell width={500} sx={{ fontSize: '12px' }}>
-                    MATERIAL PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    RAW MATERIAL PRODUCT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -288,11 +304,11 @@ const Addbillofmaterial = () => {
                       <Select
                         color="secondary"
                         onChange={(selectedOption) => handleSelectProductChange(selectedOption, index)}
-                        options={productOptions}
+                        options={rawmaterialoption}
                         value={{ value: row.productId, label: row.productname }}
                       />
                     </TableCell>
-                    <AnchorProductDrawer
+                    <RawMaterialDrawer
                       open={isproductDrawerOpen}
                       onClose={() => setIsproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectProductChange(selectedOption, index)}

@@ -72,6 +72,25 @@ import {
   updateProductRequest,
   updateProductSuccess,
   updateProductFailure,
+  //  RAW MATERIAL +++++++++++++++++++++++++
+  fetchAllRawmaterialcashRequest,
+  fetchAllRawmaterialcashSuccess,
+  fetchAllRawmaterialcashFailure,
+  fetchAllRawmaterialRequest,
+  fetchAllRawmaterialSuccess,
+  fetchAllRawmaterialFailure,
+  createRawmaterialRequest,
+  createRawmaterialFailure,
+  createRawmaterialSuccess,
+  deleteRawmaterialSuccess,
+  deleteRawmaterialRequest,
+  deleteRawmaterialFailure,
+  viewRawmaterialRequest,
+  viewRawmaterialSuccess,
+  viewRawmaterialFailure,
+  updateRawmaterialRequest,
+  updateRawmaterialSuccess,
+  updateRawmaterialFailure,
   //  DELIVERYCHALLAN +++++++++++++++++++++++
   createDeliveryChallanRequest,
   createDeliveryChallanSuccess,
@@ -446,7 +465,11 @@ import {
   viewStokeCashFailure,
   updateStokeCashRequest,
   updateStokeCashSuccess,
-  updateStokeCashFailure
+  updateStokeCashFailure,
+  // Notification ++++++++++
+  getAllNotificationRequest,
+  getAllNotificationSuccess,
+  getAllNotificationFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -985,6 +1008,121 @@ export const updateProduct = (id, data, navigate) => {
     }
   };
 };
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL ++++++++++++++++++++++++++++++++++++++++
+export const fetchAllRawmaterialCash = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllRawmaterialcashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/C_get_all_raw_material_cash`, config);
+      const data = response.data.data;
+      dispatch(fetchAllRawmaterialcashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllRawmaterialcashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllRawmaterial = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllRawmaterialRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/view_all_raw_material`, config);
+      const data = response.data.data;
+      dispatch(fetchAllRawmaterialSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllRawmaterialFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const createRawmaterial = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(createRawmaterialRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/rawMaterial/create_raw_material`, data, config);
+      const rawmaterialdata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(createRawmaterialSuccess(rawmaterialdata));
+      window.location.reload();
+      return rawmaterialdata;
+    } catch (error) {
+      dispatch(createRawmaterialFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const DeleteRawmaterial = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteRawmaterialRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/rawMaterial/delete_raw_material/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteRawmaterialSuccess(data));
+      window.location.reload();
+      return data;
+    } catch (error) {
+      dispatch(deleteRawmaterialFailure(error.message));
+    }
+  };
+};
+export const viewRawmaterial = (id) => {
+  return async (dispatch) => {
+    dispatch(viewRawmaterialRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/view_single_raw_material/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewRawmaterialSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewRawmaterialFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateRawmaterial = (id, data, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateRawmaterialRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/rawMaterial/update_raw_material/${id}`, data, config);
+      const upadteProductData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(updateRawmaterialSuccess(upadteProductData));
+      window.location.reload();
+      return upadteProductData;
+    } catch (error) {
+      dispatch(updateRawmaterialFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPaymentCash = (formData, navigate) => {
   return async (dispatch) => {
@@ -3221,6 +3359,23 @@ export const updateStokeCash = (id, formData, navigate) => {
           autoClose: 1000
         });
       }
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification ++++++++++++++++++++++++++
+export const getAllNotification = (value) => {
+  return async (dispatch) => {
+    dispatch(getAllNotificationRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/notification/view_all_notification?isFront=${value}`, config);
+      const data = response.data.data;
+      dispatch(getAllNotificationSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllNotificationFailure(error.message));
+      throw error;
     }
   };
 };

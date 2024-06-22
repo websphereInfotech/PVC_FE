@@ -26,7 +26,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
-  { id: 'stock', label: 'Stoke', minWidth: 70, align: 'center' },
+  { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
@@ -92,7 +92,7 @@ const LowStockCash = () => {
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Stoke In Cash List
+        Stock In Cash List
       </Typography>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>

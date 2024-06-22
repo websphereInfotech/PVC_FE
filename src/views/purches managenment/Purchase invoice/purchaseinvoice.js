@@ -4,28 +4,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorProductDrawer from '../../../component/productadd';
 import AnchorVendorDrawer from '../../../component/vendor';
 import { useMediaQuery } from '@mui/material';
 import {
-  fetchAllProducts,
   createPurchaseinvoice,
   fetchAllVendors,
   viewPurchaseinvoice,
   updatePurchaseinvoice,
   getallPurchaseinvoice,
-  fetchuserwiseCompany
+  fetchuserwiseCompany,
+  fetchAllRawmaterial
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import RawMaterialDrawer from 'component/rawmaterialadd';
 
 const Purchaseinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
-  const { canCreateVendor, canCreateProduct } = useCan();
+  const { canCreateVendor, canCreateRawmaterial } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -55,11 +55,11 @@ const Purchaseinvoice = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
-  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  const [canCreateRawmaterialvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateVendorValue(canCreateVendor());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateVendor, canCreateProduct]);
+    setCanCreateProductvalue(canCreateRawmaterial());
+  }, [canCreateVendor, canCreateRawmaterial]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
@@ -151,7 +151,7 @@ const Purchaseinvoice = () => {
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create Raw Material') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -206,7 +206,7 @@ const Purchaseinvoice = () => {
             setvendor(options);
           }
         }
-        const productResponse = await dispatch(fetchAllProducts());
+        const productResponse = await dispatch(fetchAllRawmaterial());
         if (Array.isArray(productResponse)) {
           setProductResponse(productResponse);
           const options = productResponse.map((product) => ({
@@ -215,8 +215,8 @@ const Purchaseinvoice = () => {
             rate: product.salesprice,
             gstrate: product.gstrate
           }));
-          setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
-          if (!canCreateProductvalue) {
+          setProduct([{ value: 'new', label: 'Create Raw Material', rate: '', gstrate: '' }, ...options]);
+          if (!canCreateRawmaterialvalue) {
             setProduct(options);
           }
         } else {
@@ -237,10 +237,10 @@ const Purchaseinvoice = () => {
       }
     };
 
-    if (canCreateVendorValue !== null || canCreateProductvalue !== null) {
+    if (canCreateVendorValue !== null || canCreateRawmaterialvalue !== null) {
       fetchData();
     }
-  }, [dispatch, vendorstate, canCreateVendorValue, canCreateProductvalue, gststate, id]);
+  }, [dispatch, vendorstate, canCreateVendorValue, canCreateRawmaterialvalue, gststate, id]);
 
   useEffect(() => {
     const data = async () => {
@@ -279,7 +279,6 @@ const Purchaseinvoice = () => {
       if (!id) {
         try {
           const PurchaseinvoiceResponse = await dispatch(getallPurchaseinvoice());
-          console.log(PurchaseinvoiceResponse.data, 'PurchaseinvoiceResponse');
           let nextPurchaseinvoiceNumber = 1;
           if (PurchaseinvoiceResponse.data.length === 0) {
             const PurchaseinvoiceNumber = nextPurchaseinvoiceNumber;
@@ -350,59 +349,6 @@ const Purchaseinvoice = () => {
     }
   };
 
-  // const handlePurchase = async () => {
-  //   try {
-  //     if (id) {
-  //       const payload = {
-  //         ...formData,
-  //         totalQty: totalQuantity,
-  //         totalMrp: subtotal,
-  //         mainTotal: Number(subtotal) + Number(plusgst),
-  //         items: rows.map((row) => ({
-  //           productId: row.productId,
-  //           qty: Number(row.qty),
-  //           rate: row.rate,
-  //           mrp: row.mrp
-  //         }))
-  //       };
-  //       const gststate = companystate === vendorstate ? 'true' : 'false';
-  //       setGststate(gststate);
-  //       if (gststate === 'true') {
-  //         payload.totalSgst = plusgst;
-  //         payload.totalIgst = 0;
-  //       } else {
-  //         payload.totalSgst = 0;
-  //         payload.totalIgst = plusgst;
-  //       }
-  //       await dispatch(updatePurchaseinvoice(id, payload, navigate));
-  //     } else {
-  //       const payload = {
-  //         ...formData,
-  //         totalQty: totalQuantity,
-  //         totalMrp: subtotal,
-  //         mainTotal: Number(subtotal) + Number(plusgst),
-  //         items: rows.map((row) => ({
-  //           productId: row.productId,
-  //           qty: Number(row.qty),
-  //           rate: row.rate,
-  //           mrp: row.mrp
-  //         }))
-  //       };
-  //       const gststate = companystate === vendorstate ? 'true' : 'false';
-  //       setGststate(gststate);
-  //       if (gststate === 'true') {
-  //         payload.totalSgst = plusgst;
-  //         payload.totalIgst = 0;
-  //       } else {
-  //         payload.totalSgst = 0;
-  //         payload.totalIgst = plusgst;
-  //       }
-  //       await dispatch(createPurchaseinvoice(payload, navigate));
-  //     }
-  //   } catch (error) {
-  //     console.error('Error creating purchae invoice:', error);
-  //   }
-  // };
   const handleInvoiceDateChange = (date) => {
     setFormData({ ...formData, invoicedate: date });
   };
@@ -501,7 +447,7 @@ const Purchaseinvoice = () => {
                         value={{ value: row.productId, label: row.product }}
                       />
                     </TableCell>
-                    <AnchorProductDrawer
+                    <RawMaterialDrawer
                       open={isproductDrawerOpen}
                       onClose={() => setIsproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}

@@ -208,9 +208,6 @@ const useCan = () => {
   const canDeleteCustomer = () => {
     return checkPermission('Customer', 'delete_customer');
   };
-  const canDeleteCustomeFeild = () => {
-    return checkPermission('Customer', 'delete_customfeild');
-  };
   const canViewCustomer = () => {
     return checkPermission('Customer', 'view_single_customer');
   };
@@ -249,6 +246,23 @@ const useCan = () => {
   };
   const canViewAllProduct = () => {
     return checkPermission('Product', 'view_all_product');
+  };
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL
+  const canCreateRawmaterial = () => {
+    return checkPermission('Raw Material', 'create_raw_material');
+  };
+  const canUpdateRawmaterial = () => {
+    return checkPermission('Raw Material', 'update_raw_material');
+  };
+  const canDeleteRawmaterial = () => {
+    return checkPermission('Raw Material', 'delete_raw_material');
+  };
+  const canViewRawmaterial = () => {
+    return checkPermission('Raw Material', 'view_single_raw_material');
+  };
+  const canViewAllRawmaterial = () => {
+    return checkPermission('Raw Material', 'view_all_raw_material');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP
@@ -594,6 +608,10 @@ const useCan = () => {
     return checkPermission('Stock Cash', 'update_product_cash_stock');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification
+  const canViewAllNotification = () => {
+    return checkPermission('Notification', 'view_all_notification');
+  };
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -656,7 +674,6 @@ const useCan = () => {
     canCreateCustomer,
     canUpdateCustomer,
     canDeleteCustomer,
-    canDeleteCustomeFeild,
     canViewCustomer,
     canViewAllCustomer,
     //  VENDOR ++++++++++++++++++++++++
@@ -671,6 +688,12 @@ const useCan = () => {
     canDeleteProduct,
     canViewProduct,
     canViewAllProduct,
+    // RAW MATERIAL ++++++++++++++++++++++++
+    canCreateRawmaterial,
+    canUpdateRawmaterial,
+    canDeleteRawmaterial,
+    canViewRawmaterial,
+    canViewAllRawmaterial,
     // ITEM GROUP +++++++++++++++++++++
     canCreateItemgroup,
     canUpdateItemgroup,
@@ -787,7 +810,9 @@ const useCan = () => {
     canUpdateStoke,
     canViewAllStokeCash,
     canViewStokeCash,
-    canUpdateStokeCash
+    canUpdateStokeCash,
+    //  NOTIFICATION ++++++++++++++
+    canViewAllNotification
   };
 };
 

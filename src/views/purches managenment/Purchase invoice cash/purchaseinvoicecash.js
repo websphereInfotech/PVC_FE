@@ -3,13 +3,12 @@ import { Typography, Grid, Paper, Table, TableRow, TableBody, TableHead, TableCe
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
-import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
   PurchaseInvoiceviewCash,
   createPurchaseInvoiceCash,
   fetchAllVendorsCash,
-  fetchAllProductsCash,
+  fetchAllRawmaterialCash,
   updatePurchaseInvoiceCash
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
@@ -18,9 +17,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import AnchorVendorDrawer from 'component/vendor';
+import RawMaterialDrawer from 'component/rawmaterialadd';
 
 const Purchaseinvoicecash = () => {
-  const { canDeleteSalescash, canCreateVendor, canCreateProduct } = useCan();
+  const { canDeleteSalescash, canCreateVendor, canCreateRawmaterial } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
@@ -37,11 +37,11 @@ const Purchaseinvoicecash = () => {
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
-  const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  const [canCreateRawmaterialvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateVendorValue(canCreateVendor());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateVendor, canCreateProduct]);
+    setCanCreateProductvalue(canCreateRawmaterial());
+  }, [canCreateVendor, canCreateRawmaterial]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -66,7 +66,7 @@ const Purchaseinvoicecash = () => {
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create Raw material') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -98,14 +98,14 @@ const Purchaseinvoicecash = () => {
             setvendor(options);
           }
         }
-        const productResponse = await dispatch(fetchAllProductsCash());
+        const productResponse = await dispatch(fetchAllRawmaterialCash());
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({
             value: product.id,
             label: product.productname
           }));
-          setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
-          if (!canCreateProductvalue) {
+          setProduct([{ value: 'new', label: 'Create Raw material' }, ...options]);
+          if (!canCreateRawmaterialvalue) {
             setProduct(options);
           }
         } else {
@@ -115,10 +115,10 @@ const Purchaseinvoicecash = () => {
         console.error('Error fetching purchase invoice cash:', error);
       }
     };
-    if (canCreateVendorValue !== null || canCreateProductvalue !== null) {
+    if (canCreateVendorValue !== null || canCreateRawmaterialvalue !== null) {
       fetchData();
     }
-  }, [dispatch, id, canCreateVendorValue, canCreateProductvalue]);
+  }, [dispatch, id, canCreateVendorValue, canCreateRawmaterialvalue]);
 
   // use for select vendor name from dropdown
   const handleSelectChange = (selectedOption) => {
@@ -185,7 +185,6 @@ const Purchaseinvoicecash = () => {
           rate: item.rate,
           mrp: item.qty * item.rate
         }));
-        console.log(updatedRows, 'updatedRows');
         setRows(updatedRows);
       }
     };
@@ -291,7 +290,7 @@ const Purchaseinvoicecash = () => {
                 <TableBody>
                   {rows?.map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>
+                      <TableCell style={{ width: '80px' }}>
                         <Select
                           color="secondary"
                           onChange={(selectedOption) => handleSelectproductChange(selectedOption, index)}
@@ -299,7 +298,7 @@ const Purchaseinvoicecash = () => {
                           value={{ value: row.productId, label: row.productname }}
                         />
                       </TableCell>
-                      <AnchorProductDrawer
+                      <RawMaterialDrawer
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}

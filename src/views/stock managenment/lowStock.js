@@ -27,7 +27,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
   { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
-  { id: 'stock', label: 'Stoke', minWidth: 70, align: 'center' },
+  { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
   { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
@@ -86,19 +86,19 @@ const LowStock = () => {
         const data = await dispatch(getAllStoke());
         setStoke(data);
       } catch (error) {
-        if(error.response.status === 401) {
-          navigate('/')
+        if (error.response.status === 401) {
+          navigate('/');
         }
         console.error('fetching data of stoke', error);
       }
     };
-    datastoke();
-  }, [dispatch,navigate]);
+    fetchStoke();
+  }, [dispatch, navigate]);
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Stoke List
+        Stock List
       </Typography>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
