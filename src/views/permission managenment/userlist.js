@@ -17,6 +17,9 @@ import { Delete, Edit } from '@mui/icons-material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 
 const columns = [
   { id: 'username', label: 'User Name', align: 'center' },
@@ -26,7 +29,52 @@ const columns = [
   { id: 'salary', label: 'Basic Salary', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
+const SearchContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: theme.spacing(2)
+}));
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0)
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto'
+  }
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    border: '1px solid #918989',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch'
+    }
+  }
+}));
 export default function UserList() {
   const { canUserView, canUserUpdate, canUserCreate, canUserDelete } = useCan();
   const navigate = useNavigate();
@@ -135,17 +183,35 @@ export default function UserList() {
     }
   };
 
+  const handleSearch = async (event) => {
+    try {
+      const query = event.target.value;
+      const response = await dispatch(getallusers({ search: query }));
+      const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
+      setData(filteredData);
+    } catch (error) {
+      console.error('Error fetching User:', error);
+    }
+  };
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         User List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddUser} disabled={!canUserCreate()}>
-        Add User
-      </Button>
+      <SearchContainer>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddUser} disabled={!canUserCreate()}>
+          Add User
+        </Button>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={handleSearch} />
+        </Search>
+      </SearchContainer>
       <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
-          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -156,7 +222,7 @@ export default function UserList() {
           </TableHead>
           <TableBody>
             {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (

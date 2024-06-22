@@ -151,6 +151,7 @@ input {
 }
 .css-11wvztw-MuiTableCell-root {
   padding: 10px 0px;
+  color: #fff;
 }
 .css-1g1evsd-MuiTableCell-root {
   padding: 10px 12px;
@@ -236,19 +237,11 @@ input {
 .css-1z0zw2q-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-1z0zw2q-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-1z0zw2q-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 8px 25px 8px 10px;
 }
-// .demo {
-//   height: 400px;
-//   width: auto;
-// }
-
-// @media only screen and (min-width: 1200px) {
-//   .demo {
-//     width: 20%;
-//   }
-// }
-
-// @media only screen and (max-width: 768px) {
-//   .demo {
-//     width: auto;
-//   }
-// }
+@media (max-width:'425px') {
+  .css-fzsmes{
+    margin: 0 10px !important;
+  }
+  .css-1yl2dwb-MuiInputBase-root{
+    width: 100%;
+  }
+}

@@ -120,7 +120,7 @@ export default function ProformainvoiceList() {
       {/* </Link> */}
       <TableContainer sx={{ maxHeight: 800, display: 'flex', alignItems: 'center' }}>
         <Table style={{ border: '1px solid lightgrey' }}>
-          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)' }}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -131,7 +131,7 @@ export default function ProformainvoiceList() {
           </TableHead>
           <TableBody>
             {quotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (

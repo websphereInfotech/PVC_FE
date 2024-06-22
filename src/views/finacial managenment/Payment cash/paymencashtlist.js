@@ -185,7 +185,7 @@ const PaymentListPage = () => {
       </div>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
-          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -195,8 +195,8 @@ const PaymentListPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment) => (
-              <TableRow key={payment.id}>
+            {payments?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((payment, index) => (
+              <TableRow key={payment.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
