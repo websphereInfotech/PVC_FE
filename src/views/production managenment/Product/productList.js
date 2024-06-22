@@ -24,6 +24,9 @@ import { DeleteProduct, fetchAllProducts, viewProduct } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 
 const columns = [
   { id: 'productname', label: 'Product Name', align: 'center' },
@@ -33,7 +36,51 @@ const columns = [
   { id: 'lowStockQty', label: 'low Stock Qty', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
+const SearchContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginBottom: theme.spacing(2)
+}));
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0)
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto'
+  }
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    border: '1px solid #918989',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch'
+    }
+  }
+}));
 const ProductList = () => {
   const { canUpdateProduct, canDeleteProduct, canViewProduct, canCreateProduct } = useCan();
   const navigate = useNavigate();
@@ -97,6 +144,16 @@ const ProductList = () => {
     }
   };
 
+  const handleSearch = async (event) => {
+    try {
+      const query = event.target.value;
+      const response = await dispatch(fetchAllProducts({ search: query }));
+      setProduct(response);
+    } catch (error) {
+      console.error('Error Searching Product:', error);
+    }
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -105,9 +162,17 @@ const ProductList = () => {
       <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateProduct()}>
         Create Product
       </Button>
-      <TableContainer>
+      <SearchContainer>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={handleSearch} />
+        </Search>
+      </SearchContainer>
+      <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
-          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)' }}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -117,8 +182,8 @@ const ProductList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
-              <TableRow key={product.id}>
+            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
+              <TableRow key={product.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (

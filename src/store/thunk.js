@@ -798,12 +798,15 @@ export const fetchAllCustomersCash = () => {
     }
   };
 };
-export const fetchAllCustomers = () => {
+export const fetchAllCustomers = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllCustomersRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/get_all_customer`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/get_all_customer?{search}=`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllCustomersSuccess(data));
       return data;
@@ -911,12 +914,15 @@ export const fetchAllProductsCash = () => {
     }
   };
 };
-export const fetchAllProducts = () => {
+export const fetchAllProducts = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllProdutsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/get_all_product`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/get_all_product?{search}=`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllProdutsSuccess(data));
       return data;
@@ -2040,12 +2046,13 @@ export const createuser = (data, navigate) => {
     }
   };
 };
-export const getallusers = () => {
+export const getallusers = (params = {}) => {
   return async (dispatch) => {
     dispatch(getallUserRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user?{search}=`, { ...config, params: params });
+
       const getallUsers = response.data.data;
       dispatch(getallUserSuccess(getallUsers));
       return getallUsers;
@@ -2199,12 +2206,12 @@ export const createVendor = (vendorData, navigate) => {
     }
   };
 };
-export const fetchAllVendors = () => {
+export const fetchAllVendors = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllVendorsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/get_all_vandor`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/get_all_vandor?{search}=`, { ...config, params: params });
       const data = response.data.data;
       dispatch(fetchAllVendorsSuccess(data));
       return data;
@@ -2870,6 +2877,9 @@ export const fetchAllClaimcashLedger = (formDate, toDate) => {
       dispatch(fetchAllclaimcashledgerSuccess(data));
       return data;
     } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(fetchAllclaimcashledgerFailure(error.message));
       throw error;
     }
