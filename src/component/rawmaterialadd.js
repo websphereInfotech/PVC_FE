@@ -124,14 +124,13 @@ const RawMaterialDrawer = ({ open, onClose, id }) => {
   };
 
   const unitOptions = [
-    { value: 'kg', label: 'Kilogram (kg)' },
-    { value: 'g', label: 'Gram (g)' },
-    { value: 't', label: 'Tonne (metric ton)' },
-    { value: 'lb', label: 'Pound (lb)' },
-    { value: 'm', label: 'Meter (m)' },
-    { value: 'mm', label: 'millimeter (mm)' },
-    { value: 'cm', label: 'centimeter (cm)' },
-    { value: 'in', label: 'inch (in)' }
+    { value: 'box', label: 'box' },
+    { value: 'fts.', label: 'fts.' },
+    { value: 'kg', label: 'kg' },
+    { value: 'LTR', label: 'LTR.' },
+    { value: 'MTS', label: 'MTS' },
+    { value: 'pcs.', label: 'pcs.' },
+    { value: 'ton', label: 'ton' }
   ];
 
   const GST = [

@@ -1031,12 +1031,15 @@ export const fetchAllRawmaterialCash = () => {
     }
   };
 };
-export const fetchAllRawmaterial = () => {
+export const fetchAllRawmaterial = (params={}) => {
   return async (dispatch) => {
     dispatch(fetchAllRawmaterialRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/view_all_raw_material`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/view_all_raw_material?{search}=`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllRawmaterialSuccess(data));
       return data;

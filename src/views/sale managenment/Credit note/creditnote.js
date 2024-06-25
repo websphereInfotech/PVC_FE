@@ -25,7 +25,7 @@ const Creditnote = () => {
   const { canDeleteCreditnote, canCreateCustomer, canCreateProduct } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
+  const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     customerId: '',
     creditdate: new Date(),
@@ -87,9 +87,25 @@ const Creditnote = () => {
     setRows(updatedRows);
   };
 
+  const unitOptions = [
+    { value: 'box', label: 'box' },
+    { value: 'fts.', label: 'fts.' },
+    { value: 'kg', label: 'kg' },
+    { value: 'LTR', label: 'LTR.' },
+    { value: 'MTS', label: 'MTS' },
+    { value: 'pcs.', label: 'pcs.' },
+    { value: 'ton', label: 'ton' }
+  ];
+
   const handleAddRow = () => {
-    const newRow = { product: '', qty: '', rate: '', mrp: '' };
+    const newRow = { product: '', qty: '', unit: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
+  };
+
+  const handleUnitChange = (selectedOption, index) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
+    setRows(updatedRows);
   };
 
   // use for select product name from dropdown
@@ -107,6 +123,7 @@ const Creditnote = () => {
             productId: selectedOption.value,
             product: selectedOption.label,
             rate: selectedOption.rate,
+            unit: selectedOption.unit,
             mrp: newMrp,
             gstrate: selectedOption.gstrate,
             gst: newGst
@@ -144,6 +161,7 @@ const Creditnote = () => {
             value: product.id,
             label: product.productname,
             rate: product.salesprice,
+            unit: product.unit,
             gstrate: product.gstrate
           }));
           setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '' }, ...options]);
@@ -248,6 +266,7 @@ const Creditnote = () => {
             productId: item.CreditProduct.id,
             product: item.CreditProduct.productname,
             qty: item.qty,
+            unit: item.unit,
             rate: item.rate,
             mrp: item.qty * item.rate,
             gstrate: item.CreditProduct.gstrate,
@@ -362,6 +381,7 @@ const Creditnote = () => {
         items: rows.map((row) => ({
           id: row.id || null,
           productId: row.productId,
+          unit: row.unit,
           qty: parseFloat(row.qty),
           rate: parseFloat(row.rate),
           mrp: parseFloat(row.qty) * parseFloat(row.rate)
@@ -512,6 +532,9 @@ const Creditnote = () => {
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
+                    UNIT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
                     RATE (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
@@ -537,6 +560,13 @@ const Creditnote = () => {
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          options={unitOptions}
+                          value={row.unit ? { label: row.unit, value: row.unit } : null}
+                          onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
+                        />
                       </TableCell>
                       <TableCell id="newcs">
                         <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />

@@ -26,7 +26,7 @@ const Deliverychallan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { canCreateCustomer, canCreateProduct } = useCan();
-  const [rows, setRows] = useState([{ product: '', qty: '' }]);
+  const [rows, setRows] = useState([{ product: '', qty: '', unit: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
   const [selectcustomer, setSelectcustomer] = useState('');
@@ -50,11 +50,25 @@ const Deliverychallan = () => {
   const handleAddRow = () => {
     const newRow = {
       product: '',
-      qty: ''
+      qty: '',
+      unit: ''
     };
     setRows((prevRows) => [...prevRows, newRow]);
   };
-
+  const unitOptions = [
+    { value: 'box', label: 'box' },
+    { value: 'fts.', label: 'fts.' },
+    { value: 'kg', label: 'kg' },
+    { value: 'LTR', label: 'LTR.' },
+    { value: 'MTS', label: 'MTS' },
+    { value: 'pcs.', label: 'pcs.' },
+    { value: 'ton', label: 'ton' }
+  ];
+  const handleUnitChange = (selectedOption, index) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
+    setRows(updatedRows);
+  };
   useEffect(() => {
     const updateTotalQuantity = () => {
       let total = 0;
@@ -112,7 +126,8 @@ const Deliverychallan = () => {
           return {
             ...row,
             productId: selectedOption.value,
-            product: selectedOption.label
+            product: selectedOption.label,
+            unit: selectedOption.unit
           };
         }
         return row;
@@ -142,7 +157,8 @@ const Deliverychallan = () => {
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({
             value: product.id,
-            label: product.productname
+            label: product.productname,
+            unit: product.unit
           }));
           setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
           if (!canCreateProductvalue) {
@@ -175,6 +191,7 @@ const Deliverychallan = () => {
             id: item.id,
             productId: item.DeliveryProduct.id,
             product: item.DeliveryProduct.productname,
+            unit: item.DeliveryProduct.unit,
             qty: item.qty
           }));
           setRows(updatedRows);
@@ -235,7 +252,8 @@ const Deliverychallan = () => {
           items: rows.map((row) => ({
             id: row.id || null,
             productId: row.productId,
-            qty: Number(row.qty)
+            qty: Number(row.qty),
+            unit: row.unit
           }))
         };
         dispatch(updateDileveryChallan(id, payload, navigate));
@@ -245,7 +263,8 @@ const Deliverychallan = () => {
           totalQty: totalQuantity,
           items: rows.map((row) => ({
             productId: row.productId,
-            qty: Number(row.qty)
+            qty: Number(row.qty),
+            unit: row.unit
           }))
         };
         await dispatch(createDeliveryChallan(payload, navigate));
@@ -318,6 +337,9 @@ const Deliverychallan = () => {
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    UNIT:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>
@@ -337,7 +359,14 @@ const Deliverychallan = () => {
                         <TableCell id="newcs">
                           <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                         </TableCell>
-                        {console.log(totalQuantity, 'totalQuantity')}
+                        <TableCell>
+                          <Select
+                            options={unitOptions}
+                            value={row.unit ? { label: row.unit, value: row.unit } : null}
+                            onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
+                          />
+                        </TableCell>
+
                         <TableCell sx={{ display: 'flex', justifyContent: 'left' }}>
                           <DeleteIcon onClick={() => handleDeleteRow(index)} />
                         </TableCell>

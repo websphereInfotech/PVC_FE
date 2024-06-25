@@ -23,7 +23,7 @@ const Purchaseinvoicecash = () => {
   const { canDeleteSalescash, canCreateVendor, canCreateRawmaterial } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [rows, setRows] = useState([{ product: '', qty: '', rate: '', mrp: '' }]);
+  const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     vendorId: '',
     date: new Date()
@@ -48,6 +48,17 @@ const Purchaseinvoicecash = () => {
   {
     console.log(selectvendor);
   }
+
+  const unitOptions = [
+    { value: 'box', label: 'box' },
+    { value: 'fts.', label: 'fts.' },
+    { value: 'kg', label: 'kg' },
+    { value: 'LTR', label: 'LTR.' },
+    { value: 'MTS', label: 'MTS' },
+    { value: 'pcs.', label: 'pcs.' },
+    { value: 'ton', label: 'ton' }
+  ];
+
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -59,8 +70,14 @@ const Purchaseinvoicecash = () => {
   };
 
   const handleAddRow = () => {
-    const newRow = { product: '', qty: '', rate: '', mrp: '' };
+    const newRow = { product: '', qty: '', unit: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
+  };
+
+  const handleUnitChange = (selectedOption, index) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
+    setRows(updatedRows);
   };
 
   // use for select product name from dropdown
@@ -74,7 +91,8 @@ const Purchaseinvoicecash = () => {
           return {
             ...row,
             productId: selectedOption.value,
-            productname: selectedOption.label
+            productname: selectedOption.label,
+            unit: selectedOption.unit
           };
         }
         return row;
@@ -102,7 +120,8 @@ const Purchaseinvoicecash = () => {
         if (Array.isArray(productResponse)) {
           const options = productResponse.map((product) => ({
             value: product.id,
-            label: product.productname
+            label: product.productname,
+            unit: product.unit
           }));
           setProduct([{ value: 'new', label: 'Create Raw material' }, ...options]);
           if (!canCreateRawmaterialvalue) {
@@ -182,6 +201,7 @@ const Purchaseinvoicecash = () => {
           productId: item.ProductPurchase.id,
           productname: item.ProductPurchase.productname,
           qty: item.qty,
+          unit: item.unit,
           rate: item.rate,
           mrp: item.qty * item.rate
         }));
@@ -202,6 +222,7 @@ const Purchaseinvoicecash = () => {
             id: row.id || null,
             productId: row.productId,
             qty: Number(row.qty),
+            unit: row.unit,
             rate: row.rate,
             mrp: row.mrp
           }))
@@ -216,6 +237,7 @@ const Purchaseinvoicecash = () => {
             id: row.id || null,
             productId: row.productId,
             qty: Number(row.qty),
+            unit: row.unit,
             rate: row.rate,
             mrp: row.mrp
           }))
@@ -280,6 +302,9 @@ const Purchaseinvoicecash = () => {
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
+                    UNIT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
                     RATE (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
@@ -305,6 +330,14 @@ const Purchaseinvoicecash = () => {
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
+                      </TableCell>
+
+                      <TableCell>
+                        <Select
+                          options={unitOptions}
+                          value={row.unit ? { label: row.unit, value: row.unit } : null}
+                          onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
+                        />
                       </TableCell>
                       <TableCell id="newcs">
                         <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />

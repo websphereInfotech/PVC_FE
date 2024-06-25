@@ -63,6 +63,7 @@ const Purchaseinvoiceview = () => {
                   PRODUCT/SERVICE
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>UNIT</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>MRP(₹)</TableCell>
               </TableHead>
@@ -72,12 +73,14 @@ const Purchaseinvoiceview = () => {
                     <TableRow key={index}>
                       <TableCell>{item?.purchseProduct?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
+                      <TableCell>{item?.unit}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.qty * item?.rate}</TableCell>
                     </TableRow>
                   ))}
                 <TableCell sx={{ fontSize: '14px', textAlign: 'right' }}>TotalQTY:</TableCell>
                 <TableCell sx={{ fontSize: '14px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableBody>

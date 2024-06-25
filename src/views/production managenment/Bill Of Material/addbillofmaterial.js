@@ -17,13 +17,14 @@ const Addbillofmaterial = () => {
   const { canCreateRawmaterial, canCreateProduct } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [rows, setRows] = useState([{ product: '', qty: 0, wastage: 0 }]);
+  const [rows, setRows] = useState([{ product: '', qty: 0, unit: '', wastage: 0 }]);
   const [formData, setFormData] = useState({
     bomNo: 0,
     date: new Date(),
     weight: '',
     productId: '',
-    qty: 0
+    qty: 0,
+    unit: ''
   });
   const [productname, setProductname] = useState('');
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -41,14 +42,33 @@ const Addbillofmaterial = () => {
   const navigate = useNavigate();
   const { bomId } = useParams();
 
+  const unitOptions = [
+    { value: 'box', label: 'box' },
+    { value: 'fts.', label: 'fts.' },
+    { value: 'kg', label: 'kg' },
+    { value: 'LTR', label: 'LTR.' },
+    { value: 'MTS', label: 'MTS' },
+    { value: 'pcs.', label: 'pcs.' },
+    { value: 'ton', label: 'ton' }
+  ];
+
   const handleDeleteRow = async (index) => {
     const updatedRows = rows.filter((_, rowIndex) => rowIndex !== index);
     setRows(updatedRows);
   };
 
   const handleAddRow = () => {
-    const newRow = { product: '', qty: 0, wastage: 0 };
+    const newRow = { product: '', qty: 0, unit: '', wastage: 0 };
     setRows((prevRows) => [...prevRows, newRow]);
+  };
+
+  const handleUnitChange = (selectedOption, index) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
+    setRows(updatedRows);
+  };
+  const handleUnit = (selectedOption) => {
+    setFormData({ ...formData, unit: selectedOption.value });
   };
 
   const handleSelectProductChange = (selectedOption, rowIndex) => {
@@ -61,12 +81,12 @@ const Addbillofmaterial = () => {
             ...row,
             productId: selectedOption.value,
             productname: selectedOption.label,
-            weight: selectedOption.weight
+            weight: selectedOption.weight,
+            unit: selectedOption.unit
           };
         }
         return row;
       });
-      console.log(selectedOption, 'selectedOption');
       setRows(updatedRows);
       setIsproductDrawerOpen(false);
     }
@@ -76,12 +96,12 @@ const Addbillofmaterial = () => {
     if (selectedOption && selectedOption.label === 'Create New Product') {
       setIsproductDrawerOpen(true);
     } else {
-      console.log(selectedOption, 'OPTIONS');
       setProductname(selectedOption.label);
       setFormData({
         ...formData,
         productId: selectedOption.value,
-        weight: selectedOption.weight
+        weight: selectedOption.weight,
+        unit: selectedOption.unit
       });
 
       setIsproductDrawerOpen(false);
@@ -97,7 +117,8 @@ const Addbillofmaterial = () => {
           const options = productResponse.map((product) => ({
             value: product.id,
             label: product.productname,
-            weight: product.weight
+            weight: product.weight,
+            unit: product.unit
           }));
           setProductOptions([{ value: 'new', label: 'Create New Product' }, ...options]);
           if (!canCreateProductvalue) {
@@ -108,7 +129,8 @@ const Addbillofmaterial = () => {
             const options = rawmaterialresponse.map((product) => ({
               value: product.id,
               label: product.productname,
-              weight: product.weight
+              weight: product.weight,
+              unit: product.unit
             }));
             setRawmaterialoptions([{ value: 'new', label: 'Create Raw Material' }, ...options]);
             if (!canCreateRawmaterialvalue) {
@@ -149,13 +171,14 @@ const Addbillofmaterial = () => {
     const fetchData = async () => {
       if (bomId) {
         const response = await dispatch(viewSingleBom(bomId));
-        const { bomNo, date, bomProduct, qty } = response;
+        const { bomNo, date, bomProduct, qty, unit } = response;
         setProductname(bomProduct.productname);
-        setFormData({ date, bomNo, weight: bomProduct.weight, qty, productId: bomProduct.id });
+        setFormData({ date, bomNo, weight: bomProduct.weight, qty, productId: bomProduct.id, unit });
         const updatedRows = response.bomItems.map((item) => ({
           id: item.id,
           productId: item.bomItemsProduct.id,
           productname: item.bomItemsProduct.productname,
+          unit: item.unit,
           qty: item.qty
         }));
         setRows(updatedRows);
@@ -205,7 +228,8 @@ const Addbillofmaterial = () => {
         items: rows.map((row) => ({
           id: row.id || null,
           productId: row.productId,
-          qty: row.qty
+          qty: row.qty,
+          unit: row.unit
         }))
       };
       if (bomId) {
@@ -281,6 +305,16 @@ const Addbillofmaterial = () => {
             </Typography>
             <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
           </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Unit : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select
+              options={unitOptions}
+              value={{ value: formData.unit, label: formData.unit }}
+              onChange={(selectedOption) => handleUnit(selectedOption)}
+            />
+          </Grid>
         </Grid>
 
         <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
@@ -293,6 +327,9 @@ const Addbillofmaterial = () => {
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>
+                    UNIT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableRow>
@@ -315,6 +352,14 @@ const Addbillofmaterial = () => {
                     />
                     <TableCell id="newcs">
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
+                    </TableCell>
+
+                    <TableCell>
+                      <Select
+                        options={unitOptions}
+                        value={row.unit ? { label: row.unit, value: row.unit } : null}
+                        onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
+                      />
                     </TableCell>
                     <TableCell>
                       <DeleteIcon

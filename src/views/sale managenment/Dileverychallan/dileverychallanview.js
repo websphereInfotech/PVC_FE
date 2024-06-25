@@ -54,6 +54,7 @@ const DileveryChallanView = () => {
                   PRODUCT/SERVICE
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>UNIT</TableCell>
               </TableHead>
               <TableBody>
                 {data?.items &&
@@ -61,10 +62,12 @@ const DileveryChallanView = () => {
                     <TableRow key={index}>
                       <TableCell>{item?.DeliveryProduct?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
+                      <TableCell>{item?.unit}</TableCell>
                     </TableRow>
                   ))}
                 <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
               </TableBody>
             </Table>
           </div>

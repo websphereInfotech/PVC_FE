@@ -66,6 +66,7 @@ const Debitnoteview = () => {
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>MRP (₹)</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>UNIT</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
               </TableHead>
               <TableBody>
@@ -75,12 +76,14 @@ const Debitnoteview = () => {
                       <TableCell>{item?.DebitProduct.productname}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
+                      <TableCell>{item?.unit}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                     </TableRow>
                   ))}
                 <TableCell></TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
+                <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableBody>
             </Table>

@@ -52,6 +52,10 @@ const Bomview = () => {
           <Typography variant="subtitle1">Qty</Typography>
           <Typography variant="subtitle2">{data.qty}</Typography>
         </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Unit</Typography>
+          <Typography variant="subtitle2">{data.unit}</Typography>
+        </Grid>
 
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
@@ -61,6 +65,7 @@ const Bomview = () => {
                   PRODUCT/SERVICE
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
+                <TableCell sx={{ fontSize: '12px' }}>UNIT</TableCell>
               </TableHead>
               <TableBody>
                 {data.bomItems &&
@@ -68,6 +73,7 @@ const Bomview = () => {
                     <TableRow key={index}>
                       <TableCell>{item?.bomItemsProduct?.productname}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
+                      <TableCell>{item?.unit}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>
