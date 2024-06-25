@@ -548,13 +548,13 @@ const MenuItem = () => {
               },
               {
                 id: 'Stoke',
-                title: 'Low Stock',
+                title: 'Stoke List',
                 type: 'item',
                 url: '/lowstock'
               },
               createConfig() === 'C' && {
                 id: 'Stoke',
-                title: 'Low Stock Cash',
+                title: 'Stoke Cash List',
                 type: 'item',
                 url: '/lowstockcash'
               }
