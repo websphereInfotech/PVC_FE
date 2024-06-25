@@ -134,7 +134,6 @@ const Proformainvoice = () => {
 
       const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
       setPlusgst(totalGST);
-      console.log(selectedOption, 'row');
 
       setRows(updatedRows);
       setSelectproduct(selectedOption.value);

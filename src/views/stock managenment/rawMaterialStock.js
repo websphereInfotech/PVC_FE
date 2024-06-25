@@ -30,7 +30,6 @@ const columns = [
   // { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
-
 const RawMaterial = () => {
   const { canUpdateRawStoke, canViewRawStoke } = useCan();
   const [stoke, setStoke] = useState([]);

@@ -1026,7 +1026,7 @@ export const updateProduct = (id, data, navigate) => {
         autoClose: 1000
       });
       dispatch(updateProductSuccess(upadteProductData));
-      // window.location.reload();
+      window.location.reload();
       return upadteProductData;
     } catch (error) {
       dispatch(updateProductFailure(error.message));
@@ -1055,7 +1055,7 @@ export const fetchAllRawmaterialCash = () => {
     }
   };
 };
-export const fetchAllRawmaterial = (params={}) => {
+export const fetchAllRawmaterial = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllRawmaterialRequest());
     try {
