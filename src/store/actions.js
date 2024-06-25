@@ -500,6 +500,38 @@ export const FETCH_ALL_NOTIFICATION_REQUEST = 'FETCH_ALL_NOTIFICATION_REQUEST';
 export const FETCH_ALL_NOTIFICATION_SUCCESS = 'FETCH_ALL_NOTIFICATION_SUCCESS';
 export const FETCH_ALL_NOTIFICATION_FAILURE = 'FETCH_ALL_NOTIFICATION_FAILURE';
 
+// ###################################################################### RAW MATERIAL STOKE #####################################################################
+export const FETCH_ALL_RAW_MATERIAL_STOKE_REQUEST = 'FETCH_ALL_RAW_MATERIAL_STOKE_REQUEST';
+export const FETCH_ALL_RAW_MATERIAL_STOKE_SUCCESS = 'FETCH_ALL_RAW_MATERIAL_STOKE_SUCCESS';
+export const FETCH_ALL_RAW_MATERIAL_STOKE_FAILURE = 'FETCH_ALL_RAW_MATERIAL_STOKE_FAILURE';
+export const VIEW_RAW_MATERIAL_STOKE_REQUEST = 'VIEW_RAW_MATERIAL_STOKE_REQUEST';
+export const VIEW_RAW_MATERIAL_STOKE_SUCCESS = 'VIEW_RAW_MATERIAL_STOKE_SUCCESS';
+export const VIEW_RAW_MATERIAL_STOKE_FAILURE = 'VIEW_RAW_MATERIAL_STOKE_FAILURE';
+export const UPDATE_RAW_MATERIAL_STOKE_REQUEST = 'UPDATE_RAW_MATERIAL_STOKE_REQUEST';
+export const UPDATE_RAW_MATERIAL_STOKE_SUCCESS = 'UPDATE_RAW_MATERIAL_STOKE_SUCCESS';
+export const UPDATE_RAW_MATERIAL_STOKE_FAILURE = 'UPDATE_RAW_MATERIAL_STOKE_FAILURE';
+
+// ###################################################################### RAW MATERIAL STOKE CASH #####################################################################
+export const FETCH_ALL_RAW_CASH_STOKE_REQUEST = 'FETCH_ALL_RAW_CASH_STOKE_REQUEST';
+export const FETCH_ALL_RAW_CASH_STOKE_SUCCESS = 'FETCH_ALL_RAW_CASH_STOKE_SUCCESS';
+export const FETCH_ALL_RAW_CASH_STOKE_FAILURE = 'FETCH_ALL_RAW_CASH_STOKE_FAILURE';
+export const VIEW_RAW_CASH_STOKE_REQUEST = 'VIEW_RAW_CASH_STOKE_REQUEST';
+export const VIEW_RAW_CASH_STOKE_SUCCESS = 'VIEW_RAW_CASH_STOKE_SUCCESS';
+export const VIEW_RAW_CASH_STOKE_FAILURE = 'VIEW_RAW_CASH_STOKE_FAILURE';
+export const UPDATE_RAW_CASH_STOKE_REQUEST = 'UPDATE_RAW_CASH_STOKE_REQUEST';
+export const UPDATE_RAW_CASH_STOKE_SUCCESS = 'UPDATE_RAW_CASH_STOKE_SUCCESS';
+export const UPDATE_RAW_CASH_STOKE_FAILURE = 'UPDATE_RAW_CASH_STOKE_FAILURE';
+
+// ###################################################################### Total RAW MATERIAL STOKE #####################################################################
+export const FETCH_TOTAL_RAW_STOKE_REQUEST = 'FETCH_TOTAL_RAW_STOKE_REQUEST';
+export const FETCH_TOTAL_RAW_STOKE_SUCCESS = 'FETCH_TOTAL_RAW_STOKE_SUCCESS';
+export const FETCH_TOTAL_RAW_STOKE_FAILURE = 'FETCH_TOTAL_RAW_STOKE_FAILURE';
+
+// ###################################################################### Total Product STOKE  #####################################################################
+export const FETCH_TOTAL_PRODUCT_STOKE_REQUEST = 'FETCH_TOTAL_PRODUCT_STOKE_REQUEST';
+export const FETCH_TOTAL_PRODUCT_STOKE_SUCCESS = 'FETCH_TOTAL_PRODUCT_STOKE_SUCCESS';
+export const FETCH_TOTAL_PRODUCT_STOKE_FAILURE = 'FETCH_TOTAL_PRODUCT_STOKE_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2240,7 +2272,107 @@ export const updateStokeCashFailure = (error) => ({
   type: 'UPDATE_STOKE_CASH_FAILURE',
   payload: error
 });
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL STOKE +++++++++
+export const getAllRawMaterialStokeRequest = (data) => ({
+  type: 'FETCH_ALL_RAW_MATERIAL_STOKE_REQUEST',
+  payload: data
+});
+export const getAllRawMaterialStokeSuccess = (data) => ({
+  type: 'FETCH_ALL_RAW_MATERIAL_STOKE_SUCCESS',
+  payload: data
+});
+export const getAllRawMaterialStokeFailure = (error) => ({
+  type: 'FETCH_ALL_RAW_MATERIAL_STOKE_FAILURE',
+  payload: error
+});
+export const viewRawStokeRequest = (data) => ({
+  type: 'VIEW_RAW_MATERIAL_STOKE_REQUEST',
+  payload: data
+});
+export const viewRawStokeSuccess = (data) => ({
+  type: 'VIEW_RAW_MATERIAL_STOKE_SUCCESS',
+  payload: data
+});
+export const viewRawStokeFailure = (error) => ({
+  type: 'VIEW_RAW_MATERIAL_STOKE_FAILURE',
+  payload: error
+});
+export const updateRawStokeRequest = (data) => ({
+  type: 'UPDATE_RAW_MATERIAL_STOKE_REQUEST',
+  payload: data
+});
+export const updateRawStokeSuccess = (data) => ({
+  type: 'UPDATE_RAW_MATERIAL_STOKE_SUCCESS',
+  payload: data
+});
+export const updateRawStokeFailure = (error) => ({
+  type: 'UPDATE_RAW_MATERIAL_STOKE_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL STOKE CASH +++++++++
+export const getAllRawCashStokeRequest = (data) => ({
+  type: 'FETCH_ALL_RAW_CASH_STOKE_REQUEST',
+  payload: data
+});
+export const getAllRawCashStokeSuccess = (data) => ({
+  type: 'FETCH_ALL_RAW_CASH_STOKE_SUCCESS',
+  payload: data
+});
+export const getAllRawCashStokeFailure = (error) => ({
+  type: 'FETCH_ALL_RAW_CASH_STOKE_FAILURE',
+  payload: error
+});
+export const viewRawCashStokeRequest = (data) => ({
+  type: 'VIEW_RAW_CASH_STOKE_REQUEST',
+  payload: data
+});
+export const viewRawCashStokeSuccess = (data) => ({
+  type: 'VIEW_RAW_CASH_STOKE_SUCCESS',
+  payload: data
+});
+export const viewRawCashStokeFailure = (error) => ({
+  type: 'VIEW_RAW_CASH_STOKE_FAILURE',
+  payload: error
+});
+export const updateRawCashStokeRequest = (data) => ({
+  type: 'UPDATE_RAW_CASH_STOKE_REQUEST',
+  payload: data
+});
+export const updateRawCashStokeSuccess = (data) => ({
+  type: 'UPDATE_RAW_CASH_STOKE_SUCCESS',
+  payload: data
+});
+export const updateRawCashStokeFailure = (error) => ({
+  type: 'UPDATE_RAW_CASH_STOKE_FAILURE',
+  payload: error
+});
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ Total RAW MATERIAL STOKE  +++++++++
+export const getTotalRawStokeRequest = (data) => ({
+  type: 'FETCH_TOTAL_RAW_STOKE_REQUEST',
+  payload: data
+});
+export const getTotalRawStokeSuccess = (data) => ({
+  type: 'FETCH_TOTAL_RAW_STOKE_SUCCESS',
+  payload: data
+});
+export const getTotalRawStokeFailure = (error) => ({
+  type: 'FETCH_TOTAL_RAW_STOKE_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++ Total Product STOKE  +++++++++
+export const getTotalProductStokeRequest = (data) => ({
+  type: 'FETCH_TOTAL_PRODUCT_STOKE_REQUEST',
+  payload: data
+});
+export const getTotalProductStokeSuccess = (data) => ({
+  type: 'FETCH_TOTAL_PRODUCT_STOKE_SUCCESS',
+  payload: data
+});
+export const getTotalProductStokeFailure = (error) => ({
+  type: 'FETCH_TOTAL_PRODUCT_STOKE_FAILURE',
+  payload: error
+});
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification +++++++++++++++++
 export const getAllNotificationRequest = (data) => ({
   type: 'FETCH_ALL_NOTIFICATION_REQUEST',

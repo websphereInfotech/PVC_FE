@@ -33,7 +33,6 @@ const columns = [
   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
   { id: 'gstrate', label: 'GST Rate', align: 'center' },
   { id: 'salesprice', label: 'Sales Price', align: 'center' },
-  { id: 'lowStockQty', label: 'low Stock Qty', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const SearchContainer = styled('div')(({ theme }) => ({

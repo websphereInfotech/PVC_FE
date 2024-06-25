@@ -469,7 +469,31 @@ import {
   // Notification ++++++++++
   getAllNotificationRequest,
   getAllNotificationSuccess,
-  getAllNotificationFailure
+  getAllNotificationFailure,
+  getAllRawMaterialStokeRequest,
+  getAllRawMaterialStokeSuccess,
+  getAllRawMaterialStokeFailure,
+  viewRawStokeRequest,
+  viewRawStokeSuccess,
+  viewRawStokeFailure,
+  updateRawStokeRequest,
+  updateRawStokeSuccess,
+  updateRawStokeFailure,
+  getAllRawCashStokeRequest,
+  getAllRawCashStokeSuccess,
+  getAllRawCashStokeFailure,
+  viewRawCashStokeSuccess,
+  viewRawCashStokeRequest,
+  viewRawCashStokeFailure,
+  updateRawCashStokeRequest,
+  updateRawCashStokeSuccess,
+  updateRawCashStokeFailure,
+  getTotalRawStokeRequest,
+  getTotalRawStokeSuccess,
+  getTotalRawStokeFailure,
+  getTotalProductStokeSuccess,
+  getTotalProductStokeFailure,
+  getTotalProductStokeRequest
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -1002,7 +1026,7 @@ export const updateProduct = (id, data, navigate) => {
         autoClose: 1000
       });
       dispatch(updateProductSuccess(upadteProductData));
-      window.location.reload();
+      // window.location.reload();
       return upadteProductData;
     } catch (error) {
       dispatch(updateProductFailure(error.message));
@@ -3258,7 +3282,7 @@ export const getAllBom = () => {
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Product STOKE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getAllStoke = () => {
   return async (dispatch) => {
     dispatch(getAllStokeRequest());
@@ -3353,6 +3377,7 @@ export const updateStokeCash = (id, formData, navigate) => {
     try {
       const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/C_update_product_stock/${id}`, formData, config);
+      console.log('response', response);
       const updateStoke = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -3375,7 +3400,156 @@ export const updateStokeCash = (id, formData, navigate) => {
     }
   };
 };
-
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Raw Material Stoke+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getAllRawStock = () => {
+  return async (dispatch) => {
+    dispatch(getAllRawMaterialStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_all_raw_material_stock`, config);
+      const data = response.data.data;
+      dispatch(getAllRawMaterialStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllRawMaterialStokeFailure(error.message));
+      // throw error;
+    }
+  };
+};
+export const viewSingleRawStock = (id) => {
+  return async (dispatch) => {
+    dispatch(viewRawStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_raw_material_stock/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewRawStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewRawStokeFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateRowStoke = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateRawStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/update_raw_material_stock/${id}`, formData, config);
+      const updateStoke = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/lowstock');
+        }
+      });
+      dispatch(updateRawStokeSuccess(updateStoke));
+      return updateStoke;
+    } catch (error) {
+      dispatch(updateRawStokeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Raw Material Stoke Cash+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getAllRawCashStock = () => {
+  return async (dispatch) => {
+    dispatch(getAllRawCashStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_all_raw_material_cash_stock`, config);
+      const data = response.data.data;
+      dispatch(getAllRawCashStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllRawCashStokeFailure(error.message));
+      // throw error;
+    }
+  };
+};
+export const viewSingleRawCashStock = (id) => {
+  return async (dispatch) => {
+    dispatch(viewRawCashStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_raw_material_cash_stock/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewRawCashStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewRawCashStokeFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateRowCashStoke = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateRawCashStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/C_update_raw_material_cash_stock/${id}`, formData, config);
+      const updateStoke = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/lowstockcash');
+        }
+      });
+      dispatch(updateRawCashStokeSuccess(updateStoke));
+      return updateStoke;
+    } catch (error) {
+      dispatch(updateRawCashStokeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Total Raw Material Stoke +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getTotalRawMaterialStock = () => {
+  return async (dispatch) => {
+    dispatch(getTotalRawStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_total_material_stock`, config);
+      const data = response.data.data;
+      dispatch(getTotalRawStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getTotalRawStokeFailure(error.message));
+      // throw error;
+    }
+  };
+};
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Total Product Stoke +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getTotalProductStock = () => {
+  return async (dispatch) => {
+    dispatch(getTotalProductStokeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_total_product_stock`, config);
+      const data = response.data.data;
+      dispatch(getTotalProductStokeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getTotalProductStokeFailure(error.message));
+      // throw error;
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification ++++++++++++++++++++++++++
 export const getAllNotification = (value) => {
   return async (dispatch) => {

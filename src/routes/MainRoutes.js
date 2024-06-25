@@ -102,10 +102,6 @@ const Addbillofmaterial = Loadable(lazy(() => import('../views/production manage
 const Bomview = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmaterialview')));
 const Product = Loadable(lazy(() => import('../views/production managenment/product')));
 
-// ++++++++++++++++++++++++++++++++++++++++++++ Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
-const StockManagement = Loadable(lazy(() => import('../views/stock managenment/stock')));
-const Stockmain = Loadable(lazy(() => import('../views/stock managenment/stockmain')));
-
 // ++++++++++++++++++++++++++++++++++++++++++++++ Route permission +++++++++++++++++++++++++++++++++++
 const Permission = Loadable(lazy(() => import('../views/permission managenment/permission')));
 const User = Loadable(lazy(() => import('../views/permission managenment/adduser')));
@@ -130,7 +126,7 @@ const Vendorview = Loadable(lazy(() => import('../views/general managenment/Vend
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++
 const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
 const LowStockCash = Loadable(lazy(() => import('../views/stock managenment/lowStokeCash')));
-const LowStockView = Loadable(lazy(() => import('../views/stock managenment/lowStockView')));
+const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalStock')));
 
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
@@ -432,11 +428,11 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/lowstock', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
-    { path: '/lowstockview/:id', element: <ProtectedRoute element={LowStockView} resource="Stock" permissionName="view_product_stock" /> },
     {
       path: '/lowstockcash',
       element: <ProtectedRoute element={LowStockCash} resource="Stock Cash" permissionName="view_all_product_cash_stock" />
     },
+    { path: '/stockmain', element: <TotalStock /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
     { path: '/permission', element: <Permission /> },
@@ -449,8 +445,7 @@ const MainRoutes = {
       path: '/notification',
       element: <ProtectedRoute element={Pagenotification} resource="Notification" permissionName="view_all_notification" />
     },
-    { path: '/stock', element: <StockManagement /> },
-    { path: '/stockmain', element: <Stockmain /> },
+    // { path: '/stock', element: <StockManagement /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },

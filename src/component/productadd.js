@@ -43,7 +43,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [id]: id === 'HSNcode' || id === 'salesprice' || id === 'purchaseprice' || id === 'weight' ? Number(value) : value
+      [id]: id === 'HSNcode' || id === 'salesprice' || id === 'purchaseprice'  || id === 'weight' ? Number(value) : value
     }));
   };
 
@@ -226,7 +226,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">
               Weight:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
+            <input placeholder="Enter weight" id="weight" type='number' step="0.01" value={formData.weight} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>

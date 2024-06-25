@@ -608,6 +608,26 @@ const useCan = () => {
     return checkPermission('Stock Cash', 'update_product_cash_stock');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE Raw Material
+  const canViewAllRawStoke = () => {
+    return checkPermission('Stock', 'view_all_raw_material_stock');
+  };
+  const canViewRawStoke = () => {
+    return checkPermission('Stock', 'view_raw_material_stock');
+  };
+  const canUpdateRawStoke = () => {
+    return checkPermission('Stock', 'update_raw_material_stock');
+  };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE Raw Material Cash
+  const canViewAllRawCashStoke = () => {
+    return checkPermission('Stock Cash', 'view_all_raw_material_cash_stock');
+  };
+  const canViewRawCashStoke = () => {
+    return checkPermission('Stock Cash', 'view_raw_material_cash_stock');
+  };
+  const canUpdateRawCashStoke = () => {
+    return checkPermission('Stock Cash', 'update_raw_material_cash_stock');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification
   const canViewAllNotification = () => {
     return checkPermission('Notification', 'view_all_notification');
@@ -811,6 +831,14 @@ const useCan = () => {
     canViewAllStokeCash,
     canViewStokeCash,
     canUpdateStokeCash,
+    // ***************************** Raw Meterial Stock *********************
+    canViewAllRawStoke,
+    canViewRawStoke,
+    canUpdateRawStoke,
+    // ***************************** Raw Meterial Stock Cash *********************
+    canViewAllRawCashStoke,
+    canViewRawCashStoke,
+    canUpdateRawCashStoke,
     //  NOTIFICATION ++++++++++++++
     canViewAllNotification
   };

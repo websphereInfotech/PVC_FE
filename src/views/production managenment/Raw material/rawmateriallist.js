@@ -32,7 +32,6 @@ const columns = [
   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
   { id: 'gstrate', label: 'GST Rate', align: 'center' },
   { id: 'salesprice', label: 'Sales Price', align: 'center' },
-  { id: 'lowStockQty', label: 'low Stock Qty', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const SearchContainer = styled('div')(({ theme }) => ({
@@ -177,7 +176,7 @@ const Rawmateriallist = () => {
       </SearchContainer>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
-          <TableHead sx={{ backgroundColor: 'lightgrey', color: 'white' }}>
+          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -187,8 +186,8 @@ const Rawmateriallist = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
-              <TableRow key={product.id}>
+            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
+              <TableRow key={product.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
