@@ -36,7 +36,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     HSNcode: 0,
     gstrate: '',
     lowStockQty: null,
-    weight: 0
+    weight: ''
   });
 
   const handleInputChange = (e) => {
