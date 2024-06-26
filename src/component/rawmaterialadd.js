@@ -36,7 +36,7 @@ const RawMaterialDrawer = ({ open, onClose, id }) => {
     HSNcode: 0,
     gstrate: '',
     lowStockQty: null,
-    weight: 0
+    weight: ''
   });
 
   const handleInputChange = (e) => {
@@ -226,7 +226,7 @@ const RawMaterialDrawer = ({ open, onClose, id }) => {
             <Typography variant="subtitle1">
               Weight:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
+            <input placeholder="Enter weight" id="weight" type="number" step="0.01" value={formData.weight} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>

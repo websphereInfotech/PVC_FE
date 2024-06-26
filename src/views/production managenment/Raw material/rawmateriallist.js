@@ -157,16 +157,16 @@ const Rawmateriallist = () => {
       <Typography variant="h4" align="center" id="mycss">
         Raw Material List
       </Typography>
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{ margin: '10px' }}
-        onClick={handleAddRawmaterial}
-        disabled={!canCreateRawmaterial()}
-      >
-        Create Raw Material
-      </Button>
-      <SearchContainer>
+      <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddRawmaterial}
+          disabled={!canCreateRawmaterial()}
+        >
+          Create Raw Material
+        </Button>
         <Search>
           <SearchIconWrapper>
             <SearchIcon />

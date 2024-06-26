@@ -185,10 +185,9 @@ const ProductCash = () => {
         <DialogContent>
           <Grid item container spacing={2}>
             <Grid item sm={6}>
-              <Typography variant="subtitle1">
-                Product Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Product Name:</Typography>
               <input
+                disabled
                 value={selectedRow?.productCashStock?.productname || ''}
                 onChange={(e) =>
                   setSelectedRow({ ...selectedRow, productStock: { ...selectedRow.productCashStock.id, productname: e.target.value } })

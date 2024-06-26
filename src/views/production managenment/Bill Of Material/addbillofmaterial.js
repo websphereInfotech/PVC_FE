@@ -21,7 +21,7 @@ const Addbillofmaterial = () => {
   const [formData, setFormData] = useState({
     bomNo: 0,
     date: new Date(),
-    weight: '',
+    weight: 0,
     productId: '',
     qty: 0,
     unit: ''
@@ -171,9 +171,9 @@ const Addbillofmaterial = () => {
     const fetchData = async () => {
       if (bomId) {
         const response = await dispatch(viewSingleBom(bomId));
-        const { bomNo, date, bomProduct, qty, unit } = response;
+        const { bomNo, date, weight, bomProduct, qty, unit } = response;
         setProductname(bomProduct.productname);
-        setFormData({ date, bomNo, weight: bomProduct.weight, qty, productId: bomProduct.id, unit });
+        setFormData({ date, bomNo, weight, qty, productId: bomProduct.id, unit });
         const updatedRows = response.bomItems.map((item) => ({
           id: item.id,
           productId: item.bomItemsProduct.id,
@@ -257,7 +257,7 @@ const Addbillofmaterial = () => {
         <Grid container spacing={2} style={{ marginBottom: '16px' }}>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
-              Betch No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              Batch No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input placeholder="No." value={formData.bomNo} onChange={(e) => setFormData({ ...formData, bomNo: e.target.value })} />
           </Grid>
@@ -295,6 +295,8 @@ const Addbillofmaterial = () => {
             </Typography>
             <input
               placeholder="Enter Weight"
+              type="number"
+              step="0.01"
               value={formData.weight}
               onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
             />

@@ -536,7 +536,7 @@ const MenuItem = () => {
         children: [
           {
             id: 'auth',
-            title: 'Stoke Management',
+            title: 'Stock Management',
             type: 'collapse',
             icon: icons['PropaneTankIcon'],
             children: [
@@ -548,13 +548,13 @@ const MenuItem = () => {
               },
               {
                 id: 'Stoke',
-                title: 'Stoke List',
+                title: 'Stock List',
                 type: 'item',
                 url: '/lowstock'
               },
               createConfig() === 'C' && {
                 id: 'Stoke',
-                title: 'Stoke Cash List',
+                title: 'Stock Cash List',
                 type: 'item',
                 url: '/lowstockcash'
               }

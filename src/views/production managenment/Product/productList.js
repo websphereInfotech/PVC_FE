@@ -33,6 +33,8 @@ const columns = [
   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
   { id: 'gstrate', label: 'GST Rate', align: 'center' },
   { id: 'salesprice', label: 'Sales Price', align: 'center' },
+  { id: 'createdby', label: 'Created By', align: 'center' },
+  { id: 'updatedby', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const SearchContainer = styled('div')(({ theme }) => ({
@@ -158,10 +160,10 @@ const ProductList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Product List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateProduct()}>
-        Create Product
-      </Button>
-      <SearchContainer>
+      <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateProduct()}>
+          Create Product
+        </Button>
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
@@ -233,6 +235,10 @@ const ProductList = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
+                    ) : column.id === 'createdby' ? (
+                      product.productCreateUser?.username
+                    ) : column.id === 'updatedby' ? (
+                      product.productUpdateUser?.username
                     ) : (
                       //   <Button
                       //   disabled={!canUpdateProduct()}
