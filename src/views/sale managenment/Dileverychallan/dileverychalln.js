@@ -257,7 +257,7 @@ const Deliverychallan = () => {
   const handleNewCustomer = (newCustomerData) => {
     setcustomer((prevCustomers) => [
       ...prevCustomers,
-      { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname }
+      { value: newCustomerData?.id, label: newCustomerData?.accountname }
     ]);
     setIsDrawerOpen(false);
   };

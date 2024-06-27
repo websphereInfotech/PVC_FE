@@ -127,7 +127,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer }) => {
         onClose();
       } else {
         const Data = await dispatch(createCustomer(customerData, navigate));
-        onChangeCustomer(Data);
+        onChangeCustomer(Data.data.data);
       }
       setFormData({
         accountname: '',

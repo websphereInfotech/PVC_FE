@@ -387,12 +387,9 @@ const Creditnote = () => {
   //create new customer after show in dropdwon
   const handleNewCustomer = (newCustomerData) => {
     setcustomer((prevCustomers) => [
-      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state },
-      ...prevCustomers
+      ...prevCustomers,
+      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state }
     ]);
-    setSelectcustomer(newCustomerData.id);
-    setCustomerState(newCustomerData.state);
-    setCustomername(newCustomerData.accountname);
     setIsDrawerOpen(false);
   };
 
