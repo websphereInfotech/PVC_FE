@@ -32,6 +32,8 @@ const columns = [
   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
   { id: 'gstrate', label: 'GST Rate', align: 'center' },
   { id: 'salesprice', label: 'Sales Price', align: 'center' },
+  { id: 'productCreateUser', label: 'Created By', align: 'center' },
+  { id: 'productUpdateUser', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const SearchContainer = styled('div')(({ theme }) => ({
@@ -131,6 +133,28 @@ const Rawmateriallist = () => {
 
   const handleAddRawmaterial = () => {
     setIsDrawerOpen(true);
+  };
+
+  const handleRawProductUpdated = () => {
+    dispatch(fetchAllRawmaterial())
+      .then((data) => {
+        setProduct(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
+  };
+
+  const handleRawNewProductAdded = () => {
+    dispatch(fetchAllRawmaterial())
+      .then((data) => {
+        setProduct(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
   };
 
   const handleDelete = async () => {
@@ -238,6 +262,10 @@ const Rawmateriallist = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
+                    ) : column.id === 'productCreateUser' ? (
+                      product.productCreateUser?.username
+                    ) : column.id === 'productUpdateUser' ? (
+                      product.productUpdateUser?.username
                     ) : (
                       product[column.id]
                     )}
@@ -269,7 +297,13 @@ const Rawmateriallist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <RawMaterialDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id={selectedProduct} />
+      <RawMaterialDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        id={selectedProduct}
+        onNewRawProductAdded={handleRawNewProductAdded}
+        onRawProductUpdated={handleRawProductUpdated}
+      />
     </Card>
   );
 };

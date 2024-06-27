@@ -141,7 +141,20 @@ const Creditnote = () => {
       setIsproductDrawerOpen(false);
     }
   };
-
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        rate: newProduct.salesprice,
+        unit: newProduct.unit,
+        gstrate: newProduct.gstrate
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
   // called api of all product and customer for show name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
@@ -222,6 +235,56 @@ const Creditnote = () => {
   };
   const handleInvoiceDateChange = (date) => {
     setFormData({ ...formData, org_invoicedate: date });
+  };
+  const handleInputChange = (index, field, value) => {
+    const updatedRows = rows.map((row, rowIndex) => {
+      if (rowIndex === index) {
+        return { ...row, [field]: value };
+      }
+      return row;
+    });
+
+    setRows(updatedRows);
+    let total = 0;
+    rows.forEach((row) => {
+      total += parseInt(row.qty);
+    });
+    setTotalQuantity(total);
+
+    updatedRows.forEach((row) => {
+      const amount = row.qty * row.rate;
+      row.mrp = amount;
+      const gstAmount = row.mrp * (row.gstrate / 100);
+      row.gst = gstAmount;
+    });
+
+    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
+    setSubtotal(newSubtotal);
+    if (id && gststate) {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalSgst: newPlusgst
+      }));
+    } else {
+      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        totalIgst: newPlusgst
+      }));
+    }
+    setRows(updatedRows);
+
+    const rowId = rows[index];
+    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
+    if (selectedProduct) {
+      const updatedRowsWithGST = updatedRows.map((row) => {
+        const gstAmount = row.mrp * (row.gstrate / 100);
+        return { ...row, gst: gstAmount };
+      });
+      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
+      setPlusgst(totalGST);
+    }
   };
   useEffect(() => {
     const data = async () => {
@@ -320,56 +383,6 @@ const Creditnote = () => {
     data();
   }, [dispatch, id, navigate]);
   //manage value of input of row
-  const handleInputChange = (index, field, value) => {
-    const updatedRows = rows.map((row, rowIndex) => {
-      if (rowIndex === index) {
-        return { ...row, [field]: value };
-      }
-      return row;
-    });
-
-    setRows(updatedRows);
-    let total = 0;
-    rows.forEach((row) => {
-      total += parseInt(row.qty);
-    });
-    setTotalQuantity(total);
-
-    updatedRows.forEach((row) => {
-      const amount = row.qty * row.rate;
-      row.mrp = amount;
-      const gstAmount = row.mrp * (row.gstrate / 100);
-      row.gst = gstAmount;
-    });
-
-    const newSubtotal = updatedRows.reduce((acc, row) => acc + row.mrp, 0);
-    setSubtotal(newSubtotal);
-    if (id && gststate) {
-      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        totalSgst: newPlusgst
-      }));
-    } else {
-      const newPlusgst = updatedRows.reduce((acc, row) => acc + row.gst, 0);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        totalIgst: newPlusgst
-      }));
-    }
-    setRows(updatedRows);
-
-    const rowId = rows[index];
-    const selectedProduct = productResponse.find((product) => product.gstrate === rowId.gstrate);
-    if (selectedProduct) {
-      const updatedRowsWithGST = updatedRows.map((row) => {
-        const gstAmount = row.mrp * (row.gstrate / 100);
-        return { ...row, gst: gstAmount };
-      });
-      const totalGST = updatedRowsWithGST.reduce((acc, row) => acc + row.gst, 0);
-      setPlusgst(totalGST);
-    }
-  };
 
   const handlecreateCreditnote = async () => {
     try {
@@ -557,6 +570,7 @@ const Creditnote = () => {
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                        onNewProductAdded={handleNewProductAdded}
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

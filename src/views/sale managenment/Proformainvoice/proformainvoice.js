@@ -131,7 +131,7 @@ const Proformainvoice = () => {
         }
         return row;
       });
-
+      console.log(updatedRows, '>>>>>>>>>>>>>>updatedRows');
       const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
       setPlusgst(totalGST);
 
@@ -140,6 +140,22 @@ const Proformainvoice = () => {
       setIsproductDrawerOpen(false);
     }
   };
+
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        rate: newProduct.salesprice,
+        unit: newProduct.unit,
+        gstrate: newProduct.gstrate
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -594,6 +610,7 @@ const Proformainvoice = () => {
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                        onNewProductAdded={handleNewProductAdded}
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

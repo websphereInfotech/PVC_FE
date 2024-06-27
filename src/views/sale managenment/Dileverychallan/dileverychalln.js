@@ -138,6 +138,18 @@ const Deliverychallan = () => {
       setIsproductDrawerOpen(false);
     }
   };
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        unit: newProduct.unit
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
   const handleChallanDateChange = (date) => {
     setFormData({ ...formData, date: date });
   };
@@ -191,7 +203,7 @@ const Deliverychallan = () => {
             id: item.id,
             productId: item.DeliveryProduct.id,
             product: item.DeliveryProduct.productname,
-            unit: item.DeliveryProduct.unit,
+            unit: item.unit,
             qty: item.qty
           }));
           setRows(updatedRows);
@@ -354,7 +366,11 @@ const Deliverychallan = () => {
                             value={{ value: row.productId, label: row.product }}
                           />
                         </TableCell>
-                        <AnchorProductDrawer open={isproductDrawerOpen} onClose={() => setIsproductDrawerOpen(false)} />
+                        <AnchorProductDrawer
+                          open={isproductDrawerOpen}
+                          onClose={() => setIsproductDrawerOpen(false)}
+                          onNewProductAdded={handleNewProductAdded}
+                        />
 
                         <TableCell id="newcs">
                           <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

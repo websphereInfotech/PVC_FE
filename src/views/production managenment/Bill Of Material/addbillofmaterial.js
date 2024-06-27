@@ -11,7 +11,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
-import RawMaterialDrawer from 'component/rawmaterialadd';
+import RawMaterialDrawer from '../../../component/rawmaterialadd';
 
 const Addbillofmaterial = () => {
   const { canCreateRawmaterial, canCreateProduct } = useCan();
@@ -28,6 +28,7 @@ const Addbillofmaterial = () => {
   });
   const [productname, setProductname] = useState('');
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
+  const [israwproductDrawerOpen, setIsRawproductDrawerOpen] = useState(false);
   const [productOptions, setProductOptions] = useState([]);
   const [rawmaterialoption, setRawmaterialoptions] = useState([]);
   const [canCreateRawmaterialvalue, setCanCreateRawmaterialvalue] = useState(null);
@@ -72,8 +73,8 @@ const Addbillofmaterial = () => {
   };
 
   const handleSelectProductChange = (selectedOption, rowIndex) => {
-    if (selectedOption && selectedOption.label === 'Create Raw Material') {
-      setIsproductDrawerOpen(true);
+    if (selectedOption && selectedOption.value === 'new material') {
+      setIsRawproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, index) => {
         if (index === rowIndex) {
@@ -88,7 +89,7 @@ const Addbillofmaterial = () => {
         return row;
       });
       setRows(updatedRows);
-      setIsproductDrawerOpen(false);
+      setIsRawproductDrawerOpen(false);
     }
   };
 
@@ -109,6 +110,34 @@ const Addbillofmaterial = () => {
     // }
   };
 
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...productOptions,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        weight: newProduct.weight,
+        unit: newProduct.unit
+      }
+    ];
+    setProductOptions(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
+
+  const handleNewRawProductAdded = (newmaterial) => {
+    const updatedProductList = [
+      ...rawmaterialoption,
+      {
+        value: newmaterial.id,
+        label: newmaterial.productname,
+        weight: newmaterial.weight,
+        unit: newmaterial.unit
+      }
+    ];
+    setRawmaterialoptions(updatedProductList);
+    setIsRawproductDrawerOpen(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -126,15 +155,15 @@ const Addbillofmaterial = () => {
           }
           const rawmaterialresponse = await dispatch(fetchAllRawmaterial());
           if (Array.isArray(rawmaterialresponse)) {
-            const options = rawmaterialresponse.map((product) => ({
+            const Roptions = rawmaterialresponse.map((product) => ({
               value: product.id,
               label: product.productname,
               weight: product.weight,
               unit: product.unit
             }));
-            setRawmaterialoptions([{ value: 'new', label: 'Create Raw Material' }, ...options]);
+            setRawmaterialoptions([{ value: 'new material', label: 'Create Raw Material' }, ...Roptions]);
             if (!canCreateRawmaterialvalue) {
-              setRawmaterialoptions(options);
+              setRawmaterialoptions(Roptions);
             }
           }
         } else {
@@ -287,6 +316,7 @@ const Addbillofmaterial = () => {
               open={isproductDrawerOpen}
               onClose={() => setIsproductDrawerOpen(false)}
               onSelectProduct={(selectedOption) => handleProductDrawerSelect(selectedOption)}
+              onNewProductAdded={handleNewProductAdded}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -348,9 +378,10 @@ const Addbillofmaterial = () => {
                       />
                     </TableCell>
                     <RawMaterialDrawer
-                      open={isproductDrawerOpen}
-                      onClose={() => setIsproductDrawerOpen(false)}
+                      open={israwproductDrawerOpen}
+                      onClose={() => setIsRawproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectProductChange(selectedOption, index)}
+                      onNewRawProductAdded={handleNewRawProductAdded}
                     />
                     <TableCell id="newcs">
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

@@ -189,6 +189,20 @@ const Salesinvoice = () => {
     generateAutoInvoiceNumber();
   }, [dispatch, id]);
 
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        rate: newProduct.salesprice,
+        unit: newProduct.unit,
+        gstrate: newProduct.gstrate
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -602,6 +616,7 @@ const Salesinvoice = () => {
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                        onNewProductAdded={handleNewProductAdded}
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

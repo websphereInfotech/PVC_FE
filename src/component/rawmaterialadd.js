@@ -9,11 +9,13 @@ import Select from 'react-select';
 import { createRawmaterial, updateRawmaterial, viewRawmaterial } from 'store/thunk';
 import { useNavigate } from 'react-router';
 
-const RawMaterialDrawer = ({ open, onClose, id }) => {
+const RawMaterialDrawer = ({ open, onClose, id, onNewRawProductAdded, onRawProductUpdated }) => {
   RawMaterialDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    id: PropTypes.string
+    id: PropTypes.string,
+    onNewRawProductAdded: PropTypes.func.isRequired,
+    onRawProductUpdated: PropTypes.func.isRequired
   };
 
   const dispatch = useDispatch();
@@ -110,9 +112,30 @@ const RawMaterialDrawer = ({ open, onClose, id }) => {
         cess
       };
       if (id) {
-        await dispatch(updateRawmaterial(id, data, navigate));
+        const newdata = await dispatch(updateRawmaterial(id, data, navigate));
+        onRawProductUpdated(newdata.data.data);
       } else {
-        await dispatch(createRawmaterial(data, navigate));
+        const newrawmaterial = await dispatch(createRawmaterial(data, navigate));
+        console.log(newrawmaterial, 'ROWMATE');
+        onNewRawProductAdded(newrawmaterial.data.data);
+        setFormData({
+          productname: '',
+          description: '',
+          itemgroup: '',
+          itemcategory: '',
+          unit: '',
+          salesprice: 0,
+          purchaseprice: 0,
+          HSNcode: 0,
+          gstrate: '',
+          lowStockQty: null,
+          weight: ''
+        });
+        setOpeningStock('');
+        setNagativeQty('');
+        setLowStock('');
+        setCess('');
+        setItemType('');
       }
     } catch (error) {
       console.error('Error creating Product', error);
@@ -200,7 +223,7 @@ const RawMaterialDrawer = ({ open, onClose, id }) => {
             </Typography>
             <Select
               options={unitOptions}
-              value={formData.unit ? { label: formData.unit.toUpperCase(), value: formData.unit } : null}
+              value={formData.unit ? { label: formData.unit, value: formData.unit } : null}
               onChange={handleUnitChange}
             />
           </Grid>

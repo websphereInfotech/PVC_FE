@@ -968,7 +968,6 @@ export const createProduct = (data, navigate) => {
         autoClose: 1000
       });
       dispatch(createProductSuccess(createProductData));
-      window.location.reload();
       return createProductData;
     } catch (error) {
       dispatch(createProductFailure(error.message));
@@ -1026,7 +1025,7 @@ export const updateProduct = (id, data, navigate) => {
         autoClose: 1000
       });
       dispatch(updateProductSuccess(upadteProductData));
-      window.location.reload();
+      // navigate(`/productview/${id}`)
       return upadteProductData;
     } catch (error) {
       dispatch(updateProductFailure(error.message));
@@ -1085,7 +1084,6 @@ export const createRawmaterial = (data, navigate) => {
         autoClose: 1000
       });
       dispatch(createRawmaterialSuccess(rawmaterialdata));
-      window.location.reload();
       return rawmaterialdata;
     } catch (error) {
       dispatch(createRawmaterialFailure(error.message));
@@ -1143,7 +1141,6 @@ export const updateRawmaterial = (id, data, navigate) => {
         autoClose: 1000
       });
       dispatch(updateRawmaterialSuccess(upadteProductData));
-      window.location.reload();
       return upadteProductData;
     } catch (error) {
       dispatch(updateRawmaterialFailure(error.message));

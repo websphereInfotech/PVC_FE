@@ -118,6 +118,7 @@ const ProductList = () => {
   };
 
   const handleUpdateProduct = (id) => {
+    // console.log("enter");
     setIsDrawerOpen(true);
     setSelectedProduct(id);
     dispatch(viewProduct(id));
@@ -133,7 +134,31 @@ const ProductList = () => {
   };
 
   const handleAddProduct = () => {
+    // console.log('setSelectedProduct');
+    // setSelectedProduct(101);
     setIsDrawerOpen(true);
+  };
+
+  const handleProductUpdated = () => {
+    dispatch(fetchAllProducts())
+      .then((data) => {
+        setProduct(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
+  };
+
+  const handleNewProductAdded = () => {
+    dispatch(fetchAllProducts())
+      .then((data) => {
+        setProduct(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
   };
 
   const handleDelete = async () => {
@@ -240,23 +265,6 @@ const ProductList = () => {
                     ) : column.id === 'updatedby' ? (
                       product.productUpdateUser?.username
                     ) : (
-                      //   <Button
-                      //   disabled={!canUpdateProduct()}
-                      //     variant="outlined"
-                      //     color="secondary"
-                      //     onClick={() => handleUpdatePayment(product.id)}
-                      //   >
-                      //     Edit
-                      //   </Button>
-                      // ) : column.id === 'delete' ? (
-                      //   <Button
-                      //   disabled={!canDeleteProduct()}
-                      //     variant="outlined"
-                      //     color="secondary"
-                      //     onClick={() => handleDeleteConfirmation(product.id)}
-                      //   >
-                      //     Delete
-                      //   </Button>
                       product[column.id]
                     )}
                   </TableCell>
@@ -287,7 +295,13 @@ const ProductList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AnchorProductDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id={selectedProduct} />
+      <AnchorProductDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        id={selectedProduct}
+        onNewProductAdded={handleNewProductAdded}
+        onProductUpdated={handleProductUpdated}
+      />
     </Card>
   );
 };

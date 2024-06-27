@@ -101,6 +101,18 @@ const Salescash = () => {
     }
   };
 
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        unit: newProduct.unit
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
   // called api of all product and customer for show name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
@@ -324,6 +336,7 @@ const Salescash = () => {
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                        onNewProductAdded={handleNewProductAdded}
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

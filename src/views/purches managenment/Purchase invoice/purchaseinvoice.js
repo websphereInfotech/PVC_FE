@@ -198,6 +198,21 @@ const Purchaseinvoice = () => {
     }
   };
 
+  const handleNewRawProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        rate: newProduct.salesprice,
+        unit: newProduct.unit,
+        gstrate: newProduct.gstrate
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
+
   console.log(selectvendor, companystate);
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
@@ -474,6 +489,7 @@ const Purchaseinvoice = () => {
                       open={isproductDrawerOpen}
                       onClose={() => setIsproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                      onNewRawProductAdded={handleNewRawProductAdded}
                     />
                     <TableCell>
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

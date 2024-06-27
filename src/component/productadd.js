@@ -9,11 +9,13 @@ import Select from 'react-select';
 import { createProduct, updateProduct, viewProduct } from 'store/thunk';
 import { useNavigate } from 'react-router';
 
-const AnchorProductDrawer = ({ open, onClose, id }) => {
+const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUpdated }) => {
   AnchorProductDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    id: PropTypes.string
+    id: PropTypes.string,
+    onNewProductAdded: PropTypes.func.isRequired,
+    onProductUpdated: PropTypes.func.isRequired
   };
 
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
     salesprice: 0,
     purchaseprice: 0,
     HSNcode: 0,
-    gstrate: '',
+    gstrate: 0,
     lowStockQty: null,
     weight: ''
   });
@@ -84,6 +86,26 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
           setLowStock(productData.lowstock);
           setCess(productData.cess);
           setItemType(productData.itemtype);
+        } else {
+          setFormData({
+            productname: '',
+            description: '',
+            itemgroup: '',
+            itemcategory: '',
+            unit: '',
+            salesprice: 0,
+            purchaseprice: 0,
+            HSNcode: 0,
+            gstrate: 0,
+            lowStockQty: null,
+            weight: ''
+          });
+          setSelectedGST(0);
+          setOpeningStock(true);
+          setNagativeQty(false);
+          setLowStock(false);
+          setCess(true);
+          setItemType('Product');
         }
       } catch (error) {
         console.error('Error fetching Product', error);
@@ -110,9 +132,30 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         cess
       };
       if (id) {
-        await dispatch(updateProduct(id, data, navigate));
+        const newdata = await dispatch(updateProduct(id, data, navigate));
+        onProductUpdated(newdata.data.data);
       } else {
-        await dispatch(createProduct(data, navigate));
+        const newdata = await dispatch(createProduct(data, navigate));
+        onNewProductAdded(newdata.data.data);
+        setFormData({
+          productname: '',
+          description: '',
+          itemgroup: '',
+          itemcategory: '',
+          unit: '',
+          salesprice: 0,
+          purchaseprice: 0,
+          HSNcode: 0,
+          gstrate: 0,
+          lowStockQty: null,
+          weight: ''
+        });
+        setSelectedGST(0);
+        setOpeningStock(true);
+        setNagativeQty(false);
+        setLowStock(false);
+        setCess(true);
+        setItemType('Product');
       }
     } catch (error) {
       console.error('Error creating Product', error);
@@ -153,7 +196,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
         }}
       >
         <Grid item>
-          <Typography variant="h4">New Item</Typography>
+          <Typography variant="h4">New ItemS</Typography>
         </Grid>
         <Grid item>
           <CancelIcon onClick={onClose} />
@@ -200,7 +243,7 @@ const AnchorProductDrawer = ({ open, onClose, id }) => {
             </Typography>
             <Select
               options={unitOptions}
-              value={formData.unit ? { label: formData.unit.toUpperCase(), value: formData.unit } : null}
+              value={formData.unit ? { label: formData.unit, value: formData.unit } : null}
               onChange={handleUnitChange}
             />
           </Grid>

@@ -104,6 +104,19 @@ const Purchaseinvoicecash = () => {
     }
   };
 
+  const handleNewRawProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname,
+        unit: newProduct.unit
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
+
   // called api of all product and vendor for show name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
@@ -327,6 +340,7 @@ const Purchaseinvoicecash = () => {
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
+                        onNewRawProductAdded={handleNewRawProductAdded}
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
