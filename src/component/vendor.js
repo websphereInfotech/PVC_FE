@@ -10,11 +10,12 @@ import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import { useNavigate } from 'react-router';
 
-const AnchorVendorDrawer = ({ open, onClose, id }) => {
+const AnchorVendorDrawer = ({ open, onClose, id, onChangeVendor }) => {
   AnchorVendorDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    id: PropTypes.string
+    id: PropTypes.string,
+    onChangeVendor: PropTypes.array
   };
 
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const AnchorVendorDrawer = ({ open, onClose, id }) => {
         setBankDetail(response.bankdetail);
         setCreditlimit(response.creditlimit);
         setTotalCredit(response.totalcreadit);
-        if (response.v_bankdetails) {
+        if (response.v_bankdetails === true) {
           setBankName(response.v_bankdetails.bankname);
           setAccountNumber(response.v_bankdetails.accountnumber);
           setAccountType(response.v_bankdetails.accounttype);
@@ -108,11 +109,46 @@ const AnchorVendorDrawer = ({ open, onClose, id }) => {
         bankdetail: bankdetail,
         creditlimit: creditlimit
       };
+      if (creditlimit) {
+        vendorData.totalcreadit = totalCredit;
+      }
+      if (bankdetail) {
+        vendorData.v_bankdetails = {
+          accountnumber: accountNumber,
+          ifsccode: ifscCode,
+          bankname: bankName,
+          accounttype: accountType
+        };
+      }
       if (id) {
         await dispatch(updateVendor(id, vendorData, navigate));
+        onClose();
       } else {
-        await dispatch(createVendor(vendorData, navigate));
+        const Data = await dispatch(createVendor(vendorData, navigate));
+        onChangeVendor(Data);
       }
+      setFormData({
+        accountname: '',
+        shortname: '',
+        email: '',
+        contactpersonname: '',
+        mobileno: '',
+        panno: '',
+        gstnumber: '',
+        creditperiod: '',
+        address1: '',
+        address2: '',
+        pincode: '',
+        country: '',
+        balance: ''
+      });
+      setBankDetail(false);
+      setCreditlimit(false);
+      setBankName('');
+      setAccountNumber('');
+      setAccountType('');
+      setIfscCode('');
+      setTotalCredit('');
     } catch (error) {
       console.error('Error creating vendor:', error);
     }

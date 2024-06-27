@@ -131,6 +131,7 @@ const VendorList = () => {
     try {
       await dispatch(DeleteVendor(selectedId));
       setOpenConfirmation(false);
+      setVendor((preVendor) => preVendor.filter((vendor) => vendor.id !== selectedId));
     } catch (error) {
       console.error('Error deleting product:', error);
     }

@@ -103,6 +103,7 @@ const CompanyList = () => {
     try {
       await dispatch(deleteCompany(selectedId));
       setOpenConfirmation(false);
+      setCompany((preCompany) => preCompany.filter((comapny) => comapny.id !== selectedId));
     } catch (error) {
       console.error('Error deleting company:', error);
     }

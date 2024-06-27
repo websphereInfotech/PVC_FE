@@ -95,6 +95,7 @@ const DileveryChallanList = () => {
     try {
       await dispatch(deleteDileveryChallan(selectedUserId));
       setOpenConfirmation(false);
+      setdeliverychallan((preDeliveryChallan) => preDeliveryChallan.filter((deliverychallans) => deliverychallans.id !== selectedUserId));
     } catch (error) {
       console.error('Error deleting delivery challan:', error);
     }

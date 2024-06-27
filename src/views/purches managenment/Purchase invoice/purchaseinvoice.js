@@ -331,6 +331,20 @@ const Purchaseinvoice = () => {
   }, [dispatch, id]);
 
   console.log(selectvendor);
+
+  //create new Vendor after show in dropdwon
+  const handleNewVendor = (newVendorData) => {
+    setvendor((prevVendor) => [
+      {
+        value: newVendorData?.id,
+        label: newVendorData?.contactpersonname,
+        state: newVendorData?.state
+      },
+      ...prevVendor
+    ]);
+    setSelectvendor(newVendorData.id), setvendorname(newVendorData.contactpersonname), setvendorstate(newVendorData.state);
+    setIsDrawerOpen(false);
+  };
   const handlePurchase = async () => {
     try {
       const payload = {
@@ -400,7 +414,7 @@ const Purchaseinvoice = () => {
             onChange={handleSelectChange}
           />
         </Grid>
-        <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+        <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">

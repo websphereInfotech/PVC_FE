@@ -140,6 +140,7 @@ const ProductList = () => {
     try {
       await dispatch(DeleteProduct(selectedId));
       setOpenConfirmation(false);
+      setProduct((prevProduct) => prevProduct.filter((product) => product.id !== selectedId));
     } catch (error) {
       console.error('Error deleting product:', error);
     }

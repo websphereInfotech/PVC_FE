@@ -51,7 +51,7 @@ const PaymentPage = () => {
         const response = await dispatch(fetchAllVendorsCash());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+        setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
         }
         if (!canCreateVendorValue) {
           setvendor(options);
@@ -80,6 +80,17 @@ const PaymentPage = () => {
     viewData();
   }, [dispatch, id, canCreateVendorValue]);
 
+  //create new Vendor after show in dropdwon
+  const handleNewVendor =  (newVendorData) => {
+    setvendor((prevVendor) => [
+      ...prevVendor,
+      {
+        value: newVendorData?.data?.id,
+        label: newVendorData?.data?.contactpersonname,
+      }
+    ]);
+    setIsDrawerOpen(false);
+  };
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
@@ -130,7 +141,7 @@ const PaymentPage = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

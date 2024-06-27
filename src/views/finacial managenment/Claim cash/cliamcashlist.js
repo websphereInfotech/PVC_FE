@@ -121,6 +121,7 @@ const Claimcashlist = () => {
     try {
       await dispatch(deleteClaimCash(selectedId));
       setOpenConfirmation(false);
+      setPayments((prevpayment) => prevpayment.filter((payment) => payment.id !== selectedId));
     } catch (error) {
       console.error('Error deleting cliam cash data:', error);
     }

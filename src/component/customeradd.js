@@ -11,13 +11,13 @@ import { createCustomer, updateCustomer, viewCustomer } from '../store/thunk';
 import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import { useNavigate } from 'react-router';
-// import PlacesAutocomplete from 'react-places-autocomplete';
 
-const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
+const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer }) => {
   AnchorTemporaryDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    id: PropTypes.string
+    id: PropTypes.string,
+    onChangeCustomer: PropTypes.array
   };
 
   const dispatch = useDispatch();
@@ -90,7 +90,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
         setBankDetail(response.bankdetail);
         setCreditlimit(response.creditlimit);
         setTotalCredit(response.totalcreadit);
-        if (response.bankdetails) {
+        if (response.bankdetails === true) {
           setBankName(response.bankdetails.bankname);
           setAccountNumber(response.bankdetails.accountnumber);
           setAccountType(response.bankdetails.accounttype);
@@ -122,12 +122,35 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
           accounttype: accountType
         };
       }
-      console.log(customerData, 'customerData');
       if (id) {
         await dispatch(updateCustomer(id, customerData, navigate));
+        onClose();
       } else {
-        await dispatch(createCustomer(customerData, navigate));
+        const Data = await dispatch(createCustomer(customerData, navigate));
+        onChangeCustomer(Data);
       }
+      setFormData({
+        accountname: '',
+        shortname: '',
+        email: '',
+        contactpersonname: '',
+        mobileno: '',
+        panno: '',
+        gstnumber: '',
+        creditperiod: '',
+        address1: '',
+        address2: '',
+        pincode: '',
+        country: '',
+        balance: ''
+      });
+      setBankDetail(false);
+      setCreditlimit(false);
+      setBankName('');
+      setAccountNumber('');
+      setAccountType('');
+      setIfscCode('');
+      setTotalCredit('');
     } catch (error) {
       console.error('Error creating customer:', error);
     }

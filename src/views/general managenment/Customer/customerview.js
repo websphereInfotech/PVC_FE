@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Paper, Table, TableRow, TableCell, TableHead } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { viewVendor } from 'store/thunk';
+import { viewCustomer } from 'store/thunk';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -17,7 +17,7 @@ const Customerview = () => {
 
   // Fetch customer data from API
   useEffect(() => {
-    dispatch(viewVendor(id))
+    dispatch(viewCustomer(id))
       .then((response) => {
         const customerData = response;
         setData(customerData);
