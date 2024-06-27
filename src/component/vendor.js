@@ -125,7 +125,7 @@ const AnchorVendorDrawer = ({ open, onClose, id, onChangeVendor }) => {
         onClose();
       } else {
         const Data = await dispatch(createVendor(vendorData, navigate));
-        onChangeVendor(Data);
+        onChangeVendor(Data.data.data);
       }
       setFormData({
         accountname: '',

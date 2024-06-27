@@ -196,7 +196,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         }}
       >
         <Grid item>
-          <Typography variant="h4">New ItemS</Typography>
+          <Typography variant="h4">New Item</Typography>
         </Grid>
         <Grid item>
           <CancelIcon onClick={onClose} />

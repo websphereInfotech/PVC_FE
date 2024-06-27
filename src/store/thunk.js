@@ -797,9 +797,11 @@ export const deleteDileveryChallan = (id) => {
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/deliverychallan/delete_deliverychallan/${id}`, config);
       const deleteChallanItem = response;
       dispatch(deleteDileverychallanItemSuccess(deleteChallanItem));
+      toast.success(response.data.message, { autoClose: 1000 });
       return deleteChallanItem;
     } catch (error) {
       dispatch(deleteDileverychallanItemFailure(error.message));
+      toast.error(error.response.data.message);
       throw error;
     }
   };
@@ -1441,7 +1443,6 @@ export const deleteSalesinvoicecash = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteSalesinvoicecashSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
@@ -1743,10 +1744,11 @@ export const deletePurchaseinvoice = (id) => {
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/delete_purchaseInvoice/${id}`, config);
       const deletePurchasebillData = response;
       dispatch(deletePurchaseinvoiceSuccess(deletePurchasebillData));
+      toast.success(response.data.message, { autoClose: 1000 });
       return deletePurchasebillData;
     } catch (error) {
-      toast.error(error.response.data.message, { autoClose: 1000 });
       dispatch(deletePurchaseinvoiceFailure(error.message));
+      toast.error(error.response.data.message, { autoClose: 1000 });
       throw error;
     }
   };

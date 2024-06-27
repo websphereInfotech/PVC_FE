@@ -417,19 +417,7 @@ const MenuItem = () => {
                       }
                     : {}
                 ]
-              },
-              {
-                id: 'expense',
-                title: 'Expense',
-                type: 'item',
-                url: '/expenselist'
               }
-              // {
-              //   id: 'general',
-              //   title: 'general',
-              //   type: 'item',
-              //   url: '/productionreport'
-              // }
             ]
           }
         ]

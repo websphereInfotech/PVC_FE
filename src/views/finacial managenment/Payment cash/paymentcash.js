@@ -85,8 +85,8 @@ const PaymentPage = () => {
     setvendor((prevVendor) => [
       ...prevVendor,
       {
-        value: newVendorData?.data?.id,
-        label: newVendorData?.data?.contactpersonname
+        value: newVendorData?.id,
+        label: newVendorData?.contactpersonname
       }
     ]);
     setIsDrawerOpen(false);

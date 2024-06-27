@@ -112,13 +112,12 @@ const Paymentbank = () => {
   //create new Vendor after show in dropdwon
   const handleNewVendor = async (newVendorData) => {
     setvendor((prevVendor) => [
+      ...prevVendor,
       {
-        value: newVendorData?.data?.id,
-        label: newVendorData?.data?.accountname
-      },
-      ...prevVendor
+        value: newVendorData.id,
+        label: newVendorData.accountname
+      }
     ]);
-    setSelectvendor(newVendorData.data.id), setvendorname(newVendorData.data.accountname);
     setIsDrawerOpen(false);
   };
   const handlecreatePaymentCash = async () => {

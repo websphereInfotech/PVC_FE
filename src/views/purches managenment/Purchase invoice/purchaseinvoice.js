@@ -350,14 +350,13 @@ const Purchaseinvoice = () => {
   //create new Vendor after show in dropdwon
   const handleNewVendor = (newVendorData) => {
     setvendor((prevVendor) => [
+      ...prevVendor,
       {
         value: newVendorData?.id,
-        label: newVendorData?.contactpersonname,
+        label: newVendorData?.accountname,
         state: newVendorData?.state
-      },
-      ...prevVendor
+      }
     ]);
-    setSelectvendor(newVendorData.id), setvendorname(newVendorData.contactpersonname), setvendorstate(newVendorData.state);
     setIsDrawerOpen(false);
   };
   const handlePurchase = async () => {
