@@ -97,6 +97,7 @@ export default function ProformainvoiceList() {
     try {
       await dispatch(deleteProformainvoice(selectedId));
       setOpenConfirmation(false);
+      setQuotations((prevQuotation) => prevQuotation.filter((quotations) => quotations.id !== selectedId));
     } catch (error) {
       console.error('Error deleting proformainvoice:', error);
     }

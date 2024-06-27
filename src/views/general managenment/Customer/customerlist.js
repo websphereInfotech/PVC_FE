@@ -132,6 +132,7 @@ const CustomerList = () => {
     try {
       await dispatch(DeleteCustomer(selectedId));
       setOpenConfirmation(false);
+      setCustomer((preCustomer) => preCustomer.filter((customer) => customer.id !== selectedId));
     } catch (error) {
       console.error('Error deleting product:', error);
     }

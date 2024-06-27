@@ -161,6 +161,7 @@ const Rawmateriallist = () => {
     try {
       await dispatch(DeleteRawmaterial(selectedId));
       setOpenConfirmation(false);
+      setProduct((prevRawMaterial) => prevRawMaterial.filter((rawMaterial) => rawMaterial.id !== selectedId));
     } catch (error) {
       console.error('Error deleting product:', error);
     }

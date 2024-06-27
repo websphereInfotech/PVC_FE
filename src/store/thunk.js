@@ -677,7 +677,6 @@ export const deleteProformainvoice = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteProformainvoiceSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
@@ -798,7 +797,6 @@ export const deleteDileveryChallan = (id) => {
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/deliverychallan/delete_deliverychallan/${id}`, config);
       const deleteChallanItem = response;
       dispatch(deleteDileverychallanItemSuccess(deleteChallanItem));
-      window.location.reload();
       return deleteChallanItem;
     } catch (error) {
       dispatch(deleteDileverychallanItemFailure(error.message));
@@ -852,7 +850,6 @@ export const createCustomer = (customerData, navigate) => {
         autoClose: 1000
       });
       dispatch(createCustomerSuccess(createdCustomer));
-      window.location.reload();
       return createdCustomer;
     } catch (error) {
       dispatch(createCustomerFailure(error.message));
@@ -877,7 +874,6 @@ export const DeleteCustomer = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteCustomerSuccess(data));
       return data;
     } catch (error) {
@@ -910,7 +906,6 @@ export const updateCustomer = (id, customerData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(updateCustomerSuccess(upadteCustomerData));
       return upadteCustomerData;
     } catch (error) {
@@ -968,6 +963,7 @@ export const createProduct = (data, navigate) => {
         autoClose: 1000
       });
       dispatch(createProductSuccess(createProductData));
+      // window.location.reload();
       return createProductData;
     } catch (error) {
       dispatch(createProductFailure(error.message));
@@ -991,7 +987,6 @@ export const DeleteProduct = (id) => {
         autoClose: 1000
       });
       dispatch(deleteProductSuccess(data));
-      window.location.reload();
       return data;
     } catch (error) {
       dispatch(deleteProductFailure(error.message));
@@ -1107,7 +1102,6 @@ export const DeleteRawmaterial = (id) => {
         autoClose: 1000
       });
       dispatch(deleteRawmaterialSuccess(data));
-      window.location.reload();
       return data;
     } catch (error) {
       dispatch(deleteRawmaterialFailure(error.message));
@@ -1246,7 +1240,6 @@ export const paymentCashDelete = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deletePaymentCashSuccess(data));
       return data;
     } catch (error) {
@@ -1347,7 +1340,6 @@ export const deleteSalesinvoice = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteSalesinvoiceSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
@@ -1551,7 +1543,6 @@ export const deleteDebitnote = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteDebitnoteSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
@@ -1653,7 +1644,6 @@ export const deleteCreditnote = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteCreditnoteSuccess());
     } catch (error) {
       toast.error(error.response.data.message);
@@ -1753,7 +1743,6 @@ export const deletePurchaseinvoice = (id) => {
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/delete_purchaseInvoice/${id}`, config);
       const deletePurchasebillData = response;
       dispatch(deletePurchaseinvoiceSuccess(deletePurchasebillData));
-      window.location.reload();
       return deletePurchasebillData;
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
@@ -1863,7 +1852,6 @@ export const deletePurchaseInvoiceCash = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       return deletePurchasebillData;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -2142,7 +2130,6 @@ export const deleteUser = (id) => {
         autoClose: 1000
       });
       dispatch(deleteUserSuccess(deleteUser));
-      window.location.reload();
       return deleteUser;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -2216,7 +2203,6 @@ export const createVendor = (vendorData, navigate) => {
         autoClose: 1000
       });
       dispatch(createVendorSuccess(createdVendor));
-      window.location.reload();
       return createdVendor;
     } catch (error) {
       dispatch(createVendorFailure(error.message));
@@ -2270,7 +2256,6 @@ export const DeleteVendor = (id) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(deleteVendorSuccess(data));
       return data;
     } catch (error) {
@@ -2304,7 +2289,6 @@ export const updateVendor = (id, vendorData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      window.location.reload();
       dispatch(updateVendorSuccess(upadteCustomerData));
       return upadteCustomerData;
     } catch (error) {
@@ -2392,7 +2376,6 @@ export const deleteCompany = (id) => {
         autoClose: 1000
       });
       dispatch(DeleteCompanySuccess(deletecompany));
-      window.location.reload();
       return deletecompany;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -2682,7 +2665,6 @@ export const deleteRecieveCash = (id) => {
         autoClose: 1000
       });
       dispatch(deleteRecieveCashSuccess(deleteRecievecash));
-      window.location.reload();
       return deleteRecievecash;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -2846,7 +2828,6 @@ export const deleteClaimCash = (id) => {
         autoClose: 1000
       });
       dispatch(deleteClaimCashSuccess(deleteClaimcash));
-      window.location.reload();
       return deleteClaimcash;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -2993,7 +2974,6 @@ export const deletePaymentbank = (id) => {
         autoClose: 1000
       });
       dispatch(deletepaymentbankSuccess(deletepaymentbank));
-      window.location.reload();
       return deletepaymentbank;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -3121,7 +3101,6 @@ export const deletePaymentRecievebank = (id) => {
         autoClose: 1000
       });
       dispatch(deletepaymentrecievebankSuccess(deletepaymentbank));
-      window.location.reload();
       return deletepaymentbank;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -3252,7 +3231,6 @@ export const deleteBom = (id) => {
         autoClose: 1000
       });
       dispatch(deleteBomSuccess(deleteBom));
-      window.location.reload();
       return deleteBom;
     } catch (error) {
       toast.error(error.response.data.message, {

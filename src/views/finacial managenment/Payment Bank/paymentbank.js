@@ -109,6 +109,18 @@ const Paymentbank = () => {
     viewData();
   }, [dispatch, id, canCreateVendorValue]);
 
+  //create new Vendor after show in dropdwon
+  const handleNewVendor = async (newVendorData) => {
+    setvendor((prevVendor) => [
+      {
+        value: newVendorData?.data?.id,
+        label: newVendorData?.data?.accountname,
+      },
+      ...prevVendor
+    ]);
+    setSelectvendor(newVendorData.data.id), setvendorname(newVendorData.data.accountname);
+    setIsDrawerOpen(false);
+  };
   const handlecreatePaymentCash = async () => {
     try {
       if (id) {
@@ -174,7 +186,7 @@ const Paymentbank = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

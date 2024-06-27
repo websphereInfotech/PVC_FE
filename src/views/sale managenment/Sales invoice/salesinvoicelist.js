@@ -93,9 +93,9 @@ const Salesinvoicelist = () => {
 
   const handleDeleteSalesInvoice = async () => {
     try {
-      console.log(selectedId, 'selected');
       await dispatch(deleteSalesinvoice(selectedId));
       setOpenConfirmation(false);
+      setsalesinvoice((prevInvoice) => prevInvoice.filter((invoice) => invoice.id !== selectedId));
     } catch (error) {
       console.error('Error deleting sales invoice:', error);
     }

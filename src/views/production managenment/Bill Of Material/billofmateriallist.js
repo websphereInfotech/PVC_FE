@@ -91,6 +91,7 @@ const Billofmateriallist = () => {
     try {
       await dispatch(deleteBom(selectedId));
       setOpenConfirmation(false);
+      setBom((prevBom) => prevBom.filter((bom) => bom.id !== selectedId));
     } catch (error) {
       console.error('Error deleting Bom:', error);
     }

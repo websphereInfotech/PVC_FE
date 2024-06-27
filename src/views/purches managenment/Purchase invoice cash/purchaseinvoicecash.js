@@ -224,6 +224,19 @@ const Purchaseinvoicecash = () => {
     data();
   }, [dispatch, id]);
 
+  //create new Vendor after show in dropdwon
+  const handleNewVendor = (newVendorData) => {
+    setvendor((prevVendor) => [
+      ...prevVendor,
+      {
+        value: newVendorData?.id,
+        label: newVendorData?.accountname
+      },
+    ]);
+    // setSelectvendor(newVendorData.id), setvendorname(newVendorData.accountname);
+    setIsDrawerOpen(false);
+  };
+
   const handlecreatePurchaseinvoicecash = async () => {
     try {
       if (id) {
@@ -288,7 +301,7 @@ const Purchaseinvoicecash = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

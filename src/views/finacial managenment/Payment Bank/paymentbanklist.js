@@ -138,6 +138,7 @@ const Paymentbanklist = () => {
     try {
       await dispatch(deletePaymentbank(selectedId));
       setOpenConfirmation(false);
+      setPayments((prevPayment) => prevPayment.filter((payments) => payments.id !== selectedId));
     } catch (error) {
       console.error('Error deleting payment bank:', error);
     }

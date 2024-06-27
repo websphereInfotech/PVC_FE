@@ -253,6 +253,14 @@ const Deliverychallan = () => {
     data();
   }, [dispatch, id, navigate]);
 
+  //create new customer after show in dropdwon
+const handleNewCustomer = (newCustomerData) => {
+  setcustomer((prevCustomers) => [
+    ...prevCustomers,
+    { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname },
+  ]);
+  setIsDrawerOpen(false);
+};
   //call craete and update deliverychallan and deliverychallan items
   const handlecreatedeliverychallan = async () => {
     try {
@@ -312,7 +320,7 @@ const Deliverychallan = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

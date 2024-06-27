@@ -220,6 +220,14 @@ const Salescash = () => {
     };
     data();
   }, [dispatch, id]);
+  //create new customer after show in dropdwon
+  const handleNewCustomer = (newCustomerData) => {
+    setcustomer((prevCustomers) => [
+      ...prevCustomers,
+      { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname, state: newCustomerData?.data?.data?.state },
+    ]);
+    setIsDrawerOpen(false);
+  };
 
   const handlecreateDebitnote = async () => {
     try {
@@ -284,7 +292,7 @@ const Salescash = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

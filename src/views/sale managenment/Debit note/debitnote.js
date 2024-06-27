@@ -380,6 +380,18 @@ const DebitNote = () => {
     data();
   }, [dispatch, id]);
 
+  //create new customer after show in dropdwon
+  const handleNewCustomer = (newCustomerData) => {
+    setcustomer((prevCustomers) => [
+      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state },
+      ...prevCustomers
+    ]);
+    setSelectcustomer(newCustomerData.id);
+    setCustomerState(newCustomerData.state);
+    setCustomername(newCustomerData.accountname);
+    setIsDrawerOpen(false);
+  };
+
   const handlecreateDebitnote = async () => {
     try {
       const payload = {
@@ -440,7 +452,7 @@ const DebitNote = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

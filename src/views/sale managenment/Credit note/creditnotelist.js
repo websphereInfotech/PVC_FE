@@ -96,6 +96,7 @@ const Creditnotelist = () => {
     try {
       await dispatch(deleteCreditnote(selectedId));
       setOpenConfirmation(false);
+      setCreditnote((preCreditNote) => preCreditNote.filter((creditnote) => creditnote.id !== selectedId));
     } catch (error) {
       console.error('Error deleting credit note:', error);
     }
