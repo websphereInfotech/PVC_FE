@@ -128,8 +128,7 @@ const Paymentrecievebank = () => {
 
   //create new customer after show in dropdwon
   const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [{  ...prevCustomers ,value: newCustomerData?.id, label: newCustomerData?.contactpersonname }, 
-    ]);
+    setcustomer((prevCustomers) => [{ ...prevCustomers, value: newCustomerData?.id, label: newCustomerData?.contactpersonname }]);
     setIsDrawerOpen(false);
   };
 

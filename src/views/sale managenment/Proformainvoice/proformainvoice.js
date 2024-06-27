@@ -273,7 +273,7 @@ const Proformainvoice = () => {
   const handleNewCustomer = (newCustomerData) => {
     setcustomer((prevCustomers) => [
       ...prevCustomers,
-      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state },
+      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state }
     ]);
     setIsDrawerOpen(false);
   };

@@ -255,10 +255,7 @@ const Deliverychallan = () => {
 
   //create new customer after show in dropdwon
   const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [
-      ...prevCustomers,
-      { value: newCustomerData?.id, label: newCustomerData?.accountname }
-    ]);
+    setcustomer((prevCustomers) => [...prevCustomers, { value: newCustomerData?.id, label: newCustomerData?.accountname }]);
     setIsDrawerOpen(false);
   };
   //call craete and update deliverychallan and deliverychallan items
