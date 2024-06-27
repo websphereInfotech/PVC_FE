@@ -224,7 +224,7 @@ const Salescash = () => {
   const handleNewCustomer = (newCustomerData) => {
     setcustomer((prevCustomers) => [
       ...prevCustomers,
-      { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname, state: newCustomerData?.data?.data?.state },
+      { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname, state: newCustomerData?.data?.data?.state }
     ]);
     setIsDrawerOpen(false);
   };

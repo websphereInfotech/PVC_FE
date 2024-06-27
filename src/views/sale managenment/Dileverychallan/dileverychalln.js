@@ -254,13 +254,13 @@ const Deliverychallan = () => {
   }, [dispatch, id, navigate]);
 
   //create new customer after show in dropdwon
-const handleNewCustomer = (newCustomerData) => {
-  setcustomer((prevCustomers) => [
-    ...prevCustomers,
-    { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname },
-  ]);
-  setIsDrawerOpen(false);
-};
+  const handleNewCustomer = (newCustomerData) => {
+    setcustomer((prevCustomers) => [
+      ...prevCustomers,
+      { value: newCustomerData?.data?.data?.id, label: newCustomerData?.data?.data?.accountname }
+    ]);
+    setIsDrawerOpen(false);
+  };
   //call craete and update deliverychallan and deliverychallan items
   const handlecreatedeliverychallan = async () => {
     try {

@@ -114,7 +114,7 @@ const Paymentbank = () => {
     setvendor((prevVendor) => [
       {
         value: newVendorData?.data?.id,
-        label: newVendorData?.data?.accountname,
+        label: newVendorData?.data?.accountname
       },
       ...prevVendor
     ]);

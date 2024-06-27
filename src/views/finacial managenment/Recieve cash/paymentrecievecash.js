@@ -78,17 +78,14 @@ const Paymentrecieve = () => {
       fetchCustomerData();
     }
   }, [dispatch, id, canCreateCustomerValue]);
-//create new customer after show in dropdwon
-const handleNewCustomer = (newCustomerData) => {
-  console.log("newCustomerData",newCustomerData);
-  setcustomer((prevCustomers) => [
-    { value: newCustomerData?.id, label: newCustomerData?.accountname },
-    ...prevCustomers
-  ]);
-  setSelectcustomer(newCustomerData.id);
-  setcustomername(newCustomerData.accountname);
-  setIsDrawerOpen(false);
-};
+  //create new customer after show in dropdwon
+  const handleNewCustomer = (newCustomerData) => {
+    console.log('newCustomerData', newCustomerData);
+    setcustomer((prevCustomers) => [{ value: newCustomerData?.id, label: newCustomerData?.accountname }, ...prevCustomers]);
+    setSelectcustomer(newCustomerData.id);
+    setcustomername(newCustomerData.accountname);
+    setIsDrawerOpen(false);
+  };
   const handlecreatepayment = async () => {
     try {
       if (id) {
@@ -107,7 +104,6 @@ const handleNewCustomer = (newCustomerData) => {
       [fieldName]: fieldName === 'amount' ? Number(value) : value
     }));
   };
-
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -140,7 +136,7 @@ const handleNewCustomer = (newCustomerData) => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer}/>
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

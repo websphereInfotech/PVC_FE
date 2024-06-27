@@ -231,7 +231,7 @@ const Purchaseinvoicecash = () => {
       {
         value: newVendorData?.id,
         label: newVendorData?.accountname
-      },
+      }
     ]);
     // setSelectvendor(newVendorData.id), setvendorname(newVendorData.accountname);
     setIsDrawerOpen(false);

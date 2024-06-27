@@ -51,7 +51,7 @@ const PaymentPage = () => {
         const response = await dispatch(fetchAllVendorsCash());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-        setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
         }
         if (!canCreateVendorValue) {
           setvendor(options);
@@ -81,12 +81,12 @@ const PaymentPage = () => {
   }, [dispatch, id, canCreateVendorValue]);
 
   //create new Vendor after show in dropdwon
-  const handleNewVendor =  (newVendorData) => {
+  const handleNewVendor = (newVendorData) => {
     setvendor((prevVendor) => [
       ...prevVendor,
       {
         value: newVendorData?.data?.id,
-        label: newVendorData?.data?.contactpersonname,
+        label: newVendorData?.data?.contactpersonname
       }
     ]);
     setIsDrawerOpen(false);
