@@ -147,7 +147,16 @@ const CustomerList = () => {
       console.error('Error Searching Customer:', error);
     }
   };
-
+  const handleCustomerUpdated = () => {
+    dispatch(fetchAllCustomers())
+      .then((data) => {
+        setCustomer(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.log('Error fetching updated product data:', error);
+      });
+  };
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -256,7 +265,12 @@ const CustomerList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id={selectedCustomer} />
+      <AnchorTemporaryDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        id={selectedCustomer}
+        onCustomerUpdated={handleCustomerUpdated}
+      />
     </Card>
   );
 };

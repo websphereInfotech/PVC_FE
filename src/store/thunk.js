@@ -3301,7 +3301,7 @@ export const updateStoke = (id, formData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/lowstock');
+          navigate('/stocklist');
         }
       });
       dispatch(updateStokeSuccess(updateStoke));
@@ -3360,7 +3360,7 @@ export const updateStokeCash = (id, formData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/lowstockcash');
+          navigate('/stockcashlist');
         }
       });
       dispatch(updateStokeCashSuccess(updateStoke));
@@ -3419,7 +3419,7 @@ export const updateRowStoke = (id, formData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/lowstock');
+          navigate('/stocklist');
         }
       });
       dispatch(updateRawStokeSuccess(updateStoke));
@@ -3478,7 +3478,7 @@ export const updateRowCashStoke = (id, formData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/lowstockcash');
+          navigate('/stockcashlist');
         }
       });
       dispatch(updateRawCashStokeSuccess(updateStoke));

@@ -4,11 +4,11 @@ import { Container, Typography, Card, Table, TableBody, TableCell, TableContaine
 const EmployeeDirectoryPage = () => {
   // Dummy employee data
   const employees = [
-    { id: 1, name: 'John Doe', role: 'Admin', mobileno: '3467890987', email: 'john@gmail.com', balance: 5000 },
-    { id: 2, name: 'Jane Smith', role: 'Account', mobileno: '9988778901', email: 'jones@gmail.com', balance: 8000 },
-    { id: 3, name: 'Alice Johnson', role: 'Employee', mobileno: '8945789604', email: 'alice@gmail.com', balance: 7000 },
-    { id: 4, name: 'Bob Brown', role: 'Workers', mobileno: '9980984532', email: 'bob@gmail.com', balance: 10000 },
-    { id: 5, name: 'Emily Wilson', role: 'Other', mobileno: '7890789034', email: 'emily@gmail.com', balance: 12000 }
+    { name: 'John Doe', role: 'Admin', status: 'Approve', startdate: '28-06-2024', enddate: '28-07-2024', salary: 5000 },
+    { name: 'Jane Smith', role: 'Account', status: 'Approve', startdate: '20-06-2024', enddate: '02-07-2024', salary: 8000 },
+    { id: 3, name: 'Alice Johnson', role: 'Employee', status: 'pending', startdate: '18-06-2024', enddate: '08-07-2024', salary: 7000 },
+    { name: 'Bob Brown', role: 'Workers', status: 'Approve', startdate: '28-06-2024', enddate: '28-08-2024', salary: 10000 },
+    { name: 'Emily Wilson', role: 'Other', status: 'pending', startdate: '12-06-2024', enddate: '02-07-2024', salary: 12000 }
   ];
 
   return (
@@ -23,34 +23,34 @@ const EmployeeDirectoryPage = () => {
             <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
               <TableRow>
                 <TableCell variant="head" align="center">
-                  ID
-                </TableCell>
-                <TableCell variant="head" align="center">
                   Name
                 </TableCell>
                 <TableCell variant="head" align="center">
                   Role
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Email
+                  Status
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Mobile No
+                  Start Date
                 </TableCell>
                 <TableCell variant="head" align="center">
-                  Balance
+                  End Date
+                </TableCell>
+                <TableCell variant="head" align="center">
+                  Salary
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {employees.map((employee, index) => (
                 <TableRow key={employee.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
-                  <TableCell align="center">{employee.id}</TableCell>
                   <TableCell align="center">{employee.name}</TableCell>
                   <TableCell align="center">{employee.role}</TableCell>
-                  <TableCell align="center">{employee.email}</TableCell>
-                  <TableCell align="center">{employee.mobileno}</TableCell>
-                  <TableCell align="center">{employee.balance}</TableCell>
+                  <TableCell align="center">{employee.status}</TableCell>
+                  <TableCell align="center">{employee.startdate}</TableCell>
+                  <TableCell align="center">{employee.enddate}</TableCell>
+                  <TableCell align="center">{employee.salary}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

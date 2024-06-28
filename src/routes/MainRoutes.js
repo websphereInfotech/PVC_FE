@@ -130,6 +130,7 @@ const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalS
 
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
+const EmployeeStatus = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
@@ -427,12 +428,12 @@ const MainRoutes = {
     { path: '/products', element: <Product /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/lowstock', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
+    { path: '/stocklist', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
     {
-      path: '/lowstockcash',
+      path: '/stockcashlist',
       element: <ProtectedRoute element={LowStockCash} resource="Stock Cash" permissionName="view_all_product_cash_stock" />
     },
-    { path: '/stockmain', element: <TotalStock /> },
+    { path: '/totalstock', element: <TotalStock /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
     { path: '/permission', element: <Permission /> },
@@ -448,6 +449,7 @@ const MainRoutes = {
     // { path: '/stock', element: <StockManagement /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
+    { path: '/employeestatus', element: <EmployeeStatus /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },

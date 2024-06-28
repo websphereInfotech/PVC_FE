@@ -106,7 +106,7 @@ const ProductCash = () => {
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
-      <TableContainer sx={{ maxHeight: 700 }}>
+      <TableContainer sx={{ maxHeight: 540, overflowY: 'scroll' }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
             <TableRow>

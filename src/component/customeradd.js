@@ -12,12 +12,13 @@ import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import { useNavigate } from 'react-router';
 
-const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer }) => {
+const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer, onCustomerUpdated }) => {
   AnchorTemporaryDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     id: PropTypes.string,
-    onChangeCustomer: PropTypes.array
+    onChangeCustomer: PropTypes.func.isRequired,
+    onCustomerUpdated: PropTypes.func.isRequired
   };
 
   const dispatch = useDispatch();
@@ -123,34 +124,34 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer }) => {
         };
       }
       if (id) {
-        await dispatch(updateCustomer(id, customerData, navigate));
-        onClose();
+        const data = await dispatch(updateCustomer(id, customerData, navigate));
+        onCustomerUpdated(data.data.data);
       } else {
         const Data = await dispatch(createCustomer(customerData, navigate));
         onChangeCustomer(Data.data.data);
+        setFormData({
+          accountname: '',
+          shortname: '',
+          email: '',
+          contactpersonname: '',
+          mobileno: '',
+          panno: '',
+          gstnumber: '',
+          creditperiod: '',
+          address1: '',
+          address2: '',
+          pincode: '',
+          country: '',
+          balance: ''
+        });
+        setBankDetail(false);
+        setCreditlimit(false);
+        setBankName('');
+        setAccountNumber('');
+        setAccountType('');
+        setIfscCode('');
+        setTotalCredit('');
       }
-      setFormData({
-        accountname: '',
-        shortname: '',
-        email: '',
-        contactpersonname: '',
-        mobileno: '',
-        panno: '',
-        gstnumber: '',
-        creditperiod: '',
-        address1: '',
-        address2: '',
-        pincode: '',
-        country: '',
-        balance: ''
-      });
-      setBankDetail(false);
-      setCreditlimit(false);
-      setBankName('');
-      setAccountNumber('');
-      setAccountType('');
-      setIfscCode('');
-      setTotalCredit('');
     } catch (error) {
       console.error('Error creating customer:', error);
     }

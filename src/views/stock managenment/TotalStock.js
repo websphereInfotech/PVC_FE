@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TablePagination, Grid } from '@mui/material';
+import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TablePagination, Grid, TableContainer } from '@mui/material';
 import { getTotalProductStock, getTotalRawMaterialStock } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -14,6 +14,8 @@ const TotalStock = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rawPage, setRawPage] = useState(0);
+  const [rawRowsPerPage, setRawRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,6 +26,14 @@ const TotalStock = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+  const handleChangeRawPage = (event, newRawPage) => {
+    setRawPage(newRawPage);
+  };
+
+  const handleChangeRowsRawPerPage = (event) => {
+    setRawRowsPerPage(parseInt(event.target.value, 10));
+    setRawPage(0);
   };
 
   useEffect(() => {
@@ -52,28 +62,30 @@ const TotalStock = () => {
             Product
           </Typography>
           <Card style={{ width: 'auto', padding: '20px' }}>
-            <Table style={{ border: '1px solid lightgrey' }}>
-              <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {stoke?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                  <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+            <TableContainer sx={{ maxHeight: 440, overflowY: 'scroll' }}>
+              <Table style={{ border: '1px solid lightgrey' }}>
+                <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
+                  <TableRow>
                     {columns.map((column) => (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.id === 'product' ? row.productName : column.id === 'stock' ? row.totalQty : row[column.id]}
+                      <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                        {column.label}
                       </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {stoke?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                    <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.id === 'product' ? row.productName : column.id === 'stock' ? row.totalQty : row[column.id]}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
@@ -90,36 +102,38 @@ const TotalStock = () => {
             Raw Material
           </Typography>
           <Card style={{ width: 'auto', padding: '20px' }}>
-            <Table style={{ border: '1px solid lightgrey' }}>
-              <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rawMaterial?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                  <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+            <TableContainer sx={{ maxHeight: 440, overflowY: 'scroll' }}>
+              <Table style={{ border: '1px solid lightgrey' }}>
+                <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
+                  <TableRow>
                     {columns.map((column) => (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.id === 'product' ? row.productName : column.id === 'stock' ? row.totalQty : row[column.id]}
+                      <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                        {column.label}
                       </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {rawMaterial?.slice(rawPage * rawRowsPerPage, rawPage * rawRowsPerPage + rawRowsPerPage).map((row, index) => (
+                    <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.id === 'product' ? row.productName : column.id === 'stock' ? row.totalQty : row[column.id]}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={rawMaterial?.length || 0}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPage={rawRowsPerPage}
+              page={rawPage}
+              onPageChange={handleChangeRawPage}
+              onRowsPerPageChange={handleChangeRowsRawPerPage}
             />
           </Card>
         </Grid>

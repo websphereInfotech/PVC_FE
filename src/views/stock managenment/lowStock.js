@@ -6,7 +6,7 @@ import RawMaterial from './rawMaterialStock';
 const LowStock = () => {
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
-      <TableContainer sx={{ maxHeight: 700 }}>
+      <TableContainer>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <Typography variant="h4" align="center" id="mycss">
