@@ -80,10 +80,7 @@ const Paymentrecieve = () => {
   }, [dispatch, id, canCreateCustomerValue]);
   //create new customer after show in dropdwon
   const handleNewCustomer = (newCustomerData) => {
-    console.log('newCustomerData', newCustomerData);
-    setcustomer((prevCustomers) => [{ value: newCustomerData?.id, label: newCustomerData?.accountname }, ...prevCustomers]);
-    setSelectcustomer(newCustomerData.id);
-    setcustomername(newCustomerData.accountname);
+    setcustomer((prevCustomers) => [...prevCustomers, { value: newCustomerData?.id, label: newCustomerData?.contactpersonname }]);
     setIsDrawerOpen(false);
   };
   const handlecreatepayment = async () => {
