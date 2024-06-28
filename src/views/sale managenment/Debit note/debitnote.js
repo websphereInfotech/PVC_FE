@@ -67,16 +67,6 @@ const DebitNote = () => {
     setCanCreateProductvalue(canCreateProduct());
   }, [canCreateCustomer, canCreateProduct]);
 
-  const unitOptions = [
-    { value: 'box', label: 'box' },
-    { value: 'fts.', label: 'fts.' },
-    { value: 'kg', label: 'kg' },
-    { value: 'LTR', label: 'LTR.' },
-    { value: 'MTS', label: 'MTS' },
-    { value: 'pcs.', label: 'pcs.' },
-    { value: 'ton', label: 'ton' }
-  ];
-
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
     const deletedRow = updatedRows.splice(index, 1)[0];
@@ -100,11 +90,7 @@ const DebitNote = () => {
     const newRow = { product: '', qty: '', unit: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
   };
-  const handleUnitChange = (selectedOption, index) => {
-    const updatedRows = [...rows];
-    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
-    setRows(updatedRows);
-  };
+
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
@@ -509,9 +495,7 @@ const DebitNote = () => {
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    UNIT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>UNIT :</TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     RATE (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
@@ -540,13 +524,7 @@ const DebitNote = () => {
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                       </TableCell>
-                      <TableCell>
-                        <Select
-                          options={unitOptions}
-                          value={row.unit ? { label: row.unit, value: row.unit } : null}
-                          onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
-                        />
-                      </TableCell>
+                      <TableCell>{row.unit}</TableCell>
                       <TableCell id="newcs">
                         <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />
                       </TableCell>

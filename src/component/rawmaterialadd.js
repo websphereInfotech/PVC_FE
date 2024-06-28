@@ -131,11 +131,12 @@ const RawMaterialDrawer = ({ open, onClose, id, onNewRawProductAdded, onRawProdu
           lowStockQty: null,
           weight: ''
         });
-        setOpeningStock('');
-        setNagativeQty('');
-        setLowStock('');
-        setCess('');
-        setItemType('');
+        setOpeningStock(true);
+        setNagativeQty(false);
+        setLowStock(false);
+        setCess(true);
+        setItemType('Product');
+        setSelectedGST('');
       }
     } catch (error) {
       console.error('Error creating Product', error);

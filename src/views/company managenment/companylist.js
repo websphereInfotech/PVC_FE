@@ -38,7 +38,7 @@ const CompanyList = () => {
   const navigate = useNavigate();
   const [Company, setCompany] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -207,7 +207,7 @@ const CompanyList = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[8, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={Company?.length || 0}
         rowsPerPage={rowsPerPage}

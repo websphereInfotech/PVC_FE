@@ -68,25 +68,10 @@ const Proformainvoice = () => {
     setCanCreateProductvalue(canCreateProduct());
   }, [canCreateCustomer, canCreateProduct]);
 
-  const unitOptions = [
-    { value: 'box', label: 'box' },
-    { value: 'fts.', label: 'fts.' },
-    { value: 'kg', label: 'kg' },
-    { value: 'LTR', label: 'LTR.' },
-    { value: 'MTS', label: 'MTS' },
-    { value: 'pcs.', label: 'pcs.' },
-    { value: 'ton', label: 'ton' }
-  ];
-
   // manage button of addrow
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', unit: '', rate: '', mrp: '' };
     setRows((prevRows) => [...prevRows, newRow]);
-  };
-  const handleUnitChange = (selectedOption, index) => {
-    const updatedRows = [...rows];
-    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
-    setRows(updatedRows);
   };
 
   const handleDeleteRow = async (index) => {
@@ -131,7 +116,6 @@ const Proformainvoice = () => {
         }
         return row;
       });
-      console.log(updatedRows, '>>>>>>>>>>>>>>updatedRows');
       const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
       setPlusgst(totalGST);
 
@@ -593,9 +577,7 @@ const Proformainvoice = () => {
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    UNIT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>UNIT :</TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>
                     RATE (₹) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
@@ -624,13 +606,7 @@ const Proformainvoice = () => {
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                       </TableCell>
-                      <TableCell>
-                        <Select
-                          options={unitOptions}
-                          value={row.unit ? { label: row.unit, value: row.unit } : null}
-                          onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
-                        />
-                      </TableCell>
+                      <TableCell>{row.unit}</TableCell>
                       <TableCell id="newcs">
                         <input placeholder="Rate" value={row.rate} onChange={(e) => handleInputChange(index, 'rate', e.target.value)} />
                       </TableCell>

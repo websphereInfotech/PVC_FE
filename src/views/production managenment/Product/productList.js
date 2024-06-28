@@ -92,7 +92,7 @@ const ProductList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState();
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAllProducts())
@@ -134,8 +134,8 @@ const ProductList = () => {
   };
 
   const handleAddProduct = () => {
-    // console.log('setSelectedProduct');
-    // setSelectedProduct(101);
+    console.log('setSelectedProduct', selectedProduct);
+    setSelectedProduct(null);
     setIsDrawerOpen(true);
   };
 

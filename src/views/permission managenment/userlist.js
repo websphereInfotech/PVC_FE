@@ -102,8 +102,8 @@ export default function UserList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallusers());
-        const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
-        setData(filteredData);
+        // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
+        setData(response[0].users);
       } catch (error) {
         if (error.response.status === 401) {
           navigate('/');
@@ -139,8 +139,8 @@ export default function UserList() {
       await dispatch(deleteUser(selectedUserId));
       setOpenConfirmation(false);
       const response = await dispatch(getallusers());
-      const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
-      setData(filteredData);
+      // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
+      setData(response[0].users);
     } catch (error) {
       console.error('Error deleting user:', error);
     }
@@ -175,8 +175,8 @@ export default function UserList() {
       await dispatch(Adduser(userid));
       setOpenAddConfirmation(false);
       const response = await dispatch(getallusers());
-      const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
-      setData(filteredData);
+      // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
+      setData(response[0].users);
     } catch (error) {
       console.error('Error adding user:', error);
       setOpenAddConfirmation(false);
@@ -187,8 +187,8 @@ export default function UserList() {
     try {
       const query = event.target.value;
       const response = await dispatch(getallusers({ search: query }));
-      const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
-      setData(filteredData);
+      // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
+      setData(response[0].users);
     } catch (error) {
       console.error('Error fetching User:', error);
     }

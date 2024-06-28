@@ -43,16 +43,6 @@ const Addbillofmaterial = () => {
   const navigate = useNavigate();
   const { bomId } = useParams();
 
-  const unitOptions = [
-    { value: 'box', label: 'box' },
-    { value: 'fts.', label: 'fts.' },
-    { value: 'kg', label: 'kg' },
-    { value: 'LTR', label: 'LTR.' },
-    { value: 'MTS', label: 'MTS' },
-    { value: 'pcs.', label: 'pcs.' },
-    { value: 'ton', label: 'ton' }
-  ];
-
   const handleDeleteRow = async (index) => {
     const updatedRows = rows.filter((_, rowIndex) => rowIndex !== index);
     setRows(updatedRows);
@@ -61,15 +51,6 @@ const Addbillofmaterial = () => {
   const handleAddRow = () => {
     const newRow = { product: '', qty: 0, unit: '', wastage: 0 };
     setRows((prevRows) => [...prevRows, newRow]);
-  };
-
-  const handleUnitChange = (selectedOption, index) => {
-    const updatedRows = [...rows];
-    updatedRows[index] = { ...updatedRows[index], unit: selectedOption.value };
-    setRows(updatedRows);
-  };
-  const handleUnit = (selectedOption) => {
-    setFormData({ ...formData, unit: selectedOption.value });
   };
 
   const handleSelectProductChange = (selectedOption, rowIndex) => {
@@ -338,14 +319,8 @@ const Addbillofmaterial = () => {
             <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="subtitle1">
-              Unit : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <Select
-              options={unitOptions}
-              value={{ value: formData.unit, label: formData.unit }}
-              onChange={(selectedOption) => handleUnit(selectedOption)}
-            />
+            <Typography variant="subtitle1">Unit :</Typography>
+            <input placeholder="unit" value={formData.unit}></input>
           </Grid>
         </Grid>
 
@@ -360,9 +335,7 @@ const Addbillofmaterial = () => {
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    UNIT : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>UNIT :</TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableRow>
               </TableHead>
@@ -387,13 +360,7 @@ const Addbillofmaterial = () => {
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
                     </TableCell>
 
-                    <TableCell>
-                      <Select
-                        options={unitOptions}
-                        value={row.unit ? { label: row.unit, value: row.unit } : null}
-                        onChange={(selectedOption) => handleUnitChange(selectedOption, index)}
-                      />
-                    </TableCell>
+                    <TableCell>{row.unit}</TableCell>
                     <TableCell>
                       <DeleteIcon
                         onClick={() => {

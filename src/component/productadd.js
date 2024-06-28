@@ -150,7 +150,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           lowStockQty: null,
           weight: ''
         });
-        setSelectedGST(0);
+        setSelectedGST('');
         setOpeningStock(true);
         setNagativeQty(false);
         setLowStock(false);
