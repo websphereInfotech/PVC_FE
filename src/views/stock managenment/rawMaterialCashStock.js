@@ -14,7 +14,8 @@ import {
   DialogTitle,
   Button,
   IconButton,
-  Grid
+  Grid,
+  TableContainer
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -104,67 +105,69 @@ const RawMaterialCash = () => {
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
-      <Table style={{ border: '1px solid lightgrey' }}>
-        <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                {column.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {stoke?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+      <TableContainer sx={{ maxHeight: 540, overflowY: 'scroll' }}>
+        <Table style={{ border: '1px solid lightgrey' }}>
+          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
+            <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.id} align={column.align}>
-                  {column.id === 'action' ? (
-                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                      <IconButton
-                        sizeSmall
-                        style={{
-                          backgroundColor: canViewRawCashStoke() ? 'Blue' : 'gray',
-                          color: canViewRawCashStoke() ? 'white' : 'white',
-                          borderRadius: 0.8,
-                          ...(canViewRawCashStoke() && { opacity: 1 }),
-                          ...(!canViewRawCashStoke() && { opacity: 0.5 }),
-                          ...(!canViewRawCashStoke() && { backgroundColor: 'gray' })
-                        }}
-                        disabled={!canViewRawCashStoke()}
-                        onClick={() => handleViewLowStock(row.id)}
-                      >
-                        <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
-                      </IconButton>
-                      <IconButton
-                        sizeSmall
-                        style={{
-                          backgroundColor: canUpdateRawCashStoke() ? 'green' : 'gray',
-                          color: canUpdateRawCashStoke() ? 'white' : 'white',
-                          borderRadius: 0.8,
-                          ...(canUpdateRawCashStoke() && { opacity: 1 }),
-                          ...(!canUpdateRawCashStoke() && { opacity: 0.5 }),
-                          ...(!canUpdateRawCashStoke() && { backgroundColor: 'gray' })
-                        }}
-                        disabled={!canUpdateRawCashStoke()}
-                        onClick={() => handleOpenDialog(row, row.productCashStock.id)}
-                      >
-                        <Edit style={{ fontSize: '16px' }} />
-                      </IconButton>
-                    </div>
-                  ) : column.id === 'product' ? (
-                    row.productCashStock.productname
-                  ) : column.id === 'stock' ? (
-                    row.qty
-                  ) : (
-                    row[column.id]
-                  )}
+                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                  {column.label}
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {stoke?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.id === 'action' ? (
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewRawCashStoke() ? 'Blue' : 'gray',
+                            color: canViewRawCashStoke() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewRawCashStoke() && { opacity: 1 }),
+                            ...(!canViewRawCashStoke() && { opacity: 0.5 }),
+                            ...(!canViewRawCashStoke() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canViewRawCashStoke()}
+                          onClick={() => handleViewLowStock(row.id)}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canUpdateRawCashStoke() ? 'green' : 'gray',
+                            color: canUpdateRawCashStoke() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canUpdateRawCashStoke() && { opacity: 1 }),
+                            ...(!canUpdateRawCashStoke() && { opacity: 0.5 }),
+                            ...(!canUpdateRawCashStoke() && { backgroundColor: 'gray' })
+                          }}
+                          disabled={!canUpdateRawCashStoke()}
+                          onClick={() => handleOpenDialog(row, row.productCashStock.id)}
+                        >
+                          <Edit style={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </div>
+                    ) : column.id === 'product' ? (
+                      row.productCashStock.productname
+                    ) : column.id === 'stock' ? (
+                      row.qty
+                    ) : (
+                      row[column.id]
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"

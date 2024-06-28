@@ -477,6 +477,12 @@ const MenuItem = () => {
                 url: '/employeedirectory'
               },
               {
+                id: 'Employee Status',
+                title: 'Employee Status',
+                type: 'item',
+                url: '/employeestatus'
+              },
+              {
                 id: 'Performance Management',
                 title: 'Performance Management',
                 type: 'item',
@@ -532,19 +538,19 @@ const MenuItem = () => {
                 id: 'Stoke',
                 title: 'Total Stock',
                 type: 'item',
-                url: '/stockmain'
+                url: '/totalstock'
               },
               {
                 id: 'Stoke',
                 title: 'Stock List',
                 type: 'item',
-                url: '/lowstock'
+                url: '/stocklist'
               },
               createConfig() === 'C' && {
                 id: 'Stoke',
                 title: 'Stock Cash List',
                 type: 'item',
-                url: '/lowstockcash'
+                url: '/stockcashlist'
               }
             ]
           }
