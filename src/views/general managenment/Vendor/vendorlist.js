@@ -126,6 +126,16 @@ const VendorList = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleProductUpdated = () => {
+    dispatch(fetchAllVendors())
+      .then((data) => {
+        setVendor(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
+  };
 
   const handleDelete = async () => {
     try {
@@ -255,7 +265,12 @@ const VendorList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} id={selectedVendor} />
+      <AnchorVendorDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        id={selectedVendor}
+        onvendorupdate={handleProductUpdated}
+      />
     </Card>
   );
 };

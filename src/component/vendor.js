@@ -10,12 +10,13 @@ import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import { useNavigate } from 'react-router';
 
-const AnchorVendorDrawer = ({ open, onClose, id, onChangeVendor }) => {
+const AnchorVendorDrawer = ({ open, onClose, id, onChangeVendor, onvendorupdate }) => {
   AnchorVendorDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     id: PropTypes.string,
-    onChangeVendor: PropTypes.array
+    onChangeVendor: PropTypes.array,
+    onvendorupdate: PropTypes.func.isRequired
   };
 
   const dispatch = useDispatch();
@@ -121,34 +122,35 @@ const AnchorVendorDrawer = ({ open, onClose, id, onChangeVendor }) => {
         };
       }
       if (id) {
-        await dispatch(updateVendor(id, vendorData, navigate));
-        onClose();
+        const updatedata = await dispatch(updateVendor(id, vendorData, navigate));
+        onvendorupdate(updatedata.data.data);
+        // onClose();
       } else {
         const Data = await dispatch(createVendor(vendorData, navigate));
         onChangeVendor(Data.data.data);
+        setFormData({
+          accountname: '',
+          shortname: '',
+          email: '',
+          contactpersonname: '',
+          mobileno: '',
+          panno: '',
+          gstnumber: '',
+          creditperiod: '',
+          address1: '',
+          address2: '',
+          pincode: '',
+          country: '',
+          balance: ''
+        });
+        setBankDetail(false);
+        setCreditlimit(false);
+        setBankName('');
+        setAccountNumber('');
+        setAccountType('');
+        setIfscCode('');
+        setTotalCredit('');
       }
-      setFormData({
-        accountname: '',
-        shortname: '',
-        email: '',
-        contactpersonname: '',
-        mobileno: '',
-        panno: '',
-        gstnumber: '',
-        creditperiod: '',
-        address1: '',
-        address2: '',
-        pincode: '',
-        country: '',
-        balance: ''
-      });
-      setBankDetail(false);
-      setCreditlimit(false);
-      setBankName('');
-      setAccountNumber('');
-      setAccountType('');
-      setIfscCode('');
-      setTotalCredit('');
     } catch (error) {
       console.error('Error creating vendor:', error);
     }
