@@ -532,6 +532,11 @@ export const FETCH_TOTAL_PRODUCT_STOKE_REQUEST = 'FETCH_TOTAL_PRODUCT_STOKE_REQU
 export const FETCH_TOTAL_PRODUCT_STOKE_SUCCESS = 'FETCH_TOTAL_PRODUCT_STOKE_SUCCESS';
 export const FETCH_TOTAL_PRODUCT_STOKE_FAILURE = 'FETCH_TOTAL_PRODUCT_STOKE_FAILURE';
 
+// ###################################################################### STOKE #####################################################################
+export const FETCH_ALL_EMPLOYEE_SALARY_REQUEST = 'FETCH_ALL_EMPLOYEE_SALARY_REQUEST';
+export const FETCH_ALL_EMPLOYEE_SALARY_SUCCESS = 'FETCH_ALL_EMPLOYEE_SALARY_SUCCESS';
+export const FETCH_ALL_EMPLOYEE_SALARY_FAILURE = 'FETCH_ALL_EMPLOYEE_SALARY_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2384,5 +2389,18 @@ export const getAllNotificationSuccess = (data) => ({
 });
 export const getAllNotificationFailure = (error) => ({
   type: 'FETCH_ALL_NOTIFICATION_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Empolyee salary +++++++++++++++++
+export const getAllEmployeesalaryRequest = (data) => ({
+  type: 'FETCH_ALL_EMPLOYEE_SALARY_REQUEST',
+  payload: data
+});
+export const getAllEmployeesalarySuccess = (data) => ({
+  type: 'FETCH_ALL_EMPLOYEE_SALARY_SUCCESS',
+  payload: data
+});
+export const getAllEmployeesalaryFailure = (error) => ({
+  type: 'FETCH_ALL_EMPLOYEE_SALARY_FAILURE',
   payload: error
 });

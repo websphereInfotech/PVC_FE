@@ -493,7 +493,11 @@ import {
   getTotalRawStokeFailure,
   getTotalProductStokeSuccess,
   getTotalProductStokeFailure,
-  getTotalProductStokeRequest
+  getTotalProductStokeRequest,
+  // EMPLOYEE ++++++++++++++++++
+  getAllEmployeesalaryRequest,
+  getAllEmployeesalarySuccess,
+  getAllEmployeesalaryFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -3539,6 +3543,22 @@ export const getAllNotification = (value) => {
       return data;
     } catch (error) {
       dispatch(getAllNotificationFailure(error.message));
+      throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification ++++++++++++++++++++++++++
+export const getAllEmployeeSalary = () => {
+  return async (dispatch) => {
+    dispatch(getAllEmployeesalaryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salary/view_all_salary`, config);
+      const data = response.data.data;
+      dispatch(getAllEmployeesalarySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllEmployeesalaryFailure(error.message));
       throw error;
     }
   };

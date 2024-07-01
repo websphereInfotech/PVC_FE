@@ -129,7 +129,7 @@ const LowStockCash = Loadable(lazy(() => import('../views/stock managenment/lowS
 const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalStock')));
 
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
-const EmployeeDirectoryPage = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
+const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const EmployeeStatus = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
@@ -446,9 +446,12 @@ const MainRoutes = {
       path: '/notification',
       element: <ProtectedRoute element={Pagenotification} resource="Notification" permissionName="view_all_notification" />
     },
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee salary ++++++++++++++++++++++++
+    { path: '/employeedirectory', element: <Employeesalary /> },
+
     // { path: '/stock', element: <StockManagement /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
-    { path: '/employeedirectory', element: <EmployeeDirectoryPage /> },
     { path: '/employeestatus', element: <EmployeeStatus /> },
     { path: '/performanceemployee', element: <PerformanceManagementPage /> },
     { path: '/productionreport', element: <ReportPage /> },
