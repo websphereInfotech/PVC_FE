@@ -20,7 +20,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Salescash = () => {
-  const { canDeleteSalescash, canCreateCustomer, canCreateProduct } = useCan();
+  const { canDeleteSalescash, canCreateCustomer, canCreateItem } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
@@ -46,8 +46,8 @@ const Salescash = () => {
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateCustomerValue(canCreateCustomer());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateCustomer, canCreateProduct]);
+    setCanCreateProductvalue(canCreateItem());
+  }, [canCreateCustomer, canCreateItem]);
 
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
@@ -67,7 +67,7 @@ const Salescash = () => {
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -119,7 +119,7 @@ const Salescash = () => {
             label: product.productname,
             unit: product.unit
           }));
-          setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
+          setProduct([{ value: 'new', label: 'Create New Item' }, ...options]);
           if (!canCreateProductvalue) {
             setProduct(options);
           }

@@ -139,17 +139,22 @@ const CompanyviewPage = () => {
       };
       if (selectedBank) {
         await dispatch(updateCompanyBank(selectedBank, bankdetails));
-        window.location.reload();
+        setData((prevData) => ({
+          ...prevData,
+          comapnyBank: prevData.comapnyBank.map((bank) => (bank.id === selectedBank ? bankdetails : bank))
+        }));
       } else {
         const response = await dispatch(createCompanyBank(bankdetails, navigate));
+        setData((prevData) => ({
+          ...prevData,
+          comapnyBank: [...prevData.comapnyBank, response.data.data]
+        }));
         toast.success(response.data.message, {
           icon: <img src={require('../../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-          autoClose: 1000,
-          onClose: () => {
-            navigate('/companylist');
-          }
+          autoClose: 1000
         });
       }
+      setOpen(false);
     } catch (error) {
       console.error('Error updating or creating bank details:', error);
     }
@@ -164,6 +169,10 @@ const CompanyviewPage = () => {
     try {
       await dispatch(deleteCompanyBank(selectedId));
       setOpenConfirmation(false);
+      setData((prevData) => ({
+        ...prevData,
+        comapnyBank: prevData.comapnyBank.filter((bank) => bank.id !== selectedId)
+      }));
     } catch (error) {
       console.error('Error deleting bank details:', error);
     }
@@ -225,7 +234,7 @@ const CompanyviewPage = () => {
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
-                    <TableRow>
+                    <TableRow style={{ backgroundColor: '#677684' }}>
                       <TableCell align="center">Account Name</TableCell>
                       <TableCell align="center">Bank Name</TableCell>
                       <TableCell align="center">Account Number</TableCell>

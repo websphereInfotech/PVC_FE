@@ -18,6 +18,7 @@ import PropaneTankIcon from '@mui/icons-material/PropaneTank';
 import HomeIcon from '@mui/icons-material/Home';
 import ScannerIcon from '@mui/icons-material/Scanner';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import ExtensionIcon from '@mui/icons-material/Extension';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getallPermissions } from 'store/thunk';
@@ -42,7 +43,8 @@ const icons = {
   PropaneTankIcon: PropaneTankIcon,
   HomeIcon: HomeIcon,
   ScannerIcon: ScannerIcon,
-  BusinessCenterIcon: BusinessCenterIcon
+  BusinessCenterIcon: BusinessCenterIcon,
+  ExtensionIcon: ExtensionIcon
 };
 
 const MenuItem = () => {
@@ -208,12 +210,12 @@ const MenuItem = () => {
     'get_all_receive_bank'
   ]);
 
-  const hasAllPermissionsProduct = checkAllPermissions('Product', [
-    'create_product',
-    'update_product',
-    'delete_product',
-    'view_single_product',
-    'view_all_product'
+  const hasAllPermissionsItem = checkAllPermissions('Items', [
+    'create_item',
+    'update_item',
+    'delete_item',
+    'view_single_item',
+    'view_all_item'
   ]);
 
   const hasAllPermissionsCustomer = checkAllPermissions('Customer', [
@@ -232,15 +234,15 @@ const MenuItem = () => {
     'view_all_vandor'
   ]);
 
-  const hasAllPermissionsBom = checkAllPermissions('Bom', ['create_bom', 'update_bom', 'delete_bom', 'view_bom', 'view_all_bom']);
-
-  const hasAllPermissionsRawmaterial = checkAllPermissions('Raw Material', [
-    'create_raw_material',
-    'update_raw_material',
-    'delete_raw_material',
-    'view_single_raw_material',
-    'view_all_raw_material'
+  const hasAllPermissionsBom = checkAllPermissions('Production', [
+    'create_production',
+    'update_production',
+    'delete_production',
+    'view_production',
+    'view_all_production'
   ]);
+
+  
 
   return {
     items: [
@@ -305,25 +307,25 @@ const MenuItem = () => {
                     children: [
                       hasAllPermissionPaymentCash && {
                         id: 'payment Cash',
-                        title: 'Payment Cash',
+                        title: 'Payment',
                         type: 'item',
                         url: '/paymentCashlist'
                       },
                       hasAllPermissionPaymentRecieveCash && {
                         id: 'recieve cash',
-                        title: 'Recieve Cash',
+                        title: 'Receipt',
                         type: 'item',
                         url: '/paymentrecieveList'
                       },
                       hasAllPermissionsClaimcash && {
                         id: 'claim cash',
-                        title: 'Claim Cash',
+                        title: 'Demand Cash',
                         type: 'item',
                         url: '/claimcashlist'
                       },
                       hasAllPermissionsRecieveClaimcash && {
                         id: 'recieve claim',
-                        title: 'Recieve Claim',
+                        title: 'Approve Claim',
                         type: 'item',
                         url: '/recieveclaimcashlist'
                       }
@@ -331,20 +333,20 @@ const MenuItem = () => {
                   }
                 : {},
               {
-                id: 'Payment',
-                title: 'Payment',
+                id: 'Vouchers',
+                title: 'Vouchers',
                 type: 'collapse',
                 icon: icons['PaymentsIcon'],
                 children: [
                   hasAllPermissionsPaymentBank && {
-                    id: 'payment Bank',
-                    title: 'Payment Bank',
+                    id: 'payment',
+                    title: 'Payment',
                     type: 'item',
                     url: '/paymentbanklist'
                   },
                   hasAllPermissionPaymentRecieveBank && {
-                    id: 'recieve Bank',
-                    title: 'Recieve Bank',
+                    id: 'recieve',
+                    title: 'Receipt',
                     type: 'item',
                     url: '/paymentrecievebanklist'
                   }
@@ -432,30 +434,38 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['ProductionQuantityLimitsIcon'],
             children: [
+              {
+                id: 'Items',
+                title: 'Items',
+                type: 'collapse',
+                icon: icons['ExtensionIcon'],
+                children: [
+                  hasAllPermissionsItem && {
+                    id: 'Product List',
+                    title: 'Product',
+                    type: 'item',
+                    url: '/productlist'
+                  },
+                  hasAllPermissionsItem && {
+                    id: 'Raw Material List',
+                    title: 'Raw Material',
+                    type: 'item',
+                    url: '/rawmateriallist'
+                  },
+                  {
+                    id: 'Spare',
+                    title: 'Spare',
+                    type: 'item',
+                    url: '/sparelist'
+                  }
+                ]
+              },
               hasAllPermissionsBom && {
                 id: 'production',
-                title: 'Bill Of Material',
+                title: 'Production',
                 type: 'item',
                 url: '/billofmateriallist'
-              },
-              hasAllPermissionsProduct && {
-                id: 'Product List',
-                title: 'Product',
-                type: 'item',
-                url: '/productlist'
-              },
-              hasAllPermissionsRawmaterial && {
-                id: 'Raw Material List',
-                title: 'Raw Material',
-                type: 'item',
-                url: '/rawmateriallist'
               }
-              // {
-              //   id: 'Report',
-              //   title: 'Report',
-              //   type: 'item',
-              //   url: '/productionreport'
-              // }
             ]
           }
         ]

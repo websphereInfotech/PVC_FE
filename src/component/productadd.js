@@ -26,6 +26,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const [lowstock, setLowStock] = React.useState(false);
   const [cess, setCess] = React.useState(true);
   const [selectedGST, setSelectedGST] = React.useState('');
+  const [selectedItemGroup, setSelectedItemGroup] = React.useState('');
 
   const [formData, setFormData] = React.useState({
     productname: '',
@@ -86,6 +87,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           setLowStock(productData.lowstock);
           setCess(productData.cess);
           setItemType(productData.itemtype);
+          setSelectedItemGroup(productData.itemgroup);
         } else {
           setFormData({
             productname: '',
@@ -106,6 +108,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           setLowStock(false);
           setCess(true);
           setItemType('Product');
+          setSelectedItemGroup('');
         }
       } catch (error) {
         console.error('Error fetching Product', error);
@@ -119,6 +122,11 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);
     setFormData({ ...formData, gstrate: selectedOption.value });
+  };
+
+  const handleitemgroupChange = (selectedOption) => {
+    setSelectedItemGroup(selectedOption.value);
+    setFormData({ ...formData, itemgroup: selectedOption.value });
   };
 
   const handleSave = async () => {
@@ -156,6 +164,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         setLowStock(false);
         setCess(true);
         setItemType('Product');
+        setSelectedItemGroup('');
       }
     } catch (error) {
       console.error('Error creating Product', error);
@@ -181,6 +190,12 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     { value: '12', label: 'GST 12%' },
     { value: '18', label: 'GST 18%' },
     { value: '28', label: 'GST 28%' }
+  ];
+
+  const Itemgroup = [
+    { value: 'product', label: 'product' },
+    { value: 'raw_material', label: 'raw material' },
+    { value: 'spare', label: 'spare' }
   ];
 
   return (
@@ -226,10 +241,18 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             <input placeholder="Enter Product" id="description" value={formData.description} onChange={handleInputChange} />
           </Grid>
         </Grid>
+
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">Item Group</Typography>
-            <input placeholder="Enter Group" id="itemgroup" value={formData.itemgroup} onChange={handleInputChange} />
+            <Typography variant="subtitle1">
+              Item Group:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select
+              id="itemgroup"
+              options={Itemgroup}
+              value={Itemgroup.find((option) => option.value === formData.itemgroup)}
+              onChange={handleitemgroupChange}
+            />
           </Grid>
           <Grid item sm={6}>
             <Typography variant="subtitle1">Item Category</Typography>
@@ -265,12 +288,12 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             </Typography>
             <input placeholder="Enter HSN Code" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
-          <Grid item sm={6}>
-            <Typography variant="subtitle1">
-              Weight:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="Enter weight" id="weight" type="number" step="0.01" value={formData.weight} onChange={handleInputChange} />
-          </Grid>
+          {selectedItemGroup === 'product' && (
+            <Grid item sm={6}>
+              <Typography variant="subtitle1">Weight :</Typography>
+              <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
+            </Grid>
+          )}
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sm={6}>

@@ -72,25 +72,6 @@ import {
   updateProductRequest,
   updateProductSuccess,
   updateProductFailure,
-  //  RAW MATERIAL +++++++++++++++++++++++++
-  fetchAllRawmaterialcashRequest,
-  fetchAllRawmaterialcashSuccess,
-  fetchAllRawmaterialcashFailure,
-  fetchAllRawmaterialRequest,
-  fetchAllRawmaterialSuccess,
-  fetchAllRawmaterialFailure,
-  createRawmaterialRequest,
-  createRawmaterialFailure,
-  createRawmaterialSuccess,
-  deleteRawmaterialSuccess,
-  deleteRawmaterialRequest,
-  deleteRawmaterialFailure,
-  viewRawmaterialRequest,
-  viewRawmaterialSuccess,
-  viewRawmaterialFailure,
-  updateRawmaterialRequest,
-  updateRawmaterialSuccess,
-  updateRawmaterialFailure,
   //  DELIVERYCHALLAN +++++++++++++++++++++++
   createDeliveryChallanRequest,
   createDeliveryChallanSuccess,
@@ -528,6 +509,8 @@ export const loginAdmin = (credentials, navigate) => {
       sessionStorage.setItem('username', username);
       const userId = decodedToken.userId;
       sessionStorage.setItem('userId', userId);
+      const companyId = decodedToken.companyId;
+      sessionStorage.setItem('companyId', companyId);
       const userData = response.data;
       sessionStorage.setItem('user', JSON.stringify(userData));
       toast.success(response.data.message, {
@@ -930,7 +913,7 @@ export const fetchAllProductsCash = () => {
     dispatch(fetchAllProdutscashRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/C_get_all_product`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/item/C_get_all_item`, config);
       const data = response.data.data;
       dispatch(fetchAllProdutscashSuccess(data));
       return data;
@@ -944,7 +927,7 @@ export const fetchAllProducts = (params = {}) => {
     dispatch(fetchAllProdutsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/get_all_product?{search}=`, {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/item/get_all_items`, {
         ...config,
         params: params
       });
@@ -962,7 +945,7 @@ export const createProduct = (data, navigate) => {
     dispatch(createProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/product/create_product`, data, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/item/create_item`, data, config);
       const createProductData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -986,7 +969,7 @@ export const DeleteProduct = (id) => {
     dispatch(deleteProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/product/delete_product/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/item/delete_item/${id}`, config);
       const data = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -1004,7 +987,7 @@ export const viewProduct = (id) => {
     dispatch(viewProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/view_product/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/item/view_item/${id}`, config);
       const data = response.data.data;
       dispatch(viewProductSuccess(data));
       return data;
@@ -1019,131 +1002,16 @@ export const updateProduct = (id, data, navigate) => {
     dispatch(updateProductRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/product/update_product/${id}`, data, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/item/update_item/${id}`, data, config);
       const upadteProductData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
       dispatch(updateProductSuccess(upadteProductData));
-      // navigate(`/productview/${id}`)
       return upadteProductData;
     } catch (error) {
       dispatch(updateProductFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
-};
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL ++++++++++++++++++++++++++++++++++++++++
-export const fetchAllRawmaterialCash = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllRawmaterialcashRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/C_get_all_raw_material_cash`, config);
-      const data = response.data.data;
-      dispatch(fetchAllRawmaterialcashSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllRawmaterialcashFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const fetchAllRawmaterial = (params = {}) => {
-  return async (dispatch) => {
-    dispatch(fetchAllRawmaterialRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/view_all_raw_material?{search}=`, {
-        ...config,
-        params: params
-      });
-      const data = response.data.data;
-      dispatch(fetchAllRawmaterialSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllRawmaterialFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createRawmaterial = (data, navigate) => {
-  return async (dispatch) => {
-    dispatch(createRawmaterialRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/rawMaterial/create_raw_material`, data, config);
-      const rawmaterialdata = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(createRawmaterialSuccess(rawmaterialdata));
-      return rawmaterialdata;
-    } catch (error) {
-      dispatch(createRawmaterialFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
-};
-export const DeleteRawmaterial = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteRawmaterialRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/rawMaterial/delete_raw_material/${id}`, config);
-      const data = response.data.data;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(deleteRawmaterialSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(deleteRawmaterialFailure(error.message));
-    }
-  };
-};
-export const viewRawmaterial = (id) => {
-  return async (dispatch) => {
-    dispatch(viewRawmaterialRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/rawMaterial/view_single_raw_material/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewRawmaterialSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewRawmaterialFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const updateRawmaterial = (id, data, navigate) => {
-  return async (dispatch) => {
-    dispatch(updateRawmaterialRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/rawMaterial/update_raw_material/${id}`, data, config);
-      const upadteProductData = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(updateRawmaterialSuccess(upadteProductData));
-      return upadteProductData;
-    } catch (error) {
-      dispatch(updateRawmaterialFailure(error.message));
       if (error.response.status === 401) {
         navigate('/');
       } else {
@@ -2473,7 +2341,6 @@ export const createCompanyBank = (bankdetails) => {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/companybank/create_company_bankDetails`, bankdetails, config);
       const Companybankdata = response;
-
       dispatch(CreateCompanyBankSuccess(Companybankdata));
       return Companybankdata;
     } catch (error) {
@@ -2493,6 +2360,10 @@ export const updateCompanyBank = (id, formData) => {
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/companybank/update_company_bankDetails/${id}`, formData, config);
       const updateCompanyBankData = response.data.data;
       dispatch(UpdateCompanyBankSuccess(updateCompanyBankData));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
       return updateCompanyBankData;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -2530,7 +2401,6 @@ export const deleteCompanyBank = (id) => {
         autoClose: 1000
       });
       dispatch(DeleteCompanyBankSuccess(deleteCompanybank));
-      window.location.reload();
       return deleteCompanybank;
     } catch (error) {
       toast.error(error.response.data.message, {

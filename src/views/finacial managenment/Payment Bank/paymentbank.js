@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper } from '@mui/material';
+import { Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentBank, fetchAllCompanyBank, fetchAllVendors, updatePaymentbank, viewSinglePaymentBank } from 'store/thunk';
+import {
+  createCompanyBank,
+  createPaymentBank,
+  fetchAllCompanyBank,
+  fetchAllVendors,
+  updatePaymentbank,
+  viewSinglePaymentBank
+} from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AnchorVendorDrawer from '../../../component/vendor';
 import Select from 'react-select';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { toast } from 'react-toastify';
 
 const Paymentbank = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -33,6 +41,14 @@ const Paymentbank = () => {
     voucherno: ''
   });
   console.log(selectvendor, selectaccount);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [bankdata, setBankdata] = useState({
+    accountname: '',
+    bankname: '',
+    accountnumber: '',
+    ifsccode: '',
+    branch: ''
+  });
   const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
   useEffect(() => {
     setCanCreateVendorValue(canCreateVendor());
@@ -41,6 +57,10 @@ const Paymentbank = () => {
   const handleDateChange = (date) => {
     setFormData({ ...formData, paymentdate: date });
   };
+  const handleaccountChange = (field, value) => {
+    setBankdata({ ...bankdata, [field]: value });
+  };
+
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Vendor') {
       setIsDrawerOpen(true);
@@ -52,10 +72,53 @@ const Paymentbank = () => {
     }
   };
   const handleSelectAccountChange = (selectedOption) => {
-    if ((selectedOption && selectedOption.label) || !canViwAllCompanyBank()) {
+    if ((selectedOption && selectedOption.label === 'Create New Account') || !canViwAllCompanyBank()) {
+      setIsDialogOpen(true);
+    } else {
       formData.accountId = selectedOption.value;
       setFormData(formData);
       setcompanyname(selectedOption.label);
+      setIsDialogOpen(false);
+    }
+  };
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+  const handleSave = async () => {
+    try {
+      const companyId = sessionStorage.getItem('companyId');
+      const bankdetails = {
+        companyId: companyId,
+        ...bankdata
+      };
+      console.log(bankdetails, 'details');
+      const response = await dispatch(createCompanyBank(bankdetails));
+
+      if (response.data.status === 'true') {
+        toast.success(response.data.message, {
+          icon: <img src={require('../../../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+        setIsDialogOpen(false);
+        setBankdata({
+          accountname: '',
+          bankname: '',
+          accountnumber: '',
+          ifsccode: '',
+          branch: ''
+        });
+
+        const responsecompany = await dispatch(fetchAllCompanyBank());
+        if (Array.isArray(responsecompany)) {
+          const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
+          setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
+        }
+      } else {
+        throw new Error('Failed to create bank details');
+      }
+    } catch (error) {
+      console.error('Error updating or creating bank details:', error);
     }
   };
 
@@ -73,7 +136,7 @@ const Paymentbank = () => {
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
           const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
-          setAccount(options);
+          setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } catch (error) {
         console.error('Error fetching payment bank:', error);
@@ -159,11 +222,11 @@ const Paymentbank = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Payment Bank
+            Update Payment
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Payment Bank
+            Payment
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -239,6 +302,76 @@ const Paymentbank = () => {
             </Grid>
           </Grid>
 
+          <Dialog open={isDialogOpen} onClose={handleClose}>
+            <DialogTitle>Add Bank Details</DialogTitle>
+            <DialogContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    Account Name:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <input
+                    id="accountname"
+                    placeholder="Account Name"
+                    onChange={(e) => handleaccountChange('accountname', e.target.value)}
+                    value={bankdata.accountname}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    IFSC Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <input
+                    placeholder="IFSC Code"
+                    id="ifsccode"
+                    onChange={(e) => handleaccountChange('ifsccode', e.target.value)}
+                    value={bankdata.ifsccode}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    Branch:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <input
+                    placeholder="Branch"
+                    id="branch"
+                    onChange={(e) => handleaccountChange('branch', e.target.value)}
+                    value={bankdata.branch}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    Bank Name:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <input
+                    placeholder="Bank Name"
+                    id="bankname"
+                    onChange={(e) => handleaccountChange('bankname', e.target.value)}
+                    value={bankdata.bankname}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                    Account Number:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <input
+                    placeholder="Account Number"
+                    id="accountnumber"
+                    onChange={(e) => handleaccountChange('accountnumber', e.target.value)}
+                    value={bankdata.accountnumber}
+                  />
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} id="savebtncs" variant="outlined">
+                Cancel
+              </Button>
+              <Button onClick={handleSave} id="savebtncs" variant="outlined">
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>

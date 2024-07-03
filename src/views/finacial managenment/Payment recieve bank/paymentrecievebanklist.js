@@ -169,7 +169,7 @@ const Paymentrecievebanklist = () => {
     <Card style={{ width: '100%', padding: '25px' }}>
       {showLedgerlist && <Paymentbankrecieveledgerlist customerId={customerId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
-        Payment Recieve Bank List
+        Receipt List
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
@@ -179,7 +179,7 @@ const Paymentrecievebanklist = () => {
           onClick={handleMakePayment}
           disabled={!canCreatePaymentRecieveBank()}
         >
-          Payment Recieve Bank
+          Receipt
         </Button>
         <Button
           variant="contained"

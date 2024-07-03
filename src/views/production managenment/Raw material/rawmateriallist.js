@@ -21,11 +21,11 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch } from 'react-redux';
-import { DeleteRawmaterial, fetchAllRawmaterial, viewRawmaterial } from 'store/thunk';
+import { DeleteProduct, fetchAllProducts, viewProduct } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
-import RawMaterialDrawer from 'component/rawmaterialadd';
+import AnchorProductDrawer from 'component/productadd';
 
 const columns = [
   { id: 'productname', label: 'Product Name', align: 'center' },
@@ -82,7 +82,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 const Rawmateriallist = () => {
-  const { canUpdateRawmaterial, canDeleteRawmaterial, canViewRawmaterial, canCreateRawmaterial } = useCan();
+  const { canUpdateItem, canDeleteItem, canViewItem, canCreateItem } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [products, setProduct] = useState([]);
@@ -94,7 +94,7 @@ const Rawmateriallist = () => {
   const [selectedProduct, setSelectedProduct] = useState();
 
   useEffect(() => {
-    dispatch(fetchAllRawmaterial())
+    dispatch(fetchAllProducts({ group: 'raw_material' }))
       .then((data) => {
         setProduct(data);
       })
@@ -112,14 +112,14 @@ const Rawmateriallist = () => {
   };
 
   const handleRawmaterial = (id) => {
-    dispatch(viewRawmaterial(id));
+    dispatch(viewProduct(id));
     navigate(`/rawmaterialview/${id}`);
   };
 
   const handleUpdateRawmaterial = (id) => {
     setIsDrawerOpen(true);
     setSelectedProduct(id);
-    dispatch(viewRawmaterial(id));
+    dispatch(viewProduct(id));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -135,8 +135,8 @@ const Rawmateriallist = () => {
     setIsDrawerOpen(true);
   };
 
-  const handleRawProductUpdated = () => {
-    dispatch(fetchAllRawmaterial())
+  const handleProductUpdated = () => {
+    dispatch(fetchAllProducts({ group: 'raw_material' }))
       .then((data) => {
         setProduct(data);
         setIsDrawerOpen(false);
@@ -146,8 +146,8 @@ const Rawmateriallist = () => {
       });
   };
 
-  const handleRawNewProductAdded = () => {
-    dispatch(fetchAllRawmaterial())
+  const handleNewProductAdded = () => {
+    dispatch(fetchAllProducts({ group: 'raw_material' }))
       .then((data) => {
         setProduct(data);
         setIsDrawerOpen(false);
@@ -159,7 +159,7 @@ const Rawmateriallist = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteRawmaterial(selectedId));
+      await dispatch(DeleteProduct(selectedId));
       setOpenConfirmation(false);
       setProduct((prevRawMaterial) => prevRawMaterial.filter((rawMaterial) => rawMaterial.id !== selectedId));
     } catch (error) {
@@ -170,7 +170,7 @@ const Rawmateriallist = () => {
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
-      const response = await dispatch(fetchAllRawmaterial({ search: query }));
+      const response = await dispatch(fetchAllProducts({ search: query, group: 'raw_material' }));
       setProduct(response);
     } catch (error) {
       console.error('Error Searching Product:', error);
@@ -183,14 +183,8 @@ const Rawmateriallist = () => {
         Raw Material List
       </Typography>
       <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ margin: '10px' }}
-          onClick={handleAddRawmaterial}
-          disabled={!canCreateRawmaterial()}
-        >
-          Create Raw Material
+        <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddRawmaterial} disabled={!canCreateItem()}>
+          Create Item
         </Button>
         <Search>
           <SearchIconWrapper>
@@ -220,45 +214,45 @@ const Rawmateriallist = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewRawmaterial() ? 'Blue' : 'gray',
-                            color: canViewRawmaterial() ? 'white' : 'white',
+                            backgroundColor: canViewItem() ? 'Blue' : 'gray',
+                            color: canViewItem() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewRawmaterial() && { opacity: 1 }),
-                            ...(!canViewRawmaterial() && { opacity: 0.5 }),
-                            ...(!canViewRawmaterial() && { backgroundColor: 'gray' })
+                            ...(canViewItem() && { opacity: 1 }),
+                            ...(!canViewItem() && { opacity: 0.5 }),
+                            ...(!canViewItem() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleRawmaterial(product.id)}
-                          disabled={!canViewRawmaterial()}
+                          disabled={!canViewItem()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateRawmaterial() ? 'green' : 'gray',
-                            color: canUpdateRawmaterial() ? 'white' : 'white',
+                            backgroundColor: canUpdateItem() ? 'green' : 'gray',
+                            color: canUpdateItem() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateRawmaterial() && { opacity: 1 }),
-                            ...(!canUpdateRawmaterial() && { opacity: 0.5 }),
-                            ...(!canUpdateRawmaterial() && { backgroundColor: 'gray' })
+                            ...(canUpdateItem() && { opacity: 1 }),
+                            ...(!canUpdateItem() && { opacity: 0.5 }),
+                            ...(!canUpdateItem() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateRawmaterial(product.id)}
-                          disabled={!canUpdateRawmaterial()}
+                          disabled={!canUpdateItem()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteRawmaterial() ? 'Red' : 'gray',
-                            color: canDeleteRawmaterial() ? 'white' : 'white',
+                            backgroundColor: canDeleteItem() ? 'Red' : 'gray',
+                            color: canDeleteItem() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteRawmaterial() && { opacity: 1 }),
-                            ...(!canDeleteRawmaterial() && { opacity: 0.5 }),
-                            ...(!canDeleteRawmaterial() && { backgroundColor: 'gray' })
+                            ...(canDeleteItem() && { opacity: 1 }),
+                            ...(!canDeleteItem() && { opacity: 0.5 }),
+                            ...(!canDeleteItem() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(product.id)}
-                          disabled={!canDeleteRawmaterial()}
+                          disabled={!canDeleteItem()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -298,12 +292,12 @@ const Rawmateriallist = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <RawMaterialDrawer
+      <AnchorProductDrawer
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         id={selectedProduct}
-        onNewRawProductAdded={handleRawNewProductAdded}
-        onRawProductUpdated={handleRawProductUpdated}
+        onNewProductAdded={handleNewProductAdded}
+        onProductUpdated={handleProductUpdated}
       />
     </Card>
   );

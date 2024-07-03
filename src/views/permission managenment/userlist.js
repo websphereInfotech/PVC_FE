@@ -105,7 +105,7 @@ export default function UserList() {
         // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
         setData(response[0].users);
       } catch (error) {
-        if (error.response.status === 401) {
+        if (error?.response?.status === 401) {
           navigate('/');
         }
         console.error('Error fetching User:', error);

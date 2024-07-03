@@ -15,7 +15,6 @@ import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
 import Pagenotification from 'component/notification';
-// import LowStockView from '../views/stock managenment/lowStockView';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -115,6 +114,11 @@ const Productview = Loadable(lazy(() => import('../views/production managenment/
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Raw material product ++++++++++++++++++++++++++++++++++++
 const Rawmateriallist = Loadable(lazy(() => import('../views/production managenment/Raw material/rawmateriallist')));
 const Rawmaterialview = Loadable(lazy(() => import('../views/production managenment/Raw material/rawmaterialview')));
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++ Spare product ++++++++++++++++++++++++++++++++++++
+const Sparelist = Loadable(lazy(() => import('../views/production managenment/Spare/sparelist')));
+const Spareview = Loadable(lazy(() => import('../views/production managenment/Spare/spareview')));
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Customer ++++++++++++++++++++++++++++++++++++++++++++++++
 const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/customerlist')));
 const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/customerview')));
@@ -257,10 +261,7 @@ const MainRoutes = {
     { path: '/addexpense/:id', element: <AddExpense /> },
     { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotations +++++++++++++++++++++++++++++++++++++++++++++++++++
-    // { path: '/proformainvoice', element: <Proformainvoice /> },
-    // { path: '/proformainvoice/:id', element: <Proformainvoice /> },
-    // { path: '/proformainvoiceList', element: <ProformainvoiceList /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Proformainvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
       path: '/proformainvoice',
       element: <ProtectedRoute element={Proformainvoice} resource="ProFormaInvoice" permissionName="create_ProFormaInvoice" />
@@ -389,17 +390,29 @@ const MainRoutes = {
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++ Product edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/productlist', element: <ProtectedRoute element={ProductList} resource="Product" permissionName="view_all_product" /> },
-    { path: '/productview/:id', element: <ProtectedRoute element={Productview} resource="Product" permissionName="view_single_product" /> },
+    // { path: '/productlist', element: <ProductList /> },
+    // { path: '/productview/:id', element: <Productview /> },
+    { path: '/productlist', element: <ProtectedRoute element={ProductList} resource="Items" permissionName="view_all_item" /> },
+    { path: '/productview/:id', element: <ProtectedRoute element={Productview} resource="Items" permissionName="view_single_item" /> },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++ Raw material product edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     {
       path: '/rawmateriallist',
-      element: <ProtectedRoute element={Rawmateriallist} resource="Raw Material" permissionName="view_all_raw_material" />
+      element: <ProtectedRoute element={Rawmateriallist} resource="Items" permissionName="view_all_item" />
     },
     {
       path: '/rawmaterialview/:id',
-      element: <ProtectedRoute element={Rawmaterialview} resource="Raw Material" permissionName="view_single_raw_material" />
+      element: <ProtectedRoute element={Rawmaterialview} resource="Items" permissionName="view_single_item" />
+    },
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++ Spare product edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/sparelist',
+      element: <ProtectedRoute element={Sparelist} resource="Items" permissionName="view_all_item" />
+    },
+    {
+      path: '/spareview/:id',
+      element: <ProtectedRoute element={Spareview} resource="Items" permissionName="view_single_item" />
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++ Customer edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -415,15 +428,21 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    { path: '/billofmateriallist', element: <ProtectedRoute element={Billofmateriallist} resource="Bom" permissionName="view_all_bom" /> },
-    { path: '/addbillofmaterial', element: <ProtectedRoute element={Addbillofmaterial} resource="Bom" permissionName="create_bom" /> },
+    {
+      path: '/billofmateriallist',
+      element: <ProtectedRoute element={Billofmateriallist} resource="Production" permissionName="view_all_production" />
+    },
+    {
+      path: '/addbillofmaterial',
+      element: <ProtectedRoute element={Addbillofmaterial} resource="Production" permissionName="create_production" />
+    },
     {
       path: '/addbillofmaterial/:bomId',
-      element: <ProtectedRoute element={Addbillofmaterial} resource="Bom" permissionName="update_bom" />
+      element: <ProtectedRoute element={Addbillofmaterial} resource="Production" permissionName="update_production" />
     },
     {
       path: '/billofmaterialview/:bomId',
-      element: <ProtectedRoute element={Bomview} resource="Bom" permissionName="view_bom" />
+      element: <ProtectedRoute element={Bomview} resource="Production" permissionName="view_production" />
     },
     { path: '/products', element: <Product /> },
 

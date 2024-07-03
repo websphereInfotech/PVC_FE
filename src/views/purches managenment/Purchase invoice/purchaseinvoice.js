@@ -13,19 +13,19 @@ import {
   updatePurchaseinvoice,
   getallPurchaseinvoice,
   fetchuserwiseCompany,
-  fetchAllRawmaterial
+  fetchAllProducts
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
-import RawMaterialDrawer from 'component/rawmaterialadd';
+import AnchorProductDrawer from 'component/productadd';
 
 const Purchaseinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
-  const { canCreateVendor, canCreateRawmaterial } = useCan();
+  const { canCreateVendor, canCreateItem } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -58,8 +58,8 @@ const Purchaseinvoice = () => {
   const [canCreateRawmaterialvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateVendorValue(canCreateVendor());
-    setCanCreateProductvalue(canCreateRawmaterial());
-  }, [canCreateVendor, canCreateRawmaterial]);
+    setCanCreateProductvalue(canCreateItem());
+  }, [canCreateVendor, canCreateItem]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', unit: '', rate: '', mrp: '' };
@@ -151,7 +151,7 @@ const Purchaseinvoice = () => {
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create Raw Material') {
+    if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -222,7 +222,7 @@ const Purchaseinvoice = () => {
             setvendor(options);
           }
         }
-        const productResponse = await dispatch(fetchAllRawmaterial());
+        const productResponse = await dispatch(fetchAllProducts());
         if (Array.isArray(productResponse)) {
           setProductResponse(productResponse);
           const options = productResponse.map((product) => ({
@@ -232,7 +232,7 @@ const Purchaseinvoice = () => {
             unit: product.unit,
             gstrate: product.gstrate
           }));
-          setProduct([{ value: 'new', label: 'Create Raw Material', rate: '', gstrate: '' }, ...options]);
+          setProduct([{ value: 'new', label: 'Create New Item', rate: '', gstrate: '' }, ...options]);
           if (!canCreateRawmaterialvalue) {
             setProduct(options);
           }
@@ -480,7 +480,7 @@ const Purchaseinvoice = () => {
                         value={{ value: row.productId, label: row.product }}
                       />
                     </TableCell>
-                    <RawMaterialDrawer
+                    <AnchorProductDrawer
                       open={isproductDrawerOpen}
                       onClose={() => setIsproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}

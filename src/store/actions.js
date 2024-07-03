@@ -54,26 +54,6 @@ export const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS';
 export const UPDATE_PRODUCT_FAILURE = 'UPDATE_PRODUCT_FAILURE';
 
 // ########################################## CUSTOMER ###############################################################################################
-export const FETCH_ALL_RAWMATERIAL_CASH_REQUEST = 'FETCH_ALL_RAWMATERIAL_CASH_REQUEST';
-export const FETCH_ALL_RAWMATERIAL_CASH_SUCCESS = 'FETCH_ALL_RAWMATERIAL_CASH_SUCCESS';
-export const FETCH_ALL_RAWMATERIAL_CASH_FAILURE = 'FETCH_ALL_RAWMATERIAL_CASH_FAILURE';
-export const FETCH_ALL_RAWMATERIAL_REQUEST = 'FETCH_ALL_RAWMATERIAL_REQUEST';
-export const FETCH_ALL_RAWMATERIAL_SUCCESS = 'FETCH_ALL_RAWMATERIAL_SUCCESS';
-export const FETCH_ALL_RAWMATERIAL_FAILURE = 'FETCH_ALL_RAWMATERIAL_FAILURE';
-export const CREATE_RAWMATERIAL_REQUEST = 'CREATE_RAWMATERIAL_REQUEST';
-export const CREATE_RAWMATERIAL_SUCCESS = 'CREATE_RAWMATERIAL_SUCCESS';
-export const CREATE_RAWMATERIAL_FAILURE = 'CREATE_RAWMATERIAL_FAILURE';
-export const DELETE_RAWMATERIAL_REQUEST = 'DELETE_RAWMATERIAL_REQUEST';
-export const DELETE_RAWMATERIAL_SUCCESS = 'DELETE_RAWMATERIAL_SUCCESS';
-export const DELETE_RAWMATERIAL_FAILURE = 'DELETE_RAWMATERIAL_FAILURE';
-export const VIEW_RAWMATERIAL_REQUEST = 'VIEW_RAWMATERIAL_REQUEST';
-export const VIEW_RAWMATERIAL_SUCCESS = 'VIEW_RAWMATERIAL_SUCCESS';
-export const VIEW_RAWMATERIAL_FAILURE = 'VIEW_RAWMATERIAL_FAILURE';
-export const UPDATE_RAWMATERIAL_REQUEST = 'UPDATE_RAWMATERIAL_REQUEST';
-export const UPDATE_RAWMATERIAL_SUCCESS = 'UPDATE_RAWMATERIAL_SUCCESS';
-export const UPDATE_RAWMATERIAL_FAILURE = 'UPDATE_RAWMATERIAL_FAILURE';
-
-// ########################################## CUSTOMER ###############################################################################################
 export const FETCH_ALL_CUSTOMERS_CASH_REQUEST = 'FETCH_ALL_CUSTOMERS_CASH_REQUEST';
 export const FETCH_ALL_CUSTOMERS_CASH_SUCCESS = 'FETCH_ALL_CUSTOMERS_CASH_SUCCESS';
 export const FETCH_ALL_CUSTOMERS_CASH_FAILURE = 'FETCH_ALL_CUSTOMERS_CASH_FAILURE';
@@ -1147,78 +1127,6 @@ export const updateProductSuccess = (data) => ({
 });
 export const updateProductFailure = (error) => ({
   type: 'UPDATE_PRODUCT_FAILURE',
-  payload: error
-});
-
-// ############################################################################# RAW MATERIAL #################################################################
-export const createRawmaterialRequest = (data) => ({
-  type: 'CREATE_RAWMATERIAL_REQUEST',
-  payload: data
-});
-export const createRawmaterialSuccess = (data) => ({
-  type: 'CREATE_RAWMATERIAL_SUCCESS',
-  payload: data
-});
-export const createRawmaterialFailure = (error) => ({
-  type: 'CREATE_RAWMATERIAL_FAILURE',
-  payload: error
-});
-export const fetchAllRawmaterialRequest = () => ({
-  type: 'FETCH_ALL_RAWMATERIAL_REQUEST'
-});
-export const fetchAllRawmaterialSuccess = (data) => ({
-  type: 'FETCH_ALL_RAWMATERIAL_SUCCESS',
-  payload: data
-});
-export const fetchAllRawmaterialFailure = (error) => ({
-  type: 'FETCH_ALL_RAWMATERIAL_FAILURE',
-  payload: error
-});
-export const fetchAllRawmaterialcashRequest = () => ({
-  type: 'FETCH_ALL_RAWMATERIAL_CASH_REQUEST'
-});
-export const fetchAllRawmaterialcashSuccess = (data) => ({
-  type: 'FETCH_ALL_RAWMATERIAL_CASH_SUCCESS',
-  payload: data
-});
-export const fetchAllRawmaterialcashFailure = (error) => ({
-  type: 'FETCH_ALL_RAWMATERIAL_CASH_FAILURE',
-  payload: error
-});
-export const deleteRawmaterialRequest = (data) => ({
-  type: 'DELETE_RAWMATERIAL_REQUEST',
-  payload: data
-});
-export const deleteRawmaterialSuccess = (data) => ({
-  type: 'DELETE_RAWMATERIAL_SUCCESS',
-  payload: data
-});
-export const deleteRawmaterialFailure = (error) => ({
-  type: 'DELETE_RAWMATERIAL_FAILURE',
-  payload: error
-});
-export const viewRawmaterialRequest = (data) => ({
-  type: 'VIEW_RAWMATERIAL_REQUEST',
-  payload: data
-});
-export const viewRawmaterialSuccess = (data) => ({
-  type: 'VIEW_RAWMATERIAL_SUCCESS',
-  payload: data
-});
-export const viewRawmaterialFailure = (error) => ({
-  type: 'VIEW_RAWMATERIAL_FAILURE',
-  payload: error
-});
-export const updateRawmaterialRequest = (data) => ({
-  type: 'UPDATE_RAWMATERIAL_REQUEST',
-  payload: data
-});
-export const updateRawmaterialSuccess = (data) => ({
-  type: 'UPDATE_RAWMATERIAL_SUCCESS',
-  payload: data
-});
-export const updateRawmaterialFailure = (error) => ({
-  type: 'UPDATE_RAWMATERIAL_FAILURE',
   payload: error
 });
 

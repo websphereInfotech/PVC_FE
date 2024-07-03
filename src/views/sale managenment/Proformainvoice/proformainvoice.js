@@ -24,7 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Proformainvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation, canCreateCustomer, canCreateProduct } = useCan();
+  const { canDeleteProformainvoiceQuotation, canCreateCustomer, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -65,8 +65,8 @@ const Proformainvoice = () => {
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateCustomerValue(canCreateCustomer());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateCustomer, canCreateProduct]);
+    setCanCreateProductvalue(canCreateItem());
+  }, [canCreateCustomer, canCreateItem]);
 
   // manage button of addrow
   const handleAddRow = () => {
@@ -96,7 +96,7 @@ const Proformainvoice = () => {
   // use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -168,7 +168,7 @@ const Proformainvoice = () => {
             unit: product.unit,
             gstrate: product.gstrate
           }));
-          setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '', unit: '' }, ...options]);
+          setProduct([{ value: 'new', label: 'Create New Item', rate: '', gstrate: '', unit: '' }, ...options]);
           if (!canCreateProductvalue) {
             setProduct(options);
           }

@@ -82,7 +82,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
   }
 }));
-const ProductList = () => {
+const Sparelist = () => {
   const { canUpdateItem, canDeleteItem, canViewItem, canCreateItem } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const ProductList = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAllProducts())
+    dispatch(fetchAllProducts({ group: 'spare' }))
       .then((data) => {
         setProduct(data);
       })
@@ -114,7 +114,7 @@ const ProductList = () => {
 
   const handleProductview = (id) => {
     dispatch(viewProduct(id));
-    navigate(`/productview/${id}`);
+    navigate(`/spareview/${id}`);
   };
 
   const handleUpdateProduct = (id) => {
@@ -134,13 +134,12 @@ const ProductList = () => {
   };
 
   const handleAddProduct = () => {
-    console.log('setSelectedProduct', selectedProduct);
     setSelectedProduct(null);
     setIsDrawerOpen(true);
   };
 
   const handleProductUpdated = () => {
-    dispatch(fetchAllProducts({ group: 'product' }))
+    dispatch(fetchAllProducts({ group: 'spare' }))
       .then((data) => {
         setProduct(data);
         setIsDrawerOpen(false);
@@ -151,7 +150,7 @@ const ProductList = () => {
   };
 
   const handleNewProductAdded = () => {
-    dispatch(fetchAllProducts({ group: 'product' }))
+    dispatch(fetchAllProducts({ group: 'spare' }))
       .then((data) => {
         setProduct(data);
         setIsDrawerOpen(false);
@@ -174,7 +173,7 @@ const ProductList = () => {
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
-      const response = await dispatch(fetchAllProducts({ group: 'product', search: query }));
+      const response = await dispatch(fetchAllProducts({ search: query, group: 'spare' }));
       setProduct(response);
     } catch (error) {
       console.error('Error Searching Product:', error);
@@ -184,7 +183,7 @@ const ProductList = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Product List
+        Spare List
       </Typography>
       <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateItem()}>
@@ -307,4 +306,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default Sparelist;

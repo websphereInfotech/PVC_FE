@@ -171,7 +171,7 @@ const Paymentbanklist = () => {
     <Card style={{ width: '100%', padding: '25px' }}>
       {showLedgerlist && <Paymentbankledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
-        Payment Bank List
+        Payment List
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
@@ -181,7 +181,7 @@ const Paymentbanklist = () => {
           onClick={handleMakePayment}
           disabled={!canCreatePaymentBank()}
         >
-          Payment Bank
+          Payment
         </Button>
         <Button
           variant="contained"

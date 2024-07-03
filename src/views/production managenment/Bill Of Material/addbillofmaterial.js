@@ -5,16 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
-import { createBom, fetchAllProducts, fetchAllRawmaterial, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
+import { createBom, fetchAllProducts, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
-import RawMaterialDrawer from '../../../component/rawmaterialadd';
 
 const Addbillofmaterial = () => {
-  const { canCreateRawmaterial, canCreateProduct } = useCan();
+  const { canCreateItem } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: 0, unit: '', wastage: 0 }]);
@@ -28,16 +27,16 @@ const Addbillofmaterial = () => {
   });
   const [productname, setProductname] = useState('');
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [israwproductDrawerOpen, setIsRawproductDrawerOpen] = useState(false);
+  const [isrowproductDrawerOpen, setIsrowproductDrawerOpen] = useState(false);
   const [productOptions, setProductOptions] = useState([]);
   const [rawmaterialoption, setRawmaterialoptions] = useState([]);
-  const [canCreateRawmaterialvalue, setCanCreateRawmaterialvalue] = useState(null);
+  // const [canCreateRawmaterialvalue, setCanCreateRawmaterialvalue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
 
   useEffect(() => {
-    setCanCreateRawmaterialvalue(canCreateRawmaterial());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateRawmaterial, canCreateProduct]);
+    // setCanCreateRawmaterialvalue(canCreateRawmaterial());
+    setCanCreateProductvalue(canCreateItem());
+  }, [canCreateItem]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,8 +53,8 @@ const Addbillofmaterial = () => {
   };
 
   const handleSelectProductChange = (selectedOption, rowIndex) => {
-    if (selectedOption && selectedOption.value === 'new material') {
-      setIsRawproductDrawerOpen(true);
+    if (selectedOption && selectedOption.label === 'Create New Item') {
+      setIsrowproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, index) => {
         if (index === rowIndex) {
@@ -70,12 +69,12 @@ const Addbillofmaterial = () => {
         return row;
       });
       setRows(updatedRows);
-      setIsRawproductDrawerOpen(false);
+      setIsrowproductDrawerOpen(false);
     }
   };
 
   const handleProductDrawerSelect = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsproductDrawerOpen(true);
     } else {
       setProductname(selectedOption.label);
@@ -88,7 +87,6 @@ const Addbillofmaterial = () => {
 
       setIsproductDrawerOpen(false);
     }
-    // }
   };
 
   const handleNewProductAdded = (newProduct) => {
@@ -116,7 +114,7 @@ const Addbillofmaterial = () => {
       }
     ];
     setRawmaterialoptions(updatedProductList);
-    setIsRawproductDrawerOpen(false);
+    setIsrowproductDrawerOpen(false);
   };
 
   useEffect(() => {
@@ -130,22 +128,19 @@ const Addbillofmaterial = () => {
             weight: product.weight,
             unit: product.unit
           }));
-          setProductOptions([{ value: 'new', label: 'Create New Product' }, ...options]);
-          if (!canCreateProductvalue) {
-            setProductOptions(options);
-          }
-          const rawmaterialresponse = await dispatch(fetchAllRawmaterial());
-          if (Array.isArray(rawmaterialresponse)) {
-            const Roptions = rawmaterialresponse.map((product) => ({
+          setProductOptions([{ value: 'new', label: 'Create New Item' }, ...options]);
+          const product = await dispatch(fetchAllProducts());
+          if (Array.isArray(product)) {
+            const rowoptions = product.map((product) => ({
               value: product.id,
               label: product.productname,
               weight: product.weight,
               unit: product.unit
             }));
-            setRawmaterialoptions([{ value: 'new material', label: 'Create Raw Material' }, ...Roptions]);
-            if (!canCreateRawmaterialvalue) {
-              setRawmaterialoptions(Roptions);
-            }
+            setRawmaterialoptions([{ value: 'new', label: 'Create New Item' }, ...rowoptions]);
+          }
+          if (!canCreateProductvalue) {
+            setProductOptions(options);
           }
         } else {
           console.error('fetchAllProductsCash returned an unexpected response:', productResponse);
@@ -154,10 +149,10 @@ const Addbillofmaterial = () => {
         console.error('Error fetching products:', error);
       }
     };
-    if (canCreateRawmaterialvalue !== null || canCreateProductvalue !== null) {
+    if (canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, canCreateRawmaterialvalue, canCreateProductvalue]);
+  }, [dispatch, canCreateProductvalue]);
 
   const handleDateChange = (date) => {
     setFormData((prevFormData) => ({
@@ -257,32 +252,14 @@ const Addbillofmaterial = () => {
       <div>
         {bomId ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Bill Of Material
+            Update Production
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Bill Of Material
+            Create Production
           </Typography>
         )}
         <Grid container spacing={2} style={{ marginBottom: '16px' }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="subtitle1">
-              Batch No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="No." value={formData.bomNo} onChange={(e) => setFormData({ ...formData, bomNo: e.target.value })} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="subtitle1">
-              Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <DatePicker
-              selected={formData.date}
-              onChange={handleDateChange}
-              dateFormat="dd/MM/yyyy"
-              isClearable={false}
-              showTimeSelect={false}
-            />
-          </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
               Product Name: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -302,6 +279,31 @@ const Addbillofmaterial = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
+              QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Batch No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input placeholder="No." value={formData.bomNo} onChange={(e) => setFormData({ ...formData, bomNo: e.target.value })} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <DatePicker
+              selected={formData.date}
+              onChange={handleDateChange}
+              dateFormat="dd/MM/yyyy"
+              isClearable={false}
+              showTimeSelect={false}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
               Weight : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input
@@ -312,12 +314,7 @@ const Addbillofmaterial = () => {
               onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="subtitle1">
-              QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
-            <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
-          </Grid>
+
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">Unit :</Typography>
             <input placeholder="unit" value={formData.unit}></input>
@@ -350,9 +347,9 @@ const Addbillofmaterial = () => {
                         value={{ value: row.productId, label: row.productname }}
                       />
                     </TableCell>
-                    <RawMaterialDrawer
-                      open={israwproductDrawerOpen}
-                      onClose={() => setIsRawproductDrawerOpen(false)}
+                    <AnchorProductDrawer
+                      open={isrowproductDrawerOpen}
+                      onClose={() => setIsrowproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectProductChange(selectedOption, index)}
                       onNewRawProductAdded={handleNewRawProductAdded}
                     />

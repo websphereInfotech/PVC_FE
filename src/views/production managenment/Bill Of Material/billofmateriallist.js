@@ -101,10 +101,10 @@ const Billofmateriallist = () => {
     // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Bill Of Material List
+        Production List
       </Typography>
       <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddBom} disabled={!canCreateBom()}>
-        Create BOM
+        Create Production
       </Button>
       <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>

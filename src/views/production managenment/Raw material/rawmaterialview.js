@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { viewRawmaterial } from 'store/thunk';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { viewProduct } from 'store/thunk';
 
 const Rawmaterialview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -15,7 +15,7 @@ const Rawmaterialview = () => {
 
   //called api for view data
   useEffect(() => {
-    dispatch(viewRawmaterial(id))
+    dispatch(viewProduct(id))
       .then((data) => {
         setData(data);
       })
@@ -76,7 +76,7 @@ const Rawmaterialview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/userlist" style={{ textDecoration: 'none' }}>
+            <Link to="/rawmateriallist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>

@@ -232,38 +232,38 @@ const useCan = () => {
     return checkPermission('Vendor', 'view_all_vandor');
   };
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PRODUCT
-  const canCreateProduct = () => {
-    return checkPermission('Product', 'create_product');
+  const canCreateItem = () => {
+    return checkPermission('Items', 'create_item');
   };
-  const canUpdateProduct = () => {
-    return checkPermission('Product', 'update_product');
+  const canUpdateItem = () => {
+    return checkPermission('Items', 'update_item');
   };
-  const canDeleteProduct = () => {
-    return checkPermission('Product', 'delete_product');
+  const canDeleteItem = () => {
+    return checkPermission('Items', 'delete_item');
   };
-  const canViewProduct = () => {
-    return checkPermission('Product', 'view_single_product');
+  const canViewItem = () => {
+    return checkPermission('Items', 'view_single_item');
   };
-  const canViewAllProduct = () => {
-    return checkPermission('Product', 'view_all_product');
+  const canViewAllItem = () => {
+    return checkPermission('Items', 'view_all_item');
   };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL
-  const canCreateRawmaterial = () => {
-    return checkPermission('Raw Material', 'create_raw_material');
-  };
-  const canUpdateRawmaterial = () => {
-    return checkPermission('Raw Material', 'update_raw_material');
-  };
-  const canDeleteRawmaterial = () => {
-    return checkPermission('Raw Material', 'delete_raw_material');
-  };
-  const canViewRawmaterial = () => {
-    return checkPermission('Raw Material', 'view_single_raw_material');
-  };
-  const canViewAllRawmaterial = () => {
-    return checkPermission('Raw Material', 'view_all_raw_material');
-  };
+  // const canCreateRawmaterial = () => {
+  //   return checkPermission('Raw Material', 'create_raw_material');
+  // };
+  // const canUpdateRawmaterial = () => {
+  //   return checkPermission('Raw Material', 'update_raw_material');
+  // };
+  // const canDeleteRawmaterial = () => {
+  //   return checkPermission('Raw Material', 'delete_raw_material');
+  // };
+  // const canViewRawmaterial = () => {
+  //   return checkPermission('Raw Material', 'view_single_raw_material');
+  // };
+  // const canViewAllRawmaterial = () => {
+  //   return checkPermission('Raw Material', 'view_all_raw_material');
+  // };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP
   const canCreateItemgroup = () => {
@@ -572,19 +572,19 @@ const useCan = () => {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ BILL OF MATERIAL
 
   const canCreateBom = () => {
-    return checkPermission('Bom', 'create_bom');
+    return checkPermission('Production', 'create_production');
   };
   const canUpdateBom = () => {
-    return checkPermission('Bom', 'update_bom');
+    return checkPermission('Production', 'update_production');
   };
   const canDeleteBom = () => {
-    return checkPermission('Bom', 'delete_bom');
+    return checkPermission('Production', 'delete_production');
   };
   const canViewBom = () => {
-    return checkPermission('Bom', 'view_bom');
+    return checkPermission('Production', 'view_production');
   };
   const canViwAllBom = () => {
-    return checkPermission('Bom', 'view_all_bom');
+    return checkPermission('Production', 'view_all_production');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE
@@ -703,17 +703,17 @@ const useCan = () => {
     canViewVendor,
     canViewAllVendor,
     // PRODUCT ++++++++++++++++++++++++
-    canCreateProduct,
-    canUpdateProduct,
-    canDeleteProduct,
-    canViewProduct,
-    canViewAllProduct,
+    canCreateItem,
+    canUpdateItem,
+    canDeleteItem,
+    canViewItem,
+    canViewAllItem,
     // RAW MATERIAL ++++++++++++++++++++++++
-    canCreateRawmaterial,
-    canUpdateRawmaterial,
-    canDeleteRawmaterial,
-    canViewRawmaterial,
-    canViewAllRawmaterial,
+    // canCreateRawmaterial,
+    // canUpdateRawmaterial,
+    // canDeleteRawmaterial,
+    // canViewRawmaterial,
+    // canViewAllRawmaterial,
     // ITEM GROUP +++++++++++++++++++++
     canCreateItemgroup,
     canUpdateItemgroup,

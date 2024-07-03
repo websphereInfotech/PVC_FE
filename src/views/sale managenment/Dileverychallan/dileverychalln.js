@@ -25,7 +25,7 @@ const Deliverychallan = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreateCustomer, canCreateProduct } = useCan();
+  const { canCreateCustomer, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customer, setcustomer] = useState([]);
@@ -44,8 +44,8 @@ const Deliverychallan = () => {
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateCustomerValue(canCreateCustomer());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateCustomer, canCreateProduct]);
+    setCanCreateProductvalue(canCreateItem());
+  }, [canCreateCustomer, canCreateItem]);
   // to add multiple row for product item
   const handleAddRow = () => {
     const newRow = {
@@ -105,7 +105,7 @@ const Deliverychallan = () => {
   //use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -159,7 +159,7 @@ const Deliverychallan = () => {
             label: product.productname,
             unit: product.unit
           }));
-          setProduct([{ value: 'new', label: 'Create New Product' }, ...options]);
+          setProduct([{ value: 'new', label: 'Create New Item' }, ...options]);
           if (!canCreateProductvalue) {
             setProduct(options);
           }

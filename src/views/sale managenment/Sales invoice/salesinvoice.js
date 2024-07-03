@@ -28,7 +28,7 @@ const Salesinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
-  const { canCreateCustomer, canCreateProduct } = useCan();
+  const { canCreateCustomer, canCreateItem } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [customername, setCustomername] = useState('');
@@ -65,8 +65,8 @@ const Salesinvoice = () => {
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
     setCanCreateCustomerValue(canCreateCustomer());
-    setCanCreateProductvalue(canCreateProduct());
-  }, [canCreateCustomer, canCreateProduct]);
+    setCanCreateProductvalue(canCreateItem());
+  }, [canCreateCustomer, canCreateItem]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
@@ -106,7 +106,7 @@ const Salesinvoice = () => {
 
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
-    if (selectedOption && selectedOption.label === 'Create New Product') {
+    if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsproductDrawerOpen(true);
     } else {
       const updatedRows = rows.map((row, rowIndex) => {
@@ -210,7 +210,7 @@ const Salesinvoice = () => {
             unit: product.unit,
             gstrate: product.gstrate
           }));
-          setProduct([{ value: 'new', label: 'Create New Product', rate: '', gstrate: '', unit: '' }, ...options]);
+          setProduct([{ value: 'new', label: 'Create New Item', rate: '', gstrate: '', unit: '' }, ...options]);
           if (!canCreateProductvalue) {
             setProduct(options);
           }

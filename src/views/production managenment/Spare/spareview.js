@@ -6,7 +6,7 @@ import { viewProduct } from 'store/thunk';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-const Productview = () => {
+const Spareview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const Productview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/productlist" style={{ textDecoration: 'none' }}>
+            <Link to="/sparelist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -84,7 +84,7 @@ const Productview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/productlist" style={{ textDecoration: 'none' }}>
+            <Link to="/sparelist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -96,4 +96,4 @@ const Productview = () => {
   );
 };
 
-export default Productview;
+export default Spareview;

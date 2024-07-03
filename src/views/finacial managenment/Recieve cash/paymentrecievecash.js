@@ -107,11 +107,11 @@ const Paymentrecieve = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Recieve Cash
+            Update Receipt Cash
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Recieve Cash
+            Receipt Cash
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
