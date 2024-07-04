@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentCash, fetchAllVendorsCash, paymentCashview, updatePaymentCash } from 'store/thunk';
+import { createPaymentCash, fetchAllVendorsCash, getallPaymentCash, paymentCashview, updatePaymentCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -24,7 +24,8 @@ const PaymentPage = () => {
     vendorId: '',
     date: new Date(),
     amount: Number(),
-    description: ''
+    description: '',
+    paymentNo: ''
   });
   console.log(selectvendor);
   const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
@@ -64,8 +65,8 @@ const PaymentPage = () => {
       try {
         if (id) {
           const response = await dispatch(paymentCashview(id));
-          const { amount, description, PaymentVendor, date } = response;
-          setFormData({ amount, description, vendorId: PaymentVendor.id, date });
+          const { amount, description, paymentNo, PaymentVendor, date } = response;
+          setFormData({ amount, description, paymentNo, vendorId: PaymentVendor.id, date });
 
           setvendorname(PaymentVendor.vendorname);
           setSelectvendor(PaymentVendor.id);
@@ -74,6 +75,39 @@ const PaymentPage = () => {
         console.error('Error fetching payment cash:', error);
       }
     };
+    const generateAutoPaymentcashNumber = async () => {
+      if (!id) {
+        try {
+          const PaymentcashResponse = await dispatch(getallPaymentCash());
+          let nextPaymentcashNumber = 1;
+          if (PaymentcashResponse.data.length === 0) {
+            const PaymentcashNumber = nextPaymentcashNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              paymentNo: Number(PaymentcashNumber)
+            }));
+            return;
+          }
+          const existingPaymentcashNumbers = PaymentcashResponse.data.map((Paymentcash) => {
+            const PaymentcashNumber = Paymentcash.paymentNo;
+            return parseInt(PaymentcashNumber);
+          });
+          const maxPaymentcashNumber = Math.max(...existingPaymentcashNumbers);
+          if (!isNaN(maxPaymentcashNumber)) {
+            nextPaymentcashNumber = maxPaymentcashNumber + 1;
+          }
+
+          const PaymentcashNumber = nextPaymentcashNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            paymentNo: Number(PaymentcashNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto Payment cash number:', error);
+        }
+      }
+    };
+    generateAutoPaymentcashNumber();
     if (canCreateVendorValue !== null) {
       fetchData();
     }
@@ -124,6 +158,17 @@ const PaymentPage = () => {
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Payment No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="0001"
+                id="paymentNo"
+                value={formData.paymentNo}
+                onChange={(e) => setFormData({ ...formData, paymentNo: e.target.value })}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

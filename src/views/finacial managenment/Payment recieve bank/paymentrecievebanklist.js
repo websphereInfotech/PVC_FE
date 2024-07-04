@@ -37,10 +37,10 @@ import { Delete, Edit } from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
 
 const columns = [
+  { id: 'voucherno', label: 'Voucher No.', align: 'center' },
   { id: 'paymentdate', label: 'Date', align: 'center' },
   { id: 'customer', label: 'Customer', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
-  { id: 'account', label: 'Company', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }

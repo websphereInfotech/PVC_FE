@@ -242,8 +242,6 @@ const MenuItem = () => {
     'view_all_production'
   ]);
 
-  
-
   return {
     items: [
       {

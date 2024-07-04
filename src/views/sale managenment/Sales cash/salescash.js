@@ -11,6 +11,7 @@ import {
   createSalesInvoiceCash,
   fetchAllCustomersCash,
   fetchAllProductsCash,
+  getallSalesInvoiceCash,
   updateSalesinvoiceCash
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
@@ -26,7 +27,8 @@ const Salescash = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     customerId: '',
-    date: new Date()
+    date: new Date(),
+    saleNo: ''
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -189,8 +191,8 @@ const Salescash = () => {
     const data = async () => {
       if (id) {
         const response = await dispatch(SalesInvoiceCashview(id));
-        const { date, totalMrp, CashCustomer } = response;
-        setFormData({ date, totalMrp, customerId: CashCustomer.id });
+        const { date, totalMrp, CashCustomer, saleNo } = response;
+        setFormData({ date, totalMrp, saleNo, customerId: CashCustomer.id });
         setSelectcustomer(CashCustomer.id);
         setCustomername(CashCustomer.customername);
         const updatedRows = response.items.map((item) => ({
@@ -205,6 +207,40 @@ const Salescash = () => {
         setRows(updatedRows);
       }
     };
+    const generateAutoSalesNumber = async () => {
+      if (!id) {
+        try {
+          const SalesResponse = await dispatch(getallSalesInvoiceCash());
+          console.log(SalesResponse.data.length, 'SalesResponse');
+          let nextSalesNumber = 1;
+          if (SalesResponse.data.length === 0) {
+            const SalesNumber = nextSalesNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              saleNo: Number(SalesNumber)
+            }));
+            return;
+          }
+          const existingSalesNumbers = SalesResponse.data.map((Sales) => {
+            const SalesNumber = Sales.saleNo;
+            return parseInt(SalesNumber);
+          });
+          const maxSalesNumber = Math.max(...existingSalesNumbers);
+          if (!isNaN(maxSalesNumber)) {
+            nextSalesNumber = maxSalesNumber + 1;
+          }
+
+          const SalesNumber = nextSalesNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            saleNo: Number(SalesNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto Sales cash number:', error);
+        }
+      }
+    };
+    generateAutoSalesNumber();
     data();
   }, [dispatch, id]);
   //create new customer after show in dropdwon
@@ -268,6 +304,17 @@ const Salescash = () => {
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Sales No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="0001"
+                id="saleNo"
+                value={formData.saleNo}
+                onChange={(e) => setFormData({ ...formData, saleNo: e.target.value })}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

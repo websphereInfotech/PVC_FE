@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createRecievecash, viewRecieveCash, updateRecieveCash, fetchAllCustomersCash } from 'store/thunk';
+import { createRecievecash, viewRecieveCash, updateRecieveCash, fetchAllCustomersCash, getallRecieveCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -24,7 +24,8 @@ const Paymentrecieve = () => {
     customerId: '',
     date: new Date(),
     amount: 0,
-    description: ''
+    description: '',
+    receiptNo: ''
   });
   const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
   useEffect(() => {
@@ -50,8 +51,8 @@ const Paymentrecieve = () => {
       try {
         if (id) {
           const response = await dispatch(viewRecieveCash(id));
-          const { date, amount, description, ReceiveCustomer } = response;
-          setFormData({ date, amount, description, customerId: ReceiveCustomer.id });
+          const { date, amount, receiptNo, description, ReceiveCustomer } = response;
+          setFormData({ date, amount, receiptNo, description, customerId: ReceiveCustomer.id });
           setcustomername(ReceiveCustomer.customername);
           setSelectcustomer(ReceiveCustomer.id);
         }
@@ -73,6 +74,39 @@ const Paymentrecieve = () => {
         console.error('Error fetching payment recieve cash:', error);
       }
     };
+    const generateAutoRecievecashNumber = async () => {
+      if (!id) {
+        try {
+          const RecievecashResponse = await dispatch(getallRecieveCash());
+          let nextRecievecashNumber = 1;
+          if (RecievecashResponse.length === 0) {
+            const RecievecashNumber = nextRecievecashNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              receiptNo: Number(RecievecashNumber)
+            }));
+            return;
+          }
+          const existingRecievecashNumbers = RecievecashResponse.map((Recievecash) => {
+            const RecievecashNumber = Recievecash.receiptNo;
+            return parseInt(RecievecashNumber);
+          });
+          const maxRecievecashNumber = Math.max(...existingRecievecashNumbers);
+          if (!isNaN(maxRecievecashNumber)) {
+            nextRecievecashNumber = maxRecievecashNumber + 1;
+          }
+
+          const RecievecashNumber = nextRecievecashNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            receiptNo: Number(RecievecashNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto receipt number:', error);
+        }
+      }
+    };
+    generateAutoRecievecashNumber();
     fetchData();
     if (canCreateCustomerValue !== null) {
       fetchCustomerData();
@@ -116,6 +150,17 @@ const Paymentrecieve = () => {
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Receipt No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="0001"
+                id="receiptNo"
+                value={formData.receiptNo}
+                onChange={(e) => setFormData({ ...formData, receiptNo: e.target.value })}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

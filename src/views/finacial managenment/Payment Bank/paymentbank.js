@@ -7,6 +7,7 @@ import {
   createPaymentBank,
   fetchAllCompanyBank,
   fetchAllVendors,
+  getAllPaymentbank,
   updatePaymentbank,
   viewSinglePaymentBank
 } from 'store/thunk';
@@ -72,6 +73,7 @@ const Paymentbank = () => {
     }
   };
   const handleSelectAccountChange = (selectedOption) => {
+    console.log(selectedOption, 'selectedOption');
     if ((selectedOption && selectedOption.label === 'Create New Account') || !canViwAllCompanyBank()) {
       setIsDialogOpen(true);
     } else {
@@ -111,7 +113,7 @@ const Paymentbank = () => {
 
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
-          const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
+          const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
           setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } else {
@@ -135,7 +137,7 @@ const Paymentbank = () => {
         }
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
-          const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
+          const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
           setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } catch (error) {
@@ -157,7 +159,7 @@ const Paymentbank = () => {
             accountId: paymentBank.id,
             paymentdate
           });
-          setcompanyname(paymentBank.accountname);
+          setcompanyname(paymentBank.bankname);
           setvendorname(paymentData.accountname);
           setSelectaccount(paymentBank.id);
           setSelectvendor(paymentData.id);
@@ -169,6 +171,40 @@ const Paymentbank = () => {
     if (canCreateVendorValue !== null) {
       fetchData();
     }
+    const generateAutoVoucherNumber = async () => {
+      if (!id) {
+        try {
+          const VoucherResponse = await dispatch(getAllPaymentbank());
+          console.log(VoucherResponse, 'VoucherResponse');
+          let nextVoucherNumber = 1;
+          if (VoucherResponse.length === 0) {
+            const VoucherNumber = nextVoucherNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              voucherno: Number(VoucherNumber)
+            }));
+            return;
+          }
+          const existingVoucherNumbers = VoucherResponse.map((Voucher) => {
+            const VoucherNumber = Voucher.voucherno;
+            return parseInt(VoucherNumber);
+          });
+          const maxVoucherNumber = Math.max(...existingVoucherNumbers);
+          if (!isNaN(maxVoucherNumber)) {
+            nextVoucherNumber = maxVoucherNumber + 1;
+          }
+
+          const VoucherNumber = nextVoucherNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            voucherno: Number(VoucherNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto Voucher number:', error);
+        }
+      }
+    };
+    generateAutoVoucherNumber();
     viewData();
   }, [dispatch, id, canCreateVendorValue]);
 

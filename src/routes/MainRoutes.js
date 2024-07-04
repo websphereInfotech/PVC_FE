@@ -13,7 +13,7 @@ import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
-import Customerledgerlist from 'views/finacial managenment/Claim cash/customerledgerlist';
+import Customerledgerlist from 'views/finacial managenment/Recieve cash/customerledgerlist';
 import Pagenotification from 'component/notification';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
@@ -36,7 +36,7 @@ const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/Pa
 const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymencashtlist')));
 const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecash')));
 const PaymentrecieveList = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecashlist')));
-const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/ledger')));
+const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/ledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment bank ++++++++++++++++++++++++++++++++++++++++++++++++
 const Paymentbank = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbank')));

@@ -9,6 +9,7 @@ import {
   createPurchaseInvoiceCash,
   fetchAllProductsCash,
   fetchAllVendorsCash,
+  getallPurchaseInvoiceCash,
   updatePurchaseInvoiceCash
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
@@ -27,7 +28,8 @@ const Purchaseinvoicecash = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     vendorId: '',
-    date: new Date()
+    date: new Date(),
+    purchaseNo: ''
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
@@ -190,8 +192,8 @@ const Purchaseinvoicecash = () => {
     const data = async () => {
       if (id) {
         const response = await dispatch(PurchaseInvoiceviewCash(id));
-        const { date, totalMrp, VendorPurchase } = response;
-        setFormData({ date, totalMrp, vendorId: VendorPurchase.id });
+        const { date, totalMrp, purchaseNo, VendorPurchase } = response;
+        setFormData({ date, totalMrp, purchaseNo, vendorId: VendorPurchase.id });
         setSelectvendor(VendorPurchase.id);
         setvendorname(VendorPurchase.vendorname);
         const updatedRows = response.items.map((item) => ({
@@ -206,6 +208,39 @@ const Purchaseinvoicecash = () => {
         setRows(updatedRows);
       }
     };
+    const generateAutoPurchaseNumber = async () => {
+      if (!id) {
+        try {
+          const PurchaseResponse = await dispatch(getallPurchaseInvoiceCash());
+          let nextPurchaseNumber = 1;
+          if (PurchaseResponse.data.length === 0) {
+            const PurchaseNumber = nextPurchaseNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              purchaseNo: Number(PurchaseNumber)
+            }));
+            return;
+          }
+          const existingPurchaseNumbers = PurchaseResponse.data.map((Purchase) => {
+            const PurchaseNumber = Purchase.purchaseNo;
+            return parseInt(PurchaseNumber);
+          });
+          const maxPurchaseNumber = Math.max(...existingPurchaseNumbers);
+          if (!isNaN(maxPurchaseNumber)) {
+            nextPurchaseNumber = maxPurchaseNumber + 1;
+          }
+
+          const PurchaseNumber = nextPurchaseNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            purchaseNo: Number(PurchaseNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto Purchase cash number:', error);
+        }
+      }
+    };
+    generateAutoPurchaseNumber();
     data();
   }, [dispatch, id]);
 
@@ -275,6 +310,17 @@ const Purchaseinvoicecash = () => {
         )}
         <Grid container style={{ marginBottom: '16px' }}>
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Purchase No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                placeholder="0001"
+                id="purchaseNo"
+                value={formData.purchaseNo}
+                onChange={(e) => setFormData({ ...formData, purchaseNo: e.target.value })}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Venoder : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

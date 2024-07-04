@@ -25,9 +25,9 @@ import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
-  // { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
-  { id: 'date', label: 'Date.', minWidth: 100, align: 'center' },
-  { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
+  { id: 'purchaseNo', label: 'Purchase No', align: 'center' },
+  { id: 'date', label: 'Date.', align: 'center' },
+  { id: 'vendor', label: 'Vendor', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }

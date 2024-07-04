@@ -8,7 +8,8 @@ import {
   fetchAllCustomers,
   createCompanyBank,
   updatePaymentRecievebank,
-  viewSinglePaymentRecieveBank
+  viewSinglePaymentRecieveBank,
+  getAllPaymentRecievebank
 } from 'store/thunk';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -23,7 +24,7 @@ const Paymentrecievebank = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateCustomer } = useCan();
+  const { canCreateCustomer, canViwAllCompanyBank } = useCan();
   const [customername, setcustomername] = useState('');
   const [companyname, setcompanyname] = useState('');
   const [customer, setcustomer] = useState([]);
@@ -113,7 +114,7 @@ const Paymentrecievebank = () => {
 
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
-          const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
+          const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
           setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } else {
@@ -137,7 +138,7 @@ const Paymentrecievebank = () => {
         }
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
-          const options = responsecompany.map((company) => ({ value: company.id, label: company.accountname }));
+          const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
           setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } catch (error) {
@@ -158,7 +159,7 @@ const Paymentrecievebank = () => {
             accountId: receiveBank.id,
             paymentdate
           });
-          setcompanyname(receiveBank.accountname);
+          setcompanyname(receiveBank.bankname);
           setcustomername(customerBank.accountname);
           setSelectaccount(receiveBank.id);
           setSelectcustomer(customerBank.id);
@@ -170,6 +171,39 @@ const Paymentrecievebank = () => {
     if (canCreateCustomerValue !== null) {
       fetchData();
     }
+    const generateAutoVoucherNumber = async () => {
+      if (!id) {
+        try {
+          const VoucherResponse = await dispatch(getAllPaymentRecievebank());
+          let nextVoucherNumber = 1;
+          if (VoucherResponse.length === 0) {
+            const VoucherNumber = nextVoucherNumber;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              voucherno: Number(VoucherNumber)
+            }));
+            return;
+          }
+          const existingVoucherNumbers = VoucherResponse.map((Voucher) => {
+            const VoucherNumber = Voucher.voucherno;
+            return parseInt(VoucherNumber);
+          });
+          const maxVoucherNumber = Math.max(...existingVoucherNumbers);
+          if (!isNaN(maxVoucherNumber)) {
+            nextVoucherNumber = maxVoucherNumber + 1;
+          }
+
+          const VoucherNumber = nextVoucherNumber;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            voucherno: Number(VoucherNumber)
+          }));
+        } catch (error) {
+          console.error('Error generating auto Voucher number:', error);
+        }
+      }
+    };
+    generateAutoVoucherNumber();
     viewData();
   }, [dispatch, id, canCreateCustomerValue]);
 

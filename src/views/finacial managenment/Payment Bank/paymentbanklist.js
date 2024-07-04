@@ -31,10 +31,10 @@ import Paymentbankledgerlist from './paymentbankledgerlist';
 import { Delete, Edit } from '@mui/icons-material';
 
 const columns = [
+  { id: 'voucherno', label: 'Voucher No.', align: 'center' },
   { id: 'paymentdate', label: 'Date', align: 'center' },
   { id: 'vendor', label: 'Vendor', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
-  { id: 'account', label: 'Company', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }

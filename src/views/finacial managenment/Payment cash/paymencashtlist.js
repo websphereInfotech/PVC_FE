@@ -26,17 +26,18 @@ import { fetchAllVendorsCash, getallPaymentCash, getallVendorledger, paymentCash
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Ledgerlist from '../Claim cash/ledger';
+import Ledgerlist from './ledger';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 
 const columns = [
+  { id: 'paymentNo', label: 'Payment No.', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'vendor', label: 'Vendor', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
+  { id: 'description', label: 'Description', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
-  { id: 'description', label: 'Description', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const PaymentListPage = () => {
