@@ -172,7 +172,7 @@ const Customerledgerlist = () => {
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">To:</Typography>
-          <Typography variant="h4">{gettodata.accountname}</Typography>
+          <Typography variant="h4">{gettodata.customername}</Typography>
           {/* <Typography>{gettodata.address1}</Typography>
           <Typography>
             {gettodata.city}, {gettodata.state}, {gettodata.pincode}
@@ -251,6 +251,7 @@ const Customerledgerlist = () => {
                 <TableCell align="center" style={{ color: 'red' }}>
                   {closingBalance.amount.toFixed(2)}
                 </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             )}
             <TableRow>

@@ -172,7 +172,7 @@ const Ledgerlist = () => {
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">To:</Typography>
-          <Typography variant="h4">{gettodata.accountname}</Typography>
+          <Typography variant="h4">{gettodata.vendorname}</Typography>
           {/* <Typography>{gettodata.address1}</Typography>
           <Typography>
             {gettodata.city}, {gettodata.state}, {gettodata.pincode}
@@ -221,12 +221,12 @@ const Ledgerlist = () => {
               <TableCell colSpan={4} align="right"></TableCell>
               <TableCell align="center">
                 <Typography variant="subtitle1" style={{ color: 'red' }}>
-                  {totals.totalDebit.toFixed(2)}
+                  {totals.totalDebit !== 0 ? totals.totalDebit.toFixed(2) : ''}
                 </Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography variant="subtitle1" style={{ color: '#00CE00' }}>
-                  {totals.totalCredit.toFixed(2)}
+                  {totals.totalCredit !== 0 ? totals.totalCredit.toFixed(2) : ''}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -251,6 +251,7 @@ const Ledgerlist = () => {
                 <TableCell align="center" style={{ color: 'red' }}>
                   {closingBalance.amount.toFixed(2)}
                 </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             )}
             <TableRow>

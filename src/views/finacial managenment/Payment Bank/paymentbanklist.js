@@ -242,25 +242,7 @@ const Paymentbanklist = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : // <Button
-                    //   variant="outlined"
-                    //   color="secondary"
-                    //   onClick={() => handleUpdatePayment(payment.id)}
-                    //   disabled={!canUpdatePaymentBank()}
-                    // >
-                    //   Edit
-                    // </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleDeleteConfirmation(payment.id)}
-                    //     disabled={!canDeletePaymentBank()}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'paymentdate' ? (
+                    ) : column.id === 'paymentdate' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'vendor' ? (
                       payment.paymentData.accountname
@@ -327,7 +309,29 @@ const Paymentbanklist = () => {
               <Typography variant="subtitle1">
                 Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorName }} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={vendor}
+                value={{ value: vendorId, label: vendorName }}
+                onChange={handleSelectChange}
+                menuPortalTarget={document.body}
+                styles={{
+                  menu: (provided) => ({
+                    ...provided,
+                    zIndex: 9999,
+                    maxHeight: '300px',
+                    overflowY: 'scroll'
+                  }),
+                  container: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  }),
+                  menuPortal: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  })
+                }}
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">

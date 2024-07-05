@@ -43,8 +43,12 @@ const Purchaseinvoiceview = () => {
           <Typography variant="subtitle2">{data?.purchseVendor?.accountname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Inv. No.</Typography>
-          <Typography variant="subtitle2">{data?.invoiceno}</Typography>
+          <Typography variant="subtitle1">Supply Inv. No.</Typography>
+          <Typography variant="subtitle2">{data?.supplyInvoiceNo}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Voucher No.</Typography>
+          <Typography variant="subtitle2">{data?.voucherno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Inv. Date</Typography>

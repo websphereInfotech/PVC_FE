@@ -2562,7 +2562,7 @@ export const getallVendorledger = (id, formDate, toDate) => {
         `${process.env.REACT_APP_BASE_URL}/vendorledger/C_get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
-      const getallvendorledgerlist = response.data;
+      const getallvendorledgerlist = response.data.data;
       dispatch(getAllvendorLedgerSuccess(getallvendorledgerlist));
       return getallvendorledgerlist;
     } catch (error) {
@@ -2582,7 +2582,7 @@ export const getallCustomerledger = (id, formDate, toDate) => {
         `${process.env.REACT_APP_BASE_URL}/customerledger/C_get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
-      const getallcustomerledgerlist = response.data;
+      const getallcustomerledgerlist = response.data.data;
       dispatch(getAllcustomerLedgerSuccess(getallcustomerledgerlist));
       return getallcustomerledgerlist;
     } catch (error) {

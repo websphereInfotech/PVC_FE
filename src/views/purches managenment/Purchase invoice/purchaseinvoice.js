@@ -45,7 +45,8 @@ const Purchaseinvoice = () => {
     invoicedate: new Date(),
     vendorId: '',
     duedate: new Date(),
-    invoiceno: '',
+    voucherno: '',
+    supplyInvoiceNo: 0,
     totalSgst: 0,
     totalIgst: 0,
     totalMrp: 0,
@@ -263,11 +264,12 @@ const Purchaseinvoice = () => {
     const data = async () => {
       if (id) {
         const response = await dispatch(viewPurchaseinvoice(id));
-        const { purchseVendor, invoicedate, invoiceno, duedate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        const { purchseVendor, invoicedate, supplyInvoiceNo, voucherno, duedate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
         setFormData({
           vendorId: purchseVendor.id,
           invoicedate,
-          invoiceno,
+          supplyInvoiceNo,
+          voucherno,
           duedate,
           totalSgst,
           mainTotal,
@@ -302,12 +304,12 @@ const Purchaseinvoice = () => {
             const PurchaseinvoiceNumber = nextPurchaseinvoiceNumber;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              invoiceno: Number(PurchaseinvoiceNumber)
+              voucherno: Number(PurchaseinvoiceNumber)
             }));
             return;
           }
           const existingPurchaseinvoiceNumbers = PurchaseinvoiceResponse.data.map((Purchaseinvoice) => {
-            const PurchaseinvoiceNumber = Purchaseinvoice.invoiceno;
+            const PurchaseinvoiceNumber = Purchaseinvoice.voucherno;
             return parseInt(PurchaseinvoiceNumber);
           });
           const maxPurchaseinvoiceNumber = Math.max(...existingPurchaseinvoiceNumbers);
@@ -318,7 +320,7 @@ const Purchaseinvoice = () => {
           const PurchaseinvoiceNumber = nextPurchaseinvoiceNumber;
           setFormData((prevFormData) => ({
             ...prevFormData,
-            invoiceno: Number(PurchaseinvoiceNumber)
+            voucherno: Number(PurchaseinvoiceNumber)
           }));
         } catch (error) {
           console.error('Error generating auto Debit Note number:', error);
@@ -416,13 +418,25 @@ const Purchaseinvoice = () => {
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">
-            Inv. No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            Supply Inv. No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
           <input
-            placeholder="Enter Inv. No."
-            id="invoiceno"
-            value={formData.invoiceno}
-            onChange={(e) => setFormData({ ...formData, invoiceno: e.target.value })}
+            placeholder="Enter Supply Inv. No."
+            id="supplyInvoiceNo"
+            value={formData.supplyInvoiceNo}
+            onChange={(e) => setFormData({ ...formData, supplyInvoiceNo: e.target.value })}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">
+            Voucher No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+          </Typography>
+          <input
+            placeholder="Enter Voucher No."
+            id="voucherno"
+            value={formData.voucherno}
+            onChange={(e) => setFormData({ ...formData, voucherno: e.target.value })}
           />
         </Grid>
 

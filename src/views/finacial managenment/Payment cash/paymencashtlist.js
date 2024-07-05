@@ -317,7 +317,29 @@ const PaymentListPage = () => {
               <Typography variant="subtitle1">
                 Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select color="secondary" options={vendor} value={{ value: vendorId, label: vendorname }} onChange={handleSelectChange} />
+              <Select
+                color="secondary"
+                options={vendor}
+                value={{ value: vendorId, label: vendorname }}
+                onChange={handleSelectChange}
+                menuPortalTarget={document.body}
+                styles={{
+                  menu: (provided) => ({
+                    ...provided,
+                    zIndex: 9999,
+                    maxHeight: '300px',
+                    overflowY: 'scroll'
+                  }),
+                  container: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  }),
+                  menuPortal: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  })
+                }}
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">

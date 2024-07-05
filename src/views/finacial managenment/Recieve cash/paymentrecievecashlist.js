@@ -305,7 +305,30 @@ const PaymentrecieveList = () => {
                 options={customer}
                 value={{ value: customerId, label: customername }}
                 onChange={handleSelectChange}
+                menuPortalTarget={document.body}
+                styles={{
+                  menu: (provided) => ({
+                    ...provided,
+                    zIndex: 9999,
+                    maxHeight: '300px',
+                    overflowY: 'scroll'
+                  }),
+                  container: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  }),
+                  menuPortal: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  })
+                }}
               />
+              {/* <Select
+                color="secondary"
+                options={customer}
+                value={{ value: customerId, label: customername }}
+                onChange={handleSelectChange}
+              /> */}
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">

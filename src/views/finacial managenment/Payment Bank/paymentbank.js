@@ -36,7 +36,7 @@ const Paymentbank = () => {
     vendorId: '',
     paymentdate: new Date(),
     amount: Number(),
-    referance: '',
+    paymentType: '',
     mode: '',
     accountId: '',
     voucherno: ''
@@ -149,11 +149,11 @@ const Paymentbank = () => {
         if (id) {
           const response = await dispatch(viewSinglePaymentBank(id));
           console.log(response, 'response');
-          const { voucherno, mode, referance, amount, paymentBank, paymentData, paymentdate } = response;
+          const { voucherno, mode, paymentType, amount, paymentBank, paymentData, paymentdate } = response;
           setFormData({
             voucherno,
             mode,
-            referance,
+            paymentType,
             amount,
             vendorId: paymentData.id,
             accountId: paymentBank.id,
@@ -240,7 +240,9 @@ const Paymentbank = () => {
   const handlePaymentChange = (selectedOption) => {
     setFormData({ ...formData, mode: selectedOption.value });
   };
-
+  const handlePaymentTypeChange = (selectedOption) => {
+    setFormData({ ...formData, paymentType: selectedOption.value });
+  };
   const Options = [
     { value: 'Cheque', label: 'Cheque' },
     { value: 'Net Banking', label: 'Net Banking' },
@@ -252,6 +254,12 @@ const Paymentbank = () => {
     { value: 'Debit card', label: 'Debit card' },
     { value: 'Credit card', label: 'Credit card' },
     { value: 'Other', label: 'Other' }
+  ];
+
+  const paymentTypes = [
+    { value: 'advance', label: 'Advance' },
+    { value: 'payment', label: 'Payment' },
+    { value: 'final payment', label: 'Final Payment' }
   ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -309,13 +317,12 @@ const Paymentbank = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Referance :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Payment Type :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
-                placeholder="Enter referance"
-                id="referance"
-                value={formData.referance}
-                onChange={(e) => handleInputChange('referance', e.target.value)}
+              <Select
+                options={paymentTypes}
+                value={paymentTypes.find((option) => option.value === formData.paymentType)}
+                onChange={handlePaymentTypeChange}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
