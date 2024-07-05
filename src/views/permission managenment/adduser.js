@@ -21,7 +21,8 @@ const User = () => {
     password: '',
     confirmpassword: ''
   });
-
+  const [entryTime, setEntryTime] = useState('');
+  const [exitTime, setExitTime] = useState('');
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -41,9 +42,11 @@ const User = () => {
         if (id) {
           const response = await dispatch(Userview(id));
           console.log(response);
-          const { username, role, email, mobileno, salary, password, confirmpassword } = response;
+          const { username, role, email, exitTime, entryTime, mobileno, salary, password, confirmpassword } = response;
           const [firstName, lastName] = username.split(' ');
           setFormData({ firstName, lastName, role, email, mobileno, salary, password, confirmpassword });
+          setExitTime(exitTime);
+          setEntryTime(entryTime);
         }
       } catch (error) {
         console.error('Error creating user:', error);
@@ -58,7 +61,9 @@ const User = () => {
       const { firstName, lastName, ...rest } = formData;
       const data = {
         ...rest,
-        username: `${firstName} ${lastName}`
+        username: `${firstName} ${lastName}`,
+        entryTime,
+        exitTime
       };
       if (!firstName) {
         toast.error('required field: Frist Name', { autoClose: 1000 });
@@ -184,6 +189,32 @@ const User = () => {
                 id="salary"
                 value={formData.salary}
                 onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Duty Entry Time: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                type="time"
+                value={entryTime}
+                onChange={(e) => {
+                  setEntryTime(e.target.value);
+                  setFormData({ ...formData, entryTime: e.target.value });
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Duty Exit Time: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <input
+                type="time"
+                value={exitTime}
+                onChange={(e) => {
+                  setExitTime(e.target.value);
+                  setFormData({ ...formData, exitTime: e.target.value });
+                }}
               />
             </Grid>
           </Grid>

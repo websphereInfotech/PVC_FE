@@ -41,7 +41,7 @@ const Userviewpage = () => {
           <Typography variant="subtitle1">Mobile No.</Typography>
           <Typography variant="subtitle2">{data?.mobileno}</Typography>
         </Grid>
-        <Grid item xs={12} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Email</Typography>
           <Typography variant="subtitle2">{data?.email}</Typography>
         </Grid>
@@ -52,6 +52,14 @@ const Userviewpage = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Basic Salary</Typography>
           <Typography variant="subtitle2">{data?.salary}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Duty Entry Time</Typography>
+          <Typography variant="subtitle2">{data?.entryTime}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Duty Exit Time</Typography>
+          <Typography variant="subtitle2">{data?.exitTime}</Typography>
         </Grid>
 
         {isMobile ? (
