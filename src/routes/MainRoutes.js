@@ -135,7 +135,7 @@ const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalS
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const EmployeeStatus = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
-const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/perfomanceemployee')));
+const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/addemployesalary')));
 const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
 const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
 const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
@@ -468,11 +468,11 @@ const MainRoutes = {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee salary ++++++++++++++++++++++++
     { path: '/employeedirectory', element: <Employeesalary /> },
+    { path: '/employeesalary', element: <PerformanceManagementPage /> },
 
     // { path: '/stock', element: <StockManagement /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/employeestatus', element: <EmployeeStatus /> },
-    { path: '/performanceemployee', element: <PerformanceManagementPage /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },

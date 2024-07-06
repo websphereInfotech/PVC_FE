@@ -494,7 +494,7 @@ const MenuItem = () => {
                 id: 'Performance Management',
                 title: 'Performance Management',
                 type: 'item',
-                url: '/performanceemployee'
+                url: '/employeesalary'
               }
               // {
               //   id: 'Report',
