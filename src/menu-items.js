@@ -495,13 +495,13 @@ const MenuItem = () => {
                 title: 'Performance Management',
                 type: 'item',
                 url: '/performanceemployee'
-              },
-              {
-                id: 'Report',
-                title: 'Report',
-                type: 'item',
-                url: '/productionreport'
               }
+              // {
+              //   id: 'Report',
+              //   title: 'Report',
+              //   type: 'item',
+              //   url: '/productionreport'
+              // }
             ]
           }
         ]
