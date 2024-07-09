@@ -5,7 +5,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Card,
+  Paper,
   TablePagination,
   TableHead,
   TableContainer,
@@ -153,7 +153,7 @@ const EmployeeStatus = () => {
   };
 
   return (
-    <Card style={{ width: '100%', padding: '25px' }}>
+    <Paper elevation={4} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Employee Status List
       </Typography>
@@ -240,7 +240,7 @@ const EmployeeStatus = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Card>
+    </Paper>
   );
 };
 

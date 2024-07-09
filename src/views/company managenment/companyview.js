@@ -30,6 +30,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Singlebankledgerlist from './singlebankledger';
 import { Delete, Edit } from '@mui/icons-material';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+
 const CompanyviewPage = () => {
   const theme = useTheme();
   const isMobiledialog = useMediaQuery(theme.breakpoints.down('sm'));
@@ -114,6 +115,7 @@ const CompanyviewPage = () => {
   useEffect(() => {
     dispatch(Companyview(id))
       .then((data) => {
+        console.log(data, 'DATA');
         setData(data);
       })
       .catch((error) => {

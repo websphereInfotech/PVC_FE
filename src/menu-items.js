@@ -474,28 +474,28 @@ const MenuItem = () => {
         children: [
           {
             id: 'auth',
-            title: 'Employee Management',
+            title: 'employee management',
             type: 'collapse',
             icon: icons['ContactMailIcon'],
             children: [
               {
-                id: 'Employee Directory',
+                id: 'employee directory',
                 title: 'Employee Directory',
                 type: 'item',
                 url: '/employeedirectory'
-              },
-              {
-                id: 'Employee Status',
-                title: 'Employee Status',
-                type: 'item',
-                url: '/employeestatus'
-              },
-              {
-                id: 'Performance Management',
-                title: 'Performance Management',
-                type: 'item',
-                url: '/employeesalary'
               }
+              // {
+              //   id: 'Employee Status',
+              //   title: 'Employee Status',
+              //   type: 'item',
+              //   url: '/employeestatus'
+              // },
+              // {
+              //   id: 'employee salary',
+              //   title: 'Employee Salary',
+              //   type: 'item',
+              //   url: '/employeesalary'
+              // }
               // {
               //   id: 'Report',
               //   title: 'Report',

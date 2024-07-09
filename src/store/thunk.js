@@ -31,9 +31,6 @@ import {
   viewProformainvoiceRequest,
   viewProformainvoiceSuccess,
   viewProformainvoiceFailure,
-  // getCountSalesinvoiceRequst,
-  // getCountSalesinvoicesuccess,
-  // getCountSalesinvoicefailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersCashRequest,
   fetchAllCustomersCashSuccess,
@@ -478,7 +475,23 @@ import {
   // EMPLOYEE ++++++++++++++++++
   getAllEmployeesalaryRequest,
   getAllEmployeesalarySuccess,
-  getAllEmployeesalaryFailure
+  getAllEmployeesalaryFailure,
+  //  USER BANK ++++++++++++++++++++++++
+  CreateUserBankRequest,
+  CreateUserBankSuccess,
+  CreateUserBankFailure,
+  ViewUserBankRequest,
+  ViewUserBankSuccess,
+  ViewUserBankFailure,
+  UpdateUserBankRequest,
+  UpdateUserBankSuccess,
+  UpdateUserBankFailure,
+  DeleteUserBankRequest,
+  DeleteUserBankSuccess,
+  DeleteUserBankFailure,
+  fetchAllUserBankRequest,
+  fetchAllUserBankSuccess,
+  fetchAllUserBankFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -671,21 +684,6 @@ export const deleteProformainvoice = (id) => {
     }
   };
 };
-// export const getCountsalesinvoice = (id) => {
-//   return async (dispatch) => {
-//     dispatch(getCountSalesinvoiceRequst());
-//     try {
-//       const config = createConfig();
-//       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/profromainvoice/count_salesInvoice/${id}`, config);
-//       const data = response.data;
-//       dispatch(getCountSalesinvoicesuccess());
-//       return data;
-//     } catch (error) {
-//       toast.error(error.response.data.message);
-//       dispatch(getCountSalesinvoicefailure());
-//     }
-//   };
-// };
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERYCHALLAN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallDeliverychallan = () => {
   return async (dispatch) => {
@@ -3430,6 +3428,98 @@ export const getAllEmployeeSalary = () => {
     } catch (error) {
       dispatch(getAllEmployeesalaryFailure(error.message));
       throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createUserBank = (bankdetails) => {
+  return async (dispatch) => {
+    dispatch(CreateUserBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/add_user_bank_account`, bankdetails, config);
+      const Userbankdata = response;
+      dispatch(CreateUserBankSuccess(Userbankdata));
+      return Userbankdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateUserBankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateUserBank = (accountId, formData) => {
+  return async (dispatch) => {
+    dispatch(UpdateUserBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/edit_user_bank_account/${accountId}`, formData, config);
+      const updateUserBankData = response.data.data;
+      dispatch(UpdateUserBankSuccess(updateUserBankData));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return updateUserBankData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateUserBankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const UserBankview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewUserBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_user_bank_account/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewUserBankSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewUserBankFailure(error.message));
+    }
+  };
+};
+export const deleteUserBank = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteUserBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_user_bank_account/${id}`, config);
+      const deleteUserbank = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteUserBankSuccess(deleteUserbank));
+      return deleteUserbank;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteUserBankFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllUserBank = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllUserBankRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_user_bank_account`, config);
+      const data = response.data.data;
+      dispatch(fetchAllUserBankSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllUserBankFailure(error.message));
     }
   };
 };

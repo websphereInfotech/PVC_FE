@@ -85,6 +85,21 @@ const useCan = () => {
   const canUserViewAllCompany = () => {
     return checkPermission('Login', 'view_all_JoinComapny');
   };
+  const canUserCreateBank = () => {
+    return checkPermission('Login', 'add_user_bank_account');
+  };
+  const canUserUpdateBank = () => {
+    return checkPermission('Login', 'edit_user_bank_account');
+  };
+  const canUserViewBank = () => {
+    return checkPermission('Login', 'view_user_bank_account');
+  };
+  const canUserViewAllBank = () => {
+    return checkPermission('Login', 'view_all_user_bank_account');
+  };
+  const canUserDeleteBank = () => {
+    return checkPermission('Login', 'delete_user_bank_account');
+  };
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERY CHALLAN
   const canCreateDeliverychallan = () => {
     return checkPermission('Delivery Challan', 'create_deliverychallan');
@@ -840,7 +855,13 @@ const useCan = () => {
     canViewRawCashStoke,
     canUpdateRawCashStoke,
     //  NOTIFICATION ++++++++++++++
-    canViewAllNotification
+    canViewAllNotification,
+    //  USER BANK +++++++++++++++++
+    canUserCreateBank,
+    canUserUpdateBank,
+    canUserViewBank,
+    canUserViewAllBank,
+    canUserDeleteBank
   };
 };
 

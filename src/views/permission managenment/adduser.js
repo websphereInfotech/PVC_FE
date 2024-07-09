@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Typography, Grid, Paper } from '@mui/material';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { Userview, createCompanyBank, createuser, fetchAllCompanyBank, updateUser } from 'store/thunk';
+import { Userview, createuser, updateUser } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -17,23 +17,12 @@ const User = () => {
     mobileno: '',
     email: '',
     role: '',
-    accountId: '',
     salary: '',
     password: '',
     confirmpassword: ''
   });
   const [entryTime, setEntryTime] = useState('');
   const [exitTime, setExitTime] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [account, setAccount] = useState([]);
-  const [companyname, setcompanyname] = useState('');
-  const [bankdata, setBankdata] = useState({
-    accountname: '',
-    bankname: '',
-    accountnumber: '',
-    ifsccode: '',
-    branch: ''
-  });
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -44,58 +33,6 @@ const User = () => {
     { value: 'Workers', label: 'Workers' },
     { value: 'Other', label: 'Other' }
   ];
-
-  const handleSelectAccountChange = (selectedOption) => {
-    console.log(selectedOption, 'selectedOption');
-    if ((selectedOption && selectedOption.label === 'Create New Account') || !canViwAllCompanyBank()) {
-      setIsDialogOpen(true);
-    } else {
-      formData.accountId = selectedOption.value;
-      setFormData(formData);
-      setcompanyname(selectedOption.label);
-      setIsDialogOpen(false);
-    }
-  };
-
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
-  const handleSave = async () => {
-    try {
-      const companyId = sessionStorage.getItem('companyId');
-      const bankdetails = {
-        companyId: companyId,
-        ...bankdata
-      };
-      console.log(bankdetails, 'details');
-      const response = await dispatch(createCompanyBank(bankdetails));
-
-      if (response.data.status === 'true') {
-        toast.success(response.data.message, {
-          icon: <img src={require('../../../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-          autoClose: 1000
-        });
-        setIsDialogOpen(false);
-        setBankdata({
-          accountname: '',
-          bankname: '',
-          accountnumber: '',
-          ifsccode: '',
-          branch: ''
-        });
-
-        const responsecompany = await dispatch(fetchAllCompanyBank());
-        if (Array.isArray(responsecompany)) {
-          const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
-          setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
-        }
-      } else {
-        throw new Error('Failed to create bank details');
-      }
-    } catch (error) {
-      console.error('Error updating or creating bank details:', error);
-    }
-  };
 
   // show data in feild for update user details
   const dispatch = useDispatch();
@@ -115,18 +52,6 @@ const User = () => {
         console.error('Error creating user:', error);
       }
     };
-    const accountdata = async () => {
-      try {
-        const responsecompany = await dispatch(fetchAllCompanyBank());
-        if (Array.isArray(responsecompany)) {
-          const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
-          setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
-        }
-      } catch (error) {
-        console.error('Error creating user:', error);
-      }
-    };
-    accountdata();
     fetchdata();
   }, [dispatch, id]);
 
@@ -257,17 +182,6 @@ const User = () => {
             )}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select
-                color="secondary"
-                options={account}
-                value={{ value: formData.accountId, label: companyname }}
-                onChange={handleSelectAccountChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
                 Basic Salary: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
@@ -304,76 +218,6 @@ const User = () => {
               />
             </Grid>
           </Grid>
-          <Dialog open={isDialogOpen} onClose={handleClose}>
-            <DialogTitle>Add Bank Details</DialogTitle>
-            <DialogContent>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    Account Name:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    id="accountname"
-                    placeholder="Account Name"
-                    onChange={(e) => handleaccountChange('accountname', e.target.value)}
-                    value={bankdata.accountname}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    IFSC Code:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="IFSC Code"
-                    id="ifsccode"
-                    onChange={(e) => handleaccountChange('ifsccode', e.target.value)}
-                    value={bankdata.ifsccode}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    Branch:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Branch"
-                    id="branch"
-                    onChange={(e) => handleaccountChange('branch', e.target.value)}
-                    value={bankdata.branch}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    Bank Name:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Bank Name"
-                    id="bankname"
-                    onChange={(e) => handleaccountChange('bankname', e.target.value)}
-                    value={bankdata.bankname}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1">
-                    Account Number:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Account Number"
-                    id="accountnumber"
-                    onChange={(e) => handleaccountChange('accountnumber', e.target.value)}
-                    value={bankdata.accountnumber}
-                  />
-                </Grid>
-              </Grid>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} id="savebtncs" variant="outlined">
-                Cancel
-              </Button>
-              <Button onClick={handleSave} id="savebtncs" variant="outlined">
-                Save
-              </Button>
-            </DialogActions>
-          </Dialog>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -23,8 +23,6 @@ const Addemployee = () => {
   });
   const [companyname, setcompanyname] = useState('');
   const [account, setAccount] = useState([]);
-  const [entryTime, setEntryTime] = useState('');
-  const [exitTime, setExitTime] = useState('');
 
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label) {
@@ -74,6 +72,17 @@ const Addemployee = () => {
         console.error('not fetch bank accounts', error);
       }
     };
+    // const useraccountdata = async () => {
+    //   try {
+    //     const responsecompany = await dispatch(fetchAllUserBank());
+    //     if (Array.isArray(responsecompany)) {
+    //       const options = responsecompany.map((user) => ({ value: user.id, label: user.bankname }));
+    //       setAccount([...options]);
+    //     }
+    //   } catch (error) {
+    //     console.error('not fetch bank accounts', error);
+    //   }
+    // };
     accountdata();
     viewData();
     fetchData();
@@ -118,11 +127,11 @@ const Addemployee = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Employee Salary
+            Pay Salary
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Employee Salary
+            Pay Salary
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -183,39 +192,12 @@ const Addemployee = () => {
                 onChange={handlepaymenttypeChange}
               />
             </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Duty Entry Time: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                type="time"
-                value={entryTime}
-                onChange={(e) => {
-                  setEntryTime(e.target.value);
-                  setFormData({ ...formData, entryTime: e.target.value });
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Duty Exit Time: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                type="time"
-                value={exitTime}
-                onChange={(e) => {
-                  setExitTime(e.target.value);
-                  setFormData({ ...formData, exitTime: e.target.value });
-                }}
-              />
-            </Grid>
           </Grid>
 
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/claimcashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/employeedirectory" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
                 <button id="savebtncs" onClick={handlecreatePaymentCash}>
@@ -226,7 +208,7 @@ const Addemployee = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/claimcashlist" style={{ textDecoration: 'none' }}>
+                <Link to="/employeedirectory" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>

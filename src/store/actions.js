@@ -517,6 +517,23 @@ export const FETCH_ALL_EMPLOYEE_SALARY_REQUEST = 'FETCH_ALL_EMPLOYEE_SALARY_REQU
 export const FETCH_ALL_EMPLOYEE_SALARY_SUCCESS = 'FETCH_ALL_EMPLOYEE_SALARY_SUCCESS';
 export const FETCH_ALL_EMPLOYEE_SALARY_FAILURE = 'FETCH_ALL_EMPLOYEE_SALARY_FAILURE';
 
+// #################################################################### USER BANK ###################################################################
+export const CREATE_USER_BANK_REQUEST = 'CREATE_USER_BANK_REQUEST';
+export const CREATE_USER_BANK_SUCCESS = 'CREATE_USER_BANK_SUCCESS';
+export const CREATE_USER_BANK_FAILURE = 'CREATE_USER_BANK_FAILURE';
+export const UPDATE_USER_BANK_REQUEST = 'UPDATE_USER_BANK_REQUEST';
+export const UPDATE_USER_BANK_SUCCESS = 'UPDATE_USER_BANK_SUCCESS';
+export const UPDATE_USER_BANK_FAILURE = 'UPDATE_USER_BANK_FAILURE';
+export const VIEW_USER_BANK_REQUEST = 'VIEW_USER_BANK_REQUEST';
+export const VIEW_USER_BANK_SUCCESS = 'VIEW_USER_BANK_SUCCESS';
+export const VIEW_USER_BANK_FAILURE = 'VIEW_USER_BANK_FAILURE';
+export const DELETE_USER_BANK_REQUEST = 'DELETE_USER_BANK_REQUEST';
+export const DELETE_USER_BANK_SUCCESS = 'DELETE_USER_BANK_SUCCESS';
+export const DELETE_USER_BANK_FAILURE = 'DELETE_USER_BANK_FAILURE';
+export const FETCH_ALL_USER_BANK_REQUEST = 'FETCH_ALL_USER_BANK_REQUEST';
+export const FETCH_ALL_USER_BANK_SUCCESS = 'FETCH_ALL_USER_BANK_SUCCESS';
+export const FETCH_ALL_USER_BANK_FAILURE = 'FETCH_ALL_USER_BANK_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2310,5 +2327,61 @@ export const getAllEmployeesalarySuccess = (data) => ({
 });
 export const getAllEmployeesalaryFailure = (error) => ({
   type: 'FETCH_ALL_EMPLOYEE_SALARY_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ USER BANK ++++++++++++++++++++++++++++++++++++
+export const CreateUserBankRequest = () => ({
+  type: 'CREATE_USER_BANK_REQUEST'
+});
+export const CreateUserBankSuccess = (data) => ({
+  type: 'CREATE_USER_BANK_SUCCESS',
+  payload: data
+});
+export const CreateUserBankFailure = (error) => ({
+  type: 'CREATE_USER_BANK_FAILURE',
+  payload: error
+});
+export const ViewUserBankRequest = () => ({
+  type: 'VIEW_USER_BANK_REQUEST'
+});
+export const ViewUserBankSuccess = (data) => ({
+  type: 'VIEW_USER_BANK_SUCCESS',
+  payload: data
+});
+export const ViewUserBankFailure = (error) => ({
+  type: 'VIEW_USER_BANK_FAILURE',
+  payload: error
+});
+export const UpdateUserBankRequest = () => ({
+  type: 'UPDATE_USER_BANK_REQUEST'
+});
+export const UpdateUserBankSuccess = (data) => ({
+  type: 'UPDATE_USER_BANK_SUCCESS',
+  payload: data
+});
+export const UpdateUserBankFailure = (error) => ({
+  type: 'UPDATE_USER_BANK_FAILURE',
+  payload: error
+});
+export const DeleteUserBankRequest = () => ({
+  type: 'DELETE_USER_BANK_REQUEST'
+});
+export const DeleteUserBankSuccess = (data) => ({
+  type: 'DELETE_USER_BANK_SUCCESS',
+  payload: data
+});
+export const DeleteUserBankFailure = (error) => ({
+  type: 'DELETE_USER_BANK_FAILURE',
+  payload: error
+});
+export const fetchAllUserBankRequest = () => ({
+  type: 'FETCH_ALL_USER_BANK_REQUEST'
+});
+export const fetchAllUserBankSuccess = (data) => ({
+  type: 'FETCH_ALL_USER_BANK_SUCCESS',
+  payload: data
+});
+export const fetchAllUserBankFailure = (error) => ({
+  type: 'FETCH_ALL_USER_BANK_FAILURE',
   payload: error
 });
