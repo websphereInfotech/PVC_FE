@@ -12,7 +12,7 @@ import {
   IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getAllEmployeeSalary } from 'store/thunk';
+import { fetchAllEmployeeSalary, getAllEmployeeSalary } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -23,7 +23,7 @@ const columns = [
   { id: 'monthStartDate', label: 'Start Date', align: 'center' },
   { id: 'monthEndDate', label: 'End Date', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
-  { id: 'amount', label: 'Payable Amount', align: 'center' },
+  { id: 'payableAmount', label: 'Payable Amount', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
@@ -33,14 +33,12 @@ const Employeesalary = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
-  const { canViewCompany, canUpdateCompany } = useCan();
+  const { canViwAllEmployeeSalary, canCreateEmployeeSalary } = useCan();
 
   useEffect(() => {
     const fetchSalaryData = async () => {
       try {
         const response = await dispatch(getAllEmployeeSalary());
-        console.log('API response:', response);
-
         if (response && typeof response === 'object') {
           const aggregatedData = [];
           for (const key in response) {
@@ -48,7 +46,6 @@ const Employeesalary = () => {
               aggregatedData.push(...response[key]);
             }
           }
-          console.log('Aggregated Data:', aggregatedData);
           setSalaryData(aggregatedData);
         } else {
           console.error('Unexpected data format:', response);
@@ -73,8 +70,13 @@ const Employeesalary = () => {
     setPage(0);
   };
 
-  const handlepaysalary = () => {
-    navigate('/employeesalary');
+  const handlepaysalary = (userId, salaryId) => {
+    navigate('/employeesalary', { state: { userId, salaryId } });
+  };
+
+  const handleview = (salaryId) => {
+    dispatch(fetchAllEmployeeSalary(salaryId));
+    navigate(`/employeestatus/${salaryId}`);
   };
 
   return (
@@ -109,30 +111,32 @@ const Employeesalary = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateCompany() ? 'green' : 'gray',
-                            color: canUpdateCompany() ? 'white' : 'white',
+                            backgroundColor: canCreateEmployeeSalary() ? 'green' : 'gray',
+                            color: canCreateEmployeeSalary() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateCompany() && { opacity: 1 }),
-                            ...(!canUpdateCompany() && { opacity: 0.5 }),
-                            ...(!canUpdateCompany() && { backgroundColor: 'gray' })
+                            ...(canCreateEmployeeSalary() && { opacity: 1 }),
+                            ...(!canCreateEmployeeSalary() && { opacity: 0.5 }),
+                            ...(!canCreateEmployeeSalary() && { backgroundColor: 'gray' })
                           }}
-                          onClick={handlepaysalary}
-                          disabled={!canUpdateCompany()}
+                          onClick={() => {
+                            handlepaysalary(row.userId, row.id);
+                          }}
+                          disabled={!canCreateEmployeeSalary()}
                         >
                           <AccountBalanceWalletIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewCompany() ? 'Blue' : 'gray',
-                            color: canViewCompany() ? 'white' : 'white',
+                            backgroundColor: canViwAllEmployeeSalary() ? 'Blue' : 'gray',
+                            color: canViwAllEmployeeSalary() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewCompany() && { opacity: 1 }),
-                            ...(!canViewCompany() && { opacity: 0.5 }),
-                            ...(!canViewCompany() && { backgroundColor: 'gray' })
+                            ...(canViwAllEmployeeSalary() && { opacity: 1 }),
+                            ...(!canViwAllEmployeeSalary() && { opacity: 0.5 }),
+                            ...(!canViwAllEmployeeSalary() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handlecompanyview(row.companyId)}
-                          disabled={!canViewCompany()}
+                          onClick={() => handleview(row.id)}
+                          disabled={!canViwAllEmployeeSalary()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>

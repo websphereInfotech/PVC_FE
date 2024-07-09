@@ -491,7 +491,23 @@ import {
   DeleteUserBankFailure,
   fetchAllUserBankRequest,
   fetchAllUserBankSuccess,
-  fetchAllUserBankFailure
+  fetchAllUserBankFailure,
+  //  EMPLOYEE SALARY ++++++++++++++++++++++++
+  CreateemployeesalaryRequest,
+  CreateemployeesalarySuccess,
+  CreateemployeesalaryFailure,
+  // ViewemployeesalaryRequest,
+  // ViewemployeesalarySuccess,
+  // ViewemployeesalaryFailure,
+  UpdateemployeesalaryRequest,
+  UpdateemployeesalarySuccess,
+  UpdateemployeesalaryFailure,
+  DeleteemployeesalaryRequest,
+  DeleteemployeesalarySuccess,
+  DeleteemployeesalaryFailure,
+  fetchAllemployeesalaryRequest,
+  fetchAllemployeesalarySuccess,
+  fetchAllemployeesalaryFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -3509,17 +3525,114 @@ export const deleteUserBank = (id) => {
     }
   };
 };
-export const fetchAllUserBank = () => {
+export const fetchAllUserBank = (userId) => {
   return async (dispatch) => {
     dispatch(fetchAllUserBankRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_user_bank_account`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_all_user_bank_account/${userId}`, config);
       const data = response.data.data;
       dispatch(fetchAllUserBankSuccess(data));
       return data;
     } catch (error) {
       dispatch(fetchAllUserBankFailure(error.message));
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALARY OF EMPLOYEE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createEmployeesalary = (salaryId, data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreateemployeesalaryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/salary/add_salary_payment/${salaryId}`, data, config);
+      const employeesalarydata = response;
+      dispatch(CreateemployeesalarySuccess(employeesalarydata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/employeedirectory');
+      return employeesalarydata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateemployeesalaryFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateEmployeesalary = (salaryPaymentId, formData) => {
+  return async (dispatch) => {
+    dispatch(UpdateemployeesalaryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/salary/edit_salary_payment/${salaryPaymentId}`, formData, config);
+      const updateemployeesalaryData = response.data.data;
+      dispatch(UpdateemployeesalarySuccess(updateemployeesalaryData));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return updateemployeesalaryData;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateemployeesalaryFailure(error.message));
+      throw error;
+    }
+  };
+};
+// export const Employeesalaryview = (id) => {
+//   return async (dispatch) => {
+//     dispatch(ViewemployeesalaryRequest());
+//     try {
+//       const config = createConfig();
+//       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salary/view_user_bank_account/${id}`, config);
+//       const data = response.data.data;
+//       dispatch(ViewemployeesalarySuccess(data));
+//       return data;
+//     } catch (error) {
+//       toast.error(error.response.data.error);
+//       dispatch(ViewemployeesalaryFailure(error.message));
+//     }
+//   };
+// };
+export const deleteEmployeesalary = (salaryPaymentId) => {
+  return async (dispatch) => {
+    dispatch(DeleteemployeesalaryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/salary/delete_salary_payment/${salaryPaymentId}`, config);
+      const deleteEmployeesalary = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteemployeesalarySuccess(deleteEmployeesalary));
+      return deleteEmployeesalary;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteemployeesalaryFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllEmployeeSalary = (salaryId) => {
+  return async (dispatch) => {
+    dispatch(fetchAllemployeesalaryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salary/view_all_salary_payment/${salaryId}`, config);
+      const data = response.data.data;
+      dispatch(fetchAllemployeesalarySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllemployeesalaryFailure(error.message));
     }
   };
 };

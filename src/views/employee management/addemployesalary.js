@@ -2,65 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createClaimcash, fetchAllCompanyBank, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import AnchorVendorDrawer from '../../component/vendor';
+import { createEmployeesalary, fetchAllCompanyBank, fetchAllUserBank } from 'store/thunk';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Addemployee = () => {
+  const location = useLocation();
+  const { userId, salaryId } = location.state || {};
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const [username, setusername] = useState('');
-  const [user, setuser] = useState([]);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
-    toUserId: '',
+    userBankId: '',
     amount: Number(),
-    accountId: '',
-    paymenttype: ''
+    companyBankId: '',
+    paymentType: '',
+    date: new Date()
   });
+  const { id } = useParams();
   const [companyname, setcompanyname] = useState('');
+  const [userbankname, setUserbankname] = useState('');
   const [account, setAccount] = useState([]);
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      formData.toUserId = selectedOption.value;
-      setFormData(formData);
-      setusername(selectedOption.label);
-      setIsDrawerOpen(false);
-    }
-  };
+  const [useraccount, setUseraccount] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(getallclaimuser());
-        if (Array.isArray(response)) {
-          console.log(response, 'res');
-          const options = response.map((user) => ({ value: user.users.id, label: user.users.username }));
-          setuser([...options]);
-        }
-      } catch (error) {
-        console.error('Error fetching cliam Cash:', error);
-      }
-    };
-    const viewData = async () => {
-      try {
-        if (id) {
-          const response = await dispatch(viewSingleclaimCash(id));
-          const { amount, description, toUser, purpose } = response;
-          console.log(response, 'response');
-          setFormData({ amount, description, purpose, toUserId: toUser.id });
-
-          setusername(toUser.username);
-          setSelectuser(toUser.id);
-        }
-      } catch (error) {
-        console.error('Error fetching cliam:', error);
-      }
-    };
     const accountdata = async () => {
       try {
         const responsecompany = await dispatch(fetchAllCompanyBank());
@@ -69,40 +36,52 @@ const Addemployee = () => {
           setAccount([...options]);
         }
       } catch (error) {
-        console.error('not fetch bank accounts', error);
+        console.error('not fetch company bank accounts', error);
       }
     };
-    // const useraccountdata = async () => {
-    //   try {
-    //     const responsecompany = await dispatch(fetchAllUserBank());
-    //     if (Array.isArray(responsecompany)) {
-    //       const options = responsecompany.map((user) => ({ value: user.id, label: user.bankname }));
-    //       setAccount([...options]);
-    //     }
-    //   } catch (error) {
-    //     console.error('not fetch bank accounts', error);
-    //   }
-    // };
+    const useraccountdata = async () => {
+      try {
+        const responseuserbank = await dispatch(fetchAllUserBank(userId));
+        if (Array.isArray(responseuserbank)) {
+          const options = responseuserbank.map((user) => ({ value: user.id, label: user.bankname }));
+          setUseraccount([...options]);
+        }
+      } catch (error) {
+        console.error('not fetch user bank accounts', error);
+      }
+    };
+    useraccountdata();
     accountdata();
-    viewData();
-    fetchData();
-  }, [dispatch, id]);
+  }, [dispatch, userId]);
+
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, date: date });
+  };
+
   const handleSelectAccountChange = (selectedOption) => {
-    console.log(selectedOption, 'selectedOption');
     if (selectedOption && selectedOption.label) {
-      formData.accountId = selectedOption.value;
+      formData.companyBankId = selectedOption.value;
       setFormData(formData);
       setcompanyname(selectedOption.label);
     }
   };
 
+  const handleSelectUserAccountChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      formData.userBankId = selectedOption.value;
+      setFormData(formData);
+      setUserbankname(selectedOption.label);
+    }
+  };
+
   const handlecreatePaymentCash = async () => {
     try {
-      if (id) {
-        await dispatch(updateClaimCash(id, formData, navigate));
-      } else {
-        await dispatch(createClaimcash(formData, navigate));
-      }
+      const payload = {
+        ...formData,
+        companyBankId: formData.paymentType === 'cash' ? null : formData.companyBankId,
+        userBankId: formData.paymentType === 'cash' ? null : formData.userBankId
+      };
+      await dispatch(createEmployeesalary(salaryId, payload, navigate));
     } catch (error) {
       console.error('Error creating cliam cash data:', error);
     }
@@ -114,13 +93,13 @@ const Addemployee = () => {
       [fieldName]: value
     }));
   };
-  const handlepaymenttypeChange = (selectedOption) => {
-    setFormData({ ...formData, paymenttype: selectedOption.value });
+  const handlepaymentTypeChange = (selectedOption) => {
+    setFormData({ ...formData, paymentType: selectedOption.value });
   };
 
-  const paymenttypeOptions = [
-    { value: 'Cash', label: 'Cash' },
-    { value: 'Bank', label: 'Bank' }
+  const paymentTypeOptions = [
+    { value: 'cash', label: 'Cash' },
+    { value: 'bank', label: 'Bank' }
   ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -138,16 +117,10 @@ const Addemployee = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                User : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <Select
-                color="secondary"
-                options={user}
-                value={{ value: formData.toUserId, label: username }}
-                onChange={handleSelectChange}
-              />
+              <DatePicker id="date" selected={formData.date} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -159,37 +132,41 @@ const Addemployee = () => {
                 onChange={(e) => handleInputChange('amount', e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Company Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select
-                color="secondary"
-                options={account}
-                value={{ value: formData.accountId, label: companyname }}
-                onChange={handleSelectAccountChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Employee Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select
-                color="secondary"
-                options={account}
-                value={{ value: formData.accountId, label: companyname }}
-                onChange={handleSelectAccountChange}
-              />
-            </Grid>
+            {formData.paymentType === 'bank' && (
+              <>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Typography variant="subtitle1">
+                    Company Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <Select
+                    color="secondary"
+                    options={account}
+                    value={{ value: formData.companyBankId, label: companyname }}
+                    onChange={handleSelectAccountChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Typography variant="subtitle1">
+                    Employee Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <Select
+                    color="secondary"
+                    options={useraccount}
+                    value={{ value: formData.userBankId, label: userbankname }}
+                    onChange={handleSelectUserAccountChange}
+                  />
+                </Grid>
+              </>
+            )}
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Payment Type: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
-                options={paymenttypeOptions}
-                value={paymenttypeOptions.find((option) => option.value === formData.paymenttype)}
-                onChange={handlepaymenttypeChange}
+                options={paymentTypeOptions}
+                value={paymentTypeOptions.find((option) => option.value === formData.paymentType)}
+                onChange={handlepaymentTypeChange}
               />
             </Grid>
           </Grid>

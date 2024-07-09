@@ -534,6 +534,22 @@ export const FETCH_ALL_USER_BANK_REQUEST = 'FETCH_ALL_USER_BANK_REQUEST';
 export const FETCH_ALL_USER_BANK_SUCCESS = 'FETCH_ALL_USER_BANK_SUCCESS';
 export const FETCH_ALL_USER_BANK_FAILURE = 'FETCH_ALL_USER_BANK_FAILURE';
 
+// #################################################################### EMPLOYEE SALARY ################################################################
+export const CREATE_EMPLOYEE_SALARY_REQUEST = 'CREATE_EMPLOYEE_SALARY_REQUEST';
+export const CREATE_EMPLOYEE_SALARY_SUCCESS = 'CREATE_EMPLOYEE_SALARY_SUCCESS';
+export const CREATE_EMPLOYEE_SALARY_FAILURE = 'CREATE_EMPLOYEE_SALARY_FAILURE';
+export const UPDATE_EMPLOYEE_SALARY_REQUEST = 'UPDATE_EMPLOYEE_SALARY_REQUEST';
+export const UPDATE_EMPLOYEE_SALARY_SUCCESS = 'UPDATE_EMPLOYEE_SALARY_SUCCESS';
+export const UPDATE_EMPLOYEE_SALARY_FAILURE = 'UPDATE_EMPLOYEE_SALARY_FAILURE';
+export const VIEW_EMPLOYEE_SALARY_REQUEST = 'VIEW_EMPLOYEE_SALARY_REQUEST';
+export const VIEW_EMPLOYEE_SALARY_SUCCESS = 'VIEW_EMPLOYEE_SALARY_SUCCESS';
+export const VIEW_EMPLOYEE_SALARY_FAILURE = 'VIEW_EMPLOYEE_SALARY_FAILURE';
+export const DELETE_EMPLOYEE_SALARY_REQUEST = 'DELETE_EMPLOYEE_SALARY_REQUEST';
+export const DELETE_EMPLOYEE_SALARY_SUCCESS = 'DELETE_EMPLOYEE_SALARY_SUCCESS';
+export const DELETE_EMPLOYEE_SALARY_FAILURE = 'DELETE_EMPLOYEE_SALARY_FAILURE';
+export const GET_ALL_EMPLOYEE_SALARY_REQUEST = 'GET_ALL_EMPLOYEE_SALARY_REQUEST';
+export const GET_ALL_EMPLOYEE_SALARY_SUCCESS = 'GET_ALL_EMPLOYEE_SALARY_SUCCESS';
+export const GET_ALL_EMPLOYEE_SALARY_FAILURE = 'GET_ALL_EMPLOYEE_SALARY_FAILURE';
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2383,5 +2399,61 @@ export const fetchAllUserBankSuccess = (data) => ({
 });
 export const fetchAllUserBankFailure = (error) => ({
   type: 'FETCH_ALL_USER_BANK_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ EMPLOYEE SALARY++++++++++++++++++++++++++++++++++++
+export const CreateemployeesalaryRequest = () => ({
+  type: 'CREATE_EMPLOYEE_SALARY_REQUEST'
+});
+export const CreateemployeesalarySuccess = (data) => ({
+  type: 'CREATE_EMPLOYEE_SALARY_SUCCESS',
+  payload: data
+});
+export const CreateemployeesalaryFailure = (error) => ({
+  type: 'CREATE_EMPLOYEE_SALARY_FAILURE',
+  payload: error
+});
+export const ViewemployeesalaryRequest = () => ({
+  type: 'VIEW_EMPLOYEE_SALARY_REQUEST'
+});
+export const ViewemployeesalarySuccess = (data) => ({
+  type: 'VIEW_EMPLOYEE_SALARY_SUCCESS',
+  payload: data
+});
+export const ViewemployeesalaryFailure = (error) => ({
+  type: 'VIEW_EMPLOYEE_SALARY_FAILURE',
+  payload: error
+});
+export const UpdateemployeesalaryRequest = () => ({
+  type: 'UPDATE_EMPLOYEE_SALARY_REQUEST'
+});
+export const UpdateemployeesalarySuccess = (data) => ({
+  type: 'UPDATE_EMPLOYEE_SALARY_SUCCESS',
+  payload: data
+});
+export const UpdateemployeesalaryFailure = (error) => ({
+  type: 'UPDATE_EMPLOYEE_SALARY_FAILURE',
+  payload: error
+});
+export const DeleteemployeesalaryRequest = () => ({
+  type: 'DELETE_EMPLOYEE_SALARY_REQUEST'
+});
+export const DeleteemployeesalarySuccess = (data) => ({
+  type: 'DELETE_EMPLOYEE_SALARY_SUCCESS',
+  payload: data
+});
+export const DeleteemployeesalaryFailure = (error) => ({
+  type: 'DELETE_EMPLOYEE_SALARY_FAILURE',
+  payload: error
+});
+export const fetchAllemployeesalaryRequest = () => ({
+  type: 'GET_ALL_EMPLOYEE_SALARY_REQUEST'
+});
+export const fetchAllemployeesalarySuccess = (data) => ({
+  type: 'GET_ALL_EMPLOYEE_SALARY_SUCCESS',
+  payload: data
+});
+export const fetchAllemployeesalaryFailure = (error) => ({
+  type: 'GET_ALL_EMPLOYEE_SALARY_FAILURE',
   payload: error
 });

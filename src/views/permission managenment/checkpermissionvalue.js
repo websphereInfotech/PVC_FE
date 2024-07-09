@@ -647,6 +647,25 @@ const useCan = () => {
   const canViewAllNotification = () => {
     return checkPermission('Notification', 'view_all_notification');
   };
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ EMPLOYEE SALARY
+
+  const canCreateEmployeeSalary = () => {
+    return checkPermission('Salary', 'add_salary_payment');
+  };
+  const canUpdateEmployeeSalary = () => {
+    return checkPermission('Salary', 'edit_salary_payment');
+  };
+  const canDeleteEmployeeSalary = () => {
+    return checkPermission('Salary', 'delete_salary_payment');
+  };
+  const canViewAllEmployeeSalary = () => {
+    return checkPermission('Salary', 'view_all_salary');
+  };
+  const canViwAllEmployeeSalary = () => {
+    return checkPermission('Salary', 'view_all_salary_payment');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -861,7 +880,13 @@ const useCan = () => {
     canUserUpdateBank,
     canUserViewBank,
     canUserViewAllBank,
-    canUserDeleteBank
+    canUserDeleteBank,
+    // EMPLOYEE SALARY +++++++++++
+    canCreateEmployeeSalary,
+    canUpdateEmployeeSalary,
+    canDeleteEmployeeSalary,
+    canViewAllEmployeeSalary,
+    canViwAllEmployeeSalary
   };
 };
 
