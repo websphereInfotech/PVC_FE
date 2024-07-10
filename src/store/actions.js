@@ -550,6 +550,12 @@ export const DELETE_EMPLOYEE_SALARY_FAILURE = 'DELETE_EMPLOYEE_SALARY_FAILURE';
 export const GET_ALL_EMPLOYEE_SALARY_REQUEST = 'GET_ALL_EMPLOYEE_SALARY_REQUEST';
 export const GET_ALL_EMPLOYEE_SALARY_SUCCESS = 'GET_ALL_EMPLOYEE_SALARY_SUCCESS';
 export const GET_ALL_EMPLOYEE_SALARY_FAILURE = 'GET_ALL_EMPLOYEE_SALARY_FAILURE';
+
+// #################################################################### MACHINE ################################################################
+export const CREATE_MACHINE_REQUEST = 'CREATE_MACHINE_REQUEST';
+export const CREATE_MACHINE_SUCCESS = 'CREATE_MACHINE_SUCCESS';
+export const CREATE_MACHINE_FAILURE = 'CREATE_MACHINE_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2455,5 +2461,17 @@ export const fetchAllemployeesalarySuccess = (data) => ({
 });
 export const fetchAllemployeesalaryFailure = (error) => ({
   type: 'GET_ALL_EMPLOYEE_SALARY_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ MACHINE ++++++++++++++++++++++++++++++++++++
+export const CreateMachineRequest = () => ({
+  type: 'CREATE_MACHINE_REQUEST'
+});
+export const CreateMachineSuccess = (data) => ({
+  type: 'CREATE_MACHINE_SUCCESS',
+  payload: data
+});
+export const CreateMachineFailure = (error) => ({
+  type: 'CREATE_MACHINE_FAILURE',
   payload: error
 });

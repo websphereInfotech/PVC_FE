@@ -132,6 +132,9 @@ const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock
 const LowStockCash = Loadable(lazy(() => import('../views/stock managenment/lowStokeCash')));
 const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalStock')));
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++ Machine +++++++++++++++++++++++++++++++++
+const Machineadd = Loadable(lazy(() => import('../views/machine managenment/machineadd')));
+
 const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const Employeeview = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
@@ -476,6 +479,9 @@ const MainRoutes = {
       path: '/employeestatus/:id',
       element: <ProtectedRoute element={Employeeview} resource="Salary" permissionName="view_all_salary_payment" />
     },
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
+    { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },
 
     // { path: '/stock', element: <StockManagement /> },
     { path: '/machineinventory', element: <MachineInventoryPage /> },

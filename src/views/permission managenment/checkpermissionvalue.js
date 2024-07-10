@@ -666,6 +666,12 @@ const useCan = () => {
     return checkPermission('Salary', 'view_all_salary_payment');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE
+
+  const canCreateMachine = () => {
+    return checkPermission('Machine', 'create_machine');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -886,7 +892,9 @@ const useCan = () => {
     canUpdateEmployeeSalary,
     canDeleteEmployeeSalary,
     canViewAllEmployeeSalary,
-    canViwAllEmployeeSalary
+    canViwAllEmployeeSalary,
+    // MACHINE ++++++++++++++++++
+    canCreateMachine
   };
 };
 

@@ -507,7 +507,11 @@ import {
   DeleteemployeesalaryFailure,
   fetchAllemployeesalaryRequest,
   fetchAllemployeesalarySuccess,
-  fetchAllemployeesalaryFailure
+  fetchAllemployeesalaryFailure,
+  // MACHINE +++++++++++++++++++++++
+  CreateMachineRequest,
+  CreateMachineSuccess,
+  CreateMachineFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -3633,6 +3637,29 @@ export const fetchAllEmployeeSalary = (salaryId) => {
       return data;
     } catch (error) {
       dispatch(fetchAllemployeesalaryFailure(error.message));
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE CREATE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createMachine = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateMachineRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/machine/create_machine`, data, config);
+      const addMachinedata = response;
+      dispatch(CreateMachineSuccess(addMachinedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return addMachinedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateMachineFailure(error.message));
+      throw error;
     }
   };
 };

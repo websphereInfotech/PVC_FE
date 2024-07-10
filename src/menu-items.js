@@ -574,18 +574,18 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['ScannerIcon'],
             children: [
-              {
-                id: 'Machine Inventory',
-                title: 'Machine Inventory',
-                type: 'item',
-                url: '/machineinventory'
-              }
               // {
-              //   id: 'Report',
-              //   title: 'Report',
+              //   id: 'Machine Inventory',
+              //   title: 'Machine Inventory',
               //   type: 'item',
-              //   url: '/productionreport'
-              // }
+              //   url: '/machineinventory'
+              // },
+              {
+                id: 'Machine',
+                title: 'Machine',
+                type: 'item',
+                url: '/machineadd'
+              }
             ]
           }
         ]
