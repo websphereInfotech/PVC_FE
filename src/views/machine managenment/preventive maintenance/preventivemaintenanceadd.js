@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 import { createMachine } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const Machineadd = () => {
+const Preventivemaintenanceadd = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -13,7 +15,10 @@ const Machineadd = () => {
   const [formData, setFormData] = useState({
     name: '',
     model: '',
-    description: null
+    description: null,
+    performedby: '',
+    cost: '',
+    date: new Date()
   });
 
   //   useEffect(() => {
@@ -55,11 +60,11 @@ const Machineadd = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Machine
+            Update Preventive Maintenance
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Add Machine
+            Add Preventive Maintenance
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -87,6 +92,48 @@ const Machineadd = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Next Maintenance Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formData.date}
+                onChange={(date) => handleInputChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Last Maintenance Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <DatePicker
+                selected={formData.date}
+                onChange={(date) => handleInputChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Cost :</Typography>
+              <input
+                placeholder="Enter cost amount"
+                id="cost"
+                value={formData.cost}
+                onChange={(e) => handleInputChange('cost', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">Performed By :</Typography>
+              <input
+                placeholder="Enter name"
+                id="performedby"
+                value={formData.performedby}
+                onChange={(e) => handleInputChange('performedby', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">description :</Typography>
               <input
                 placeholder="Enter description"
@@ -101,9 +148,7 @@ const Machineadd = () => {
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link style={{ textDecoration: 'none' }}>
-                  <button to="/machinelist" id="savebtncs">
-                    Cancel
-                  </button>
+                  <button id="savebtncs">Cancel</button>
                 </Link>
                 <button id="savebtncs" onClick={handlecreateMachinedetails}>
                   Save
@@ -113,7 +158,7 @@ const Machineadd = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/machinelist" style={{ textDecoration: 'none' }}>
+                <Link style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
@@ -130,4 +175,4 @@ const Machineadd = () => {
   );
 };
 
-export default Machineadd;
+export default Preventivemaintenanceadd;

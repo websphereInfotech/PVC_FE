@@ -671,6 +671,12 @@ const useCan = () => {
   const canCreateMachine = () => {
     return checkPermission('Machine', 'create_machine');
   };
+  const canViewAllMachine = () => {
+    return checkPermission('Machine', 'view_all_machine');
+  };
+  const canViewSingleMachine = () => {
+    return checkPermission('Machine', 'view_one_machine');
+  };
 
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
@@ -894,7 +900,9 @@ const useCan = () => {
     canViewAllEmployeeSalary,
     canViwAllEmployeeSalary,
     // MACHINE ++++++++++++++++++
-    canCreateMachine
+    canCreateMachine,
+    canViewAllMachine,
+    canViewSingleMachine
   };
 };
 

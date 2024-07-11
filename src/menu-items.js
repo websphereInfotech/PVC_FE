@@ -574,17 +574,29 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['ScannerIcon'],
             children: [
-              // {
-              //   id: 'Machine Inventory',
-              //   title: 'Machine Inventory',
-              //   type: 'item',
-              //   url: '/machineinventory'
-              // },
               {
                 id: 'Machine',
                 title: 'Machine',
                 type: 'item',
-                url: '/machineadd'
+                url: '/machinelist'
+              },
+              {
+                id: 'Regular maintenance',
+                title: 'Regular maintenance',
+                type: 'item',
+                url: '/regularmaintenanceadd'
+              },
+              {
+                id: 'Preventive maintenance',
+                title: 'Preventive maintenance',
+                type: 'item',
+                url: '/preventivemaintenanceadd'
+              },
+              {
+                id: 'Breakdown maintenance',
+                title: 'Breakdown maintenance',
+                type: 'item',
+                url: '/breakdownmaintenanceadd'
               }
             ]
           }

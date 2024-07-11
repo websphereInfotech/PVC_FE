@@ -511,7 +511,13 @@ import {
   // MACHINE +++++++++++++++++++++++
   CreateMachineRequest,
   CreateMachineSuccess,
-  CreateMachineFailure
+  CreateMachineFailure,
+  fetchAllMachineRequest,
+  fetchAllMachineSuccess,
+  fetchAllMachineFailure,
+  ViewsingleMachineRequest,
+  ViewsingleMachineSuccess,
+  ViewsingleMachineFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -3660,6 +3666,35 @@ export const createMachine = (data) => {
       });
       dispatch(CreateMachineFailure(error.message));
       throw error;
+    }
+  };
+};
+export const fetchAllMachine = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllMachineRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/machine/view_all_machine`, config);
+      const data = response.data.data;
+      dispatch(fetchAllMachineSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllMachineFailure(error.message));
+    }
+  };
+};
+export const Machineview = (machineId) => {
+  return async (dispatch) => {
+    dispatch(ViewsingleMachineRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/machine/view_one_machine/${machineId}`, config);
+      const data = response.data.data;
+      dispatch(ViewsingleMachineSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsingleMachineFailure(error.message));
     }
   };
 };

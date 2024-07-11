@@ -134,8 +134,13 @@ const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalS
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Machine +++++++++++++++++++++++++++++++++
 const Machineadd = Loadable(lazy(() => import('../views/machine managenment/machineadd')));
+const MachineList = Loadable(lazy(() => import('../views/machine managenment/machinelist')));
+const Regularmaintenanceadd = Loadable(lazy(() => import('../views/machine managenment/regular maintenance/regularmaintenanceadd')));
+const Preventivemaintenanceadd = Loadable(
+  lazy(() => import('../views/machine managenment/preventive maintenance/preventivemaintenanceadd'))
+);
+const Breakdownmaintenanceadd = Loadable(lazy(() => import('../views/machine managenment/breakdown maintenance/breakdownmaintenanceadd')));
 
-const MachineInventoryPage = Loadable(lazy(() => import('../views/machine managenment/machineinventory')));
 const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const Employeeview = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/addemployesalary')));
@@ -481,17 +486,20 @@ const MainRoutes = {
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
+    { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
     { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },
+    { path: '/regularmaintenanceadd', element: <Regularmaintenanceadd /> },
+    { path: '/preventivemaintenanceadd', element: <Preventivemaintenanceadd /> },
+    { path: '/breakdownmaintenanceadd', element: <Breakdownmaintenanceadd /> },
 
     // { path: '/stock', element: <StockManagement /> },
-    { path: '/machineinventory', element: <MachineInventoryPage /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/generalpage', element: <GeneralPage /> },
     { path: '/generalmain', element: <Generalmain /> },
     { path: '/stokegeneral', element: <Stokegeneral /> },
     { path: '/reports', element: <Reports /> },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesummary', element: <Salesummary /> },
     { path: '/saleregister', element: <Saleregister /> },
     { path: '/purchasesummary', element: <Purchasesummary /> },

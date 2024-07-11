@@ -555,6 +555,12 @@ export const GET_ALL_EMPLOYEE_SALARY_FAILURE = 'GET_ALL_EMPLOYEE_SALARY_FAILURE'
 export const CREATE_MACHINE_REQUEST = 'CREATE_MACHINE_REQUEST';
 export const CREATE_MACHINE_SUCCESS = 'CREATE_MACHINE_SUCCESS';
 export const CREATE_MACHINE_FAILURE = 'CREATE_MACHINE_FAILURE';
+export const GET_ALL_MACHINE_REQUEST = 'GET_ALL_MACHINE_REQUEST';
+export const GET_ALL_MACHINE_SUCCESS = 'GET_ALL_MACHINE_SUCCESS';
+export const GET_ALL_MACHINE_FAILURE = 'GET_ALL_MACHINE_FAILURE';
+export const VIEW_SINGLE_MACHINE_REQUEST = 'VIEW_SINGLE_MACHINE_REQUEST';
+export const VIEW_SINGLE_MACHINE_SUCCESS = 'VIEW_SINGLE_MACHINE_SUCCESS';
+export const VIEW_SINGLE_MACHINE_FAILURE = 'VIEW_SINGLE_MACHINE_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -2473,5 +2479,27 @@ export const CreateMachineSuccess = (data) => ({
 });
 export const CreateMachineFailure = (error) => ({
   type: 'CREATE_MACHINE_FAILURE',
+  payload: error
+});
+export const fetchAllMachineRequest = () => ({
+  type: 'GET_ALL_MACHINE_REQUEST'
+});
+export const fetchAllMachineSuccess = (data) => ({
+  type: 'GET_ALL_MACHINE_SUCCESS',
+  payload: data
+});
+export const fetchAllMachineFailure = (error) => ({
+  type: 'GET_ALL_MACHINE_FAILURE',
+  payload: error
+});
+export const ViewsingleMachineRequest = () => ({
+  type: 'VIEW_SINGLE_MACHINE_REQUEST'
+});
+export const ViewsingleMachineSuccess = (data) => ({
+  type: 'VIEW_SINGLE_MACHINE_SUCCESS',
+  payload: data
+});
+export const ViewsingleMachineFailure = (error) => ({
+  type: 'VIEW_SINGLE_MACHINE_FAILURE',
   payload: error
 });
