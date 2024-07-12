@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createMachine } from 'store/thunk';
+import { createMachine, Machineview, updateMachine } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const Machineadd = () => {
@@ -12,32 +12,33 @@ const Machineadd = () => {
   const { id } = useParams();
   const [formData, setFormData] = useState({
     name: '',
-    model: '',
+    machineNo: '',
     description: null
   });
 
-  //   useEffect(() => {
-  //     const viewData = async () => {
-  //       try {
-  //         if (id) {
-  //           const response = await dispatch(viewSingleclaimCash(id));
-  //           const { amount, description, toUser, purpose } = response;
-  //           console.log(response, 'response');
-  //           setFormData({ amount, description, purpose, toUserId: toUser.id });
-
-  //           setusername(toUser.username);
-  //           setSelectuser(toUser.id);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error fetching cliam:', error);
-  //       }
-  //     };
-  //     viewData();
-  //   }, [dispatch, id]);
+  useEffect(() => {
+    const viewData = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(Machineview(id));
+          const { name, machineNo, description } = response;
+          console.log(response, 'response');
+          setFormData({ name, machineNo, description });
+        }
+      } catch (error) {
+        console.error('Error fetching Machine:', error);
+      }
+    };
+    viewData();
+  }, [dispatch, id]);
 
   const handlecreateMachinedetails = async () => {
     try {
-      await dispatch(createMachine(formData, navigate));
+      if (id) {
+        await dispatch(updateMachine(id, formData, navigate));
+      } else {
+        await dispatch(createMachine(formData, navigate));
+      }
     } catch (error) {
       console.error('Error creating machine data:', error);
     }
@@ -77,13 +78,13 @@ const Machineadd = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Machine Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Machine Number : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
-                placeholder="Enter Machine Type"
-                id="model"
-                value={formData.model}
-                onChange={(e) => handleInputChange('model', e.target.value)}
+                placeholder="Enter Machine Number"
+                id="machineNo"
+                value={formData.machineNo}
+                onChange={(e) => handleInputChange('machineNo', e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>

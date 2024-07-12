@@ -584,19 +584,19 @@ const MenuItem = () => {
                 id: 'Regular maintenance',
                 title: 'Regular maintenance',
                 type: 'item',
-                url: '/regularmaintenanceadd'
+                url: '/regularmaintenancelist'
               },
               {
                 id: 'Preventive maintenance',
                 title: 'Preventive maintenance',
                 type: 'item',
-                url: '/preventivemaintenanceadd'
+                url: '/preventivemaintenancelist'
               },
               {
                 id: 'Breakdown maintenance',
                 title: 'Breakdown maintenance',
                 type: 'item',
-                url: '/breakdownmaintenanceadd'
+                url: '/breakdownmaintenancelist'
               }
             ]
           }

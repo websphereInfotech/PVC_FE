@@ -517,7 +517,29 @@ import {
   fetchAllMachineFailure,
   ViewsingleMachineRequest,
   ViewsingleMachineSuccess,
-  ViewsingleMachineFailure
+  ViewsingleMachineFailure,
+  UpdateMachineRequest,
+  UpdateMachineSuccess,
+  UpdateMachineFailure,
+  DeleteMachineRequest,
+  DeleteMachineSuccess,
+  DeleteMachineFailure,
+  // REGULAR MAINTENANCE ++++++++++++
+  CreateRegularmaintenanceRequest,
+  CreateRegularmaintenanceSuccess,
+  CreateRegularmaintenanceFailure,
+  fetchAllRegularmaintenanceRequest,
+  fetchAllRegularmaintenanceSuccess,
+  fetchAllRegularmaintenanceFailure,
+  ViewsingleregularRequest,
+  ViewsingleregularSuccess,
+  ViewsingleregularFailure,
+  UpdateRegularRequest,
+  UpdateRegularSuccess,
+  UpdateRegularFailure,
+  DeleteRegularRequest,
+  DeleteRegularSuccess,
+  DeleteRegularFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -3647,7 +3669,7 @@ export const fetchAllEmployeeSalary = (salaryId) => {
   };
 };
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE CREATE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createMachine = (data) => {
+export const createMachine = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateMachineRequest());
     try {
@@ -3659,6 +3681,7 @@ export const createMachine = (data) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
+      navigate('/machinelist');
       return addMachinedata;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -3695,6 +3718,153 @@ export const Machineview = (machineId) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(ViewsingleMachineFailure(error.message));
+    }
+  };
+};
+export const updateMachine = (machineId, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateMachineRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/machine/update_machine/${machineId}`, formData, config);
+      const updatemachinedata = response.data.data;
+      dispatch(UpdateMachineSuccess(updatemachinedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/machinelist');
+      return updatemachinedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateMachineFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteMachine = (machineId) => {
+  return async (dispatch) => {
+    dispatch(DeleteMachineRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/machine/delete_machine/${machineId}`, config);
+      const deletemachinedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteMachineSuccess(deletemachinedata));
+      return deletemachinedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteMachineFailure(error.message));
+      throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE CREATE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createregular = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreateRegularmaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/create_regular_maintenance`, data, config);
+      const addregularmaintenancedata = response;
+      dispatch(CreateRegularmaintenanceSuccess(addregularmaintenancedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/regularmaintenancelist');
+      return addregularmaintenancedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateRegularmaintenanceFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllregularMaintenance = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllRegularmaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/view_all_regular_maintenance`, config);
+      const data = response.data.data;
+      dispatch(fetchAllRegularmaintenanceSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllRegularmaintenanceFailure(error.message));
+    }
+  };
+};
+export const Regularview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewsingleregularRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/view_one_regular_maintenance/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewsingleregularSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsingleregularFailure(error.message));
+    }
+  };
+};
+export const updateRegular = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateRegularRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/regularMaintenance/update_regular_maintenance/${id}`,
+        formData,
+        config
+      );
+      const upadateregulardata = response.data.data;
+      dispatch(UpdateRegularSuccess(upadateregulardata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/regularmaintenancelist');
+      return upadateregulardata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateRegularFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteRegular = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteRegularRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/delete_regular_maintenance/${id}`, config);
+      const deleteregulardata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteRegularSuccess(deleteregulardata));
+      return deleteregulardata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteRegularFailure(error.message));
+      throw error;
     }
   };
 };

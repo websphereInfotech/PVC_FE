@@ -17,28 +17,27 @@ import {
   DialogContent
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteMachine, fetchAllMachine, Machineview } from 'store/thunk';
+import { fetchAllMachine, Machineview } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit, Delete } from '@mui/icons-material';
 
 const columns = [
-  { id: 'name', label: 'Machine Type', align: 'center' },
-  { id: 'machineNo', label: 'Machine Number', align: 'center' },
+  { id: 'name', label: 'Machine Name', align: 'center' },
+  { id: 'model', label: 'Machine Type', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
-const MachineList = () => {
+const BreakdownmaintenanceList = () => {
   const navigate = useNavigate();
   const [machineData, setMachineData] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [page, setPage] = useState(0);
-  const [selectedMachineId, setSelectedMachineId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateMachine, canDeleteMachine, canUpdateMachine } = useCan();
+  const { canCreateMachine } = useCan();
 
   useEffect(() => {
     const fetchSalaryData = async () => {
@@ -66,33 +65,24 @@ const MachineList = () => {
   };
 
   const handleaddmachine = () => {
-    navigate('/machineadd');
+    navigate('/breakdownmaintenanceadd');
   };
-  const handleUpdateMachine = (id) => {
+  const handleUpdateUser = (id) => {
     dispatch(Machineview(id));
     navigate(`/updatemachine/${id}`);
   };
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setSelectedMachineId(id);
+    setSelectedUserId(id);
   };
-  const handleDeleteMachine = async () => {
-    try {
-      await dispatch(deleteMachine(selectedMachineId));
-      setOpenConfirmation(false);
-      const response = await dispatch(fetchAllMachine());
-      setMachineData(response);
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
+
   return (
     <Card style={{ width: '100%', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Machine
+        Breakdown Maintenance
       </Typography>
       <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddmachine} disabled={!canCreateMachine()}>
-        Add Machine
+        Add Breakdown Maintenance
       </Button>
       <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -117,30 +107,30 @@ const MachineList = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateMachine() ? 'green' : 'gray',
-                            color: canUpdateMachine() ? 'white' : 'white',
+                            backgroundColor: canCreateMachine() ? 'green' : 'gray',
+                            color: canCreateMachine() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateMachine() && { opacity: 1 }),
-                            ...(!canUpdateMachine() && { opacity: 0.5 }),
-                            ...(!canUpdateMachine() && { backgroundColor: 'gray' })
+                            ...(canCreateMachine() && { opacity: 1 }),
+                            ...(!canCreateMachine() && { opacity: 0.5 }),
+                            ...(!canCreateMachine() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleUpdateMachine(row.id)}
-                          disabled={!canUpdateMachine()}
+                          onClick={() => handleUpdateUser(row.id)}
+                          disabled={!canCreateMachine()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteMachine() ? 'Red' : 'gray',
-                            color: canDeleteMachine() ? 'white' : 'white',
+                            backgroundColor: canCreateMachine() ? 'Red' : 'gray',
+                            color: canCreateMachine() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteMachine() && { opacity: 1 }),
-                            ...(!canDeleteMachine() && { opacity: 0.5 }),
-                            ...(!canDeleteMachine() && { backgroundColor: 'gray' })
+                            ...(canCreateMachine() && { opacity: 1 }),
+                            ...(!canCreateMachine() && { opacity: 0.5 }),
+                            ...(!canCreateMachine() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(row.id)}
-                          disabled={!canDeleteMachine()}
+                          disabled={!canCreateMachine()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -167,12 +157,12 @@ const MachineList = () => {
 
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this machine?</DialogContent>
+        <DialogContent>Are you sure you want to delete this user?</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleDeleteMachine} color="secondary">
+          <Button variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -181,4 +171,4 @@ const MachineList = () => {
   );
 };
 
-export default MachineList;
+export default BreakdownmaintenanceList;

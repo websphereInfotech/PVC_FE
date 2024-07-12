@@ -1,50 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createMachine } from 'store/thunk';
+import { createregular, fetchAllMachine, Regularview, updateRegular } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Select from 'react-select';
 
 const Regularmaintenanceadd = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [machine, setMachine] = useState([]);
+  const [machinename, setmachinename] = useState('');
   const [formData, setFormData] = useState({
-    name: '',
-    model: '',
+    machineId: '',
     description: null,
-    performedby: '',
+    performed: '',
     cost: '',
     date: new Date()
   });
 
-  //   useEffect(() => {
-  //     const viewData = async () => {
-  //       try {
-  //         if (id) {
-  //           const response = await dispatch(viewSingleclaimCash(id));
-  //           const { amount, description, toUser, purpose } = response;
-  //           console.log(response, 'response');
-  //           setFormData({ amount, description, purpose, toUserId: toUser.id });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllMachine());
+        if (Array.isArray(response)) {
+          const options = response.map((machine) => ({ value: machine.id, label: machine.name }));
+          setMachine([...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching machine:', error);
+      }
+    };
+    const viewData = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(Regularview(id));
+          const { machineId, performed, description, cost, date, machineRegularMaintenance } = response;
+          setFormData({ machineId, performed, description, cost, date });
+          setmachinename(machineRegularMaintenance.name);
+        }
+      } catch (error) {
+        console.error('Error fetching machine:', error);
+      }
+    };
+    viewData();
+    fetchData();
+  }, [dispatch, id]);
 
-  //           setusername(toUser.username);
-  //           setSelectuser(toUser.id);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error fetching cliam:', error);
-  //       }
-  //     };
-  //     viewData();
-  //   }, [dispatch, id]);
-
-  const handlecreateMachinedetails = async () => {
+  const handlecreateregularmaintenance = async () => {
     try {
-      await dispatch(createMachine(formData, navigate));
+      if (id) {
+        await dispatch(updateRegular(id, formData, navigate));
+      } else {
+        await dispatch(createregular(formData, navigate));
+      }
     } catch (error) {
-      console.error('Error creating machine data:', error);
+      console.error('Error creating regular maintenance data:', error);
     }
   };
 
@@ -53,6 +68,17 @@ const Regularmaintenanceadd = () => {
       ...prevState,
       [fieldName]: value
     }));
+  };
+
+  const handleSelectChange = (selectedOption) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      machineId: selectedOption.value
+    }));
+    setmachinename(selectedOption.label);
+  };
+  const handledateChange = (date) => {
+    setFormData({ ...formData, date: date });
   };
 
   return (
@@ -71,24 +97,13 @@ const Regularmaintenanceadd = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Machine Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Machine Id : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
-                placeholder="Enter Machine name"
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Machine Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                placeholder="Enter Machine Type"
-                id="model"
-                value={formData.model}
-                onChange={(e) => handleInputChange('model', e.target.value)}
+              <Select
+                color="secondary"
+                options={machine}
+                value={{ value: formData.machineId, label: machinename }}
+                onChange={handleSelectChange}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -97,7 +112,7 @@ const Regularmaintenanceadd = () => {
               </Typography>
               <DatePicker
                 selected={formData.date}
-                onChange={(date) => handleInputChange(date)}
+                onChange={(date) => handledateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
@@ -116,9 +131,9 @@ const Regularmaintenanceadd = () => {
               <Typography variant="subtitle1">Performed By :</Typography>
               <input
                 placeholder="Enter name"
-                id="performedby"
-                value={formData.performedby}
-                onChange={(e) => handleInputChange('performedby', e.target.value)}
+                id="performed"
+                value={formData.performed}
+                onChange={(e) => handleInputChange('performed', e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -135,10 +150,10 @@ const Regularmaintenanceadd = () => {
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link style={{ textDecoration: 'none' }}>
+                <Link to="/regularmaintenancelist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
-                <button id="savebtncs" onClick={handlecreateMachinedetails}>
+                <button id="savebtncs" onClick={handlecreateregularmaintenance}>
                   Save
                 </button>
               </div>
@@ -146,12 +161,12 @@ const Regularmaintenanceadd = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link style={{ textDecoration: 'none' }}>
+                <Link to="/regularmaintenancelist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" onClick={handlecreateMachinedetails}>
+                <button id="savebtncs" onClick={handlecreateregularmaintenance}>
                   Save
                 </button>
               </div>

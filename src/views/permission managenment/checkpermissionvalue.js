@@ -677,7 +677,30 @@ const useCan = () => {
   const canViewSingleMachine = () => {
     return checkPermission('Machine', 'view_one_machine');
   };
+  const canUpdateMachine = () => {
+    return checkPermission('Machine', 'update_machine');
+  };
+  const canDeleteMachine = () => {
+    return checkPermission('Machine', 'delete_machine');
+  };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Regular
+
+  const canCreateRegular = () => {
+    return checkPermission('Regular Maintenance', 'create_regular_maintenance');
+  };
+  const canViewAllRegular = () => {
+    return checkPermission('Regular Maintenance', 'view_all_regular_maintenance');
+  };
+  const canViewSingleRegular = () => {
+    return checkPermission('Regular Maintenance', 'view_one_regular_maintenance');
+  };
+  const canUpdateRegular = () => {
+    return checkPermission('Regular Maintenance', 'update_regular_maintenance');
+  };
+  const canDeleteRegular = () => {
+    return checkPermission('Regular Maintenance', 'delete_regular_maintenance');
+  };
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -902,7 +925,15 @@ const useCan = () => {
     // MACHINE ++++++++++++++++++
     canCreateMachine,
     canViewAllMachine,
-    canViewSingleMachine
+    canViewSingleMachine,
+    canUpdateMachine,
+    canDeleteMachine,
+    // REGULAR MAINTENANCE +++++++
+    canCreateRegular,
+    canViewAllRegular,
+    canViewSingleRegular,
+    canUpdateRegular,
+    canDeleteRegular
   };
 };
 

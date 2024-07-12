@@ -17,33 +17,36 @@ import {
   DialogContent
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteMachine, fetchAllMachine, Machineview } from 'store/thunk';
+import { deleteRegular, fetchAllregularMaintenance, Machineview } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit, Delete } from '@mui/icons-material';
 
 const columns = [
-  { id: 'name', label: 'Machine Type', align: 'center' },
-  { id: 'machineNo', label: 'Machine Number', align: 'center' },
+  { id: 'name', label: 'Machine Name', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
+  { id: 'cost', label: 'Cost', align: 'center' },
+  { id: 'performed', label: 'Performed By', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
-const MachineList = () => {
+const RegularmaintenanceList = () => {
   const navigate = useNavigate();
   const [machineData, setMachineData] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [page, setPage] = useState(0);
-  const [selectedMachineId, setSelectedMachineId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [selectedId, setSelectedId] = useState(null);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateMachine, canDeleteMachine, canUpdateMachine } = useCan();
+  const { canCreateRegular, canUpdateRegular, canDeleteRegular } = useCan();
 
   useEffect(() => {
     const fetchSalaryData = async () => {
       try {
-        const response = await dispatch(fetchAllMachine());
+        const response = await dispatch(fetchAllregularMaintenance());
+        console.log(response.data, 'response');
         setMachineData(response);
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -66,33 +69,35 @@ const MachineList = () => {
   };
 
   const handleaddmachine = () => {
-    navigate('/machineadd');
+    navigate('/regularmaintenanceadd');
   };
-  const handleUpdateMachine = (id) => {
+  const handleUpdate = (id) => {
     dispatch(Machineview(id));
-    navigate(`/updatemachine/${id}`);
+    navigate(`/regularmaintenanceupdate/${id}`);
   };
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setSelectedMachineId(id);
+    setSelectedId(id);
   };
-  const handleDeleteMachine = async () => {
+
+  const handleDeleteRegularmaintenance = async () => {
     try {
-      await dispatch(deleteMachine(selectedMachineId));
+      await dispatch(deleteRegular(selectedId));
       setOpenConfirmation(false);
-      const response = await dispatch(fetchAllMachine());
+      const response = await dispatch(fetchAllregularMaintenance());
       setMachineData(response);
     } catch (error) {
       console.error('Error deleting user:', error);
     }
   };
+
   return (
     <Card style={{ width: '100%', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Machine
+        Regular Maintenance List
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddmachine} disabled={!canCreateMachine()}>
-        Add Machine
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddmachine} disabled={!canCreateRegular()}>
+        Add Regular Maintenance
       </Button>
       <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -112,35 +117,39 @@ const MachineList = () => {
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'description' ? (
                       row.description || '-'
+                    ) : column.id === 'name' ? (
+                      row.machineRegularMaintenance.name
+                    ) : column.id === 'date' ? (
+                      new Date(row.date).toLocaleDateString('en-GB')
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateMachine() ? 'green' : 'gray',
-                            color: canUpdateMachine() ? 'white' : 'white',
+                            backgroundColor: canUpdateRegular() ? 'green' : 'gray',
+                            color: canUpdateRegular() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateMachine() && { opacity: 1 }),
-                            ...(!canUpdateMachine() && { opacity: 0.5 }),
-                            ...(!canUpdateMachine() && { backgroundColor: 'gray' })
+                            ...(canUpdateRegular() && { opacity: 1 }),
+                            ...(!canUpdateRegular() && { opacity: 0.5 }),
+                            ...(!canUpdateRegular() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleUpdateMachine(row.id)}
-                          disabled={!canUpdateMachine()}
+                          onClick={() => handleUpdate(row.id)}
+                          disabled={!canUpdateRegular()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteMachine() ? 'Red' : 'gray',
-                            color: canDeleteMachine() ? 'white' : 'white',
+                            backgroundColor: canDeleteRegular() ? 'Red' : 'gray',
+                            color: canDeleteRegular() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteMachine() && { opacity: 1 }),
-                            ...(!canDeleteMachine() && { opacity: 0.5 }),
-                            ...(!canDeleteMachine() && { backgroundColor: 'gray' })
+                            ...(canDeleteRegular() && { opacity: 1 }),
+                            ...(!canDeleteRegular() && { opacity: 0.5 }),
+                            ...(!canDeleteRegular() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(row.id)}
-                          disabled={!canDeleteMachine()}
+                          disabled={!canDeleteRegular()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -158,7 +167,7 @@ const MachineList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={machineData.length || 0}
+        count={machineData?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -167,12 +176,12 @@ const MachineList = () => {
 
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this machine?</DialogContent>
+        <DialogContent>Are you sure you want to delete this user?</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleDeleteMachine} color="secondary">
+          <Button onClick={handleDeleteRegularmaintenance} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -181,4 +190,4 @@ const MachineList = () => {
   );
 };
 
-export default MachineList;
+export default RegularmaintenanceList;

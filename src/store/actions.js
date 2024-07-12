@@ -561,6 +561,29 @@ export const GET_ALL_MACHINE_FAILURE = 'GET_ALL_MACHINE_FAILURE';
 export const VIEW_SINGLE_MACHINE_REQUEST = 'VIEW_SINGLE_MACHINE_REQUEST';
 export const VIEW_SINGLE_MACHINE_SUCCESS = 'VIEW_SINGLE_MACHINE_SUCCESS';
 export const VIEW_SINGLE_MACHINE_FAILURE = 'VIEW_SINGLE_MACHINE_FAILURE';
+export const UPDATE_MACHINE_REQUEST = 'UPDATE_MACHINE_REQUEST';
+export const UPDATE_MACHINE_SUCCESS = 'UPDATE_MACHINE_SUCCESS';
+export const UPDATE_MACHINE_FAILURE = 'UPDATE_MACHINE_FAILURE';
+export const DELETE_MACHINE_REQUEST = 'DELETE_MACHINE_REQUEST';
+export const DELETE_MACHINE_SUCCESS = 'DELETE_MACHINE_SUCCESS';
+export const DELETE_MACHINE_FAILURE = 'DELETE_MACHINE_FAILURE';
+
+// #################################################################### REGULAR MAINTENANCE ########################################
+export const CREATE_REGULAR_REQUEST = 'CREATE_REGULAR_REQUEST';
+export const CREATE_REGULAR_SUCCESS = 'CREATE_REGULAR_SUCCESS';
+export const CREATE_REGULAR_FAILURE = 'CREATE_REGULAR_FAILURE';
+export const GET_ALL_REGULAR_REQUEST = 'GET_ALL_REGULAR_REQUEST';
+export const GET_ALL_REGULAR_SUCCESS = 'GET_ALL_REGULAR_SUCCESS';
+export const GET_ALL_REGULAR_FAILURE = 'GET_ALL_REGULAR_FAILURE';
+export const VIEW_SINGLE_REGULAR_REQUEST = 'VIEW_SINGLE_REGULAR_REQUEST';
+export const VIEW_SINGLE_REGULAR_SUCCESS = 'VIEW_SINGLE_REGULAR_SUCCESS';
+export const VIEW_SINGLE_REGULAR_FAILURE = 'VIEW_SINGLE_REGULAR_FAILURE';
+export const UPDATE_REGULAR_REQUEST = 'UPDATE_REGULAR_REQUEST';
+export const UPDATE_REGULAR_SUCCESS = 'UPDATE_REGULAR_SUCCESS';
+export const UPDATE_REGULAR_FAILURE = 'UPDATE_REGULAR_FAILURE';
+export const DELETE_REGULAR_REQUEST = 'DELETE_REGULAR_REQUEST';
+export const DELETE_REGULAR_SUCCESS = 'DELETE_REGULAR_SUCCESS';
+export const DELETE_REGULAR_FAILURE = 'DELETE_REGULAR_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -2501,5 +2524,83 @@ export const ViewsingleMachineSuccess = (data) => ({
 });
 export const ViewsingleMachineFailure = (error) => ({
   type: 'VIEW_SINGLE_MACHINE_FAILURE',
+  payload: error
+});
+export const UpdateMachineRequest = () => ({
+  type: 'UPDATE_MACHINE_REQUEST'
+});
+export const UpdateMachineSuccess = (data) => ({
+  type: 'UPDATE_MACHINE_SUCCESS',
+  payload: data
+});
+export const UpdateMachineFailure = (error) => ({
+  type: 'UPDATE_MACHINE_FAILURE',
+  payload: error
+});
+export const DeleteMachineRequest = () => ({
+  type: 'DELETE_MACHINE_REQUEST'
+});
+export const DeleteMachineSuccess = (data) => ({
+  type: 'DELETE_MACHINE_SUCCESS',
+  payload: data
+});
+export const DeleteMachineFailure = (error) => ({
+  type: 'DELETE_MACHINE_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ REGULAR MAINTENANCE ++++++++++++++++++++++++++++++++++++
+export const CreateRegularmaintenanceRequest = () => ({
+  type: 'CREATE_REGULAR_REQUEST'
+});
+export const CreateRegularmaintenanceSuccess = (data) => ({
+  type: 'CREATE_REGULAR_SUCCESS',
+  payload: data
+});
+export const CreateRegularmaintenanceFailure = (error) => ({
+  type: 'CREATE_REGULAR_FAILURE',
+  payload: error
+});
+export const fetchAllRegularmaintenanceRequest = () => ({
+  type: 'GET_ALL_REGULAR_REQUEST'
+});
+export const fetchAllRegularmaintenanceSuccess = (data) => ({
+  type: 'GET_ALL_REGULAR_SUCCESS',
+  payload: data
+});
+export const fetchAllRegularmaintenanceFailure = (error) => ({
+  type: 'GET_ALL_REGULAR_FAILURE',
+  payload: error
+});
+export const ViewsingleregularRequest = () => ({
+  type: 'VIEW_SINGLE_REGULAR_REQUEST'
+});
+export const ViewsingleregularSuccess = (data) => ({
+  type: 'VIEW_SINGLE_REGULAR_SUCCESS',
+  payload: data
+});
+export const ViewsingleregularFailure = (error) => ({
+  type: 'VIEW_SINGLE_REGULAR_FAILURE',
+  payload: error
+});
+export const UpdateRegularRequest = () => ({
+  type: 'UPDATE_REGULAR_REQUEST'
+});
+export const UpdateRegularSuccess = (data) => ({
+  type: 'UPDATE_REGULAR_SUCCESS',
+  payload: data
+});
+export const UpdateRegularFailure = (error) => ({
+  type: 'UPDATE_REGULAR_FAILURE',
+  payload: error
+});
+export const DeleteRegularRequest = () => ({
+  type: 'DELETE_REGULAR_REQUEST'
+});
+export const DeleteRegularSuccess = (data) => ({
+  type: 'DELETE_REGULAR_SUCCESS',
+  payload: data
+});
+export const DeleteRegularFailure = (error) => ({
+  type: 'DELETE_REGULAR_FAILURE',
   payload: error
 });
