@@ -282,6 +282,7 @@ const Paymentbankrecieveledgerlist = () => {
                 <TableCell align="center" style={{ color: 'red' }}>
                   {closingBalance.amount.toFixed(2)}
                 </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             )}
             <TableRow>

@@ -585,6 +585,40 @@ export const DELETE_REGULAR_REQUEST = 'DELETE_REGULAR_REQUEST';
 export const DELETE_REGULAR_SUCCESS = 'DELETE_REGULAR_SUCCESS';
 export const DELETE_REGULAR_FAILURE = 'DELETE_REGULAR_FAILURE';
 
+// #################################################################### PREVENTIVE MAINTENANCE ########################################
+export const CREATE_PREVENTIVE_REQUEST = 'CREATE_PREVENTIVE_REQUEST';
+export const CREATE_PREVENTIVE_SUCCESS = 'CREATE_PREVENTIVE_SUCCESS';
+export const CREATE_PREVENTIVE_FAILURE = 'CREATE_PREVENTIVE_FAILURE';
+export const GET_ALL_PREVENTIVE_REQUEST = 'GET_ALL_PREVENTIVE_REQUEST';
+export const GET_ALL_PREVENTIVE_SUCCESS = 'GET_ALL_PREVENTIVE_SUCCESS';
+export const GET_ALL_PREVENTIVE_FAILURE = 'GET_ALL_PREVENTIVE_FAILURE';
+export const VIEW_SINGLE_PREVENTIVE_REQUEST = 'VIEW_SINGLE_PREVENTIVE_REQUEST';
+export const VIEW_SINGLE_PREVENTIVE_SUCCESS = 'VIEW_SINGLE_PREVENTIVE_SUCCESS';
+export const VIEW_SINGLE_PREVENTIVE_FAILURE = 'VIEW_SINGLE_PREVENTIVE_FAILURE';
+export const UPDATE_PREVENTIVE_REQUEST = 'UPDATE_PREVENTIVE_REQUEST';
+export const UPDATE_PREVENTIVE_SUCCESS = 'UPDATE_PREVENTIVE_SUCCESS';
+export const UPDATE_PREVENTIVE_FAILURE = 'UPDATE_PREVENTIVE_FAILURE';
+export const DELETE_PREVENTIVE_REQUEST = 'DELETE_PREVENTIVE_REQUEST';
+export const DELETE_PREVENTIVE_SUCCESS = 'DELETE_PREVENTIVE_SUCCESS';
+export const DELETE_PREVENTIVE_FAILURE = 'DELETE_PREVENTIVE_FAILURE';
+
+// #################################################################### PREVENTIVE MAINTENANCE ########################################
+export const CREATE_BREACKDOWN_REQUEST = 'CREATE_BREACKDOWN_REQUEST';
+export const CREATE_BREACKDOWN_SUCCESS = 'CREATE_BREACKDOWN_SUCCESS';
+export const CREATE_BREACKDOWN_FAILURE = 'CREATE_BREACKDOWN_FAILURE';
+export const GET_ALL_BREACKDOWN_REQUEST = 'GET_ALL_BREACKDOWN_REQUEST';
+export const GET_ALL_BREACKDOWN_SUCCESS = 'GET_ALL_BREACKDOWN_SUCCESS';
+export const GET_ALL_BREACKDOWN_FAILURE = 'GET_ALL_BREACKDOWN_FAILURE';
+export const VIEW_SINGLE_BREACKDOWN_REQUEST = 'VIEW_SINGLE_BREACKDOWN_REQUEST';
+export const VIEW_SINGLE_BREACKDOWN_SUCCESS = 'VIEW_SINGLE_BREACKDOWN_SUCCESS';
+export const VIEW_SINGLE_BREACKDOWN_FAILURE = 'VIEW_SINGLE_BREACKDOWN_FAILURE';
+export const UPDATE_BREACKDOWN_REQUEST = 'UPDATE_BREACKDOWN_REQUEST';
+export const UPDATE_BREACKDOWN_SUCCESS = 'UPDATE_BREACKDOWN_SUCCESS';
+export const UPDATE_BREACKDOWN_FAILURE = 'UPDATE_BREACKDOWN_FAILURE';
+export const DELETE_BREACKDOWN_REQUEST = 'DELETE_BREACKDOWN_REQUEST';
+export const DELETE_BREACKDOWN_SUCCESS = 'DELETE_BREACKDOWN_SUCCESS';
+export const DELETE_BREACKDOWN_FAILURE = 'DELETE_BREACKDOWN_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2602,5 +2636,117 @@ export const DeleteRegularSuccess = (data) => ({
 });
 export const DeleteRegularFailure = (error) => ({
   type: 'DELETE_REGULAR_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ PREVENTIVE MAINTENANCE ++++++++++++++++++++++++++++++++++++
+export const CreatePreventiveRequest = () => ({
+  type: 'CREATE_PREVENTIVE_REQUEST'
+});
+export const CreatePreventiveSuccess = (data) => ({
+  type: 'CREATE_PREVENTIVE_SUCCESS',
+  payload: data
+});
+export const CreatePreventiveFailure = (error) => ({
+  type: 'CREATE_PREVENTIVE_FAILURE',
+  payload: error
+});
+export const fetchAllPreventiveRequest = () => ({
+  type: 'GET_ALL_PREVENTIVE_REQUEST'
+});
+export const fetchAllPreventiveSuccess = (data) => ({
+  type: 'GET_ALL_PREVENTIVE_SUCCESS',
+  payload: data
+});
+export const fetchAllPreventiveFailure = (error) => ({
+  type: 'GET_ALL_PREVENTIVE_FAILURE',
+  payload: error
+});
+export const ViewsinglepreventiveRequest = () => ({
+  type: 'VIEW_SINGLE_PREVENTIVE_REQUEST'
+});
+export const ViewsinglepreventiveSuccess = (data) => ({
+  type: 'VIEW_SINGLE_PREVENTIVE_SUCCESS',
+  payload: data
+});
+export const ViewsinglepreventiveFailure = (error) => ({
+  type: 'VIEW_SINGLE_PREVENTIVE_FAILURE',
+  payload: error
+});
+export const UpdatePreventiveRequest = () => ({
+  type: 'UPDATE_PREVENTIVE_REQUEST'
+});
+export const UpdatePreventiveSuccess = (data) => ({
+  type: 'UPDATE_PREVENTIVE_SUCCESS',
+  payload: data
+});
+export const UpdatePreventiveFailure = (error) => ({
+  type: 'UPDATE_PREVENTIVE_FAILURE',
+  payload: error
+});
+export const DeletePreventiveRequest = () => ({
+  type: 'DELETE_PREVENTIVE_REQUEST'
+});
+export const DeletePreventiveSuccess = (data) => ({
+  type: 'DELETE_PREVENTIVE_SUCCESS',
+  payload: data
+});
+export const DeletePreventiveFailure = (error) => ({
+  type: 'DELETE_PREVENTIVE_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ BREACK MAINTENANCE ++++++++++++++++++++++++++++++++++++
+export const CreateBreakdownRequest = () => ({
+  type: 'CREATE_BREACKDOWN_REQUEST'
+});
+export const CreateBreakdownSuccess = (data) => ({
+  type: 'CREATE_BREACKDOWN_SUCCESS',
+  payload: data
+});
+export const CreateBreakdownFailure = (error) => ({
+  type: 'CREATE_BREACKDOWN_FAILURE',
+  payload: error
+});
+export const fetchAllBreakdownRequest = () => ({
+  type: 'GET_ALL_BREACKDOWN_REQUEST'
+});
+export const fetchAllBreakdownSuccess = (data) => ({
+  type: 'GET_ALL_BREACKDOWN_SUCCESS',
+  payload: data
+});
+export const fetchAllBreakdownFailure = (error) => ({
+  type: 'GET_ALL_BREACKDOWN_FAILURE',
+  payload: error
+});
+export const ViewsingleBreakdownRequest = () => ({
+  type: 'VIEW_SINGLE_BREACKDOWN_REQUEST'
+});
+export const ViewsingleBreakdownSuccess = (data) => ({
+  type: 'VIEW_SINGLE_BREACKDOWN_SUCCESS',
+  payload: data
+});
+export const ViewsingleBreakdownFailure = (error) => ({
+  type: 'VIEW_SINGLE_BREACKDOWN_FAILURE',
+  payload: error
+});
+export const UpdateBreakdownRequest = () => ({
+  type: 'UPDATE_BREACKDOWN_REQUEST'
+});
+export const UpdateBreakdownSuccess = (data) => ({
+  type: 'UPDATE_BREACKDOWN_SUCCESS',
+  payload: data
+});
+export const UpdateBreakdownFailure = (error) => ({
+  type: 'UPDATE_BREACKDOWN_FAILURE',
+  payload: error
+});
+export const DeleteBreakdownRequest = () => ({
+  type: 'DELETE_BREACKDOWN_REQUEST'
+});
+export const DeleteBreakdownSuccess = (data) => ({
+  type: 'DELETE_BREACKDOWN_SUCCESS',
+  payload: data
+});
+export const DeleteBreakdownFailure = (error) => ({
+  type: 'DELETE_BREACKDOWN_FAILURE',
   payload: error
 });

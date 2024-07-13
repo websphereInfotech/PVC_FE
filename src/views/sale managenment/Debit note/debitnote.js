@@ -291,7 +291,7 @@ const DebitNote = () => {
       const purchseinvoice = await dispatch(getallPurchaseinvoice());
       const options = purchseinvoice.data.map((item) => ({
         value: item.id,
-        label: item.invoiceno,
+        label: item.voucherno,
         invoicedate: item.invoicedate
       }));
       setPurchaseinvoicedata(options);
@@ -310,7 +310,7 @@ const DebitNote = () => {
           totalMrp,
           totalIgst
         });
-        setPurchasedata(purchaseData.invoiceno);
+        setPurchasedata(purchaseData.voucherno);
         setSelectcustomer(DebitCustomer.id);
         setCustomerState(DebitCustomer.state);
         setCustomername(DebitCustomer.accountname);

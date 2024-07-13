@@ -17,33 +17,36 @@ import {
   DialogContent
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchAllMachine, Machineview } from 'store/thunk';
+import { Breakdownview, deleteBreakdown, fetchAllbreackdownMaintenance } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit, Delete } from '@mui/icons-material';
 
 const columns = [
   { id: 'name', label: 'Machine Name', align: 'center' },
-  { id: 'model', label: 'Machine Type', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
+  { id: 'performed', label: 'Performed By', align: 'center' },
+  { id: 'reason', label: 'Reason Of Breack', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const BreakdownmaintenanceList = () => {
   const navigate = useNavigate();
-  const [machineData, setMachineData] = useState([]);
+  const [breackdownData, setBreackdownData] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateMachine } = useCan();
+  const { canCreateBreakdown, canUpdateBreakdown, canDeleteBreakdown } = useCan();
 
   useEffect(() => {
     const fetchSalaryData = async () => {
       try {
-        const response = await dispatch(fetchAllMachine());
-        setMachineData(response);
+        const response = await dispatch(fetchAllbreackdownMaintenance());
+        setBreackdownData(response);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           navigate('/');
@@ -68,12 +71,22 @@ const BreakdownmaintenanceList = () => {
     navigate('/breakdownmaintenanceadd');
   };
   const handleUpdateUser = (id) => {
-    dispatch(Machineview(id));
-    navigate(`/updatemachine/${id}`);
+    dispatch(Breakdownview(id));
+    navigate(`/breakdownmaintenanceupdate/${id}`);
   };
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setSelectedUserId(id);
+    setSelectedId(id);
+  };
+  const handleDeletebreackdownmaintenance = async () => {
+    try {
+      await dispatch(deleteBreakdown(selectedId));
+      setOpenConfirmation(false);
+      const response = await dispatch(fetchAllbreackdownMaintenance());
+      setBreackdownData(response);
+    } catch (error) {
+      console.error('Error deleting breack:', error);
+    }
   };
 
   return (
@@ -81,7 +94,7 @@ const BreakdownmaintenanceList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Breakdown Maintenance
       </Typography>
-      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddmachine} disabled={!canCreateMachine()}>
+      <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleaddmachine} disabled={!canCreateBreakdown()}>
         Add Breakdown Maintenance
       </Button>
       <TableContainer sx={{ maxHeight: 575 }}>
@@ -96,41 +109,45 @@ const BreakdownmaintenanceList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {machineData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {breackdownData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={row.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'description' ? (
                       row.description || '-'
+                    ) : column.id === 'name' ? (
+                      row.machineBreakdownMaintenance.name
+                    ) : column.id === 'date' ? (
+                      new Date(row.date).toLocaleDateString('en-GB')
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canCreateMachine() ? 'green' : 'gray',
-                            color: canCreateMachine() ? 'white' : 'white',
+                            backgroundColor: canUpdateBreakdown() ? 'green' : 'gray',
+                            color: canUpdateBreakdown() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canCreateMachine() && { opacity: 1 }),
-                            ...(!canCreateMachine() && { opacity: 0.5 }),
-                            ...(!canCreateMachine() && { backgroundColor: 'gray' })
+                            ...(canUpdateBreakdown() && { opacity: 1 }),
+                            ...(!canUpdateBreakdown() && { opacity: 0.5 }),
+                            ...(!canUpdateBreakdown() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateUser(row.id)}
-                          disabled={!canCreateMachine()}
+                          disabled={!canUpdateBreakdown()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canCreateMachine() ? 'Red' : 'gray',
-                            color: canCreateMachine() ? 'white' : 'white',
+                            backgroundColor: canDeleteBreakdown() ? 'Red' : 'gray',
+                            color: canDeleteBreakdown() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canCreateMachine() && { opacity: 1 }),
-                            ...(!canCreateMachine() && { opacity: 0.5 }),
-                            ...(!canCreateMachine() && { backgroundColor: 'gray' })
+                            ...(canDeleteBreakdown() && { opacity: 1 }),
+                            ...(!canDeleteBreakdown() && { opacity: 0.5 }),
+                            ...(!canDeleteBreakdown() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(row.id)}
-                          disabled={!canCreateMachine()}
+                          disabled={!canDeleteBreakdown()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -148,7 +165,7 @@ const BreakdownmaintenanceList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={machineData.length || 0}
+        count={breackdownData.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -157,12 +174,12 @@ const BreakdownmaintenanceList = () => {
 
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this user?</DialogContent>
+        <DialogContent>Are you sure you want to delete this breackdown maintenance?</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handleDeletebreackdownmaintenance} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

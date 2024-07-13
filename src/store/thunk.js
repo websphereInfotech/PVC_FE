@@ -539,7 +539,39 @@ import {
   UpdateRegularFailure,
   DeleteRegularRequest,
   DeleteRegularSuccess,
-  DeleteRegularFailure
+  DeleteRegularFailure,
+  // PREVENTIVE MAINTENANCE ++++++++++++
+  CreatePreventiveRequest,
+  CreatePreventiveSuccess,
+  CreatePreventiveFailure,
+  fetchAllPreventiveRequest,
+  fetchAllPreventiveSuccess,
+  fetchAllPreventiveFailure,
+  ViewsinglepreventiveRequest,
+  ViewsinglepreventiveSuccess,
+  ViewsinglepreventiveFailure,
+  UpdatePreventiveRequest,
+  UpdatePreventiveSuccess,
+  UpdatePreventiveFailure,
+  DeletePreventiveRequest,
+  DeletePreventiveSuccess,
+  DeletePreventiveFailure,
+  // BREACKDOWN MAINTENANCE ++++++++++++
+  CreateBreakdownRequest,
+  CreateBreakdownSuccess,
+  CreateBreakdownFailure,
+  fetchAllBreakdownRequest,
+  fetchAllBreakdownSuccess,
+  fetchAllBreakdownFailure,
+  ViewsingleBreakdownRequest,
+  ViewsingleBreakdownSuccess,
+  ViewsingleBreakdownFailure,
+  UpdateBreakdownRequest,
+  UpdateBreakdownSuccess,
+  UpdateBreakdownFailure,
+  DeleteBreakdownRequest,
+  DeleteBreakdownSuccess,
+  DeleteBreakdownFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 
@@ -2344,6 +2376,8 @@ export const setDefaultCompany = (id) => {
       const data = response.data.data;
       const token = response.data.token;
       sessionStorage.setItem('token', token);
+      const decodedToken = jwtDecode(token);
+      sessionStorage.setItem('companyId', decodedToken.companyId);
       dispatch(setDefaultCompanySuccess(data));
       return data;
     } catch (error) {
@@ -3766,7 +3800,7 @@ export const deleteMachine = (machineId) => {
     }
   };
 };
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE CREATE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ REGULAR MAINTENANCE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createregular = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateRegularmaintenanceRequest());
@@ -3864,6 +3898,230 @@ export const deleteRegular = (id) => {
         autoClose: 1000
       });
       dispatch(DeleteRegularFailure(error.message));
+      throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PREVENTIVE MAINTENANCE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createpreventive = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreatePreventiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/create_preventive_maintenance`,
+        data,
+        config
+      );
+      const addpreventivemaintenancedata = response;
+      dispatch(CreatePreventiveSuccess(addpreventivemaintenancedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/preventivemaintenancelist');
+      return addpreventivemaintenancedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreatePreventiveFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllpreventiveMaintenance = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllPreventiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/view_all_preventive_maintenance`, config);
+      const data = response.data.data;
+      dispatch(fetchAllPreventiveSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllPreventiveFailure(error.message));
+    }
+  };
+};
+export const Preventiveview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewsinglepreventiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/view_one_preventive_maintenance/${id}`,
+        config
+      );
+      const data = response.data.data;
+      dispatch(ViewsinglepreventiveSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsinglepreventiveFailure(error.message));
+    }
+  };
+};
+export const updatePreventive = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdatePreventiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/update_preventive_maintenance/${id}`,
+        formData,
+        config
+      );
+      const upadatepreventivedata = response.data.data;
+      dispatch(UpdatePreventiveSuccess(upadatepreventivedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/preventivemaintenancelist');
+      return upadatepreventivedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdatePreventiveFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deletePreventive = (id) => {
+  return async (dispatch) => {
+    dispatch(DeletePreventiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/delete_preventive_maintenance/${id}`,
+        config
+      );
+      const deletepreventivedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeletePreventiveSuccess(deletepreventivedata));
+      return deletepreventivedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeletePreventiveFailure(error.message));
+      throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ BREACKDOWN MAINTENANCE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createbreackdown = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreateBreakdownRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/create_breakdown_maintenance`,
+        data,
+        config
+      );
+      const addbreakdowndata = response;
+      dispatch(CreateBreakdownSuccess(addbreakdowndata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/breakdownmaintenancelist');
+      return addbreakdowndata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateBreakdownFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllbreackdownMaintenance = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllBreakdownRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/view_all_breakdown_maintenance`, config);
+      const data = response.data.data;
+      dispatch(fetchAllBreakdownSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllBreakdownFailure(error.message));
+    }
+  };
+};
+export const Breakdownview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewsingleBreakdownRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/view_one_breakdown_maintenance/${id}`,
+        config
+      );
+      const data = response.data.data;
+      dispatch(ViewsingleBreakdownSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsingleBreakdownFailure(error.message));
+    }
+  };
+};
+export const updateBreakdown = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateBreakdownRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/update_breakdown_maintenance/${id}`,
+        formData,
+        config
+      );
+      const upadateBreakdowndata = response.data.data;
+      dispatch(UpdateBreakdownSuccess(upadateBreakdowndata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/breakdownmaintenancelist');
+      return upadateBreakdowndata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateBreakdownFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteBreakdown = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteBreakdownRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/delete_breakdown_maintenance/${id}`,
+        config
+      );
+      const deleteBreakdowndata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteBreakdownSuccess(deleteBreakdowndata));
+      return deleteBreakdowndata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteBreakdownFailure(error.message));
       throw error;
     }
   };

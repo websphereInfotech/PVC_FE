@@ -511,10 +511,59 @@ const MainRoutes = {
       )
     },
 
-    { path: '/preventivemaintenanceadd', element: <Preventivemaintenanceadd /> },
-    { path: '/preventivemaintenancelist', element: <PreventivemaintenanceList /> },
-    { path: '/breakdownmaintenanceadd', element: <Breakdownmaintenanceadd /> },
-    { path: '/breakdownmaintenancelist', element: <BreakdownmaintenanceList /> },
+    {
+      path: '/preventivemaintenanceadd',
+      element: (
+        <ProtectedRoute
+          element={Preventivemaintenanceadd}
+          resource="Preventive Maintenance"
+          permissionName="create_preventive_maintenance"
+        />
+      )
+    },
+    {
+      path: '/preventivemaintenanceupdate/:id',
+      element: (
+        <ProtectedRoute
+          element={Preventivemaintenanceadd}
+          resource="Preventive Maintenance"
+          permissionName="update_preventive_maintenance"
+        />
+      )
+    },
+    {
+      path: '/preventivemaintenancelist',
+      element: (
+        <ProtectedRoute
+          element={PreventivemaintenanceList}
+          resource="Preventive Maintenance"
+          permissionName="view_all_preventive_maintenance"
+        />
+      )
+    },
+
+    {
+      path: '/breakdownmaintenanceadd',
+      element: (
+        <ProtectedRoute element={Breakdownmaintenanceadd} resource="Breakdown Maintenance" permissionName="create_breakdown_maintenance" />
+      )
+    },
+    {
+      path: '/breakdownmaintenanceupdate/:id',
+      element: (
+        <ProtectedRoute element={Breakdownmaintenanceadd} resource="Breakdown Maintenance" permissionName="update_breakdown_maintenance" />
+      )
+    },
+    {
+      path: '/breakdownmaintenancelist',
+      element: (
+        <ProtectedRoute
+          element={BreakdownmaintenanceList}
+          resource="Breakdown Maintenance"
+          permissionName="view_all_breakdown_maintenance"
+        />
+      )
+    },
 
     // { path: '/stock', element: <StockManagement /> },
     { path: '/productionreport', element: <ReportPage /> },

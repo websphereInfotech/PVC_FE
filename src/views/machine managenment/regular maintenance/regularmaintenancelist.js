@@ -87,7 +87,7 @@ const RegularmaintenanceList = () => {
       const response = await dispatch(fetchAllregularMaintenance());
       setMachineData(response);
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting regular:', error);
     }
   };
 

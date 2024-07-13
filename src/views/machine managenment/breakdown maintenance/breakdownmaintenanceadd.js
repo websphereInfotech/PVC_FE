@@ -1,51 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createMachine } from 'store/thunk';
+import { Breakdownview, createbreackdown, fetchAllMachine, updateBreakdown } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Select from 'react-select';
 
 const Breakdownmaintenanceadd = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [machine, setMachine] = useState([]);
+  const [machinename, setmachinename] = useState('');
   const { id } = useParams();
   const [formData, setFormData] = useState({
-    name: '',
-    model: '',
+    machineId: '',
     description: null,
-    reportedby: '',
+    performed: '',
     cost: '',
     date: new Date(),
     reason: ''
   });
 
-  //   useEffect(() => {
-  //     const viewData = async () => {
-  //       try {
-  //         if (id) {
-  //           const response = await dispatch(viewSingleclaimCash(id));
-  //           const { amount, description, toUser, purpose } = response;
-  //           console.log(response, 'response');
-  //           setFormData({ amount, description, purpose, toUserId: toUser.id });
-
-  //           setusername(toUser.username);
-  //           setSelectuser(toUser.id);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error fetching cliam:', error);
-  //       }
-  //     };
-  //     viewData();
-  //   }, [dispatch, id]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllMachine());
+        if (Array.isArray(response)) {
+          const options = response.map((machine) => ({ value: machine.id, label: machine.name }));
+          setMachine([...options]);
+        }
+      } catch (error) {
+        console.error('Error fetching machine:', error);
+      }
+    };
+    const viewData = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(Breakdownview(id));
+          const { machineId, performed, description, cost, date, reason, machineBreakdownMaintenance } = response;
+          setFormData({ machineId, performed, description, cost, reason, date });
+          setmachinename(machineBreakdownMaintenance.name);
+        }
+      } catch (error) {
+        console.error('Error fetching machine:', error);
+      }
+    };
+    viewData();
+    fetchData();
+  }, [dispatch, id]);
 
   const handlecreateMachinedetails = async () => {
     try {
-      await dispatch(createMachine(formData, navigate));
+      if (id) {
+        await dispatch(updateBreakdown(id, formData, navigate));
+      } else {
+        await dispatch(createbreackdown(formData, navigate));
+      }
     } catch (error) {
-      console.error('Error creating machine data:', error);
+      console.error('Error creating Breackdown data:', error);
     }
   };
 
@@ -54,6 +69,16 @@ const Breakdownmaintenanceadd = () => {
       ...prevState,
       [fieldName]: value
     }));
+  };
+  const handleSelectChange = (selectedOption) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      machineId: selectedOption.value
+    }));
+    setmachinename(selectedOption.label);
+  };
+  const handledateChange = (date) => {
+    setFormData({ ...formData, date: date });
   };
 
   return (
@@ -72,45 +97,22 @@ const Breakdownmaintenanceadd = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Machine Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Machine Id : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <input
-                placeholder="Enter Machine name"
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
+              <Select
+                color="secondary"
+                options={machine}
+                value={{ value: formData.machineId, label: machinename }}
+                onChange={handleSelectChange}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Machine Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <input
-                placeholder="Enter Machine Type"
-                id="model"
-                value={formData.model}
-                onChange={(e) => handleInputChange('model', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Next Maintenance Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
                 selected={formData.date}
-                onChange={(date) => handleInputChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Last Maintenance Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formData.date}
-                onChange={(date) => handleInputChange(date)}
+                onChange={(date) => handledateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}
@@ -139,9 +141,9 @@ const Breakdownmaintenanceadd = () => {
               <Typography variant="subtitle1">Reported By :</Typography>
               <input
                 placeholder="Enter name"
-                id="reportedby"
-                value={formData.reportedby}
-                onChange={(e) => handleInputChange('reportedby', e.target.value)}
+                id="performed"
+                value={formData.performed}
+                onChange={(e) => handleInputChange('performed', e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
