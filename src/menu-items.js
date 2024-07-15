@@ -242,6 +242,38 @@ const MenuItem = () => {
     'view_all_production'
   ]);
 
+  const hasAllPermissionsMachine = checkAllPermissions('Machine', [
+    'create_machine',
+    'view_all_machine',
+    'view_one_machine',
+    'update_machine',
+    'delete_machine'
+  ]);
+
+  const hasAllPermissionsRegularmaintenance = checkAllPermissions('Regular Maintenance', [
+    'create_regular_maintenance',
+    'view_all_regular_maintenance',
+    'view_one_regular_maintenance',
+    'update_regular_maintenance',
+    'delete_regular_maintenance'
+  ]);
+
+  const hasAllPermissionsPreventivemaintenance = checkAllPermissions('Preventive Maintenance', [
+    'create_preventive_maintenance',
+    'view_all_preventive_maintenance',
+    'view_one_preventive_maintenance',
+    'update_preventive_maintenance',
+    'delete_preventive_maintenance'
+  ]);
+
+  const hasAllPermissionsBreackdownmaintenance = checkAllPermissions('Breakdown Maintenance', [
+    'create_breakdown_maintenance',
+    'view_all_breakdown_maintenance',
+    'view_one_breakdown_maintenance',
+    'update_breakdown_maintenance',
+    'delete_breakdown_maintenance'
+  ]);
+
   return {
     items: [
       {
@@ -450,7 +482,7 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/rawmateriallist'
                   },
-                  {
+                  hasAllPermissionsItem && {
                     id: 'Spare',
                     title: 'Spare',
                     type: 'item',
@@ -574,25 +606,25 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['ScannerIcon'],
             children: [
-              {
+              hasAllPermissionsMachine && {
                 id: 'Machine',
                 title: 'Machine',
                 type: 'item',
                 url: '/machinelist'
               },
-              {
+              hasAllPermissionsRegularmaintenance && {
                 id: 'Regular maintenance',
                 title: 'Regular maintenance',
                 type: 'item',
                 url: '/regularmaintenancelist'
               },
-              {
+              hasAllPermissionsPreventivemaintenance && {
                 id: 'Preventive maintenance',
                 title: 'Preventive maintenance',
                 type: 'item',
                 url: '/preventivemaintenancelist'
               },
-              {
+              hasAllPermissionsBreackdownmaintenance && {
                 id: 'Breakdown maintenance',
                 title: 'Breakdown maintenance',
                 type: 'item',

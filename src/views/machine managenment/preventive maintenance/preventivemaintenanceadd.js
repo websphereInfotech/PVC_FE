@@ -18,8 +18,7 @@ const Preventivemaintenanceadd = () => {
     description: null,
     performed: '',
     cost: '',
-    nextDate: '',
-    lastDate: new Date()
+    date: new Date()
   });
   const [machine, setMachine] = useState([]);
   const [machinename, setmachinename] = useState('');
@@ -40,8 +39,8 @@ const Preventivemaintenanceadd = () => {
       try {
         if (id) {
           const response = await dispatch(Preventiveview(id));
-          const { machineId, performed, description, cost, nextDate, lastDate, machinePreventiveMaintenance } = response;
-          setFormData({ machineId, performed, description, cost, lastDate, nextDate });
+          const { machineId, performed, description, cost, date, machinePreventiveMaintenance } = response;
+          setFormData({ machineId, performed, description, cost, date });
           setmachinename(machinePreventiveMaintenance.name);
         }
       } catch (error) {
@@ -77,11 +76,8 @@ const Preventivemaintenanceadd = () => {
     }));
     setmachinename(selectedOption.label);
   };
-  const handlenextdateChange = (date) => {
-    setFormData({ ...formData, nextDate: date });
-  };
-  const handlelastdateChange = (date) => {
-    setFormData({ ...formData, lastDate: date });
+  const handledateChange = (date) => {
+    setFormData({ ...formData, date: date });
   };
 
   return (
@@ -111,23 +107,11 @@ const Preventivemaintenanceadd = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Last Maintenance Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.lastDate}
-                onChange={(date) => handlelastdateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Next Maintenance Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formData.nextDate}
-                onChange={(date) => handlenextdateChange(date)}
+                selected={formData.date}
+                onChange={(date) => handledateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
                 showTimeSelect={false}

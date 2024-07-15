@@ -24,8 +24,7 @@ import { Edit, Delete } from '@mui/icons-material';
 
 const columns = [
   { id: 'name', label: 'Machine Name', align: 'center' },
-  { id: 'nextDate', label: 'Next Date', align: 'center' },
-  { id: 'lastDate', label: 'Last Date', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
   { id: 'cost', label: 'Cost', align: 'center' },
   { id: 'performed', label: 'Performed By ', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
@@ -118,10 +117,8 @@ const PreventivemaintenanceList = () => {
                       row.description || '-'
                     ) : column.id === 'name' ? (
                       row.machinePreventiveMaintenance.name
-                    ) : column.id === 'lastDate' ? (
-                      new Date(row.lastDate).toLocaleDateString('en-GB')
-                    ) : column.id === 'nextDate' ? (
-                      new Date(row.nextDate).toLocaleDateString('en-GB')
+                    ) : column.id === 'date' ? (
+                      new Date(row.date).toLocaleDateString('en-GB')
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
