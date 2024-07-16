@@ -102,9 +102,22 @@
 
 // export default Customerledgerlist;
 import React, { useState, useEffect } from 'react';
-import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TableHead,
+  TableContainer,
+  Grid,
+  Paper,
+  styled,
+  Button
+} from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { getallCustomerledger } from 'store/thunk';
+import { CashCustomerPDF, getallCustomerledger } from 'store/thunk';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -159,9 +172,22 @@ const Customerledgerlist = () => {
       });
   }, [dispatch, customerId, formData, toDate]);
 
+  const downloadpdf = () => {
+    try {
+      dispatch(CashCustomerPDF(customerId, formData, toDate));
+    } catch (error) {
+      console.error('Error fetching pdf:', error);
+    }
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>
+        <Grid item xs={12} align="end">
+          <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={downloadpdf}>
+            Download PDF
+          </Button>
+        </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
           <Typography variant="h4">{getdata.companyname}</Typography>

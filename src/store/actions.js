@@ -619,6 +619,22 @@ export const DELETE_BREACKDOWN_REQUEST = 'DELETE_BREACKDOWN_REQUEST';
 export const DELETE_BREACKDOWN_SUCCESS = 'DELETE_BREACKDOWN_SUCCESS';
 export const DELETE_BREACKDOWN_FAILURE = 'DELETE_BREACKDOWN_FAILURE';
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PDF VENDOR BANK ++++++++++++++++++++++++++++++++
+
+export const GET_VENDOR_BANK_PDF_REQUEST = 'GET_VENDOR_BANK_PDF_REQUEST';
+export const GET_VENDOR_BANK_PDF_SUCCESS = 'GET_VENDOR_BANK_PDF_SUCCESS';
+export const GET_VENDOR_BANK_PDF_FAILURE = 'GET_VENDOR_BANK_PDF_FAILURE';
+export const GET_CUSTOMER_BANK_PDF_REQUEST = 'GET_CUSTOMER_BANK_PDF_REQUEST';
+export const GET_CUSTOMER_BANK_PDF_SUCCESS = 'GET_CUSTOMER_BANK_PDF_SUCCESS';
+export const GET_CUSTOMER_BANK_PDF_FAILURE = 'GET_CUSTOMER_BANK_PDF_FAILURE';
+
+export const GET_CUSTOMER_CASH_PDF_REQUEST = 'GET_CUSTOMER_CASH_PDF_REQUEST';
+export const GET_CUSTOMER_CASH_PDF_SUCCESS = 'GET_CUSTOMER_CASH_PDF_SUCCESS';
+export const GET_CUSTOMER_CASH_PDF_FAILURE = 'GET_CUSTOMER_CASH_PDF_FAILURE';
+export const GET_VENDOR_CASH_PDF_REQUEST = 'GET_VENDOR_CASH_PDF_REQUEST';
+export const GET_VENDOR_CASH_PDF_SUCCESS = 'GET_VENDOR_CASH_PDF_SUCCESS';
+export const GET_VENDOR_CASH_PDF_FAILURE = 'GET_VENDOR_CASH_PDF_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2748,5 +2764,52 @@ export const DeleteBreakdownSuccess = (data) => ({
 });
 export const DeleteBreakdownFailure = (error) => ({
   type: 'DELETE_BREACKDOWN_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PDF OF VENDOR BANK ++++++++++++++++++++++++++++++++++++
+
+export const VendorbankPdfRequest = () => ({
+  type: 'GET_VENDOR_BANK_PDF_REQUEST'
+});
+export const VendorbankPdfSuccess = (data) => ({
+  type: 'GET_VENDOR_BANK_PDF_SUCCESS',
+  payload: data
+});
+export const VendorbankPdfFailure = (error) => ({
+  type: 'GET_VENDOR_BANK_PDF_FAILURE',
+  payload: error
+});
+export const CustomerbankPdfRequest = () => ({
+  type: 'GET_CUSTOMER_BANK_PDF_REQUEST'
+});
+export const CustomerbankPdfSuccess = (data) => ({
+  type: 'GET_CUSTOMER_BANK_PDF_SUCCESS',
+  payload: data
+});
+export const CustomerbankPdfFailure = (error) => ({
+  type: 'GET_CUSTOMER_BANK_PDF_FAILURE',
+  payload: error
+});
+
+export const CustomerCashPdfRequest = () => ({
+  type: 'GET_CUSTOMER_CASH_PDF_REQUEST'
+});
+export const CustomerCashPdfSuccess = (data) => ({
+  type: 'GET_CUSTOMER_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const CustomerCashPdfFailure = (error) => ({
+  type: 'GET_CUSTOMER_CASH_PDF_FAILURE',
+  payload: error
+});
+export const VendorCashPdfRequest = () => ({
+  type: 'GET_VENDOR_CASH_PDF_REQUEST'
+});
+export const VendorCashPdfSuccess = (data) => ({
+  type: 'GET_VENDOR_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const VendorCashPdfFailure = (error) => ({
+  type: 'GET_VENDOR_CASH_PDF_FAILURE',
   payload: error
 });

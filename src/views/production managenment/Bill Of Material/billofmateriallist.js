@@ -27,7 +27,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 const columns = [
   { id: 'bomNo', label: 'Batch No.', align: 'center' },
   { id: 'date', label: 'Date.', align: 'center' },
-  // { id: 'weight', label: 'Weight', align: 'center' },
+  { id: 'name', label: 'Product Name', align: 'center' },
   { id: 'createdBy', label: 'Created By', align: 'center' },
   { id: 'updatedBy', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
@@ -174,6 +174,8 @@ const Billofmateriallist = () => {
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'createdBy' ? (
                       row.bomCreatedUser?.username
+                    ) : column.id === 'name' ? (
+                      row.bomProduct?.productname
                     ) : column.id === 'updatedBy' ? (
                       row.bomUpdatedUser?.username
                     ) : (
