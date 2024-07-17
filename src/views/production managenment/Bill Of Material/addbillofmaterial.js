@@ -164,7 +164,7 @@ const Addbillofmaterial = () => {
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
       if (rowIndex === index) {
-        const numericValue = field === 'qty' ? Number(value) : value;
+        const numericValue = field === 'qty' ? parseFloat(value) : value;
         return { ...row, [field]: numericValue };
       }
       return row;
@@ -354,7 +354,12 @@ const Addbillofmaterial = () => {
                       onNewRawProductAdded={handleNewRawProductAdded}
                     />
                     <TableCell id="newcs">
-                      <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />
+                      <input
+                        placeholder="qty"
+                        type="number"
+                        value={row.qty}
+                        onChange={(e) => handleInputChange(index, 'qty', e.target.value)}
+                      />
                     </TableCell>
 
                     <TableCell>{row.unit}</TableCell>

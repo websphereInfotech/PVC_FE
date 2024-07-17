@@ -148,6 +148,7 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { BankCustomerPDF, getAllPaymentRecievebankLedger } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -178,6 +179,7 @@ const Paymentbankrecieveledgerlist = () => {
   const customerId = sessionStorage.getItem('PRcustomerId');
   const formData = sessionStorage.getItem('PRformDate');
   const toDate = sessionStorage.getItem('PRtoDate');
+  const { canDownloadPdfBankCustomer } = useCan();
 
   useEffect(() => {
     dispatch(getAllPaymentRecievebankLedger(customerId, formData, toDate))
@@ -215,7 +217,13 @@ const Paymentbankrecieveledgerlist = () => {
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>
         <Grid item xs={12} align="end">
-          <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={downloadpdf}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ margin: '16px' }}
+            onClick={downloadpdf}
+            disabled={!canDownloadPdfBankCustomer()}
+          >
             Download PDF
           </Button>
         </Grid>

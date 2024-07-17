@@ -118,6 +118,7 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { CashCustomerPDF, getallCustomerledger } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -148,6 +149,7 @@ const Customerledgerlist = () => {
   const customerId = sessionStorage.getItem('customerId');
   const formData = sessionStorage.getItem('customerformDate');
   const toDate = sessionStorage.getItem('customertoDate');
+  const { canDownloadPdfCashCustomer } = useCan();
 
   useEffect(() => {
     dispatch(getallCustomerledger(customerId, formData, toDate))
@@ -184,25 +186,23 @@ const Customerledgerlist = () => {
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>
         <Grid item xs={12} align="end">
-          <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={downloadpdf}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ margin: '16px' }}
+            onClick={downloadpdf}
+            disabled={!canDownloadPdfCashCustomer()}
+          >
             Download PDF
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
-          <Typography variant="h4">{getdata.companyname}</Typography>
-          <Typography>{getdata.address1}</Typography>
-          <Typography>
-            {getdata.city}, {getdata.state}, {getdata.pincode}
-          </Typography>
+          <Typography variant="h4">{getdata.username}</Typography>
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">To:</Typography>
           <Typography variant="h4">{gettodata.customername}</Typography>
-          {/* <Typography>{gettodata.address1}</Typography>
-          <Typography>
-            {gettodata.city}, {gettodata.state}, {gettodata.pincode}
-          </Typography> */}
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" align="center">

@@ -46,7 +46,7 @@ const Purchaseinvoice = () => {
     vendorId: '',
     duedate: new Date(),
     voucherno: '',
-    supplyInvoiceNo: 0,
+    supplyInvoiceNo: '',
     totalSgst: 0,
     totalIgst: 0,
     totalMrp: 0,

@@ -584,7 +584,14 @@ import {
   CustomerCashPdfFailure,
   VendorCashPdfRequest,
   VendorCashPdfSuccess,
-  VendorCashPdfFailure
+  VendorCashPdfFailure,
+  // DASHBORAD +++++++++++++++
+  GetTotalPurchaseRequest,
+  GetTotalPurchaseSuccess,
+  GetTotalPurchaseFailure,
+  GetTotalSalesRequest,
+  GetTotalSalesSuccess,
+  GetTotalSalesFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -2831,7 +2838,6 @@ export const IsStatusclaimCash = (id, toUserId, isApproved) => {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/claim/isapproved_claim/${id}`, { toUserId, isApproved }, config);
       const data = response.data.data;
       dispatch(viewsingleClaimCashSuccess(data));
-      window.location.reload();
       return data;
     } catch (error) {
       dispatch(viewsingleClaimCashFailure(error.message));
@@ -4141,24 +4147,6 @@ export const deleteBreakdown = (id) => {
   };
 };
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor pdf of bank +++++++++++++++++++++++++++++++++++++
-// export const BankVendorPDF = (id, formDate, toDate) => {
-//   return async (dispatch) => {
-//     dispatch(VendorbankPdfRequest());
-//     try {
-//       const config = createConfig();
-//       const response = await axios.get(
-//         `${process.env.REACT_APP_BASE_URL}/vendorledger/get_vendorLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
-//         config
-//       );
-//       const data = response.data.data;
-//       dispatch(VendorbankPdfSuccess(data));
-//       return data;
-//     } catch (error) {
-//       toast.error(error.response.data.error);
-//       dispatch(VendorbankPdfFailure(error.message));
-//     }
-//   };
-// };
 export const BankVendorPDF = (id, formDate, toDate) => {
   return async (dispatch) => {
     dispatch(VendorbankPdfRequest());
@@ -4168,25 +4156,18 @@ export const BankVendorPDF = (id, formDate, toDate) => {
         `${process.env.REACT_APP_BASE_URL}/vendorledger/get_vendorLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
-
       const base64Data = response.data.data;
-
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-
       const binaryString = atob(base64Data);
-
       const len = binaryString.length;
       const bytes = new Uint8Array(len);
       for (let i = 0; i < len; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
-
       const blob = new Blob([bytes], { type: 'application/pdf' });
-
       saveAs(blob, 'vendor_bank_ledger.pdf');
-
       dispatch(VendorbankPdfSuccess(base64Data));
       return base64Data;
     } catch (error) {
@@ -4205,25 +4186,18 @@ export const BankCustomerPDF = (id, formDate, toDate) => {
         `${process.env.REACT_APP_BASE_URL}/customerledger/get_customerLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
-
       const base64Data = response.data.data;
-
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-
       const binaryString = atob(base64Data);
-
       const len = binaryString.length;
       const bytes = new Uint8Array(len);
       for (let i = 0; i < len; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
-
       const blob = new Blob([bytes], { type: 'application/pdf' });
-
       saveAs(blob, 'customer_bank_ledger.pdf');
-
       dispatch(CustomerbankPdfSuccess(base64Data));
       return base64Data;
     } catch (error) {
@@ -4242,25 +4216,18 @@ export const CashCustomerPDF = (id, formDate, toDate) => {
         `${process.env.REACT_APP_BASE_URL}/customerledger/C_get_customerLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
-
       const base64Data = response.data.data;
-
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-
       const binaryString = atob(base64Data);
-
       const len = binaryString.length;
       const bytes = new Uint8Array(len);
       for (let i = 0; i < len; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
-
       const blob = new Blob([bytes], { type: 'application/pdf' });
-
       saveAs(blob, 'customer_cash_ledger.pdf');
-
       dispatch(CustomerCashPdfSuccess(base64Data));
       return base64Data;
     } catch (error) {
@@ -4279,31 +4246,56 @@ export const CashVendorPDF = (id, formDate, toDate) => {
         `${process.env.REACT_APP_BASE_URL}/vendorledger/C_get_vendorLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
         config
       );
-
       const base64Data = response.data.data;
-
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-
       const binaryString = atob(base64Data);
-
       const len = binaryString.length;
       const bytes = new Uint8Array(len);
       for (let i = 0; i < len; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
-
       const blob = new Blob([bytes], { type: 'application/pdf' });
-
       saveAs(blob, 'vendor_cash_ledger.pdf');
-
       dispatch(VendorCashPdfSuccess(base64Data));
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
       toast.error(error.response?.data?.error || 'An error occurred');
       dispatch(VendorCashPdfFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD API +++++++++++++++++++++++++++++++++++++
+export const TotalSalesDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalSalesRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/dashboard/total_sales`, config);
+      const data = response.data.data;
+      dispatch(GetTotalSalesSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalSalesFailure(error.message));
+    }
+  };
+};
+export const TotalPurchaseDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalPurchaseRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Dashboard/total_purchase`, config);
+      const data = response.data.data;
+      dispatch(GetTotalPurchaseSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalPurchaseFailure(error.message));
     }
   };
 };

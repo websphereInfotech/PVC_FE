@@ -342,19 +342,19 @@ const MenuItem = () => {
                         url: '/paymentCashlist'
                       },
                       hasAllPermissionPaymentRecieveCash && {
-                        id: 'recieve cash',
+                        id: 'Receipt cash',
                         title: 'Receipt',
                         type: 'item',
                         url: '/paymentrecieveList'
                       },
                       hasAllPermissionsClaimcash && {
-                        id: 'claim cash',
+                        id: 'Demand cash',
                         title: 'Demand Cash',
                         type: 'item',
                         url: '/claimcashlist'
                       },
                       hasAllPermissionsRecieveClaimcash && {
-                        id: 'recieve claim',
+                        id: 'Approve claim',
                         title: 'Approve Claim',
                         type: 'item',
                         url: '/recieveclaimcashlist'
@@ -369,13 +369,13 @@ const MenuItem = () => {
                 icon: icons['PaymentsIcon'],
                 children: [
                   hasAllPermissionsPaymentBank && {
-                    id: 'payment',
+                    id: 'Payment',
                     title: 'Payment',
                     type: 'item',
                     url: '/paymentbanklist'
                   },
                   hasAllPermissionPaymentRecieveBank && {
-                    id: 'recieve',
+                    id: 'Receipt',
                     title: 'Receipt',
                     type: 'item',
                     url: '/paymentrecievebanklist'

@@ -132,7 +132,7 @@ const Claimcashlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Claim Cash List
+        Demand Cash List
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button
@@ -142,7 +142,7 @@ const Claimcashlist = () => {
           onClick={handleMakePayment}
           disabled={!canCreateClaimcash()}
         >
-          Claim Cash
+          Demand Cash
         </Button>
         <Button
           variant="contained"

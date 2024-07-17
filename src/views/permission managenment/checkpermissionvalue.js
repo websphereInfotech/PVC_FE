@@ -737,6 +737,31 @@ const useCan = () => {
   const canDeleteBreakdown = () => {
     return checkPermission('Breakdown Maintenance', 'delete_breakdown_maintenance');
   };
+
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ customer ledger
+
+  const canDownloadPdfBankCustomer = () => {
+    return checkPermission('Customer Ledger', 'Pdf_Download');
+  };
+  const canDownloadPdfBankVendor = () => {
+    return checkPermission('Vendor Ledger', 'Pdf_Download');
+  };
+  const canDownloadPdfCashCustomer = () => {
+    return checkPermission('Customer Ledger Cash', 'Pdf_Download');
+  };
+  const canDownloadPdfCashVendor = () => {
+    return checkPermission('Vendor Ledger Cash', 'Pdf_Download');
+  };
+
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ dash board ++++++++++++++++++++++++
+
+  const canSeeTotalSales = () => {
+    return checkPermission('Dashboard', 'total_sales');
+  };
+  const canSeeTotalPurchase = () => {
+    return checkPermission('Dashboard', 'total_purchase');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -981,7 +1006,15 @@ const useCan = () => {
     canViewAllBreakdown,
     canViewSingleBreakdown,
     canUpdateBreakdown,
-    canDeleteBreakdown
+    canDeleteBreakdown,
+    // PDF OF LEDGER +++++++++
+    canDownloadPdfBankCustomer,
+    canDownloadPdfBankVendor,
+    canDownloadPdfCashCustomer,
+    canDownloadPdfCashVendor,
+    // DASH BOARD +++++++++++++
+    canSeeTotalSales,
+    canSeeTotalPurchase
   };
 };
 

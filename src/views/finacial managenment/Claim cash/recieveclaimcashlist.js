@@ -54,7 +54,7 @@ const Recieveclaimcashlist = () => {
   const { canIsapproveClaimcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const [statuses, setStatuses] = useState({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
@@ -90,7 +90,7 @@ const Recieveclaimcashlist = () => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 15));
     setPage(0);
   };
 
@@ -157,7 +157,7 @@ const Recieveclaimcashlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Recieve Claim Cash List
+        Approve Claim Cash List
       </Typography>
 
       <TableContainer>
@@ -217,7 +217,7 @@ const Recieveclaimcashlist = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[15, 25, 100]}
         component="div"
         count={payments?.length || 0}
         rowsPerPage={rowsPerPage}

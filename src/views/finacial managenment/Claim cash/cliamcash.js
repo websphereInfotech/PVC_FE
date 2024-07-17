@@ -97,11 +97,11 @@ const Cliamcashpage = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Cliam Cash
+            Update Demand Cash
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Cliam Cash
+            Demand Cash
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>

@@ -620,7 +620,6 @@ export const DELETE_BREACKDOWN_SUCCESS = 'DELETE_BREACKDOWN_SUCCESS';
 export const DELETE_BREACKDOWN_FAILURE = 'DELETE_BREACKDOWN_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PDF VENDOR BANK ++++++++++++++++++++++++++++++++
-
 export const GET_VENDOR_BANK_PDF_REQUEST = 'GET_VENDOR_BANK_PDF_REQUEST';
 export const GET_VENDOR_BANK_PDF_SUCCESS = 'GET_VENDOR_BANK_PDF_SUCCESS';
 export const GET_VENDOR_BANK_PDF_FAILURE = 'GET_VENDOR_BANK_PDF_FAILURE';
@@ -634,6 +633,14 @@ export const GET_CUSTOMER_CASH_PDF_FAILURE = 'GET_CUSTOMER_CASH_PDF_FAILURE';
 export const GET_VENDOR_CASH_PDF_REQUEST = 'GET_VENDOR_CASH_PDF_REQUEST';
 export const GET_VENDOR_CASH_PDF_SUCCESS = 'GET_VENDOR_CASH_PDF_SUCCESS';
 export const GET_VENDOR_CASH_PDF_FAILURE = 'GET_VENDOR_CASH_PDF_FAILURE';
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++
+export const GET_TOTAL_SALES_REQUEST = 'GET_TOTAL_SALES_REQUEST';
+export const GET_TOTAL_SALES_SUCCESS = 'GET_TOTAL_SALES_SUCCESS';
+export const GET_TOTAL_SALES_FAILURE = 'GET_TOTAL_SALES_FAILURE';
+export const GET_TOTAL_PURCHASE_REQUEST = 'GET_TOTAL_PURCHASE_REQUEST';
+export const GET_TOTAL_PURCHASE_SUCCESS = 'GET_TOTAL_PURCHASE_SUCCESS';
+export const GET_TOTAL_PURCHASE_FAILURE = 'GET_TOTAL_PURCHASE_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -2811,5 +2818,29 @@ export const VendorCashPdfSuccess = (data) => ({
 });
 export const VendorCashPdfFailure = (error) => ({
   type: 'GET_VENDOR_CASH_PDF_FAILURE',
+  payload: error
+});
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++++++++++
+export const GetTotalPurchaseRequest = () => ({
+  type: 'GET_TOTAL_PURCHASE_REQUEST'
+});
+export const GetTotalPurchaseSuccess = (data) => ({
+  type: 'GET_TOTAL_PURCHASE_SUCCESS',
+  payload: data
+});
+export const GetTotalPurchaseFailure = (error) => ({
+  type: 'GET_TOTAL_PURCHASE_FAILURE',
+  payload: error
+});
+export const GetTotalSalesRequest = () => ({
+  type: 'GET_TOTAL_SALES_REQUEST'
+});
+export const GetTotalSalesSuccess = (data) => ({
+  type: 'GET_TOTAL_SALES_SUCCESS',
+  payload: data
+});
+export const GetTotalSalesFailure = (error) => ({
+  type: 'GET_TOTAL_SALES_FAILURE',
   payload: error
 });

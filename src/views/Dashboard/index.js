@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from 'react';
 
 // material-ui
-import { useTheme, styled } from '@mui/material/styles';
-import { Grid, Card, CardContent, Typography, LinearProgress, Divider, CardHeader } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Grid } from '@mui/material';
 
 //project import
-import SalesLineCard from './SalesLineCard';
-import SalesLineCardData from './chart/sale-chart-1';
+// import SalesLineCard from './SalesLineCard';
+// import SalesLineCardData from './chart/sale-chart-1';
 
-import RevenuChartCard from './RevenuChartCard';
-import RevenuChartCardData from './chart/revenu-chart';
+// import RevenuChartCard from './RevenuChartCard';
+// import RevenuChartCardData from './chart/revenu-chart';
 import ReportCard from './ReportCard';
 import { gridSpacing } from 'config.js';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 // assets
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import MonetizationOnTwoTone from '@mui/icons-material/MonetizationOnTwoTone';
-import DescriptionTwoTone from '@mui/icons-material/DescriptionTwoTone';
-import ThumbUpAltTwoTone from '@mui/icons-material/ThumbUpAltTwoTone';
-import BadgeIcon from '@mui/icons-material/Badge';
+// import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+// import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+// import MonetizationOnTwoTone from '@mui/icons-material/MonetizationOnTwoTone';
+// import DescriptionTwoTone from '@mui/icons-material/DescriptionTwoTone';
+// import ThumbUpAltTwoTone from '@mui/icons-material/ThumbUpAltTwoTone';
+// import BadgeIcon from '@mui/icons-material/Badge';
 import { useDispatch } from 'react-redux';
-import { getCompanyBankBalance, getCompanyCashBalance } from 'store/thunk';
+import { getCompanyBankBalance, getCompanyCashBalance, TotalSalesDashboard, TotalPurchaseDashboard } from 'store/thunk';
 // import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
 
 // custom style
-const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)(({ theme }) => ({
-  padding: '25px 25px',
-  borderLeft: '1px solid' + theme.palette.background.default,
-  [theme.breakpoints.down('sm')]: {
-    borderLeft: 'none',
-    borderBottom: '1px solid' + theme.palette.background.default
-  },
-  [theme.breakpoints.down('md')]: {
-    borderBottom: '1px solid' + theme.palette.background.default
-  }
-}));
+// const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)(({ theme }) => ({
+//   padding: '25px 25px',
+//   borderLeft: '1px solid' + theme.palette.background.default,
+//   [theme.breakpoints.down('sm')]: {
+//     borderLeft: 'none',
+//     borderBottom: '1px solid' + theme.palette.background.default
+//   },
+//   [theme.breakpoints.down('md')]: {
+//     borderBottom: '1px solid' + theme.palette.background.default
+//   }
+// }));
 
 // ==============================|| DASHBOARD DEFAULT ||============================== //
 
@@ -44,6 +44,8 @@ const Default = () => {
   const dispatch = useDispatch();
   const [balance, setBalance] = useState(0);
   const [Cbalance, setCBalance] = useState(0);
+  const [salesbalance, setSalesBalance] = useState(0);
+  const [purchasebalance, setPurchaseBalance] = useState(0);
   useEffect(() => {
     const fetchbankbalance = async () => {
       try {
@@ -61,8 +63,26 @@ const Default = () => {
         console.log(error, 'fetch bank balance of company');
       }
     };
+    const fetchtotalsalesbalance = async () => {
+      try {
+        const data = await dispatch(TotalSalesDashboard());
+        setSalesBalance(data);
+      } catch (error) {
+        console.log(error, 'fetch total sales');
+      }
+    };
+    const fetchtotalpurchasebalance = async () => {
+      try {
+        const data = await dispatch(TotalPurchaseDashboard());
+        setPurchaseBalance(data);
+      } catch (error) {
+        console.log(error, 'fetch total purchase');
+      }
+    };
     fetchbankbalance();
     fetchcashbalance();
+    fetchtotalsalesbalance();
+    fetchtotalpurchasebalance();
   });
   return (
     <Grid container spacing={gridSpacing}>
@@ -90,12 +110,12 @@ const Default = () => {
           </Grid>
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
-              primary="290+"
+              primary={salesbalance}
               secondary="Total Sales"
               color={theme.palette.success.main}
-              footerData="10k total sales"
-              iconPrimary={DescriptionTwoTone}
-              iconFooter={TrendingUpIcon}
+              footerData="Total Sales"
+              iconPrimary={CurrencyRupeeIcon}
+              // iconFooter={TrendingUpIcon}
             />
           </Grid>
         </Grid>
@@ -108,8 +128,8 @@ const Default = () => {
               secondary="Total Productions"
               color={theme.palette.primary.main}
               footerData="1k total productions"
-              iconPrimary={ThumbUpAltTwoTone}
-              iconFooter={TrendingUpIcon}
+              // iconPrimary={ThumbUpAltTwoTone}
+              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={4} sm={8} xs={12}>
@@ -118,23 +138,23 @@ const Default = () => {
               secondary="Total Recieve"
               color={theme.palette.info.main}
               footerData="28% employee growth"
-              iconPrimary={BadgeIcon}
-              iconFooter={TrendingDownIcon}
+              // iconPrimary={BadgeIcon}
+              // iconFooter={TrendingDownIcon}
             />
           </Grid>
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
-              primary="$1000"
+              primary={purchasebalance}
               secondary="Total Purchase"
               color={theme.palette.secondary.main}
-              footerData="10% changes on profit"
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
+              footerData="Total Purchase"
+              iconPrimary={CurrencyRupeeIcon}
+              // iconFooter={TrendingUpIcon}
             />
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={8} xs={12}>
             <Grid container spacing={gridSpacing}>
@@ -293,7 +313,7 @@ const Default = () => {
             </Card>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
