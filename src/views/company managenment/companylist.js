@@ -60,9 +60,9 @@ const CompanyList = () => {
 
   const handlesetcompany = async (id) => {
     try {
-      const data = await dispatch(setDefaultCompany(id));
+      await dispatch(setDefaultCompany(id));
       window.location.reload();
-      console.log(data, 'data');
+      // console.log(data, 'data');
       setCompany((prevCompanies) =>
         prevCompanies.map((company) => (company.id === id ? { ...company, setDefault: true } : { ...company, setDefault: false }))
       );
@@ -103,6 +103,8 @@ const CompanyList = () => {
     try {
       await dispatch(deleteCompany(selectedId));
       setOpenConfirmation(false);
+      const data = await dispatch(fetchuserwiseCompany());
+      setCompany(data);
       setCompany((preCompany) => preCompany.filter((comapny) => comapny.id !== selectedId));
     } catch (error) {
       console.error('Error deleting company:', error);

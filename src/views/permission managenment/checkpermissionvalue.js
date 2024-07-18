@@ -761,6 +761,9 @@ const useCan = () => {
   const canSeeTotalPurchase = () => {
     return checkPermission('Dashboard', 'total_purchase');
   };
+  const canSeeCompanyCashbalance = () => {
+    return checkPermission('Company Cash', 'view_company_cash_balance');
+  };
 
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
@@ -1014,7 +1017,8 @@ const useCan = () => {
     canDownloadPdfCashVendor,
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
-    canSeeTotalPurchase
+    canSeeTotalPurchase,
+    canSeeCompanyCashbalance
   };
 };
 

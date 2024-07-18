@@ -22,6 +22,7 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 // import BadgeIcon from '@mui/icons-material/Badge';
 import { useDispatch } from 'react-redux';
 import { getCompanyBankBalance, getCompanyCashBalance, TotalSalesDashboard, TotalPurchaseDashboard } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 // import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
 
 // custom style
@@ -46,6 +47,7 @@ const Default = () => {
   const [Cbalance, setCBalance] = useState(0);
   const [salesbalance, setSalesBalance] = useState(0);
   const [purchasebalance, setPurchaseBalance] = useState(0);
+  const { canSeeCompanyCashbalance } = useCan();
   useEffect(() => {
     const fetchbankbalance = async () => {
       try {
@@ -98,16 +100,18 @@ const Default = () => {
               // iconFooter={TrendingUpIcon}
             />
           </Grid>
-          <Grid item lg={4} sm={8} xs={12}>
-            <ReportCard
-              primary={Cbalance}
-              secondary="Total Cash Balance"
-              color={theme.palette.error.main}
-              footerData="Balance Of Company In Cash"
-              iconPrimary={CurrencyRupeeIcon}
-              // iconFooter={TrendingDownIcon}
-            />
-          </Grid>
+          {canSeeCompanyCashbalance() && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={Cbalance}
+                secondary="Total Cash Balance"
+                color={theme.palette.error.main}
+                footerData="Balance Of Company In Cash"
+                iconPrimary={CurrencyRupeeIcon}
+                // iconFooter={TrendingDownIcon}
+              />
+            </Grid>
+          )}
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
               primary={salesbalance}
@@ -118,10 +122,6 @@ const Default = () => {
               // iconFooter={TrendingUpIcon}
             />
           </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
               primary="500"

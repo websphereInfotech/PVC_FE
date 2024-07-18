@@ -172,6 +172,16 @@ const Addbillofmaterial = () => {
     setRows(updatedRows);
   };
 
+  // useEffect(() => {
+  //   const selectedProduct = productOptions.find((product) => product.value === formData.productId);
+  //   if (selectedProduct && formData.qty) {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       weight: formData.qty * selectedProduct.weight
+  //     }));
+  //   }
+  // }, [formData.qty, formData.productId, productOptions]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (bomId) {
