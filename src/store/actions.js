@@ -642,6 +642,28 @@ export const GET_TOTAL_PURCHASE_REQUEST = 'GET_TOTAL_PURCHASE_REQUEST';
 export const GET_TOTAL_PURCHASE_SUCCESS = 'GET_TOTAL_PURCHASE_SUCCESS';
 export const GET_TOTAL_PURCHASE_FAILURE = 'GET_TOTAL_PURCHASE_FAILURE';
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++
+export const CREATE_ITEM_GROUP_REQUEST = 'CREATE_ITEM_GROUP_REQUEST';
+export const CREATE_ITEM_GROUP_SUCCESS = 'CREATE_ITEM_GROUP_SUCCESS';
+export const CREATE_ITEM_GROUP_FAILURE = 'CREATE_ITEM_GROUP_FAILURE';
+export const VIEW_ITEM_GROUP_REQUEST = 'VIEW_ITEM_GROUP_REQUEST';
+export const VIEW_ITEM_GROUP_SUCCESS = 'VIEW_ITEM_GROUP_SUCCESS';
+export const VIEW_ITEM_GROUP_FAILURE = 'VIEW_ITEM_GROUP_FAILURE';
+export const GET_ALL_ITEM_GROUP_REQUEST = 'GET_ALL_ITEM_GROUP_REQUEST';
+export const GET_ALL_ITEM_GROUP_SUCCESS = 'GET_ALL_ITEM_GROUP_SUCCESS';
+export const GET_ALL_ITEM_GROUP_FAILURE = 'GET_ALL_ITEM_GROUP_FAILURE';
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM CATEGORY +++++++++++++++++++++++++++
+export const CREATE_ITEM_CATEGORY_REQUEST = 'CREATE_ITEM_CATEGORY_REQUEST';
+export const CREATE_ITEM_CATEGORY_SUCCESS = 'CREATE_ITEM_CATEGORY_SUCCESS';
+export const CREATE_ITEM_CATEGORY_FAILURE = 'CREATE_ITEM_CATEGORY_FAILURE';
+export const VIEW_ITEM_CATEGORY_REQUEST = 'VIEW_ITEM_CATEGORY_REQUEST';
+export const VIEW_ITEM_CATEGORY_SUCCESS = 'VIEW_ITEM_CATEGORY_SUCCESS';
+export const VIEW_ITEM_CATEGORY_FAILURE = 'VIEW_ITEM_CATEGORY_FAILURE';
+export const GET_ALL_ITEM_CATEGORY_REQUEST = 'GET_ALL_ITEM_CATEGORY_REQUEST';
+export const GET_ALL_ITEM_CATEGORY_SUCCESS = 'GET_ALL_ITEM_CATEGORY_SUCCESS';
+export const GET_ALL_ITEM_CATEGORY_FAILURE = 'GET_ALL_ITEM_CATEGORY_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2842,5 +2864,75 @@ export const GetTotalSalesSuccess = (data) => ({
 });
 export const GetTotalSalesFailure = (error) => ({
   type: 'GET_TOTAL_SALES_FAILURE',
+  payload: error
+});
+
+// +++++++++++++++++++++++++++++++++++++++++++++++ITEM GROUP ++++++++++++++++++++++++++++++++++++
+export const CreateItemGroupRequest = () => ({
+  type: 'CREATE_ITEM_GROUP_REQUEST'
+});
+export const CreateItemGroupSuccess = (data) => ({
+  type: 'CREATE_ITEM_GROUP_SUCCESS',
+  payload: data
+});
+export const CreateItemGroupFailure = (error) => ({
+  type: 'CREATE_ITEM_GROUP_FAILURE',
+  payload: error
+});
+export const ViewItemGroupRequest = () => ({
+  type: 'VIEW_ITEM_GROUP_REQUEST'
+});
+export const ViewItemGroupSuccess = (data) => ({
+  type: 'VIEW_ITEM_GROUP_SUCCESS',
+  payload: data
+});
+export const ViewItemGroupFailure = (error) => ({
+  type: 'VIEW_ITEM_GROUP_FAILURE',
+  payload: error
+});
+export const fetchAllItemGroupRequest = () => ({
+  type: 'GET_ALL_ITEM_GROUP_REQUEST'
+});
+export const fetchAllItemGroupSuccess = (data) => ({
+  type: 'GET_ALL_ITEM_GROUP_SUCCESS',
+  payload: data
+});
+export const fetchAllItemGroupFailure = (error) => ({
+  type: 'GET_ALL_ITEM_GROUP_FAILURE',
+  payload: error
+});
+
+// +++++++++++++++++++++++++++++++++++++++++++++++ITEM CATEGORY ++++++++++++++++++++++++++++++++++++
+export const CreateItemCategoryRequest = () => ({
+  type: 'CREATE_ITEM_CATEGORY_REQUEST'
+});
+export const CreateItemCategorySuccess = (data) => ({
+  type: 'CREATE_ITEM_CATEGORY_SUCCESS',
+  payload: data
+});
+export const CreateItemCategoryFailure = (error) => ({
+  type: 'CREATE_ITEM_CATEGORY_FAILURE',
+  payload: error
+});
+export const ViewItemCategoryRequest = () => ({
+  type: 'VIEW_ITEM_CATEGORY_REQUEST'
+});
+export const ViewItemCategorySuccess = (data) => ({
+  type: 'VIEW_ITEM_CATEGORY_SUCCESS',
+  payload: data
+});
+export const ViewItemCategoryFailure = (error) => ({
+  type: 'VIEW_ITEM_CATEGORY_FAILURE',
+  payload: error
+});
+export const fetchAllItemCategoryRequest = () => ({
+  type: 'GET_ALL_ITEM_CATEGORY_REQUEST'
+});
+export const fetchAllItemCategorySuccess = (data) => ({
+  type: 'GET_ALL_ITEM_CATEGORY_SUCCESS',
+  payload: data
+});
+export const fetchAllItemCategoryFailure = (error) => ({
+  type: 'GET_ALL_ITEM_CATEGORY_FAILURE',
   payload: error
 });

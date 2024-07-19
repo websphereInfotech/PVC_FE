@@ -6,8 +6,10 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, Paper } from '@mui/material';
 import Select from 'react-select';
-import { createProduct, updateProduct, viewProduct } from 'store/thunk';
+import { createProduct, fetchAllItemcategory, fetchAllItemGroup, updateProduct, viewProduct } from 'store/thunk';
 import { useNavigate } from 'react-router';
+import ItemGroup from './itemgruop';
+import Itemcategory from './itemcategory';
 
 const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUpdated }) => {
   AnchorProductDrawer.propTypes = {
@@ -27,12 +29,18 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const [cess, setCess] = React.useState(true);
   const [selectedGST, setSelectedGST] = React.useState('');
   const [selectedItemGroup, setSelectedItemGroup] = React.useState('');
+  const [itemGroupDrawerOpen, setItemGroupDrawerOpen] = React.useState(false);
+  const [itemCategoryDrawerOpen, setItemCategoryDrawerOpen] = React.useState(false);
+  const [itemgroupOptions, setItemgroupOptions] = React.useState([]);
+  const [itemgroupname, setItemgroupname] = React.useState('');
+  const [itemcategoryOptions, setItemcategoryOptions] = React.useState([]);
+  const [itemcategoryname, setItemcategoryname] = React.useState('');
 
   const [formData, setFormData] = React.useState({
     productname: '',
     description: '',
-    itemgroup: '',
-    itemcategory: '',
+    itemGroupId: '',
+    itemCategoryId: '',
     unit: '',
     salesprice: 0,
     purchaseprice: 0,
@@ -76,6 +84,35 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   };
 
   React.useEffect(() => {
+    const itemgroup = async () => {
+      try {
+        const itemgroup = await dispatch(fetchAllItemGroup());
+        if (Array.isArray(itemgroup)) {
+          const options = itemgroup.map((product) => ({
+            value: product.id,
+            label: product.name
+          }));
+          setItemgroupOptions([{ value: 'new_group', label: 'Create New Group' }, ...options]);
+        }
+      } catch (error) {
+        console.log(error, 'fetch item group');
+      }
+    };
+    const itemcategory = async () => {
+      try {
+        const itemcategory = await dispatch(fetchAllItemcategory(selectedItemGroup));
+        console.log(itemcategory, 'CATEGORY');
+        if (Array.isArray(itemcategory)) {
+          const options = itemcategory.map((category) => ({
+            value: category.id,
+            label: category.name
+          }));
+          setItemcategoryOptions([{ value: 'new_category', label: 'Create New Category' }, ...options]);
+        }
+      } catch (error) {
+        console.log(error, 'fetch item category');
+      }
+    };
     const fetchData = async () => {
       try {
         if (id) {
@@ -88,11 +125,13 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           setCess(productData.cess);
           setItemType(productData.itemtype);
           setSelectedItemGroup(productData.itemgroup);
+          setItemgroupname(productData.name);
+          setItemcategoryname(productData.name);
         } else {
           setFormData({
             productname: '',
             description: '',
-            itemgroup: '',
+            itemGroupId: '',
             itemcategory: '',
             unit: '',
             salesprice: 0,
@@ -109,25 +148,29 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           setCess(true);
           setItemType('Product');
           setSelectedItemGroup('');
+          setItemgroupname('');
+          setItemcategoryname('');
         }
       } catch (error) {
         console.error('Error fetching Product', error);
       }
     };
+    itemcategory();
+    itemgroup();
     if (id) {
       fetchData();
     }
-  }, [id, dispatch]);
+  }, [id, dispatch, selectedItemGroup]);
 
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);
     setFormData({ ...formData, gstrate: selectedOption.value });
   };
 
-  const handleitemgroupChange = (selectedOption) => {
-    setSelectedItemGroup(selectedOption.value);
-    setFormData({ ...formData, itemgroup: selectedOption.value });
-  };
+  // const handleitemgroupChange = (selectedOption) => {
+  //   setSelectedItemGroup(selectedOption.value);
+  //   setFormData({ ...formData, itemgroup: selectedOption.value });
+  // };
 
   const handleSave = async () => {
     try {
@@ -191,12 +234,24 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     { value: '18', label: 'GST 18%' },
     { value: '28', label: 'GST 28%' }
   ];
+  const handleitemgroupChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label === 'Create New Group') {
+      setItemGroupDrawerOpen(true);
+    } else {
+      setSelectedItemGroup(selectedOption.value);
+      setItemgroupname(selectedOption.label);
+      setFormData({ ...formData, itemGroupId: selectedOption.value });
+    }
+  };
 
-  const Itemgroup = [
-    { value: 'product', label: 'product' },
-    { value: 'raw_material', label: 'raw material' },
-    { value: 'spare', label: 'spare' }
-  ];
+  const handleitemcategoryChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label === 'Create New Category') {
+      setItemCategoryDrawerOpen(true);
+    } else {
+      setItemcategoryname(selectedOption.label);
+      setFormData({ ...formData, itemCategoryId: selectedOption.value });
+    }
+  };
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -249,14 +304,23 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             </Typography>
             <Select
               id="itemgroup"
-              options={Itemgroup}
-              value={Itemgroup.find((option) => option.value === formData.itemgroup)}
-              onChange={handleitemgroupChange}
+              options={itemgroupOptions}
+              value={{ value: formData.itemGroupId, label: itemgroupname }}
+              onChange={(selectedOption) => handleitemgroupChange(selectedOption)}
             />
+            <ItemGroup anchor="Right" open={itemGroupDrawerOpen} onClose={() => setItemGroupDrawerOpen(false)} />
           </Grid>
           <Grid item sm={6}>
-            <Typography variant="subtitle1">Item Category</Typography>
-            <input placeholder="Enter Category" id="itemcategory" value={formData.itemcategory} onChange={handleInputChange} />
+            <Typography variant="subtitle1">
+              Item Category:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select
+              id="itemgroup"
+              options={itemcategoryOptions}
+              value={{ value: formData.itemCategoryId, label: itemcategoryname }}
+              onChange={(selectedOption) => handleitemcategoryChange(selectedOption)}
+            />
+            <Itemcategory anchor="Right" open={itemCategoryDrawerOpen} onClose={() => setItemCategoryDrawerOpen(false)} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
@@ -288,12 +352,10 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             </Typography>
             <input placeholder="Enter HSN Code" id="HSNcode" value={formData.HSNcode} onChange={handleInputChange} />
           </Grid>
-          {selectedItemGroup === 'product' && (
-            <Grid item sm={6}>
-              <Typography variant="subtitle1">Weight :</Typography>
-              <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
-            </Grid>
-          )}
+          <Grid item sm={6}>
+            <Typography variant="subtitle1">Weight :</Typography>
+            <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
+          </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sm={6}>

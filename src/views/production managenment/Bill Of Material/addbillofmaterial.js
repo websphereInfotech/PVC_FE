@@ -16,7 +16,7 @@ const Addbillofmaterial = () => {
   const { canCreateItem } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [rows, setRows] = useState([{ product: '', qty: 0, unit: '', wastage: 0 }]);
+  const [rows, setRows] = useState([{ product: '', qty: null, unit: '', wastage: 0 }]);
   const [formData, setFormData] = useState({
     bomNo: 0,
     date: new Date(),
@@ -30,11 +30,10 @@ const Addbillofmaterial = () => {
   const [isrowproductDrawerOpen, setIsrowproductDrawerOpen] = useState(false);
   const [productOptions, setProductOptions] = useState([]);
   const [rawmaterialoption, setRawmaterialoptions] = useState([]);
-  // const [canCreateRawmaterialvalue, setCanCreateRawmaterialvalue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  const [totalQty, setTotalQty] = useState(0);
 
   useEffect(() => {
-    // setCanCreateRawmaterialvalue(canCreateRawmaterial());
     setCanCreateProductvalue(canCreateItem());
   }, [canCreateItem]);
 
@@ -48,10 +47,13 @@ const Addbillofmaterial = () => {
   };
 
   const handleAddRow = () => {
-    const newRow = { product: '', qty: 0, unit: '', wastage: 0 };
+    const newRow = { product: '', qty: null, unit: '', wastage: 0 };
     setRows((prevRows) => [...prevRows, newRow]);
   };
-
+  const calculateTotalQty = (rows) => {
+    const total = rows.reduce((sum, row) => sum + parseFloat(row.qty || 0), 0);
+    setTotalQty(total);
+  };
   const handleSelectProductChange = (selectedOption, rowIndex) => {
     if (selectedOption && selectedOption.label === 'Create New Item') {
       setIsrowproductDrawerOpen(true);
@@ -70,6 +72,7 @@ const Addbillofmaterial = () => {
       });
       setRows(updatedRows);
       setIsrowproductDrawerOpen(false);
+      calculateTotalQty(updatedRows);
     }
   };
 
@@ -84,7 +87,6 @@ const Addbillofmaterial = () => {
         weight: selectedOption.weight,
         unit: selectedOption.unit
       });
-
       setIsproductDrawerOpen(false);
     }
   };
@@ -170,6 +172,7 @@ const Addbillofmaterial = () => {
       return row;
     });
     setRows(updatedRows);
+    calculateTotalQty(updatedRows);
   };
 
   // useEffect(() => {
@@ -197,6 +200,7 @@ const Addbillofmaterial = () => {
           qty: item.qty
         }));
         setRows(updatedRows);
+        calculateTotalQty(updatedRows);
       }
     };
 
@@ -240,6 +244,7 @@ const Addbillofmaterial = () => {
     try {
       const payload = {
         ...formData,
+        totalQty: totalQty,
         items: rows.map((row) => ({
           id: row.id || null,
           productId: row.productId,
@@ -382,6 +387,16 @@ const Addbillofmaterial = () => {
                     </TableCell>
                   </TableRow>
                 ))}
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell align="right">
+                    <Typography variant="h6">Total Quantity:</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">{totalQty}</Typography>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </div>

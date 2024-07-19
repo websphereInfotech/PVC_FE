@@ -591,7 +591,27 @@ import {
   GetTotalPurchaseFailure,
   GetTotalSalesRequest,
   GetTotalSalesSuccess,
-  GetTotalSalesFailure
+  GetTotalSalesFailure,
+  // ITEM GROUP +++++++++++++
+  CreateItemGroupRequest,
+  CreateItemGroupSuccess,
+  CreateItemGroupFailure,
+  fetchAllItemGroupRequest,
+  fetchAllItemGroupSuccess,
+  fetchAllItemGroupFailure,
+  ViewItemGroupRequest,
+  ViewItemGroupSuccess,
+  ViewItemGroupFailure,
+  // ITEM Category +++++++++++++
+  CreateItemCategoryRequest,
+  CreateItemCategorySuccess,
+  CreateItemCategoryFailure,
+  fetchAllItemCategoryRequest,
+  fetchAllItemCategorySuccess,
+  fetchAllItemCategoryFailure,
+  ViewItemCategoryRequest,
+  ViewItemCategorySuccess,
+  ViewItemCategoryFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -4296,6 +4316,112 @@ export const TotalPurchaseDashboard = () => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(GetTotalPurchaseFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++++++++++++++++++++
+export const createItemgroup = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateItemGroupRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/itemGroup/create_itemGroup`, data, config);
+      const additemgroup = response;
+      dispatch(CreateItemGroupSuccess(additemgroup));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return additemgroup;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateItemGroupFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllItemGroup = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllItemGroupRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemGroup/get_all_itemgroup`, config);
+      const data = response.data.data;
+      dispatch(fetchAllItemGroupSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllItemGroupFailure(error.message));
+    }
+  };
+};
+export const ItemGroupview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewItemGroupRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemGroup/view_itemGroup/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewItemGroupSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewItemGroupFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM CATEGORY +++++++++++++++++++++++++++++++++++++++++++++
+export const createItemcategory = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateItemCategoryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/itemCategory/create_itemCategory`, data, config);
+      const additemgroup = response;
+      dispatch(CreateItemCategorySuccess(additemgroup));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return additemgroup;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateItemCategoryFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllItemcategory = (groupId) => {
+  return async (dispatch) => {
+    dispatch(fetchAllItemCategoryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemCategory/get_all_itemCategoryGroup/${groupId}`, config);
+      const data = response.data.data;
+      dispatch(fetchAllItemCategorySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllItemCategoryFailure(error.message));
+    }
+  };
+};
+export const ItemCategoryview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewItemCategoryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemCategory/view_itemCategory/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewItemCategorySuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewItemCategoryFailure(error.message));
     }
   };
 };

@@ -1,30 +1,43 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import { withStyles } from '@mui/styles';
-import InputBase from '@mui/material/InputBase';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import AddIcon from '@mui/icons-material/Add';
-import { Grid, Typography, Paper } from '@mui/material';
+import { Grid, Typography, Card } from '@mui/material';
+import Select from 'react-select';
+import { useDispatch } from 'react-redux';
+import { createItemcategory, fetchAllItemGroup } from 'store/thunk';
 
 const Itemcategory = ({ open, onClose }) => {
-  const StyledInput = withStyles((theme) => ({
-    root: {
-      borderRadius: 4,
-      backgroundColor: theme.palette.common.white,
-      border: '1px solid #ced4da',
-      fontSize: 15,
-      width: '100%',
-      padding: '5px',
-      transition: theme.transitions.create(['border-color', 'box-shadow']),
-      '&:focus': {
-        boxShadow: `${theme.palette.secondary.main} 0 0 0 0.5px`,
-        borderColor: theme.palette.secondary.main
+  const [itemGroupOptions, setItemGroupOptions] = React.useState([]);
+  const [selectedItemGroup, setSelectedItemGroup] = React.useState(null);
+  const [categoryName, setCategoryName] = React.useState('');
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    const itemgroupdata = async () => {
+      try {
+        const response = await dispatch(fetchAllItemGroup());
+        console.log(response, 'RESPONSE');
+        const options = response.map((group) => ({
+          value: group.id,
+          label: group.name
+        }));
+        setItemGroupOptions(options);
+      } catch (error) {
+        console.error('There was an error fetching the item groups!', error);
       }
-    }
-  }))(InputBase);
+    };
+    itemgroupdata();
+  }, [dispatch]);
+
+  const handleSave = async () => {
+    const payload = {
+      itemGroupId: selectedItemGroup.value,
+      name: categoryName
+    };
+    await dispatch(createItemcategory(payload));
+    onClose();
+  };
 
   Itemcategory.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -34,44 +47,24 @@ const Itemcategory = ({ open, onClose }) => {
   const list = (
     <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden' }} role="presentation">
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
-        <Grid item sm={5}>
-          <Typography variant="subtitle1">Item Category</Typography>
-          <StyledInput placeholder="Enter category" />
+        <Grid item sm={6}>
+          <Typography variant="subtitle1">Item Group</Typography>
+          <Select color="secondary" onChange={setSelectedItemGroup} options={itemGroupOptions} value={selectedItemGroup} />
+          {/* <Select options={itemGroupOptions} value={selectedItemGroup} onChange={setSelectedItemGroup} placeholder="Select Item Group" /> */}
         </Grid>
-        <Grid item sm={5}>
-          <Typography variant="subtitle1">Remarks</Typography>
-          <StyledInput placeholder="Enter Remarks" />
+        <Grid item sm={6}>
+          <Typography variant="subtitle1">Item Category</Typography>
+          <input placeholder="Enter category" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
         </Grid>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
         <div>
-          <button
-            style={{
-              width: '100px',
-              color: '#425466',
-              padding: '8px',
-              borderColor: '#425466',
-              display: 'flex',
-              justifyContent: 'center',
-              borderRadius: '5px'
-            }}
-            onClick={onClose}
-          >
+          <button id="savebtncs" onClick={onClose}>
             Cancel
           </button>
         </div>
         <div style={{ display: 'flex' }}>
-          <button
-            style={{
-              width: '100px',
-              color: '#425466',
-              padding: '8px',
-              borderColor: '#425466',
-              display: 'flex',
-              justifyContent: 'center',
-              borderRadius: '5px'
-            }}
-          >
+          <button id="savebtncs" onClick={handleSave}>
             Save
           </button>
         </div>
@@ -81,7 +74,7 @@ const Itemcategory = ({ open, onClose }) => {
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
-      <Paper
+      <Card
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -97,7 +90,7 @@ const Itemcategory = ({ open, onClose }) => {
         <Grid item>
           <CancelIcon onClick={onClose} />
         </Grid>
-      </Paper>
+      </Card>
       {list}
     </Drawer>
   );
