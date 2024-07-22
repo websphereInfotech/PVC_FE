@@ -13,6 +13,7 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewgroupadded }) =>
   const [selectedItemGroup, setSelectedItemGroup] = React.useState(null);
   const [categoryName, setCategoryName] = React.useState('');
   const dispatch = useDispatch();
+
   React.useEffect(() => {
     const itemgroupdata = async () => {
       try {
@@ -23,11 +24,9 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewgroupadded }) =>
           label: group.name
         }));
         setItemGroupOptions(options);
-        if (onnewgroupadded) {
-          onnewgroupadded(options);
-        }
+        onnewgroupadded(options);
       } catch (error) {
-        console.error('There was an error fetching the item groups!', error);
+        console.error('fetch all item groups', error);
       }
     };
     itemgroupdata();
@@ -39,7 +38,6 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewgroupadded }) =>
       name: categoryName
     };
     const response = await dispatch(createItemcategory(payload));
-    console.log(response.data.data, 'RESPONSE');
     onnewCategoryadded(response.data.data);
     onClose();
     setSelectedItemGroup('');

@@ -23,7 +23,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canseeitemgroup } = useCan();
+  const { canseeitemgroup, canseeitemcategory } = useCan();
   const [itemtype, setItemType] = React.useState('Product');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
@@ -38,6 +38,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const [itemcategoryOptions, setItemcategoryOptions] = React.useState([]);
   const [itemcategoryname, setItemcategoryname] = React.useState('');
   const [canCreategroupvalue, setCanCreategroupvalue] = React.useState(null);
+  const [canCreatecategoryvalue, setCanCreatecategoryvalue] = React.useState(null);
   const [formData, setFormData] = React.useState({
     productname: '',
     description: '',
@@ -54,7 +55,8 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
 
   React.useEffect(() => {
     setCanCreategroupvalue(canseeitemgroup());
-  }, [canseeitemgroup]);
+    setCanCreatecategoryvalue(canseeitemcategory());
+  }, [canseeitemgroup, canseeitemcategory]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -99,27 +101,29 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             label: product.name
           }));
           setItemgroupOptions([{ value: 'new_group', label: 'Create New Group' }, ...options]);
-        }
-        if (!canCreategroupvalue) {
-          setItemgroupOptions(options);
+          if (!canCreategroupvalue) {
+            setItemgroupOptions(options);
+          }
         }
       } catch (error) {
-        console.log(error, 'fetch item group');
+        console.log(error, 'fetch item Group');
       }
     };
     const itemcategory = async () => {
       try {
         const itemcategory = await dispatch(fetchAllItemcategory(selectedItemGroup));
-        console.log(itemcategory, 'CATEGORY');
         if (Array.isArray(itemcategory)) {
           const options = itemcategory.map((category) => ({
             value: category.id,
             label: category.name
           }));
           setItemcategoryOptions([{ value: 'new_category', label: 'Create New Category' }, ...options]);
+          if (!canCreatecategoryvalue) {
+            setItemcategoryOptions(options);
+          }
         }
       } catch (error) {
-        console.log(error, 'fetch item category');
+        console.log(error, 'fetch item Category');
       }
     };
     const fetchData = async () => {
@@ -164,14 +168,16 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         console.error('Error fetching Product', error);
       }
     };
-    itemcategory();
+    if (canCreatecategoryvalue !== null) {
+      itemcategory();
+    }
     if (canCreategroupvalue !== null) {
       itemgroup();
     }
     if (id) {
       fetchData();
     }
-  }, [id, dispatch, selectedItemGroup, canCreategroupvalue]);
+  }, [id, dispatch, selectedItemGroup, canCreategroupvalue, canCreatecategoryvalue]);
 
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);

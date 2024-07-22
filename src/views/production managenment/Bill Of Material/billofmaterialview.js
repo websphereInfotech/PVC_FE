@@ -29,7 +29,7 @@ const Bomview = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Bill Of Material View
+        Production View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -76,6 +76,13 @@ const Bomview = () => {
                       <TableCell>{item?.unit}</TableCell>
                     </TableRow>
                   ))}
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell>Total Quantity</TableCell>
+                  <TableCell>
+                    <strong>{data.totalQty}</strong>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </div>
