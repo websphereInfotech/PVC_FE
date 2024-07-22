@@ -3511,7 +3511,7 @@ export const getTotalProductStock = () => {
     dispatch(getTotalProductStokeRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/C_view_total_product_stock`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_all_product_stock`, config);
       const data = response.data.data;
       dispatch(getTotalProductStokeSuccess(data));
       return data;

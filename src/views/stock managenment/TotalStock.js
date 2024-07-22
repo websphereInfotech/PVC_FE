@@ -78,7 +78,7 @@ const TotalStock = () => {
                     <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                       {columns.map((column) => (
                         <TableCell key={column.id} align={column.align}>
-                          {column.id === 'product' ? row.productName : column.id === 'stock' ? row.totalQty : row[column.id]}
+                          {column.id === 'product' ? row.productStock.productname : column.id === 'stock' ? row.qty : row[column.id]}
                         </TableCell>
                       ))}
                     </TableRow>
