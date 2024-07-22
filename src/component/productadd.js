@@ -10,6 +10,7 @@ import { createProduct, fetchAllItemcategory, fetchAllItemGroup, updateProduct, 
 import { useNavigate } from 'react-router';
 import ItemGroup from './itemgruop';
 import Itemcategory from './itemcategory';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUpdated }) => {
   AnchorProductDrawer.propTypes = {
@@ -22,6 +23,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { canseeitemgroup } = useCan();
   const [itemtype, setItemType] = React.useState('Product');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
@@ -35,7 +37,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const [itemgroupname, setItemgroupname] = React.useState('');
   const [itemcategoryOptions, setItemcategoryOptions] = React.useState([]);
   const [itemcategoryname, setItemcategoryname] = React.useState('');
-
+  const [canCreategroupvalue, setCanCreategroupvalue] = React.useState(null);
   const [formData, setFormData] = React.useState({
     productname: '',
     description: '',
@@ -49,6 +51,10 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     lowStockQty: null,
     weight: ''
   });
+
+  React.useEffect(() => {
+    setCanCreategroupvalue(canseeitemgroup());
+  }, [canseeitemgroup]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -93,6 +99,9 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             label: product.name
           }));
           setItemgroupOptions([{ value: 'new_group', label: 'Create New Group' }, ...options]);
+        }
+        if (!canCreategroupvalue) {
+          setItemgroupOptions(options);
         }
       } catch (error) {
         console.log(error, 'fetch item group');
@@ -156,11 +165,13 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
       }
     };
     itemcategory();
-    itemgroup();
+    if (canCreategroupvalue !== null) {
+      itemgroup();
+    }
     if (id) {
       fetchData();
     }
-  }, [id, dispatch, selectedItemGroup]);
+  }, [id, dispatch, selectedItemGroup, canCreategroupvalue]);
 
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);
@@ -252,6 +263,28 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
       setFormData({ ...formData, itemCategoryId: selectedOption.value });
     }
   };
+  const handleNewgroupadded = (newGroup) => {
+    const updatedgrouplist = [
+      ...itemgroupOptions,
+      {
+        value: newGroup.id,
+        label: newGroup.name
+      }
+    ];
+    setItemgroupOptions(updatedgrouplist);
+    setItemGroupDrawerOpen(false);
+  };
+  const handleNewCategoryadded = (newCategory) => {
+    const updatedcategorylist = [
+      ...itemcategoryOptions,
+      {
+        value: newCategory.id,
+        label: newCategory.name
+      }
+    ];
+    setItemcategoryOptions(updatedcategorylist);
+    setItemCategoryDrawerOpen(false);
+  };
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -308,7 +341,12 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
               value={{ value: formData.itemGroupId, label: itemgroupname }}
               onChange={(selectedOption) => handleitemgroupChange(selectedOption)}
             />
-            <ItemGroup anchor="Right" open={itemGroupDrawerOpen} onClose={() => setItemGroupDrawerOpen(false)} />
+            <ItemGroup
+              anchor="Right"
+              onnewgroupadded={handleNewgroupadded}
+              open={itemGroupDrawerOpen}
+              onClose={() => setItemGroupDrawerOpen(false)}
+            />
           </Grid>
           <Grid item sm={6}>
             <Typography variant="subtitle1">
@@ -320,7 +358,12 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
               value={{ value: formData.itemCategoryId, label: itemcategoryname }}
               onChange={(selectedOption) => handleitemcategoryChange(selectedOption)}
             />
-            <Itemcategory anchor="Right" open={itemCategoryDrawerOpen} onClose={() => setItemCategoryDrawerOpen(false)} />
+            <Itemcategory
+              onnewCategoryadded={handleNewCategoryadded}
+              anchor="Right"
+              open={itemCategoryDrawerOpen}
+              onClose={() => setItemCategoryDrawerOpen(false)}
+            />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>

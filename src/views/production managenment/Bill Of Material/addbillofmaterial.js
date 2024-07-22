@@ -42,8 +42,10 @@ const Addbillofmaterial = () => {
   const { bomId } = useParams();
 
   const handleDeleteRow = async (index) => {
+    const deletedRowQty = rows[index].qty || 0;
     const updatedRows = rows.filter((_, rowIndex) => rowIndex !== index);
     setRows(updatedRows);
+    setTotalQty((prevTotal) => prevTotal - parseFloat(deletedRowQty));
   };
 
   const handleAddRow = () => {

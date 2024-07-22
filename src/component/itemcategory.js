@@ -8,7 +8,7 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { createItemcategory, fetchAllItemGroup } from 'store/thunk';
 
-const Itemcategory = ({ open, onClose }) => {
+const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewgroupadded }) => {
   const [itemGroupOptions, setItemGroupOptions] = React.useState([]);
   const [selectedItemGroup, setSelectedItemGroup] = React.useState(null);
   const [categoryName, setCategoryName] = React.useState('');
@@ -23,36 +23,44 @@ const Itemcategory = ({ open, onClose }) => {
           label: group.name
         }));
         setItemGroupOptions(options);
+        if (onnewgroupadded) {
+          onnewgroupadded(options);
+        }
       } catch (error) {
         console.error('There was an error fetching the item groups!', error);
       }
     };
     itemgroupdata();
-  }, [dispatch]);
+  }, [dispatch, onnewgroupadded]);
 
   const handleSave = async () => {
     const payload = {
       itemGroupId: selectedItemGroup.value,
       name: categoryName
     };
-    await dispatch(createItemcategory(payload));
+    const response = await dispatch(createItemcategory(payload));
+    console.log(response.data.data, 'RESPONSE');
+    onnewCategoryadded(response.data.data);
     onClose();
+    setSelectedItemGroup('');
+    setCategoryName('');
   };
 
   Itemcategory.propTypes = {
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    onnewCategoryadded: PropTypes.func.isRequired,
+    onnewgroupadded: PropTypes.func.isRequired
   };
 
   const list = (
-    <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden' }} role="presentation">
+    <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden', height: '500px' }} role="presentation">
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
-        <Grid item sm={6}>
+        <Grid item sm={12}>
           <Typography variant="subtitle1">Item Group</Typography>
           <Select color="secondary" onChange={setSelectedItemGroup} options={itemGroupOptions} value={selectedItemGroup} />
-          {/* <Select options={itemGroupOptions} value={selectedItemGroup} onChange={setSelectedItemGroup} placeholder="Select Item Group" /> */}
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={12}>
           <Typography variant="subtitle1">Item Category</Typography>
           <input placeholder="Enter category" value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
         </Grid>

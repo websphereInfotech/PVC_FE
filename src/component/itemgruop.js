@@ -8,26 +8,28 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createItemgroup } from 'store/thunk';
 
-const ItemGroup = ({ open, onClose }) => {
+const ItemGroup = ({ open, onClose, onnewgroupadded }) => {
   const [itemGroupName, setItemGroupName] = useState('');
   const dispatch = useDispatch();
 
   ItemGroup.propTypes = {
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    onnewgroupadded: PropTypes.func.isRequired
   };
 
   const handleSave = async () => {
     const payload = { name: itemGroupName };
-    await dispatch(createItemgroup(payload));
-    console.log(payload);
+    const response = await dispatch(createItemgroup(payload));
+    onnewgroupadded(response.data.data);
     onClose();
+    setItemGroupName('');
   };
 
   const list = (
     <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden' }} role="presentation">
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
-        <Grid item sm={6}>
+        <Grid item sm={12}>
           <Typography variant="subtitle1">Item Group</Typography>
           <input placeholder="Enter Item Group" value={itemGroupName} onChange={(e) => setItemGroupName(e.target.value)} />
         </Grid>

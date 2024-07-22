@@ -765,6 +765,30 @@ const useCan = () => {
     return checkPermission('Company Cash', 'view_company_cash_balance');
   };
 
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Group ++++++++++++++++++++++++
+
+  const canseeitemgroup = () => {
+    return checkPermission('Item Group', 'create_itemGroup');
+  };
+  const canseeviewitemgroup = () => {
+    return checkPermission('Item Group', 'view_single_itemGroup');
+  };
+  const canseeviewAllitemgroup = () => {
+    return checkPermission('Item Group', 'view_all_itemGroup');
+  };
+
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Category ++++++++++++++++++++++++
+
+  const canseeitemcategory = () => {
+    return checkPermission('Item Category', 'create_itemCategory');
+  };
+  const canseeviewitemcategory = () => {
+    return checkPermission('Item Category', 'view_single_itemCategory');
+  };
+  const canseeviewAllitemcategory = () => {
+    return checkPermission('Item Category', 'view_all_itemCategory_group');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -1018,7 +1042,15 @@ const useCan = () => {
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
     canSeeTotalPurchase,
-    canSeeCompanyCashbalance
+    canSeeCompanyCashbalance,
+    // ITEM GROUP ++++++++++++
+    canseeitemgroup,
+    canseeviewitemgroup,
+    canseeviewAllitemgroup,
+    // ITEM CATEGORY ++++++++++
+    canseeitemcategory,
+    canseeviewitemcategory,
+    canseeviewAllitemcategory
   };
 };
 
