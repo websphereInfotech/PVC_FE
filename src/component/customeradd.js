@@ -98,13 +98,14 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer, onCustomer
           setIfscCode(response.bankdetails.ifsccode);
         }
       } catch (error) {
-        console.log('Error fetching Product', error);
+        console.log('Error fetching Customer', error);
       }
     };
     if (id) {
       fetchData();
     }
   }, [id, dispatch]);
+
   const handleSave = async () => {
     try {
       const customerData = {
@@ -341,65 +342,6 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer, onCustomer
             </Grid>
           )}
         </Grid>
-        {/* <Grid item sx={{ margin: '8px 16px' }}>
-          <Card sx={{ padding: '10px' }}>
-            <h3>Custom Feild</h3>
-            {customFields.map((field, index) => (
-              <Grid key={index} container spacing={2} sx={{ margin: '1px' }}>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">
-                    Label : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Label"
-                    value={field.label}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].label = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={5}>
-                  <Typography variant="subtitle1">
-                    Value : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <input
-                    placeholder="Value"
-                    value={field.value}
-                    onChange={(e) => {
-                      const updatedCustomFields = [...customFields];
-                      updatedCustomFields[index].value = e.target.value;
-                      setCustomFields(updatedCustomFields);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={2}>
-                  <Typography variant="subtitle1">Delete</Typography>
-                  <DeleteIcon onClick={() => handleDeleteCustomField(index)} sx={{ margin: '7px' }} />
-                </Grid>
-              </Grid>
-            ))}
-            <Grid item xs={12}>
-              <button
-                style={{
-                  width: '100px',
-                  color: '#425466',
-                  borderColor: '#425466',
-                  padding: '2px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  borderRadius: '5px',
-                  lineHeight: '19px',
-                  marginTop: '10px'
-                }}
-                onClick={handleAddCustomField}
-              >
-                <AddIcon sx={{ fontSize: '18px' }} /> Add Row
-              </button>
-            </Grid>
-          </Card>
-        </Grid> */}
         <Grid item sx={{ margin: '8px 16px' }}>
           <Grid item sx={12} sm={6}>
             <Typography variant="h5" sx={{ margin: '20px 0px 10px 0px' }}>
@@ -410,34 +352,12 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer, onCustomer
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
           <div>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={onClose}
-            >
+            <button id="savebtncs" onClick={onClose}>
               Cancel
             </button>
           </div>
           <div style={{ display: 'flex' }}>
-            <button
-              style={{
-                width: '100px',
-                color: '#425466',
-                padding: '8px',
-                borderColor: '#425466',
-                display: 'flex',
-                justifyContent: 'center',
-                borderRadius: '5px'
-              }}
-              onClick={handleSave}
-            >
+            <button id="savebtncs" onClick={handleSave}>
               Save
             </button>
           </div>

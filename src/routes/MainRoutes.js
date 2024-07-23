@@ -151,9 +151,6 @@ const BreakdownmaintenanceList = Loadable(
 const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const Employeeview = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
 const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/addemployesalary')));
-const GeneralPage = Loadable(lazy(() => import('../views/general managenment/generalvoucher')));
-const Generalmain = Loadable(lazy(() => import('../views/general managenment/generalvouchermain')));
-const Stokegeneral = Loadable(lazy(() => import('../views/general managenment/stokegeneral')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
@@ -567,9 +564,6 @@ const MainRoutes = {
 
     // { path: '/stock', element: <StockManagement /> },
     { path: '/productionreport', element: <ReportPage /> },
-    { path: '/generalpage', element: <GeneralPage /> },
-    { path: '/generalmain', element: <Generalmain /> },
-    { path: '/stokegeneral', element: <Stokegeneral /> },
     { path: '/reports', element: <Reports /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++

@@ -80,7 +80,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 const VendorList = () => {
-  const { canUpdateCustomer, canDeleteCustomer, canViewVendor } = useCan();
+  const { canUpdateCustomer, canDeleteCustomer, canViewVendor, canCreateVendor } = useCan();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [vendors, setVendor] = useState([]);
@@ -108,14 +108,21 @@ const VendorList = () => {
     setOpenConfirmation(true);
     setSelectedId(id);
   };
+
   const handleCustomerview = (id) => {
     dispatch(viewVendor(id));
     navigate(`/vendorview/${id}`);
   };
+
   const handleUpdateVendor = (id) => {
     setIsDrawerOpen(true);
     setSelectedVendor(id);
     dispatch(viewVendor(id));
+  };
+
+  const handleCreateVendor = () => {
+    setSelectedVendor(null);
+    setIsDrawerOpen(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -126,14 +133,26 @@ const VendorList = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleProductUpdated = () => {
+
+  const handleVendorUpdated = () => {
     dispatch(fetchAllVendors())
       .then((data) => {
         setVendor(data);
         setIsDrawerOpen(false);
       })
       .catch((error) => {
-        console.error('Error fetching updated product data:', error);
+        console.error('Error fetching updated vendor data:', error);
+      });
+  };
+
+  const handleVendorCreated = () => {
+    dispatch(fetchAllVendors())
+      .then((data) => {
+        setVendor(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching created vendor data:', error);
       });
   };
 
@@ -162,7 +181,10 @@ const VendorList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Vendor List
       </Typography>
-      <SearchContainer>
+      <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleCreateVendor} disabled={!canCreateVendor()}>
+          Create Vendor
+        </Button>
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
@@ -269,7 +291,8 @@ const VendorList = () => {
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         id={selectedVendor}
-        onvendorupdate={handleProductUpdated}
+        onvendorupdate={handleVendorUpdated}
+        onChangeVendor={handleVendorCreated}
       />
     </Card>
   );

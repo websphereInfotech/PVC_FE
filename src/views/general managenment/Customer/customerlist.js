@@ -80,7 +80,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 const CustomerList = () => {
-  const { canUpdateCustomer, canDeleteCustomer, canViewCustomer } = useCan();
+  const { canUpdateCustomer, canDeleteCustomer, canViewCustomer, canCreateCustomer } = useCan();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [customers, setCustomer] = useState([]);
@@ -113,10 +113,16 @@ const CustomerList = () => {
     dispatch(viewCustomer(id));
     navigate(`/customerview/${id}`);
   };
+
   const handleUpdateCustomer = (id) => {
     setIsDrawerOpen(true);
     setSelectedCustomer(id);
     dispatch(viewCustomer(id));
+  };
+
+  const handleCreatecustomer = () => {
+    setSelectedCustomer(null);
+    setIsDrawerOpen(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -147,6 +153,7 @@ const CustomerList = () => {
       console.error('Error Searching Customer:', error);
     }
   };
+
   const handleCustomerUpdated = () => {
     dispatch(fetchAllCustomers())
       .then((data) => {
@@ -157,12 +164,33 @@ const CustomerList = () => {
         console.log('Error fetching updated product data:', error);
       });
   };
+
+  const handleCustomerCreated = () => {
+    dispatch(fetchAllCustomers())
+      .then((data) => {
+        setCustomer(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.log('Error fetching create product data:', error);
+      });
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Customer List
       </Typography>
-      <SearchContainer>
+      <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '16px' }}
+          onClick={handleCreatecustomer}
+          disabled={!canCreateCustomer()}
+        >
+          Create Customer
+        </Button>
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
@@ -270,6 +298,7 @@ const CustomerList = () => {
         onClose={() => setIsDrawerOpen(false)}
         id={selectedCustomer}
         onCustomerUpdated={handleCustomerUpdated}
+        onChangeCustomer={handleCustomerCreated}
       />
     </Card>
   );

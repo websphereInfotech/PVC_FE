@@ -644,18 +644,12 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['BusinessCenterIcon'],
             children: [
-              {
-                id: 'Ganeral Voucher',
-                title: 'Ganeral Voucher',
-                type: 'item',
-                url: '/generalmain'
-              },
-              {
-                id: 'Stoke general',
-                title: 'Stoke general',
-                type: 'item',
-                url: '/stokegeneral'
-              },
+              // {
+              //   id: 'Ganeral Voucher',
+              //   title: 'Ganeral Voucher',
+              //   type: 'item',
+              //   url: '/generalmain'
+              // },
               hasAllPermissionsCustomer && {
                 id: 'Customer',
                 title: "Customer's",

@@ -184,11 +184,6 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     setFormData({ ...formData, gstrate: selectedOption.value });
   };
 
-  // const handleitemgroupChange = (selectedOption) => {
-  //   setSelectedItemGroup(selectedOption.value);
-  //   setFormData({ ...formData, itemgroup: selectedOption.value });
-  // };
-
   const handleSave = async () => {
     try {
       const data = {
@@ -366,6 +361,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             />
             <Itemcategory
               onnewCategoryadded={handleNewCategoryadded}
+              ItemGroupOptions={itemgroupOptions}
               anchor="Right"
               open={itemCategoryDrawerOpen}
               onClose={() => setItemCategoryDrawerOpen(false)}

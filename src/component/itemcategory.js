@@ -8,29 +8,30 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { createItemcategory, fetchAllItemGroup } from 'store/thunk';
 
-const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewgroupadded }) => {
+const Itemcategory = ({ open, onClose, onnewCategoryadded, ItemGroupOptions }) => {
   const [itemGroupOptions, setItemGroupOptions] = React.useState([]);
   const [selectedItemGroup, setSelectedItemGroup] = React.useState(null);
   const [categoryName, setCategoryName] = React.useState('');
   const dispatch = useDispatch();
 
+  const fetchItemGroups = React.useCallback(async () => {
+    try {
+      const response = await dispatch(fetchAllItemGroup());
+      const options = response.map((group) => ({
+        value: group.id,
+        label: group.name
+      }));
+      setItemGroupOptions(options);
+      const updatedOptions = ItemGroupOptions.slice(1);
+      setItemGroupOptions(updatedOptions);
+    } catch (error) {
+      console.error('fetch all item groups', error);
+    }
+  }, [dispatch, ItemGroupOptions]);
+
   React.useEffect(() => {
-    const itemgroupdata = async () => {
-      try {
-        const response = await dispatch(fetchAllItemGroup());
-        console.log(response, 'RESPONSE');
-        const options = response.map((group) => ({
-          value: group.id,
-          label: group.name
-        }));
-        setItemGroupOptions(options);
-        onnewgroupadded(options);
-      } catch (error) {
-        console.error('fetch all item groups', error);
-      }
-    };
-    itemgroupdata();
-  }, [dispatch, onnewgroupadded]);
+    fetchItemGroups();
+  }, [fetchItemGroups, dispatch]);
 
   const handleSave = async () => {
     const payload = {
@@ -48,7 +49,8 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewgroupadded }) =>
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onnewCategoryadded: PropTypes.func.isRequired,
-    onnewgroupadded: PropTypes.func.isRequired
+    onnewgroupadded: PropTypes.func.isRequired,
+    ItemGroupOptions: PropTypes.array.isRequired
   };
 
   const list = (
