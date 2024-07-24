@@ -7,8 +7,8 @@ import { useMediaQuery } from '@mui/material';
 import {
   PurchaseInvoiceviewCash,
   createPurchaseInvoiceCash,
+  fetchAllCustomers,
   fetchAllProductsCash,
-  fetchAllVendorsCash,
   getallPurchaseInvoiceCash,
   updatePurchaseInvoiceCash
 } from 'store/thunk';
@@ -17,8 +17,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
-import AnchorVendorDrawer from 'component/vendor';
-// import RawMaterialDrawer from 'component/rawmaterialadd';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from 'component/productadd';
 
 const Purchaseinvoicecash = () => {
@@ -108,10 +107,10 @@ const Purchaseinvoicecash = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendorsCash());
+        const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          setvendor([{ value: 'new', label: 'Create New Party' }, ...options]);
           if (!canCreateVendorValue) {
             setvendor(options);
           }
@@ -141,7 +140,7 @@ const Purchaseinvoicecash = () => {
 
   // use for select vendor name from dropdown
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.vendorId = selectedOption.value;
@@ -332,7 +331,7 @@ const Purchaseinvoicecash = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

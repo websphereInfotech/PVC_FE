@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
@@ -64,7 +64,7 @@ const Paymentrecievebank = () => {
   };
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;
@@ -131,7 +131,7 @@ const Paymentrecievebank = () => {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
-          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
         }
         if (!canCreateCustomerValue) {
           setcustomer(options);

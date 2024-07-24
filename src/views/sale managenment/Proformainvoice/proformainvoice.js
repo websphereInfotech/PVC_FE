@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from '../../../component/productadd';
 import { useDispatch } from 'react-redux';
 import {
@@ -151,7 +151,7 @@ const Proformainvoice = () => {
             label: customer.accountname,
             state: customer.state
           }));
-          setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          setcustomer([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
           if (!canCreateCustomerValue) {
             setcustomer(options);
           }
@@ -264,7 +264,7 @@ const Proformainvoice = () => {
 
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;

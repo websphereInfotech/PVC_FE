@@ -293,27 +293,6 @@ export const ADD_USER_REQUEST = 'ADD_USER_REQUEST';
 export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
 export const ADD_USER_FAILURE = 'ADD_USER_FAILURE';
 
-// ########################################################################### VENDOR ###############################################################
-
-export const CREATE_VENDOR_REQUEST = 'CREATE_VENDOR_REQUEST';
-export const CREATE_VENDOR_SUCCESS = 'CREATE_VENDOR_SUCCESS';
-export const CREATE_VENDOR_FAILURE = 'CREATE_VENDOR_FAILURE';
-export const VIEW_VENDOR_REQUEST = 'VIEW_VENDOR_REQUEST';
-export const VIEW_VENDOR_SUCCESS = 'VIEW_VENDOR_SUCCESS';
-export const VIEW_VENDOR_FAILURE = 'VIEW_VENDOR_FAILURE';
-export const DELETE_VENDOR_REQUEST = 'DELETE_VENDOR_REQUEST';
-export const DELETE_VENDOR_SUCCESS = 'DELETE_VENDOR_SUCCESS';
-export const DELETE_VENDOR_FAILURE = 'DELETE_VENDOR_FAILURE';
-export const UPDATE_VENDOR_REQUEST = 'UPDATE_VENDOR_REQUEST';
-export const UPDATE_VENDOR_SUCCESS = 'UPDATE_VENDOR_SUCCESS';
-export const UPDATE_VENDOR_FAILURE = 'UPDATE_VENDOR_FAILURE';
-export const FETCH_ALL_VENDORS_REQUEST = 'FETCH_ALL_VENDORS_REQUEST';
-export const FETCH_ALL_VENDORS_SUCCESS = 'FETCH_ALL_VENDORS_SUCCESS';
-export const FETCH_ALL_VENDORS_FAILURE = 'FETCH_ALL_VENDORS_FAILURE';
-export const FETCH_ALL_VENDORS_CASH_REQUEST = 'FETCH_ALL_VENDORS_CASH_REQUEST';
-export const FETCH_ALL_VENDORS_CASH_SUCCESS = 'FETCH_ALL_VENDORS_CASH_SUCCESS';
-export const FETCH_ALL_VENDORS_CASH_FAILURE = 'FETCH_ALL_VENDORS_CASH_FAILURE';
-
 // #################################################################### VENDOR LEDGER ###################################################################
 export const FETCH_ALL_VENDOR_LEDGER_REQUEST = 'FETCH_ALL_VENDOR_LEDGER_REQUEST';
 export const FETCH_ALL_VENDOR_LEDGER_SUCCESS = 'FETCH_ALL_VENDOR_LEDGER_SUCCESS';
@@ -1516,77 +1495,6 @@ export const addUserSuccess = (data) => ({
 });
 export const addUserFailure = (error) => ({
   type: 'ADD_USER_FAILURE',
-  payload: error
-});
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createVendorRequest = (data) => ({
-  type: 'CREATE_VENDOR_REQUEST',
-  payload: data
-});
-export const createVendorSuccess = (data) => ({
-  type: 'CREATE_VENDOR_SUCCESS',
-  payload: data
-});
-export const createVendorFailure = (error) => ({
-  type: 'CREATE_VENDOR_FAILURE',
-  payload: error
-});
-export const viewVendorRequest = (data) => ({
-  type: 'VIEW_VENDOR_REQUEST',
-  payload: data
-});
-export const viewVendorSuccess = (data) => ({
-  type: 'VIEW_VENDOR_SUCCESS',
-  payload: data
-});
-export const viewVendorFailure = (error) => ({
-  type: 'VIEW_VENDOR_FAILURE',
-  payload: error
-});
-export const deleteVendorRequest = (data) => ({
-  type: 'DELETE_VENDOR_REQUEST',
-  payload: data
-});
-export const deleteVendorSuccess = (data) => ({
-  type: 'DELETE_VENDOR_SUCCESS',
-  payload: data
-});
-export const deleteVendorFailure = (error) => ({
-  type: 'DELETE_VENDOR_FAILURE',
-  payload: error
-});
-export const updateVendorRequest = (data) => ({
-  type: 'UPDATE_VENDOR_REQUEST',
-  payload: data
-});
-export const updateVendorSuccess = (data) => ({
-  type: 'UPDATE_VENDOR_SUCCESS',
-  payload: data
-});
-export const updateVendorFailure = (error) => ({
-  type: 'UPDATE_VENDOR_FAILURE',
-  payload: error
-});
-export const fetchAllVendorsRequest = () => ({
-  type: 'FETCH_ALL_VENDORS_REQUEST'
-});
-export const fetchAllVendorsSuccess = (data) => ({
-  type: 'FETCH_ALL_VENDORS_SUCCESS',
-  payload: data
-});
-export const fetchAllVendorsFailure = (error) => ({
-  type: 'FETCH_ALL_VENDORS_FAILURE',
-  payload: error
-});
-export const fetchAllVendorsCashRequest = () => ({
-  type: 'FETCH_ALL_VENDORS_CASH_REQUEST'
-});
-export const fetchAllVendorsCashSuccess = (data) => ({
-  type: 'FETCH_ALL_VENDORS_CASH_SUCCESS',
-  payload: data
-});
-export const fetchAllVendorsCashFailure = (error) => ({
-  type: 'FETCH_ALL_VENDORS_CASH_FAILURE',
   payload: error
 });
 

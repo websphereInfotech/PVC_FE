@@ -6,7 +6,7 @@ import {
   createCompanyBank,
   createPaymentBank,
   fetchAllCompanyBank,
-  fetchAllVendors,
+  fetchAllCustomers,
   getAllPaymentbank,
   updatePaymentbank,
   viewSinglePaymentBank
@@ -14,7 +14,7 @@ import {
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import AnchorVendorDrawer from '../../../component/vendor';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { toast } from 'react-toastify';
@@ -63,7 +63,7 @@ const Paymentbank = () => {
   };
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.vendorId = selectedOption.value;
@@ -127,10 +127,10 @@ const Paymentbank = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendors());
+        const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          setvendor([{ value: 'new', label: 'Create New Party' }, ...options]);
         }
         if (!canCreateVendorValue) {
           setvendor(options);
@@ -292,7 +292,7 @@ const Paymentbank = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

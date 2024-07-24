@@ -226,25 +226,6 @@ import {
   addUserRequest,
   addUserSuccess,
   addUserFailure,
-  // VENDOR ++++++++++++++++++++++++++
-  createVendorRequest,
-  createVendorSuccess,
-  createVendorFailure,
-  fetchAllVendorsCashRequest,
-  fetchAllVendorsCashSuccess,
-  fetchAllVendorsCashFailure,
-  fetchAllVendorsRequest,
-  fetchAllVendorsSuccess,
-  fetchAllVendorsFailure,
-  deleteVendorRequest,
-  deleteVendorSuccess,
-  deleteVendorFailure,
-  viewVendorRequest,
-  viewVendorSuccess,
-  viewVendorFailure,
-  updateVendorRequest,
-  updateVendorSuccess,
-  updateVendorFailure,
   //  COMPANY ++++++++++++++++++++++++
   CreateCompanyRequest,
   CreateCompanySuccess,
@@ -2186,117 +2167,7 @@ export const Adduser = (userid) => {
     }
   };
 };
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VENDOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createVendor = (vendorData, navigate) => {
-  return async (dispatch) => {
-    dispatch(createVendorRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/vendor/create_vendor`, vendorData, config);
-      const createdVendor = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(createVendorSuccess(createdVendor));
-      return createdVendor;
-    } catch (error) {
-      dispatch(createVendorFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message, {
-          autoClose: 1000
-        });
-      }
-    }
-  };
-};
-export const fetchAllVendors = (params = {}) => {
-  return async (dispatch) => {
-    dispatch(fetchAllVendorsRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/get_all_vandor?{search}=`, { ...config, params: params });
-      const data = response.data.data;
-      dispatch(fetchAllVendorsSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllVendorsFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const fetchAllVendorsCash = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllVendorsCashRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/C_get_all_vandor`, config);
-      const data = response.data.data;
-      dispatch(fetchAllVendorsCashSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllVendorsCashFailure(error.message));
-    }
-  };
-};
-export const DeleteVendor = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteVendorRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/vendor/delete_vandor/${id}`, config);
-      const data = response.data.data;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(deleteVendorSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(deleteVendorFailure(error.message));
-    }
-  };
-};
-export const viewVendor = (id) => {
-  return async (dispatch) => {
-    dispatch(viewVendorRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/vendor/view_vendor/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewVendorSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewVendorFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const updateVendor = (id, vendorData, navigate) => {
-  return async (dispatch) => {
-    dispatch(updateVendorRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/vendor/update_vendor/${id}`, vendorData, config);
-      const upadteCustomerData = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(updateVendorSuccess(upadteCustomerData));
-      return upadteCustomerData;
-    } catch (error) {
-      dispatch(updateVendorFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
-};
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createCompany = (data) => {
   return async (dispatch) => {

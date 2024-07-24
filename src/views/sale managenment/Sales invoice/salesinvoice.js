@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import {
   fetchAllProducts,
   fetchAllCustomers,
@@ -93,7 +93,7 @@ const Salesinvoice = () => {
   };
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;
@@ -195,7 +195,7 @@ const Salesinvoice = () => {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
-          setcustomer([{ value: 'new', label: 'Create New Customer', state: '' }, ...options]);
+          setcustomer([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
           if (!canCreateCustomerValue) {
             setcustomer(options);
           }

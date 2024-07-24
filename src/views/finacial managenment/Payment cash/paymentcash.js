@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentCash, fetchAllVendorsCash, getallPaymentCash, paymentCashview, updatePaymentCash } from 'store/thunk';
+import { createPaymentCash, fetchAllCustomers, getallPaymentCash, paymentCashview, updatePaymentCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import AnchorVendorDrawer from '../../../component/vendor';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
@@ -37,7 +37,7 @@ const PaymentPage = () => {
     setFormData({ ...formData, date: date });
   };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.vendorId = selectedOption.value;
@@ -49,10 +49,10 @@ const PaymentPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendorsCash());
+        const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Vendor' }, ...options]);
+          setvendor([{ value: 'new', label: 'Create New Party' }, ...options]);
         }
         if (!canCreateVendorValue) {
           setvendor(options);
@@ -186,7 +186,7 @@ const PaymentPage = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

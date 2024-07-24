@@ -49,10 +49,6 @@ const Paymentrecievebanklist = Loadable(lazy(() => import('../views/finacial man
 const Paymentbankrecieveledgerlist = Loadable(
   lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentbankrecieveledgerlist'))
 );
-// ++++++++++++++++++++++++++++++++++++++++++++ Routes of expense +++++++++++++++++++++++++++++++++++++++++++++++++++
-const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expencelist')));
-const AddExpense = Loadable(lazy(() => import('../views/finacial managenment/expenceadd')));
-const ExpenseDetailsPage = Loadable(lazy(() => import('../views/finacial managenment/expenceview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
@@ -123,13 +119,8 @@ const Spareview = Loadable(lazy(() => import('../views/production managenment/Sp
 const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/customerlist')));
 const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/customerview')));
 
-// +++++++++++++++++++++++++++++++++++++++++++++++ Vendor +++++++++++++++++++++++++++++++++++++
-const VendorList = Loadable(lazy(() => import('../views/general managenment/Vendor/vendorlist')));
-const Vendorview = Loadable(lazy(() => import('../views/general managenment/Vendor/vendorview')));
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++
 const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
-const LowStockCash = Loadable(lazy(() => import('../views/stock managenment/lowStokeCash')));
 const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalStock')));
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Machine +++++++++++++++++++++++++++++++++
@@ -266,12 +257,6 @@ const MainRoutes = {
       path: '/paymentrecievebankledgerlist',
       element: <ProtectedRoute element={Paymentbankrecieveledgerlist} resource="Customer Ledger" permissionName="View_customer_Ledger" />
     },
-
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of expenses +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/expenselist', element: <ExpensePage /> },
-    { path: '/addexpense', element: <AddExpense /> },
-    { path: '/addexpense/:id', element: <AddExpense /> },
-    { path: '/viewexpense/:id', element: <ExpenseDetailsPage /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Proformainvoice +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
@@ -434,10 +419,6 @@ const MainRoutes = {
       element: <ProtectedRoute element={Customerview} resource="Customer" permissionName="view_single_customer" />
     },
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/vendorlist', element: <ProtectedRoute element={VendorList} resource="Vendor" permissionName="view_all_vandor" /> },
-    { path: '/vendorview/:id', element: <ProtectedRoute element={Vendorview} resource="Vendor" permissionName="view_vendor" /> },
-
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 
     {
@@ -460,10 +441,6 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/stocklist', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
-    {
-      path: '/stockcashlist',
-      element: <ProtectedRoute element={LowStockCash} resource="Stock Cash" permissionName="view_all_product_cash_stock" />
-    },
     { path: '/totalstock', element: <TotalStock /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++

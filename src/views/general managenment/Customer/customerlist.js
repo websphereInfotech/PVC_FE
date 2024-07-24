@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux';
 import { DeleteCustomer, fetchAllCustomers, viewCustomer } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
-import AnchorTemporaryDrawer from 'component/customeradd';
+import AnchorTemporaryDrawer from 'component/addparty';
 import { useNavigate } from 'react-router';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';

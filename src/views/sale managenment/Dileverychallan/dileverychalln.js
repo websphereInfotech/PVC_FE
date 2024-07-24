@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMediaQuery } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from '../../../component/productadd';
 import 'react-toastify/dist/ReactToastify.css';
 import { createDeliveryChallan, getallDeliverychallan, updateDileveryChallan } from 'store/thunk';
@@ -92,7 +92,7 @@ const Deliverychallan = () => {
 
   //use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;
@@ -147,7 +147,7 @@ const Deliverychallan = () => {
         const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
-          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
           if (!canCreateCustomerValue) {
             setcustomer(options);
           }

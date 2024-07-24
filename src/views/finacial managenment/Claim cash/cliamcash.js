@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 import { createClaimcash, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import AnchorVendorDrawer from '../../../component/vendor';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
 
 const Cliamcashpage = () => {
@@ -117,7 +117,7 @@ const Cliamcashpage = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

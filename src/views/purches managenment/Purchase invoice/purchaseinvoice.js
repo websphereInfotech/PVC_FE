@@ -4,16 +4,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import AnchorVendorDrawer from '../../../component/vendor';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import { useMediaQuery } from '@mui/material';
 import {
   createPurchaseinvoice,
-  fetchAllVendors,
   viewPurchaseinvoice,
   updatePurchaseinvoice,
   getallPurchaseinvoice,
   fetchuserwiseCompany,
-  fetchAllProducts
+  fetchAllProducts,
+  fetchAllCustomers
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -138,7 +138,7 @@ const Purchaseinvoice = () => {
   };
 
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Vendor') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.vendorId = selectedOption.value;
@@ -215,10 +215,10 @@ const Purchaseinvoice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendors());
+        const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname, state: vendor.state }));
-          setvendor([{ value: 'new', label: 'Create New Vendor', state: '' }, ...options]);
+          setvendor([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
           if (!canCreateVendorValue) {
             setvendor(options);
           }
@@ -414,7 +414,7 @@ const Purchaseinvoice = () => {
             onChange={handleSelectChange}
           />
         </Grid>
-        <AnchorVendorDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+        <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">

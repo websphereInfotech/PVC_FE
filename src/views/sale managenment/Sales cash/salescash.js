@@ -3,7 +3,7 @@ import { Typography, Grid, Paper, Table, TableRow, TableBody, TableHead, TableCe
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from '../../../component/customeradd';
+import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
@@ -109,7 +109,7 @@ const Salescash = () => {
         const response = await dispatch(fetchAllCustomersCash());
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
-          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
           if (!canCreateCustomerValue) {
             setcustomer(options);
           }
@@ -140,7 +140,7 @@ const Salescash = () => {
 
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;

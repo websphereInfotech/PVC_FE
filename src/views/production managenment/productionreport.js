@@ -15,7 +15,6 @@ const productionTrendsData = [
   { month: 'Feb', production: 200 },
   { month: 'Mar', production: 300 },
   { month: 'Apr', production: 400 }
-  // Add more data as needed
 ];
 
 // Component to display production statistics

@@ -22,7 +22,7 @@ import {
 import Select from 'react-select';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { deletePaymentbank, fetchAllVendors, getAllPaymentbank, viewSinglePaymentBank, getAllPaymentbankLedger } from 'store/thunk';
+import { deletePaymentbank, getAllPaymentbank, viewSinglePaymentBank, getAllPaymentbankLedger, fetchAllCustomers } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -147,7 +147,7 @@ const Paymentbanklist = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllVendors());
+        const response = await dispatch(fetchAllCustomers());
         if (Array.isArray(response)) {
           const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname }));
           setVendor([...options]);

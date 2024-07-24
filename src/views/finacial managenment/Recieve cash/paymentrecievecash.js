@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
-import AnchorTemporaryDrawer from 'component/customeradd';
+import AnchorTemporaryDrawer from 'component/addparty';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Paymentrecieve = () => {
@@ -37,7 +37,7 @@ const Paymentrecieve = () => {
     setFormData({ ...formData, date: date });
   };
   const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label === 'Create New Customer') {
+    if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
       formData.customerId = selectedOption.value;
@@ -46,6 +46,7 @@ const Paymentrecieve = () => {
       setIsDrawerOpen(false);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,7 +66,7 @@ const Paymentrecieve = () => {
         const response = await dispatch(fetchAllCustomersCash());
         if (Array.isArray(response)) {
           const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
-          setcustomer([{ value: 'new', label: 'Create New Customer' }, ...options]);
+          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
           if (!canCreateCustomerValue) {
             setcustomer(options);
           }
