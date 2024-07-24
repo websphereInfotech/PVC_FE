@@ -40,7 +40,7 @@ const useCan = () => {
     return true;
   };
 
-  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ QOUTATION
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ PROFORMA INVOICE
   const canCreateProformainvoiceQuotation = () => {
     return checkPermission('ProFormaInvoice', 'create_ProFormaInvoice');
   };
@@ -739,7 +739,7 @@ const useCan = () => {
     return checkPermission('Sales Cash', 'view_sales_cash_pdf');
   };
   const canDownloadPdfCashPurchase = () => {
-    return checkPermission('Purchase Cash', 'C_view_purchaseCash_pdf');
+    return checkPermission('Purchase Cash', 'view_purchase_cash_pdf');
   };
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ dash board ++++++++++++++++++++++++
