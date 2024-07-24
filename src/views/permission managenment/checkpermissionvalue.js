@@ -263,23 +263,6 @@ const useCan = () => {
     return checkPermission('Items', 'view_all_item');
   };
 
-  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ RAW MATERIAL
-  // const canCreateRawmaterial = () => {
-  //   return checkPermission('Raw Material', 'create_raw_material');
-  // };
-  // const canUpdateRawmaterial = () => {
-  //   return checkPermission('Raw Material', 'update_raw_material');
-  // };
-  // const canDeleteRawmaterial = () => {
-  //   return checkPermission('Raw Material', 'delete_raw_material');
-  // };
-  // const canViewRawmaterial = () => {
-  //   return checkPermission('Raw Material', 'view_single_raw_material');
-  // };
-  // const canViewAllRawmaterial = () => {
-  //   return checkPermission('Raw Material', 'view_all_raw_material');
-  // };
-
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP
   const canCreateItemgroup = () => {
     return checkPermission('Item Group', 'create_itemgroup');
@@ -752,6 +735,12 @@ const useCan = () => {
   const canDownloadPdfCashVendor = () => {
     return checkPermission('Vendor Ledger Cash', 'Pdf_Download');
   };
+  const canDownloadPdfCashSales = () => {
+    return checkPermission('Sales Cash', 'view_sales_cash_pdf');
+  };
+  const canDownloadPdfCashPurchase = () => {
+    return checkPermission('Purchase Cash', 'C_view_purchaseCash_pdf');
+  };
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ dash board ++++++++++++++++++++++++
 
@@ -1039,6 +1028,8 @@ const useCan = () => {
     canDownloadPdfBankVendor,
     canDownloadPdfCashCustomer,
     canDownloadPdfCashVendor,
+    canDownloadPdfCashSales,
+    canDownloadPdfCashPurchase,
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
     canSeeTotalPurchase,

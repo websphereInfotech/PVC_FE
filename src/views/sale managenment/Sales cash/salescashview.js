@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
+import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow, Button } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { SalesInvoiceCashview } from 'store/thunk';
+import { SalesCashPDF, SalesInvoiceCashview } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Salescashview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { canDownloadPdfCashSales } = useCan();
   const { id } = useParams();
   const [data, setData] = useState({});
 
@@ -25,6 +27,11 @@ const Salescashview = () => {
         console.error('Error fetching sales cash data:', error);
       });
   }, [dispatch, id, navigate]);
+
+  const handledownloadpdf = async () => {
+    await dispatch(SalesCashPDF(id));
+  };
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -43,7 +50,11 @@ const Salescashview = () => {
           <Typography variant="subtitle1">Date</Typography>
           <Typography variant="subtitle2">{new Date(data.date).toLocaleDateString('en-GB')}</Typography>
         </Grid>
-
+        <Grid item xs={12} sm={6} md={3}>
+          <Button variant="contained" color="secondary" onClick={handledownloadpdf} disabled={!canDownloadPdfCashSales()}>
+            Download Pdf
+          </Button>
+        </Grid>
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>
             <Table>

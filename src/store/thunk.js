@@ -585,6 +585,12 @@ import {
   VendorCashPdfRequest,
   VendorCashPdfSuccess,
   VendorCashPdfFailure,
+  SalesCashPdfRequest,
+  SalesCashPdfSuccess,
+  SalesCashPdfFailure,
+  PurchaseCashPdfRequest,
+  PurchaseCashPdfSuccess,
+  PurchaseCashPdfFailure,
   // DASHBORAD +++++++++++++++
   GetTotalPurchaseRequest,
   GetTotalPurchaseSuccess,
@@ -652,14 +658,12 @@ export const loginAdmin = (credentials, navigate) => {
         autoClose: 1000,
         onClose: () => {
           navigate('/dashboard');
-          // window.location.reload();
         }
       });
       dispatch(loginSuccess(userData));
       return userData;
     } catch (error) {
       toast.error(error.response.data.message, { autoClose: 1000 });
-      console.log(error);
       dispatch(loginFailure(error.message));
     }
   };
@@ -835,7 +839,6 @@ export const createDeliveryChallan = (ChallanData, navigate) => {
           navigate('/deliverychallanlist');
         }
       });
-      console.log(response);
       dispatch(createDeliveryChallanSuccess(createdDeliverychallan));
       return createdDeliverychallan;
     } catch (error) {
@@ -3348,7 +3351,6 @@ export const updateStokeCash = (id, formData, navigate) => {
     try {
       const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/stock/C_update_product_stock/${id}`, formData, config);
-      console.log('response', response);
       const updateStoke = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4287,7 +4289,60 @@ export const CashVendorPDF = (id, formDate, toDate) => {
     }
   };
 };
-
+export const SalesCashPDF = (id) => {
+  return async (dispatch) => {
+    dispatch(SalesCashPdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_view_salesInvoice_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'sales_cash.pdf');
+      dispatch(SalesCashPdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      toast.error(error.response?.data?.error || 'An error occurred');
+      dispatch(SalesCashPdfFailure(error.message));
+    }
+  };
+};
+export const PurchaseCashPDF = (id) => {
+  return async (dispatch) => {
+    dispatch(PurchaseCashPdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_view_purchaseCash_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'purchase_cash.pdf');
+      dispatch(PurchaseCashPdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      toast.error(error.response?.data?.error || 'An error occurred');
+      dispatch(PurchaseCashPdfFailure(error.message));
+    }
+  };
+};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD API +++++++++++++++++++++++++++++++++++++
 export const TotalSalesDashboard = () => {
   return async (dispatch) => {

@@ -634,6 +634,13 @@ export const GET_VENDOR_CASH_PDF_REQUEST = 'GET_VENDOR_CASH_PDF_REQUEST';
 export const GET_VENDOR_CASH_PDF_SUCCESS = 'GET_VENDOR_CASH_PDF_SUCCESS';
 export const GET_VENDOR_CASH_PDF_FAILURE = 'GET_VENDOR_CASH_PDF_FAILURE';
 
+export const GET_SALES_CASH_PDF_REQUEST = 'GET_SALES_CASH_PDF_REQUEST';
+export const GET_SALES_CASH_PDF_SUCCESS = 'GET_SALES_CASH_PDF_SUCCESS';
+export const GET_SALES_CASH_PDF_FAILURE = 'GET_SALES_CASH_PDF_FAILURE';
+export const GET_PURCHASE_CASH_PDF_REQUEST = 'GET_PURCHASE_CASH_PDF_REQUEST';
+export const GET_PURCHASE_CASH_PDF_SUCCESS = 'GET_PURCHASE_CASH_PDF_SUCCESS';
+export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++
 export const GET_TOTAL_SALES_REQUEST = 'GET_TOTAL_SALES_REQUEST';
 export const GET_TOTAL_SALES_SUCCESS = 'GET_TOTAL_SALES_SUCCESS';
@@ -2840,6 +2847,28 @@ export const VendorCashPdfSuccess = (data) => ({
 });
 export const VendorCashPdfFailure = (error) => ({
   type: 'GET_VENDOR_CASH_PDF_FAILURE',
+  payload: error
+});
+export const SalesCashPdfRequest = () => ({
+  type: 'GET_SALES_CASH_PDF_REQUEST'
+});
+export const SalesCashPdfSuccess = (data) => ({
+  type: 'GET_SALES_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const SalesCashPdfFailure = (error) => ({
+  type: 'GET_SALES_CASH_PDF_FAILURE',
+  payload: error
+});
+export const PurchaseCashPdfRequest = () => ({
+  type: 'GET_PURCHSE_CASH_PDF_REQUEST'
+});
+export const PurchaseCashPdfSuccess = (data) => ({
+  type: 'GET_PURCHSE_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const PurchaseCashPdfFailure = (error) => ({
+  type: 'GET_PURCHSE_CASH_PDF_FAILURE',
   payload: error
 });
 
