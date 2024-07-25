@@ -205,14 +205,6 @@ const useCan = () => {
     return checkPermission('Payment', 'view_all_payment');
   };
 
-  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOCK
-  const canCreateStock = () => {
-    return checkPermission('Stock', 'create_stockitem');
-  };
-  const canViewAllStock = () => {
-    return checkPermission('Stock', 'view_all_stock');
-  };
-
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CUSTOMER
   const canCreateCustomer = () => {
     return checkPermission('Customer', 'create_customer');
@@ -588,44 +580,15 @@ const useCan = () => {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE
 
   const canViewAllStoke = () => {
-    return checkPermission('Stock', 'view_all_product_stock');
+    return checkPermission('Stock', 'view_all_item_stock');
   };
   const canViewStoke = () => {
-    return checkPermission('Stock', 'view_product_stock');
+    return checkPermission('Stock', 'view_item_stock');
   };
   const canUpdateStoke = () => {
-    return checkPermission('Stock', 'update_product_stock');
-  };
-  const canViewAllStokeCash = () => {
-    return checkPermission('Stock Cash', 'view_all_product_cash_stock');
-  };
-  const canViewStokeCash = () => {
-    return checkPermission('Stock Cash', 'view_product_cash_stock');
-  };
-  const canUpdateStokeCash = () => {
-    return checkPermission('Stock Cash', 'update_product_cash_stock');
+    return checkPermission('Stock', 'update_item_stock');
   };
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE Raw Material
-  const canViewAllRawStoke = () => {
-    return checkPermission('Stock', 'view_all_raw_material_stock');
-  };
-  const canViewRawStoke = () => {
-    return checkPermission('Stock', 'view_raw_material_stock');
-  };
-  const canUpdateRawStoke = () => {
-    return checkPermission('Stock', 'update_raw_material_stock');
-  };
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ STOKE Raw Material Cash
-  const canViewAllRawCashStoke = () => {
-    return checkPermission('Stock Cash', 'view_all_raw_material_cash_stock');
-  };
-  const canViewRawCashStoke = () => {
-    return checkPermission('Stock Cash', 'view_raw_material_cash_stock');
-  };
-  const canUpdateRawCashStoke = () => {
-    return checkPermission('Stock Cash', 'update_raw_material_cash_stock');
-  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification
   const canViewAllNotification = () => {
     return checkPermission('Notification', 'view_all_notification');
@@ -833,9 +796,6 @@ const useCan = () => {
     canDeletePayment,
     canViewPayment,
     canViewAllPayment,
-    // STOCK ++++++++++++++++++++++++++
-    canCreateStock,
-    canViewAllStock,
     // CUSTOMER +++++++++++++++++++++++
     canCreateCustomer,
     canUpdateCustomer,
@@ -854,12 +814,6 @@ const useCan = () => {
     canDeleteItem,
     canViewItem,
     canViewAllItem,
-    // RAW MATERIAL ++++++++++++++++++++++++
-    // canCreateRawmaterial,
-    // canUpdateRawmaterial,
-    // canDeleteRawmaterial,
-    // canViewRawmaterial,
-    // canViewAllRawmaterial,
     // ITEM GROUP +++++++++++++++++++++
     canCreateItemgroup,
     canUpdateItemgroup,
@@ -974,17 +928,6 @@ const useCan = () => {
     canViewAllStoke,
     canViewStoke,
     canUpdateStoke,
-    canViewAllStokeCash,
-    canViewStokeCash,
-    canUpdateStokeCash,
-    // ***************************** Raw Meterial Stock *********************
-    canViewAllRawStoke,
-    canViewRawStoke,
-    canUpdateRawStoke,
-    // ***************************** Raw Meterial Stock Cash *********************
-    canViewAllRawCashStoke,
-    canViewRawCashStoke,
-    canUpdateRawCashStoke,
     //  NOTIFICATION ++++++++++++++
     canViewAllNotification,
     //  USER BANK +++++++++++++++++

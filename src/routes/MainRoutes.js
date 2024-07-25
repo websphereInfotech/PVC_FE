@@ -121,7 +121,6 @@ const Customerview = Loadable(lazy(() => import('../views/general managenment/Cu
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++
 const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
-const TotalStock = Loadable(lazy(() => import('../views/stock managenment/TotalStock')));
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Machine +++++++++++++++++++++++++++++++++
 const Machineadd = Loadable(lazy(() => import('../views/machine managenment/machineadd')));
@@ -440,8 +439,8 @@ const MainRoutes = {
     { path: '/products', element: <Product /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++Routes of stock +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/stocklist', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
-    { path: '/totalstock', element: <TotalStock /> },
+    // { path: '/stocklist', element: <ProtectedRoute element={LowStock} resource="Stock" permissionName="view_all_product_stock" /> },
+    { path: '/stocklist', element: <LowStock /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Permission +++++++++++++++++++++++++++++++++++
     { path: '/permission', element: <Permission /> },

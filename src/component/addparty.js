@@ -77,12 +77,15 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onChangeCustomer, onCustomer
   const handleStateChange = (selectedState) => {
     setFormData({ ...formData, state: selectedState.name });
   };
+
   const handleCreditDetailChange = (event) => {
     setCreditlimit(event.target.value === 'true' ? true : false);
   };
+
   const handleTotalCreditChange = (event) => {
     setTotalCredit(event.target.value);
   };
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {

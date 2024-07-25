@@ -563,12 +563,6 @@ const MenuItem = () => {
                 children: [
                   {
                     id: 'Stoke',
-                    title: 'Total Stock',
-                    type: 'item',
-                    url: '/totalstock'
-                  },
-                  {
-                    id: 'Stoke',
                     title: 'Stock List',
                     type: 'item',
                     url: '/stocklist'

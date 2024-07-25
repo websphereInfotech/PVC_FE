@@ -26,13 +26,11 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'product', label: 'Product Name', minWidth: 100, align: 'center' },
-  // { id: 'hsncode', label: 'HSN Code', minWidth: 100, align: 'center' },
   { id: 'stock', label: 'Stock', minWidth: 70, align: 'center' },
-  // { id: 'lowstock', label: 'Low Stock', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
-const Product = () => {
+const Product = (GroupId) => {
   const { canUpdateStoke, canViewStoke } = useCan();
   const [stoke, setStoke] = useState([]);
   const [page, setPage] = useState(0);
@@ -66,11 +64,11 @@ const Product = () => {
   const handleSave = async () => {
     try {
       const paylod = {
-        productId: selectedRow.productId,
+        itemId: selectedRow.productId,
         qty: selectedRow.qty
       };
       await dispatch(updateStoke(selectedRow.id, paylod, navigate));
-      const updatedData = await dispatch(getAllStoke());
+      const updatedData = await dispatch(getAllStoke(GroupId.GroupId));
       setStoke(updatedData);
       handleCloseDialog();
     } catch (error) {
@@ -83,6 +81,7 @@ const Product = () => {
     setViewStock(data);
     setOpenViewDialog(true);
   };
+
   const handleCloseViewDialog = () => {
     setOpenViewDialog(false);
     setSelectedRow(null);
@@ -91,7 +90,7 @@ const Product = () => {
   useEffect(() => {
     const fetchStoke = async () => {
       try {
-        const data = await dispatch(getAllStoke());
+        const data = await dispatch(getAllStoke(GroupId.GroupId));
         setStoke(data);
       } catch (error) {
         if (error.response.status === 401) {
@@ -101,7 +100,7 @@ const Product = () => {
       }
     };
     fetchStoke();
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, GroupId]);
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
@@ -152,13 +151,13 @@ const Product = () => {
                             ...(!canUpdateStoke() && { backgroundColor: 'gray' })
                           }}
                           disabled={!canUpdateStoke()}
-                          onClick={() => handleOpenDialog(row, row.productStock.id)}
+                          onClick={() => handleOpenDialog(row, row.itemStock.id)}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'product' ? (
-                      row.productStock.productname
+                      row.itemStock?.productname
                     ) : column.id === 'stock' ? (
                       row.qty
                     ) : (
@@ -188,9 +187,9 @@ const Product = () => {
               <Typography variant="subtitle1">Product Name:</Typography>
               <input
                 disabled
-                value={selectedRow?.productStock.productname || ''}
+                value={selectedRow?.itemStock.productname || ''}
                 onChange={(e) =>
-                  setSelectedRow({ ...selectedRow, productStock: { ...selectedRow.productStock.id, productname: e.target.value } })
+                  setSelectedRow({ ...selectedRow, itemStock: { ...selectedRow.itemStock.id, productname: e.target.value } })
                 }
               />
             </Grid>
@@ -221,7 +220,7 @@ const Product = () => {
               <Typography variant="subtitle1">Product name:</Typography>
             </Grid>
             <Grid item sm={6}>
-              <Typography>{viewStock?.productStock?.productname}</Typography>
+              <Typography>{viewStock?.itemStock?.productname}</Typography>
             </Grid>
           </Grid>
           <Grid item container spacing={4}>
