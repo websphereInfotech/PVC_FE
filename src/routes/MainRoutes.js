@@ -116,7 +116,7 @@ const Sparelist = Loadable(lazy(() => import('../views/production managenment/Sp
 const Spareview = Loadable(lazy(() => import('../views/production managenment/Spare/spareview')));
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Customer ++++++++++++++++++++++++++++++++++++++++++++++++
-const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/customerlist')));
+const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/partylist')));
 const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/customerview')));
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++

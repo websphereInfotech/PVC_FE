@@ -562,7 +562,23 @@ import {
   fetchAllItemCategoryFailure,
   ViewItemCategoryRequest,
   ViewItemCategorySuccess,
-  ViewItemCategoryFailure
+  ViewItemCategoryFailure,
+  // LEDGER OPTIONS +++++++++++++
+  fetchAllAccountOptionsRequest,
+  fetchAllAccountOptionsSuccess,
+  fetchAllAccountOptionsFailure,
+  CreateAccountRequest,
+  CreateAccountSuccess,
+  CreateAccountFailure,
+  ViewAccountRequest,
+  ViewAccountSuccess,
+  ViewAccountFailure,
+  fetchAllAccountsRequest,
+  fetchAllAccountsSuccess,
+  fetchAllAccountsFailure,
+  UpdateAccountRequest,
+  UpdateAccountSuccess,
+  UpdateAccountFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -4105,6 +4121,97 @@ export const ItemCategoryview = (id) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(ViewItemCategoryFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SELECT LEDGR GROUP +++++++++++++++++++++++++++++++++++++++++++++
+
+export const fetchAllAccountOptions = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllAccountOptionsRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/view_all_account_group`, config);
+      const data = response.data.data;
+      dispatch(fetchAllAccountOptionsSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllAccountOptionsFailure(error.message));
+    }
+  };
+};
+export const createAccounts = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateAccountRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/account/create_account`, data, config);
+      const additemgroup = response;
+      dispatch(CreateAccountSuccess(additemgroup));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return additemgroup;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateAccountFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const viewAccount = (accountId) => {
+  return async (dispatch) => {
+    dispatch(ViewAccountRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/view_one_account/${accountId}`, config);
+      const data = response.data.data;
+      dispatch(ViewAccountSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewAccountFailure(error.message));
+    }
+  };
+};
+export const fetchAllAccounts = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllAccountsRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/view_all_account`, config);
+      const data = response.data.data;
+      dispatch(fetchAllAccountsSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllAccountsFailure(error.message));
+    }
+  };
+};
+export const updateAccount = (accountId, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateAccountRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/account/update_account/${accountId}`, formData, config);
+      const upadateAccountdata = response.data.data;
+      dispatch(UpdateAccountSuccess(upadateAccountdata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/customerlist');
+      return upadateAccountdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateAccountFailure(error.message));
+      throw error;
     }
   };
 };

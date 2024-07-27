@@ -609,6 +609,23 @@ export const GET_ALL_ITEM_CATEGORY_REQUEST = 'GET_ALL_ITEM_CATEGORY_REQUEST';
 export const GET_ALL_ITEM_CATEGORY_SUCCESS = 'GET_ALL_ITEM_CATEGORY_SUCCESS';
 export const GET_ALL_ITEM_CATEGORY_FAILURE = 'GET_ALL_ITEM_CATEGORY_FAILURE';
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNTS +++++++++++++++++++++++
+export const GET_ALL_ACCOUNT_OPTIONS_REQUEST = 'GET_ALL_ACCOUNT_OPTIONS_REQUEST';
+export const GET_ALL_ACCOUNT_OPTIONS_SUCCESS = 'GET_ALL_ACCOUNT_OPTIONS_SUCCESS';
+export const GET_ALL_ACCOUNT_OPTIONS_FAILURE = 'GET_ALL_ACCOUNT_OPTIONS_FAILURE';
+export const CREATE_ACCOUNT_REQUEST = 'CREATE_ACCOUNT_REQUEST';
+export const CREATE_ACCOUNT_SUCCESS = 'CREATE_ACCOUNT_SUCCESS';
+export const CREATE_ACCOUNT_FAILURE = 'CREATE_ACCOUNT_FAILURE';
+export const VIEW_ACCOUNT_REQUEST = 'VIEW_ACCOUNT_REQUEST';
+export const VIEW_ACCOUNT_SUCCESS = 'VIEW_ACCOUNT_SUCCESS';
+export const VIEW_ACCOUNT_FAILURE = 'VIEW_ACCOUNT_FAILURE';
+export const UPDATE_ACCOUNT_REQUEST = 'UPDATE_ACCOUNT_REQUEST';
+export const UPDATE_ACCOUNT_SUCCESS = 'UPDATE_ACCOUNT_SUCCESS';
+export const UPDATE_ACCOUNT_FAILURE = 'UPDATE_ACCOUNT_FAILURE';
+export const GET_ALL_ACCOUNTS_REQUEST = 'GET_ALL_ACCOUNTS_REQUEST';
+export const GET_ALL_ACCOUNTS_SUCCESS = 'GET_ALL_ACCOUNTS_SUCCESS';
+export const GET_ALL_ACCOUNTS_FAILURE = 'GET_ALL_ACCOUNTS_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -2693,5 +2710,62 @@ export const fetchAllItemCategorySuccess = (data) => ({
 });
 export const fetchAllItemCategoryFailure = (error) => ({
   type: 'GET_ALL_ITEM_CATEGORY_FAILURE',
+  payload: error
+});
+
+// ############################################################# LEDGER SELECT OPTIONS #################
+export const fetchAllAccountOptionsRequest = () => ({
+  type: 'GET_ALL_ACCOUNT_OPTIONS_REQUEST'
+});
+export const fetchAllAccountOptionsSuccess = (data) => ({
+  type: 'GET_ALL_ACCOUNT_OPTIONS_SUCCESS',
+  payload: data
+});
+export const fetchAllAccountOptionsFailure = (error) => ({
+  type: 'GET_ALL_ACCOUNT_OPTIONS_FAILURE',
+  payload: error
+});
+export const CreateAccountRequest = () => ({
+  type: 'CREATE_ACCOUNT_REQUEST'
+});
+export const CreateAccountSuccess = (data) => ({
+  type: 'CREATE_ACCOUNT_SUCCESS',
+  payload: data
+});
+export const CreateAccountFailure = (error) => ({
+  type: 'CREATE_ACCOUNT_FAILURE',
+  payload: error
+});
+export const ViewAccountRequest = () => ({
+  type: 'VIEW_ACCOUNT_REQUEST'
+});
+export const ViewAccountSuccess = (data) => ({
+  type: 'VIEW_ACCOUNT_SUCCESS',
+  payload: data
+});
+export const ViewAccountFailure = (error) => ({
+  type: 'VIEW_ACCOUNT_FAILURE',
+  payload: error
+});
+export const UpdateAccountRequest = () => ({
+  type: 'UPDATE_ACCOUNT_REQUEST'
+});
+export const UpdateAccountSuccess = (data) => ({
+  type: 'UPDATE_ACCOUNT_SUCCESS',
+  payload: data
+});
+export const UpdateAccountFailure = (error) => ({
+  type: 'UPDATE_ACCOUNT_FAILURE',
+  payload: error
+});
+export const fetchAllAccountsRequest = () => ({
+  type: 'GET_ALL_ACCOUNTS_REQUEST'
+});
+export const fetchAllAccountsSuccess = (data) => ({
+  type: 'GET_ALL_ACCOUNTS_SUCCESS',
+  payload: data
+});
+export const fetchAllAccountsFailure = (error) => ({
+  type: 'GET_ALL_ACCOUNTS_FAILURE',
   payload: error
 });

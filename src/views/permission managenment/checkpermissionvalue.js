@@ -741,6 +741,12 @@ const useCan = () => {
     return checkPermission('Item Category', 'view_all_itemCategory_group');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Accounts +++++++++++++++++++++++++++++++++
+
+  const canseecreateAccount = () => {
+    return checkPermission('Account', 'create_account');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -984,7 +990,9 @@ const useCan = () => {
     // ITEM CATEGORY ++++++++++
     canseeitemcategory,
     canseeviewitemcategory,
-    canseeviewAllitemcategory
+    canseeviewAllitemcategory,
+    // ACCOUNTS ++++++++++++++
+    canseecreateAccount
   };
 };
 

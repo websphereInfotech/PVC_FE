@@ -19,7 +19,7 @@ import {
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch } from 'react-redux';
-import { DeleteCustomer, fetchAllCustomers, viewCustomer } from 'store/thunk';
+import { fetchAllAccounts, viewAccount } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import AnchorTemporaryDrawer from 'component/addparty';
@@ -29,9 +29,9 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 
 const columns = [
-  { id: 'accountname', label: 'Name', align: 'center' },
-  { id: 'email', label: 'Email', align: 'center' },
-  { id: 'mobileno', label: 'Mobile No.', align: 'center' },
+  { id: 'accountName', label: 'Name', align: 'center' },
+  { id: 'contactPersonName', label: 'Contect Person Name', align: 'center' },
+  { id: 'accountGroup', label: 'Group Name', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const SearchContainer = styled('div')(({ theme }) => ({
@@ -83,18 +83,19 @@ const CustomerList = () => {
   const { canUpdateCustomer, canDeleteCustomer, canViewCustomer, canCreateCustomer } = useCan();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [customers, setCustomer] = useState([]);
+  const [accounts, setAccount] = useState([]);
   const [page, setPage] = useState(0);
-  const [selectedId, setSelectedId] = useState(null);
+  // const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState();
 
   useEffect(() => {
-    dispatch(fetchAllCustomers())
+    dispatch(fetchAllAccounts())
       .then((data) => {
-        setCustomer(data);
+        console.log(data, 'data');
+        setAccount(data);
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -104,23 +105,23 @@ const CustomerList = () => {
       });
   }, [dispatch, navigate]);
 
-  const handleDeleteConfirmation = (id) => {
-    setOpenConfirmation(true);
-    setSelectedId(id);
-  };
+  // const handleDeleteConfirmation = (id) => {
+  //   setOpenConfirmation(true);
+  //   setSelectedId(id);
+  // };
 
-  const handleCustomerview = (id) => {
-    dispatch(viewCustomer(id));
+  const handleAccountview = (id) => {
+    dispatch(viewAccount(id));
     navigate(`/customerview/${id}`);
   };
 
-  const handleUpdateCustomer = (id) => {
+  const handleUpdateAccount = (id) => {
     setIsDrawerOpen(true);
     setSelectedCustomer(id);
-    dispatch(viewCustomer(id));
+    dispatch(viewAccount(id));
   };
 
-  const handleCreatecustomer = () => {
+  const handleCreateAccount = () => {
     setSelectedCustomer(null);
     setIsDrawerOpen(true);
   };
@@ -134,46 +135,24 @@ const CustomerList = () => {
     setPage(0);
   };
 
-  const handleDelete = async () => {
-    try {
-      await dispatch(DeleteCustomer(selectedId));
-      setOpenConfirmation(false);
-      setCustomer((preCustomer) => preCustomer.filter((customer) => customer.id !== selectedId));
-    } catch (error) {
-      console.error('Error deleting product:', error);
-    }
-  };
+  // const handleDelete = async () => {
+  //   try {
+  //     await dispatch(DeleteCustomer(selectedId));
+  //     setOpenConfirmation(false);
+  //     setAccount((preCustomer) => preCustomer.filter((customer) => customer.id !== selectedId));
+  //   } catch (error) {
+  //     console.error('Error deleting product:', error);
+  //   }
+  // };
 
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
       const response = await dispatch(fetchAllCustomers({ search: query }));
-      setCustomer(response);
+      setAccount(response);
     } catch (error) {
       console.error('Error Searching Customer:', error);
     }
-  };
-
-  const handleCustomerUpdated = () => {
-    dispatch(fetchAllCustomers())
-      .then((data) => {
-        setCustomer(data);
-        setIsDrawerOpen(false);
-      })
-      .catch((error) => {
-        console.log('Error fetching updated product data:', error);
-      });
-  };
-
-  const handleCustomerCreated = () => {
-    dispatch(fetchAllCustomers())
-      .then((data) => {
-        setCustomer(data);
-        setIsDrawerOpen(false);
-      })
-      .catch((error) => {
-        console.log('Error fetching create product data:', error);
-      });
   };
 
   return (
@@ -186,10 +165,10 @@ const CustomerList = () => {
           variant="contained"
           color="secondary"
           style={{ margin: '16px' }}
-          onClick={handleCreatecustomer}
+          onClick={handleCreateAccount}
           disabled={!canCreateCustomer()}
         >
-          Create Customer
+          Create Account
         </Button>
         <Search>
           <SearchIconWrapper>
@@ -210,8 +189,8 @@ const CustomerList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((customer, index) => (
-              <TableRow key={customer.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
+            {accounts?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((account, index) => (
+              <TableRow key={account.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
@@ -226,7 +205,7 @@ const CustomerList = () => {
                             ...(!canViewCustomer() && { opacity: 0.5 }),
                             ...(!canViewCustomer() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleCustomerview(customer.id)}
+                          onClick={() => handleAccountview(account.id)}
                           disabled={!canViewCustomer()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
@@ -241,7 +220,7 @@ const CustomerList = () => {
                             ...(!canUpdateCustomer() && { opacity: 0.5 }),
                             ...(!canUpdateCustomer() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleUpdateCustomer(customer.id)}
+                          onClick={() => handleUpdateAccount(account.id)}
                           disabled={!canUpdateCustomer()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
@@ -256,14 +235,16 @@ const CustomerList = () => {
                             ...(!canDeleteCustomer() && { opacity: 0.5 }),
                             ...(!canDeleteCustomer() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleDeleteConfirmation(customer.id)}
+                          onClick={() => handleDeleteConfirmation(account.id)}
                           disabled={!canDeleteCustomer()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
+                    ) : column.id === 'accountGroup' ? (
+                      account.accountGroup?.name
                     ) : (
-                      customer[column.id]
+                      account[column.id]
                     )}
                   </TableCell>
                 ))}
@@ -275,7 +256,7 @@ const CustomerList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={customers?.length || 0}
+        count={accounts?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -288,7 +269,7 @@ const CustomerList = () => {
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleDelete} variant="contained" color="secondary">
+          <Button variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -297,8 +278,8 @@ const CustomerList = () => {
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         id={selectedCustomer}
-        onCustomerUpdated={handleCustomerUpdated}
-        onChangeCustomer={handleCustomerCreated}
+        // onCustomerUpdated={handleCustomerUpdated}
+        // onChangeCustomer={handleCustomerCreated}
       />
     </Card>
   );
