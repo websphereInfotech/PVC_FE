@@ -348,10 +348,10 @@ const Salesinvoice = () => {
     updateTotalQuantity();
   }, [rows]);
   //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setAccount((prevCustomers) => [
-      ...prevCustomers,
-      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state }
+  const handleNewAccount = (newAccountData) => {
+    setAccount((prevAccount) => [
+      ...prevAccount,
+      { value: newAccountData?.id, label: newAccountData?.accountname, state: newAccountData?.state }
     ]);
     setIsDrawerOpen(false);
   };
@@ -486,7 +486,7 @@ const Salesinvoice = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
