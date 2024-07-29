@@ -19,7 +19,7 @@ import {
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch } from 'react-redux';
-import { fetchAllAccounts, viewAccount } from 'store/thunk';
+import { deleteAccount, fetchAllAccounts, viewAccount } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import AnchorTemporaryDrawer from 'component/addparty';
@@ -79,50 +79,49 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
   }
 }));
-const CustomerList = () => {
-  const { canUpdateCustomer, canDeleteCustomer, canViewCustomer, canCreateCustomer } = useCan();
+const AccountList = () => {
+  const { canseecreateAccount, canseedeleteAccount, canseeviewAccount, canseeupdateAccount } = useCan();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [accounts, setAccount] = useState([]);
   const [page, setPage] = useState(0);
-  // const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState();
+  const [selectedAccount, setSelectedAccount] = useState();
 
   useEffect(() => {
     dispatch(fetchAllAccounts())
       .then((data) => {
-        console.log(data, 'data');
         setAccount(data);
       })
       .catch((error) => {
         if (error.response.status === 401) {
           navigate('/');
         }
-        console.error('Error fetching product data:', error);
+        console.error('Error fetching account data:', error);
       });
   }, [dispatch, navigate]);
 
-  // const handleDeleteConfirmation = (id) => {
-  //   setOpenConfirmation(true);
-  //   setSelectedId(id);
-  // };
+  const handleDeleteConfirmation = (id) => {
+    setOpenConfirmation(true);
+    setSelectedId(id);
+  };
 
   const handleAccountview = (id) => {
     dispatch(viewAccount(id));
-    navigate(`/customerview/${id}`);
+    navigate(`/accountview/${id}`);
   };
 
   const handleUpdateAccount = (id) => {
     setIsDrawerOpen(true);
-    setSelectedCustomer(id);
+    setSelectedAccount(id);
     dispatch(viewAccount(id));
   };
 
   const handleCreateAccount = () => {
-    setSelectedCustomer(null);
+    setSelectedAccount(null);
     setIsDrawerOpen(true);
   };
 
@@ -135,30 +134,52 @@ const CustomerList = () => {
     setPage(0);
   };
 
-  // const handleDelete = async () => {
-  //   try {
-  //     await dispatch(DeleteCustomer(selectedId));
-  //     setOpenConfirmation(false);
-  //     setAccount((preCustomer) => preCustomer.filter((customer) => customer.id !== selectedId));
-  //   } catch (error) {
-  //     console.error('Error deleting product:', error);
-  //   }
-  // };
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteAccount(selectedId));
+      setOpenConfirmation(false);
+      setAccount((preAccount) => preAccount.filter((account) => account.id !== selectedId));
+    } catch (error) {
+      console.error('Error deleting account:', error);
+    }
+  };
 
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
-      const response = await dispatch(fetchAllCustomers({ search: query }));
+      const response = await dispatch(fetchAllAccounts({ search: query }));
       setAccount(response);
     } catch (error) {
-      console.error('Error Searching Customer:', error);
+      console.error('Error Searching Account:', error);
     }
+  };
+
+  const handleNewAccountAdded = () => {
+    dispatch(fetchAllAccounts())
+      .then((data) => {
+        setAccount(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated Account data:', error);
+      });
+  };
+
+  const handleAccountUpdated = () => {
+    dispatch(fetchAllAccounts())
+      .then((data) => {
+        setAccount(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated Account data:', error);
+      });
   };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Customer List
+        Account List
       </Typography>
       <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Button
@@ -166,7 +187,7 @@ const CustomerList = () => {
           color="secondary"
           style={{ margin: '16px' }}
           onClick={handleCreateAccount}
-          disabled={!canCreateCustomer()}
+          disabled={!canseecreateAccount()}
         >
           Create Account
         </Button>
@@ -198,45 +219,45 @@ const CustomerList = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewCustomer() ? 'Blue' : 'gray',
-                            color: canViewCustomer() ? 'white' : 'white',
+                            backgroundColor: canseeviewAccount() ? 'Blue' : 'gray',
+                            color: canseeviewAccount() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewCustomer() && { opacity: 1 }),
-                            ...(!canViewCustomer() && { opacity: 0.5 }),
-                            ...(!canViewCustomer() && { backgroundColor: 'gray' })
+                            ...(canseeviewAccount() && { opacity: 1 }),
+                            ...(!canseeviewAccount() && { opacity: 0.5 }),
+                            ...(!canseeviewAccount() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleAccountview(account.id)}
-                          disabled={!canViewCustomer()}
+                          disabled={!canseeviewAccount()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateCustomer() ? 'green' : 'gray',
-                            color: canUpdateCustomer() ? 'white' : 'white',
+                            backgroundColor: canseeupdateAccount() ? 'green' : 'gray',
+                            color: canseeupdateAccount() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateCustomer() && { opacity: 1 }),
-                            ...(!canUpdateCustomer() && { opacity: 0.5 }),
-                            ...(!canUpdateCustomer() && { backgroundColor: 'gray' })
+                            ...(canseeupdateAccount() && { opacity: 1 }),
+                            ...(!canseeupdateAccount() && { opacity: 0.5 }),
+                            ...(!canseeupdateAccount() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateAccount(account.id)}
-                          disabled={!canUpdateCustomer()}
+                          disabled={!canseeupdateAccount()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteCustomer() ? 'Red' : 'gray',
-                            color: canDeleteCustomer() ? 'white' : 'white',
+                            backgroundColor: canseedeleteAccount() ? 'Red' : 'gray',
+                            color: canseedeleteAccount() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteCustomer() && { opacity: 1 }),
-                            ...(!canDeleteCustomer() && { opacity: 0.5 }),
-                            ...(!canDeleteCustomer() && { backgroundColor: 'gray' })
+                            ...(canseedeleteAccount() && { opacity: 1 }),
+                            ...(!canseedeleteAccount() && { opacity: 0.5 }),
+                            ...(!canseedeleteAccount() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(account.id)}
-                          disabled={!canDeleteCustomer()}
+                          disabled={!canseedeleteAccount()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -264,12 +285,12 @@ const CustomerList = () => {
       />
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this?</DialogContent>
+        <DialogContent>Are you sure you want to delete this Account?</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={handleDelete} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -277,12 +298,12 @@ const CustomerList = () => {
       <AnchorTemporaryDrawer
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        id={selectedCustomer}
-        // onCustomerUpdated={handleCustomerUpdated}
-        // onChangeCustomer={handleCustomerCreated}
+        id={selectedAccount}
+        onAccountUpdated={handleAccountUpdated}
+        onAccountCreate={handleNewAccountAdded}
       />
     </Card>
   );
 };
 
-export default CustomerList;
+export default AccountList;

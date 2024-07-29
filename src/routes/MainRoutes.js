@@ -117,7 +117,7 @@ const Spareview = Loadable(lazy(() => import('../views/production managenment/Sp
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Customer ++++++++++++++++++++++++++++++++++++++++++++++++
 const CustomerList = Loadable(lazy(() => import('../views/general managenment/Customer/partylist')));
-const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/customerview')));
+const Customerview = Loadable(lazy(() => import('../views/general managenment/Customer/partyview')));
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Stoke +++++++++++++++++++++++++++++++++++++++
 const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock')));
@@ -412,10 +412,10 @@ const MainRoutes = {
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++ Customer edit view ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/customerlist', element: <ProtectedRoute element={CustomerList} resource="Customer" permissionName="view_all_customer" /> },
+    { path: '/accountlist', element: <ProtectedRoute element={CustomerList} resource="Account" permissionName="view_all_account" /> },
     {
-      path: '/customerview/:id',
-      element: <ProtectedRoute element={Customerview} resource="Customer" permissionName="view_single_customer" />
+      path: '/accountview/:id',
+      element: <ProtectedRoute element={Customerview} resource="Account" permissionName="view_one_account" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++

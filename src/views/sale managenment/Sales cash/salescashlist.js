@@ -27,7 +27,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 const columns = [
   { id: 'saleNo', label: 'Sale No', align: 'center' },
   { id: 'date', label: 'Date.', align: 'center' },
-  { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
@@ -129,14 +129,6 @@ const Salescashlist = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
-                      // <Button
-                      //   variant="outlined"
-                      //   color="secondary"
-                      //   disabled={!canViewSalescash()}
-                      //   onClick={() => handleViewsalescash(row.id)}
-                      // >
-                      //   View
-                      // </Button>
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
@@ -184,29 +176,10 @@ const Salescashlist = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : //  column.id === 'edit' ? (
-                    //   <Button
-                    //     disabled={!canUpdateSalescash()}
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleUpdateSalescash(row.id)}
-                    //   >
-                    //     Edit
-                    //   </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     disabled={!canDeleteSalescash()}
-                    //     onClick={() => handleDeleteConfirmation(row.id)}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'date' ? (
+                    ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      row.CashCustomer.customername
+                    ) : column.id === 'party' ? (
+                      row.accountSaleCash.accountName
                     ) : column.id === 'updatedBy' ? (
                       row.salesInvoiceUpdate?.username
                     ) : column.id === 'createdBy' ? (

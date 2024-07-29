@@ -746,6 +746,18 @@ const useCan = () => {
   const canseecreateAccount = () => {
     return checkPermission('Account', 'create_account');
   };
+  const canseeupdateAccount = () => {
+    return checkPermission('Account', 'update_account');
+  };
+  const canseeviewAccount = () => {
+    return checkPermission('Account', 'view_one_account');
+  };
+  const canseeviewAllAccount = () => {
+    return checkPermission('Account', 'view_all_account');
+  };
+  const canseedeleteAccount = () => {
+    return checkPermission('Account', 'delete_account');
+  };
 
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
@@ -992,7 +1004,11 @@ const useCan = () => {
     canseeviewitemcategory,
     canseeviewAllitemcategory,
     // ACCOUNTS ++++++++++++++
-    canseecreateAccount
+    canseecreateAccount,
+    canseeupdateAccount,
+    canseeviewAccount,
+    canseeviewAllAccount,
+    canseedeleteAccount
   };
 };
 

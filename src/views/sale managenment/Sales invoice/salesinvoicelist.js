@@ -25,7 +25,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'invoiceno', label: 'Invocie No', align: 'center' },
-  { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'invoicedate', label: 'Date.', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
@@ -180,37 +180,10 @@ const Salesinvoicelist = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : // <Button
-                    //   variant="outlined"
-                    //   color="secondary"
-                    //   disabled={!canViewalesinvoice()}
-                    //   onClick={() => handleViewsalesinvoice(row.id)}
-                    // >
-                    //   View
-                    // </Button>
-                    //  column.id === 'edit' ? (
-                    //   <Button
-                    //     disabled={!canUpdateSalesinvoice()}
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleUpdateSalesInvoice(row.id)}
-                    //   >
-                    //     Edit
-                    //   </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     disabled={!canDeleteSalesinvoice()}
-                    //     onClick={() => handleDeleteConfirmation(row.id)}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'invoicedate' ? (
+                    ) : column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      row.InvioceCustomer.accountname
+                    ) : column.id === 'party' ? (
+                      row.accountSaleInv.accountName
                     ) : column.id === 'updatedBy' ? (
                       row.updateUser?.username
                     ) : column.id === 'createdBy' ? (

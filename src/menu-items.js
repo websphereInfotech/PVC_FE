@@ -218,12 +218,12 @@ const MenuItem = () => {
     'view_all_item'
   ]);
 
-  const hasAllPermissionsCustomer = checkAllPermissions('Customer', [
-    'create_customer',
-    'update_customer',
-    'delete_customer',
-    'view_single_customer',
-    'view_all_customer'
+  const hasAllPermissionsAccount = checkAllPermissions('Account', [
+    'create_account',
+    'update_account',
+    'delete_account',
+    'view_one_account',
+    'view_all_account'
   ]);
 
   const hasAllPermissionsBom = checkAllPermissions('Production', [
@@ -620,11 +620,11 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['BusinessCenterIcon'],
             children: [
-              hasAllPermissionsCustomer && {
-                id: 'Customer',
-                title: "Customer's",
+              hasAllPermissionsAccount && {
+                id: 'Account',
+                title: "Account's",
                 type: 'item',
-                url: '/customerlist'
+                url: '/accountlist'
               },
               {
                 id: 'Report',

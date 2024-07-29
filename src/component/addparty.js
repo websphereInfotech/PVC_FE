@@ -11,11 +11,13 @@ import { CitySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import { useNavigate } from 'react-router';
 
-const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
+const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUpdated }) => {
   AnchorTemporaryDrawer.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    id: PropTypes.string
+    id: PropTypes.string,
+    onAccountCreate: PropTypes.func.isRequired,
+    onAccountUpdated: PropTypes.func.isRequired
   };
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,11 +43,11 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
   const [sundryDetails, setSundryDetails] = React.useState({
     email: '',
     mobileNo: '',
-    panNo: '',
+    panNo: null,
     state: '',
     city: '',
     address1: '',
-    address2: '',
+    address2: null,
     pincode: '',
     balance: '',
     gstnumber: 0,
@@ -135,7 +137,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
         setTotalCredit(response.accountDetail.totalCredit);
         setSelectedGroup({ value: response.accountGroup.id, label: response.accountGroup.name });
       } catch (error) {
-        console.log('Error fetching Customer', error);
+        console.log('Error fetching Account', error);
       }
     };
     if (id) {
@@ -144,7 +146,6 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
     data();
   }, [id, dispatch]);
 
-  console.log(formData, 'formdata');
   const handlesave = async () => {
     const payload = {
       accountGroupId: formData.accountGroupId,
@@ -153,12 +154,14 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
       contactPersonName: formData.contactpersonname,
       accountDetail: {}
     };
+
     if (
       selectedGroup?.label === 'Sundry Creditors' ||
       selectedGroup?.label === 'Sundry Debtors' ||
       selectedGroup?.label === 'Unsecured Loans'
     ) {
       payload.accountDetail = {
+        ...payload.accountDetail,
         email: sundryDetails.email,
         mobileNo: sundryDetails.mobileNo,
         panNo: sundryDetails.panNo,
@@ -170,27 +173,42 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
         bankDetail: bankdetail
       };
     }
+
     if (selectedGroup?.label === 'Sundry Creditors' || selectedGroup?.label === 'Sundry Debtors') {
       payload.accountDetail = {
+        ...payload.accountDetail,
         gstNumber: sundryDetails.gstnumber,
         balance: sundryDetails.balance,
         creditPeriod: sundryDetails.creditperiod,
         creditLimit: creditlimit
       };
     }
-    if (creditlimit === 'true') {
+
+    if (creditlimit === true) {
       payload.accountDetail.totalCredit = totalCredit;
     }
-    if (bankdetail === 'true' || selectedGroup?.label === 'Bank Account') {
-      payload.accountDetail.bankName = bankName;
-      payload.accountDetail.accountNumber = accountNumber;
-      payload.accountDetail.accountHolderName = accountHolderName;
-      payload.accountDetail.ifscCode = ifscCode;
+
+    if (bankdetail === true || selectedGroup?.label === 'Bank Account') {
+      payload.accountDetail = {
+        ...payload.accountDetail,
+        bankName: bankName,
+        accountNumber: accountNumber,
+        accountHolderName: accountHolderName,
+        ifscCode: ifscCode
+      };
     }
-    if (id) {
-      await dispatch(updateAccount(id, payload, navigate));
-    } else {
-      await dispatch(createAccounts(payload));
+
+    try {
+      if (id) {
+        const response = await dispatch(updateAccount(id, payload, navigate));
+        onAccountUpdated(response);
+      } else {
+        const response = await dispatch(createAccounts(payload));
+        onAccountCreate(response);
+      }
+      onClose();
+    } catch (error) {
+      console.error('Error saving account:', error);
     }
   };
 
@@ -207,9 +225,19 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
         }}
       >
         <Grid item>
-          <Typography variant="h4" className="heading">
-            New Party [ledger]
-          </Typography>
+          {id ? (
+            <>
+              <Typography variant="h4" className="heading">
+                Update Party [ledger]
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="h4" className="heading">
+                New Party [ledger]
+              </Typography>
+            </>
+          )}
         </Grid>
         <Grid item>
           <CancelIcon onClick={onClose} />
@@ -230,8 +258,17 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
             <input placeholder="Enter Short/Alias Name" id="shortname" value={formData.shortname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Account Group</Typography>
-            <Select color="secondary" id="accountGroupId" options={accountgroup} onChange={handleGroupChange} />
+            <Typography variant="subtitle1">
+              Account Group :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select
+              color="secondary"
+              id="accountGroupId"
+              isDisabled={id}
+              value={{ value: selectedGroup?.value, label: selectedGroup?.label }}
+              options={accountgroup}
+              onChange={handleGroupChange}
+            />
           </Grid>
           <Grid item>
             <Typography variant="subtitle1">
@@ -283,9 +320,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
                 <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder={sundryDetails.city} />
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">
-                  PAN No : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                </Typography>
+                <Typography variant="subtitle1">PAN No :</Typography>
                 <input placeholder="Enter PAN No" id="panNo" value={sundryDetails.panNo} onChange={handleInputSundryDetailChange} />
               </Grid>
               <Grid item>
@@ -300,9 +335,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
                 />
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">
-                  Address 2 : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                </Typography>
+                <Typography variant="subtitle1">Address 2 :</Typography>
                 <input
                   placeholder="Enter Address 2"
                   id="address2"
@@ -366,16 +399,21 @@ const AnchorTemporaryDrawer = ({ open, onClose, id }) => {
                   </Grid>
                 </>
               )}
+
               <Grid item spacing={2}>
-                <Grid item>
-                  <Typography variant="subtitle1">
-                    Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                  </Typography>
-                  <RadioGroup row defaultValue="false" value={creditlimit} onChange={handleCreditDetailChange}>
-                    <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="false" control={<Radio />} label="No" />
-                  </RadioGroup>
-                </Grid>
+                {selectedGroup?.label !== 'Unsecured Loans' && (
+                  <>
+                    <Grid item>
+                      <Typography variant="subtitle1">
+                        Enable credit limit? : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                      </Typography>
+                      <RadioGroup row defaultValue="false" value={creditlimit} onChange={handleCreditDetailChange}>
+                        <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                        <FormControlLabel value="false" control={<Radio />} label="No" />
+                      </RadioGroup>
+                    </Grid>
+                  </>
+                )}
 
                 <Grid item>
                   <Typography variant="subtitle1">

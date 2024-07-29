@@ -43,8 +43,8 @@ const Purchaseinvoicecashview = () => {
           <Typography variant="subtitle2">{data.purchaseNo}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Vendor</Typography>
-          <Typography variant="subtitle2">{data.VendorPurchase?.vendorname}</Typography>
+          <Typography variant="subtitle1">Party</Typography>
+          <Typography variant="subtitle2">{data.accountPurchaseCash?.contactPersonName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Date</Typography>
@@ -61,7 +61,7 @@ const Purchaseinvoicecashview = () => {
             <Table>
               <TableHead>
                 <TableCell width={420} sx={{ fontSize: '12px' }}>
-                  PRODUCT/SERVICE
+                  PRODUCT
                 </TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>QTY</TableCell>
                 <TableCell sx={{ fontSize: '12px' }}>UNIT</TableCell>
@@ -79,10 +79,6 @@ const Purchaseinvoicecashview = () => {
                       <TableCell>{item?.mrp}</TableCell>
                     </TableRow>
                   ))}
-                {/* <TableCell></TableCell>
-                <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
-                <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
-                <TableCell></TableCell> */}
               </TableBody>
             </Table>
           </div>

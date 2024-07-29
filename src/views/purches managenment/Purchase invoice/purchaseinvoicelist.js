@@ -18,7 +18,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
-  { id: 'vendor', label: 'Vendor', minWidth: 100, align: 'center' },
+  { id: 'party', label: 'Party', minWidth: 100, align: 'center' },
   { id: 'duedate', label: 'Due Date', minWidth: 100, align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
@@ -119,14 +119,6 @@ export default function PurchaseinvoiceList() {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
-                      // <Button
-                      //   variant="outlined"
-                      //   color="secondary"
-                      //   onClick={() => handleViewPurchaseBill(row.id)}
-                      //   disabled={!canViewPurchaseinvoice()}
-                      // >
-                      //   View
-                      // </Button>
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
@@ -174,31 +166,12 @@ export default function PurchaseinvoiceList() {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : //  column.id === 'edit' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleUpdatePurchaseBill(row.id)}
-                    //     disabled={!canUpdatePurchaseinvoice()}
-                    //   >
-                    //     Edit
-                    //   </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleDeleteConfirmation(row.id)}
-                    //     disabled={!canDeletePurchaseinvoice()}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'invoicedate' ? (
+                    ) : column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'duedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      row.purchseVendor.accountname
+                    ) : column.id === 'party' ? (
+                      row.accountPurchaseInv.accountName
                     ) : column.id === 'updatedBy' ? (
                       row.salesUpdateUser?.username
                     ) : column.id === 'createdBy' ? (

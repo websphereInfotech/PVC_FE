@@ -13,7 +13,7 @@ import {
   getallPurchaseinvoice,
   fetchuserwiseCompany,
   fetchAllProducts,
-  fetchAllCustomers
+  fetchAllAccounts
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,25 +25,25 @@ import AnchorProductDrawer from 'component/productadd';
 const Purchaseinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
-  const { canCreateVendor, canCreateItem } = useCan();
+  const { canseecreateAccount, canCreateItem } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [vendor, setvendor] = useState([]);
-  const [selectvendor, setSelectvendor] = useState([]);
+  const [account, setAccount] = useState([]);
+  const [selectAccount, setSelectAccount] = useState([]);
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  const [vendorname, setvendorname] = useState('');
+  const [accountname, setAccountname] = useState('');
   const [companystate, setCompanystate] = useState('');
   const [gststate, setGststate] = useState('');
   const [plusgst, setPlusgst] = useState(0);
-  const [vendorstate, setvendorstate] = useState('');
+  const [accountstate, setAccountstate] = useState('');
   const [productResponse, setProductResponse] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [formData, setFormData] = useState({
     invoicedate: new Date(),
-    vendorId: '',
+    accountId: '',
     duedate: new Date(),
     voucherno: '',
     supplyInvoiceNo: '',
@@ -55,12 +55,12 @@ const Purchaseinvoice = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   const [canCreateRawmaterialvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateVendorValue(canCreateVendor());
+    setCanCreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateVendor, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', unit: '', rate: '', mrp: '' };
@@ -141,10 +141,10 @@ const Purchaseinvoice = () => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.vendorId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setvendorname(selectedOption.label);
-      setvendorstate(selectedOption.state);
+      setAccountname(selectedOption.label);
+      setAccountstate(selectedOption.state);
       setIsDrawerOpen(false);
     }
   };
@@ -198,7 +198,7 @@ const Purchaseinvoice = () => {
     setIsproductDrawerOpen(false);
   };
 
-  console.log(selectvendor, companystate);
+  console.log(selectAccount, companystate);
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
@@ -215,12 +215,16 @@ const Purchaseinvoice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.accountname, state: vendor.state }));
-          setvendor([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
-          if (!canCreateVendorValue) {
-            setvendor(options);
+          const options = response.map((account) => ({
+            value: account.id,
+            label: account.accountName,
+            state: account.accountDetail?.state || ''
+          }));
+          setAccount([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
+          if (!canCreateAccountValue) {
+            setAccount(options);
           }
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -245,7 +249,7 @@ const Purchaseinvoice = () => {
         console.log(defaultCompany.companies.state, 'defaultcompany');
         if (defaultCompany) {
           setCompanystate(defaultCompany.companies.state);
-          const isGstState = defaultCompany.companies.state === vendorstate;
+          const isGstState = defaultCompany.companies.state === accountstate;
           setGststate(isGstState);
         } else {
           console.error('No default company found');
@@ -255,18 +259,19 @@ const Purchaseinvoice = () => {
       }
     };
 
-    if (canCreateVendorValue !== null || canCreateRawmaterialvalue !== null) {
+    if (canCreateAccountValue !== null || canCreateRawmaterialvalue !== null) {
       fetchData();
     }
-  }, [dispatch, vendorstate, canCreateVendorValue, canCreateRawmaterialvalue, gststate, id]);
+  }, [dispatch, accountstate, canCreateAccountValue, canCreateRawmaterialvalue, gststate, id]);
 
   useEffect(() => {
     const data = async () => {
       if (id) {
         const response = await dispatch(viewPurchaseinvoice(id));
-        const { purchseVendor, invoicedate, supplyInvoiceNo, voucherno, duedate, totalSgst, mainTotal, totalMrp, totalIgst } = response;
+        const { accountPurchaseInv, invoicedate, supplyInvoiceNo, voucherno, duedate, totalSgst, mainTotal, totalMrp, totalIgst } =
+          response;
         setFormData({
-          vendorId: purchseVendor.id,
+          accountId: accountPurchaseInv.id,
           invoicedate,
           supplyInvoiceNo,
           voucherno,
@@ -276,9 +281,9 @@ const Purchaseinvoice = () => {
           totalMrp,
           totalIgst
         });
-        setSelectvendor(purchseVendor.id);
-        setvendorstate(purchseVendor.state);
-        setvendorname(purchseVendor.accountname);
+        setSelectAccount(accountPurchaseInv.id);
+        setAccountstate(accountPurchaseInv.accountDetail?.state);
+        setAccountname(accountPurchaseInv.accountName);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.purchseProduct.id,
@@ -331,16 +336,16 @@ const Purchaseinvoice = () => {
     data();
   }, [dispatch, id]);
 
-  console.log(selectvendor);
+  console.log(selectAccount);
 
   //create new Vendor after show in dropdwon
-  const handleNewVendor = (newVendorData) => {
-    setvendor((prevVendor) => [
-      ...prevVendor,
+  const handleNewAccount = (newAccountData) => {
+    setAccount((prevAccount) => [
+      ...prevAccount,
       {
-        value: newVendorData?.id,
-        label: newVendorData?.accountname,
-        state: newVendorData?.state
+        value: newAccountData?.id,
+        label: newAccountData?.accountName,
+        state: newAccountData?.accountDetail?.state
       }
     ]);
     setIsDrawerOpen(false);
@@ -362,7 +367,7 @@ const Purchaseinvoice = () => {
         }))
       };
 
-      const gstState = companystate === vendorstate ? 'true' : 'false';
+      const gstState = companystate === accountstate ? 'true' : 'false';
       if (gstState === 'true') {
         payload.totalSgst = plusgst / 2;
         payload.totalCgst = plusgst / 2;
@@ -405,16 +410,16 @@ const Purchaseinvoice = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">
-            Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
           <Select
             color="secondary"
-            options={vendor}
-            value={{ value: formData.vendorId, label: vendorname }}
+            options={account}
+            value={{ value: formData.accountId, label: accountname }}
             onChange={handleSelectChange}
           />
         </Grid>
-        <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+        <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">

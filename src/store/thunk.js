@@ -578,7 +578,13 @@ import {
   fetchAllAccountsFailure,
   UpdateAccountRequest,
   UpdateAccountSuccess,
-  UpdateAccountFailure
+  UpdateAccountFailure,
+  DeleteAccountRequest,
+  DeleteAccountSuccess,
+  DeleteAccountFailure,
+  fetchAllAccountcashRequest,
+  fetchAllAccountcashSuccess,
+  fetchAllAccountcashFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -4178,12 +4184,15 @@ export const viewAccount = (accountId) => {
     }
   };
 };
-export const fetchAllAccounts = () => {
+export const fetchAllAccounts = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllAccountsRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/view_all_account`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/view_all_account?{search}=`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllAccountsSuccess(data));
       return data;
@@ -4204,7 +4213,7 @@ export const updateAccount = (accountId, formData, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
-      navigate('/customerlist');
+      navigate('/accountlist');
       return upadateAccountdata;
     } catch (error) {
       toast.error(error.response.data.message, {
@@ -4212,6 +4221,42 @@ export const updateAccount = (accountId, formData, navigate) => {
       });
       dispatch(UpdateAccountFailure(error.message));
       throw error;
+    }
+  };
+};
+export const deleteAccount = (accountId) => {
+  return async (dispatch) => {
+    dispatch(DeleteAccountRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/account/delete_account/${accountId}`, config);
+      const deleteAccountdata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteAccountSuccess(deleteAccountdata));
+      return deleteAccountdata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteAccountFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllAccountCash = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllAccountcashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/C_view_all_account`, config);
+      const data = response.data.data;
+      dispatch(fetchAllAccountcashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllAccountcashFailure(error.message));
     }
   };
 };

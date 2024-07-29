@@ -43,8 +43,8 @@ const Salescashview = () => {
           <Typography variant="subtitle2">{data.saleNo}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.CashCustomer?.customername}</Typography>
+          <Typography variant="subtitle1">Party</Typography>
+          <Typography variant="subtitle2">{data.accountSaleCash?.accountName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Date</Typography>

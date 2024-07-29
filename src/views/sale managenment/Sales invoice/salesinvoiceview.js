@@ -41,8 +41,8 @@ const Salesinvoiceview = () => {
           <Typography variant="subtitle2">{data.proFormaNo}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.InvioceCustomer?.accountname}</Typography>
+          <Typography variant="subtitle1">Party</Typography>
+          <Typography variant="subtitle2">{data.accountSaleInv?.accountName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Invoice No.</Typography>

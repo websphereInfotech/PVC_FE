@@ -27,7 +27,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 const columns = [
   { id: 'purchaseNo', label: 'Purchase No', align: 'center' },
   { id: 'date', label: 'Date.', align: 'center' },
-  { id: 'vendor', label: 'Vendor', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
@@ -129,14 +129,6 @@ const Purchaseinvoicecashlist = () => {
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'action' ? (
-                      // <Button
-                      //   variant="outlined"
-                      //   color="secondary"
-                      //   disabled={!canViewPurchasebillcash()}
-                      //   onClick={() => handleViewPurchasebillCash(row.id)}
-                      // >
-                      //   View
-                      // </Button>
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
                           sizeSmall
@@ -184,29 +176,10 @@ const Purchaseinvoicecashlist = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : //  column.id === 'edit' ? (
-                    //   <Button
-                    //     disabled={!canUpdatePurchasebillcash()}
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleUpdatePurchasebillCash(row.id)}
-                    //   >
-                    //     Edit
-                    //   </Button>
-                    // ) : column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     disabled={!canDeletePurchasebillcash()}
-                    //     onClick={() => handleDeleteConfirmation(row.id)}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'date' ? (
+                    ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      row.VendorPurchase.vendorname
+                    ) : column.id === 'party' ? (
+                      row.accountPurchaseCash?.contactPersonName
                     ) : column.id === 'updatedBy' ? (
                       row.purchaseUpdateUser?.username
                     ) : column.id === 'createdBy' ? (

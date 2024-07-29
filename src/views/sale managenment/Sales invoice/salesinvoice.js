@@ -11,14 +11,13 @@ import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import {
   fetchAllProducts,
-  fetchAllCustomers,
   createSalesInvoice,
   SalesInvoiceview,
   updateSalesinvoice,
   fetchuserwiseCompany,
   getallSalesInvoice,
-  fetchproformainvoiceList
-  // deleteProformainvoiceItem
+  fetchproformainvoiceList,
+  fetchAllAccounts
 } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorProductDrawer from 'component/productadd';
@@ -28,25 +27,24 @@ const Salesinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
-  const { canCreateCustomer, canCreateItem } = useCan();
+  const { canseecreateAccount, canCreateItem } = useCan();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [customername, setCustomername] = useState('');
+  const [accountname, setAccountname] = useState('');
   const [companystate, setCompanystate] = useState('');
-  const [customerState, setCustomerState] = useState('');
+  const [accountState, setAccountState] = useState('');
   const [gststate, setGststate] = useState('');
   const [plusgst, setPlusgst] = useState(0);
   const [productResponse, setProductResponse] = useState([]);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [account, setAccount] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [proformainvoice, setProformainvoice] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
-  // const [proformainvoicelabel, setProformainvoicelabel] = useState([]);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     destination: null,
     dispatchThrough: null,
     dispatchno: null,
@@ -61,12 +59,12 @@ const Salesinvoice = () => {
   const { id } = useParams();
   const [subtotal, setSubtotal] = useState(0);
   const navigate = useNavigate();
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateCustomer, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
 
   const handleAddRow = () => {
     const newRow = { product: '', qty: '', rate: '', mrp: '' };
@@ -96,10 +94,10 @@ const Salesinvoice = () => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setCustomername(selectedOption.label);
-      setCustomerState(selectedOption.state);
+      setAccountname(selectedOption.label);
+      setAccountState(selectedOption.state);
       setIsDrawerOpen(false);
     }
   };
@@ -192,12 +190,16 @@ const Salesinvoice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
-          setcustomer([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
-          if (!canCreateCustomerValue) {
-            setcustomer(options);
+          const options = response.map((account) => ({
+            value: account.id,
+            label: account.accountName,
+            state: account.accountDetail?.state
+          }));
+          setAccount([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
+          if (!canCreateAccountValue) {
+            setAccount(options);
           }
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -222,7 +224,7 @@ const Salesinvoice = () => {
         const defaultCompany = data.find((company) => company.setDefault === true);
         if (defaultCompany) {
           setCompanystate(defaultCompany.companies.state);
-          const isGstState = defaultCompany.companies.state === customerState;
+          const isGstState = defaultCompany.companies.state === accountState;
           setGststate(isGstState);
         } else {
           console.error('No default company found');
@@ -231,19 +233,18 @@ const Salesinvoice = () => {
         console.error('Error fetching sales invoice:', error);
       }
     };
-    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+    if (canCreateAccountValue !== null || canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, companystate, customerState, canCreateCustomerValue, canCreateProductvalue]);
+  }, [dispatch, companystate, accountState, canCreateAccountValue, canCreateProductvalue]);
 
   const handleproformnumber = (selectedOption) => {
-    console.log(selectedOption, 'selected');
     const updatedFormData = {
       ...selectedOption,
       proFormaNo: selectedOption.value
     };
-    setCustomername(selectedOption.customer.accountname);
-    setCustomerState(selectedOption.customer.state);
+    setAccountname(selectedOption.customer.accountname);
+    setAccountState(selectedOption.customer.state);
     setFormData({ ...updatedFormData, invoiceno: formData.invoiceno, dispatchno: formData.invoiceno });
     console.log(updatedFormData, 'form');
     const selectedProFormaItems = selectedOption.items.map((item) => ({
@@ -275,7 +276,7 @@ const Salesinvoice = () => {
         destination: item.destination,
         termsOfDelivery: item.termsOfDelivery,
         terms: item.terms,
-        customerId: item.customerId,
+        accountId: item.accountId,
         customer: item.customer,
         invoicedate: new Date(),
         items: item.items
@@ -284,7 +285,7 @@ const Salesinvoice = () => {
       if (id) {
         const response = await dispatch(SalesInvoiceview(id));
         const {
-          InvioceCustomer,
+          accountSaleInv,
           dispatchThrough,
           motorVehicleNo,
           LL_RR_no,
@@ -299,7 +300,7 @@ const Salesinvoice = () => {
           proFormaNo
         } = response;
         setFormData({
-          customerId: InvioceCustomer.id,
+          accountId: accountSaleInv.id,
           dispatchThrough,
           motorVehicleNo,
           LL_RR_no,
@@ -312,9 +313,9 @@ const Salesinvoice = () => {
           termsOfDelivery,
           duedate
         });
-        setSelectcustomer(InvioceCustomer.id);
-        setCustomerState(InvioceCustomer.state);
-        setCustomername(InvioceCustomer.accountname);
+        setSelectaccount(accountSaleInv.id);
+        setAccountState(accountSaleInv.accountDetail?.state);
+        setAccountname(accountSaleInv.accountName);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.InvoiceProduct.id,
@@ -348,7 +349,7 @@ const Salesinvoice = () => {
   }, [rows]);
   //create new customer after show in dropdwon
   const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [
+    setAccount((prevCustomers) => [
       ...prevCustomers,
       { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state }
     ]);
@@ -357,7 +358,7 @@ const Salesinvoice = () => {
 
   const handleSalesinvoice = async () => {
     try {
-      console.log(selectcustomer);
+      console.log(selectaccount);
       const payload = {
         ...formData,
         dispatchno: formData.invoiceno,
@@ -373,7 +374,7 @@ const Salesinvoice = () => {
           mrp: row.mrp
         }))
       };
-      const gststate = companystate === customerState ? 'true' : 'false';
+      const gststate = companystate === accountState ? 'true' : 'false';
       if (gststate === 'true') {
         payload.totalSgst = plusgst;
         payload.totalIgst = 0;
@@ -476,12 +477,12 @@ const Salesinvoice = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>

@@ -622,9 +622,15 @@ export const VIEW_ACCOUNT_FAILURE = 'VIEW_ACCOUNT_FAILURE';
 export const UPDATE_ACCOUNT_REQUEST = 'UPDATE_ACCOUNT_REQUEST';
 export const UPDATE_ACCOUNT_SUCCESS = 'UPDATE_ACCOUNT_SUCCESS';
 export const UPDATE_ACCOUNT_FAILURE = 'UPDATE_ACCOUNT_FAILURE';
+export const DELETE_ACCOUNT_REQUEST = 'DELETE_ACCOUNT_REQUEST';
+export const DELETE_ACCOUNT_SUCCESS = 'DELETE_ACCOUNT_SUCCESS';
+export const DELETE_ACCOUNT_FAILURE = 'DELETE_ACCOUNT_FAILURE';
 export const GET_ALL_ACCOUNTS_REQUEST = 'GET_ALL_ACCOUNTS_REQUEST';
 export const GET_ALL_ACCOUNTS_SUCCESS = 'GET_ALL_ACCOUNTS_SUCCESS';
 export const GET_ALL_ACCOUNTS_FAILURE = 'GET_ALL_ACCOUNTS_FAILURE';
+export const GET_ALL_ACCOUNTS_CASH_REQUEST = 'GET_ALL_ACCOUNTS_CASH_REQUEST';
+export const GET_ALL_ACCOUNTS_CASH_SUCCESS = 'GET_ALL_ACCOUNTS_CASH_SUCCESS';
+export const GET_ALL_ACCOUNTS_CASH_FAILURE = 'GET_ALL_ACCOUNTS_CASH_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -2767,5 +2773,27 @@ export const fetchAllAccountsSuccess = (data) => ({
 });
 export const fetchAllAccountsFailure = (error) => ({
   type: 'GET_ALL_ACCOUNTS_FAILURE',
+  payload: error
+});
+export const DeleteAccountRequest = () => ({
+  type: 'DELETE_ACCOUNT_REQUEST'
+});
+export const DeleteAccountSuccess = (data) => ({
+  type: 'DELETE_ACCOUNT_SUCCESS',
+  payload: data
+});
+export const DeleteAccountFailure = (error) => ({
+  type: 'DELETE_ACCOUNT_FAILURE',
+  payload: error
+});
+export const fetchAllAccountcashRequest = () => ({
+  type: 'GET_ALL_ACCOUNTS_CASH_REQUEST'
+});
+export const fetchAllAccountcashSuccess = (data) => ({
+  type: 'GET_ALL_ACCOUNTS_CASH_SUCCESS',
+  payload: data
+});
+export const fetchAllAccountcashFailure = (error) => ({
+  type: 'GET_ALL_ACCOUNTS_CASH_FAILURE',
   payload: error
 });

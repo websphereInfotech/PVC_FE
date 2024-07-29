@@ -9,7 +9,7 @@ import { useMediaQuery } from '@mui/material';
 import {
   SalesInvoiceCashview,
   createSalesInvoiceCash,
-  fetchAllCustomersCash,
+  fetchAllAccountCash,
   fetchAllProductsCash,
   getallSalesInvoiceCash,
   updateSalesinvoiceCash
@@ -21,20 +21,20 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Salescash = () => {
-  const { canDeleteSalescash, canCreateCustomer, canCreateItem } = useCan();
+  const { canDeleteSalescash, canseecreateAccount, canCreateItem } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     date: new Date(),
     saleNo: ''
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState([]);
-  const [customername, setCustomername] = useState('');
+  const [account, setAccount] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
+  const [accountname, setAccountname] = useState('');
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
@@ -42,14 +42,14 @@ const Salescash = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   {
-    console.log(selectcustomer);
+    console.log(selectaccount);
   }
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateCustomer, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
 
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
@@ -102,16 +102,17 @@ const Salescash = () => {
     setProduct(updatedProductList);
     setIsproductDrawerOpen(false);
   };
-  // called api of all product and customer for show name of them in dropdown
+
+  // called api of all product and account for show name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomersCash());
+        const response = await dispatch(fetchAllAccountCash());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
-          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
-          if (!canCreateCustomerValue) {
-            setcustomer(options);
+          const options = response.map((account) => ({ value: account.id, label: account.contactPersonName }));
+          setAccount([{ value: 'new', label: 'Create New Party' }, ...options]);
+          if (!canCreateAccountValue) {
+            setAccount(options);
           }
         }
         const productResponse = await dispatch(fetchAllProductsCash());
@@ -133,19 +134,19 @@ const Salescash = () => {
       }
     };
 
-    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+    if (canCreateAccountValue !== null || canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, id, canCreateCustomerValue, canCreateProductvalue]);
+  }, [dispatch, id, canCreateAccountValue, canCreateProductvalue]);
 
-  // use for select customer name from dropdown
+  // use for select account name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setCustomername(selectedOption.label);
+      setAccountname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
@@ -153,14 +154,6 @@ const Salescash = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
-    // const updateTotalQuantity = () => {
-    //   let total = 0;
-    //   rows.forEach((row) => {
-    //     total += parseInt(row.qty);
-    //   });
-    //   setTotalQuantity(total);
-    // };
-    // updateTotalQuantity();
   }, [rows]);
 
   const handleDateChange = (date) => {
@@ -180,21 +173,16 @@ const Salescash = () => {
       row.mrp = amount;
     });
     setRows(updatedRows);
-    // let total = 0;
-    // rows.forEach((row) => {
-    //   total += parseInt(row.qty);
-    // });
-    // setTotalQuantity(total);
   };
 
   useEffect(() => {
     const data = async () => {
       if (id) {
         const response = await dispatch(SalesInvoiceCashview(id));
-        const { date, totalMrp, CashCustomer, saleNo } = response;
-        setFormData({ date, totalMrp, saleNo, customerId: CashCustomer.id });
-        setSelectcustomer(CashCustomer.id);
-        setCustomername(CashCustomer.customername);
+        const { date, totalMrp, accountSaleCash, saleNo } = response;
+        setFormData({ date, totalMrp, saleNo, accountId: accountSaleCash.id });
+        setSelectaccount(accountSaleCash.id);
+        setAccountname(accountSaleCash.contactPersonName);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.CashProduct.id,
@@ -211,7 +199,6 @@ const Salescash = () => {
       if (!id) {
         try {
           const SalesResponse = await dispatch(getallSalesInvoiceCash());
-          console.log(SalesResponse.data.length, 'SalesResponse');
           let nextSalesNumber = 1;
           if (SalesResponse.data.length === 0) {
             const SalesNumber = nextSalesNumber;
@@ -244,10 +231,10 @@ const Salescash = () => {
     data();
   }, [dispatch, id]);
   //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [
-      ...prevCustomers,
-      { value: newCustomerData?.id, label: newCustomerData?.contactpersonname, state: newCustomerData?.state }
+  const handleNewAccount = (newAccountData) => {
+    setAccount((prevAccounts) => [
+      ...prevAccounts,
+      { value: newAccountData?.id, label: newAccountData?.contactPersonName, state: newAccountData?.state }
     ]);
     setIsDrawerOpen(false);
   };
@@ -282,7 +269,7 @@ const Salescash = () => {
             mrp: row.mrp
           }))
         };
-        console.log(selectcustomer);
+        console.log(selectaccount);
         await dispatch(createSalesInvoiceCash(payload, navigate));
       }
     } catch (error) {
@@ -317,16 +304,16 @@ const Salescash = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

@@ -7,7 +7,7 @@ import { useMediaQuery } from '@mui/material';
 import {
   PurchaseInvoiceviewCash,
   createPurchaseInvoiceCash,
-  fetchAllCustomers,
+  fetchAllAccountCash,
   fetchAllProductsCash,
   getallPurchaseInvoiceCash,
   updatePurchaseInvoiceCash
@@ -21,34 +21,34 @@ import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from 'component/productadd';
 
 const Purchaseinvoicecash = () => {
-  const { canDeleteSalescash, canCreateVendor, canCreateItem } = useCan();
+  const { canDeleteSalescash, canseecreateAccount, canCreateItem } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
-    vendorId: '',
+    accountId: '',
     date: new Date(),
     purchaseNo: ''
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [vendor, setvendor] = useState([]);
-  const [selectvendor, setSelectvendor] = useState([]);
-  const [vendorname, setvendorname] = useState('');
+  const [account, setAccount] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
+  const [accountname, setAccountname] = useState('');
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   const [canCreateRawmaterialvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateVendorValue(canCreateVendor());
+    setCanCreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateVendor, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   {
-    console.log(selectvendor);
+    console.log(selectaccount);
   }
 
   const handleDeleteRow = async (index) => {
@@ -107,12 +107,12 @@ const Purchaseinvoicecash = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccountCash());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Party' }, ...options]);
-          if (!canCreateVendorValue) {
-            setvendor(options);
+          const options = response.map((account) => ({ value: account.id, label: account.contactPersonName }));
+          setAccount([{ value: 'new', label: 'Create New Party' }, ...options]);
+          if (!canCreateAccountValue) {
+            setAccount(options);
           }
         }
         const productResponse = await dispatch(fetchAllProductsCash());
@@ -133,19 +133,19 @@ const Purchaseinvoicecash = () => {
         console.error('Error fetching purchase invoice cash:', error);
       }
     };
-    if (canCreateVendorValue !== null || canCreateRawmaterialvalue !== null) {
+    if (canCreateAccountValue !== null || canCreateRawmaterialvalue !== null) {
       fetchData();
     }
-  }, [dispatch, id, canCreateVendorValue, canCreateRawmaterialvalue]);
+  }, [dispatch, id, canCreateAccountValue, canCreateRawmaterialvalue]);
 
   // use for select vendor name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.vendorId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setvendorname(selectedOption.label);
+      setAccountname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
@@ -191,10 +191,10 @@ const Purchaseinvoicecash = () => {
     const data = async () => {
       if (id) {
         const response = await dispatch(PurchaseInvoiceviewCash(id));
-        const { date, totalMrp, purchaseNo, VendorPurchase } = response;
-        setFormData({ date, totalMrp, purchaseNo, vendorId: VendorPurchase.id });
-        setSelectvendor(VendorPurchase.id);
-        setvendorname(VendorPurchase.vendorname);
+        const { date, totalMrp, purchaseNo, accountPurchaseCash } = response;
+        setFormData({ date, totalMrp, purchaseNo, accountId: accountPurchaseCash.id });
+        setSelectaccount(accountPurchaseCash.id);
+        setAccountname(accountPurchaseCash.contactPersonName);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.ProductPurchase.id,
@@ -244,15 +244,14 @@ const Purchaseinvoicecash = () => {
   }, [dispatch, id]);
 
   //create new Vendor after show in dropdwon
-  const handleNewVendor = (newVendorData) => {
-    setvendor((prevVendor) => [
-      ...prevVendor,
+  const handleNewAccount = (newAccountData) => {
+    setAccount((preAccount) => [
+      ...preAccount,
       {
-        value: newVendorData?.id,
-        label: newVendorData?.accountname
+        value: newAccountData?.id,
+        label: newAccountData?.contactPersonName
       }
     ]);
-    // setSelectvendor(newVendorData.id), setvendorname(newVendorData.accountname);
     setIsDrawerOpen(false);
   };
 
@@ -287,7 +286,7 @@ const Purchaseinvoicecash = () => {
             mrp: row.mrp
           }))
         };
-        console.log(selectvendor);
+        console.log(selectaccount);
         await dispatch(createPurchaseInvoiceCash(payload, navigate));
       }
     } catch (error) {
@@ -322,16 +321,16 @@ const Purchaseinvoicecash = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Venoder : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={vendor}
-                value={{ value: formData.vendorId, label: vendorname }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
