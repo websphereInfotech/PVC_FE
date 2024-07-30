@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createRecievecash, viewRecieveCash, updateRecieveCash, fetchAllCustomersCash, getallRecieveCash } from 'store/thunk';
+import { createRecievecash, viewRecieveCash, updateRecieveCash, getallRecieveCash, fetchAllAccountCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,23 +15,23 @@ const Paymentrecieve = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateCustomer } = useCan();
-  const [customername, setcustomername] = useState('');
-  const [customer, setcustomer] = useState([]);
+  const { canseecreateAccount } = useCan();
+  const [accountname, setaccountname] = useState('');
+  const [account, setaccount] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectcustomer, setSelectcustomer] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     date: new Date(),
     amount: 0,
     description: '',
     receiptNo: ''
   });
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
-  }, [canCreateCustomer]);
-  console.log(selectcustomer);
+    setCanCreateAccountValue(canseecreateAccount());
+  }, [canseecreateAccount]);
+  console.log(selectaccount);
 
   const handleDateChange = (date) => {
     setFormData({ ...formData, date: date });
@@ -40,9 +40,9 @@ const Paymentrecieve = () => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setcustomername(selectedOption.label);
+      setaccountname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
@@ -52,10 +52,10 @@ const Paymentrecieve = () => {
       try {
         if (id) {
           const response = await dispatch(viewRecieveCash(id));
-          const { date, amount, receiptNo, description, ReceiveCustomer } = response;
-          setFormData({ date, amount, receiptNo, description, customerId: ReceiveCustomer.id });
-          setcustomername(ReceiveCustomer.customername);
-          setSelectcustomer(ReceiveCustomer.id);
+          const { date, amount, receiptNo, description, accountReceiptCash } = response;
+          setFormData({ date, amount, receiptNo, description, accountId: accountReceiptCash.id });
+          setaccountname(accountReceiptCash.contactPersonName);
+          setSelectaccount(accountReceiptCash.id);
         }
       } catch (error) {
         console.error('Error fetching payment recive:', error);
@@ -63,12 +63,12 @@ const Paymentrecieve = () => {
     };
     const fetchCustomerData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomersCash());
+        const response = await dispatch(fetchAllAccountCash());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.customername }));
-          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
-          if (!canCreateCustomerValue) {
-            setcustomer(options);
+          const options = response.map((account) => ({ value: account.id, label: account.contactPersonName }));
+          setaccount([{ value: 'new', label: 'Create New Party' }, ...options]);
+          if (!canCreateAccountValue) {
+            setaccount(options);
           }
         }
       } catch (error) {
@@ -109,13 +109,16 @@ const Paymentrecieve = () => {
     };
     generateAutoRecievecashNumber();
     fetchData();
-    if (canCreateCustomerValue !== null) {
+    if (canCreateAccountValue !== null) {
       fetchCustomerData();
     }
-  }, [dispatch, id, canCreateCustomerValue]);
+  }, [dispatch, id, canCreateAccountValue]);
   //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [...prevCustomers, { value: newCustomerData?.id, label: newCustomerData?.contactpersonname }]);
+  const handleNewAccount = (newAccountData) => {
+    setaccount((prevAccounts) => [
+      ...prevAccounts,
+      { value: newAccountData?.data.data.id, label: newAccountData?.data.data.contactPersonName }
+    ]);
     setIsDrawerOpen(false);
   };
   const handlecreatepayment = async () => {
@@ -174,12 +177,12 @@ const Paymentrecieve = () => {
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

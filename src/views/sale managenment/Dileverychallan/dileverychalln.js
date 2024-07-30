@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from '../../../component/productadd';
 import 'react-toastify/dist/ReactToastify.css';
-import { createDeliveryChallan, getallDeliverychallan, updateDileveryChallan } from 'store/thunk';
-import { fetchAllProducts, fetchAllCustomers } from 'store/thunk';
+import { createDeliveryChallan, fetchAllAccounts, getallDeliverychallan, updateDileveryChallan } from 'store/thunk';
+import { fetchAllProducts } from 'store/thunk';
 import { Link } from 'react-router-dom';
 
 import { Deliverychallanview } from 'store/thunk';
@@ -28,15 +28,15 @@ const Deliverychallan = () => {
   const { canCreateCustomer, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState('');
-  const [customername, setCustomername] = useState('');
+  const [account, setaccount] = useState([]);
+  const [selectaccount, setSelectaccount] = useState('');
+  const [accountname, setAccountname] = useState('');
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     date: new Date(),
     challanno: 0
   });
@@ -95,9 +95,9 @@ const Deliverychallan = () => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setCustomername(selectedOption.label);
+      setAccountname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
@@ -144,12 +144,12 @@ const Deliverychallan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
-          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
+          const options = response.map((account) => ({ value: account.id, label: account.accountName }));
+          setaccount([{ value: 'new', label: 'Create New Party' }, ...options]);
           if (!canCreateCustomerValue) {
-            setcustomer(options);
+            setaccount(options);
           }
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -181,11 +181,11 @@ const Deliverychallan = () => {
         if (id) {
           console.log(id, 'viewid');
           const response = await dispatch(Deliverychallanview(id));
-          const { DeliveryCustomer, date, challanno } = response;
-          console.log(response.DeliveryCustomer, 'response');
-          setFormData({ customerId: DeliveryCustomer.id, date, challanno });
-          setSelectcustomer(DeliveryCustomer.id);
-          setCustomername(DeliveryCustomer.accountname);
+          const { accountDelivery, date, challanno } = response;
+          console.log(response, 'response');
+          setFormData({ accountId: accountDelivery.id, date, challanno });
+          setSelectaccount(accountDelivery.id);
+          setAccountname(accountDelivery.accountName);
           const updatedRows = response.items.map((item) => ({
             id: item.id,
             productId: item.DeliveryProduct.id,
@@ -240,9 +240,9 @@ const Deliverychallan = () => {
     data();
   }, [dispatch, id, navigate]);
 
-  //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [...prevCustomers, { value: newCustomerData?.id, label: newCustomerData?.accountname }]);
+  //create new account after show in dropdwon
+  const handleNewAccount = (newAccountData) => {
+    setaccount((prevAccounts) => [...prevAccounts, { value: newAccountData.data.data.id, label: newAccountData.data.data.accountName }]);
     setIsDrawerOpen(false);
   };
   //call craete and update deliverychallan and deliverychallan items
@@ -272,7 +272,7 @@ const Deliverychallan = () => {
           }))
         };
         await dispatch(createDeliveryChallan(payload, navigate));
-        console.log(selectcustomer, 'Deliverychallan');
+        console.log(selectaccount);
       }
     } catch (error) {
       console.error('Error creating delivery challan:', error);
@@ -299,12 +299,12 @@ const Deliverychallan = () => {
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

@@ -9,7 +9,7 @@ import { useMediaQuery } from '@mui/material';
 import {
   Creditnoteviewdata,
   createCreditnote,
-  fetchAllCustomers,
+  fetchAllAccounts,
   fetchAllProducts,
   fetchuserwiseCompany,
   getallCreditnote,
@@ -22,12 +22,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Creditnote = () => {
-  const { canDeleteCreditnote, canCreateCustomer, canCreateItem } = useCan();
+  const { canDeleteCreditnote, canseecreateAccount, canCreateItem } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     creditdate: new Date(),
     org_invoicedate: new Date(),
     creditnoteNo: '',
@@ -43,10 +43,10 @@ const Creditnote = () => {
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState([]);
-  const [customerState, setCustomerState] = useState('');
-  const [customername, setCustomername] = useState('');
+  const [account, setaccount] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
+  const [accountState, setAccountState] = useState('');
+  const [accountname, setAccountname] = useState('');
   const [companystate, setCompanystate] = useState('');
   const [product, setProduct] = useState('');
   const [selectproduct, setSelectproduct] = useState([]);
@@ -59,14 +59,14 @@ const Creditnote = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   {
-    console.log(companystate, selectcustomer);
+    console.log(companystate, selectaccount);
   }
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateCustomer, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
 
   const handleDeleteRow = async (index) => {
     const updatedRows = [...rows];
@@ -118,8 +118,6 @@ const Creditnote = () => {
 
       const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
       setPlusgst(totalGST);
-      console.log(selectedOption, 'row');
-
       setRows(updatedRows);
       setSelectproduct(selectedOption.value);
       setIsproductDrawerOpen(false);
@@ -139,16 +137,21 @@ const Creditnote = () => {
     setProduct(updatedProductList);
     setIsproductDrawerOpen(false);
   };
-  // called api of all product and customer for show name of them in dropdown
+
+  // called api of all product and account for show name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname, state: customer.state }));
-          setcustomer([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
-          if (!canCreateCustomerValue) {
-            setcustomer(options);
+          const options = response.map((account) => ({
+            value: account.id,
+            label: account.accountName,
+            state: account.accountDetail?.state
+          }));
+          setaccount([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
+          if (!canCreateAccountValue) {
+            setaccount(options);
           }
         }
         const productResponse = await dispatch(fetchAllProducts());
@@ -173,7 +176,7 @@ const Creditnote = () => {
         const defaultCompany = data.find((company) => company.setDefault === true);
         if (defaultCompany) {
           setCompanystate(defaultCompany.companies.state);
-          const isGstState = defaultCompany.companies.state === customerState;
+          const isGstState = defaultCompany.companies.state === accountState;
           setGststate(isGstState);
         } else {
           console.error('No default company found');
@@ -183,20 +186,20 @@ const Creditnote = () => {
       }
     };
 
-    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+    if (canCreateAccountValue !== null || canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, customerState, gststate, id, canCreateCustomerValue, canCreateProductvalue]);
+  }, [dispatch, accountState, gststate, id, canCreateAccountValue, canCreateProductvalue]);
 
   // use for select customer name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setCustomername(selectedOption.label);
-      setCustomerState(selectedOption.state);
+      setAccountname(selectedOption.label);
+      setAccountState(selectedOption.state);
       setIsDrawerOpen(false);
     }
   };
@@ -276,7 +279,7 @@ const Creditnote = () => {
         if (id) {
           const response = await dispatch(Creditnoteviewdata(id));
           const {
-            CreditCustomer,
+            accountCreditNo,
             LL_RR_no,
             creditdate,
             creditnoteNo,
@@ -291,7 +294,7 @@ const Creditnote = () => {
             totalIgst
           } = response;
           setFormData({
-            customerId: CreditCustomer.id,
+            accountId: accountCreditNo.id,
             LL_RR_no,
             creditdate,
             creditnoteNo,
@@ -305,9 +308,9 @@ const Creditnote = () => {
             totalMrp,
             totalIgst
           });
-          setSelectcustomer(CreditCustomer.id);
-          setCustomerState(CreditCustomer.state);
-          setCustomername(CreditCustomer.accountname);
+          setSelectaccount(accountCreditNo.id);
+          setAccountState(accountCreditNo.accountDetail?.state);
+          setAccountname(accountCreditNo.accountName);
           const updatedRows = response.items.map((item) => ({
             id: item.id,
             productId: item.CreditProduct.id,
@@ -369,10 +372,14 @@ const Creditnote = () => {
   //manage value of input of row
 
   //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [
-      ...prevCustomers,
-      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state }
+  const handleNewAccount = (newAccountData) => {
+    setaccount((prevAccounts) => [
+      ...prevAccounts,
+      {
+        value: newAccountData?.data.data.id,
+        label: newAccountData?.data.data.accountName,
+        state: newAccountData?.data.data.accountDetail?.state
+      }
     ]);
     setIsDrawerOpen(false);
   };
@@ -394,7 +401,7 @@ const Creditnote = () => {
         }))
       };
 
-      const gststate = companystate === customerState ? 'true' : 'false';
+      const gststate = companystate === accountState ? 'true' : 'false';
       if (gststate === 'true') {
         payload.totalSgst = parseFloat(plusgst);
         payload.totalIgst = 0;
@@ -433,12 +440,12 @@ const Creditnote = () => {
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

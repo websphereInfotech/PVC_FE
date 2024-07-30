@@ -135,7 +135,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
         setAccountHolderName(response.accountDetail.accountHolderName);
         setIfscCode(response.accountDetail.ifscCode);
         setTotalCredit(response.accountDetail.totalCredit);
-        setSelectedGroup({ value: response.accountGroup.id, label: response.accountGroup.name });
+        setSelectedGroup({ value: response.accountGroup.id, label: response.accountGroup?.name });
       } catch (error) {
         console.log('Error fetching Account', error);
       }
@@ -212,6 +212,37 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
     }
   };
 
+  const handleClose = () => {
+    setFormData({
+      accountname: '',
+      shortname: '',
+      contactpersonname: '',
+      accountGroupId: ''
+    });
+    setSundryDetails({
+      email: '',
+      mobileNo: '',
+      panNo: null,
+      state: '',
+      city: '',
+      address1: '',
+      address2: null,
+      pincode: '',
+      balance: '',
+      gstnumber: 0,
+      creditperiod: 0
+    });
+    setBankDetail(false);
+    setCreditlimit(false);
+    setBankName('');
+    setAccountNumber('');
+    setAccountHolderName('');
+    setIfscCode('');
+    setTotalCredit('');
+    setSelectedGroup(null);
+    onClose();
+  };
+
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Paper
@@ -252,9 +283,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
             <input placeholder="Enter Account Name" id="accountname" value={formData.accountname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">
-              Short/Alias Name : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-            </Typography>
+            <Typography variant="subtitle1">Short/Alias Name :</Typography>
             <input placeholder="Enter Short/Alias Name" id="shortname" value={formData.shortname} onChange={handleInputChange} />
           </Grid>
           <Grid item>
@@ -468,7 +497,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
 
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
           <div>
-            <button id="savebtncs" onClick={onClose}>
+            <button id="savebtncs" onClick={handleClose}>
               Cancel
             </button>
           </div>

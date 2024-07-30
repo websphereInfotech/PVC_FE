@@ -190,27 +190,27 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
       path: '/paymentcash',
-      element: <ProtectedRoute element={PaymentPage} resource="Payment Cash" permissionName="create_payment_Cash" />
+      element: <ProtectedRoute element={PaymentPage} resource="Payment Cash" permissionName="create_payment" />
     },
     {
       path: '/paymentcash/:id',
-      element: <ProtectedRoute element={PaymentPage} resource="Payment Cash" permissionName="update_payment_Cash" />
+      element: <ProtectedRoute element={PaymentPage} resource="Payment Cash" permissionName="update_payment" />
     },
     {
       path: '/paymentcashlist',
-      element: <ProtectedRoute element={PaymentListPage} resource="Payment Cash" permissionName="view_all_payment_Cash" />
+      element: <ProtectedRoute element={PaymentListPage} resource="Payment Cash" permissionName="view_all_payment" />
     },
     {
       path: '/paymentrecieve',
-      element: <ProtectedRoute element={Paymentrecieve} resource="Receive Cash" permissionName="create_receive_Cash" />
+      element: <ProtectedRoute element={Paymentrecieve} resource="Receipt Cash" permissionName="create_receipt" />
     },
     {
       path: '/paymentrecieve/:id',
-      element: <ProtectedRoute element={Paymentrecieve} resource="Receive Cash" permissionName="update_receive_Cash" />
+      element: <ProtectedRoute element={Paymentrecieve} resource="Receipt Cash" permissionName="update_receipt" />
     },
     {
       path: '/paymentrecieveList',
-      element: <ProtectedRoute element={PaymentrecieveList} resource="Receive Cash" permissionName="view_all_receive_Cash" />
+      element: <ProtectedRoute element={PaymentrecieveList} resource="Receipt Cash" permissionName="view_all_receipt" />
     },
     {
       path: '/ledgerlist',
@@ -224,15 +224,15 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments bank +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
       path: '/paymentbank',
-      element: <ProtectedRoute element={Paymentbank} resource="Payment Bank" permissionName="create_payment_bank" />
+      element: <ProtectedRoute element={Paymentbank} resource="Payment" permissionName="create_payment" />
     },
     {
       path: '/paymentbank/:id',
-      element: <ProtectedRoute element={Paymentbank} resource="Payment Bank" permissionName="update_payment_bank" />
+      element: <ProtectedRoute element={Paymentbank} resource="Payment" permissionName="update_payment" />
     },
     {
       path: '/paymentbanklist',
-      element: <ProtectedRoute element={Paymentbanklist} resource="Payment Bank" permissionName="view_all_payment_bank" />
+      element: <ProtectedRoute element={Paymentbanklist} resource="Payment" permissionName="view_all_payment" />
     },
     {
       path: '/paymentbankledgerlist',
@@ -242,15 +242,15 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments recieve bank +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
       path: '/paymentrecievebank',
-      element: <ProtectedRoute element={Paymentrecievebank} resource="Receive Bank" permissionName="create_receive_bank" />
+      element: <ProtectedRoute element={Paymentrecievebank} resource="Receipt" permissionName="create_receipt" />
     },
     {
       path: '/paymentrecievebank/:id',
-      element: <ProtectedRoute element={Paymentrecievebank} resource="Receive Bank" permissionName="update_receive_bank" />
+      element: <ProtectedRoute element={Paymentrecievebank} resource="Receipt" permissionName="update_receipt" />
     },
     {
       path: '/paymentrecievebanklist',
-      element: <ProtectedRoute element={Paymentrecievebanklist} resource="Receive Bank" permissionName="get_all_receive_bank" />
+      element: <ProtectedRoute element={Paymentrecievebanklist} resource="Receipt" permissionName="get_all_receipt" />
     },
     {
       path: '/paymentrecievebankledgerlist',

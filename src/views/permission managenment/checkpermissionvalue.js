@@ -414,19 +414,19 @@ const useCan = () => {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH
 
   const canCreatePaymentcash = () => {
-    return checkPermission('Payment Cash', 'create_payment_Cash');
+    return checkPermission('Payment Cash', 'create_payment');
   };
   const canUpdatePaymentcash = () => {
-    return checkPermission('Payment Cash', 'update_payment_Cash');
+    return checkPermission('Payment Cash', 'update_payment');
   };
   const canDeletePaymentcash = () => {
-    return checkPermission('Payment Cash', 'delete_payment_Cash');
+    return checkPermission('Payment Cash', 'delete_payment');
   };
   const canViewPaymentcash = () => {
-    return checkPermission('Payment Cash', 'view_payment_Cash');
+    return checkPermission('Payment Cash', 'view_payment');
   };
   const canViwAllPaymentcash = () => {
-    return checkPermission('Payment Cash', 'view_all_payment_Cash');
+    return checkPermission('Payment Cash', 'view_all_payment');
   };
   const canViwAllPaymentcashLedger = () => {
     return checkPermission('Vendor Ledger Cash', 'View_Cash_vendor_Ledger');
@@ -434,19 +434,19 @@ const useCan = () => {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreatePaymentrecievecash = () => {
-    return checkPermission('Receive Cash', 'create_receive_Cash');
+    return checkPermission('Receipt Cash', 'create_receipt');
   };
   const canUpdatePaymentrecievecash = () => {
-    return checkPermission('Receive Cash', 'update_receive_Cash');
+    return checkPermission('Receipt Cash', 'update_receipt');
   };
   const canDeletePaymentrecievecash = () => {
-    return checkPermission('Receive Cash', 'delete_receive_Cash');
+    return checkPermission('Receipt Cash', 'delete_receipt');
   };
   const canViewPaymentrecievecash = () => {
-    return checkPermission('Receive Cash', 'view_receive_Cash');
+    return checkPermission('Receipt Cash', 'view_receipt');
   };
   const canViwAllPaymentrecievecash = () => {
-    return checkPermission('Receive Cash', 'view_all_receive_Cash');
+    return checkPermission('Receipt Cash', 'view_all_receipt');
   };
   const canViwAllPaymentrecievecashLedger = () => {
     return checkPermission('Customer Ledger Cash', 'View_Cash_customer_Ledger');
@@ -455,19 +455,19 @@ const useCan = () => {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK
 
   const canCreatePaymentBank = () => {
-    return checkPermission('Payment Bank', 'create_payment_bank');
+    return checkPermission('Payment', 'create_payment');
   };
   const canUpdatePaymentBank = () => {
-    return checkPermission('Payment Bank', 'update_payment_bank');
+    return checkPermission('Payment', 'update_payment');
   };
   const canDeletePaymentBank = () => {
-    return checkPermission('Payment Bank', 'delete_payment_bank');
+    return checkPermission('Payment', 'delete_payment');
   };
   const canViewPaymentBank = () => {
-    return checkPermission('Payment Bank', 'view_payment_bank');
+    return checkPermission('Payment', 'view_payment');
   };
   const canViwAllPaymentBank = () => {
-    return checkPermission('Payment Bank', 'view_all_payment_bank');
+    return checkPermission('Payment', 'view_all_payment');
   };
   const canViewAllVendorLedger = () => {
     return checkPermission('Vendor Ledger', 'View_vendor_Ledger');
@@ -476,19 +476,19 @@ const useCan = () => {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT Recieve BANK
 
   const canCreatePaymentRecieveBank = () => {
-    return checkPermission('Receive Bank', 'create_receive_bank');
+    return checkPermission('Receipt', 'create_receipt');
   };
   const canUpdatePaymentRecieveBank = () => {
-    return checkPermission('Receive Bank', 'update_receive_bank');
+    return checkPermission('Receipt', 'update_receipt');
   };
   const canDeletePaymentRecieveBank = () => {
-    return checkPermission('Receive Bank', 'delete_receive_bank');
+    return checkPermission('Receipt', 'delete_receipt');
   };
   const canViewPaymentRecieveBank = () => {
-    return checkPermission('Receive Bank', 'view_receive_bank');
+    return checkPermission('Receipt', 'view_receipt');
   };
   const canViwAllPaymentRecieveBank = () => {
-    return checkPermission('Receive Bank', 'get_all_receive_bank');
+    return checkPermission('Receipt', 'get_all_receipt');
   };
   const canViewAllCustomerLedger = () => {
     return checkPermission('Customer Ledger', 'View_customer_Ledger');

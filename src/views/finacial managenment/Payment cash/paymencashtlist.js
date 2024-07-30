@@ -33,7 +33,7 @@ import { Delete, Edit } from '@mui/icons-material';
 const columns = [
   { id: 'paymentNo', label: 'Payment No.', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
-  { id: 'vendor', label: 'Vendor', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
@@ -234,28 +234,10 @@ const PaymentListPage = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : // <Button
-                    //   variant="outlined"
-                    //   color="secondary"
-                    //   onClick={() => handleUpdatePayment(payment.id)}
-                    //   disabled={!canUpdatePaymentcash()}
-                    // >
-                    //   Edit
-                    // </Button>
-                    // column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleDeleteConfirmation(payment.id)}
-                    //     disabled={!canDeletePaymentcash()}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // ) :
-                    column.id === 'date' ? (
+                    ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      payment.PaymentVendor.vendorname
+                    ) : column.id === 'party' ? (
+                      payment.accountPaymentCash.contactPersonName
                     ) : column.id === 'updatedBy' ? (
                       payment.paymentUpdate?.username
                     ) : column.id === 'createdBy' ? (

@@ -161,19 +161,19 @@ const MenuItem = () => {
   ]);
 
   const hasAllPermissionPaymentCash = checkAllPermissions('Payment Cash', [
-    'create_payment_Cash',
-    'update_payment_Cash',
-    'delete_payment_Cash',
-    'view_payment_Cash',
-    'view_all_payment_Cash'
+    'create_payment',
+    'update_payment',
+    'delete_payment',
+    'view_payment',
+    'view_all_payment'
   ]);
 
-  const hasAllPermissionPaymentRecieveCash = checkAllPermissions('Receive Cash', [
-    'create_receive_Cash',
-    'update_receive_Cash',
-    'delete_receive_Cash',
-    'view_receive_Cash',
-    'view_all_receive_Cash'
+  const hasAllPermissionPaymentRecieveCash = checkAllPermissions('Receipt Cash', [
+    'create_receipt',
+    'update_receipt',
+    'delete_receipt',
+    'view_receipt',
+    'view_all_receipt'
   ]);
 
   const hasAllPermissionsClaimcash = checkAllPermissions('Claim Cash', [
@@ -186,12 +186,12 @@ const MenuItem = () => {
 
   const hasAllPermissionsRecieveClaimcash = checkAllPermissions('Claim Cash', ['view_reciveclaim', 'isapproved_claim']);
 
-  const hasAllPermissionsPaymentBank = checkAllPermissions('Payment Bank', [
-    'create_payment_bank',
-    'update_payment_bank',
-    'view_payment_bank',
-    'view_all_payment_bank',
-    'delete_payment_bank'
+  const hasAllPermissionsPaymentBank = checkAllPermissions('Payment', [
+    'create_payment',
+    'update_payment',
+    'view_payment',
+    'view_all_payment',
+    'delete_payment'
   ]);
 
   const hasAllPermissionsCompany = checkAllPermissions('Company', [
@@ -202,12 +202,12 @@ const MenuItem = () => {
     'view_single_company'
   ]);
 
-  const hasAllPermissionPaymentRecieveBank = checkAllPermissions('Receive Bank', [
-    'create_receive_bank',
-    'update_receive_bank',
-    'delete_receive_bank',
-    'view_receive_bank',
-    'get_all_receive_bank'
+  const hasAllPermissionPaymentRecieveBank = checkAllPermissions('Receipt', [
+    'create_receipt',
+    'update_receipt',
+    'delete_receipt',
+    'view_receipt',
+    'get_all_receipt'
   ]);
 
   const hasAllPermissionsItem = checkAllPermissions('Items', [

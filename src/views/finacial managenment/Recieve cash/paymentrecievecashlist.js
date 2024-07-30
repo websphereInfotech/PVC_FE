@@ -33,7 +33,7 @@ import { Delete, Edit } from '@mui/icons-material';
 const columns = [
   { id: 'receiptNo', label: 'Receipt No', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
-  { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
@@ -237,8 +237,8 @@ const PaymentrecieveList = () => {
                       </div>
                     ) : column.id === 'date' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      payment.ReceiveCustomer.customername
+                    ) : column.id === 'party' ? (
+                      payment.accountReceiptCash?.contactPersonName
                     ) : column.id === 'updatedBy' ? (
                       payment.receiveUpdate?.username
                     ) : column.id === 'createdBy' ? (

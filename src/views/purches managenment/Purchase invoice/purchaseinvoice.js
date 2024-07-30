@@ -343,9 +343,9 @@ const Purchaseinvoice = () => {
     setAccount((prevAccount) => [
       ...prevAccount,
       {
-        value: newAccountData?.id,
-        label: newAccountData?.accountName,
-        state: newAccountData?.accountDetail?.state
+        value: newAccountData?.data.data.id,
+        label: newAccountData?.data.data.accountName,
+        state: newAccountData?.data.data.accountDetail?.state
       }
     ]);
     setIsDrawerOpen(false);

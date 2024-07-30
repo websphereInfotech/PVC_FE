@@ -10,11 +10,11 @@ import AnchorProductDrawer from '../../../component/productadd';
 import { useDispatch } from 'react-redux';
 import {
   createProformainvoice,
-  fetchAllCustomers,
   Proformainvoiceview,
   updateProformainvoice,
   fetchproformainvoiceList,
-  fetchuserwiseCompany
+  fetchuserwiseCompany,
+  fetchAllAccounts
 } from 'store/thunk';
 import { fetchAllProducts } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,27 +24,26 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Proformainvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation, canCreateCustomer, canCreateItem } = useCan();
+  const { canDeleteProformainvoiceQuotation, canseecreateAccount, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
-  const [customer, setcustomer] = useState([]);
-  const [selectcustomer, setSelectcustomer] = useState('');
-  const [customerState, setCustomerState] = useState('');
-  const [customername, setCustomername] = useState('');
+  const [account, setaccount] = useState([]);
+  const [selectaccount, setSelectaccount] = useState('');
+  const [accountState, setAccountState] = useState('');
+  const [accountname, setAccountname] = useState('');
   const [companystate, setCompanystate] = useState('');
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [gststate, setGststate] = useState('');
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     date: new Date(),
     ProFormaInvoice_no: '',
     destination: null,
     dispatchThrough: null,
-    // dispatchno: null,
     LL_RR_no: null,
     motorVehicleNo: null,
     termsOfDelivery: '',
@@ -61,12 +60,12 @@ const Proformainvoice = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
+    setCanCreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateCustomer, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
 
   // manage button of addrow
   const handleAddRow = () => {
@@ -143,17 +142,16 @@ const Proformainvoice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
-          await dispatch(fetchAllCustomers());
-          let options = response.map((customer) => ({
-            value: customer.id,
-            label: customer.accountname,
-            state: customer.state
+          let options = response.map((account) => ({
+            value: account.id,
+            label: account.accountName,
+            state: account.accountDetail?.state
           }));
-          setcustomer([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
-          if (!canCreateCustomerValue) {
-            setcustomer(options);
+          setaccount([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
+          if (!canCreateAccountValue) {
+            setaccount(options);
           }
         }
 
@@ -180,7 +178,7 @@ const Proformainvoice = () => {
         console.log(defaultCompany.companies.state, 'defaultcompany');
         if (defaultCompany) {
           setCompanystate(defaultCompany.companies.state);
-          const isGstState = defaultCompany.companies.state === customerState;
+          const isGstState = defaultCompany.companies.state === accountState;
           setGststate(isGstState);
         } else {
           console.error('No default company found');
@@ -190,17 +188,17 @@ const Proformainvoice = () => {
       }
     };
 
-    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+    if (canCreateAccountValue !== null || canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, customerState, id, canCreateCustomerValue, canCreateProductvalue]);
+  }, [dispatch, accountState, id, canCreateAccountValue, canCreateProductvalue]);
 
   useEffect(() => {
     const data = async () => {
       if (id) {
         const response = await dispatch(Proformainvoiceview(id));
         const {
-          customer,
+          accountProForma,
           date,
           ProFormaInvoice_no,
           validtill,
@@ -216,7 +214,7 @@ const Proformainvoice = () => {
           destination
         } = response;
         setFormData({
-          customerId: customer.id,
+          accountId: accountProForma.id,
           date,
           ProFormaInvoice_no,
           validtill,
@@ -231,9 +229,9 @@ const Proformainvoice = () => {
           terms,
           destination
         });
-        setSelectcustomer(customer.id);
-        setCustomerState(customer.state);
-        setCustomername(customer.accountname);
+        setSelectaccount(accountProForma.id);
+        setAccountState(accountProForma.accountDetail?.state);
+        setAccountname(accountProForma.accountName);
         const updatedRows = response.items.map((item) => ({
           id: item.id,
           productId: item.product.id,
@@ -254,23 +252,28 @@ const Proformainvoice = () => {
   }, [dispatch, id]);
 
   //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [
-      ...prevCustomers,
-      { value: newCustomerData?.id, label: newCustomerData?.accountname, state: newCustomerData?.state }
+  const handleNewAccount = (newAccountData) => {
+    console.log(newAccountData, 'newAccount');
+    setaccount((prevAccount) => [
+      ...prevAccount,
+      {
+        value: newAccountData.data.data.id,
+        label: newAccountData.data.data.accountName,
+        state: newAccountData.data.data.accountDetail?.state
+      }
     ]);
     setIsDrawerOpen(false);
   };
 
-  // use for select customer name from dropdown
+  // use for select Account name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setCustomername(selectedOption.label);
-      setCustomerState(selectedOption.state);
+      setAccountname(selectedOption.label);
+      setAccountState(selectedOption.state);
       setIsDrawerOpen(false);
     }
   };
@@ -304,7 +307,7 @@ const Proformainvoice = () => {
           mrp: row.mrp
         }))
       };
-      const gststate = companystate === customerState ? 'true' : 'false';
+      const gststate = companystate === accountState ? 'true' : 'false';
       if (gststate === 'true') {
         payload.totalSgst = plusgst;
         payload.totalIgst = 0;
@@ -315,7 +318,7 @@ const Proformainvoice = () => {
       if (id) {
         await dispatch(updateProformainvoice(id, payload, navigate));
       } else {
-        console.log(selectcustomer);
+        console.log(selectaccount);
         await dispatch(createProformainvoice(payload, navigate));
       }
     } catch (error) {
@@ -459,16 +462,16 @@ const Proformainvoice = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

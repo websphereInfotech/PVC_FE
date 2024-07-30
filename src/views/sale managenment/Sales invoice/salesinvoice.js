@@ -239,12 +239,13 @@ const Salesinvoice = () => {
   }, [dispatch, companystate, accountState, canCreateAccountValue, canCreateProductvalue]);
 
   const handleproformnumber = (selectedOption) => {
+    console.log(selectedOption, 'Options');
     const updatedFormData = {
       ...selectedOption,
       proFormaNo: selectedOption.value
     };
-    setAccountname(selectedOption.customer.accountname);
-    setAccountState(selectedOption.customer.state);
+    setAccountname(selectedOption.accountProForma.accountName);
+    setAccountState(selectedOption.accountProForma.accountDetail?.state);
     setFormData({ ...updatedFormData, invoiceno: formData.invoiceno, dispatchno: formData.invoiceno });
     console.log(updatedFormData, 'form');
     const selectedProFormaItems = selectedOption.items.map((item) => ({
@@ -268,7 +269,7 @@ const Salesinvoice = () => {
       const proformainvoiceresponse = await dispatch(fetchproformainvoiceList());
       const options = proformainvoiceresponse.map((item) => ({
         value: item.ProFormaInvoice_no,
-        label: `${item.ProFormaInvoice_no}  ${item.customer.accountname}`,
+        label: `${item.ProFormaInvoice_no}  ${item.accountProForma?.accountName}`,
         dispatchThrough: item.dispatchThrough,
         motorVehicleNo: item.motorVehicleNo,
         LL_RR_no: item.LL_RR_no,
@@ -279,7 +280,8 @@ const Salesinvoice = () => {
         accountId: item.accountId,
         customer: item.customer,
         invoicedate: new Date(),
-        items: item.items
+        items: item.items,
+        accountProForma: item.accountProForma
       }));
       setProformainvoice(options);
       if (id) {
@@ -289,7 +291,6 @@ const Salesinvoice = () => {
           dispatchThrough,
           motorVehicleNo,
           LL_RR_no,
-          // dispatchno,
           destination,
           deliverydate,
           invoiceno,
@@ -347,11 +348,16 @@ const Salesinvoice = () => {
     };
     updateTotalQuantity();
   }, [rows]);
-  //create new customer after show in dropdwon
+
+  //create new Account after show in dropdwon
   const handleNewAccount = (newAccountData) => {
     setAccount((prevAccount) => [
       ...prevAccount,
-      { value: newAccountData?.id, label: newAccountData?.accountname, state: newAccountData?.state }
+      {
+        value: newAccountData.data.data.id,
+        label: newAccountData.data.data.accountName,
+        state: newAccountData.data.data.accountDetail?.state
+      }
     ]);
     setIsDrawerOpen(false);
   };
@@ -451,6 +457,7 @@ const Salesinvoice = () => {
     { value: 'Advance', label: 'Advance' },
     { value: 'Terms', label: 'Terms' }
   ];
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -669,7 +676,6 @@ const Salesinvoice = () => {
               </>
             ) : (
               // For larger screens, show all totals on one line
-
               <div style={{ float: 'right', width: '30%' }}>
                 <div id="subtotalcs">
                   <p>Sub Total</p>

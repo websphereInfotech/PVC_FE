@@ -38,8 +38,8 @@ const CreditnoteView = () => {
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Customer</Typography>
-          <Typography variant="subtitle2">{data.CreditCustomer?.accountname}</Typography>
+          <Typography variant="subtitle1">Party</Typography>
+          <Typography variant="subtitle2">{data.accountCreditNo?.accountName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Date</Typography>

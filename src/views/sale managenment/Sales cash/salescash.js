@@ -234,7 +234,7 @@ const Salescash = () => {
   const handleNewAccount = (newAccountData) => {
     setAccount((prevAccounts) => [
       ...prevAccounts,
-      { value: newAccountData?.id, label: newAccountData?.contactPersonName, state: newAccountData?.state }
+      { value: newAccountData.data.data.id, label: newAccountData.data.data.contactPersonName }
     ]);
     setIsDrawerOpen(false);
   };

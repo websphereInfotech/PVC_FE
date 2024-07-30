@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createPaymentCash, fetchAllCustomers, getallPaymentCash, paymentCashview, updatePaymentCash } from 'store/thunk';
+import { createPaymentCash, fetchAllAccountCash, getallPaymentCash, paymentCashview, updatePaymentCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,23 +15,23 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateVendor } = useCan();
-  const [vendorname, setvendorname] = useState('');
-  const [vendor, setvendor] = useState([]);
+  const { canseecreateAccount } = useCan();
+  const [accountname, setaccountname] = useState('');
+  const [account, setaccount] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectvendor, setSelectvendor] = useState([]);
+  const [selectaccount, setSelectaccount] = useState([]);
   const [formData, setFormData] = useState({
-    vendorId: '',
+    accountId: '',
     date: new Date(),
     amount: Number(),
     description: '',
     paymentNo: ''
   });
-  console.log(selectvendor);
-  const [canCreateVendorValue, setCanCreateVendorValue] = useState(null);
+  console.log(selectaccount);
+  const [canCreateAccountValue, setCanCreateAccountValue] = useState(null);
   useEffect(() => {
-    setCanCreateVendorValue(canCreateVendor());
-  }, [canCreateVendor]);
+    setCanCreateAccountValue(canseecreateAccount());
+  }, [canseecreateAccount]);
 
   const handleDateChange = (date) => {
     setFormData({ ...formData, date: date });
@@ -40,22 +40,22 @@ const PaymentPage = () => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.vendorId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setvendorname(selectedOption.label);
+      setaccountname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccountCash());
         if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([{ value: 'new', label: 'Create New Party' }, ...options]);
+          const options = response.map((account) => ({ value: account.id, label: account.contactPersonName }));
+          setaccount([{ value: 'new', label: 'Create New Party' }, ...options]);
         }
-        if (!canCreateVendorValue) {
-          setvendor(options);
+        if (!canCreateAccountValue) {
+          setaccount(options);
         }
       } catch (error) {
         console.error('Error fetching payment cash:', error);
@@ -65,11 +65,10 @@ const PaymentPage = () => {
       try {
         if (id) {
           const response = await dispatch(paymentCashview(id));
-          const { amount, description, paymentNo, PaymentVendor, date } = response;
-          setFormData({ amount, description, paymentNo, vendorId: PaymentVendor.id, date });
-
-          setvendorname(PaymentVendor.vendorname);
-          setSelectvendor(PaymentVendor.id);
+          const { amount, description, paymentNo, accountPaymentCash, date } = response;
+          setFormData({ amount, description, paymentNo, accountId: accountPaymentCash.id, date });
+          setaccountname(accountPaymentCash.contactPersonName);
+          setSelectaccount(accountPaymentCash.id);
         }
       } catch (error) {
         console.error('Error fetching payment cash:', error);
@@ -108,19 +107,19 @@ const PaymentPage = () => {
       }
     };
     generateAutoPaymentcashNumber();
-    if (canCreateVendorValue !== null) {
+    if (canCreateAccountValue !== null) {
       fetchData();
     }
     viewData();
-  }, [dispatch, id, canCreateVendorValue]);
+  }, [dispatch, id, canCreateAccountValue]);
 
   //create new Vendor after show in dropdwon
-  const handleNewVendor = (newVendorData) => {
-    setvendor((prevVendor) => [
-      ...prevVendor,
+  const handleNewVendor = (newAccountData) => {
+    setaccount((prevAccount) => [
+      ...prevAccount,
       {
-        value: newVendorData?.id,
-        label: newVendorData?.contactpersonname
+        value: newAccountData?.data.data.id,
+        label: newAccountData?.data.data.contactPersonName
       }
     ]);
     setIsDrawerOpen(false);
@@ -181,12 +180,12 @@ const PaymentPage = () => {
               </Typography>
               <Select
                 color="secondary"
-                options={vendor}
-                value={{ value: formData.vendorId, label: vendorname }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeVendor={handleNewVendor} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewVendor} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Amount : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>

@@ -19,7 +19,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'ProFormaInvoice_no', label: 'No.', align: 'center' },
-  { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'validtill', label: 'Valid Till', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
@@ -185,8 +185,8 @@ export default function ProformainvoiceList() {
                       </div>
                     ) : column.id === 'date' || column.id === 'validtill' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      row.customer.accountname
+                    ) : column.id === 'party' ? (
+                      row.accountProForma.accountName
                     ) : column.id === 'updatedBy' ? (
                       row.proUpdateUser?.username
                     ) : column.id === 'createdBy' ? (

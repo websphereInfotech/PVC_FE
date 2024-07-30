@@ -27,7 +27,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 const columns = [
   { id: 'challanno', label: 'Challan No', minWidth: 100, align: 'center' },
   { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
-  { id: 'customer', label: 'Customer', minWidth: 100, align: 'center' },
+  { id: 'party', label: 'Party', minWidth: 100, align: 'center' },
   { id: 'challanCreateUser', label: 'Created By', align: 'center' },
   { id: 'challanUpdateUser', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', minWidth: 100, align: 'center' }
@@ -188,8 +188,8 @@ const DileveryChallanList = () => {
                       order.challanUpdateUser?.username
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      order.DeliveryCustomer.accountname
+                    ) : column.id === 'party' ? (
+                      order.accountDelivery.accountName
                     ) : (
                       order[column.id]
                     )}
