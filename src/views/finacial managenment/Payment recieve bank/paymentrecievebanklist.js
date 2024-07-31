@@ -39,7 +39,7 @@ import { useTheme } from '@emotion/react';
 const columns = [
   { id: 'voucherno', label: 'Voucher No.', align: 'center' },
   { id: 'paymentdate', label: 'Date', align: 'center' },
-  { id: 'customer', label: 'Customer', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
@@ -240,28 +240,10 @@ const Paymentrecievebanklist = () => {
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
-                    ) : // <Button
-                    //   variant="outlined"
-                    //   color="secondary"
-                    //   onClick={() => handleUpdatePayment(payment.id)}
-                    //   disabled={!canUpdatePaymentRecieveBank()}
-                    // >
-                    //   Edit
-                    // </Button>
-                    //  column.id === 'delete' ? (
-                    //   <Button
-                    //     variant="outlined"
-                    //     color="secondary"
-                    //     onClick={() => handleDeleteConfirmation(payment.id)}
-                    //     disabled={!canDeletePaymentRecieveBank()}
-                    //   >
-                    //     Delete
-                    //   </Button>
-                    // )
-                    column.id === 'paymentdate' ? (
+                    ) : column.id === 'paymentdate' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'customer' ? (
-                      payment.customerBank?.accountname
+                    ) : column.id === 'party' ? (
+                      payment.accountReceipt?.accountName
                     ) : column.id === 'account' ? (
                       payment.receiveBank?.accountname
                     ) : column.id === 'createdBy' ? (

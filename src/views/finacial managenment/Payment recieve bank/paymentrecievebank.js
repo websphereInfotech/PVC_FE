@@ -5,11 +5,11 @@ import { useMediaQuery } from '@mui/material';
 import {
   createPaymentRecieveBank,
   fetchAllCompanyBank,
-  fetchAllCustomers,
   createCompanyBank,
   updatePaymentRecievebank,
   viewSinglePaymentRecieveBank,
-  getAllPaymentRecievebank
+  getAllPaymentRecievebank,
+  fetchAllAccounts
 } from 'store/thunk';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -25,20 +25,20 @@ const Paymentrecievebank = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { canCreateCustomer, canViwAllCompanyBank } = useCan();
-  const [customername, setcustomername] = useState('');
+  const [accountname, setaccountname] = useState('');
   const [companyname, setcompanyname] = useState('');
-  const [customer, setcustomer] = useState([]);
-  const [account, setAccount] = useState([]);
+  const [account, setaccount] = useState([]);
+  const [companyaccount, setCompanyaccount] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectcustomer, setSelectcustomer] = useState([]);
   const [selectaccount, setSelectaccount] = useState([]);
+  const [selectcompanyaccount, setSelectcompanyaccount] = useState([]);
   const [formData, setFormData] = useState({
-    customerId: '',
+    accountId: '',
     paymentdate: new Date(),
     amount: 0,
     paymentType: '',
     mode: '',
-    accountId: '',
+    bankAccountId: '',
     voucherno: ''
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -49,7 +49,7 @@ const Paymentrecievebank = () => {
     ifsccode: '',
     branch: ''
   });
-  console.log(selectcustomer, selectaccount);
+  console.log(selectaccount, selectcompanyaccount);
   const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
   useEffect(() => {
     setCanCreateCustomerValue(canCreateCustomer());
@@ -67,9 +67,9 @@ const Paymentrecievebank = () => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
     } else {
-      formData.customerId = selectedOption.value;
+      formData.accountId = selectedOption.value;
       setFormData(formData);
-      setcustomername(selectedOption.label);
+      setaccountname(selectedOption.label);
       setIsDrawerOpen(false);
     }
   };
@@ -78,7 +78,7 @@ const Paymentrecievebank = () => {
     if ((selectedOption && selectedOption.label === 'Create New Account') || !canViwAllCompanyBank()) {
       setIsDialogOpen(true);
     } else {
-      formData.accountId = selectedOption.value;
+      formData.bankAccountId = selectedOption.value;
       setFormData(formData);
       setcompanyname(selectedOption.label);
       setIsDialogOpen(false);
@@ -95,7 +95,6 @@ const Paymentrecievebank = () => {
         companyId: companyId,
         ...bankdata
       };
-      console.log(bankdetails, 'details');
       const response = await dispatch(createCompanyBank(bankdetails));
 
       if (response.data.status === 'true') {
@@ -115,7 +114,7 @@ const Paymentrecievebank = () => {
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
           const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
-          setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
+          setCompanyaccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } else {
         throw new Error('Failed to create bank details');
@@ -128,18 +127,18 @@ const Paymentrecievebank = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchAllCustomers());
+        const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
-          setcustomer([{ value: 'new', label: 'Create New Party' }, ...options]);
+          const options = response.map((account) => ({ value: account.id, label: account.accountName }));
+          setaccount([{ value: 'new', label: 'Create New Party' }, ...options]);
         }
         if (!canCreateCustomerValue) {
-          setcustomer(options);
+          setaccount(options);
         }
         const responsecompany = await dispatch(fetchAllCompanyBank());
         if (Array.isArray(responsecompany)) {
           const options = responsecompany.map((company) => ({ value: company.id, label: company.bankname }));
-          setAccount([{ value: 'new', label: 'Create New Account' }, ...options]);
+          setCompanyaccount([{ value: 'new', label: 'Create New Account' }, ...options]);
         }
       } catch (error) {
         console.error('Error fetching payment recieve bank:', error);
@@ -149,20 +148,20 @@ const Paymentrecievebank = () => {
       try {
         if (id) {
           const response = await dispatch(viewSinglePaymentRecieveBank(id));
-          const { voucherno, mode, paymentType, amount, receiveBank, customerBank, paymentdate } = response;
+          const { voucherno, mode, paymentType, amount, receiptBankAccount, accountReceipt, paymentdate } = response;
           setFormData({
             voucherno,
             mode,
             paymentType,
             amount,
-            customerId: customerBank.id,
-            accountId: receiveBank.id,
+            accountId: accountReceipt.id,
+            bankAccountId: receiptBankAccount.id,
             paymentdate
           });
-          setcompanyname(receiveBank.bankname);
-          setcustomername(customerBank.accountname);
-          setSelectaccount(receiveBank.id);
-          setSelectcustomer(customerBank.id);
+          setcompanyname(receiptBankAccount.bankname);
+          setaccountname(accountReceipt.accountName);
+          setSelectcompanyaccount(receiptBankAccount.id);
+          setSelectaccount(accountReceipt.id);
         }
       } catch (error) {
         console.error('Error fetching payment recieve bank:', error);
@@ -219,18 +218,12 @@ const Paymentrecievebank = () => {
     }
   };
 
-  //create new customer after show in dropdwon
-  const handleNewCustomer = (newCustomerData) => {
-    setcustomer((prevCustomers) => [{ ...prevCustomers, value: newCustomerData?.id, label: newCustomerData?.contactpersonname }]);
+  //create new account after show in dropdwon
+  const handleNewAccount = (newAccountData) => {
+    setaccount((prevAccount) => [{ ...prevAccount, value: newAccountData?.data.data.id, label: newAccountData?.data.data.accountName }]);
     setIsDrawerOpen(false);
   };
 
-  // const handleInputChange = (fieldName, value) => {
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [fieldName]: value
-  //   }));
-  // };
   const handleInputChange = (fieldName, value) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -284,24 +277,24 @@ const Paymentrecievebank = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={customer}
-                value={{ value: formData.customerId, label: customername }}
+                options={account}
+                value={{ value: formData.accountId, label: accountname }}
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"
-                options={account}
-                value={{ value: formData.accountId, label: companyname }}
+                options={companyaccount}
+                value={{ value: formData.bankAccountId, label: companyname }}
                 onChange={handleSelectAccountChange}
               />
             </Grid>
@@ -332,7 +325,6 @@ const Paymentrecievebank = () => {
               </Typography>
               <input
                 placeholder="Enter Amount"
-                // type="number"
                 id="amount"
                 value={formData.amount}
                 onChange={(e) => handleInputChange('amount', e.target.value)}

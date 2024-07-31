@@ -449,32 +449,32 @@ const MenuItem = () => {
                 type: 'collapse',
                 icon: icons['ProductionQuantityLimitsIcon'],
                 children: [
-                  {
-                    id: 'Items',
-                    title: 'Items',
-                    type: 'collapse',
-                    icon: icons['ExtensionIcon'],
-                    children: [
-                      hasAllPermissionsItem && {
-                        id: 'Product List',
-                        title: 'Product',
-                        type: 'item',
-                        url: '/productlist'
-                      },
-                      hasAllPermissionsItem && {
-                        id: 'Raw Material List',
-                        title: 'Raw Material',
-                        type: 'item',
-                        url: '/rawmateriallist'
-                      },
-                      hasAllPermissionsItem && {
-                        id: 'Spare',
-                        title: 'Spare',
-                        type: 'item',
-                        url: '/sparelist'
-                      }
-                    ]
+                  // {
+                  // id: 'Items',
+                  // title: 'Items',
+                  // type: 'collapse',
+                  // icon: icons['ExtensionIcon'],
+                  // children: [
+                  hasAllPermissionsItem && {
+                    id: 'Item List',
+                    title: 'Item',
+                    type: 'item',
+                    url: '/productlist'
                   },
+                  // hasAllPermissionsItem && {
+                  //   id: 'Raw Material List',
+                  //   title: 'Raw Material',
+                  //   type: 'item',
+                  //   url: '/rawmateriallist'
+                  // },
+                  // hasAllPermissionsItem && {
+                  //   id: 'Spare',
+                  //   title: 'Spare',
+                  //   type: 'item',
+                  //   url: '/sparelist'
+                  // }
+                  // ]
+                  // },
                   hasAllPermissionsBom && {
                     id: 'production',
                     title: 'Production',

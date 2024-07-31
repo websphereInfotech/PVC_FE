@@ -134,13 +134,12 @@ const ProductList = () => {
   };
 
   const handleAddProduct = () => {
-    console.log('setSelectedProduct', selectedProduct);
     setSelectedProduct(null);
     setIsDrawerOpen(true);
   };
 
   const handleProductUpdated = () => {
-    dispatch(fetchAllProducts({ group: 'product' }))
+    dispatch(fetchAllProducts())
       .then((data) => {
         setProduct(data);
         setIsDrawerOpen(false);
@@ -151,7 +150,7 @@ const ProductList = () => {
   };
 
   const handleNewProductAdded = () => {
-    dispatch(fetchAllProducts({ group: 'product' }))
+    dispatch(fetchAllProducts())
       .then((data) => {
         setProduct(data);
         setIsDrawerOpen(false);
@@ -174,7 +173,7 @@ const ProductList = () => {
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
-      const response = await dispatch(fetchAllProducts({ group: 'product', search: query }));
+      const response = await dispatch(fetchAllProducts({ search: query }));
       setProduct(response);
     } catch (error) {
       console.error('Error Searching Product:', error);

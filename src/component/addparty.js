@@ -92,8 +92,45 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   const handleStateChange = (selectedState) => {
     setSundryDetails({ ...sundryDetails, state: selectedState.name });
   };
-
   React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(viewAccount(id));
+        setFormData({
+          accountname: response.accountName || '',
+          shortname: response.shortName || '',
+          contactpersonname: response.contactPersonName || '',
+          accountGroupId: response.accountGroupId || ''
+        });
+        setSundryDetails({
+          email: response.accountDetail?.email || '',
+          mobileNo: response.accountDetail?.mobileNo || '',
+          panNo: response.accountDetail?.panNo || null,
+          state: response.accountDetail?.state || '',
+          city: response.accountDetail?.city || '',
+          address1: response.accountDetail?.address1 || '',
+          address2: response.accountDetail?.address2 || null,
+          pincode: response.accountDetail?.pincode || '',
+          balance: response.accountDetail?.balance || '',
+          gstnumber: response.accountDetail?.gstNumber || 0,
+          creditperiod: response.accountDetail?.creditPeriod || 0
+        });
+        setBankDetail(response.accountDetail?.bankDetail || false);
+        setCreditlimit(response.accountDetail?.creditLimit || false);
+        setBankName(response.accountDetail?.bankName || '');
+        setAccountNumber(response.accountDetail?.accountNumber || '');
+        setAccountHolderName(response.accountDetail?.accountHolderName || '');
+        setIfscCode(response.accountDetail?.ifscCode || '');
+        setTotalCredit(response.accountDetail?.totalCredit || '');
+        setSelectedGroup({
+          value: response.accountGroup?.id || '',
+          label: response.accountGroup?.name || 'Select Group'
+        });
+      } catch (error) {
+        console.log('Error fetching Account', error);
+      }
+    };
+
     const data = async () => {
       try {
         const fetchdata = await dispatch(fetchAllAccountOptions());
@@ -106,43 +143,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
         console.log('fetching data of all group of ledgers:', error);
       }
     };
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(viewAccount(id));
-        setFormData({
-          accountname: response.accountName,
-          shortname: response.shortName,
-          contactpersonname: response.contactPersonName,
-          accountGroupId: response.accountGroupId
-        });
-        setSundryDetails({
-          email: response.accountDetail.email,
-          mobileNo: response.accountDetail.mobileNo,
-          panNo: response.accountDetail.panNo,
-          state: response.accountDetail.state,
-          city: response.accountDetail.city,
-          address1: response.accountDetail.address1,
-          address2: response.accountDetail.address2,
-          pincode: response.accountDetail.pincode,
-          balance: response.accountDetail.balance,
-          gstnumber: response.accountDetail.gstNumber,
-          creditperiod: response.accountDetail.creditPeriod
-        });
-        setBankDetail(response.accountDetail.bankDetail);
-        setCreditlimit(response.accountDetail.creditLimit);
-        setBankName(response.accountDetail.bankName);
-        setAccountNumber(response.accountDetail.accountNumber);
-        setAccountHolderName(response.accountDetail.accountHolderName);
-        setIfscCode(response.accountDetail.ifscCode);
-        setTotalCredit(response.accountDetail.totalCredit);
-        setSelectedGroup({ value: response.accountGroup.id, label: response.accountGroup?.name });
-      } catch (error) {
-        console.log('Error fetching Account', error);
-      }
-    };
-    if (id) {
-      fetchData();
-    }
+    fetchData();
     data();
   }, [id, dispatch]);
 
@@ -213,33 +214,6 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   };
 
   const handleClose = () => {
-    setFormData({
-      accountname: '',
-      shortname: '',
-      contactpersonname: '',
-      accountGroupId: ''
-    });
-    setSundryDetails({
-      email: '',
-      mobileNo: '',
-      panNo: null,
-      state: '',
-      city: '',
-      address1: '',
-      address2: null,
-      pincode: '',
-      balance: '',
-      gstnumber: 0,
-      creditperiod: 0
-    });
-    setBankDetail(false);
-    setCreditlimit(false);
-    setBankName('');
-    setAccountNumber('');
-    setAccountHolderName('');
-    setIfscCode('');
-    setTotalCredit('');
-    setSelectedGroup(null);
     onClose();
   };
 

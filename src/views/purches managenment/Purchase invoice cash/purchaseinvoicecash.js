@@ -103,7 +103,7 @@ const Purchaseinvoicecash = () => {
     setIsproductDrawerOpen(false);
   };
 
-  // called api of all product and vendor for show name of them in dropdown
+  // called api of all product and account for show name of them in dropdown
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -138,7 +138,7 @@ const Purchaseinvoicecash = () => {
     }
   }, [dispatch, id, canCreateAccountValue, canCreateRawmaterialvalue]);
 
-  // use for select vendor name from dropdown
+  // use for select account name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);

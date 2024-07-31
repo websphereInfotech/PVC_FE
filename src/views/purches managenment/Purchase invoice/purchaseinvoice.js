@@ -338,7 +338,7 @@ const Purchaseinvoice = () => {
 
   console.log(selectAccount);
 
-  //create new Vendor after show in dropdwon
+  //create new Account after show in dropdwon
   const handleNewAccount = (newAccountData) => {
     setAccount((prevAccount) => [
       ...prevAccount,

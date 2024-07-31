@@ -189,7 +189,7 @@ const DileveryChallanList = () => {
                     ) : column.id === 'date' ? (
                       new Date(order[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
-                      order.accountDelivery.accountName
+                      order.accountDelivery?.accountName
                     ) : (
                       order[column.id]
                     )}

@@ -138,8 +138,8 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           setCess(productData.cess);
           setItemType(productData.itemtype);
           setSelectedItemGroup(productData.itemgroup);
-          setItemgroupname(productData.name);
-          setItemcategoryname(productData.name);
+          setItemgroupname(productData.itemGroup?.name);
+          setItemcategoryname(productData.itemCategory?.name);
         } else {
           setFormData({
             productname: '',
@@ -174,9 +174,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     if (canCreategroupvalue !== null) {
       itemgroup();
     }
-    if (id) {
-      fetchData();
-    }
+    fetchData();
   }, [id, dispatch, selectedItemGroup, canCreategroupvalue, canCreatecategoryvalue]);
 
   const handleGSTChange = (selectedOption) => {
@@ -200,27 +198,27 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
       } else {
         const newdata = await dispatch(createProduct(data, navigate));
         onNewProductAdded(newdata.data.data);
-        setFormData({
-          productname: '',
-          description: '',
-          itemgroup: '',
-          itemcategory: '',
-          unit: '',
-          salesprice: 0,
-          purchaseprice: 0,
-          HSNcode: 0,
-          gstrate: 0,
-          lowStockQty: null,
-          weight: ''
-        });
-        setSelectedGST('');
-        setOpeningStock(true);
-        setNagativeQty(false);
-        setLowStock(false);
-        setCess(true);
-        setItemType('Product');
-        setSelectedItemGroup('');
       }
+      setFormData({
+        productname: '',
+        description: '',
+        itemgroup: '',
+        itemcategory: '',
+        unit: '',
+        salesprice: 0,
+        purchaseprice: 0,
+        HSNcode: 0,
+        gstrate: 0,
+        lowStockQty: null,
+        weight: ''
+      });
+      setSelectedGST('');
+      setOpeningStock(true);
+      setNagativeQty(false);
+      setLowStock(false);
+      setCess(true);
+      setItemType('Product');
+      setSelectedItemGroup('');
     } catch (error) {
       console.error('Error creating Product', error);
     }
@@ -341,6 +339,13 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
               options={itemgroupOptions}
               value={{ value: formData.itemGroupId, label: itemgroupname }}
               onChange={(selectedOption) => handleitemgroupChange(selectedOption)}
+              isDisabled={Boolean(id)}
+              styles={{
+                container: (base) => ({
+                  ...base,
+                  width: '80%'
+                })
+              }}
             />
             <ItemGroup
               anchor="Right"
@@ -358,6 +363,13 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
               options={itemcategoryOptions}
               value={{ value: formData.itemCategoryId, label: itemcategoryname }}
               onChange={(selectedOption) => handleitemcategoryChange(selectedOption)}
+              isDisabled={Boolean(id)}
+              styles={{
+                container: (base) => ({
+                  ...base,
+                  width: '80%'
+                })
+              }}
             />
             <Itemcategory
               onnewCategoryadded={handleNewCategoryadded}
