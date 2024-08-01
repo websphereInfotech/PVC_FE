@@ -33,7 +33,7 @@ import { Delete, Edit } from '@mui/icons-material';
 const columns = [
   { id: 'voucherno', label: 'Voucher No.', align: 'center' },
   { id: 'paymentdate', label: 'Date', align: 'center' },
-  { id: 'vendor', label: 'Vendor', align: 'center' },
+  { id: 'party', label: 'Party', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
   { id: 'updatedBy', label: 'Update By', align: 'center' },
@@ -244,10 +244,10 @@ const Paymentbanklist = () => {
                       </div>
                     ) : column.id === 'paymentdate' ? (
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
-                    ) : column.id === 'vendor' ? (
-                      payment.paymentData.accountname
+                    ) : column.id === 'party' ? (
+                      payment.accountPayment.accountName
                     ) : column.id === 'account' ? (
-                      payment.paymentBank.accountname
+                      payment.paymentBankAccount.accountname
                     ) : column.id === 'createdBy' ? (
                       payment.paymentCreateUser.username
                     ) : column.id === 'updatedBy' ? (

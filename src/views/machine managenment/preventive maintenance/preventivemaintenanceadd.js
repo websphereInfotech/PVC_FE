@@ -17,7 +17,7 @@ const Preventivemaintenanceadd = () => {
     machineId: '',
     description: null,
     performed: '',
-    cost: '',
+    cost: null,
     date: new Date()
   });
   const [machine, setMachine] = useState([]);

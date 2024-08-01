@@ -33,13 +33,14 @@ const Paymentrecievebank = () => {
   const [selectaccount, setSelectaccount] = useState([]);
   const [selectcompanyaccount, setSelectcompanyaccount] = useState([]);
   const [formData, setFormData] = useState({
-    accountId: '',
+    accountId: null,
     paymentdate: new Date(),
     amount: 0,
     paymentType: '',
-    mode: '',
-    bankAccountId: '',
-    voucherno: ''
+    mode: null,
+    bankAccountId: null,
+    voucherno: '',
+    transactionType: ''
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bankdata, setBankdata] = useState({
@@ -236,7 +237,9 @@ const Paymentrecievebank = () => {
   const handlePaymentTypeChange = (selectedOption) => {
     setFormData({ ...formData, paymentType: selectedOption.value });
   };
-
+  const handleTransactionTypeChange = (selectedOption) => {
+    setFormData({ ...formData, transactionType: selectedOption.value });
+  };
   const Options = [
     { value: 'Cheque', label: 'Cheque' },
     { value: 'Net Banking', label: 'Net Banking' },
@@ -254,7 +257,10 @@ const Paymentrecievebank = () => {
     { value: 'payment', label: 'Payment' },
     { value: 'final payment', label: 'Final Payment' }
   ];
-
+  const TransactionType = [
+    { value: 'Bank', label: 'Bank' },
+    { value: 'Cash', label: 'Cash' }
+  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -288,16 +294,14 @@ const Paymentrecievebank = () => {
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
+              <Typography variant="subtitle1">Transaction Type</Typography>
               <Select
-                color="secondary"
-                options={companyaccount}
-                value={{ value: formData.bankAccountId, label: companyname }}
-                onChange={handleSelectAccountChange}
+                options={TransactionType}
+                onChange={handleTransactionTypeChange}
+                value={TransactionType.find((option) => option.value === formData.transactionType)}
               />
             </Grid>
+
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Voucher No.:<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -331,12 +335,31 @@ const Paymentrecievebank = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">
-                Mode :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select options={Options} value={Options.find((option) => option.value === formData.mode)} onChange={handlePaymentChange} />
-            </Grid>
+            {formData.transactionType === 'Bank' && (
+              <>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Typography variant="subtitle1">
+                    Account : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <Select
+                    color="secondary"
+                    options={companyaccount}
+                    value={{ value: formData.bankAccountId, label: companyname }}
+                    onChange={handleSelectAccountChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Typography variant="subtitle1">
+                    Mode :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                  </Typography>
+                  <Select
+                    options={Options}
+                    value={Options.find((option) => option.value === formData.mode)}
+                    onChange={handlePaymentChange}
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
 
           <Dialog open={isDialogOpen} onClose={handleClose}>

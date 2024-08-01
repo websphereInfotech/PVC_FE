@@ -19,7 +19,7 @@ const Regularmaintenanceadd = () => {
     machineId: '',
     description: null,
     performed: '',
-    cost: '',
+    cost: null,
     date: new Date()
   });
 

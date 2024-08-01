@@ -50,11 +50,12 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
     address2: null,
     pincode: '',
     balance: '',
-    gstnumber: 0,
+    gstnumber: null,
     creditperiod: 0
   });
   const [accountgroup, setAccountgroup] = React.useState([]);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
+  const [registrationType, setregistrationType] = React.useState('Composition');
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -64,6 +65,14 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   const handleInputSundryDetailChange = (e) => {
     const { id, value } = e.target;
     setSundryDetails({ ...sundryDetails, [id]: value });
+
+    if (id === 'gstnumber' && value.length === 15) {
+      const panNo = value.substring(2, 12);
+      setSundryDetails((prevDetails) => ({
+        ...prevDetails,
+        panNo: panNo
+      }));
+    }
   };
 
   const handleGroupChange = (selectedOption) => {
@@ -92,40 +101,77 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   const handleStateChange = (selectedState) => {
     setSundryDetails({ ...sundryDetails, state: selectedState.name });
   };
+
+  const handleGstTypeChange = (selectedOption) => {
+    setregistrationType(selectedOption.value);
+  };
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(viewAccount(id));
-        setFormData({
-          accountname: response.accountName || '',
-          shortname: response.shortName || '',
-          contactpersonname: response.contactPersonName || '',
-          accountGroupId: response.accountGroupId || ''
-        });
-        setSundryDetails({
-          email: response.accountDetail?.email || '',
-          mobileNo: response.accountDetail?.mobileNo || '',
-          panNo: response.accountDetail?.panNo || null,
-          state: response.accountDetail?.state || '',
-          city: response.accountDetail?.city || '',
-          address1: response.accountDetail?.address1 || '',
-          address2: response.accountDetail?.address2 || null,
-          pincode: response.accountDetail?.pincode || '',
-          balance: response.accountDetail?.balance || '',
-          gstnumber: response.accountDetail?.gstNumber || 0,
-          creditperiod: response.accountDetail?.creditPeriod || 0
-        });
-        setBankDetail(response.accountDetail?.bankDetail || false);
-        setCreditlimit(response.accountDetail?.creditLimit || false);
-        setBankName(response.accountDetail?.bankName || '');
-        setAccountNumber(response.accountDetail?.accountNumber || '');
-        setAccountHolderName(response.accountDetail?.accountHolderName || '');
-        setIfscCode(response.accountDetail?.ifscCode || '');
-        setTotalCredit(response.accountDetail?.totalCredit || '');
-        setSelectedGroup({
-          value: response.accountGroup?.id || '',
-          label: response.accountGroup?.name || 'Select Group'
-        });
+        if (id) {
+          const response = await dispatch(viewAccount(id));
+          setFormData({
+            accountname: response.accountName || '',
+            shortname: response.shortName || '',
+            contactpersonname: response.contactPersonName || '',
+            accountGroupId: response.accountGroupId || ''
+          });
+          setSundryDetails({
+            email: response.accountDetail?.email || '',
+            mobileNo: response.accountDetail?.mobileNo || '',
+            panNo: response.accountDetail?.panNo || null,
+            state: response.accountDetail?.state || '',
+            city: response.accountDetail?.city || '',
+            address1: response.accountDetail?.address1 || '',
+            address2: response.accountDetail?.address2 || null,
+            pincode: response.accountDetail?.pincode || '',
+            balance: response.accountDetail?.balance || '',
+            gstnumber: response.accountDetail?.gstNumber || 0,
+            creditperiod: response.accountDetail?.creditPeriod || 0
+          });
+          setBankDetail(response.accountDetail?.bankDetail || false);
+          setCreditlimit(response.accountDetail?.creditLimit || false);
+          setBankName(response.accountDetail?.bankName || '');
+          setAccountNumber(response.accountDetail?.accountNumber || '');
+          setAccountHolderName(response.accountDetail?.accountHolderName || '');
+          setIfscCode(response.accountDetail?.ifscCode || '');
+          setTotalCredit(response.accountDetail?.totalCredit || '');
+          setSelectedGroup({
+            value: response.accountGroup?.id || '',
+            label: response.accountGroup?.name || ''
+          });
+          setregistrationType(response.accountDetail?.registrationType);
+        } else {
+          setFormData({
+            accountname: '',
+            shortname: '',
+            contactpersonname: '',
+            accountGroupId: ''
+          });
+          setSundryDetails({
+            email: '',
+            mobileNo: '',
+            panNo: null,
+            state: '',
+            city: '',
+            address1: '',
+            address2: null,
+            pincode: '',
+            balance: '',
+            gstnumber: null,
+            creditperiod: 0
+          });
+          setBankDetail(false);
+          setCreditlimit(false);
+          setBankName('');
+          setAccountNumber('');
+          setAccountHolderName('');
+          setIfscCode('');
+          setTotalCredit('');
+          setSelectedGroup(null);
+          setregistrationType('Composition');
+        }
       } catch (error) {
         console.log('Error fetching Account', error);
       }
@@ -181,8 +227,13 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
         gstNumber: sundryDetails.gstnumber,
         balance: sundryDetails.balance,
         creditPeriod: sundryDetails.creditperiod,
-        creditLimit: creditlimit
+        creditLimit: creditlimit,
+        registrationType: registrationType
       };
+
+      if (registrationType === 'Regular') {
+        payload.accountDetail.gstNumber = sundryDetails.gstnumber;
+      }
     }
 
     if (creditlimit === true) {
@@ -207,6 +258,34 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
         const response = await dispatch(createAccounts(payload));
         onAccountCreate(response);
       }
+      setFormData({
+        accountname: '',
+        shortname: '',
+        contactpersonname: '',
+        accountGroupId: ''
+      });
+      setSundryDetails({
+        email: '',
+        mobileNo: '',
+        panNo: null,
+        state: '',
+        city: '',
+        address1: '',
+        address2: null,
+        pincode: '',
+        balance: '',
+        gstnumber: null,
+        creditperiod: 0
+      });
+      setBankDetail(false);
+      setCreditlimit(false);
+      setBankName('');
+      setAccountNumber('');
+      setAccountHolderName('');
+      setIfscCode('');
+      setTotalCredit('');
+      setSelectedGroup(null);
+      setregistrationType('Composition');
       onClose();
     } catch (error) {
       console.error('Error saving account:', error);
@@ -216,6 +295,11 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   const handleClose = () => {
     onClose();
   };
+  const gstOptions = [
+    { value: 'Composition', label: 'Composition' },
+    { value: 'Regular', label: 'Regular' },
+    { value: 'Unregistered', label: 'Unregistered' }
+  ];
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
@@ -323,10 +407,6 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
                 <CitySelect countryid={countryid} stateid={stateid} onChange={handleCityChange} placeHolder={sundryDetails.city} />
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">PAN No :</Typography>
-                <input placeholder="Enter PAN No" id="panNo" value={sundryDetails.panNo} onChange={handleInputSundryDetailChange} />
-              </Grid>
-              <Grid item>
                 <Typography variant="subtitle1">
                   Address 1 : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                 </Typography>
@@ -365,31 +445,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
                       onChange={handleInputSundryDetailChange}
                     />
                   </Grid>
-                </>
-              )}
-              {selectedGroup?.label !== 'Unsecured Loans' && (
-                <>
                   <Grid item>
-                    <Typography variant="subtitle1">
-                      GST No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                    </Typography>
-                    <input placeholder="GSTIN452" id="gstnumber" value={sundryDetails.gstnumber} onChange={handleInputSundryDetailChange} />
-                  </Grid>
-                </>
-              )}
-              {selectedGroup?.label !== 'Unsecured Loans' && (
-                <>
-                  <Grid style={{ width: '100%' }}>
-                    {creditlimit && (
-                      <Grid item sx={{ margin: '8px 16px' }} md={5}>
-                        <Typography variant="subtitle1">
-                          Total Credit: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-                        </Typography>
-                        <input placeholder="Enter Total Credit" value={totalCredit} onChange={handleTotalCreditChange} />
-                      </Grid>
-                    )}
-                  </Grid>
-                  <Grid item xs={12}>
                     <Typography variant="subtitle1">
                       Default Credit Period (In days) : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                     </Typography>
@@ -402,8 +458,45 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
                   </Grid>
                 </>
               )}
+              {selectedGroup?.label !== 'Unsecured Loans' && (
+                <>
+                  <Grid item>
+                    <Typography variant="subtitle1">
+                      GST Type: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    </Typography>
+                    <Select
+                      id="registrationType"
+                      name="registrationType"
+                      placeholder="Select GST Type"
+                      options={gstOptions}
+                      value={gstOptions.find((option) => option.value === registrationType)}
+                      onChange={handleGstTypeChange}
+                    />
+                  </Grid>
 
-              <Grid item spacing={2}>
+                  <Grid item>
+                    <Typography variant="subtitle1">PAN No :</Typography>
+                    <input placeholder="Enter PAN No" id="panNo" value={sundryDetails.panNo} onChange={handleInputSundryDetailChange} />
+                  </Grid>
+                  {registrationType === 'Regular' && (
+                    <>
+                      <Grid item>
+                        <Typography variant="subtitle1">
+                          GST No.: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                        </Typography>
+                        <input
+                          placeholder="GSTIN452"
+                          id="gstnumber"
+                          value={sundryDetails.gstnumber}
+                          onChange={handleInputSundryDetailChange}
+                        />
+                      </Grid>
+                    </>
+                  )}
+                </>
+              )}
+
+              <Grid item container spacing={2}>
                 {selectedGroup?.label !== 'Unsecured Loans' && (
                   <>
                     <Grid item>
@@ -414,6 +507,16 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
                         <FormControlLabel value="true" control={<Radio />} label="Yes" />
                         <FormControlLabel value="false" control={<Radio />} label="No" />
                       </RadioGroup>
+                    </Grid>
+                    <Grid style={{ width: '100%' }}>
+                      {creditlimit && (
+                        <Grid item>
+                          <Typography variant="subtitle1">
+                            Total Credit: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                          </Typography>
+                          <input placeholder="Enter Total Credit" value={totalCredit} onChange={handleTotalCreditChange} />
+                        </Grid>
+                      )}
                     </Grid>
                   </>
                 )}

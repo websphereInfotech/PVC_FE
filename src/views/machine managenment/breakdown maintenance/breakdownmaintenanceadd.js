@@ -19,7 +19,7 @@ const Breakdownmaintenanceadd = () => {
     machineId: '',
     description: null,
     performed: '',
-    cost: '',
+    cost: null,
     date: new Date(),
     reason: ''
   });

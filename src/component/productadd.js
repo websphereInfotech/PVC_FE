@@ -126,6 +126,16 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         console.log(error, 'fetch item Category');
       }
     };
+
+    if (canCreatecategoryvalue !== null) {
+      itemcategory();
+    }
+    if (canCreategroupvalue !== null) {
+      itemgroup();
+    }
+  }, [dispatch, selectedItemGroup, canCreategroupvalue, canCreatecategoryvalue]);
+
+  React.useEffect(() => {
     const fetchData = async () => {
       try {
         if (id) {
@@ -168,14 +178,8 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         console.error('Error fetching Product', error);
       }
     };
-    if (canCreatecategoryvalue !== null) {
-      itemcategory();
-    }
-    if (canCreategroupvalue !== null) {
-      itemgroup();
-    }
     fetchData();
-  }, [id, dispatch, selectedItemGroup, canCreategroupvalue, canCreatecategoryvalue]);
+  }, [id, dispatch]);
 
   const handleGSTChange = (selectedOption) => {
     setSelectedGST(selectedOption.value);
@@ -284,7 +288,6 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     setItemcategoryOptions(updatedcategorylist);
     setItemCategoryDrawerOpen(false);
   };
-
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Paper
