@@ -242,6 +242,14 @@ const MenuItem = () => {
     'delete_machine'
   ]);
 
+  const hasAllPermissionsMachineSchedule = checkAllPermissions('Machine Schedule', [
+    'create_machine_schedule',
+    'view_all_machine_schedule',
+    'view_machine_schedule',
+    'update_machine_schedule',
+    'delete_machine_schedule'
+  ]);
+
   const hasAllPermissionsRegularmaintenance = checkAllPermissions('Regular Maintenance', [
     'create_regular_maintenance',
     'view_all_regular_maintenance',
@@ -587,6 +595,12 @@ const MenuItem = () => {
                 title: 'Machine',
                 type: 'item',
                 url: '/machinelist'
+              },
+              hasAllPermissionsMachineSchedule && {
+                id: 'Machine Schedule',
+                title: 'Machine Schedule',
+                type: 'item',
+                url: '/machineschedulelist'
               },
               hasAllPermissionsRegularmaintenance && {
                 id: 'Regular maintenance',
