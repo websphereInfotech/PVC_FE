@@ -469,6 +469,22 @@ import {
   DeleteMachineRequest,
   DeleteMachineSuccess,
   DeleteMachineFailure,
+  // MACHINE SCHEDULE+++++++++++++++++++++++
+  CreateMachineScheduleRequest,
+  CreateMachineScheduleSuccess,
+  CreateMachineScheduleFailure,
+  fetchAllMachineScheduleRequest,
+  fetchAllMachineScheduleSuccess,
+  fetchAllMachineScheduleFailure,
+  ViewsingleMachineScheduleRequest,
+  ViewsingleMachineScheduleSuccess,
+  ViewsingleMachineScheduleFailure,
+  UpdateMachineScheduleRequest,
+  UpdateMachineScheduleSuccess,
+  UpdateMachineScheduleFailure,
+  DeleteMachineScheduleRequest,
+  DeleteMachineScheduleSuccess,
+  DeleteMachineScheduleFailure,
   // REGULAR MAINTENANCE ++++++++++++
   CreateRegularmaintenanceRequest,
   CreateRegularmaintenanceSuccess,
@@ -3492,6 +3508,106 @@ export const deleteMachine = (machineId) => {
     }
   };
 };
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE CREATE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createMachineSchedule = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreateMachineScheduleRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/schedule/create_machine_schedule`, data, config);
+      const addMachinescheduledata = response;
+      dispatch(CreateMachineScheduleSuccess(addMachinescheduledata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/machineschedulelist');
+      return addMachinescheduledata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateMachineScheduleFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllMachineSchedule = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllMachineScheduleRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/schedule/view_all_machine_schedule`, config);
+      const data = response.data.data;
+      dispatch(fetchAllMachineScheduleSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllMachineScheduleFailure(error.message));
+    }
+  };
+};
+export const MachineScheduleview = (machineId) => {
+  return async (dispatch) => {
+    dispatch(ViewsingleMachineScheduleRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/schedule/view_machine_schedule/${machineId}`, config);
+      const data = response.data.data;
+      dispatch(ViewsingleMachineScheduleSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsingleMachineScheduleFailure(error.message));
+    }
+  };
+};
+export const updateMachineSchedule = (machineId, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateMachineScheduleRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/schedule/update_machine_schedule/${machineId}`, formData, config);
+      const updatemachineScheduledata = response.data.data;
+      dispatch(UpdateMachineScheduleSuccess(updatemachineScheduledata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/machineschedulelist');
+      return updatemachineScheduledata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateMachineScheduleFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const deleteMachineSchedule = (machineId) => {
+  return async (dispatch) => {
+    dispatch(DeleteMachineScheduleRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/schedule/delete_machine_schedule/${machineId}`, config);
+      const deletemachineScheduledata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteMachineScheduleSuccess(deletemachineScheduledata));
+      return deletemachineScheduledata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(DeleteMachineScheduleFailure(error.message));
+      throw error;
+    }
+  };
+};
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ REGULAR MAINTENANCE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createregular = (data, navigate) => {
   return async (dispatch) => {

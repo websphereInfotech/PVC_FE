@@ -630,6 +630,24 @@ const useCan = () => {
     return checkPermission('Machine', 'delete_machine');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE SCHEDULE
+
+  const canCreateMachineSchedule = () => {
+    return checkPermission('Machine Schedule', 'create_machine_schedule');
+  };
+  const canViewAllMachineSchedule = () => {
+    return checkPermission('Machine Schedule', 'view_all_machine_schedule');
+  };
+  const canViewSingleMachineSchedule = () => {
+    return checkPermission('Machine Schedule', 'view_machine_schedule');
+  };
+  const canUpdateMachineSchedule = () => {
+    return checkPermission('Machine Schedule', 'update_machine_schedule');
+  };
+  const canDeleteMachineSchedule = () => {
+    return checkPermission('Machine Schedule', 'delete_machine_schedule');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Regular
 
   const canCreateRegular = () => {
@@ -966,6 +984,12 @@ const useCan = () => {
     canViewSingleMachine,
     canUpdateMachine,
     canDeleteMachine,
+    // MACHINE SCHEDULE ++++++++++++++++++
+    canCreateMachineSchedule,
+    canViewAllMachineSchedule,
+    canViewSingleMachineSchedule,
+    canUpdateMachineSchedule,
+    canDeleteMachineSchedule,
     // REGULAR MAINTENANCE +++++++
     canCreateRegular,
     canViewAllRegular,

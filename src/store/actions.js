@@ -506,6 +506,23 @@ export const DELETE_MACHINE_REQUEST = 'DELETE_MACHINE_REQUEST';
 export const DELETE_MACHINE_SUCCESS = 'DELETE_MACHINE_SUCCESS';
 export const DELETE_MACHINE_FAILURE = 'DELETE_MACHINE_FAILURE';
 
+// #################################################################### MACHINE ################################################################
+export const CREATE_MACHINE_SCHEDULE_REQUEST = 'CREATE_MACHINE_SCHEDULE_REQUEST';
+export const CREATE_MACHINE_SCHEDULE_SUCCESS = 'CREATE_MACHINE_SCHEDULE_SUCCESS';
+export const CREATE_MACHINE_SCHEDULE_FAILURE = 'CREATE_MACHINE_SCHEDULE_FAILURE';
+export const GET_ALL_MACHINE_SCHEDULE_REQUEST = 'GET_ALL_MACHINE_SCHEDULE_REQUEST';
+export const GET_ALL_MACHINE_SCHEDULE_SUCCESS = 'GET_ALL_MACHINE_SCHEDULE_SUCCESS';
+export const GET_ALL_MACHINE_SCHEDULE_FAILURE = 'GET_ALL_MACHINE_SCHEDULE_FAILURE';
+export const VIEW_SINGLE_MACHINE_SCHEDULE_REQUEST = 'VIEW_SINGLE_MACHINE_SCHEDULE_REQUEST';
+export const VIEW_SINGLE_MACHINE_SCHEDULE_SUCCESS = 'VIEW_SINGLE_MACHINE_SCHEDULE_SUCCESS';
+export const VIEW_SINGLE_MACHINE_SCHEDULE_FAILURE = 'VIEW_SINGLE_MACHINE_SCHEDULE_FAILURE';
+export const UPDATE_MACHINE_SCHEDULE_REQUEST = 'UPDATE_MACHINE_SCHEDULE_REQUEST';
+export const UPDATE_MACHINE_SCHEDULE_SUCCESS = 'UPDATE_MACHINE_SCHEDULE_SUCCESS';
+export const UPDATE_MACHINE_SCHEDULE_FAILURE = 'UPDATE_MACHINE_SCHEDULE_FAILURE';
+export const DELETE_MACHINE_SCHEDULE_REQUEST = 'DELETE_MACHINE_SCHEDULE_REQUEST';
+export const DELETE_MACHINE_SCHEDULE_SUCCESS = 'DELETE_MACHINE_SCHEDULE_SUCCESS';
+export const DELETE_MACHINE_SCHEDULE_FAILURE = 'DELETE_MACHINE_SCHEDULE_FAILURE';
+
 // #################################################################### REGULAR MAINTENANCE ########################################
 export const CREATE_REGULAR_REQUEST = 'CREATE_REGULAR_REQUEST';
 export const CREATE_REGULAR_SUCCESS = 'CREATE_REGULAR_SUCCESS';
@@ -2387,6 +2404,64 @@ export const DeleteMachineFailure = (error) => ({
   type: 'DELETE_MACHINE_FAILURE',
   payload: error
 });
+
+// +++++++++++++++++++++++++++++++++++++++++++++++ MACHINE SCHEDULE ++++++++++++++++++++++++++++++++++++
+export const CreateMachineScheduleRequest = () => ({
+  type: 'CREATE_MACHINE_SCHEDULE_REQUEST'
+});
+export const CreateMachineScheduleSuccess = (data) => ({
+  type: 'CREATE_MACHINE_SCHEDULE_SUCCESS',
+  payload: data
+});
+export const CreateMachineScheduleFailure = (error) => ({
+  type: 'CREATE_MACHINE_SCHEDULE_FAILURE',
+  payload: error
+});
+export const fetchAllMachineScheduleRequest = () => ({
+  type: 'GET_ALL_MACHINE_SCHEDULE_REQUEST'
+});
+export const fetchAllMachineScheduleSuccess = (data) => ({
+  type: 'GET_ALL_MACHINE_SCHEDULE_SUCCESS',
+  payload: data
+});
+export const fetchAllMachineScheduleFailure = (error) => ({
+  type: 'GET_ALL_MACHINE_SCHEDULE_FAILURE',
+  payload: error
+});
+export const ViewsingleMachineScheduleRequest = () => ({
+  type: 'VIEW_SINGLE_MACHINE_SCHEDULE_REQUEST'
+});
+export const ViewsingleMachineScheduleSuccess = (data) => ({
+  type: 'VIEW_SINGLE_MACHINE_SCHEDULE_SUCCESS',
+  payload: data
+});
+export const ViewsingleMachineScheduleFailure = (error) => ({
+  type: 'VIEW_SINGLE_MACHINE_SCHEDULE_FAILURE',
+  payload: error
+});
+export const UpdateMachineScheduleRequest = () => ({
+  type: 'UPDATE_MACHINE_SCHEDULE_REQUEST'
+});
+export const UpdateMachineScheduleSuccess = (data) => ({
+  type: 'UPDATE_MACHINE_SCHEDULE_SUCCESS',
+  payload: data
+});
+export const UpdateMachineScheduleFailure = (error) => ({
+  type: 'UPDATE_MACHINE_SCHEDULE_FAILURE',
+  payload: error
+});
+export const DeleteMachineScheduleRequest = () => ({
+  type: 'DELETE_MACHINE_SCHEDULE_REQUEST'
+});
+export const DeleteMachineScheduleSuccess = (data) => ({
+  type: 'DELETE_MACHINE_SCHEDULE_SUCCESS',
+  payload: data
+});
+export const DeleteMachineScheduleFailure = (error) => ({
+  type: 'DELETE_MACHINE_SCHEDULE_FAILURE',
+  payload: error
+});
+
 // +++++++++++++++++++++++++++++++++++++++++++++++ REGULAR MAINTENANCE ++++++++++++++++++++++++++++++++++++
 export const CreateRegularmaintenanceRequest = () => ({
   type: 'CREATE_REGULAR_REQUEST'

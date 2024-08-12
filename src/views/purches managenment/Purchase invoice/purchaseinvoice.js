@@ -183,7 +183,7 @@ const Purchaseinvoice = () => {
     }
   };
 
-  const handleNewRawProductAdded = (newProduct) => {
+  const handleNewProductAdded = (newProduct) => {
     const updatedProductList = [
       ...product,
       {
@@ -503,7 +503,7 @@ const Purchaseinvoice = () => {
                       open={isproductDrawerOpen}
                       onClose={() => setIsproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
-                      onNewRawProductAdded={handleNewRawProductAdded}
+                      onNewProductAdded={handleNewProductAdded}
                     />
                     <TableCell>
                       <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

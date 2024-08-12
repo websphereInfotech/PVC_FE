@@ -125,6 +125,8 @@ const LowStock = Loadable(lazy(() => import('../views/stock managenment/lowStock
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Machine +++++++++++++++++++++++++++++++++
 const Machineadd = Loadable(lazy(() => import('../views/machine managenment/machineadd')));
 const MachineList = Loadable(lazy(() => import('../views/machine managenment/machinelist')));
+const Machinescheduleadd = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machinescheduleadd')));
+const Machineschedulelist = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machineschedulelist')));
 const Regularmaintenanceadd = Loadable(lazy(() => import('../views/machine managenment/regular maintenance/regularmaintenanceadd')));
 const RegularmaintenanceList = Loadable(lazy(() => import('../views/machine managenment/regular maintenance/regularmaintenancelist')));
 const Preventivemaintenanceadd = Loadable(
@@ -468,7 +470,19 @@ const MainRoutes = {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
     { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },
-    { path: '/updatemachine/:id', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },
+    { path: '/updatemachine/:id', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="update_machine" /> },
+    {
+      path: '/machineschedulelist',
+      element: <ProtectedRoute element={Machineschedulelist} resource="Machine Schedule" permissionName="view_all_machine_schedule" />
+    },
+    {
+      path: '/machinescheduleadd',
+      element: <ProtectedRoute element={Machinescheduleadd} resource="Machine Schedule" permissionName="create_machine_schedule" />
+    },
+    {
+      path: '/updatemachineschedule/:id',
+      element: <ProtectedRoute element={Machinescheduleadd} resource="Machine Schedule" permissionName="update_machine_schedule" />
+    },
     {
       path: '/regularmaintenanceadd',
       element: <ProtectedRoute element={Regularmaintenanceadd} resource="Regular Maintenance" permissionName="create_regular_maintenance" />

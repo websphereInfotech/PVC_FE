@@ -291,9 +291,11 @@ const DebitNote = () => {
   useEffect(() => {
     const data = async () => {
       const purchseinvoice = await dispatch(getallPurchaseinvoice());
+      console.log(purchseinvoice, 'Purchase');
+
       const options = purchseinvoice.data.map((item) => ({
         value: item.id,
-        label: item.voucherno,
+        label: item.supplyInvoiceNo,
         invoicedate: item.invoicedate
       }));
       setPurchaseinvoicedata(options);
@@ -312,7 +314,7 @@ const DebitNote = () => {
           totalMrp,
           totalIgst
         });
-        setPurchasedata(purchaseData.voucherno);
+        setPurchasedata(purchaseData.supplyInvoiceNo);
         setSelectaccount(accountDebitNo.id);
         setAccountState(accountDebitNo.accountDetail?.state);
         setAccountname(accountDebitNo.accountName);
@@ -369,12 +371,12 @@ const DebitNote = () => {
   }, [dispatch, id]);
 
   //create new customer after show in dropdwon
-  const handleNewCustomer = (newAccountData) => {
+  const handleNewAccount = (newAccountData) => {
     setaccount((prevAccounts) => [
       ...prevAccounts,
       {
         value: newAccountData?.data.data.id,
-        label: newAccountData?.data.data.accountname,
+        label: newAccountData?.data.data.accountName,
         state: newAccountData?.data.data.accountDetail?.state
       }
     ]);
@@ -441,7 +443,7 @@ const DebitNote = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onChangeCustomer={handleNewCustomer} />
+            <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

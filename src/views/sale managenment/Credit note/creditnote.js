@@ -191,7 +191,7 @@ const Creditnote = () => {
     }
   }, [dispatch, accountState, gststate, id, canCreateAccountValue, canCreateProductvalue]);
 
-  // use for select customer name from dropdown
+  // use for select Party name from dropdown
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
@@ -371,7 +371,7 @@ const Creditnote = () => {
   }, [dispatch, id, navigate]);
   //manage value of input of row
 
-  //create new customer after show in dropdwon
+  //create new Party after show in dropdwon
   const handleNewAccount = (newAccountData) => {
     setaccount((prevAccounts) => [
       ...prevAccounts,
@@ -436,7 +436,7 @@ const Creditnote = () => {
           <Grid container spacing={2} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Party : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 color="secondary"

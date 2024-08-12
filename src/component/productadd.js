@@ -24,6 +24,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { canseeitemgroup, canseeitemcategory } = useCan();
+  const [loading, setLoading] = React.useState(false);
   const [itemtype, setItemType] = React.useState('Product');
   const [openingstock, setOpeningStock] = React.useState(true);
   const [nagativeqty, setNagativeQty] = React.useState(false);
@@ -187,6 +188,9 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   };
 
   const handleSave = async () => {
+    if (loading) return;
+
+    setLoading(true);
     try {
       const data = {
         ...formData,
@@ -225,6 +229,8 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
       setSelectedItemGroup('');
     } catch (error) {
       console.error('Error creating Product', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -414,7 +420,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           </Grid>
           <Grid item sm={6}>
             <Typography variant="subtitle1">Weight :</Typography>
-            <input placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
+            <input type="number" placeholder="Enter weight" id="weight" value={formData.weight} onChange={handleInputChange} />
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ margin: '1px' }}>
@@ -493,8 +499,8 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
             </button>
           </div>
           <div style={{ display: 'flex' }}>
-            <button id="savebtncs" onClick={handleSave}>
-              Save
+            <button id="savebtncs" onClick={handleSave} disabled={loading}>
+              {loading ? 'Save' : 'Save'}
             </button>
           </div>
         </Grid>

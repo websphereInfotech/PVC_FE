@@ -368,7 +368,7 @@ const Addbillofmaterial = () => {
                       open={isrowproductDrawerOpen}
                       onClose={() => setIsrowproductDrawerOpen(false)}
                       onSelectProduct={(selectedOption) => handleSelectProductChange(selectedOption, index)}
-                      onNewRawProductAdded={handleNewRawProductAdded}
+                      onNewProductAdded={handleNewRawProductAdded}
                     />
                     <TableCell id="newcs">
                       <input
