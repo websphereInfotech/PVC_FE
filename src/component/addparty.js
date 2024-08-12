@@ -27,7 +27,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
     contactpersonname: '',
     accountGroupId: ''
   });
-
+  const [loading, setLoading] = React.useState(false);
   const [stateid, setstateid] = React.useState(0);
   const [countryid, setCountryid] = React.useState(101);
   {
@@ -249,7 +249,9 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
         ifscCode: ifscCode
       };
     }
+    if (loading) return;
 
+    setLoading(true);
     try {
       if (id) {
         const response = await dispatch(updateAccount(id, payload, navigate));
@@ -289,6 +291,8 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
       onClose();
     } catch (error) {
       console.error('Error saving account:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -579,8 +583,8 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
             </button>
           </div>
           <div style={{ display: 'flex' }}>
-            <button id="savebtncs" onClick={handlesave}>
-              Save
+            <button id="savebtncs" onClick={handlesave} disabled={loading}>
+              {loading ? 'Save' : 'Save'}
             </button>
           </div>
         </Grid>
