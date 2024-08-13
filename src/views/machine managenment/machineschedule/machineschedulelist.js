@@ -23,9 +23,11 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit, Delete } from '@mui/icons-material';
 
 const columns = [
-  { id: 'name', label: 'Machine Type', align: 'center' },
-  { id: 'machineNo', label: 'Machine Number', align: 'center' },
-  { id: 'description', label: 'Description', align: 'center' },
+  { id: 'name', label: 'Machine Name', align: 'center' },
+  { id: 'frequency', label: 'Frequency', align: 'center' },
+  { id: 'date', label: 'Date', align: 'center' },
+  { id: 'type', label: 'Type', align: 'center' },
+  { id: 'interval', label: 'Interval', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
@@ -116,8 +118,8 @@ const Machineschedulelist = () => {
               <TableRow key={row.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
-                    {column.id === 'description' ? (
-                      row.description || '-'
+                    {column.id === 'date' ? (
+                      new Date(row.date).toLocaleDateString('en-GB')
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton
@@ -173,7 +175,7 @@ const Machineschedulelist = () => {
 
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this machine?</DialogContent>
+        <DialogContent>Are you sure you want to delete this machine schedule?</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel

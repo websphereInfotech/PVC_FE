@@ -149,17 +149,22 @@ const Machinescheduleadd = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Interval :</Typography>
+              <Typography variant="subtitle1">
+                Interval : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
               <input
                 placeholder="Enter interval"
                 id="interval"
+                type="number"
                 value={formData.interval}
                 onChange={(e) => handleInputChange('interval', e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="subtitle1">Type :</Typography>
-              <Select options={Types} value={Types.find((option) => option.value === formData.paymentType)} onChange={handleTypeChange} />
+              <Typography variant="subtitle1">
+                Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select options={Types} value={Types.find((option) => option.value === formData.type)} onChange={handleTypeChange} />
             </Grid>
           </Grid>
 
@@ -167,7 +172,7 @@ const Machinescheduleadd = () => {
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Link style={{ textDecoration: 'none' }}>
-                  <button to="/machinelist" id="savebtncs">
+                  <button to="/machineschedulelist" id="savebtncs">
                     Cancel
                   </button>
                 </Link>
@@ -179,7 +184,7 @@ const Machinescheduleadd = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/machinelist" style={{ textDecoration: 'none' }}>
+                <Link to="/machineschedulelist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
