@@ -13,6 +13,12 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
+// ############################################# PURCHASE ORDER ########################################33
+
+export const CREATE_PURCHASE_ORDER_REQUEST = 'CREATE_PURCHASE_ORDER_REQUEST';
+export const CREATE_PURCHASE_ORDER_SUCCESS = 'CREATE_PURCHASE_ORDER_SUCCESS';
+export const CREATE_PURCHASE_ORDER_FAILURE = 'CREATE_PURCHASE_ORDER_FAILURE';
+
 // ######################################## PRO FORMA INVOICE #####################################################################
 export const FETCH_PRO_FORMA_INVOICE_REQUEST = 'FETCH_PRO_FORMA_INVOICE_REQUEST';
 export const FETCH_PRO_FORMA_INVOICE_SUCCESS = 'FETCH_PRO_FORMA_INVOICE_SUCCESS';
@@ -741,6 +747,19 @@ export const updateProformainvoicesuccess = (data) => ({
 });
 export const updateProformainvoicefailure = (error) => ({
   type: 'UPDATE_PRO_FORMA_INVOICE_FAILURE',
+  payload: error
+});
+
+// ########################################################## PURCHASE ORDER ########################################################3
+export const createPurchaseorderRequest = () => ({
+  type: 'CREATE_PURCHASE_ORDER_REQUEST'
+});
+export const createPurchaseorderSuccess = (data) => ({
+  type: 'CREATE_PURCHASE_ORDER_SUCCESS',
+  payload: data
+});
+export const createPurchaseorderFailure = (error) => ({
+  type: 'CREATE_PURCHASE_ORDER_FAILURE',
   payload: error
 });
 

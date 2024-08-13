@@ -15,6 +15,9 @@ import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Recieve cash/customerledgerlist';
 import Pagenotification from 'component/notification';
+import Purchaseorder from 'views/purches managenment/purchase order/purchaseorderadd';
+import Purchaseorderlist from 'views/purches managenment/purchase order/purchaseorderlist';
+import Purchaseorderview from 'views/purches managenment/purchase order/purchaseorderview';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -257,6 +260,24 @@ const MainRoutes = {
     {
       path: '/paymentrecievebankledgerlist',
       element: <ProtectedRoute element={Paymentbankrecieveledgerlist} resource="Customer Ledger" permissionName="View_customer_Ledger" />
+    },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase order +++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/purchaseorderadd',
+      element: <Purchaseorder />
+    },
+    {
+      path: '/purchaseorderupdate/:id',
+      element: <Purchaseorder />
+    },
+    {
+      path: '/purchaseorderlist',
+      element: <Purchaseorderlist />
+    },
+    {
+      path: '/purchaseorderview',
+      element: <Purchaseorderview />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Proformainvoice +++++++++++++++++++++++++++++++++++++++++++++++++++

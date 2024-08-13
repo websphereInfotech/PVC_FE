@@ -179,7 +179,7 @@ const Salescashlist = () => {
                     ) : column.id === 'date' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
-                      row.accountSaleCash.accountName
+                      row.accountSaleCash.contactPersonName
                     ) : column.id === 'updatedBy' ? (
                       row.salesInvoiceUpdate?.username
                     ) : column.id === 'createdBy' ? (

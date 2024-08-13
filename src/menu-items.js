@@ -420,6 +420,12 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/proformainvoiceList'
                   },
+                  {
+                    id: 'purchaseorder',
+                    title: 'Purchase Order',
+                    type: 'item',
+                    url: '/purchaseorderlist'
+                  },
                   hasAllPermissiondeliverychallan && {
                     id: 'Delivery Challan',
                     title: 'Delivery Challan',

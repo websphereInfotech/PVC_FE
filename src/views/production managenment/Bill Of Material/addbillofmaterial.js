@@ -23,8 +23,12 @@ const Addbillofmaterial = () => {
     weight: 0,
     productId: '',
     qty: 0,
-    unit: ''
+    unit: '',
+    shift: ''
   });
+
+  const [startTime, setstartTime] = useState('');
+  const [endTime, setendTime] = useState('');
   const [productname, setProductname] = useState('');
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [isrowproductDrawerOpen, setIsrowproductDrawerOpen] = useState(false);
@@ -177,23 +181,23 @@ const Addbillofmaterial = () => {
     calculateTotalQty(updatedRows);
   };
 
-  // useEffect(() => {
-  //   const selectedProduct = productOptions.find((product) => product.value === formData.productId);
-  //   if (selectedProduct && formData.qty) {
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       weight: formData.qty * selectedProduct.weight
-  //     }));
-  //   }
-  // }, [formData.qty, formData.productId, productOptions]);
+  const shift = [
+    { value: 'Day', label: 'Day' },
+    { value: 'Night', label: 'Night' }
+  ];
+  const handleshiftChange = (selectedOption) => {
+    setFormData({ ...formData, shift: selectedOption.value });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       if (bomId) {
         const response = await dispatch(viewSingleBom(bomId));
-        const { bomNo, date, weight, bomProduct, qty, unit } = response;
+        const { bomNo, date, weight, bomProduct, qty, unit, shift, endTime, startTime } = response;
         setProductname(bomProduct.productname);
-        setFormData({ date, bomNo, weight, qty, productId: bomProduct.id, unit });
+        setstartTime(startTime);
+        setendTime(endTime);
+        setFormData({ date, bomNo, weight, qty, productId: bomProduct.id, unit, shift });
         const updatedRows = response.bomItems.map((item) => ({
           id: item.id,
           productId: item.bomItemsProduct.id,
@@ -247,6 +251,8 @@ const Addbillofmaterial = () => {
       const payload = {
         ...formData,
         totalQty: totalQty,
+        startTime,
+        endTime,
         items: rows.map((row) => ({
           id: row.id || null,
           productId: row.productId,
@@ -335,6 +341,38 @@ const Addbillofmaterial = () => {
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">Unit :</Typography>
             <input placeholder="unit" value={formData.unit}></input>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Shift : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select options={shift} value={shift.find((option) => option.value === formData.shift)} onChange={handleshiftChange} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Start Time: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input
+              type="time"
+              value={startTime}
+              onChange={(e) => {
+                setstartTime(e.target.value);
+                setFormData({ ...formData, startTime: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              End Time: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input
+              type="time"
+              value={endTime}
+              onChange={(e) => {
+                setendTime(e.target.value);
+                setFormData({ ...formData, endTime: e.target.value });
+              }}
+            />
           </Grid>
         </Grid>
 

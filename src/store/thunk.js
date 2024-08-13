@@ -31,6 +31,10 @@ import {
   viewProformainvoiceRequest,
   viewProformainvoiceSuccess,
   viewProformainvoiceFailure,
+  // PURCHASE ORDER ++++++++++++++++++++++++++++
+  createPurchaseorderRequest,
+  createPurchaseorderSuccess,
+  createPurchaseorderFailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersCashRequest,
   fetchAllCustomersCashSuccess,
@@ -792,6 +796,34 @@ export const deleteProformainvoice = (id) => {
     }
   };
 };
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE ORDER ++++++++++++++++++++++++++++++++
+export const createPurchaseOrder = (quotationData, navigate) => {
+  return async (dispatch) => {
+    dispatch(createPurchaseorderRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/purchaseOrder/create_purchaseOrder`, quotationData, config);
+      const createdpurchaseorder = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/purchaseorderlist');
+        }
+      });
+      dispatch(createPurchaseorderSuccess(createdpurchaseorder));
+      return createdpurchaseorder;
+    } catch (error) {
+      dispatch(createPurchaseorderFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERYCHALLAN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallDeliverychallan = () => {
   return async (dispatch) => {

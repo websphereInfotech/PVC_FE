@@ -28,6 +28,7 @@ const columns = [
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'type', label: 'Type', align: 'center' },
   { id: 'interval', label: 'Interval', align: 'center' },
+  { id: 'maintenanceType', label: 'Maintenance Type', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
@@ -120,6 +121,8 @@ const Machineschedulelist = () => {
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'date' ? (
                       new Date(row.date).toLocaleDateString('en-GB')
+                    ) : column.id === 'name' ? (
+                      row.scheduleMachine.name
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton

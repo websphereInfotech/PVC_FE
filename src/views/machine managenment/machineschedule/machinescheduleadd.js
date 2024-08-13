@@ -20,7 +20,8 @@ const Machinescheduleadd = () => {
     frequency: '',
     date: new Date(),
     interval: '',
-    type: ''
+    type: '',
+    maintenanceType: ''
   });
 
   useEffect(() => {
@@ -39,9 +40,10 @@ const Machinescheduleadd = () => {
       try {
         if (id) {
           const response = await dispatch(MachineScheduleview(id));
-          const { machineId, frequency, date, interval, type } = response;
+          const { machineId, frequency, date, interval, type, maintenanceType, scheduleMachine } = response;
           console.log(response, 'response');
-          setFormData({ machineId, frequency, date, interval, type });
+          setFormData({ machineId, frequency, date, interval, type, maintenanceType });
+          setmachinename(scheduleMachine.name);
         }
       } catch (error) {
         console.error('Error fetching Machine:', error);
@@ -86,6 +88,10 @@ const Machinescheduleadd = () => {
     setFormData({ ...formData, frequency: selectedOption.value });
   };
 
+  const handleMaintenanceTypeChange = (selectedOption) => {
+    setFormData({ ...formData, maintenanceType: selectedOption.value });
+  };
+
   const handledateChange = (date) => {
     setFormData({ ...formData, date: date });
   };
@@ -99,6 +105,13 @@ const Machinescheduleadd = () => {
     { value: 'Daily', label: 'Daily' },
     { value: 'Weekly', label: 'Weekly' },
     { value: 'Monthly', label: 'Monthly' }
+  ];
+
+  const MaintanceType = [
+    { value: 'oiling', label: 'Oiling' },
+    { value: 'greasing', label: 'Greasing' },
+    { value: 'painting', label: 'Painting' },
+    { value: 'cleaning', label: 'Cleaning' }
   ];
 
   return (
@@ -165,6 +178,16 @@ const Machinescheduleadd = () => {
                 Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select options={Types} value={Types.find((option) => option.value === formData.type)} onChange={handleTypeChange} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Maintance Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select
+                options={MaintanceType}
+                value={MaintanceType.find((option) => option.value === formData.maintenanceType)}
+                onChange={handleMaintenanceTypeChange}
+              />
             </Grid>
           </Grid>
 

@@ -96,11 +96,11 @@ const Recieveclaimcashlist = () => {
 
   const handleStatusChange = (paymentId, event) => {
     const newStatus = event.target.value;
-    if (newStatus === 'Approve') {
+    const payment = payments.find((p) => p.id === paymentId);
+    const isApproved = newStatus === 'Approve';
+    if (newStatus === 'Approve' && balance < payment.amount) {
       const newStatus = event.target.value;
       if (newStatus === 'Approve') {
-        const payment = payments.find((p) => p.id === paymentId);
-        const isApproved = newStatus === 'Approve';
         if (balance < payment.amount) {
           setSelectedPaymentId(paymentId);
           setDialogOpen(true);
@@ -118,7 +118,7 @@ const Recieveclaimcashlist = () => {
         }
       }
     } else {
-      const isApproved = newStatus === 'Approve';
+      // const isApproved = newStatus === 'Approve';
       dispatch(IsStatusclaimCash(paymentId, payments.find((p) => p.id === paymentId).toUserId, isApproved))
         .then(() => {
           setStatuses({
@@ -153,6 +153,49 @@ const Recieveclaimcashlist = () => {
         handleDialogClose();
       });
   };
+
+  // const handleStatusChange = (paymentId, event) => {
+  //   const newStatus = event.target.value;
+  //   const isApproved = newStatus === 'Approve';
+  //   const payment = payments.find((p) => p.id === paymentId);
+
+  //   if (newStatus === 'Approve' && balance < payment.amount) {
+  //     setSelectedPaymentId(paymentId);
+  //     setDialogOpen(true);
+  //   } else {
+  //     dispatch(IsStatusclaimCash(paymentId, payment.toUserId, isApproved))
+  //       .then(() => {
+  //         // Update statuses and payments state
+  //         setStatuses((prevStatuses) => ({
+  //           ...prevStatuses,
+  //           [paymentId]: newStatus
+  //         }));
+  //         setPayments((prevPayments) => prevPayments.map((p) => (p.id === paymentId ? { ...p, isApproved: isApproved } : p)));
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error updating receive claim cash status:', error);
+  //       });
+  //   }
+  // };
+
+  // const handleDialogConfirm = () => {
+  //   const paymentId = selectedPaymentId;
+  //   const isApproved = true;
+
+  //   dispatch(IsStatusclaimCash(paymentId, payments.find((p) => p.id === paymentId).toUserId, isApproved))
+  //     .then(() => {
+  //       setStatuses((prevStatuses) => ({
+  //         ...prevStatuses,
+  //         [paymentId]: 'Approve'
+  //       }));
+  //       setPayments((prevPayments) => prevPayments.map((p) => (p.id === paymentId ? { ...p, isApproved: isApproved } : p)));
+  //       handleDialogClose();
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error updating receive claim cash status:', error);
+  //       handleDialogClose();
+  //     });
+  // };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
