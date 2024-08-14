@@ -265,19 +265,19 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase order +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
       path: '/purchaseorderadd',
-      element: <Purchaseorder />
+      element: <ProtectedRoute element={Purchaseorder} resource="Purchase Order" permissionName="create_purchaseOrder" />
     },
     {
       path: '/purchaseorderupdate/:id',
-      element: <Purchaseorder />
+      element: <ProtectedRoute element={Purchaseorder} resource="Purchase Order" permissionName="update_purchaseOrder" />
     },
     {
       path: '/purchaseorderlist',
-      element: <Purchaseorderlist />
+      element: <ProtectedRoute element={Purchaseorderlist} resource="Purchase Order" permissionName="view_all_purchaseOrder" />
     },
     {
-      path: '/purchaseorderview',
-      element: <Purchaseorderview />
+      path: '/purchaseorderview/:id',
+      element: <ProtectedRoute element={Purchaseorderview} resource="Purchase Order" permissionName="view_single_purchaseOrder" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Proformainvoice +++++++++++++++++++++++++++++++++++++++++++++++++++

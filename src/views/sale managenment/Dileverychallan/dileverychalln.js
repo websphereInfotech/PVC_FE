@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from '../../../component/productadd';
 import 'react-toastify/dist/ReactToastify.css';
-import { createDeliveryChallan, fetchAllAccounts, getallDeliverychallan, updateDileveryChallan } from 'store/thunk';
+import { createDeliveryChallan, fetchAllAccounts, getallDeliverychallan, getallSalesInvoice, updateDileveryChallan } from 'store/thunk';
 import { fetchAllProducts } from 'store/thunk';
 import { Link } from 'react-router-dom';
 
@@ -29,8 +29,10 @@ const Deliverychallan = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [account, setaccount] = useState([]);
+  const [invoice, setinvoice] = useState([]);
   const [selectaccount, setSelectaccount] = useState('');
   const [accountname, setAccountname] = useState('');
+  const [invoicelabel, setInvoicelabel] = useState('');
   const [product, setProduct] = useState([]);
   const [selectproduct, setSelectproduct] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
@@ -38,7 +40,8 @@ const Deliverychallan = () => {
   const [formData, setFormData] = useState({
     accountId: '',
     date: new Date(),
-    challanno: 0
+    challanno: 0,
+    invoiceId: ''
   });
   const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
@@ -102,6 +105,33 @@ const Deliverychallan = () => {
     }
   };
 
+  const handleSelectinvoicenoChange = async (selectedOption) => {
+    if (selectedOption && selectedOption.value) {
+      try {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          invoiceId: selectedOption.value
+        }));
+        setInvoicelabel(selectedOption.label);
+
+        const invoiceresponse = await dispatch(getallSalesInvoice());
+        const selectedInvoice = invoiceresponse.data.find((inv) => inv.id === selectedOption.value);
+
+        if (selectedInvoice && selectedInvoice.items) {
+          const updatedRows = selectedInvoice.items.map((item) => ({
+            productId: item.productId,
+            product: item.InvoiceProduct.productname,
+            qty: item.qty,
+            unit: item.unit
+          }));
+          setRows(updatedRows);
+        }
+      } catch (error) {
+        console.error('Error fetching and updating invoice items:', error);
+      }
+    }
+  };
+
   //use for select product name from dropdown
   const handleSelectproductChange = (selectedOption, index) => {
     console.log(selectproduct);
@@ -144,6 +174,12 @@ const Deliverychallan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const invoiceresponse = await dispatch(getallSalesInvoice());
+
+        if (Array.isArray(invoiceresponse.data)) {
+          const options = invoiceresponse.data.map((invoice) => ({ value: invoice.id, label: invoice.invoiceno }));
+          setinvoice([...options]);
+        }
         const response = await dispatch(fetchAllAccounts());
         if (Array.isArray(response)) {
           const options = response.map((account) => ({ value: account.id, label: account.accountName }));
@@ -305,6 +341,17 @@ const Deliverychallan = () => {
               />
             </Grid>
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
+            <Grid item xs={12} sm={6} md={3}>
+              <Typography variant="subtitle1">
+                Invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              </Typography>
+              <Select
+                color="secondary"
+                options={Array.isArray(invoice) ? invoice : invoice}
+                value={{ value: formData.invoiceId, label: invoicelabel }}
+                onChange={handleSelectinvoicenoChange}
+              />
+            </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

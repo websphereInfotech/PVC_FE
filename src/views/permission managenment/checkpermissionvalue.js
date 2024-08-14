@@ -47,9 +47,6 @@ const useCan = () => {
   const canUpdateProformainvoiceQuotation = () => {
     return checkPermission('ProFormaInvoice', 'update_ProFormaInvoice');
   };
-  const canDeleteProformainvoiceQuotation = () => {
-    return checkPermission('ProFormaInvoice', 'delete_ProFormaInvoiceItem');
-  };
   const canDeProformainvoiceQuotation = () => {
     return checkPermission('ProFormaInvoice', 'delete_ProFormaInvoice');
   };
@@ -109,9 +106,6 @@ const useCan = () => {
   };
   const canDeleteDeliverychallan = () => {
     return checkPermission('Delivery Challan', 'delete_deliverychallan');
-  };
-  const canDeleteDeliverychallanItem = () => {
-    return checkPermission('Delivery Challan', 'delete_deliverychallanitem');
   };
   const canViewDeliverychallan = () => {
     return checkPermission('Delivery Challan', 'view_single_deliverychallan');
@@ -777,12 +771,29 @@ const useCan = () => {
     return checkPermission('Account', 'delete_account');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Purchase order +++++++++++++++++++++++++++++++++
+
+  const canseecreatePurchaseOrder = () => {
+    return checkPermission('Purchase Order', 'create_purchaseOrder');
+  };
+  const canseeupdatePurchaseOrder = () => {
+    return checkPermission('Purchase Order', 'update_purchaseOrder');
+  };
+  const canseeviewPurchaseOrder = () => {
+    return checkPermission('Purchase Order', 'view_single_purchaseOrder');
+  };
+  const canseeviewAllPurchaseOrder = () => {
+    return checkPermission('Purchase Order', 'view_all_purchaseOrder');
+  };
+  const canseedeletePurchaseOrder = () => {
+    return checkPermission('Purchase Order', 'delete_purchaseOrder');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
     canCreateProformainvoiceQuotation,
     canUpdateProformainvoiceQuotation,
-    canDeleteProformainvoiceQuotation,
     canViewProformainvoiceQuotation,
     canViewAllProformainvoiceQuotation,
     canDeProformainvoiceQuotation,
@@ -799,7 +810,6 @@ const useCan = () => {
     canCreateDeliverychallan,
     canUpdateDeliverychallan,
     canDeleteDeliverychallan,
-    canDeleteDeliverychallanItem,
     canViewDeliverychallan,
     canViewAllDeliverychallan,
     // SALES INVOICE ++++++++++++++++++
@@ -1032,7 +1042,13 @@ const useCan = () => {
     canseeupdateAccount,
     canseeviewAccount,
     canseeviewAllAccount,
-    canseedeleteAccount
+    canseedeleteAccount,
+    // PURCHSE ORDER ++++++++++++++
+    canseecreatePurchaseOrder,
+    canseeupdatePurchaseOrder,
+    canseeviewPurchaseOrder,
+    canseeviewAllPurchaseOrder,
+    canseedeletePurchaseOrder
   };
 };
 

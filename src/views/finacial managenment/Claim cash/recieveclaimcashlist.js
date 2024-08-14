@@ -98,7 +98,7 @@ const Recieveclaimcashlist = () => {
     const newStatus = event.target.value;
     const payment = payments.find((p) => p.id === paymentId);
     const isApproved = newStatus === 'Approve';
-    if (newStatus === 'Approve' && balance < payment.amount) {
+    if (newStatus === 'Approve') {
       const newStatus = event.target.value;
       if (newStatus === 'Approve') {
         if (balance < payment.amount) {
@@ -118,7 +118,7 @@ const Recieveclaimcashlist = () => {
         }
       }
     } else {
-      // const isApproved = newStatus === 'Approve';
+      const isApproved = newStatus === 'Approve';
       dispatch(IsStatusclaimCash(paymentId, payments.find((p) => p.id === paymentId).toUserId, isApproved))
         .then(() => {
           setStatuses({

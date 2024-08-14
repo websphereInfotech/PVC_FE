@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Proformainvoiceview, fetchproformainvoiceList, deleteProformainvoice } from 'store/thunk';
+import { PurchaseorderView, deletePurchaseOrder, fetchpurchaseorderList } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,7 +18,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
-  { id: 'ProFormaInvoice_no', label: 'No.', align: 'center' },
+  { id: 'purchaseOrder_no', label: 'No.', align: 'center' },
   { id: 'party', label: 'Party', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'validtill', label: 'Valid Till', align: 'center' },
@@ -28,17 +28,12 @@ const columns = [
 ];
 
 export default function Purchaseorderlist() {
-  const {
-    canUpdateProformainvoiceQuotation,
-    canCreateProformainvoiceQuotation,
-    canViewProformainvoiceQuotation,
-    canDeProformainvoiceQuotation
-  } = useCan();
+  const { canseeupdatePurchaseOrder, canseecreatePurchaseOrder, canseeviewPurchaseOrder, canseedeletePurchaseOrder } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [quotations, setQuotations] = useState([]);
+  const [purchaseorder, setPurchaseorder] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -46,13 +41,13 @@ export default function Purchaseorderlist() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(fetchproformainvoiceList());
+        const response = await dispatch(fetchpurchaseorderList());
         response.sort((a, b) => {
-          const aNum = parseInt(a.ProFormaInvoice_no.split('-')[1]);
-          const bNum = parseInt(b.ProFormaInvoice_no.split('-')[1]);
+          const aNum = parseInt(a.purchaseOrder_no);
+          const bNum = parseInt(b.purchaseOrder_no);
           return aNum - bNum;
         });
-        setQuotations(response);
+        setPurchaseorder(response);
       } catch (error) {
         if (error.response.status === 401) {
           navigate('/');
@@ -76,15 +71,15 @@ export default function Purchaseorderlist() {
 
   // use for view single button passed id of data
   const handleViewQuotation = (id) => {
-    dispatch(Proformainvoiceview(id));
-    navigate(`/proformainvoiceviewpage/${id}`);
+    dispatch(PurchaseorderView(id));
+    navigate(`/purchaseorderview/${id}`);
   };
   const handleaddproforma = () => {
     navigate('/purchaseorderadd');
   };
   //use for edit button passed id of data
   const handleUpdateQuotation = (id) => {
-    dispatch(Proformainvoiceview(id));
+    dispatch(PurchaseorderView(id));
     navigate(`/purchaseorderupdate/${id}`);
   };
 
@@ -95,9 +90,9 @@ export default function Purchaseorderlist() {
 
   const handleDeleteQuotation = async () => {
     try {
-      await dispatch(deleteProformainvoice(selectedId));
+      await dispatch(deletePurchaseOrder(selectedId));
       setOpenConfirmation(false);
-      setQuotations((prevQuotation) => prevQuotation.filter((quotations) => quotations.id !== selectedId));
+      setPurchaseorder((prevQuotation) => prevQuotation.filter((purchaseorder) => purchaseorder.id !== selectedId));
     } catch (error) {
       console.error('Error deleting proformainvoice:', error);
     }
@@ -114,7 +109,7 @@ export default function Purchaseorderlist() {
         onClick={handleaddproforma}
         color="secondary"
         style={{ margin: '10px' }}
-        disabled={!canCreateProformainvoiceQuotation()}
+        disabled={!canseecreatePurchaseOrder()}
       >
         Create Purchase Order
       </Button>
@@ -131,7 +126,7 @@ export default function Purchaseorderlist() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {quotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+            {purchaseorder.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -140,45 +135,45 @@ export default function Purchaseorderlist() {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewProformainvoiceQuotation() ? 'Blue' : 'gray',
-                            color: canViewProformainvoiceQuotation() ? 'white' : 'white',
+                            backgroundColor: canseeviewPurchaseOrder() ? 'Blue' : 'gray',
+                            color: canseeviewPurchaseOrder() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewProformainvoiceQuotation() && { opacity: 1 }),
-                            ...(!canViewProformainvoiceQuotation() && { opacity: 0.5 }),
-                            ...(!canViewProformainvoiceQuotation() && { backgroundColor: 'gray' })
+                            ...(canseeviewPurchaseOrder() && { opacity: 1 }),
+                            ...(!canseeviewPurchaseOrder() && { opacity: 0.5 }),
+                            ...(!canseeviewPurchaseOrder() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleViewQuotation(row.id)}
-                          disabled={!canViewProformainvoiceQuotation()}
+                          disabled={!canseeviewPurchaseOrder()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateProformainvoiceQuotation() ? 'green' : 'gray',
-                            color: canUpdateProformainvoiceQuotation() ? 'white' : 'white',
+                            backgroundColor: canseeupdatePurchaseOrder() ? 'green' : 'gray',
+                            color: canseeupdatePurchaseOrder() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateProformainvoiceQuotation() && { opacity: 1 }),
-                            ...(!canUpdateProformainvoiceQuotation() && { opacity: 0.5 }),
-                            ...(!canUpdateProformainvoiceQuotation() && { backgroundColor: 'gray' })
+                            ...(canseeupdatePurchaseOrder() && { opacity: 1 }),
+                            ...(!canseeupdatePurchaseOrder() && { opacity: 0.5 }),
+                            ...(!canseeupdatePurchaseOrder() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateQuotation(row.id)}
-                          disabled={!canUpdateProformainvoiceQuotation()}
+                          disabled={!canseeupdatePurchaseOrder()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeProformainvoiceQuotation() ? 'Red' : 'gray',
-                            color: canDeProformainvoiceQuotation() ? 'white' : 'white',
+                            backgroundColor: canseedeletePurchaseOrder() ? 'Red' : 'gray',
+                            color: canseedeletePurchaseOrder() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeProformainvoiceQuotation() && { opacity: 1 }),
-                            ...(!canDeProformainvoiceQuotation() && { opacity: 0.5 }),
-                            ...(!canDeProformainvoiceQuotation() && { backgroundColor: 'gray' })
+                            ...(canseedeletePurchaseOrder() && { opacity: 1 }),
+                            ...(!canseedeletePurchaseOrder() && { opacity: 0.5 }),
+                            ...(!canseedeletePurchaseOrder() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(row.id)}
-                          disabled={!canDeProformainvoiceQuotation()}
+                          disabled={!canseedeletePurchaseOrder()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -186,11 +181,11 @@ export default function Purchaseorderlist() {
                     ) : column.id === 'date' || column.id === 'validtill' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
-                      row.accountProForma.accountName
+                      row.accountPurchaseOrder?.accountName
                     ) : column.id === 'updatedBy' ? (
-                      row.proUpdateUser?.username
+                      row.orderUpdateUser?.username
                     ) : column.id === 'createdBy' ? (
-                      row.proCreateUser?.username
+                      row.orderCreateUser?.username
                     ) : (
                       row[column.id]
                     )}
@@ -204,7 +199,7 @@ export default function Purchaseorderlist() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={quotations.length}
+        count={purchaseorder.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

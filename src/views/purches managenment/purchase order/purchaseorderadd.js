@@ -10,11 +10,11 @@ import AnchorProductDrawer from '../../../component/productadd';
 import { useDispatch } from 'react-redux';
 import {
   createPurchaseOrder,
-  Proformainvoiceview,
-  updateProformainvoice,
-  fetchproformainvoiceList,
   fetchuserwiseCompany,
-  fetchAllAccounts
+  fetchAllAccounts,
+  fetchpurchaseorderList,
+  PurchaseorderView,
+  updatePurchaseOrder
 } from 'store/thunk';
 import { fetchAllProducts } from 'store/thunk';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,7 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Purchaseorder = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation, canseecreateAccount, canCreateItem } = useCan();
+  const { canseecreateAccount, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -196,9 +196,9 @@ const Purchaseorder = () => {
   useEffect(() => {
     const data = async () => {
       if (id) {
-        const response = await dispatch(Proformainvoiceview(id));
+        const response = await dispatch(PurchaseorderView(id));
         const {
-          accountProForma,
+          accountPurchaseOrder,
           date,
           purchaseOrder_no,
           validtill,
@@ -214,7 +214,7 @@ const Purchaseorder = () => {
           destination
         } = response;
         setFormData({
-          accountId: accountProForma.id,
+          accountId: accountPurchaseOrder.id,
           date,
           purchaseOrder_no,
           validtill,
@@ -229,19 +229,19 @@ const Purchaseorder = () => {
           terms,
           destination
         });
-        setSelectaccount(accountProForma.id);
-        setAccountState(accountProForma.accountDetail?.state);
-        setAccountname(accountProForma.accountName);
-        const updatedRows = response.items.map((item) => ({
+        setSelectaccount(accountPurchaseOrder.id);
+        setAccountState(accountPurchaseOrder.accountDetail?.state);
+        setAccountname(accountPurchaseOrder.accountName);
+        const updatedRows = response.purchaseOrderItem.map((item) => ({
           id: item.id,
-          productId: item.product.id,
-          product: item.product.productname,
+          productId: item.purchaseOrderProduct.id,
+          product: item.purchaseOrderProduct.productname,
           qty: item.qty,
           unit: item.unit,
           rate: item.rate,
           mrp: item.rate * item.qty,
-          gstrate: item.product.gstrate,
-          gst: item.mrp * (item.product.gstrate / 100)
+          gstrate: item.purchaseOrderProduct.gstrate,
+          gst: item.mrp * (item.purchaseOrderProduct.gstrate / 100)
         }));
         setRows(updatedRows);
         const totalGST = updatedRows.reduce((acc, row) => acc + row.gst, 0);
@@ -291,7 +291,7 @@ const Purchaseorder = () => {
     updateTotalQuantity();
   }, [rows]);
 
-  const handleCreateQuotation = async () => {
+  const handleCreatePurchaseOrder = async () => {
     try {
       const payload = {
         ...formData,
@@ -316,14 +316,14 @@ const Purchaseorder = () => {
         payload.totalIgst = plusgst;
       }
       if (id) {
-        await dispatch(updateProformainvoice(id, payload, navigate));
+        await dispatch(updatePurchaseOrder(id, payload, navigate));
       } else {
         console.log(selectaccount);
         await dispatch(createPurchaseOrder(payload, navigate));
       }
     } catch (error) {
       console.log(error);
-      console.error('Error creating proformainvoice:', error);
+      console.error('Error creating purchase order:', error);
     }
   };
 
@@ -401,39 +401,39 @@ const Purchaseorder = () => {
       ...prevFormData,
       validtill: initialValidTill
     }));
-    const generateAutoQuotationNumber = async () => {
+    const generateAutoPurchaseOrderNumber = async () => {
       if (!id) {
         try {
-          const quotationResponse = await dispatch(fetchproformainvoiceList());
-          let nextQuotationNumber = 1;
-          if (quotationResponse.length === 0) {
-            const quotationNumber = `Q-${nextQuotationNumber}`;
+          const PurchaseOrderResponse = await dispatch(fetchpurchaseorderList());
+          let nextPrchaseorderNumber = 1;
+          if (PurchaseOrderResponse.length === 0) {
+            const purchaseorderNumber = nextPrchaseorderNumber;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              purchaseOrder_no: quotationNumber
+              purchaseOrder_no: purchaseorderNumber
             }));
             return;
           }
-          const existingQuotationNumbers = quotationResponse.map((quotation) => {
-            const quotationNumber = quotation.purchaseOrder_no.split('-')[1];
-            return parseInt(quotationNumber);
+          const existingPurchaseorderNumbers = PurchaseOrderResponse.map((purchaseorder) => {
+            const purchaseorderNumber = purchaseorder.purchaseOrder_no;
+            return parseInt(purchaseorderNumber);
           });
-          const maxQuotationNumber = Math.max(...existingQuotationNumbers);
+          const maxQuotationNumber = Math.max(...existingPurchaseorderNumbers);
           if (!isNaN(maxQuotationNumber)) {
-            nextQuotationNumber = maxQuotationNumber + 1;
+            nextPrchaseorderNumber = maxQuotationNumber + 1;
           }
 
-          const quotationNumber = `Q-${nextQuotationNumber}`;
+          const purchaseorderNumber = nextPrchaseorderNumber;
           setFormData((prevFormData) => ({
             ...prevFormData,
-            purchaseOrder_no: quotationNumber
+            purchaseOrder_no: purchaseorderNumber
           }));
         } catch (error) {
-          console.error('Error generating auto proformainvoice number:', error);
+          console.error('Error generating auto purchase order number:', error);
         }
       }
     };
-    generateAutoQuotationNumber();
+    generateAutoPurchaseOrderNumber();
   }, [dispatch, formData.date, id]);
 
   const handleTermsChange = (selectedOption) => {
@@ -474,7 +474,7 @@ const Purchaseorder = () => {
             <AnchorTemporaryDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} onAccountCreate={handleNewAccount} />
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Pro forma invoice No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Purchase Order No. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <input
                 placeholder="Enter Quotation No."
@@ -486,7 +486,7 @@ const Purchaseorder = () => {
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Pro forma invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Purchae Order Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
                 selected={formData.date}
@@ -616,7 +616,7 @@ const Purchaseorder = () => {
                       <TableCell id="newcs" style={{ fontSize: '16px' }}>
                         {row.mrp}
                       </TableCell>
-                      <TableCell disabled={!canDeleteProformainvoiceQuotation()}>
+                      <TableCell>
                         <DeleteIcon
                           onClick={() => {
                             handleDeleteRow(index);
@@ -717,7 +717,7 @@ const Purchaseorder = () => {
                     Cancel
                   </button>
                 </Link>
-                <button id="savebtncs" onClick={handleCreateQuotation}>
+                <button id="savebtncs" onClick={handleCreatePurchaseOrder}>
                   Save
                 </button>
               </div>
@@ -730,7 +730,7 @@ const Purchaseorder = () => {
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" onClick={handleCreateQuotation}>
+                <button id="savebtncs" onClick={handleCreatePurchaseOrder}>
                   Save
                 </button>
               </div>

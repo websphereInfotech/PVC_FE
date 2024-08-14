@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Proformainvoiceview } from 'store/thunk';
+import { PurchaseorderView } from 'store/thunk';
 
 const Purchaseorderview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -15,7 +15,7 @@ const Purchaseorderview = () => {
 
   //called api for view data
   useEffect(() => {
-    dispatch(Proformainvoiceview(id))
+    dispatch(PurchaseorderView(id))
       .then((data) => {
         setData(data);
       })
@@ -40,11 +40,11 @@ const Purchaseorderview = () => {
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Party</Typography>
-          <Typography variant="subtitle2">{data?.accountProForma?.accountName}</Typography>
+          <Typography variant="subtitle2">{data?.accountPurchaseOrder?.accountName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">ProFormaInvoice No.</Typography>
-          <Typography variant="subtitle2">{data?.ProFormaInvoice_no}</Typography>
+          <Typography variant="subtitle2">{data?.purchaseOrder_no}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">ProFormaInvoice Date</Typography>
@@ -89,10 +89,10 @@ const Purchaseorderview = () => {
                 <TableCell sx={{ fontSize: '12px' }}>AMOUNT (₹)</TableCell>
               </TableHead>
               <TableBody>
-                {data?.items &&
-                  data?.items.map((item, index) => (
+                {data?.purchaseOrderItem &&
+                  data?.purchaseOrderItem.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.product?.productname}</TableCell>
+                      <TableCell>{item?.purchaseOrderProduct?.productname}</TableCell>
                       <TableCell>{item?.unit}</TableCell>
                       <TableCell>{item?.rate}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
@@ -189,7 +189,7 @@ const Purchaseorderview = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
+            <Link to="/purchaseorderlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -197,7 +197,7 @@ const Purchaseorderview = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/proformainvoiceList" style={{ textDecoration: 'none' }}>
+            <Link to="/purchaseorderlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>

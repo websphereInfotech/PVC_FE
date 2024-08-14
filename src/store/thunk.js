@@ -35,6 +35,18 @@ import {
   createPurchaseorderRequest,
   createPurchaseorderSuccess,
   createPurchaseorderFailure,
+  updatePurchaseOrderRequst,
+  updatePurchaseOrdersuccess,
+  updatePurchaseOrderfailure,
+  deletePurchaseOrderRequest,
+  deletePurchaseOrderSuccess,
+  deletePurchaseOrderFailure,
+  viewPurchaseOrderRequest,
+  viewPurchaseOrderSuccess,
+  viewPurchaseOrderFailure,
+  fetchPurchaseOrderRequest,
+  fetchPurchaseOrderSuccess,
+  fetchPurchaseOrderFailure,
   // CUSTOMER +++++++++++++++++++++++++++++++++++++
   fetchAllCustomersCashRequest,
   fetchAllCustomersCashSuccess,
@@ -823,7 +835,79 @@ export const createPurchaseOrder = (quotationData, navigate) => {
     }
   };
 };
-
+export const updatePurchaseOrder = (id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(updatePurchaseOrderRequst());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/purchaseOrder/update_purchaseOrder/${id}`, formData, config);
+      const updatePrchaseOrderData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/purchaseorderlist');
+        }
+      });
+      dispatch(updatePurchaseOrdersuccess(updatePrchaseOrderData));
+      return updatePrchaseOrderData;
+    } catch (error) {
+      dispatch(updatePurchaseOrderfailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const deletePurchaseOrder = (id) => {
+  return async (dispatch) => {
+    dispatch(deletePurchaseOrderRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/purchaseOrder/delete_purchaseOrder/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deletePurchaseOrderSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deletePurchaseOrderFailure());
+    }
+  };
+};
+export const PurchaseorderView = (id) => {
+  return async (dispatch) => {
+    dispatch(viewPurchaseOrderRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseOrder/view_single_purchaseOrder/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewPurchaseOrderSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(viewPurchaseOrderFailure(error.message));
+    }
+  };
+};
+export const fetchpurchaseorderList = () => {
+  return async (dispatch) => {
+    dispatch(fetchPurchaseOrderRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseOrder/get_all_purchaseOrder`, config);
+      const data = await response.data.data;
+      dispatch(fetchPurchaseOrderSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchPurchaseOrderFailure(error));
+      throw error;
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERYCHALLAN ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallDeliverychallan = () => {
   return async (dispatch) => {

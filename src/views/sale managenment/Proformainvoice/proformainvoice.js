@@ -24,7 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const Proformainvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { canDeleteProformainvoiceQuotation, canseecreateAccount, canCreateItem } = useCan();
+  const { canseecreateAccount, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -616,7 +616,7 @@ const Proformainvoice = () => {
                       <TableCell id="newcs" style={{ fontSize: '16px' }}>
                         {row.mrp}
                       </TableCell>
-                      <TableCell disabled={!canDeleteProformainvoiceQuotation()}>
+                      <TableCell>
                         <DeleteIcon
                           onClick={() => {
                             handleDeleteRow(index);

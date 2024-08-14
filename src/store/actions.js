@@ -18,6 +18,18 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 export const CREATE_PURCHASE_ORDER_REQUEST = 'CREATE_PURCHASE_ORDER_REQUEST';
 export const CREATE_PURCHASE_ORDER_SUCCESS = 'CREATE_PURCHASE_ORDER_SUCCESS';
 export const CREATE_PURCHASE_ORDER_FAILURE = 'CREATE_PURCHASE_ORDER_FAILURE';
+export const UPDATE_PURCHASE_ORDER_REQUEST = 'UPDATE_PURCHASE_ORDER_REQUEST';
+export const UPDATE_PURCHASE_ORDER_SUCCESS = 'UPDATE_PURCHASE_ORDER_SUCCESS';
+export const UPDATE_PURCHASE_ORDER_FAILURE = 'UPDATE_PURCHASE_ORDER_FAILURE';
+export const DELETE_PURCHASE_ORDER_REQUEST = 'DELETE_PURCHASE_ORDER_REQUEST';
+export const DELETE_PURCHASE_ORDER_SUCCESS = 'DELETE_PURCHASE_ORDER_SUCCESS';
+export const DELETE_PURCHASE_ORDER_FAILURE = 'DELETE_PURCHASE_ORDER_FAILURE';
+export const VIEW_PURCHASE_ORDER_REQUEST = 'VIEW_PURCHASE_ORDER_REQUEST';
+export const VIEW_PURCHASE_ORDER_SUCCESS = 'VIEW_PURCHASE_ORDER_SUCCESS';
+export const VIEW_PURCHASE_ORDER_FAILURE = 'VIEW_PURCHASE_ORDER_FAILURE';
+export const FETCH_PURCHASE_ORDER_REQUEST = 'FETCH_PURCHASE_ORDER_REQUEST';
+export const FETCH_PURCHASE_ORDER_SUCCESS = 'FETCH_PURCHASE_ORDER_SUCCESS';
+export const FETCH_PURCHASE_ORDER_FAILURE = 'FETCH_PURCHASE_ORDER_FAILURE';
 
 // ######################################## PRO FORMA INVOICE #####################################################################
 export const FETCH_PRO_FORMA_INVOICE_REQUEST = 'FETCH_PRO_FORMA_INVOICE_REQUEST';
@@ -762,7 +774,53 @@ export const createPurchaseorderFailure = (error) => ({
   type: 'CREATE_PURCHASE_ORDER_FAILURE',
   payload: error
 });
-
+export const deletePurchaseOrderRequest = (data) => ({
+  type: 'DELETE_PURCHASE_ORDER_REQUEST',
+  payload: data
+});
+export const deletePurchaseOrderSuccess = (data) => ({
+  type: 'DELETE_PURCHASE_ORDER_SUCCESS',
+  payload: data
+});
+export const deletePurchaseOrderFailure = (error) => ({
+  type: 'DELETE_PURCHASE_ORDER_FAILURE',
+  payload: error
+});
+export const viewPurchaseOrderRequest = (data) => ({
+  type: 'VIEW_PURCHASE_ORDER_REQUEST',
+  payload: data
+});
+export const viewPurchaseOrderSuccess = (data) => ({
+  type: 'VIEW_PURCHASE_ORDER_SUCCESS',
+  payload: data
+});
+export const viewPurchaseOrderFailure = (error) => ({
+  type: 'VIEW_PURCHASE_ORDER_FAILURE',
+  payload: error
+});
+export const updatePurchaseOrderRequst = (data) => ({
+  type: 'UPDATE_PURCHASE_ORDER_REQUEST',
+  payload: data
+});
+export const updatePurchaseOrdersuccess = (data) => ({
+  type: 'UPDATE_PURCHASE_ORDER_SUCCESS',
+  payload: data
+});
+export const updatePurchaseOrderfailure = (error) => ({
+  type: 'UPDATE_PURCHASE_ORDER_FAILURE',
+  payload: error
+});
+export const fetchPurchaseOrderRequest = () => ({
+  type: 'FETCH_PURCHASE_ORDER_REQUEST'
+});
+export const fetchPurchaseOrderSuccess = (data) => ({
+  type: 'FETCH_PURCHASE_ORDER_SUCCESS',
+  payload: data
+});
+export const fetchPurchaseOrderFailure = (error) => ({
+  type: 'FETCH_PURCHASE_ORDER_FAILURE',
+  payload: error
+});
 // ################################################################ CUSTOMERS ##################################################################################
 export const fetchAllCustomersCashRequest = () => ({
   type: 'FETCH_ALL_CUSTOMERS_CASH_REQUEST'
