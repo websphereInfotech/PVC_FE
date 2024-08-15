@@ -682,6 +682,18 @@ const MenuItem = () => {
                 url: '/accountlist'
               },
               {
+                id: 'Item Group',
+                title: 'Item Group',
+                type: 'item',
+                url: '/itemgrouplist'
+              },
+              {
+                id: 'Item Category',
+                title: 'Item Category',
+                type: 'item',
+                url: '/itemcategorylist'
+              },
+              {
                 id: 'Report',
                 title: 'Report',
                 type: 'item',

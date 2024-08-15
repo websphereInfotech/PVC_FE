@@ -18,6 +18,8 @@ import Pagenotification from 'component/notification';
 import Creditnotecash from 'views/sale managenment/Credit note cash/creditnotecash';
 import Creditnotecashlist from 'views/sale managenment/Credit note cash/creditnotecashlist';
 import CreditnotecashView from 'views/sale managenment/Credit note cash/creditnotecashview';
+import ItemgropuList from 'views/production managenment/Item Group/itemgrouplist';
+import ItemcategoryList from 'views/production managenment/Item Category/itemcategorylist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -385,6 +387,16 @@ const MainRoutes = {
     {
       path: '/debitnotecashview/:id',
       element: <ProtectedRoute element={Debitnotecashview} resource="Debit Note Cash" permissionName="view_single_debitNote" />
+    },
+    // +++++++++++++++++++++++++++++++++++++++++ routes of item group ++++++++++++++++++++
+    {
+      path: '/itemgrouplist',
+      element: <ItemgropuList />
+    },
+    // +++++++++++++++++++++++++++++++++++++++++ routes of item group ++++++++++++++++++++
+    {
+      path: '/itemcategorylist',
+      element: <ItemcategoryList />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note cash +++++++++++++++++++++++++++++++++++++++++++++++++++
