@@ -302,6 +302,22 @@ import {
   deleteDebitnoteRequest,
   deleteDebitnoteSuccess,
   deleteDebitnoteFailure,
+  // DEBIT NOTE+++++++++++++++++++++
+  createDebitnotecashRequest,
+  createDebitnotecashSuccess,
+  createDebitnotecashFailure,
+  getAllDebitnotecashRequest,
+  getAllDebitnotecashSuccess,
+  getAllDebitnotecashFailure,
+  viewDebitnotecashRequest,
+  viewDebitnotecashSuccess,
+  viewDebitnotecashFailure,
+  updateDebitnotecashRequest,
+  updateDebitnotecashSuccess,
+  updateDebitnotecashFailure,
+  deleteDebitnotecashRequest,
+  deleteDebitnotecashSuccess,
+  deleteDebitnotecashFailure,
   // Credit NOTE+++++++++++++++++++++
   createCreditnoteRequest,
   createCreditnoteSuccess,
@@ -318,6 +334,22 @@ import {
   deleteCreditnoteRequest,
   deleteCreditnoteSuccess,
   deleteCreditnoteFailure,
+  // Credit NOTE CASH +++++++++++++++++++++
+  createCreditnotecashRequest,
+  createCreditnotecashSuccess,
+  createCreditnotecashFailure,
+  getAllCreditnotecashRequest,
+  getAllCreditnotecashSuccess,
+  getAllCreditnotecashFailure,
+  viewCreditnotecashRequest,
+  viewCreditnotecashSuccess,
+  viewCreditnotecashFailure,
+  updateCreditnotecashRequest,
+  updateCreditnotecashSuccess,
+  updateCreditnotecashFailure,
+  deleteCreditnotecashRequest,
+  deleteCreditnotecashSuccess,
+  deleteCreditnotecashFailure,
   // ECIEVE CASH +++++++++++++
   createRecieveCashRequest,
   createRecieveCashSuccess,
@@ -1645,6 +1677,106 @@ export const deleteDebitnote = (id) => {
   };
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createDebitnotecash = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createDebitnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/debitnote/C_create_debitNote`, payload, config);
+      const createDebitnotecash = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/debitnotecashlist');
+        }
+      });
+      dispatch(createDebitnotecashSuccess(createDebitnotecash));
+      return createDebitnotecash;
+    } catch (error) {
+      dispatch(createDebitnotecashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+export const getallDebitnotecash = () => {
+  return async (dispatch) => {
+    dispatch(getAllDebitnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/C_get_all_debitNote`, config);
+      const getallDebitnotecash = response.data.data;
+      dispatch(getAllDebitnotecashSuccess(getallDebitnotecash));
+      return getallDebitnotecash;
+    } catch (error) {
+      dispatch(getAllDebitnotecashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const Debitnotecashviewdata = (id) => {
+  return async (dispatch) => {
+    dispatch(viewDebitnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/C_view_single_debitNote/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewDebitnotecashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewDebitnotecashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateDebitnotecash = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateDebitnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/debitnote/C_update_debitNote/${id}`, payload, config);
+      const updateDebitnotecashData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/debitnotecashlist');
+        }
+      });
+      dispatch(updateDebitnotecashSuccess(updateDebitnotecashData));
+      return updateDebitnotecashData;
+    } catch (error) {
+      dispatch(updateDebitnotecashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+export const deleteDebitnotecash = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteDebitnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/debitnote/C_delete_debitNote/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteDebitnotecashSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteDebitnotecashFailure());
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createCreditnote = (payload, navigate) => {
   return async (dispatch) => {
@@ -1742,6 +1874,107 @@ export const deleteCreditnote = (id) => {
     } catch (error) {
       toast.error(error.response.data.message);
       dispatch(deleteCreditnoteFailure());
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createCreditnotecash = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createCreditnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/creditnote/C_create_creditNote`, payload, config);
+      const createCreditnotecash = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/creditnotelist');
+        }
+      });
+      dispatch(createCreditnotecashSuccess(createCreditnotecash));
+      return createCreditnotecash;
+    } catch (error) {
+      dispatch(createCreditnotecashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+export const getallCreditnotecash = () => {
+  return async (dispatch) => {
+    dispatch(getAllCreditnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/C_get_all_creditNote`, config);
+      const getallCreditnotecash = response.data.data;
+      dispatch(getAllCreditnotecashSuccess(getallCreditnotecash));
+      return getallCreditnotecash;
+    } catch (error) {
+      dispatch(getAllCreditnotecashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const Creditnotecashviewdata = (id) => {
+  return async (dispatch) => {
+    dispatch(viewCreditnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/C_view_single_creditNote/${id}`, config);
+      const data = response.data.data;
+      dispatch(viewCreditnotecashSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(viewCreditnotecashFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateCreditnotecash = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateCreditnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/creditnote/C_update_creditNote/${id}`, payload, config);
+      const updateCreditnotecashData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/creditnotelist');
+        }
+      });
+      dispatch(updateCreditnotecashSuccess(updateCreditnotecashData));
+      return updateCreditnotecashData;
+    } catch (error) {
+      dispatch(updateCreditnotecashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+export const deleteCreditnotecash = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteCreditnotecashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/creditnote/delete_creditNote/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(deleteCreditnotecashSuccess());
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(deleteCreditnotecashFailure());
     }
   };
 };

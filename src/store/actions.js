@@ -176,7 +176,7 @@ export const VIEW_SALES_INVOICE_CASH_REQUEST = 'VIEW_SALES_INVOICE_CASH_REQUEST'
 export const VIEW_SALES_INVOICE_CASH_SUCCESS = 'VIEW_SALES_INVOICE_CASH_SUCCESS';
 export const VIEW_SALES_INVOICE_CASH_FAILURE = 'VIEW_SALES_INVOICE_CASH_FAILURE';
 
-// ########################################## SALES INVOICE ###############################################################################################
+// ########################################## DEBIT NOTE ###############################################################################################
 export const CREATE_DEBIT_NOTE_REQUEST = 'CREATE_DEBIT_NOTE_REQUEST';
 export const CREATE_DEBIT_NOTE_SUCCESS = 'CREATE_DEBIT_NOTE_SUCCESS';
 export const CREATE_DEBIT_NOTE_FAILURE = 'CREATE_DEBIT_NOTE_FAILURE';
@@ -192,6 +192,23 @@ export const FETCH_ALL_DEBITNOTE_FAILURE = 'FETCH_ALL_DEBITNOTE_FAILURE';
 export const VIEW_DEBIT_NOTE_REQUEST = 'VIEW_DEBIT_NOTE_REQUEST';
 export const VIEW_DEBIT_NOTE_SUCCESS = 'VIEW_DEBIT_NOTE_SUCCESS';
 export const VIEW_DEBIT_NOTE_FAILURE = 'VIEW_DEBIT_NOTE_FAILURE';
+
+// ########################################## DEBIT NOTE ###############################################################################################
+export const CREATE_DEBIT_NOTE_CASH_REQUEST = 'CREATE_DEBIT_NOTE_CASH_REQUEST';
+export const CREATE_DEBIT_NOTE_CASH_SUCCESS = 'CREATE_DEBIT_NOTE_CASH_SUCCESS';
+export const CREATE_DEBIT_NOTE_CASH_FAILURE = 'CREATE_DEBIT_NOTE_CASH_FAILURE';
+export const DELETE_DEBIT_NOTE_CASH_REQUEST = 'DELETE_DEBIT_NOTE_CASH_REQUEST';
+export const DELETE_DEBIT_NOTE_CASH_SUCCESS = 'DELETE_DEBIT_NOTE_CASH_SUCCESS';
+export const DELETE_DEBIT_NOTE_CASH_FAILURE = 'DELETE_DEBIT_NOTE_CASH_FAILURE';
+export const UPDATE_DEBIT_NOTE_CASH_REQUEST = 'UPDATE_DEBIT_NOTE_CASH_REQUEST';
+export const UPDATE_DEBIT_NOTE_CASH_SUCCESS = 'UPDATE_DEBIT_NOTE_CASH_SUCCESS';
+export const UPDATE_DEBIT_NOTE_CASH_FAILURE = 'UPDATE_DEBIT_NOTE_CASH_FAILURE';
+export const FETCH_ALL_DEBIT_NOTE_CASH_REQUEST = 'FETCH_ALL_DEBIT_NOTE_CASH_REQUEST';
+export const FETCH_ALL_DEBIT_NOTE_CASH_SUCCESS = 'FETCH_ALL_DEBIT_NOTE_CASH_SUCCESS';
+export const FETCH_ALL_DEBIT_NOTE_CASH_FAILURE = 'FETCH_ALL_DEBIT_NOTE_CASH_FAILURE';
+export const VIEW_DEBIT_NOTE_CASH_REQUEST = 'VIEW_DEBIT_NOTE_CASH_REQUEST';
+export const VIEW_DEBIT_NOTE_CASH_SUCCESS = 'VIEW_DEBIT_NOTE_CASH_SUCCESS';
+export const VIEW_DEBIT_NOTE_CASH_FAILURE = 'VIEW_DEBIT_NOTE_CASH_FAILURE';
 
 // ########################################## CREDIT NOTE ###############################################################################################
 export const CREATE_CREDIT_NOTE_REQUEST = 'CREATE_CREDIT_NOTE_REQUEST';
@@ -209,6 +226,23 @@ export const FETCH_ALL_CREDITNOTE_FAILURE = 'FETCH_ALL_CREDITNOTE_FAILURE';
 export const VIEW_CREDIT_NOTE_REQUEST = 'VIEW_CREDIT_NOTE_REQUEST';
 export const VIEW_CREDIT_NOTE_SUCCESS = 'VIEW_CREDIT_NOTE_SUCCESS';
 export const VIEW_CREDIT_NOTE_FAILURE = 'VIEW_CREDIT_NOTE_FAILURE';
+
+// ########################################## CREDIT NOTE ###############################################################################################
+export const CREATE_CREDIT_NOTE_CASH_REQUEST = 'CREATE_CREDIT_NOTE_CASH_REQUEST';
+export const CREATE_CREDIT_NOTE_CASH_SUCCESS = 'CREATE_CREDIT_NOTE_CASH_SUCCESS';
+export const CREATE_CREDIT_NOTE_CASH_FAILURE = 'CREATE_CREDIT_NOTE_CASH_FAILURE';
+export const DELETE_CREDIT_NOTE_CASH_REQUEST = 'DELETE_CREDIT_NOTE_CASH_REQUEST';
+export const DELETE_CREDIT_NOTE_CASH_SUCCESS = 'DELETE_CREDIT_NOTE_CASH_SUCCESS';
+export const DELETE_CREDIT_NOTE_CASH_FAILURE = 'DELETE_CREDIT_NOTE_CASH_FAILURE';
+export const UPDATE_CREDIT_NOTE_CASH_REQUEST = 'UPDATE_CREDIT_NOTE_CASH_REQUEST';
+export const UPDATE_CREDIT_NOTE_CASH_SUCCESS = 'UPDATE_CREDIT_NOTE_CASH_SUCCESS';
+export const UPDATE_CREDIT_NOTE_CASH_FAILURE = 'UPDATE_CREDIT_NOTE_CASH_FAILURE';
+export const FETCH_ALL_CREDIT_NOTE_CASH_REQUEST = 'FETCH_ALL_CREDIT_NOTE_CASH_REQUEST';
+export const FETCH_ALL_CREDIT_NOTE_CASH_SUCCESS = 'FETCH_ALL_CREDIT_NOTE_CASH_SUCCESS';
+export const FETCH_ALL_CREDIT_NOTE_CASH_FAILURE = 'FETCH_ALL_CREDIT_NOTE_CASH_FAILURE';
+export const VIEW_CREDIT_NOTE_CASH_REQUEST = 'VIEW_CREDIT_NOTE_CASH_REQUEST';
+export const VIEW_CREDIT_NOTE_CASH_SUCCESS = 'VIEW_CREDIT_NOTE_CASH_SUCCESS';
+export const VIEW_CREDIT_NOTE_CASH_FAILURE = 'VIEW_CREDIT_NOTE_CASH_FAILURE';
 
 // ########################################## EXPENSE ###############################################################################################
 export const CREATE_EXPENCE_REQUEST = 'CREATE_EXPENCE_REQUEST';
@@ -1793,6 +1827,69 @@ export const viewDebitnoteFailure = (error) => ({
   payload: error
 });
 
+// ##################################################################################### DEBIT NOTE ################################################################
+
+export const createDebitnotecashRequest = (data) => ({
+  type: 'CREATE_DEBIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const createDebitnotecashSuccess = (data) => ({
+  type: 'CREATE_DEBIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const createDebitnotecashFailure = (error) => ({
+  type: 'CREATE_DEBIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const deleteDebitnotecashRequest = (data) => ({
+  type: 'DELETE_DEBIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const deleteDebitnotecashSuccess = (data) => ({
+  type: 'DELETE_DEBIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const deleteDebitnotecashFailure = (error) => ({
+  type: 'DELETE_DEBIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const updateDebitnotecashRequest = (data) => ({
+  type: 'UPDATE_DEBIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const updateDebitnotecashSuccess = (data) => ({
+  type: 'UPDATE_DEBIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const updateDebitnotecashFailure = (error) => ({
+  type: 'UPDATE_DEBIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const getAllDebitnotecashRequest = (data) => ({
+  type: 'FETCH_ALL_DEBITNOTE_REQUEST',
+  payload: data
+});
+export const getAllDebitnotecashSuccess = (data) => ({
+  type: 'FETCH_ALL_DEBIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const getAllDebitnotecashFailure = (error) => ({
+  type: 'FETCH_ALL_DEBIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const viewDebitnotecashRequest = (data) => ({
+  type: 'VIEW_DEBIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const viewDebitnotecashSuccess = (data) => ({
+  type: 'VIEW_DEBIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const viewDebitnotecashFailure = (error) => ({
+  type: 'VIEW_DEBIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+
 // ##################################################################################### CREDIT NOTE ################################################################
 
 export const createCreditnoteRequest = (data) => ({
@@ -1853,6 +1950,68 @@ export const viewCreditnoteSuccess = (data) => ({
 });
 export const viewCreditnoteFailure = (error) => ({
   type: 'VIEW_CREDIT_NOTE_FAILURE',
+  payload: error
+});
+
+// ##################################################################################### CREDIT NOTE CASH################################################################
+export const createCreditnotecashRequest = (data) => ({
+  type: 'CREATE_CREDIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const createCreditnotecashSuccess = (data) => ({
+  type: 'CREATE_CREDIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const createCreditnotecashFailure = (error) => ({
+  type: 'CREATE_CREDIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const deleteCreditnotecashRequest = (data) => ({
+  type: 'DELETE_CREDIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const deleteCreditnotecashSuccess = (data) => ({
+  type: 'DELETE_CREDIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const deleteCreditnotecashFailure = (error) => ({
+  type: 'DELETE_CREDIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const updateCreditnotecashRequest = (data) => ({
+  type: 'UPDATE_CREDIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const updateCreditnotecashSuccess = (data) => ({
+  type: 'UPDATE_CREDIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const updateCreditnotecashFailure = (error) => ({
+  type: 'UPDATE_CREDIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const getAllCreditnotecashRequest = (data) => ({
+  type: 'FETCH_ALL_CREDIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const getAllCreditnotecashSuccess = (data) => ({
+  type: 'FETCH_ALL_CREDIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const getAllCreditnotecashFailure = (error) => ({
+  type: 'FETCH_ALL_CREDIT_NOTE_CASH_FAILURE',
+  payload: error
+});
+export const viewCreditnotecashRequest = (data) => ({
+  type: 'VIEW_CREDIT_NOTE_CASH_REQUEST',
+  payload: data
+});
+export const viewCreditnotecashSuccess = (data) => ({
+  type: 'VIEW_CREDIT_NOTE_CASH_SUCCESS',
+  payload: data
+});
+export const viewCreditnotecashFailure = (error) => ({
+  type: 'VIEW_CREDIT_NOTE_CASH_FAILURE',
   payload: error
 });
 // ##################################################################################### PAYMENT RECIEVE CASH ######################################################

@@ -15,9 +15,9 @@ import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Customerledgerlist from 'views/finacial managenment/Recieve cash/customerledgerlist';
 import Pagenotification from 'component/notification';
-import Purchaseorder from 'views/purches managenment/purchase order/purchaseorderadd';
-import Purchaseorderlist from 'views/purches managenment/purchase order/purchaseorderlist';
-import Purchaseorderview from 'views/purches managenment/purchase order/purchaseorderview';
+import Creditnotecash from 'views/sale managenment/Credit note cash/creditnotecash';
+import Creditnotecashlist from 'views/sale managenment/Credit note cash/creditnotecashlist';
+import CreditnotecashView from 'views/sale managenment/Credit note cash/creditnotecashview';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -58,6 +58,11 @@ const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Pr
 const ProformainvoiceList = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoicelist')));
 const Proformainvoiceviewpage = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoiceview')));
 
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Purchaseorder = Loadable(lazy(() => import('../views/purches managenment/purchase order/purchaseorderadd')));
+const Purchaseorderlist = Loadable(lazy(() => import('../views/purches managenment/purchase order/purchaseorderlist')));
+const Purchaseorderview = Loadable(lazy(() => import('../views/purches managenment/purchase order/purchaseorderview')));
+
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of delivery challan +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Deliverychallan = Loadable(lazy(() => import('../views/sale managenment/Dileverychallan/dileverychalln')));
 const DileveryChallanList = Loadable(lazy(() => import('../views/sale managenment/Dileverychallan/dileverychallanlist')));
@@ -67,6 +72,11 @@ const DileveryChallanView = Loadable(lazy(() => import('../views/sale managenmen
 const DebitNote = Loadable(lazy(() => import('../views/sale managenment/Debit note/debitnote')));
 const Debitnotelist = Loadable(lazy(() => import('../views/sale managenment/Debit note/debitnotelist')));
 const Debitnoteview = Loadable(lazy(() => import('../views/sale managenment/Debit note/debitnoteview')));
+
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of Debit note cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Debitnotecash = Loadable(lazy(() => import('../views/sale managenment/Debit note cash/debitnotecash')));
+const Debitnotecashlist = Loadable(lazy(() => import('../views/sale managenment/Debit note cash/debitnotecashlist')));
+const Debitnotecashview = Loadable(lazy(() => import('../views/sale managenment/Debit note cash/debitnotecashview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Creditnote = Loadable(lazy(() => import('../views/sale managenment/Credit note/creditnote')));
@@ -335,7 +345,7 @@ const MainRoutes = {
       element: <ProtectedRoute element={DileveryChallanView} resource="Delivery Challan" permissionName="view_single_deliverychallan" />
     },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of debit note +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/debitnote', element: <ProtectedRoute element={DebitNote} resource="Debit Note" permissionName="create_debitNote" /> },
     { path: '/debitnote/:id', element: <ProtectedRoute element={DebitNote} resource="Debit Note" permissionName="update_debitNote" /> },
     {
@@ -347,7 +357,7 @@ const MainRoutes = {
       element: <ProtectedRoute element={Debitnoteview} resource="Debit Note" permissionName="view_single_debitNote" />
     },
 
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of sales return +++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note +++++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/creditnote', element: <ProtectedRoute element={Creditnote} resource="Credit Note" permissionName="create_creditNote" /> },
     { path: '/creditnote/:id', element: <ProtectedRoute element={Creditnote} resource="Credit Note" permissionName="update_creditNote" /> },
     {
@@ -357,6 +367,36 @@ const MainRoutes = {
     {
       path: '/creditnoteview/:id',
       element: <ProtectedRoute element={CreditnoteView} resource="Credit Note" permissionName="view_single_creditNote" />
+    },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of debit note cash+++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/debitnotecash',
+      element: <ProtectedRoute element={Debitnotecash} resource="Debit Note Cash" permissionName="create_debitNote" />
+    },
+    {
+      path: '/debitnotecashupdate/:id',
+      element: <ProtectedRoute element={Debitnotecash} resource="Debit Note Cash" permissionName="update_debitNote" />
+    },
+    {
+      path: '/debitnotecashlist',
+      element: <ProtectedRoute element={Debitnotecashlist} resource="Debit Note Cash" permissionName="view_all_debitNote" />
+    },
+    {
+      path: '/debitnotecashview/:id',
+      element: <ProtectedRoute element={Debitnotecashview} resource="Debit Note Cash" permissionName="view_single_debitNote" />
+    },
+
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/creditnotecash', element: <Creditnotecash /> },
+    { path: '/creditnotecashupdate/:id', element: <Creditnotecash /> },
+    {
+      path: '/creditnotecashlist',
+      element: <Creditnotecashlist />
+    },
+    {
+      path: '/creditnotecashview/:id',
+      element: <CreditnotecashView />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice +++++++++++++++++++++++++++++++++++++++++++++++++++

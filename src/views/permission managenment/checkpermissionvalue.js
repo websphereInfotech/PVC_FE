@@ -351,6 +351,23 @@ const useCan = () => {
   const canViwAllDebitnote = () => {
     return checkPermission('Debit Note', 'view_all_debitNote');
   };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE CASH
+
+  const canCreateDebitnotecash = () => {
+    return checkPermission('Debit Note Cash', 'create_debitNote');
+  };
+  const canUpdateDebitnotecash = () => {
+    return checkPermission('Debit Note Cash', 'update_debitNote');
+  };
+  const canDeleteDebitnotecash = () => {
+    return checkPermission('Debit Note Cash', 'delete_debitNote');
+  };
+  const canViewDebitnotecash = () => {
+    return checkPermission('Debit Note Cash', 'view_single_debitNote');
+  };
+  const canViwAllDebitnotecash = () => {
+    return checkPermission('Debit Note Cash', 'view_all_debitNote');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE
 
   const canCreateCreditnote = () => {
@@ -896,6 +913,12 @@ const useCan = () => {
     canDeleteDebitnote,
     canViewDebitnote,
     canViwAllDebitnote,
+    //  DEBIT NOTE CASH++++++++++++++++++
+    canCreateDebitnotecash,
+    canUpdateDebitnotecash,
+    canDeleteDebitnotecash,
+    canViewDebitnotecash,
+    canViwAllDebitnotecash,
     //  CREDIT NOTE ++++++++++++++++++
     canCreateCreditnote,
     canUpdateCreditnote,

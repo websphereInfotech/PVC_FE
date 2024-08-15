@@ -99,9 +99,24 @@ const MenuItem = () => {
     'get_all_ProFormaInvoice',
     'view_single_ProFormaInvoice',
     'delete_ProFormaInvoice',
-    'delete_ProFormaInvoiceItem',
     'update_ProFormaInvoice',
     'create_ProFormaInvoice'
+  ]);
+
+  const hasAllPermissionsPurchaseorder = checkAllPermissions('Purchase Order', [
+    'view_all_purchaseOrder',
+    'view_single_purchaseOrder',
+    'delete_purchaseOrder',
+    'update_purchaseOrder',
+    'create_purchaseOrder'
+  ]);
+
+  const hasAllPermissionsDebitnotecash = checkAllPermissions('Debit Note Cash', [
+    'view_single_debitNote',
+    'update_debitNote',
+    'create_debitNote',
+    'view_all_debitNote',
+    'delete_debitNote'
   ]);
 
   const hasAllpermissionsalesinvoice = checkAllPermissions('Sales Invoice', [
@@ -358,6 +373,18 @@ const MenuItem = () => {
                         title: 'Receipt',
                         type: 'item',
                         url: '/paymentrecieveList'
+                      },
+                      hasAllPermissionsDebitnotecash && {
+                        id: 'Debit note cash',
+                        title: 'Debit Note Cash',
+                        type: 'item',
+                        url: '/debitnotecashlist'
+                      },
+                      {
+                        id: 'Credit note cash',
+                        title: 'Credit Note Cash',
+                        type: 'item',
+                        url: '/creditnotecashlist'
                       }
                     ]
                   }
@@ -420,7 +447,7 @@ const MenuItem = () => {
                     type: 'item',
                     url: '/proformainvoiceList'
                   },
-                  {
+                  hasAllPermissionsPurchaseorder && {
                     id: 'purchaseorder',
                     title: 'Purchase Order',
                     type: 'item',
