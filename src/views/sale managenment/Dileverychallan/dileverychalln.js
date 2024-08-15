@@ -41,7 +41,7 @@ const Deliverychallan = () => {
     accountId: '',
     date: new Date(),
     challanno: 0,
-    invoiceId: ''
+    saleInvoiceId: ''
   });
   const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
@@ -110,7 +110,7 @@ const Deliverychallan = () => {
       try {
         setFormData((prevFormData) => ({
           ...prevFormData,
-          invoiceId: selectedOption.value
+          saleInvoiceId: selectedOption.value
         }));
         setInvoicelabel(selectedOption.label);
 
@@ -217,11 +217,12 @@ const Deliverychallan = () => {
         if (id) {
           console.log(id, 'viewid');
           const response = await dispatch(Deliverychallanview(id));
-          const { accountDelivery, date, challanno } = response;
+          const { accountDelivery, date, challanno, saleDeliveryChallan } = response;
           console.log(response, 'response');
-          setFormData({ accountId: accountDelivery.id, date, challanno });
+          setFormData({ accountId: accountDelivery.id, date, challanno, saleInvoiceId: saleDeliveryChallan.id });
           setSelectaccount(accountDelivery.id);
           setAccountname(accountDelivery.accountName);
+          setInvoicelabel(saleDeliveryChallan.invoiceno);
           const updatedRows = response.items.map((item) => ({
             id: item.id,
             productId: item.DeliveryProduct.id,
@@ -348,7 +349,7 @@ const Deliverychallan = () => {
               <Select
                 color="secondary"
                 options={Array.isArray(invoice) ? invoice : invoice}
-                value={{ value: formData.invoiceId, label: invoicelabel }}
+                value={{ value: formData.saleInvoiceId, label: invoicelabel }}
                 onChange={handleSelectinvoicenoChange}
               />
             </Grid>

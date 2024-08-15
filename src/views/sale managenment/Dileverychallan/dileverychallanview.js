@@ -42,6 +42,10 @@ const DileveryChallanView = () => {
           <Typography variant="subtitle2">{data?.challanno}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
+          <Typography variant="subtitle1">Sales Invoice No.</Typography>
+          <Typography variant="subtitle2">{data?.saleDeliveryChallan?.invoiceno}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
           <Typography variant="subtitle1">Challan Date</Typography>
           <Typography variant="subtitle2">{new Date(data?.date).toLocaleDateString('en-GB')}</Typography>
         </Grid>
