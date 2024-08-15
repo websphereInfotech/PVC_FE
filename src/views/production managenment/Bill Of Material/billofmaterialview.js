@@ -68,6 +68,14 @@ const Bomview = () => {
           <Typography variant="subtitle1">End Time</Typography>
           <Typography variant="subtitle2">{data.endTime}</Typography>
         </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Wastage Name</Typography>
+          <Typography variant="subtitle2">{data.bomWastage?.name}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="subtitle1">Wastage Qty</Typography>
+          <Typography variant="subtitle2">{data.wastageQty}</Typography>
+        </Grid>
 
         <Grid item xs={12}>
           <div style={{ overflowX: 'auto', maxHeight: '300px', maxWidth: '100%' }}>

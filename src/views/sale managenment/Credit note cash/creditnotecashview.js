@@ -30,12 +30,12 @@ const CreditnotecashView = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Debit Note View
+        Credit Note Cash View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Party</Typography>
-          <Typography variant="subtitle2">{data.accountCreditNo?.accountName}</Typography>
+          <Typography variant="subtitle2">{data.accountCreditNoCash?.accountName}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Date</Typography>
@@ -44,14 +44,6 @@ const CreditnotecashView = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Debit Note No.</Typography>
           <Typography variant="subtitle2">{data.creditnoteNo}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Org. Invoice No.</Typography>
-          <Typography variant="subtitle2">{data.org_invoiceno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Org. Invoice Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.org_invoicedate).toLocaleDateString()}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">RR-No.</Typography>
@@ -83,10 +75,10 @@ const CreditnotecashView = () => {
                 <TableCell sx={{ fontSize: '12px' }}>RATE (₹)</TableCell>
               </TableHead>
               <TableBody>
-                {data.items &&
-                  data.items.map((item, index) => (
+                {data.cashCreditNoteItem &&
+                  data.cashCreditNoteItem.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell>{item?.CreditProduct.productname}</TableCell>
+                      <TableCell>{item?.CreditProductCash.productname}</TableCell>
                       <TableCell>{item?.mrp}</TableCell>
                       <TableCell>{item?.qty}</TableCell>
                       <TableCell>{item?.unit}</TableCell>
@@ -95,7 +87,6 @@ const CreditnotecashView = () => {
                   ))}
                 <TableCell></TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
-                <TableCell></TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
                 <TableCell></TableCell>
               </TableBody>
@@ -127,7 +118,7 @@ const CreditnotecashView = () => {
 
         {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
+            <Link to="/creditnotecashlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>
@@ -135,7 +126,7 @@ const CreditnotecashView = () => {
           </Grid>
         ) : (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Link to="/creditnotelist" style={{ textDecoration: 'none' }}>
+            <Link to="/creditnotecashlist" style={{ textDecoration: 'none' }}>
               <div>
                 <button id="savebtncs">Cancel</button>
               </div>

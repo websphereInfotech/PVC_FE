@@ -667,6 +667,17 @@ export const GET_ALL_ITEM_GROUP_REQUEST = 'GET_ALL_ITEM_GROUP_REQUEST';
 export const GET_ALL_ITEM_GROUP_SUCCESS = 'GET_ALL_ITEM_GROUP_SUCCESS';
 export const GET_ALL_ITEM_GROUP_FAILURE = 'GET_ALL_ITEM_GROUP_FAILURE';
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++
+export const CREATE_WASTAGE_REQUEST = 'CREATE_WASTAGE_REQUEST';
+export const CREATE_WASTAGE_SUCCESS = 'CREATE_WASTAGE_SUCCESS';
+export const CREATE_WASTAGE_FAILURE = 'CREATE_WASTAGE_FAILURE';
+export const VIEW_WASTAGE_REQUEST = 'VIEW_WASTAGE_REQUEST';
+export const VIEW_WASTAGE_SUCCESS = 'VIEW_WASTAGE_SUCCESS';
+export const VIEW_WASTAGE_FAILURE = 'VIEW_WASTAGE_FAILURE';
+export const GET_ALL_WASTAGE_REQUEST = 'GET_ALL_WASTAGE_REQUEST';
+export const GET_ALL_WASTAGE_SUCCESS = 'GET_ALL_WASTAGE_SUCCESS';
+export const GET_ALL_WASTAGE_FAILURE = 'GET_ALL_WASTAGE_FAILURE';
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM CATEGORY +++++++++++++++++++++++++++
 export const CREATE_ITEM_CATEGORY_REQUEST = 'CREATE_ITEM_CATEGORY_REQUEST';
 export const CREATE_ITEM_CATEGORY_SUCCESS = 'CREATE_ITEM_CATEGORY_SUCCESS';
@@ -2957,6 +2968,40 @@ export const GetTotalSalesSuccess = (data) => ({
 });
 export const GetTotalSalesFailure = (error) => ({
   type: 'GET_TOTAL_SALES_FAILURE',
+  payload: error
+});
+// +++++++++++++++++++++++++++++++++++++++++++++++ITEM GROUP ++++++++++++++++++++++++++++++++++++
+export const CreateWastageRequest = () => ({
+  type: 'CREATE_WASTAGE_REQUEST'
+});
+export const CreateWastageSuccess = (data) => ({
+  type: 'CREATE_WASTAGE_SUCCESS',
+  payload: data
+});
+export const CreateWastageFailure = (error) => ({
+  type: 'CREATE_WASTAGE_FAILURE',
+  payload: error
+});
+export const ViewWastageRequest = () => ({
+  type: 'VIEW_WASTAGE_REQUEST'
+});
+export const ViewWastageSuccess = (data) => ({
+  type: 'VIEW_WASTAGE_SUCCESS',
+  payload: data
+});
+export const ViewWastageFailure = (error) => ({
+  type: 'VIEW_WASTAGE_FAILURE',
+  payload: error
+});
+export const fetchAllWastageRequest = () => ({
+  type: 'GET_ALL_WASTAGE_REQUEST'
+});
+export const fetchAllWastageSuccess = (data) => ({
+  type: 'GET_ALL_WASTAGE_SUCCESS',
+  payload: data
+});
+export const fetchAllWastageFailure = (error) => ({
+  type: 'GET_ALL_WASTAGE_FAILURE',
   payload: error
 });
 

@@ -34,7 +34,7 @@ const columns = [
 ];
 
 const Creditnotecashlist = () => {
-  const { canUpdateCreditnote, canViewCreditnote, canCreateCreditnote, canDeleteCreditnote } = useCan();
+  const { canUpdateCreditnotecash, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash } = useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -106,16 +106,16 @@ const Creditnotecashlist = () => {
     // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Credit Note List
+        Credit Note Cash List
       </Typography>
       <Button
         variant="contained"
         color="secondary"
         style={{ margin: '10px' }}
         onClick={handleAddCreditnote}
-        disabled={!canCreateCreditnote()}
+        disabled={!canCreateCreditnotecash()}
       >
-        Create Credit Note
+        Create Credit Note Cash
       </Button>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
@@ -138,45 +138,45 @@ const Creditnotecashlist = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewCreditnote() ? 'Blue' : 'gray',
-                            color: canViewCreditnote() ? 'white' : 'white',
+                            backgroundColor: canViewCreditnotecash() ? 'Blue' : 'gray',
+                            color: canViewCreditnotecash() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewCreditnote() && { opacity: 1 }),
-                            ...(!canViewCreditnote() && { opacity: 0.5 }),
-                            ...(!canViewCreditnote() && { backgroundColor: 'gray' })
+                            ...(canViewCreditnotecash() && { opacity: 1 }),
+                            ...(!canViewCreditnotecash() && { opacity: 0.5 }),
+                            ...(!canViewCreditnotecash() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleViewCreditnote(row.id)}
-                          disabled={!canViewCreditnote()}
+                          disabled={!canViewCreditnotecash()}
                         >
                           <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateCreditnote() ? 'green' : 'gray',
-                            color: canUpdateCreditnote() ? 'white' : 'white',
+                            backgroundColor: canUpdateCreditnotecash() ? 'green' : 'gray',
+                            color: canUpdateCreditnotecash() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateCreditnote() && { opacity: 1 }),
-                            ...(!canUpdateCreditnote() && { opacity: 0.5 }),
-                            ...(!canUpdateCreditnote() && { backgroundColor: 'gray' })
+                            ...(canUpdateCreditnotecash() && { opacity: 1 }),
+                            ...(!canUpdateCreditnotecash() && { opacity: 0.5 }),
+                            ...(!canUpdateCreditnotecash() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateCreditnote(row.id)}
-                          disabled={!canUpdateCreditnote()}
+                          disabled={!canUpdateCreditnotecash()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteCreditnote() ? 'Red' : 'gray',
-                            color: canDeleteCreditnote() ? 'white' : 'white',
+                            backgroundColor: canDeleteCreditnotecash() ? 'Red' : 'gray',
+                            color: canDeleteCreditnotecash() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteCreditnote() && { opacity: 1 }),
-                            ...(!canDeleteCreditnote() && { opacity: 0.5 }),
-                            ...(!canDeleteCreditnote() && { backgroundColor: 'gray' })
+                            ...(canDeleteCreditnotecash() && { opacity: 1 }),
+                            ...(!canDeleteCreditnotecash() && { opacity: 0.5 }),
+                            ...(!canDeleteCreditnotecash() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(row.id)}
-                          disabled={!canDeleteCreditnote()}
+                          disabled={!canDeleteCreditnotecash()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -184,11 +184,11 @@ const Creditnotecashlist = () => {
                     ) : column.id === 'creditdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
-                      row.accountCreditNo.accountName
+                      row.accountCreditNoCash.accountName
                     ) : column.id === 'createdBy' ? (
-                      row.creditCreateUser?.username
+                      row.creditCreateUserCash?.username
                     ) : column.id === 'updatedBy' ? (
-                      row.creditUpdateUser?.username
+                      row.creditUpdateUserCash?.username
                     ) : (
                       row[column.id]
                     )}

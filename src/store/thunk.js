@@ -617,6 +617,16 @@ import {
   ViewItemGroupRequest,
   ViewItemGroupSuccess,
   ViewItemGroupFailure,
+  // WASTAGE ++++++++++++
+  CreateWastageRequest,
+  CreateWastageSuccess,
+  CreateWastageFailure,
+  fetchAllWastageRequest,
+  fetchAllWastageSuccess,
+  fetchAllWastageFailure,
+  ViewWastageRequest,
+  ViewWastageSuccess,
+  ViewWastageFailure,
   // ITEM Category +++++++++++++
   CreateItemCategoryRequest,
   CreateItemCategorySuccess,
@@ -1890,7 +1900,7 @@ export const createCreditnotecash = (payload, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/creditnotelist');
+          navigate('/creditnotecashlist');
         }
       });
       dispatch(createCreditnotecashSuccess(createCreditnotecash));
@@ -1946,7 +1956,7 @@ export const updateCreditnotecash = (id, payload, navigate) => {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/creditnotelist');
+          navigate('/creditnotecashlist');
         }
       });
       dispatch(updateCreditnotecashSuccess(updateCreditnotecashData));
@@ -1966,7 +1976,7 @@ export const deleteCreditnotecash = (id) => {
     dispatch(deleteCreditnotecashRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/creditnote/delete_creditNote/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/creditnote/C_delete_creditNote/${id}`, config);
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
@@ -4539,6 +4549,59 @@ export const ItemGroupview = (id) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(ViewItemGroupFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE +++++++++++++++++++++++++++++++++++++++++++++
+export const createWastage = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateWastageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wastage/create_wastage`, data, config);
+      const addWastage = response;
+      dispatch(CreateWastageSuccess(addWastage));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return addWastage;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateWastageFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const fetchAllWastage = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllWastageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wastage/get_all_wastage`, config);
+      const data = response.data.data;
+      dispatch(fetchAllWastageSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllWastageFailure(error.message));
+    }
+  };
+};
+export const Wastageview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewWastageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wastage/view_single_wastage/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewWastageSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewWastageFailure(error.message));
     }
   };
 };

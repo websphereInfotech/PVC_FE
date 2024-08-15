@@ -218,9 +218,10 @@ const Creditnotecash = () => {
       try {
         if (id) {
           const response = await dispatch(Creditnotecashviewdata(id));
-          const { accountCreditNo, LL_RR_no, creditdate, creditnoteNo, motorVehicleNo, dispatchThrough, destination, mainTotal } = response;
+          const { accountCreditNoCash, LL_RR_no, creditdate, creditnoteNo, motorVehicleNo, dispatchThrough, destination, mainTotal } =
+            response;
           setFormData({
-            accountId: accountCreditNo.id,
+            accountId: accountCreditNoCash.id,
             LL_RR_no,
             creditdate,
             creditnoteNo,
@@ -229,13 +230,13 @@ const Creditnotecash = () => {
             destination,
             mainTotal
           });
-          setSelectaccount(accountCreditNo.id);
-          setAccountState(accountCreditNo.accountDetail?.state);
-          setAccountname(accountCreditNo.accountName);
-          const updatedRows = response.items.map((item) => ({
+          setSelectaccount(accountCreditNoCash.id);
+          setAccountState(accountCreditNoCash.accountDetail?.state);
+          setAccountname(accountCreditNoCash.accountName);
+          const updatedRows = response.cashCreditNoteItem.map((item) => ({
             id: item.id,
-            productId: item.CreditProduct.id,
-            product: item.CreditProduct.productname,
+            productId: item.CreditProductCash.id,
+            product: item.CreditProductCash.productname,
             qty: item.qty,
             unit: item.unit,
             rate: item.rate,

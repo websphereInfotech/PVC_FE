@@ -34,7 +34,7 @@ const CreditnoteView = () => {
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Debit Note View
+        Credit Note View
       </Typography>
       <Grid container spacing={4} sx={{ padding: '0px 20px' }}>
         <Grid item xs={12} sm={6} md={3}>
@@ -99,7 +99,6 @@ const CreditnoteView = () => {
                   ))}
                 <TableCell></TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'right' }}>TotalQTY:</TableCell>
-                <TableCell></TableCell>
                 <TableCell sx={{ fontSize: '12px', textAlign: 'left', padding: '10px' }}>{data?.totalQty}</TableCell>
                 <TableCell></TableCell>
               </TableBody>

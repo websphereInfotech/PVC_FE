@@ -5,15 +5,16 @@ import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
-import { createBom, fetchAllProducts, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
+import { createBom, fetchAllProducts, fetchAllWastage, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import Wastage from 'component/wastage';
 
 const Addbillofmaterial = () => {
-  const { canCreateItem } = useCan();
+  const { canCreateItem, canseewastage } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
   const [rows, setRows] = useState([{ product: '', qty: null, unit: '', wastage: 0 }]);
@@ -24,7 +25,9 @@ const Addbillofmaterial = () => {
     productId: '',
     qty: 0,
     unit: '',
-    shift: ''
+    shift: '',
+    wastageId: '',
+    wastageQty: 0
   });
 
   const [startTime, setstartTime] = useState('');
@@ -35,11 +38,16 @@ const Addbillofmaterial = () => {
   const [productOptions, setProductOptions] = useState([]);
   const [rawmaterialoption, setRawmaterialoptions] = useState([]);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
+  const [canCreateWastagevalue, setCanCreateWastagevalue] = useState(null);
   const [totalQty, setTotalQty] = useState(0);
+  const [wastageOptions, setWastageOptions] = React.useState([]);
+  const [wastagename, setWastagename] = React.useState('');
+  const [wastageDrawerOpen, setWastageDrawerOpen] = React.useState(false);
 
   useEffect(() => {
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateItem]);
+    setCanCreateWastagevalue(canseewastage());
+  }, [canCreateItem, canseewastage]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -157,10 +165,28 @@ const Addbillofmaterial = () => {
         console.error('Error fetching products:', error);
       }
     };
+    const wastage = async () => {
+      try {
+        const wastage = await dispatch(fetchAllWastage());
+        if (Array.isArray(wastage)) {
+          const options = wastage.map((product) => ({
+            value: product.id,
+            label: product.name
+          }));
+          setWastageOptions([{ value: 'new_group', label: 'Create New Wastage' }, ...options]);
+          if (!canCreateWastagevalue) {
+            setWastageOptions(options);
+          }
+        }
+      } catch (error) {
+        console.log(error, 'fetch item Group');
+      }
+    };
+    wastage();
     if (canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, canCreateProductvalue]);
+  }, [dispatch, canCreateProductvalue, canCreateWastagevalue]);
 
   const handleDateChange = (date) => {
     setFormData((prevFormData) => ({
@@ -189,15 +215,25 @@ const Addbillofmaterial = () => {
     setFormData({ ...formData, shift: selectedOption.value });
   };
 
+  const handlewastageChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label === 'Create New Wastage') {
+      setWastageDrawerOpen(true);
+    } else {
+      setWastagename(selectedOption.label);
+      setFormData({ ...formData, wastageId: selectedOption.value });
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (bomId) {
         const response = await dispatch(viewSingleBom(bomId));
-        const { bomNo, date, weight, bomProduct, qty, unit, shift, endTime, startTime } = response;
+        const { bomNo, date, weight, bomProduct, qty, unit, shift, endTime, startTime, wastageQty, bomWastage } = response;
         setProductname(bomProduct.productname);
         setstartTime(startTime);
         setendTime(endTime);
-        setFormData({ date, bomNo, weight, qty, productId: bomProduct.id, unit, shift });
+        setWastagename(bomWastage.name);
+        setFormData({ wastageId: bomWastage.id, date, bomNo, weight, qty, productId: bomProduct.id, unit, shift, wastageQty });
         const updatedRows = response.bomItems.map((item) => ({
           id: item.id,
           productId: item.bomItemsProduct.id,
@@ -268,6 +304,18 @@ const Addbillofmaterial = () => {
     } catch (error) {
       console.error('Error creating or updating invoice:', error);
     }
+  };
+
+  const handleNewgroupadded = (newWastage) => {
+    const updatedwastagelist = [
+      ...wastageOptions,
+      {
+        value: newWastage.id,
+        label: newWastage.name
+      }
+    ];
+    setWastageOptions(updatedwastagelist);
+    setWastageDrawerOpen(false);
   };
 
   return (
@@ -372,6 +420,34 @@ const Addbillofmaterial = () => {
                 setendTime(e.target.value);
                 setFormData({ ...formData, endTime: e.target.value });
               }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Wastage :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <Select
+              id="itemgroup"
+              options={wastageOptions}
+              value={{ value: formData.wastageId, label: wastagename }}
+              onChange={(selectedOption) => handlewastageChange(selectedOption)}
+              styles={{
+                container: (base) => ({
+                  ...base,
+                  width: '80%'
+                })
+              }}
+            />
+            <Wastage anchor="Right" onnewadded={handleNewgroupadded} open={wastageDrawerOpen} onClose={() => setWastageDrawerOpen(false)} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">
+              Wastage QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+            </Typography>
+            <input
+              placeholder="QTY"
+              value={formData.wastageQty}
+              onChange={(e) => setFormData({ ...formData, wastageQty: e.target.value })}
             />
           </Grid>
         </Grid>

@@ -388,15 +388,21 @@ const MainRoutes = {
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note cash +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/creditnotecash', element: <Creditnotecash /> },
-    { path: '/creditnotecashupdate/:id', element: <Creditnotecash /> },
+    {
+      path: '/creditnotecash',
+      element: <ProtectedRoute element={Creditnotecash} resource="Credit Note Cash" permissionName="create_creditNote" />
+    },
+    {
+      path: '/creditnotecashupdate/:id',
+      element: <ProtectedRoute element={Creditnotecash} resource="Credit Note Cash" permissionName="update_creditNote" />
+    },
     {
       path: '/creditnotecashlist',
-      element: <Creditnotecashlist />
+      element: <ProtectedRoute element={Creditnotecashlist} resource="Credit Note Cash" permissionName="view_all_creditNote" />
     },
     {
       path: '/creditnotecashview/:id',
-      element: <CreditnotecashView />
+      element: <ProtectedRoute element={CreditnotecashView} resource="Credit Note Cash" permissionName="view_single_creditNote" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase invoice +++++++++++++++++++++++++++++++++++++++++++++++++++

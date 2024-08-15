@@ -119,6 +119,14 @@ const MenuItem = () => {
     'delete_debitNote'
   ]);
 
+  const hasAllPermissionsCreditnotecash = checkAllPermissions('Credit Note Cash', [
+    'view_single_creditNote',
+    'update_creditNote',
+    'create_creditNote',
+    'view_all_creditNote',
+    'delete_creditNote'
+  ]);
+
   const hasAllpermissionsalesinvoice = checkAllPermissions('Sales Invoice', [
     'create_salesinvoice',
     'update_salesInvoice',
@@ -380,7 +388,7 @@ const MenuItem = () => {
                         type: 'item',
                         url: '/debitnotecashlist'
                       },
-                      {
+                      hasAllPermissionsCreditnotecash && {
                         id: 'Credit note cash',
                         title: 'Credit Note Cash',
                         type: 'item',

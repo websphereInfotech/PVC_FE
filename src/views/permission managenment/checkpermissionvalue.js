@@ -386,6 +386,24 @@ const useCan = () => {
     return checkPermission('Credit Note', 'view_all_creditNote');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE CASH
+
+  const canCreateCreditnotecash = () => {
+    return checkPermission('Credit Note Cash', 'create_creditNote');
+  };
+  const canUpdateCreditnotecash = () => {
+    return checkPermission('Credit Note Cash', 'update_creditNote');
+  };
+  const canDeleteCreditnotecash = () => {
+    return checkPermission('Credit Note Cash', 'delete_creditNote');
+  };
+  const canViewCreditnotecash = () => {
+    return checkPermission('Credit Note Cash', 'view_single_creditNote');
+  };
+  const canViwAllCreditnotecash = () => {
+    return checkPermission('Credit Note Cash', 'view_all_creditNote');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALES CASH
 
   const canCreateSalescash = () => {
@@ -758,6 +776,18 @@ const useCan = () => {
     return checkPermission('Item Group', 'view_all_itemGroup');
   };
 
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Group ++++++++++++++++++++++++
+
+  const canseewastage = () => {
+    return checkPermission('Wastage', 'create_wastage');
+  };
+  const canseeviewwastage = () => {
+    return checkPermission('Wastage', 'view_single_wastage');
+  };
+  const canseeviewAllwastage = () => {
+    return checkPermission('Wastage', 'view_all_wastage');
+  };
+
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Category ++++++++++++++++++++++++
 
   const canseeitemcategory = () => {
@@ -925,6 +955,12 @@ const useCan = () => {
     canDeleteCreditnote,
     canViewCreditnote,
     canViwAllCreditnote,
+    //  CREDIT NOTE CASH ++++++++++++++++++
+    canCreateCreditnotecash,
+    canUpdateCreditnotecash,
+    canDeleteCreditnotecash,
+    canViewCreditnotecash,
+    canViwAllCreditnotecash,
     // SALES CASH ++++++++++++++++++++
     canCreateSalescash,
     canUpdateSalescash,
@@ -1052,6 +1088,10 @@ const useCan = () => {
     canSeeTotalSales,
     canSeeTotalPurchase,
     canSeeCompanyCashbalance,
+    // WAASTAGE ++++++++++++
+    canseewastage,
+    canseeviewwastage,
+    canseeviewAllwastage,
     // ITEM GROUP ++++++++++++
     canseeitemgroup,
     canseeviewitemgroup,

@@ -8,12 +8,12 @@ import AnchorProductDrawer from '../../../component/productadd';
 import { useMediaQuery } from '@mui/material';
 import {
   fetchAllProductsCash,
-  getallDebitnote,
   updateDebitnotecash,
   createDebitnotecash,
   Debitnotecashviewdata,
   getallPurchaseInvoiceCash,
-  fetchAllAccountCash
+  fetchAllAccountCash,
+  getallDebitnotecash
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -271,7 +271,7 @@ const Debitnotecash = () => {
     const generateAutoDebitnoteNumber = async () => {
       if (!id) {
         try {
-          const DebitnoteResponse = await dispatch(getallDebitnote());
+          const DebitnoteResponse = await dispatch(getallDebitnotecash());
           let nextDebitnoteNumber = 1;
           if (DebitnoteResponse.length === 0) {
             const DebitnoteNumber = nextDebitnoteNumber;
@@ -310,8 +310,7 @@ const Debitnotecash = () => {
       ...prevAccounts,
       {
         value: newAccountData?.data.data.id,
-        label: newAccountData?.data.data.accountName,
-        state: newAccountData?.data.data.accountDetail?.state
+        label: newAccountData?.data.data.accountName
       }
     ]);
     setIsDrawerOpen(false);
