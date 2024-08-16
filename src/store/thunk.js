@@ -3504,12 +3504,12 @@ export const getAllBom = () => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Product STOKE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const getAllStoke = (id) => {
+export const getAllStoke = (params = {}) => {
   return async (dispatch) => {
     dispatch(getAllStokeRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_all_item_stock/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/stock/view_all_item_stock`, { ...config, params: params });
       const data = response.data.data;
       dispatch(getAllStokeSuccess(data));
       return data;

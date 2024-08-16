@@ -30,7 +30,7 @@ const columns = [
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
-const Product = (GroupId) => {
+const Product = (GroupId, CategoryId, Query) => {
   const { canUpdateStoke, canViewStoke } = useCan();
   const [stoke, setStoke] = useState([]);
   const [page, setPage] = useState(0);
@@ -68,7 +68,12 @@ const Product = (GroupId) => {
         qty: selectedRow.qty
       };
       await dispatch(updateStoke(selectedRow.id, paylod, navigate));
-      const updatedData = await dispatch(getAllStoke(GroupId.GroupId));
+      const query = {
+        groupId: GroupId.GroupId,
+        categoryId: GroupId.CategoryId,
+        search: GroupId.Query
+      };
+      const updatedData = await dispatch(getAllStoke(query));
       setStoke(updatedData);
       handleCloseDialog();
     } catch (error) {
@@ -90,7 +95,12 @@ const Product = (GroupId) => {
   useEffect(() => {
     const fetchStoke = async () => {
       try {
-        const data = await dispatch(getAllStoke(GroupId.GroupId));
+        const query = {
+          groupId: GroupId.GroupId,
+          categoryId: GroupId.CategoryId,
+          search: GroupId.Query
+        };
+        const data = await dispatch(getAllStoke(query));
         setStoke(data);
       } catch (error) {
         if (error.response.status === 401) {
@@ -100,7 +110,7 @@ const Product = (GroupId) => {
       }
     };
     fetchStoke();
-  }, [dispatch, navigate, GroupId]);
+  }, [dispatch, navigate, GroupId, CategoryId, Query]);
 
   return (
     <Card style={{ width: 'auto', padding: '20px' }}>
