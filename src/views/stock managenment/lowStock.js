@@ -118,7 +118,8 @@ const LowStock = () => {
                   styles={{ container: (provided) => ({ ...provided, width: 200 }) }}
                   options={product}
                   onChange={handleSelectChange}
-                  value={{ value: groupId, label: groupname }}
+                  value={groupId ? { value: groupId, label: groupname } : null}
+                  placeholder="Item Group"
                 />
               </div>
             </Grid>
@@ -128,7 +129,8 @@ const LowStock = () => {
                   styles={{ container: (provided) => ({ ...provided, width: 200 }) }}
                   options={category}
                   onChange={handleSelectcategoryChange}
-                  value={{ value: categoryId, label: categoryname }}
+                  value={categoryId ? { value: categoryId, label: categoryname } : null}
+                  placeholder="Item Category"
                 />
               </div>
             </Grid>
