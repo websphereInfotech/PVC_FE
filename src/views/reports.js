@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { Link } from 'react-router-dom';
+import Ledgeraccountreport from 'component/reports/financial report/ledgerreport';
 
 const Reports = () => {
+  const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+
+  const handleOpenLedgerDialog = () => {
+    setOpenLedgerDialog(true);
+  };
+
+  const handleCloseLedgerDialog = () => {
+    setOpenLedgerDialog(false);
+  };
   return (
     <div>
       <Card variant="outlined" style={{ padding: '30px' }}>
@@ -80,9 +90,15 @@ const Reports = () => {
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Profit and Lost Report
                 </Typography>
-                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                <Typography
+                  variant="body1"
+                  sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
+                  onClick={handleOpenLedgerDialog}
+                  style={{ cursor: 'pointer' }}
+                >
                   Ledger Report
                 </Typography>
+                {openLedgerDialog && <Ledgeraccountreport Open={handleOpenLedgerDialog} onClose={handleCloseLedgerDialog} />}
                 <Typography variant="body1" sx={{ marginTop: '2px' }}>
                   Daybook Reports
                 </Typography>

@@ -673,7 +673,11 @@ import {
   DeleteAccountFailure,
   fetchAllAccountcashRequest,
   fetchAllAccountcashSuccess,
-  fetchAllAccountcashFailure
+  fetchAllAccountcashFailure,
+  // LEdger+++++++++++
+  getAllAccountLedgerRequest,
+  getAllAccountLedgerSuccess,
+  getAllAccountLedgerFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -4898,6 +4902,26 @@ export const fetchAllAccountCash = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllAccountcashFailure(error.message));
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT LEDGER +++++++++++++++++++++++++++++++++++++
+export const getallAccountledger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllAccountLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/account_ledger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getallAccountledgerlist = response.data.data;
+      dispatch(getAllAccountLedgerSuccess(getallAccountledgerlist));
+      return getallAccountledgerlist;
+    } catch (error) {
+      dispatch(getAllAccountLedgerFailure(error.message));
+      throw error;
     }
   };
 };

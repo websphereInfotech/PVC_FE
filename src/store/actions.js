@@ -726,6 +726,10 @@ export const GET_ALL_ACCOUNTS_FAILURE = 'GET_ALL_ACCOUNTS_FAILURE';
 export const GET_ALL_ACCOUNTS_CASH_REQUEST = 'GET_ALL_ACCOUNTS_CASH_REQUEST';
 export const GET_ALL_ACCOUNTS_CASH_SUCCESS = 'GET_ALL_ACCOUNTS_CASH_SUCCESS';
 export const GET_ALL_ACCOUNTS_CASH_FAILURE = 'GET_ALL_ACCOUNTS_CASH_FAILURE';
+// ++++++++++++++++++++ LEDGER +++++++++++++++++++++++++++
+export const GET_ALL_ACCOUNT_LEDGER_REQUEST = 'GET_ALL_ACCOUNT_LEDGER_REQUEST';
+export const GET_ALL_ACCOUNT_LEDGER_SUCCESS = 'GET_ALL_ACCOUNT_LEDGER_SUCCESS';
+export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -3222,5 +3226,18 @@ export const fetchAllAccountcashSuccess = (data) => ({
 });
 export const fetchAllAccountcashFailure = (error) => ({
   type: 'GET_ALL_ACCOUNTS_CASH_FAILURE',
+  payload: error
+});
+//  ####################################################################### CUSTOMER LEDGER #####################################################
+export const getAllAccountLedgerRequest = (data) => ({
+  type: 'GET_ALL_ACCOUNT_LEDGER_REQUEST',
+  payload: data
+});
+export const getAllAccountLedgerSuccess = (data) => ({
+  type: 'GET_ALL_ACCOUNT_LEDGER_SUCCESS',
+  payload: data
+});
+export const getAllAccountLedgerFailure = (error) => ({
+  type: 'GET_ALL_ACCOUNT_LEDGER_FAILURE',
   payload: error
 });
