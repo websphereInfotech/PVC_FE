@@ -111,7 +111,7 @@ const LowStock = () => {
               Product
             </Typography>
           </Grid>
-          <div style={{ display: 'flex', paddingLeft:'20px' }}>
+          <div style={{ display: 'flex', paddingLeft: '20px' }}>
             <Grid item xs={12} sx={{ marginLeft: '10px' }}>
               <div style={{ display: 'flex', justifyContent: 'start', width: '98%' }}>
                 <Select
