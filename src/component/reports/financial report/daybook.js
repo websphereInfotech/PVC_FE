@@ -9,7 +9,7 @@ import { fetchAllAccounts, getallAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import { useTheme } from '@emotion/react';
 
-const Ledgeraccountreport = ({ Open, onClose }) => {
+const Daybookreport = ({ Open, onClose }) => {
   Ledgeraccountreport.propTypes = {
     Open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
@@ -17,9 +17,6 @@ const Ledgeraccountreport = ({ Open, onClose }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   // const [openDrawer, setOpenDrawer] = useState(false);
-  const [AccountId, setAccountId] = useState(null);
-  const [Account, setAccount] = useState([]);
-  const [Accountname, setAccountname] = useState('');
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
   const dispatch = useDispatch();
@@ -32,14 +29,6 @@ const Ledgeraccountreport = ({ Open, onClose }) => {
   //   const handleLedgerClick = () => {
   //     setOpenDrawer(true);
   //   };
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      setAccountId(selectedOption.value);
-      setAccountname(selectedOption.label);
-      //   setAccount('');
-    }
-  };
 
   const handleformDateChange = (date) => {
     const year = date.getFullYear();
@@ -57,35 +46,13 @@ const Ledgeraccountreport = ({ Open, onClose }) => {
     setToDate(formattedDate);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchAllAccounts());
-
-        if (Array.isArray(response)) {
-          const options = response.map((account) => ({
-            value: account.id,
-            label: account.accountName
-          }));
-          setAccount(options);
-        }
-      } catch (error) {
-        console.error('Error fetching ledger:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleLedger = (AccountId, formDate, toDate) => {
-    dispatch(getallAccountledger(AccountId, formDate, toDate));
+  const handleLedger = (formDate, toDate) => {
+    dispatch(getallAccountledger(formDate, toDate));
     navigate('/accountledger');
-    setAccountId(AccountId);
-    sessionStorage.setItem('RAccountId', AccountId);
     setFormDate(formDate);
-    sessionStorage.setItem('RAccountformDate', formDate);
+    sessionStorage.setItem('RDaybookformDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('RAccounttoDate', toDate);
+    sessionStorage.setItem('RDaybooktoDate', toDate);
   };
 
   return (
@@ -107,31 +74,6 @@ const Ledgeraccountreport = ({ Open, onClose }) => {
         </div>
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '20px' }}>
-              <Typography variant="subtitle1">Account :</Typography>
-              <Select
-                options={Account}
-                value={{ value: AccountId, label: Accountname }}
-                onChange={handleSelectChange}
-                menuPortalTarget={document.body}
-                styles={{
-                  menu: (provided) => ({
-                    ...provided,
-                    zIndex: 9999,
-                    maxHeight: '300px',
-                    overflowY: 'scroll'
-                  }),
-                  container: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  }),
-                  menuPortal: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  })
-                }}
-              />
-            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">From Date:</Typography>
               <DatePicker
@@ -168,4 +110,4 @@ const Ledgeraccountreport = ({ Open, onClose }) => {
   );
 };
 
-export default Ledgeraccountreport;
+export default Daybookreport;

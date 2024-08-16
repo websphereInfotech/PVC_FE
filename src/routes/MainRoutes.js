@@ -21,6 +21,7 @@ import CreditnotecashView from 'views/sale managenment/Credit note cash/creditno
 import ItemgropuList from 'views/production managenment/Item Group/itemgrouplist';
 import ItemcategoryList from 'views/production managenment/Item Category/itemcategorylist';
 import Accountledgerlist from 'component/reports/financial report/accountledgerlist';
+import Daybookledgerlist from 'component/reports/financial report/daybookledgerlist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -636,6 +637,7 @@ const MainRoutes = {
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/reports', element: <Reports /> },
     { path: '/accountledger', element: <Accountledgerlist /> },
+    { path: '/daybookledger', element: <Daybookledgerlist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesummary', element: <Salesummary /> },
