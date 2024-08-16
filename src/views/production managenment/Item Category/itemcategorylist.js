@@ -17,10 +17,8 @@ import {
   IconButton
 } from '@mui/material';
 
-// import AnchorProductDrawer from 'component/productadd';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch } from 'react-redux';
-import { DeleteProduct, fetchAllItemcategory, fetchAllProducts, viewProduct } from 'store/thunk';
+import { DeleteItemcategory, getAllcategory, ItemCategoryview } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
@@ -31,9 +29,7 @@ import Itemcategory from 'component/itemcategory';
 
 const columns = [
   { id: 'name', label: 'Item Category Name', align: 'center' },
-  //   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
-  //   { id: 'gstrate', label: 'GST Rate', align: 'center' },
-  //   { id: 'salesprice', label: 'Sales Price', align: 'center' },
+  { id: 'group', label: 'Item Group Name', align: 'center' },
   { id: 'createdby', label: 'Created By', align: 'center' },
   { id: 'updatedby', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
@@ -84,21 +80,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 const ItemcategoryList = () => {
-  const { canUpdateItem, canDeleteItem, canViewItem, canCreateItem } = useCan();
+  const { canseeUpdateitemcategory, canseeDeleteitemcategory, canseeitemcategory } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [products, setProduct] = useState([]);
+  const [Itemcategoty, setItemcategoty] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  //   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedItemcategoty, setselectedItemcategoty] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAllItemcategory())
+    dispatch(getAllcategory())
       .then((data) => {
-        setProduct(data);
+        setItemcategoty(data);
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -113,16 +109,10 @@ const ItemcategoryList = () => {
     setSelectedId(id);
   };
 
-  const handleProductview = (id) => {
-    dispatch(viewProduct(id));
-    navigate(`/productview/${id}`);
-  };
-
   const handleUpdateProduct = (id) => {
-    // console.log("enter");
     setIsDrawerOpen(true);
-    // setSelectedProduct(id);
-    dispatch(viewProduct(id));
+    setselectedItemcategoty(id);
+    dispatch(ItemCategoryview(id));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -134,50 +124,50 @@ const ItemcategoryList = () => {
     setPage(0);
   };
 
-  const handleAddProduct = () => {
-    // setSelectedProduct(null);
+  const handleAddItemCategory = () => {
+    setselectedItemcategoty(null);
     setIsDrawerOpen(true);
   };
 
-  //   const handleProductUpdated = () => {
-  //     dispatch(fetchAllProducts())
-  //       .then((data) => {
-  //         setProduct(data);
-  //         setIsDrawerOpen(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error fetching updated product data:', error);
-  //       });
-  //   };
+  const handleItemCategoryUpdated = () => {
+    dispatch(getAllcategory())
+      .then((data) => {
+        setItemcategoty(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
+  };
 
-  //   const handleNewProductAdded = () => {
-  //     dispatch(fetchAllProducts())
-  //       .then((data) => {
-  //         setProduct(data);
-  //         setIsDrawerOpen(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error fetching updated product data:', error);
-  //       });
-  //   };
+  const handleItemCategoryAdded = () => {
+    dispatch(getAllcategory())
+      .then((data) => {
+        setItemcategoty(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated product data:', error);
+      });
+  };
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteProduct(selectedId));
+      await dispatch(DeleteItemcategory(selectedId));
       setOpenConfirmation(false);
-      setProduct((prevProduct) => prevProduct.filter((product) => product.id !== selectedId));
+      setItemcategoty((prevcategory) => prevcategory.filter((category) => category.id !== selectedId));
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Error deleting category:', error);
     }
   };
 
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
-      const response = await dispatch(fetchAllProducts({ search: query }));
-      setProduct(response);
+      const response = await dispatch(getAllcategory({ search: query }));
+      setItemcategoty(response);
     } catch (error) {
-      console.error('Error Searching Product:', error);
+      console.error('Error Searching category:', error);
     }
   };
 
@@ -187,7 +177,13 @@ const ItemcategoryList = () => {
         Item Category List
       </Typography>
       <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateItem()}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddItemCategory}
+          disabled={!canseeitemcategory()}
+        >
           Create Item Category
         </Button>
         <Search>
@@ -209,7 +205,7 @@ const ItemcategoryList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
+            {Itemcategoty?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
               <TableRow key={product.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -218,53 +214,40 @@ const ItemcategoryList = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewItem() ? 'Blue' : 'gray',
-                            color: canViewItem() ? 'white' : 'white',
+                            backgroundColor: canseeUpdateitemcategory() ? 'green' : 'gray',
+                            color: canseeUpdateitemcategory() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewItem() && { opacity: 1 }),
-                            ...(!canViewItem() && { opacity: 0.5 }),
-                            ...(!canViewItem() && { backgroundColor: 'gray' })
-                          }}
-                          onClick={() => handleProductview(product.id)}
-                          disabled={!canViewItem()}
-                        >
-                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
-                        </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{
-                            backgroundColor: canUpdateItem() ? 'green' : 'gray',
-                            color: canUpdateItem() ? 'white' : 'white',
-                            borderRadius: 0.8,
-                            ...(canUpdateItem() && { opacity: 1 }),
-                            ...(!canUpdateItem() && { opacity: 0.5 }),
-                            ...(!canUpdateItem() && { backgroundColor: 'gray' })
+                            ...(canseeUpdateitemcategory() && { opacity: 1 }),
+                            ...(!canseeUpdateitemcategory() && { opacity: 0.5 }),
+                            ...(!canseeUpdateitemcategory() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateProduct(product.id)}
-                          disabled={!canUpdateItem()}
+                          disabled={!canseeUpdateitemcategory()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteItem() ? 'Red' : 'gray',
-                            color: canDeleteItem() ? 'white' : 'white',
+                            backgroundColor: canseeDeleteitemcategory() ? 'Red' : 'gray',
+                            color: canseeDeleteitemcategory() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteItem() && { opacity: 1 }),
-                            ...(!canDeleteItem() && { opacity: 0.5 }),
-                            ...(!canDeleteItem() && { backgroundColor: 'gray' })
+                            ...(canseeDeleteitemcategory() && { opacity: 1 }),
+                            ...(!canseeDeleteitemcategory() && { opacity: 0.5 }),
+                            ...(!canseeDeleteitemcategory() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(product.id)}
-                          disabled={!canDeleteItem()}
+                          disabled={!canseeDeleteitemcategory()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
+                    ) : column.id === 'group' ? (
+                      product.ItemGroup?.name
                     ) : column.id === 'createdby' ? (
-                      product.groupCreateUser?.username
+                      product.categoryCreateUser?.username
                     ) : column.id === 'updatedby' ? (
-                      product.groupUpdateUser?.username
+                      product.categoryUpdateUser?.username
                     ) : (
                       product[column.id]
                     )}
@@ -278,7 +261,7 @@ const ItemcategoryList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={products?.length || 0}
+        count={Itemcategoty?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -296,7 +279,13 @@ const ItemcategoryList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Itemcategory open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <Itemcategory
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        id={selectedItemcategoty}
+        onnewCategoryadded={handleItemCategoryAdded}
+        onnewCategoryupdated={handleItemCategoryUpdated}
+      />
     </Card>
   );
 };

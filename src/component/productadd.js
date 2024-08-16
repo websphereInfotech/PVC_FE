@@ -23,7 +23,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canseeitemgroup, canseeitemcategory } = useCan();
+  const { canCreateItemgroup, canseeitemcategory } = useCan();
   const [loading, setLoading] = React.useState(false);
   const [itemtype, setItemType] = React.useState('Product');
   const [openingstock, setOpeningStock] = React.useState(true);
@@ -55,9 +55,9 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   });
 
   React.useEffect(() => {
-    setCanCreategroupvalue(canseeitemgroup());
+    setCanCreategroupvalue(canCreateItemgroup());
     setCanCreatecategoryvalue(canseeitemcategory());
-  }, [canseeitemgroup, canseeitemcategory]);
+  }, [canCreateItemgroup, canseeitemcategory]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;

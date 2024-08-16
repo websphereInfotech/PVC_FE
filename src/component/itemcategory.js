@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import { Grid, Typography, Card } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import { createItemcategory, fetchAllItemGroup } from 'store/thunk';
+import { createItemcategory, fetchAllItemGroup, ItemCategoryview, updateItemcategory } from 'store/thunk';
 
-const Itemcategory = ({ open, onClose, onnewCategoryadded, ItemGroupOptions }) => {
+const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewCategoryupdated, id, ItemGroupOptions }) => {
   const [itemGroupOptions, setItemGroupOptions] = React.useState([]);
   const [selectedItemGroup, setSelectedItemGroup] = React.useState(null);
   const [categoryName, setCategoryName] = React.useState('');
@@ -33,16 +33,42 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, ItemGroupOptions }) =
     fetchItemGroups();
   }, [fetchItemGroups, dispatch]);
 
-  const handleSave = async () => {
-    const payload = {
-      itemGroupId: selectedItemGroup.value,
-      name: categoryName
+  React.useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(ItemCategoryview(id));
+          setCategoryName(response.name);
+          setSelectedItemGroup({ value: response.ItemGroup.id, label: response.ItemGroup.name });
+        } else {
+          setSelectedItemGroup('');
+          setCategoryName('');
+        }
+      } catch (error) {
+        console.error('Error view item group', error);
+      }
     };
-    const response = await dispatch(createItemcategory(payload));
-    onnewCategoryadded(response.data.data);
-    onClose();
-    setSelectedItemGroup('');
-    setCategoryName('');
+    fetchdata();
+  }, [id, dispatch]);
+
+  const handleSave = async () => {
+    try {
+      const payload = {
+        itemGroupId: selectedItemGroup.value,
+        name: categoryName
+      };
+      if (id) {
+        const response = await dispatch(updateItemcategory(id, payload));
+        onnewCategoryupdated(response.data.data);
+      } else {
+        const response = await dispatch(createItemcategory(payload));
+        onnewCategoryadded(response.data.data);
+        setSelectedItemGroup('');
+        setCategoryName('');
+      }
+    } catch (error) {
+      console.error('fetch all item category', error);
+    }
   };
 
   Itemcategory.propTypes = {
@@ -50,7 +76,9 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, ItemGroupOptions }) =
     onClose: PropTypes.func.isRequired,
     onnewCategoryadded: PropTypes.func.isRequired,
     onnewgroupadded: PropTypes.func.isRequired,
-    ItemGroupOptions: PropTypes.array.isRequired
+    onnewCategoryupdated: PropTypes.func.isRequired,
+    ItemGroupOptions: PropTypes.array.isRequired,
+    id: PropTypes.string
   };
 
   const list = (

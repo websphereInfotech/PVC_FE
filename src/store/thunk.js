@@ -617,12 +617,12 @@ import {
   ViewItemGroupRequest,
   ViewItemGroupSuccess,
   ViewItemGroupFailure,
-  // UpdateItemGroupRequest,
-  //UpdateItemGroupSuccess,
-  //UpdateItemGroupFailure,
-  // DeleteItemGroupRequest,
-  // DeleteItemGroupSuccess,
-  // DeleteItemGroupFailure,
+  UpdateItemGroupRequest,
+  UpdateItemGroupSuccess,
+  UpdateItemGroupFailure,
+  DeleteItemGroupRequest,
+  DeleteItemGroupSuccess,
+  DeleteItemGroupFailure,
   // WASTAGE ++++++++++++
   CreateWastageRequest,
   CreateWastageSuccess,
@@ -643,6 +643,15 @@ import {
   ViewItemCategoryRequest,
   ViewItemCategorySuccess,
   ViewItemCategoryFailure,
+  UpdateItemCategoryRequest,
+  UpdateItemCategorySuccess,
+  UpdateItemCategoryFailure,
+  DeleteItemCategoryRequest,
+  DeleteItemCategorySuccess,
+  DeleteItemCategoryFailure,
+  getAllItemCategoryRequest,
+  getAllItemCategorySuccess,
+  getAllItemCategoryFailure,
   // LEDGER OPTIONS +++++++++++++
   fetchAllAccountOptionsRequest,
   fetchAllAccountOptionsSuccess,
@@ -4529,12 +4538,12 @@ export const createItemgroup = (data) => {
     }
   };
 };
-export const fetchAllItemGroup = () => {
+export const fetchAllItemGroup = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllItemGroupRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemGroup/get_all_itemgroup`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemGroup/get_all_itemgroup`, { ...config, params: params });
       const data = response.data.data;
       dispatch(fetchAllItemGroupSuccess(data));
       return data;
@@ -4555,6 +4564,47 @@ export const ItemGroupview = (id) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(ViewItemGroupFailure(error.message));
+    }
+  };
+};
+export const updateItemgroup = (id, data, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateItemGroupRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/itemGroup/update_itemGroup/${id}`, data, config);
+      const upadteItemGroupData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(UpdateItemGroupSuccess(upadteItemGroupData));
+      return upadteItemGroupData;
+    } catch (error) {
+      dispatch(UpdateItemGroupFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const DeleteItemgroup = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteItemGroupRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/itemGroup/delete_itemGroup/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteItemGroupSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(DeleteItemGroupFailure(error.message));
     }
   };
 };
@@ -4611,7 +4661,6 @@ export const Wastageview = (id) => {
     }
   };
 };
-
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM CATEGORY +++++++++++++++++++++++++++++++++++++++++++++
 export const createItemcategory = (data) => {
   return async (dispatch) => {
@@ -4661,6 +4710,64 @@ export const ItemCategoryview = (id) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(ViewItemCategoryFailure(error.message));
+    }
+  };
+};
+export const updateItemcategory = (id, data, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateItemCategoryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/itemCategory/update_itemCategory/${id}`, data, config);
+      const upadteItemCategoryData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(UpdateItemCategorySuccess(upadteItemCategoryData));
+      return upadteItemCategoryData;
+    } catch (error) {
+      dispatch(UpdateItemCategoryFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const DeleteItemcategory = (id) => {
+  return async (dispatch) => {
+    dispatch(DeleteItemCategoryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/itemCategory/delete_itemCategory/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteItemCategorySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(DeleteItemCategoryFailure(error.message));
+    }
+  };
+};
+export const getAllcategory = (params = {}) => {
+  return async (dispatch) => {
+    dispatch(getAllItemCategoryRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/itemCategory/view_all_itemCategory`, {
+        ...config,
+        params: params
+      });
+      const data = response.data.data;
+      dispatch(getAllItemCategorySuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(getAllItemCategoryFailure(error.message));
     }
   };
 };

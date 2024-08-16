@@ -212,6 +212,19 @@ const Addbillofmaterial = () => {
     { value: 'Night', label: 'Night' }
   ];
   const handleshiftChange = (selectedOption) => {
+    let startTime = '';
+    let endTime = '';
+
+    if (selectedOption.value === 'Day') {
+      startTime = '08:00';
+      endTime = '20:00';
+    } else if (selectedOption.value === 'Night') {
+      startTime = '20:00';
+      endTime = '08:00';
+    }
+
+    setstartTime(startTime);
+    setendTime(endTime);
     setFormData({ ...formData, shift: selectedOption.value });
   };
 

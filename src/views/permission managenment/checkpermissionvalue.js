@@ -251,10 +251,10 @@ const useCan = () => {
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP
   const canCreateItemgroup = () => {
-    return checkPermission('Item Group', 'create_itemgroup');
+    return checkPermission('Item Group', 'create_itemGroup');
   };
   const canUpdateItemgroup = () => {
-    return checkPermission('Item Group', 'update_itemgroup');
+    return checkPermission('Item Group', 'update_itemGroup');
   };
   const canViewItemgroup = () => {
     return checkPermission('Item Group', 'view_single_itemgroup');
@@ -262,7 +262,9 @@ const useCan = () => {
   const canViewAllItemgroup = () => {
     return checkPermission('Item Group', 'view_all_itemgroup');
   };
-
+  const canDeleteItemgroup = () => {
+    return checkPermission('Item Group', 'delete_itemGroup');
+  };
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL
   const canCreatePurchaseinvoice = () => {
     return checkPermission('Purchase Invoice', 'create_purchase_Invoice');
@@ -766,18 +768,6 @@ const useCan = () => {
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Group ++++++++++++++++++++++++
 
-  const canseeitemgroup = () => {
-    return checkPermission('Item Group', 'create_itemGroup');
-  };
-  const canseeviewitemgroup = () => {
-    return checkPermission('Item Group', 'view_single_itemGroup');
-  };
-  const canseeviewAllitemgroup = () => {
-    return checkPermission('Item Group', 'view_all_itemGroup');
-  };
-
-  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Group ++++++++++++++++++++++++
-
   const canseewastage = () => {
     return checkPermission('Wastage', 'create_wastage');
   };
@@ -798,6 +788,15 @@ const useCan = () => {
   };
   const canseeviewAllitemcategory = () => {
     return checkPermission('Item Category', 'view_all_itemCategory_group');
+  };
+  const canseeDeleteitemcategory = () => {
+    return checkPermission('Item Category', 'delete_itemCategory');
+  };
+  const canseeGetallitemcategory = () => {
+    return checkPermission('Item Category', 'view_all_itemCategory');
+  };
+  const canseeUpdateitemcategory = () => {
+    return checkPermission('Item Category', 'update_itemCategory');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Accounts +++++++++++++++++++++++++++++++++
@@ -912,6 +911,7 @@ const useCan = () => {
     canUpdateItemgroup,
     canViewItemgroup,
     canViewAllItemgroup,
+    canDeleteItemgroup,
     // PURCHSE BILL +++++++++++++++++++
     canCreatePurchaseinvoice,
     canUpdatePurchaseinvoice,
@@ -1092,14 +1092,13 @@ const useCan = () => {
     canseewastage,
     canseeviewwastage,
     canseeviewAllwastage,
-    // ITEM GROUP ++++++++++++
-    canseeitemgroup,
-    canseeviewitemgroup,
-    canseeviewAllitemgroup,
     // ITEM CATEGORY ++++++++++
     canseeitemcategory,
     canseeviewitemcategory,
     canseeviewAllitemcategory,
+    canseeUpdateitemcategory,
+    canseeDeleteitemcategory,
+    canseeGetallitemcategory,
     // ACCOUNTS ++++++++++++++
     canseecreateAccount,
     canseeupdateAccount,

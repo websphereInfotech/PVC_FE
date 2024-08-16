@@ -666,6 +666,12 @@ export const VIEW_ITEM_GROUP_FAILURE = 'VIEW_ITEM_GROUP_FAILURE';
 export const GET_ALL_ITEM_GROUP_REQUEST = 'GET_ALL_ITEM_GROUP_REQUEST';
 export const GET_ALL_ITEM_GROUP_SUCCESS = 'GET_ALL_ITEM_GROUP_SUCCESS';
 export const GET_ALL_ITEM_GROUP_FAILURE = 'GET_ALL_ITEM_GROUP_FAILURE';
+export const UPDATE_ITEM_GROUP_REQUEST = 'UPDATE_ITEM_GROUP_REQUEST';
+export const UPDATE_ITEM_GROUP_SUCCESS = 'UPDATE_ITEM_GROUP_SUCCESS';
+export const UPDATE_ITEM_GROUP_FAILURE = 'UPDATE_ITEM_GROUP_FAILURE';
+export const DELETE_ITEM_GROUP_REQUEST = 'DELETE_ITEM_GROUP_REQUEST';
+export const DELETE_ITEM_GROUP_SUCCESS = 'DELETE_ITEM_GROUP_SUCCESS';
+export const DELETE_ITEM_GROUP_FAILURE = 'DELETE_ITEM_GROUP_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++
 export const CREATE_WASTAGE_REQUEST = 'CREATE_WASTAGE_REQUEST';
@@ -688,6 +694,15 @@ export const VIEW_ITEM_CATEGORY_FAILURE = 'VIEW_ITEM_CATEGORY_FAILURE';
 export const GET_ALL_ITEM_CATEGORY_REQUEST = 'GET_ALL_ITEM_CATEGORY_REQUEST';
 export const GET_ALL_ITEM_CATEGORY_SUCCESS = 'GET_ALL_ITEM_CATEGORY_SUCCESS';
 export const GET_ALL_ITEM_CATEGORY_FAILURE = 'GET_ALL_ITEM_CATEGORY_FAILURE';
+export const FETCH_ALL_ITEM_CATEGORY_REQUEST = 'FETCH_ALL_ITEM_CATEGORY_REQUEST';
+export const FETCH_ALL_ITEM_CATEGORY_SUCCESS = 'FETCH_ALL_ITEM_CATEGORY_SUCCESS';
+export const FETCH_ALL_ITEM_CATEGORY_FAILURE = 'FETCH_ALL_ITEM_CATEGORY_FAILURE';
+export const UPDATE_ITEM_CATEGORY_REQUEST = 'UPDATE_ITEM_CATEGORY_REQUEST';
+export const UPDATE_ITEM_CATEGORY_SUCCESS = 'UPDATE_ITEM_CATEGORY_SUCCESS';
+export const UPDATE_ITEM_CATEGORY_FAILURE = 'UPDATE_ITEM_CATEGORY_FAILURE';
+export const DELETE_ITEM_CATEGORY_REQUEST = 'DELETE_ITEM_CATEGORY_REQUEST';
+export const DELETE_ITEM_CATEGORY_SUCCESS = 'DELETE_ITEM_CATEGORY_SUCCESS';
+export const DELETE_ITEM_CATEGORY_FAILURE = 'DELETE_ITEM_CATEGORY_FAILURE';
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNTS +++++++++++++++++++++++
 export const GET_ALL_ACCOUNT_OPTIONS_REQUEST = 'GET_ALL_ACCOUNT_OPTIONS_REQUEST';
@@ -3028,6 +3043,29 @@ export const ViewItemGroupFailure = (error) => ({
   type: 'VIEW_ITEM_GROUP_FAILURE',
   payload: error
 });
+export const UpdateItemGroupRequest = () => ({
+  type: 'UPDATE_ITEM_GROUP_REQUEST'
+});
+export const UpdateItemGroupSuccess = (data) => ({
+  type: 'UPDATE_ITEM_GROUP_SUCCESS',
+  payload: data
+});
+export const UpdateItemGroupFailure = (error) => ({
+  type: 'UPDATE_ITEM_GROUP_FAILURE',
+  payload: error
+});
+
+export const DeleteItemGroupRequest = () => ({
+  type: 'DELETE_ITEM_GROUP_REQUEST'
+});
+export const DeleteItemGroupSuccess = (data) => ({
+  type: 'DELETE_ITEM_GROUP_SUCCESS',
+  payload: data
+});
+export const DeleteItemGroupFailure = (error) => ({
+  type: 'DELETE_ITEM_GROUP_FAILURE',
+  payload: error
+});
 export const fetchAllItemGroupRequest = () => ({
   type: 'GET_ALL_ITEM_GROUP_REQUEST'
 });
@@ -3072,6 +3110,39 @@ export const fetchAllItemCategorySuccess = (data) => ({
 });
 export const fetchAllItemCategoryFailure = (error) => ({
   type: 'GET_ALL_ITEM_CATEGORY_FAILURE',
+  payload: error
+});
+export const getAllItemCategoryRequest = () => ({
+  type: 'FETCH_ALL_ITEM_CATEGORY_REQUEST'
+});
+export const getAllItemCategorySuccess = (data) => ({
+  type: 'FETCH_ALL_ITEM_CATEGORY_SUCCESS',
+  payload: data
+});
+export const getAllItemCategoryFailure = (error) => ({
+  type: 'FETCH_ALL_ITEM_CATEGORY_FAILURE',
+  payload: error
+});
+export const UpdateItemCategoryRequest = () => ({
+  type: 'UPDATE_ITEM_CATEGORY_REQUEST'
+});
+export const UpdateItemCategorySuccess = (data) => ({
+  type: 'UPDATE_ITEM_CATEGORY_SUCCESS',
+  payload: data
+});
+export const UpdateItemCategoryFailure = (error) => ({
+  type: 'UPDATE_ITEM_CATEGORY_FAILURE',
+  payload: error
+});
+export const DeleteItemCategoryRequest = () => ({
+  type: 'DELETE_ITEM_CATEGORY_REQUEST'
+});
+export const DeleteItemCategorySuccess = (data) => ({
+  type: 'DELETE_ITEM_CATEGORY_SUCCESS',
+  payload: data
+});
+export const DeleteItemCategoryFailure = (error) => ({
+  type: 'DELETE_ITEM_CATEGORY_FAILURE',
   payload: error
 });
 

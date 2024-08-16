@@ -17,10 +17,8 @@ import {
   IconButton
 } from '@mui/material';
 
-// import AnchorProductDrawer from 'component/productadd';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch } from 'react-redux';
-import { DeleteProduct, fetchAllItemGroup, fetchAllProducts, viewProduct } from 'store/thunk';
+import { DeleteItemgroup, fetchAllItemGroup, ItemGroupview } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
@@ -31,9 +29,6 @@ import ItemGroup from 'component/itemgruop';
 
 const columns = [
   { id: 'name', label: 'Item Group Name', align: 'center' },
-  //   { id: 'HSNcode', label: 'HSN Code', align: 'center' },
-  //   { id: 'gstrate', label: 'GST Rate', align: 'center' },
-  //   { id: 'salesprice', label: 'Sales Price', align: 'center' },
   { id: 'createdby', label: 'Created By', align: 'center' },
   { id: 'updatedby', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
@@ -84,27 +79,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 const ItemgropuList = () => {
-  const { canUpdateItem, canDeleteItem, canViewItem, canCreateItem } = useCan();
+  const { canUpdateItemgroup, canDeleteItemgroup, canCreateItemgroup } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [products, setProduct] = useState([]);
+  const [Itemgroup, setItemgroup] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  //   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedItemgroup, setSelectedItemgroup] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAllItemGroup())
       .then((data) => {
-        setProduct(data);
+        setItemgroup(data);
       })
       .catch((error) => {
         if (error.response.status === 401) {
           navigate('/');
         }
-        console.error('Error fetching product data:', error);
+        console.error('Error fetching item group data:', error);
       });
   }, [dispatch, navigate]);
 
@@ -113,16 +108,10 @@ const ItemgropuList = () => {
     setSelectedId(id);
   };
 
-  const handleProductview = (id) => {
-    dispatch(viewProduct(id));
-    navigate(`/productview/${id}`);
-  };
-
-  const handleUpdateProduct = (id) => {
-    // console.log("enter");
+  const handleUpdateItemgroup = (id) => {
     setIsDrawerOpen(true);
-    // setSelectedProduct(id);
-    dispatch(viewProduct(id));
+    setSelectedItemgroup(id);
+    dispatch(ItemGroupview(id));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -134,50 +123,50 @@ const ItemgropuList = () => {
     setPage(0);
   };
 
-  const handleAddProduct = () => {
-    // setSelectedProduct(null);
+  const handleAddItemgroup = () => {
+    setSelectedItemgroup(null);
     setIsDrawerOpen(true);
   };
 
-  //   const handleProductUpdated = () => {
-  //     dispatch(fetchAllProducts())
-  //       .then((data) => {
-  //         setProduct(data);
-  //         setIsDrawerOpen(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error fetching updated product data:', error);
-  //       });
-  //   };
+  const handleItemgroupUpdated = () => {
+    dispatch(fetchAllItemGroup())
+      .then((data) => {
+        setItemgroup(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated item group data:', error);
+      });
+  };
 
-  //   const handleNewProductAdded = () => {
-  //     dispatch(fetchAllProducts())
-  //       .then((data) => {
-  //         setProduct(data);
-  //         setIsDrawerOpen(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error fetching updated product data:', error);
-  //       });
-  //   };
+  const handleNewItemgroupAdded = () => {
+    dispatch(fetchAllItemGroup())
+      .then((data) => {
+        setItemgroup(data);
+        setIsDrawerOpen(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching updated item group data:', error);
+      });
+  };
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteProduct(selectedId));
+      await dispatch(DeleteItemgroup(selectedId));
       setOpenConfirmation(false);
-      setProduct((prevProduct) => prevProduct.filter((product) => product.id !== selectedId));
+      setItemgroup((prevgroup) => prevgroup.filter((group) => group.id !== selectedId));
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Error deleting group:', error);
     }
   };
 
   const handleSearch = async (event) => {
     try {
       const query = event.target.value;
-      const response = await dispatch(fetchAllProducts({ search: query }));
-      setProduct(response);
+      const response = await dispatch(fetchAllItemGroup({ search: query }));
+      setItemgroup(response);
     } catch (error) {
-      console.error('Error Searching Product:', error);
+      console.error('Error Searching item group:', error);
     }
   };
 
@@ -187,7 +176,13 @@ const ItemgropuList = () => {
         Item Category List
       </Typography>
       <SearchContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleAddProduct} disabled={!canCreateItem()}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddItemgroup}
+          disabled={!canCreateItemgroup()}
+        >
           Create Item Group
         </Button>
         <Search>
@@ -209,7 +204,7 @@ const ItemgropuList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
+            {Itemgroup?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => (
               <TableRow key={product.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 {columns.map((column) => (
                   <TableCell key={column.id} align={column.align}>
@@ -218,45 +213,30 @@ const ItemgropuList = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canViewItem() ? 'Blue' : 'gray',
-                            color: canViewItem() ? 'white' : 'white',
+                            backgroundColor: canUpdateItemgroup() ? 'green' : 'gray',
+                            color: canUpdateItemgroup() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canViewItem() && { opacity: 1 }),
-                            ...(!canViewItem() && { opacity: 0.5 }),
-                            ...(!canViewItem() && { backgroundColor: 'gray' })
+                            ...(canUpdateItemgroup() && { opacity: 1 }),
+                            ...(!canUpdateItemgroup() && { opacity: 0.5 }),
+                            ...(!canUpdateItemgroup() && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleProductview(product.id)}
-                          disabled={!canViewItem()}
-                        >
-                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
-                        </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{
-                            backgroundColor: canUpdateItem() ? 'green' : 'gray',
-                            color: canUpdateItem() ? 'white' : 'white',
-                            borderRadius: 0.8,
-                            ...(canUpdateItem() && { opacity: 1 }),
-                            ...(!canUpdateItem() && { opacity: 0.5 }),
-                            ...(!canUpdateItem() && { backgroundColor: 'gray' })
-                          }}
-                          onClick={() => handleUpdateProduct(product.id)}
-                          disabled={!canUpdateItem()}
+                          onClick={() => handleUpdateItemgroup(product.id)}
+                          disabled={!canUpdateItemgroup()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteItem() ? 'Red' : 'gray',
-                            color: canDeleteItem() ? 'white' : 'white',
+                            backgroundColor: canDeleteItemgroup() ? 'Red' : 'gray',
+                            color: canDeleteItemgroup() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteItem() && { opacity: 1 }),
-                            ...(!canDeleteItem() && { opacity: 0.5 }),
-                            ...(!canDeleteItem() && { backgroundColor: 'gray' })
+                            ...(canDeleteItemgroup() && { opacity: 1 }),
+                            ...(!canDeleteItemgroup() && { opacity: 0.5 }),
+                            ...(!canDeleteItemgroup() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(product.id)}
-                          disabled={!canDeleteItem()}
+                          disabled={!canDeleteItemgroup()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -278,7 +258,7 @@ const ItemgropuList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={products?.length || 0}
+        count={Itemgroup?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -296,14 +276,13 @@ const ItemgropuList = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <ItemGroup open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-      {/* <AnchorProductDrawer
+      <ItemGroup
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        id={selectedProduct}
-        onNewProductAdded={handleNewProductAdded}
-        onProductUpdated={handleProductUpdated}
-      /> */}
+        id={selectedItemgroup}
+        onnewgroupadded={handleNewItemgroupAdded}
+        onnewgroupUpdated={handleItemgroupUpdated}
+      />
     </Card>
   );
 };

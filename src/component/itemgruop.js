@@ -6,25 +6,51 @@ import PropTypes from 'prop-types';
 import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createItemgroup } from 'store/thunk';
+import { createItemgroup, ItemGroupview, updateItemgroup } from 'store/thunk';
 
-const ItemGroup = ({ open, onClose, onnewgroupadded }) => {
+const ItemGroup = ({ open, onClose, id, onnewgroupadded, onnewgroupUpdated }) => {
   const [itemGroupName, setItemGroupName] = useState('');
   const dispatch = useDispatch();
 
   ItemGroup.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onnewgroupadded: PropTypes.func.isRequired
+    onnewgroupadded: PropTypes.func.isRequired,
+    onnewgroupUpdated: PropTypes.func.isRequired,
+    id: PropTypes.string
   };
 
   const handleSave = async () => {
-    const payload = { name: itemGroupName };
-    const response = await dispatch(createItemgroup(payload));
-    onnewgroupadded(response.data.data);
-    onClose();
-    setItemGroupName('');
+    try {
+      const payload = { name: itemGroupName };
+      if (id) {
+        const response = await dispatch(updateItemgroup(id, payload));
+        onnewgroupUpdated(response.data.data);
+      } else {
+        const response = await dispatch(createItemgroup(payload));
+        onnewgroupadded(response.data.data);
+        setItemGroupName('');
+      }
+    } catch (error) {
+      console.error('Error creating item group', error);
+    }
   };
+
+  React.useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(ItemGroupview(id));
+          setItemGroupName(response.name);
+        } else {
+          setItemGroupName('');
+        }
+      } catch (error) {
+        console.error('Error view item group', error);
+      }
+    };
+    fetchdata();
+  }, [id, dispatch]);
 
   const list = (
     <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden' }} role="presentation">
@@ -61,9 +87,15 @@ const ItemGroup = ({ open, onClose, onnewgroupadded }) => {
           width: { xs: '100%', sm: '420px' }
         }}
       >
-        <Grid item>
-          <Typography variant="h4">New Group</Typography>
-        </Grid>
+        {id ? (
+          <Grid item>
+            <Typography variant="h4">Upadate Group</Typography>
+          </Grid>
+        ) : (
+          <Grid item>
+            <Typography variant="h4">New Group</Typography>
+          </Grid>
+        )}
         <Grid item>
           <CancelIcon onClick={onClose} />
         </Grid>

@@ -391,7 +391,7 @@ const MainRoutes = {
     // +++++++++++++++++++++++++++++++++++++++++ routes of item group ++++++++++++++++++++
     {
       path: '/itemgrouplist',
-      element: <ItemgropuList />
+      element: <ProtectedRoute element={ItemgropuList} resource="Item Group" permissionName="view_all_itemGroup" />
     },
     // +++++++++++++++++++++++++++++++++++++++++ routes of item group ++++++++++++++++++++
     {

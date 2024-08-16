@@ -249,6 +249,23 @@ const MenuItem = () => {
     'view_all_account'
   ]);
 
+  const hasAllPermissionsItemGroup = checkAllPermissions('Item Group', [
+    'create_itemGroup',
+    'update_itemGroup',
+    'delete_itemGroup',
+    'view_single_itemGroup',
+    'view_all_itemGroup'
+  ]);
+
+  const hasAllPermissionsItemCategory = checkAllPermissions('Item Category', [
+    'create_itemCategory',
+    'delete_itemCategory',
+    'view_all_itemCategory',
+    'view_single_itemCategory',
+    'update_itemCategory',
+    'view_all_itemCategory_group'
+  ]);
+
   const hasAllPermissionsBom = checkAllPermissions('Production', [
     'create_production',
     'update_production',
@@ -681,13 +698,13 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/accountlist'
               },
-              {
+              hasAllPermissionsItemGroup && {
                 id: 'Item Group',
                 title: 'Item Group',
                 type: 'item',
                 url: '/itemgrouplist'
               },
-              {
+              hasAllPermissionsItemCategory && {
                 id: 'Item Category',
                 title: 'Item Category',
                 type: 'item',
