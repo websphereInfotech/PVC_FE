@@ -290,29 +290,29 @@ const MenuItem = () => {
     'delete_machine_schedule'
   ]);
 
-  const hasAllPermissionsRegularmaintenance = checkAllPermissions('Regular Maintenance', [
-    'create_regular_maintenance',
-    'view_all_regular_maintenance',
-    'view_one_regular_maintenance',
-    'update_regular_maintenance',
-    'delete_regular_maintenance'
-  ]);
+  // const hasAllPermissionsRegularmaintenance = checkAllPermissions('Regular Maintenance', [
+  //   'create_regular_maintenance',
+  //   'view_all_regular_maintenance',
+  //   'view_one_regular_maintenance',
+  //   'update_regular_maintenance',
+  //   'delete_regular_maintenance'
+  // ]);
 
-  const hasAllPermissionsPreventivemaintenance = checkAllPermissions('Preventive Maintenance', [
-    'create_preventive_maintenance',
-    'view_all_preventive_maintenance',
-    'view_one_preventive_maintenance',
-    'update_preventive_maintenance',
-    'delete_preventive_maintenance'
-  ]);
+  // const hasAllPermissionsPreventivemaintenance = checkAllPermissions('Preventive Maintenance', [
+  //   'create_preventive_maintenance',
+  //   'view_all_preventive_maintenance',
+  //   'view_one_preventive_maintenance',
+  //   'update_preventive_maintenance',
+  //   'delete_preventive_maintenance'
+  // ]);
 
-  const hasAllPermissionsBreackdownmaintenance = checkAllPermissions('Breakdown Maintenance', [
-    'create_breakdown_maintenance',
-    'view_all_breakdown_maintenance',
-    'view_one_breakdown_maintenance',
-    'update_breakdown_maintenance',
-    'delete_breakdown_maintenance'
-  ]);
+  // const hasAllPermissionsBreackdownmaintenance = checkAllPermissions('Breakdown Maintenance', [
+  //   'create_breakdown_maintenance',
+  //   'view_all_breakdown_maintenance',
+  //   'view_one_breakdown_maintenance',
+  //   'update_breakdown_maintenance',
+  //   'delete_breakdown_maintenance'
+  // ]);
 
   return {
     items: [
@@ -655,29 +655,35 @@ const MenuItem = () => {
                 url: '/machinelist'
               },
               hasAllPermissionsMachineSchedule && {
-                id: 'Machine Schedule',
-                title: 'Machine Schedule',
+                id: 'Create Schedule',
+                title: 'Create Schedule',
                 type: 'item',
                 url: '/machineschedulelist'
               },
-              hasAllPermissionsRegularmaintenance && {
-                id: 'Regular maintenance',
-                title: 'Regular maintenance',
+              {
+                id: 'Mainten Schedule',
+                title: 'Mainten Schedule',
                 type: 'item',
-                url: '/regularmaintenancelist'
-              },
-              hasAllPermissionsPreventivemaintenance && {
-                id: 'Preventive maintenance',
-                title: 'Preventive maintenance',
-                type: 'item',
-                url: '/preventivemaintenancelist'
-              },
-              hasAllPermissionsBreackdownmaintenance && {
-                id: 'Breakdown maintenance',
-                title: 'Breakdown maintenance',
-                type: 'item',
-                url: '/breakdownmaintenancelist'
+                url: '/maintenschedulelist'
               }
+              // hasAllPermissionsRegularmaintenance && {
+              //   id: 'Regular maintenance',
+              //   title: 'Regular maintenance',
+              //   type: 'item',
+              //   url: '/regularmaintenancelist'
+              // },
+              // hasAllPermissionsPreventivemaintenance && {
+              //   id: 'Preventive maintenance',
+              //   title: 'Preventive maintenance',
+              //   type: 'item',
+              //   url: '/preventivemaintenancelist'
+              // },
+              // hasAllPermissionsBreackdownmaintenance && {
+              //   id: 'Breakdown maintenance',
+              //   title: 'Breakdown maintenance',
+              //   type: 'item',
+              //   url: '/breakdownmaintenancelist'
+              // }
             ]
           }
         ]

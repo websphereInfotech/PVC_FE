@@ -22,6 +22,8 @@ import ItemgropuList from 'views/production managenment/Item Group/itemgrouplist
 import ItemcategoryList from 'views/production managenment/Item Category/itemcategorylist';
 import Accountledgerlist from 'component/reports/financial report/accountledgerlist';
 import Daybookledgerlist from 'component/reports/financial report/daybookledgerlist';
+import Maintenchedulelist from 'views/machine managenment/mainten shedule/maintenschedulelist';
+import Maintenscheduleadd from 'views/machine managenment/mainten shedule/maintenscheduleadd';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -552,6 +554,14 @@ const MainRoutes = {
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
     { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },
     { path: '/updatemachine/:id', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="update_machine" /> },
+    {
+      path: '/maintenschedulelist',
+      element: <Maintenchedulelist />
+    },
+    {
+      path: '/maintenscheduleadd',
+      element: <Maintenscheduleadd />
+    },
     {
       path: '/machineschedulelist',
       element: <ProtectedRoute element={Machineschedulelist} resource="Machine Schedule" permissionName="view_all_machine_schedule" />

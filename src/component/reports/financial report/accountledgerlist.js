@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Card,
-  TableHead,
-  TableContainer,
-  Grid,
-  Paper,
-  styled,
-  Button
-} from '@mui/material';
+import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { BankCustomerPDF, getallAccountledger } from 'store/thunk';
-import useCan from 'views/permission managenment/checkpermissionvalue';
+import { getallAccountledger } from 'store/thunk';
+// import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -46,7 +33,7 @@ const Accountledgerlist = () => {
   const AccountId = sessionStorage.getItem('RAccountId');
   const formData = sessionStorage.getItem('RAccountformDate');
   const toDate = sessionStorage.getItem('RAccounttoDate');
-  const { canDownloadPdfBankCustomer } = useCan();
+  // const { canDownloadPdfBankCustomer } = useCan();
 
   useEffect(() => {
     dispatch(getallAccountledger(AccountId, formData, toDate))
@@ -71,18 +58,18 @@ const Accountledgerlist = () => {
       });
   }, [dispatch, AccountId, formData, toDate]);
 
-  const downloadpdf = () => {
-    try {
-      dispatch(BankCustomerPDF(AccountId, formData, toDate));
-    } catch (error) {
-      console.error('Error fetching pdf:', error);
-    }
-  };
+  // const downloadpdf = () => {
+  //   try {
+  //     dispatch(BankCustomerPDF(AccountId, formData, toDate));
+  //   } catch (error) {
+  //     console.error('Error fetching pdf:', error);
+  //   }
+  // };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>
-        <Grid item xs={12} align="end">
+        {/* <Grid item xs={12} align="end">
           <Button
             variant="contained"
             color="secondary"
@@ -92,7 +79,7 @@ const Accountledgerlist = () => {
           >
             Download PDF
           </Button>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
           <Typography variant="h4">{getdata.companyname}</Typography>

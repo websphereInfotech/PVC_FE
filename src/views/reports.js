@@ -3,9 +3,11 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { Link } from 'react-router-dom';
 import Ledgeraccountreport from 'component/reports/financial report/ledgerreport';
+import Daybookreport from 'component/reports/financial report/daybook';
 
 const Reports = () => {
   const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+  const [opendaybookLedgerDialog, setOpendaybookLedgerDialog] = useState(false);
 
   const handleOpenLedgerDialog = () => {
     setOpenLedgerDialog(true);
@@ -13,6 +15,14 @@ const Reports = () => {
 
   const handleCloseLedgerDialog = () => {
     setOpenLedgerDialog(false);
+  };
+
+  const handleOpenLDayBookedgerDialog = () => {
+    setOpendaybookLedgerDialog(true);
+  };
+
+  const handleCloseDayBookLedgerDialog = () => {
+    setOpendaybookLedgerDialog(false);
   };
   return (
     <div>
@@ -99,9 +109,19 @@ const Reports = () => {
                   Ledger Report
                 </Typography>
                 {openLedgerDialog && <Ledgeraccountreport Open={handleOpenLedgerDialog} onClose={handleCloseLedgerDialog} />}
-                <Typography variant="body1" sx={{ marginTop: '2px' }}>
+
+                <Typography
+                  variant="body1"
+                  sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
+                  onClick={handleOpenLDayBookedgerDialog}
+                  style={{ cursor: 'pointer' }}
+                >
                   Daybook Reports
                 </Typography>
+                {opendaybookLedgerDialog && <Daybookreport Open={handleOpenLDayBookedgerDialog} onClose={handleCloseDayBookLedgerDialog} />}
+                {/* <Typography variant="body1" sx={{ marginTop: '2px' }}>
+                  Daybook Reports
+                </Typography> */}
               </CardContent>
             </Card>
           </Grid>

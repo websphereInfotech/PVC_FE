@@ -730,6 +730,9 @@ export const GET_ALL_ACCOUNTS_CASH_FAILURE = 'GET_ALL_ACCOUNTS_CASH_FAILURE';
 export const GET_ALL_ACCOUNT_LEDGER_REQUEST = 'GET_ALL_ACCOUNT_LEDGER_REQUEST';
 export const GET_ALL_ACCOUNT_LEDGER_SUCCESS = 'GET_ALL_ACCOUNT_LEDGER_SUCCESS';
 export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
+export const GET_ALL_DAY_BOOK_LEDGER_REQUEST = 'GET_ALL_DAY_BOOK_LEDGER_REQUEST';
+export const GET_ALL_DAY_BOOK_LEDGER_SUCCESS = 'GET_ALL_DAY_BOOK_LEDGER_SUCCESS';
+export const GET_ALL_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_DAY_BOOK_LEDGER_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -3239,5 +3242,17 @@ export const getAllAccountLedgerSuccess = (data) => ({
 });
 export const getAllAccountLedgerFailure = (error) => ({
   type: 'GET_ALL_ACCOUNT_LEDGER_FAILURE',
+  payload: error
+});
+export const getAllDaybookLedgerRequest = (data) => ({
+  type: 'GET_ALL_DAY_BOOK_LEDGER_REQUEST',
+  payload: data
+});
+export const getAllDaybookLedgerSuccess = (data) => ({
+  type: 'GET_ALL_DAY_BOOK_LEDGER_SUCCESS',
+  payload: data
+});
+export const getAllDaybookLedgerFailure = (error) => ({
+  type: 'GET_ALL_DAY_BOOK_LEDGER_FAILURE',
   payload: error
 });

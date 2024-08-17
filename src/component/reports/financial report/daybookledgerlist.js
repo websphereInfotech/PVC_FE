@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  Card,
-  TableHead,
-  TableContainer,
-  Grid,
-  Paper,
-  styled,
-  Button
-} from '@mui/material';
+import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { BankCustomerPDF, getallAccountledger } from 'store/thunk';
-import useCan from 'views/permission managenment/checkpermissionvalue';
+import { getallDaybookledger } from 'store/thunk';
+// import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -43,13 +30,12 @@ const Daybookledgerlist = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totals, setTotals] = useState({ totalCredit: 0, totalDebit: 0 });
   const [closingBalance, setClosingBalance] = useState({ type: '', amount: 0 });
-  const AccountId = sessionStorage.getItem('RAccountId');
-  const formData = sessionStorage.getItem('RAccountformDate');
-  const toDate = sessionStorage.getItem('RAccounttoDate');
-  const { canDownloadPdfBankCustomer } = useCan();
+  const formData = sessionStorage.getItem('RDaybookformDate');
+  const toDate = sessionStorage.getItem('RDaybooktoDate');
+  // const { canDownloadPdfBankCustomer } = useCan();
 
   useEffect(() => {
-    dispatch(getallAccountledger(AccountId, formData, toDate))
+    dispatch(getallDaybookledger(formData, toDate))
       .then((data) => {
         if (data && data.records) {
           const recordsArray = Object.values(data.records).flat();
@@ -69,20 +55,20 @@ const Daybookledgerlist = () => {
       .catch((error) => {
         console.error('Error fetching payment ledger data:', error);
       });
-  }, [dispatch, AccountId, formData, toDate]);
+  }, [dispatch, formData, toDate]);
 
-  const downloadpdf = () => {
-    try {
-      dispatch(BankCustomerPDF(AccountId, formData, toDate));
-    } catch (error) {
-      console.error('Error fetching pdf:', error);
-    }
-  };
+  // const downloadpdf = () => {
+  //   try {
+  //     dispatch(BankCustomerPDF(formData, toDate));
+  //   } catch (error) {
+  //     console.error('Error fetching pdf:', error);
+  //   }
+  // };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>
-        <Grid item xs={12} align="end">
+        {/* <Grid item xs={12} align="end">
           <Button
             variant="contained"
             color="secondary"
@@ -92,7 +78,7 @@ const Daybookledgerlist = () => {
           >
             Download PDF
           </Button>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
           <Typography variant="h4">{getdata.companyname}</Typography>

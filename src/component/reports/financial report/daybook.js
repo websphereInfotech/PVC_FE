@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Dialog, DialogContent, useMediaQuery, Grid, Typography } from '@mui/material';
-import Select from 'react-select';
+// import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { fetchAllAccounts, getallAccountledger } from 'store/thunk';
+import { getallDaybookledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import { useTheme } from '@emotion/react';
 
 const Daybookreport = ({ Open, onClose }) => {
-  Ledgeraccountreport.propTypes = {
+  Daybookreport.propTypes = {
     Open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -47,7 +47,7 @@ const Daybookreport = ({ Open, onClose }) => {
   };
 
   const handleLedger = (formDate, toDate) => {
-    dispatch(getallAccountledger(formDate, toDate));
+    dispatch(getallDaybookledger(formDate, toDate));
     navigate('/accountledger');
     setFormDate(formDate);
     sessionStorage.setItem('RDaybookformDate', formDate);
@@ -95,12 +95,7 @@ const Daybookreport = ({ Open, onClose }) => {
               />
             </Grid>
 
-            <Button
-              onClick={() => handleLedger(AccountId, formDate, toDate)}
-              variant="contained"
-              color="secondary"
-              style={{ marginLeft: '60%' }}
-            >
+            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
               GO
             </Button>
           </Grid>

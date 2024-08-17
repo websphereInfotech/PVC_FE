@@ -677,7 +677,10 @@ import {
   // LEdger+++++++++++
   getAllAccountLedgerRequest,
   getAllAccountLedgerSuccess,
-  getAllAccountLedgerFailure
+  getAllAccountLedgerFailure,
+  getAllDaybookLedgerRequest,
+  getAllDaybookLedgerSuccess,
+  getAllDaybookLedgerFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -4921,6 +4924,21 @@ export const getallAccountledger = (id, formDate, toDate) => {
       return getallAccountledgerlist;
     } catch (error) {
       dispatch(getAllAccountLedgerFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallDaybookledger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllDaybookLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/ledger/daybook/?formDate=${formDate}&toDate=${toDate}`, config);
+      const getallDaybookledgerlist = response.data.data;
+      dispatch(getAllDaybookLedgerSuccess(getallDaybookledgerlist));
+      return getallDaybookledgerlist;
+    } catch (error) {
+      dispatch(getAllDaybookLedgerFailure(error.message));
       throw error;
     }
   };

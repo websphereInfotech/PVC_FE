@@ -8,7 +8,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const Machinescheduleadd = () => {
+const Maintenscheduleadd = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Machinescheduleadd = () => {
   const [machinename, setmachinename] = useState('');
   const [formData, setFormData] = useState({
     machineId: '',
-    frequency: '',
+    // frequency: '',
     date: new Date(),
     interval: '',
     type: '',
@@ -73,20 +73,20 @@ const Machinescheduleadd = () => {
     setmachinename(selectedOption.label);
   };
 
-  const handleInputChange = (fieldName, value) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [fieldName]: value
-    }));
-  };
+  // const handleInputChange = (fieldName, value) => {
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [fieldName]: value
+  //   }));
+  // };
 
   const handleTypeChange = (selectedOption) => {
     setFormData({ ...formData, type: selectedOption.value });
   };
 
-  const handleFrequencyChange = (selectedOption) => {
-    setFormData({ ...formData, frequency: selectedOption.value });
-  };
+  // const handleFrequencyChange = (selectedOption) => {
+  //   setFormData({ ...formData, frequency: selectedOption.value });
+  // };
 
   const handleMaintenanceTypeChange = (selectedOption) => {
     setFormData({ ...formData, maintenanceType: selectedOption.value });
@@ -101,11 +101,11 @@ const Machinescheduleadd = () => {
     { value: 'Preventive', label: 'Preventive' }
   ];
 
-  const Frequency = [
-    { value: 'Daily', label: 'Daily' },
-    { value: 'Weekly', label: 'Weekly' },
-    { value: 'Monthly', label: 'Monthly' }
-  ];
+  // const Frequency = [
+  //   { value: 'Daily', label: 'Daily' },
+  //   { value: 'Weekly', label: 'Weekly' },
+  //   { value: 'Monthly', label: 'Monthly' }
+  // ];
 
   const MaintanceType = [
     { value: 'oiling', label: 'Oiling' },
@@ -114,27 +114,16 @@ const Machinescheduleadd = () => {
     { value: 'cleaning', label: 'Cleaning' }
   ];
 
-  const customStyles = {
-    multiValue: (provided) => ({
-      ...provided,
-      display: 'flex'
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      display: 'float'
-    })
-  };
-
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Machine Schedule
+            Update Mainten Schedule
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Add Machine Schedule
+            Add Mainten Schedule
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -150,7 +139,7 @@ const Machinescheduleadd = () => {
                 onChange={handleSelectChange}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            {/* <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Frequency : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -159,7 +148,7 @@ const Machinescheduleadd = () => {
                 value={Frequency.find((option) => option.value === formData.frequency)}
                 onChange={handleFrequencyChange}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -172,7 +161,7 @@ const Machinescheduleadd = () => {
                 showTimeSelect={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            {/* <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Interval : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
@@ -183,7 +172,7 @@ const Machinescheduleadd = () => {
                 value={formData.interval}
                 onChange={(e) => handleInputChange('interval', e.target.value)}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -199,7 +188,6 @@ const Machinescheduleadd = () => {
                 isMulti
                 value={MaintanceType.find((option) => option.value === formData.maintenanceType)}
                 onChange={handleMaintenanceTypeChange}
-                styles={customStyles}
               />
             </Grid>
           </Grid>
@@ -237,4 +225,4 @@ const Machinescheduleadd = () => {
   );
 };
 
-export default Machinescheduleadd;
+export default Maintenscheduleadd;
