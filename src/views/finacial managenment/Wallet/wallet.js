@@ -39,7 +39,7 @@ const Wallet = () => {
   const handleApply = async () => {
     try {
       const data = await dispatch(getWallet(userId, startDate, endDate));
-      setWalletData(data.records); // Assuming the fetched data is an array of objects
+      setWalletData(data);
     } catch (error) {
       console.log('fetch data of wallet:', error);
     }
@@ -50,7 +50,7 @@ const Wallet = () => {
     setUsername('');
     setStartDate(new Date());
     setEndDate(new Date());
-    setWalletData([]); // Clear the displayed data
+    setWalletData([]);
   };
 
   return (
@@ -113,48 +113,110 @@ const Wallet = () => {
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Credit</TableCell>
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Debit</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell>
+                  <Grid container spacing={1}>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={3} style={{ fontWeight: 'bold' }}>
+                      Date
+                    </Grid>
+                    <Grid item xs={4} style={{ fontWeight: 'bold' }}>
+                      Particulars
+                    </Grid>
+                    <Grid item xs={3} style={{ fontWeight: 'bold' }}>
+                      Name
+                    </Grid>
+                    <Grid item xs={1} style={{ fontWeight: 'bold' }}>
+                      Amount
+                    </Grid>
+                  </Grid>
+                </TableCell>
+                <TableCell>
+                  <Grid container spacing={1}>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={3} style={{ fontWeight: 'bold' }}>
+                      Date
+                    </Grid>
+                    <Grid item xs={4} style={{ fontWeight: 'bold' }}>
+                      Particulars
+                    </Grid>
+                    <Grid item xs={3} style={{ fontWeight: 'bold' }}>
+                      Name
+                    </Grid>
+                    <Grid item xs={1} style={{ fontWeight: 'bold' }}>
+                      Amount
+                    </Grid>
+                  </Grid>
+                </TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
-              {walletData.map((entry, index) => (
-                <TableRow key={index}>
-                  <TableCell style={{ verticalAlign: 'top' }}>
-                    {entry.creditAmount && (
-                      <Grid container spacing={1}>
+              <TableRow>
+                <TableCell>
+                  {walletData?.records?.map((entry, index) =>
+                    entry.creditAmount ? (
+                      <Grid container spacing={1} key={index}>
                         <Grid item xs={1}>
                           <Checkbox />
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={3}>
                           {entry.date}
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={4}>
                           {entry.particulars}
+                        </Grid>
+                        <Grid item xs={3}>
+                          {entry.personName}
                         </Grid>
                         <Grid item xs={1}>
                           {entry.creditAmount}
                         </Grid>
                       </Grid>
-                    )}
-                  </TableCell>
-                  <TableCell style={{ verticalAlign: 'top' }}>
-                    {entry.debitAmount && (
-                      <Grid container spacing={1}>
+                    ) : (
+                      ''
+                    )
+                  )}
+                </TableCell>
+                <TableCell>
+                  {walletData?.records?.map((entry, index) =>
+                    entry.debitAmount ? (
+                      <Grid container spacing={1} key={index}>
                         <Grid item xs={1}>
                           <Checkbox />
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={3}>
                           {entry.date}
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={4}>
                           {entry.particulars}
+                        </Grid>
+                        <Grid item xs={3}>
+                          {entry.personName}
                         </Grid>
                         <Grid item xs={1}>
                           {entry.debitAmount}
                         </Grid>
                       </Grid>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+                    ) : (
+                      ''
+                    )
+                  )}
+                </TableCell>
+              </TableRow>
+
+              {walletData?.totals && (
+                <>
+                  <TableRow>
+                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>Total: {walletData?.totals?.totalCredit}</TableCell>
+                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>Total: {walletData?.totals?.totalDebit}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={2} style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                      Closing Balance: {walletData?.closingBalance?.amount}
+                    </TableCell>
+                  </TableRow>
+                </>
+              )}
             </TableBody>
           </Table>
         </Grid>
