@@ -130,7 +130,7 @@ const Wallet = () => {
                           {entry.particulars}
                         </Grid>
                         <Grid item xs={1}>
-                          {entry.amount}
+                          {entry.creditAmount}
                         </Grid>
                       </Grid>
                     )}
@@ -148,7 +148,7 @@ const Wallet = () => {
                           {entry.particulars}
                         </Grid>
                         <Grid item xs={1}>
-                          {entry.amount}
+                          {entry.debitAmount}
                         </Grid>
                       </Grid>
                     )}
