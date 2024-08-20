@@ -5,59 +5,63 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { createMaintenancetype, Maintenancetypeview, updateMaintenancetype } from 'store/thunk';
+import { useDispatch } from 'react-redux';
+import { createMaintenancType, MaintenanceTypeview, updateMaintenanceType } from 'store/thunk';
 
 const Maintenancetype = ({ open, onClose, id }) => {
   const [MaintenancetypeName, setMaintenancetypeName] = useState('');
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   Maintenancetype.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onnewgroupadded: PropTypes.func.isRequired,
-    onnewgroupUpdated: PropTypes.func.isRequired,
+    // onnewgroupadded: PropTypes.func.isRequired,
+    // onnewgroupUpdated: PropTypes.func.isRequired,
     id: PropTypes.string
   };
 
-//   const handleSave = async () => {
-//     try {
-//       const payload = { name: MaintenancetypeName };
-//       if (id) {
-//         const response = await dispatch(updateMaintenancetype(id, payload));
-//         onnewgroupUpdated(response.data.data);
-//       } else {
-//         const response = await dispatch(createMaintenancetype(payload));
-//         onnewgroupadded(response.data.data);
-//         setMaintenancetypeName('');
-//       }
-//     } catch (error) {
-//       console.error('Error creating item group', error);
-//     }
-//   };
+  const handleSave = async () => {
+    try {
+      const payload = { name: MaintenancetypeName };
+      if (id) {
+        await dispatch(updateMaintenanceType(id, payload));
+        // onnewgroupUpdated(response.data.data);
+      } else {
+        await dispatch(createMaintenancType(payload));
+        // onnewgroupadded(response.data.data);
+        setMaintenancetypeName('');
+      }
+    } catch (error) {
+      console.error('Error creating item group', error);
+    }
+  };
 
-//   React.useEffect(() => {
-//     const fetchdata = async () => {
-//       try {
-//         if (id) {
-//           const response = await dispatch(Maintenancetypeview(id));
-//           setMaintenancetypeName(response.name);
-//         } else {
-//           setMaintenancetypeName('');
-//         }
-//       } catch (error) {
-//         console.error('Error view item group', error);
-//       }
-//     };
-//     fetchdata();
-//   }, [id, dispatch]);
+  React.useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(MaintenanceTypeview(id));
+          setMaintenancetypeName(response.name);
+        } else {
+          setMaintenancetypeName('');
+        }
+      } catch (error) {
+        console.error('Error view item group', error);
+      }
+    };
+    fetchdata();
+  }, [id, dispatch]);
 
   const list = (
     <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden' }} role="presentation">
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
         <Grid item sm={12}>
           <Typography variant="subtitle1">Maintenance Type</Typography>
-          <input placeholder="Enter Maintenance Type" value={MaintenancetypeName} onChange={(e) => setMaintenancetypeName(e.target.value)} />
+          <input
+            placeholder="Enter Maintenance Type"
+            value={MaintenancetypeName}
+            onChange={(e) => setMaintenancetypeName(e.target.value)}
+          />
         </Grid>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
@@ -67,7 +71,7 @@ const Maintenancetype = ({ open, onClose, id }) => {
           </button>
         </div>
         <div style={{ display: 'flex' }}>
-          <button id="savebtncs" >
+          <button id="savebtncs" onClick={handleSave}>
             Save
           </button>
         </div>
@@ -89,11 +93,11 @@ const Maintenancetype = ({ open, onClose, id }) => {
       >
         {id ? (
           <Grid item>
-            <Typography variant="h4">Upadate Group</Typography>
+            <Typography variant="h4">Upadate Maintenance Type</Typography>
           </Grid>
         ) : (
           <Grid item>
-            <Typography variant="h4">New Group</Typography>
+            <Typography variant="h4">Add Maintenance Type</Typography>
           </Grid>
         )}
         <Grid item>

@@ -541,6 +541,19 @@ export const GET_ALL_EMPLOYEE_SALARY_REQUEST = 'GET_ALL_EMPLOYEE_SALARY_REQUEST'
 export const GET_ALL_EMPLOYEE_SALARY_SUCCESS = 'GET_ALL_EMPLOYEE_SALARY_SUCCESS';
 export const GET_ALL_EMPLOYEE_SALARY_FAILURE = 'GET_ALL_EMPLOYEE_SALARY_FAILURE';
 
+// #################################################################### MAINTENANCE_TYPE ################################################################
+export const CREATE_MAINTENANCE_TYPE_REQUEST = 'CREATE_MAINTENANCE_TYPE_REQUEST';
+export const CREATE_MAINTENANCE_TYPE_SUCCESS = 'CREATE_MAINTENANCE_TYPE_SUCCESS';
+export const CREATE_MAINTENANCE_TYPE_FAILURE = 'CREATE_MAINTENANCE_TYPE_FAILURE';
+export const UPDATE_MAINTENANCE_TYPE_REQUEST = 'UPDATE_MAINTENANCE_TYPE_REQUEST';
+export const UPDATE_MAINTENANCE_TYPE_SUCCESS = 'UPDATE_MAINTENANCE_TYPE_SUCCESS';
+export const UPDATE_MAINTENANCE_TYPE_FAILURE = 'UPDATE_MAINTENANCE_TYPE_FAILURE';
+export const VIEW_SINGLE_MAINTENANCE_TYPE_REQUEST = 'VIEW_SINGLE_MAINTENANCE_TYPE_REQUEST';
+export const VIEW_SINGLE_MAINTENANCE_TYPE_SUCCESS = 'VIEW_SINGLE_MAINTENANCE_TYPE_SUCCESS';
+export const VIEW_SINGLE_MAINTENANCE_TYPE_FAILURE = 'VIEW_SINGLE_MAINTENANCE_TYPE_FAILURE';
+export const GET_ALL_MAINTENANCE_TYPE_REQUEST = 'GET_ALL_MAINTENANCE_TYPE_REQUEST';
+export const GET_ALL_MAINTENANCE_TYPE_SUCCESS = 'GET_ALL_MAINTENANCE_TYPE_SUCCESS';
+export const GET_ALL_MAINTENANCE_TYPE_FAILURE = 'GET_ALL_MAINTENANCE_TYPE_FAILURE';
 // #################################################################### MACHINE ################################################################
 export const CREATE_MACHINE_REQUEST = 'CREATE_MACHINE_REQUEST';
 export const CREATE_MACHINE_SUCCESS = 'CREATE_MACHINE_SUCCESS';
@@ -733,6 +746,9 @@ export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
 export const GET_ALL_DAY_BOOK_LEDGER_REQUEST = 'GET_ALL_DAY_BOOK_LEDGER_REQUEST';
 export const GET_ALL_DAY_BOOK_LEDGER_SUCCESS = 'GET_ALL_DAY_BOOK_LEDGER_SUCCESS';
 export const GET_ALL_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_DAY_BOOK_LEDGER_FAILURE';
+export const GET_WALLET_REQUEST = 'GET_WALLET_REQUEST';
+export const GET_WALLET_SUCCESS = 'GET_WALLET_SUCCESS';
+export const GET_WALLET_FAILURE = 'GET_WALLET_FAILURE';
 
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
@@ -2617,6 +2633,53 @@ export const fetchAllemployeesalaryFailure = (error) => ({
   type: 'GET_ALL_EMPLOYEE_SALARY_FAILURE',
   payload: error
 });
+
+// ++++++++++++++++++++++++++++++++++++++++++ MAINTENANCE TYPE ++++++++++++++
+export const CreateMaintenanceTypeRequest = () => ({
+  type: 'CREATE_MAINTENANCE_TYPE_REQUEST'
+});
+export const CreateMaintenanceTypeSuccess = (data) => ({
+  type: 'CREATE_MAINTENANCE_TYPE_SUCCESS',
+  payload: data
+});
+export const CreateMaintenanceTypeFailure = (error) => ({
+  type: 'CREATE_MAINTENANCE_TYPE_FAILURE',
+  payload: error
+});
+export const UpdateMaintenanceTypeRequest = () => ({
+  type: 'UPDATE_MAINTENANCE_TYPE_REQUEST'
+});
+export const UpdateMaintenanceTypeSuccess = (data) => ({
+  type: 'UPDATE_MAINTENANCE_TYPE_SUCCESS',
+  payload: data
+});
+export const UpdateMaintenanceTypeFailure = (error) => ({
+  type: 'UPDATE_MAINTENANCE_TYPE_FAILURE',
+  payload: error
+});
+
+export const ViewsingleMaintenancetypeRequest = () => ({
+  type: 'VIEW_SINGLE_MAINTENANCE_TYPE_REQUEST'
+});
+export const ViewsingleMaintenancetypeSuccess = (data) => ({
+  type: 'VIEW_SINGLE_MAINTENANCE_TYPE_SUCCESS',
+  payload: data
+});
+export const ViewsingleMaintenancetypeFailure = (error) => ({
+  type: 'VIEW_SINGLE_MAINTENANCE_TYPE_FAILURE',
+  payload: error
+});
+export const fetchAllMaintenanceTypeRequest = () => ({
+  type: 'GET_ALL_MAINTENANCE_TYPE_REQUEST'
+});
+export const fetchAllMaintenanceTypeSuccess = (data) => ({
+  type: 'GET_ALL_MAINTENANCE_TYPE_SUCCESS',
+  payload: data
+});
+export const fetchAllMaintenanceTypeFailure = (error) => ({
+  type: 'GET_ALL_MAINTENANCE_TYPE_FAILURE',
+  payload: error
+});
 // +++++++++++++++++++++++++++++++++++++++++++++++ MACHINE ++++++++++++++++++++++++++++++++++++
 export const CreateMachineRequest = () => ({
   type: 'CREATE_MACHINE_REQUEST'
@@ -3254,5 +3317,17 @@ export const getAllDaybookLedgerSuccess = (data) => ({
 });
 export const getAllDaybookLedgerFailure = (error) => ({
   type: 'GET_ALL_DAY_BOOK_LEDGER_FAILURE',
+  payload: error
+});
+export const getWalletRequest = (data) => ({
+  type: 'GET_WALLET_REQUEST',
+  payload: data
+});
+export const getWalletSuccess = (data) => ({
+  type: 'GET_WALLET_SUCCESS',
+  payload: data
+});
+export const getWalletFailure = (error) => ({
+  type: 'GET_WALLET_FAILURE',
   payload: error
 });

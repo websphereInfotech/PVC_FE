@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createMachineSchedule, fetchAllMachine, MachineScheduleview, updateMachineSchedule } from 'store/thunk';
+import { createMachineSchedule, fetchAllMachine, fetchAllMaintenanceType, MachineScheduleview, updateMachineSchedule } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Maintenancetype from 'component/maintenancetype';
 
 const Machinescheduleadd = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -21,8 +22,12 @@ const Machinescheduleadd = () => {
     date: new Date(),
     interval: '',
     type: '',
-    maintenanceType: ''
+    maintenanceType: []
   });
+  const [maintenanceTypeOptions, setmaintenanceTypeOptions] = React.useState([]);
+  const [selectedmaintenanceType, setSelectedmaintenanceType] = React.useState('');
+  const [maintenanceTypename, setmaintenanceTypename] = React.useState('');
+  const [maintenanceTypeDrawerOpen, setmaintenanceTypeDrawerOpen] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,10 +37,19 @@ const Machinescheduleadd = () => {
           const options = response.map((machine) => ({ value: machine.id, label: machine.name }));
           setMachine([...options]);
         }
+        const maintenanceType = await dispatch(fetchAllMaintenanceType());
+        if (Array.isArray(maintenanceType)) {
+          const options = maintenanceType.map((product) => ({
+            value: product.id,
+            label: product.name
+          }));
+          setmaintenanceTypeOptions([{ value: 'new_group', label: 'Create New Type' }, ...options]);
+        }
       } catch (error) {
         console.error('Error fetching machine:', error);
       }
     };
+
     const viewData = async () => {
       try {
         if (id) {
@@ -88,10 +102,6 @@ const Machinescheduleadd = () => {
     setFormData({ ...formData, frequency: selectedOption.value });
   };
 
-  const handleMaintenanceTypeChange = (selectedOption) => {
-    setFormData({ ...formData, maintenanceType: selectedOption.value });
-  };
-
   const handledateChange = (date) => {
     setFormData({ ...formData, date: date });
   };
@@ -107,23 +117,29 @@ const Machinescheduleadd = () => {
     { value: 'Monthly', label: 'Monthly' }
   ];
 
-  const MaintanceType = [
-    { value: 'oiling', label: 'Oiling' },
-    { value: 'greasing', label: 'Greasing' },
-    { value: 'painting', label: 'Painting' },
-    { value: 'cleaning', label: 'Cleaning' }
-  ];
+  const handleMaintenanceTypeChange = (selectedOptions) => {
+    if (selectedOptions.some((option) => option.label === 'Create New Type')) {
+      setmaintenanceTypeDrawerOpen(true);
+    } else {
+      const selectedValues = selectedOptions.map((option) => option.value);
+      const selectedLabels = selectedOptions.map((option) => option.label);
 
-  const customStyles = {
-    multiValue: (provided) => ({
-      ...provided,
-      display: 'flex'
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      display: 'float'
-    })
+      setSelectedmaintenanceType(selectedOptions);
+      setmaintenanceTypename(selectedLabels.join(', '));
+      setFormData({ ...formData, maintenanceTypeId: selectedValues });
+    }
   };
+
+  // const customStyles = {
+  //   multiValue: (provided) => ({
+  //     ...provided,
+  //     display: 'flex'
+  //   }),
+  //   valueContainer: (provided) => ({
+  //     ...provided,
+  //     display: 'float'
+  //   })
+  // };
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -195,12 +211,12 @@ const Machinescheduleadd = () => {
                 Maintance Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
-                options={MaintanceType}
+                options={maintenanceTypeOptions}
                 isMulti
-                value={MaintanceType.find((option) => option.value === formData.maintenanceType)}
-                onChange={handleMaintenanceTypeChange}
-                styles={customStyles}
+                value={selectedmaintenanceType.length ? { value: selectedmaintenanceType, label: maintenanceTypename } : null}
+                onChange={(selectedOption) => handleMaintenanceTypeChange(selectedOption)}
               />
+              <Maintenancetype anchor="Right" open={maintenanceTypeDrawerOpen} onClose={() => setmaintenanceTypeDrawerOpen(false)} />
             </Grid>
           </Grid>
 

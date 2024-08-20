@@ -24,6 +24,7 @@ import Accountledgerlist from 'component/reports/financial report/accountledgerl
 import Daybookledgerlist from 'component/reports/financial report/daybookledgerlist';
 import Maintenchedulelist from 'views/machine managenment/mainten shedule/maintenschedulelist';
 import Maintenscheduleadd from 'views/machine managenment/mainten shedule/maintenscheduleadd';
+import Wallet from 'views/finacial managenment/Wallet/wallet';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -184,6 +185,7 @@ const MainRoutes = {
     },
     { path: '/profile', element: <SamplePage /> },
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
+    { path: 'wallet', element: <Wallet /> },
     { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="create_claim" /> },
     { path: '/claimcash/:id', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="update_claim" /> },
     { path: '/claimcashlist', element: <ProtectedRoute element={Claimcashlist} resource="Claim Cash" permissionName="view_myclaim" /> },

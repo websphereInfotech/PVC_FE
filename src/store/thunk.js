@@ -501,6 +501,19 @@ import {
   fetchAllemployeesalaryRequest,
   fetchAllemployeesalarySuccess,
   fetchAllemployeesalaryFailure,
+  // MAINTENANCE TYPE+++++++++++++
+  CreateMaintenanceTypeRequest,
+  CreateMaintenanceTypeSuccess,
+  CreateMaintenanceTypeFailure,
+  UpdateMaintenanceTypeRequest,
+  UpdateMaintenanceTypeSuccess,
+  UpdateMaintenanceTypeFailure,
+  ViewsingleMaintenancetypeRequest,
+  ViewsingleMaintenancetypeSuccess,
+  ViewsingleMaintenancetypeFailure,
+  fetchAllMaintenanceTypeRequest,
+  fetchAllMaintenanceTypeSuccess,
+  fetchAllMaintenanceTypeFailure,
   // MACHINE +++++++++++++++++++++++
   CreateMachineRequest,
   CreateMachineSuccess,
@@ -680,7 +693,10 @@ import {
   getAllAccountLedgerFailure,
   getAllDaybookLedgerRequest,
   getAllDaybookLedgerSuccess,
-  getAllDaybookLedgerFailure
+  getAllDaybookLedgerFailure,
+  getWalletRequest,
+  getWalletSuccess,
+  getWalletFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -3890,6 +3906,89 @@ export const deleteMachine = (machineId) => {
   };
 };
 
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++ MAINTENANCE TYPE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createMaintenancType = (data) => {
+  return async (dispatch) => {
+    dispatch(CreateMaintenanceTypeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/maintenanceType/create_maintenanceType`, data, config);
+      const addMaintenancedata = response;
+      dispatch(CreateMaintenanceTypeSuccess(addMaintenancedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return addMaintenancedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(CreateMaintenanceTypeFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const updateMaintenanceType = (MaintenanceTypeId, formData) => {
+  return async (dispatch) => {
+    dispatch(UpdateMaintenanceTypeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/maintenanceType/update_maintenanceType/${MaintenanceTypeId}`,
+        formData,
+        config
+      );
+      const updateMaintenanceTypedata = response.data.data;
+      dispatch(UpdateMaintenanceTypeSuccess(updateMaintenanceTypedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return updateMaintenanceTypedata;
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+      dispatch(UpdateMaintenanceTypeFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const MaintenanceTypeview = (machineId) => {
+  return async (dispatch) => {
+    dispatch(ViewsingleMaintenancetypeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/maintenanceType/view_single_maintenanceType/${machineId}`,
+        config
+      );
+      const data = response.data.data;
+      dispatch(ViewsingleMaintenancetypeSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsingleMaintenancetypeFailure(error.message));
+    }
+  };
+};
+
+export const fetchAllMaintenanceType = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllMaintenanceTypeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/maintenanceType/get_all_maintenanceType`, config);
+      const data = response.data.data;
+      dispatch(fetchAllMaintenanceTypeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllMaintenanceTypeFailure(error.message));
+    }
+  };
+};
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE CREATE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createMachineSchedule = (data, navigate) => {
   return async (dispatch) => {
@@ -4939,6 +5038,24 @@ export const getallDaybookledger = (id, formDate, toDate) => {
       return getallDaybookledgerlist;
     } catch (error) {
       dispatch(getAllDaybookLedgerFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getWallet = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getWalletRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_wallet_ledger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getWalletlist = response.data.data;
+      dispatch(getWalletSuccess(getWalletlist));
+      return getWalletlist;
+    } catch (error) {
+      dispatch(getWalletFailure(error.message));
       throw error;
     }
   };

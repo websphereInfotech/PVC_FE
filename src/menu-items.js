@@ -375,6 +375,12 @@ const MenuItem = () => {
                     type: 'collapse',
                     icon: icons['PaymentsIcon'],
                     children: [
+                      {
+                        id: 'Wallet',
+                        title: 'Wallet',
+                        type: 'item',
+                        url: '/wallet'
+                      },
                       hasAllPermissionSalesCash && {
                         id: 'sales cash',
                         title: 'Sales Cash',
@@ -661,8 +667,8 @@ const MenuItem = () => {
                 url: '/machineschedulelist'
               },
               {
-                id: 'Mainten Schedule',
-                title: 'Mainten Schedule',
+                id: 'Add Maintenance',
+                title: 'Add Maintenance',
                 type: 'item',
                 url: '/maintenschedulelist'
               }
