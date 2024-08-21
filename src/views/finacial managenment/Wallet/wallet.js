@@ -409,7 +409,7 @@ const Wallet = () => {
                         />
                       </TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{entry.particulars}</TableCell>
+                      <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.creditAmount}</TableCell>
                     </TableRow>
@@ -461,7 +461,7 @@ const Wallet = () => {
                         />
                       </TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{entry.particulars}</TableCell>
+                      <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.debitAmount}</TableCell>
                     </TableRow>
