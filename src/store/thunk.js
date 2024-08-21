@@ -696,7 +696,10 @@ import {
   getAllDaybookLedgerFailure,
   getWalletRequest,
   getWalletSuccess,
-  getWalletFailure
+  getWalletFailure,
+  approveWalletRequest,
+  approveWalletSuccess,
+  approveWalletFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -5056,6 +5059,21 @@ export const getWallet = (id, formDate, toDate) => {
       return getWalletlist;
     } catch (error) {
       dispatch(getWalletFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const ApproveWallet = (id) => {
+  return async (dispatch) => {
+    dispatch(approveWalletRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wallet_approve/${id}`, config);
+      const approveWalletlist = response.data.data;
+      dispatch(approveWalletSuccess(approveWalletlist));
+      return approveWalletlist;
+    } catch (error) {
+      dispatch(approveWalletFailure(error.message));
       throw error;
     }
   };

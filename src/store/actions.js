@@ -749,7 +749,9 @@ export const GET_ALL_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_DAY_BOOK_LEDGER_FAILURE'
 export const GET_WALLET_REQUEST = 'GET_WALLET_REQUEST';
 export const GET_WALLET_SUCCESS = 'GET_WALLET_SUCCESS';
 export const GET_WALLET_FAILURE = 'GET_WALLET_FAILURE';
-
+export const APPROVE_WALLET_REQUEST = 'APPROVE_WALLET_REQUEST';
+export const APPROVE_WALLET_SUCCESS = 'APPROVE_WALLET_SUCCESS';
+export const APPROVE_WALLET_FAILURE = 'APPROVE_WALLET_FAILURE';
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -3329,5 +3331,18 @@ export const getWalletSuccess = (data) => ({
 });
 export const getWalletFailure = (error) => ({
   type: 'GET_WALLET_FAILURE',
+  payload: error
+});
+
+export const approveWalletRequest = (data) => ({
+  type: 'APPROVE_WALLET_REQUEST',
+  payload: data
+});
+export const approveWalletSuccess = (data) => ({
+  type: 'APPROVE_WALLET_SUCCESS',
+  payload: data
+});
+export const approveWalletFailure = (error) => ({
+  type: 'APPROVE_WALLET_FAILURE',
   payload: error
 });

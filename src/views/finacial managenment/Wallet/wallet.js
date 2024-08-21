@@ -4,7 +4,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
-import { getallusers, getWallet } from 'store/thunk';
+import { ApproveWallet, getallusers, getWallet } from 'store/thunk';
 
 const Wallet = () => {
   const [users, setUsers] = useState([]);
@@ -53,8 +53,20 @@ const Wallet = () => {
     setWalletData([]);
   };
 
+  const handleCheckboxChange = async (entry) => {
+    if (entry.isApprove === false) {
+      try {
+        await dispatch(ApproveWallet(entry.id));
+        const updatedData = await dispatch(getWallet(userId, startDate, endDate));
+        setWalletData(updatedData);
+      } catch (error) {
+        console.error('Error approving transaction:', error);
+      }
+    }
+  };
+
   return (
-    <Paper style={{ padding: '20px' }}>
+    <Paper elevation={4} style={{ padding: '20px' }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center" id="mycss">
@@ -157,10 +169,14 @@ const Wallet = () => {
                     entry.creditAmount ? (
                       <Grid container spacing={1} key={index}>
                         <Grid item xs={1}>
-                          <Checkbox />
+                          <Checkbox
+                            checked={entry.isApprove === true}
+                            disabled={entry.isApprove === true}
+                            onClick={() => handleCheckboxChange(entry)}
+                          />
                         </Grid>
                         <Grid item xs={3}>
-                          {entry.date}
+                          {new Date(entry.date).toLocaleDateString('en-GB')}
                         </Grid>
                         <Grid item xs={4}>
                           {entry.particulars}
@@ -182,10 +198,14 @@ const Wallet = () => {
                     entry.debitAmount ? (
                       <Grid container spacing={1} key={index}>
                         <Grid item xs={1}>
-                          <Checkbox />
+                          <Checkbox
+                            checked={entry.isApprove === true}
+                            disabled={entry.isApprove === true}
+                            onClick={() => handleCheckboxChange(entry)}
+                          />
                         </Grid>
                         <Grid item xs={3}>
-                          {entry.date}
+                          {new Date(entry.date).toLocaleDateString('en-GB')}
                         </Grid>
                         <Grid item xs={4}>
                           {entry.particulars}
@@ -207,11 +227,11 @@ const Wallet = () => {
               {walletData?.totals && (
                 <>
                   <TableRow>
-                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>Total: {walletData?.totals?.totalCredit}</TableCell>
-                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>Total: {walletData?.totals?.totalDebit}</TableCell>
+                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total: {walletData?.totals?.totalCredit}</TableCell>
+                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total: {walletData?.totals?.totalDebit}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell colSpan={2} style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <TableCell colSpan={2} style={{ textAlign: 'end', fontWeight: 'bold' }}>
                       Closing Balance: {walletData?.closingBalance?.amount}
                     </TableCell>
                   </TableRow>
