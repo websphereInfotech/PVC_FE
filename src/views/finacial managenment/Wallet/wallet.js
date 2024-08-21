@@ -370,8 +370,8 @@ const Wallet = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Button variant="contained" color="secondary" onClick={handleCancel}>
+            <div style={{ display: 'flex' }}>
+              <Button style={{ marginRight:'20px' }} variant="contained" color="secondary" onClick={handleCancel}>
                 Cancel
               </Button>
               <Button variant="contained" color="primary" onClick={handleApply}>
