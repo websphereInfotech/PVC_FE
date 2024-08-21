@@ -18,7 +18,6 @@ const Maintenscheduleadd = () => {
   const [maintenanceTypeOptions, setmaintenanceTypeOptions] = React.useState([]);
   const [machinename, setmachinename] = useState('');
   const [selectedmaintenanceType, setSelectedmaintenanceType] = React.useState('');
-  const [maintenanceTypename, setmaintenanceTypename] = React.useState('');
   const [maintenanceTypeDrawerOpen, setmaintenanceTypeDrawerOpen] = React.useState(false);
 
   const [formData, setFormData] = useState({
@@ -27,7 +26,7 @@ const Maintenscheduleadd = () => {
     date: new Date(),
     interval: '',
     type: '',
-    maintenanceType: ''
+    maintenanceType: []
   });
 
   useEffect(() => {
@@ -106,11 +105,11 @@ const Maintenscheduleadd = () => {
       setmaintenanceTypeDrawerOpen(true);
     } else {
       const selectedValues = selectedOptions.map((option) => option.value);
-      const selectedLabels = selectedOptions.map((option) => option.label);
-
       setSelectedmaintenanceType(selectedOptions);
-      setmaintenanceTypename(selectedLabels.join(', '));
-      setFormData({ ...formData, maintenanceTypeId: selectedValues });
+      setFormData((prevState) => ({
+        ...prevState,
+        maintenanceType: selectedValues
+      }));
     }
   };
 
@@ -201,7 +200,7 @@ const Maintenscheduleadd = () => {
               <Select
                 options={maintenanceTypeOptions}
                 isMulti
-                value={selectedmaintenanceType.length ? { value: selectedmaintenanceType, label: maintenanceTypename } : null}
+                value={selectedmaintenanceType}
                 onChange={(selectedOption) => handleMaintenanceTypeChange(selectedOption)}
               />
               <Maintenancetype anchor="Right" open={maintenanceTypeDrawerOpen} onClose={() => setmaintenanceTypeDrawerOpen(false)} />
