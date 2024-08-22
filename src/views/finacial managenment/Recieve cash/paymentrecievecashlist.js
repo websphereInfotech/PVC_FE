@@ -262,7 +262,7 @@ const PaymentrecieveList = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)} fullWidth maxWidth="sm">
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>Are you sure you want to delete this ?</DialogContent>
         <DialogActions>

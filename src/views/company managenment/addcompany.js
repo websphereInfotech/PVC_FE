@@ -315,7 +315,8 @@ const AddCompanyForm = () => {
           )}
         </Grid>
       </div>
-      <Dialog open={open} onClose={handleClose}>
+
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>Add Bank Details</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>

@@ -2443,7 +2443,6 @@ export const getallusers = (params = {}) => {
     try {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user?{search}=`, { ...config, params: params });
-
       const getallUsers = response.data.data;
       dispatch(getallUserSuccess(getallUsers));
       return getallUsers;
@@ -3137,6 +3136,9 @@ export const IsStatusclaimCash = (id, toUserId, isApproved) => {
       return data;
     } catch (error) {
       dispatch(viewsingleClaimCashFailure(error.message));
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       throw error;
     }
   };
