@@ -143,7 +143,7 @@ const Ledgeraccountreport = ({ Open, onClose }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="subtitle1">From Date:</Typography>
+              <Typography variant="subtitle1">To Date:</Typography>
               <DatePicker
                 selected={toDate}
                 onChange={(date) => handletoDateChange(date)}
