@@ -405,6 +405,12 @@ const MenuItem = () => {
                         type: 'item',
                         url: '/paymentrecieveList'
                       },
+                      {
+                        id: 'Report',
+                        title: 'Report',
+                        type: 'item',
+                        url: '/cashreports'
+                      },
                       hasAllPermissionsDebitnotecash && {
                         id: 'Debit note cash',
                         title: 'Debit Note Cash',
@@ -471,6 +477,12 @@ const MenuItem = () => {
                     title: 'Receipt',
                     type: 'item',
                     url: '/paymentrecievebanklist'
+                  },
+                  {
+                    id: 'Report',
+                    title: 'Report',
+                    type: 'item',
+                    url: '/reports'
                   },
                   hasAllPermissions && {
                     id: 'proformainvoice',
@@ -721,12 +733,6 @@ const MenuItem = () => {
                 title: 'Item Category',
                 type: 'item',
                 url: '/itemcategorylist'
-              },
-              {
-                id: 'Report',
-                title: 'Report',
-                type: 'item',
-                url: '/reports'
               }
             ]
           }

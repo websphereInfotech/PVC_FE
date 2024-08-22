@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogContent, useMediaQuery, Grid, Typography } from '@mui/material';
-// import Select from 'react-select';
+import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { getallDaybookledger } from 'store/thunk';
+import { fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import { useTheme } from '@emotion/react';
 
-const Daybookreport = ({ Open, onClose }) => {
-  Daybookreport.propTypes = {
+const Ledgeraccountcashreport = ({ Open, onClose }) => {
+  Ledgeraccountcashreport.propTypes = {
     Open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   // const [openDrawer, setOpenDrawer] = useState(false);
+  const [AccountId, setAccountId] = useState(null);
+  const [Account, setAccount] = useState([]);
+  const [Accountname, setAccountname] = useState('');
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
   const dispatch = useDispatch();
@@ -29,6 +32,14 @@ const Daybookreport = ({ Open, onClose }) => {
   //   const handleLedgerClick = () => {
   //     setOpenDrawer(true);
   //   };
+
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setAccountId(selectedOption.value);
+      setAccountname(selectedOption.label);
+      //   setAccount('');
+    }
+  };
 
   const handleformDateChange = (date) => {
     const year = date.getFullYear();
@@ -46,13 +57,35 @@ const Daybookreport = ({ Open, onClose }) => {
     setToDate(formattedDate);
   };
 
-  const handleLedger = (formDate, toDate) => {
-    dispatch(getallDaybookledger(formDate, toDate));
-    navigate('/daybookledger');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllAccountCash());
+
+        if (Array.isArray(response)) {
+          const options = response.map((account) => ({
+            value: account.id,
+            label: account.contactPersonName
+          }));
+          setAccount(options);
+        }
+      } catch (error) {
+        console.error('Error fetching ledger:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const handleLedger = (AccountId, formDate, toDate) => {
+    dispatch(getallCashAccountledger(AccountId, formDate, toDate));
+    navigate('/cashaccountledger');
+    setAccountId(AccountId);
+    sessionStorage.setItem('RCAccountId', AccountId);
     setFormDate(formDate);
-    sessionStorage.setItem('RDaybookformDate', formDate);
+    sessionStorage.setItem('RCAccountformDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('RDaybooktoDate', toDate);
+    sessionStorage.setItem('RCAccounttoDate', toDate);
   };
 
   return (
@@ -74,6 +107,31 @@ const Daybookreport = ({ Open, onClose }) => {
         </div>
         <DialogContent>
           <Grid container spacing={2}>
+            <Grid item xs={12} style={{ paddingTop: '20px' }}>
+              <Typography variant="subtitle1">Account :</Typography>
+              <Select
+                options={Account}
+                value={{ value: AccountId, label: Accountname }}
+                onChange={handleSelectChange}
+                menuPortalTarget={document.body}
+                styles={{
+                  menu: (provided) => ({
+                    ...provided,
+                    zIndex: 9999,
+                    maxHeight: '300px',
+                    overflowY: 'scroll'
+                  }),
+                  container: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  }),
+                  menuPortal: (provided) => ({
+                    ...provided,
+                    zIndex: 9999
+                  })
+                }}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">From Date:</Typography>
               <DatePicker
@@ -95,7 +153,12 @@ const Daybookreport = ({ Open, onClose }) => {
               />
             </Grid>
 
-            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+            <Button
+              onClick={() => handleLedger(AccountId, formDate, toDate)}
+              variant="contained"
+              color="secondary"
+              style={{ marginLeft: '60%' }}
+            >
               GO
             </Button>
           </Grid>
@@ -105,4 +168,4 @@ const Daybookreport = ({ Open, onClose }) => {
   );
 };
 
-export default Daybookreport;
+export default Ledgeraccountcashreport;

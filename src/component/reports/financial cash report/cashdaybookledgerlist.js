@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { getallDaybookledger } from 'store/thunk';
+import { getallCashDaybookledger } from 'store/thunk';
 // import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
@@ -22,20 +22,19 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString('en-GB', options);
 };
 
-const Daybookledgerlist = () => {
+const Cashdaybookledgerlist = () => {
   const dispatch = useDispatch();
   const [payments, setPayments] = useState([]);
   const [getdata, setGetdata] = useState({});
-  // const [gettodata, setGettodata] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [totals, setTotals] = useState({ totalCredit: 0, totalDebit: 0 });
   const [closingBalance, setClosingBalance] = useState({ type: '', amount: 0 });
-  const formData = sessionStorage.getItem('RDaybookformDate');
-  const toDate = sessionStorage.getItem('RDaybooktoDate');
+  const formData = sessionStorage.getItem('RCDaybookformDate');
+  const toDate = sessionStorage.getItem('RCDaybooktoDate');
   // const { canDownloadPdfBankCustomer } = useCan();
 
   useEffect(() => {
-    dispatch(getallDaybookledger(formData, toDate))
+    dispatch(getallCashDaybookledger(formData, toDate))
       .then((data) => {
         if (data && data.records) {
           const recordsArray = Object.values(data.records).flat();
@@ -181,4 +180,4 @@ const Daybookledgerlist = () => {
   );
 };
 
-export default Daybookledgerlist;
+export default Cashdaybookledgerlist;

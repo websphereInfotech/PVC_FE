@@ -5,12 +5,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { getallDaybookledger } from 'store/thunk';
+import { getallCashDaybookledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import { useTheme } from '@emotion/react';
 
-const Daybookreport = ({ Open, onClose }) => {
-  Daybookreport.propTypes = {
+const Cashdaybookreport = ({ Open, onClose }) => {
+  Cashdaybookreport.propTypes = {
     Open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -47,12 +47,12 @@ const Daybookreport = ({ Open, onClose }) => {
   };
 
   const handleLedger = (formDate, toDate) => {
-    dispatch(getallDaybookledger(formDate, toDate));
-    navigate('/daybookledger');
+    dispatch(getallCashDaybookledger(formDate, toDate));
+    navigate('/cashdaybookledger');
     setFormDate(formDate);
-    sessionStorage.setItem('RDaybookformDate', formDate);
+    sessionStorage.setItem('RCDaybookformDate', formDate);
     setToDate(toDate);
-    sessionStorage.setItem('RDaybooktoDate', toDate);
+    sessionStorage.setItem('RCDaybooktoDate', toDate);
   };
 
   return (
@@ -105,4 +105,4 @@ const Daybookreport = ({ Open, onClose }) => {
   );
 };
 
-export default Daybookreport;
+export default Cashdaybookreport;

@@ -348,7 +348,6 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
               options={itemgroupOptions}
               value={{ value: formData.itemGroupId, label: itemgroupname }}
               onChange={(selectedOption) => handleitemgroupChange(selectedOption)}
-              isDisabled={Boolean(id)}
               styles={{
                 container: (base) => ({
                   ...base,
@@ -372,7 +371,6 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
               options={itemcategoryOptions}
               value={{ value: formData.itemCategoryId, label: itemcategoryname }}
               onChange={(selectedOption) => handleitemcategoryChange(selectedOption)}
-              isDisabled={Boolean(id)}
               styles={{
                 container: (base) => ({
                   ...base,

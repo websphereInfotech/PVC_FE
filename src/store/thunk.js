@@ -691,9 +691,15 @@ import {
   getAllAccountLedgerRequest,
   getAllAccountLedgerSuccess,
   getAllAccountLedgerFailure,
+  getAllCashAccountLedgerRequest,
+  getAllCashAccountLedgerSuccess,
+  getAllCashAccountLedgerFailure,
   getAllDaybookLedgerRequest,
   getAllDaybookLedgerSuccess,
   getAllDaybookLedgerFailure,
+  getAllCashDaybookLedgerRequest,
+  getAllCashDaybookLedgerSuccess,
+  getAllCashDaybookLedgerFailure,
   getWalletRequest,
   getWalletSuccess,
   getWalletFailure,
@@ -5032,7 +5038,25 @@ export const getallAccountledger = (id, formDate, toDate) => {
     }
   };
 };
-export const getallDaybookledger = (id, formDate, toDate) => {
+export const getallCashAccountledger = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllCashAccountLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_account_ledger/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getallCashAccountledgerlist = response.data.data;
+      dispatch(getAllCashAccountLedgerSuccess(getallCashAccountledgerlist));
+      return getallCashAccountledgerlist;
+    } catch (error) {
+      dispatch(getAllCashAccountLedgerFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallDaybookledger = (formDate, toDate) => {
   return async (dispatch) => {
     dispatch(getAllDaybookLedgerRequest());
     try {
@@ -5043,6 +5067,21 @@ export const getallDaybookledger = (id, formDate, toDate) => {
       return getallDaybookledgerlist;
     } catch (error) {
       dispatch(getAllDaybookLedgerFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallCashDaybookledger = (formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllCashDaybookLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/ledger/C_daybook/?formDate=${formDate}&toDate=${toDate}`, config);
+      const getallCashDaybookledgerlist = response.data.data;
+      dispatch(getAllCashDaybookLedgerSuccess(getallCashDaybookledgerlist));
+      return getallCashDaybookledgerlist;
+    } catch (error) {
+      dispatch(getAllCashDaybookLedgerFailure(error.message));
       throw error;
     }
   };

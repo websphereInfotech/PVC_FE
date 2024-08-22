@@ -25,11 +25,13 @@ import Daybookledgerlist from 'component/reports/financial report/daybookledgerl
 import Maintenchedulelist from 'views/machine managenment/mainten shedule/maintenschedulelist';
 import Maintenscheduleadd from 'views/machine managenment/mainten shedule/maintenscheduleadd';
 import Wallet from 'views/finacial managenment/Wallet/wallet';
+import Cashaccountledgerlist from 'component/reports/financial cash report/cashaccountledgerlist';
+import Cashdaybookledgerlist from 'component/reports/financial cash report/cashdaybookledgerlist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
-const Reports = Loadable(lazy(() => import('../views/reports')));
-
+const Reports = Loadable(lazy(() => import('../views/finacial managenment/Ledgers/reports')));
+const Reportcash = Loadable(lazy(() => import('../views/finacial managenment/Ledgers/reportscash')));
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcashlist')));
 const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcash')));
@@ -648,6 +650,9 @@ const MainRoutes = {
     // { path: '/stock', element: <StockManagement /> },
     { path: '/productionreport', element: <ReportPage /> },
     { path: '/reports', element: <Reports /> },
+    { path: '/cashreports', element: <Reportcash /> },
+    { path: '/cashaccountledger', element: <Cashaccountledgerlist /> },
+    { path: '/cashdaybookledger', element: <Cashdaybookledgerlist /> },
     { path: '/accountledger', element: <Accountledgerlist /> },
     { path: '/daybookledger', element: <Daybookledgerlist /> },
 
