@@ -269,7 +269,7 @@ const Recieveclaimcashlist = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+      <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
         <DialogTitle>Confirm Approval</DialogTitle>
         <DialogContent>
           <DialogContentText>
