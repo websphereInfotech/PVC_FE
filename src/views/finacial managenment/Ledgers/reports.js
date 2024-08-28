@@ -4,10 +4,12 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import { Link } from 'react-router-dom';
 import Ledgeraccountreport from 'component/reports/financial report/ledgerreport';
 import Daybookreport from 'component/reports/financial report/daybook';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Reports = () => {
   const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
   const [opendaybookLedgerDialog, setOpendaybookLedgerDialog] = useState(false);
+  const { canseeaccountledger, canseedaybookledger } = useCan();
 
   const handleOpenLedgerDialog = () => {
     setOpenLedgerDialog(true);
@@ -100,28 +102,34 @@ const Reports = () => {
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Profit and Lost Report
                 </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
-                  onClick={handleOpenLedgerDialog}
-                  style={{ cursor: 'pointer' }}
-                >
-                  Ledger Report
-                </Typography>
-                {openLedgerDialog && <Ledgeraccountreport Open={handleOpenLedgerDialog} onClose={handleCloseLedgerDialog} />}
-
-                <Typography
-                  variant="body1"
-                  sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
-                  onClick={handleOpenLDayBookedgerDialog}
-                  style={{ cursor: 'pointer' }}
-                >
-                  Daybook Reports
-                </Typography>
-                {opendaybookLedgerDialog && <Daybookreport Open={handleOpenLDayBookedgerDialog} onClose={handleCloseDayBookLedgerDialog} />}
-                {/* <Typography variant="body1" sx={{ marginTop: '2px' }}>
-                  Daybook Reports
-                </Typography> */}
+                {canseeaccountledger() && (
+                  <>
+                    <Typography
+                      variant="body1"
+                      sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
+                      onClick={handleOpenLedgerDialog}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Ledger Report
+                    </Typography>
+                    {openLedgerDialog && <Ledgeraccountreport Open={handleOpenLedgerDialog} onClose={handleCloseLedgerDialog} />}
+                  </>
+                )}
+                {canseedaybookledger() && (
+                  <>
+                    <Typography
+                      variant="body1"
+                      sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
+                      onClick={handleOpenLDayBookedgerDialog}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Daybook Reports
+                    </Typography>
+                    {opendaybookLedgerDialog && (
+                      <Daybookreport Open={handleOpenLDayBookedgerDialog} onClose={handleCloseDayBookLedgerDialog} />
+                    )}
+                  </>
+                )}
               </CardContent>
             </Card>
           </Grid>

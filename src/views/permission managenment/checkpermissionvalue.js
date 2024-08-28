@@ -835,6 +835,24 @@ const useCan = () => {
     return checkPermission('Purchase Order', 'delete_purchaseOrder');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++ LEDGERS +++++++++++++++++++++++++++++++++++++++
+
+  const canseeaccountledger = () => {
+    return checkPermission('Ledger', 'account_ledger');
+  };
+  const canseeaccountcashledger = () => {
+    return checkPermission('Ledger Cash', 'account_ledger');
+  };
+  const canseedaybookledger = () => {
+    return checkPermission('Ledger', 'daybook');
+  };
+  const canseedaybookcashledger = () => {
+    return checkPermission('Ledger Cash', 'daybook');
+  };
+  const canseewalletledger = () => {
+    return checkPermission('Login', 'wallet_ledger');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -1110,7 +1128,13 @@ const useCan = () => {
     canseeupdatePurchaseOrder,
     canseeviewPurchaseOrder,
     canseeviewAllPurchaseOrder,
-    canseedeletePurchaseOrder
+    canseedeletePurchaseOrder,
+    // LEDGERS ++++++++++++++++++
+    canseeaccountledger,
+    canseeaccountcashledger,
+    canseedaybookledger,
+    canseedaybookcashledger,
+    canseewalletledger
   };
 };
 

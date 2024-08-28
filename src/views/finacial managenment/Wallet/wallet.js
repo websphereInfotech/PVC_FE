@@ -266,6 +266,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
 import { ApproveWallet, getallusers, getWallet } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Wallet = () => {
   const [users, setUsers] = useState([]);
@@ -277,6 +278,7 @@ const Wallet = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { canseewalletledger } = useCan();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -374,7 +376,7 @@ const Wallet = () => {
               <Button style={{ marginRight: '20px' }} variant="contained" color="secondary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button variant="contained" color="primary" onClick={handleApply}>
+              <Button disabled={!canseewalletledger()} variant="contained" color="primary" onClick={handleApply}>
                 Apply
               </Button>
             </div>
@@ -419,15 +421,15 @@ const Wallet = () => {
                     <TableCell colSpan={4} style={{ textAlign: 'end', fontWeight: 'bold' }}>
                       Total Credit
                     </TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>{walletData?.totals?.totalCredit}</TableCell>
+                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData?.totals?.totalCredit}</TableCell>
                   </TableRow>
                 )}
-                {walletData?.closingBalance && (
+                {walletData?.closingBalance && walletData?.closingBalance.type === 'credit' && (
                   <TableRow>
                     <TableCell colSpan={4} style={{ textAlign: 'end', fontWeight: 'bold' }}>
                       Closing Balance
                     </TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>{walletData?.closingBalance?.amount}</TableCell>
+                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData?.closingBalance?.amount}</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -471,7 +473,15 @@ const Wallet = () => {
                     <TableCell colSpan={4} style={{ textAlign: 'end', fontWeight: 'bold' }}>
                       Total Debit
                     </TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>{walletData?.totals?.totalDebit}</TableCell>
+                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData?.totals?.totalDebit}</TableCell>
+                  </TableRow>
+                )}
+                {walletData?.closingBalance && walletData?.closingBalance.type === 'debit' && (
+                  <TableRow>
+                    <TableCell colSpan={4} style={{ textAlign: 'end', fontWeight: 'bold' }}>
+                      Closing Balance
+                    </TableCell>
+                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData?.closingBalance?.amount}</TableCell>
                   </TableRow>
                 )}
               </TableBody>

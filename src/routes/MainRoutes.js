@@ -187,7 +187,7 @@ const MainRoutes = {
     },
     { path: '/profile', element: <SamplePage /> },
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
-    { path: 'wallet', element: <Wallet /> },
+    { path: 'wallet', element: <ProtectedRoute element={Wallet} resource="Login" permissionName="wallet_ledger" /> },
     { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="create_claim" /> },
     { path: '/claimcash/:id', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="update_claim" /> },
     { path: '/claimcashlist', element: <ProtectedRoute element={Claimcashlist} resource="Claim Cash" permissionName="view_myclaim" /> },

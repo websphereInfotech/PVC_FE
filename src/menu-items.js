@@ -306,13 +306,7 @@ const MenuItem = () => {
   //   'delete_preventive_maintenance'
   // ]);
 
-  // const hasAllPermissionsBreackdownmaintenance = checkAllPermissions('Breakdown Maintenance', [
-  //   'create_breakdown_maintenance',
-  //   'view_all_breakdown_maintenance',
-  //   'view_one_breakdown_maintenance',
-  //   'update_breakdown_maintenance',
-  //   'delete_breakdown_maintenance'
-  // ]);
+  const hasAllPermissionsWallet = checkAllPermissions('Login', ['wallet_ledger']);
 
   return {
     items: [
@@ -375,12 +369,13 @@ const MenuItem = () => {
                     type: 'collapse',
                     icon: icons['PaymentsIcon'],
                     children: [
-                      {
-                        id: 'Wallet',
-                        title: 'Wallet',
-                        type: 'item',
-                        url: '/wallet'
-                      },
+                      hasAllPermissionsWallet &&
+                        createConfig1() === 'Super Admin' && {
+                          id: 'Wallet',
+                          title: 'Wallet',
+                          type: 'item',
+                          url: '/wallet'
+                        },
                       hasAllPermissionSalesCash && {
                         id: 'sales cash',
                         title: 'Sales Cash',
