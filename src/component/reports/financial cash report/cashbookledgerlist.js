@@ -72,7 +72,15 @@ const Cashbookledgerlist = () => {
       </Grid>
 
       <Grid container style={{ marginTop: '20px', overflowY: 'scroll' }}>
-        <Grid item xs={12} md={6}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          sx={{
+            borderRight: { xs: 'none', md: '1px solid #ccc' },
+            paddingRight: { md: '16px' }
+          }}
+        >
           <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>
             Credit
           </Typography>
@@ -98,12 +106,14 @@ const Cashbookledgerlist = () => {
                 ))}
               {payments?.totals && (
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>Total Credit:{payments?.totals?.totalCredit}</TableCell>
+                  <TableCell colSpan={4} style={{ textAlign: 'start', fontWeight: 'bold' }}>
+                    Total Credit:{payments?.totals?.totalCredit}
+                  </TableCell>
                 </TableRow>
               )}
               {payments?.closingBalance && payments?.closingBalance.type === 'credit' && (
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                  <TableCell colSpan={4} style={{ textAlign: 'start', fontWeight: 'bold' }}>
                     Closing Balance:{payments?.closingBalance?.amount}
                   </TableCell>
                 </TableRow>
@@ -112,7 +122,7 @@ const Cashbookledgerlist = () => {
           </Table>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} sx={{ paddingLeft: { md: '16px' } }}>
           <Typography variant="h4" gutterBottom style={{ textAlign: 'center', marginTop: isSmallScreen ? '20px' : '0px' }}>
             Debit
           </Typography>
@@ -138,12 +148,14 @@ const Cashbookledgerlist = () => {
                 ))}
               {payments?.totals && (
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>Total Debit:{payments?.totals?.totalDebit}</TableCell>
+                  <TableCell colSpan={4} style={{ textAlign: 'start', fontWeight: 'bold' }}>
+                    Total Debit:{payments?.totals?.totalDebit}
+                  </TableCell>
                 </TableRow>
               )}
               {payments?.closingBalance && payments?.closingBalance.type === 'debit' && (
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                  <TableCell colSpan={4} style={{ textAlign: 'start', fontWeight: 'bold' }}>
                     Closing Balance:{payments?.closingBalance?.amount}
                   </TableCell>
                 </TableRow>
