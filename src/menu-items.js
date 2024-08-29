@@ -199,15 +199,15 @@ const MenuItem = () => {
     'view_all_receipt'
   ]);
 
-  const hasAllPermissionsClaimcash = checkAllPermissions('Claim Cash', [
-    'create_claim',
-    'update_claim',
-    'delete_claim',
-    'view_single_claim',
-    'view_myclaim'
-  ]);
+  // const hasAllPermissionsClaimcash = checkAllPermissions('Claim Cash', [
+  //   'create_claim',
+  //   'update_claim',
+  //   'delete_claim',
+  //   'view_single_claim',
+  //   'view_myclaim'
+  // ]);
 
-  const hasAllPermissionsRecieveClaimcash = checkAllPermissions('Claim Cash', ['view_reciveclaim', 'isapproved_claim']);
+  // const hasAllPermissionsRecieveClaimcash = checkAllPermissions('Claim Cash', ['view_reciveclaim', 'isapproved_claim']);
 
   const hasAllPermissionsPaymentBank = checkAllPermissions('Payment', [
     'create_payment',
@@ -369,13 +369,12 @@ const MenuItem = () => {
                     type: 'collapse',
                     icon: icons['PaymentsIcon'],
                     children: [
-                      hasAllPermissionsWallet &&
-                        createConfig1() === 'Super Admin' && {
-                          id: 'Wallet',
-                          title: 'Wallet',
-                          type: 'item',
-                          url: '/wallet'
-                        },
+                      hasAllPermissionsWallet && {
+                        id: 'Wallet',
+                        title: 'Wallet',
+                        type: 'item',
+                        url: '/wallet'
+                      },
                       hasAllPermissionSalesCash && {
                         id: 'sales cash',
                         title: 'Sales Cash',
@@ -421,28 +420,28 @@ const MenuItem = () => {
                     ]
                   }
                 : {},
-              createConfig() === 'C'
-                ? {
-                    id: 'Cliam',
-                    title: 'Cliam',
-                    type: 'collapse',
-                    icon: icons['PaymentsIcon'],
-                    children: [
-                      hasAllPermissionsClaimcash && {
-                        id: 'Demand cash',
-                        title: 'Demand Cash',
-                        type: 'item',
-                        url: '/claimcashlist'
-                      },
-                      hasAllPermissionsRecieveClaimcash && {
-                        id: 'Approve claim',
-                        title: 'Approve Claim',
-                        type: 'item',
-                        url: '/recieveclaimcashlist'
-                      }
-                    ]
-                  }
-                : {},
+              // createConfig() === 'C'
+              //   ? {
+              //       id: 'Cliam',
+              //       title: 'Cliam',
+              //       type: 'collapse',
+              //       icon: icons['PaymentsIcon'],
+              //       children: [
+              //         hasAllPermissionsClaimcash && {
+              //           id: 'Demand cash',
+              //           title: 'Demand Cash',
+              //           type: 'item',
+              //           url: '/claimcashlist'
+              //         },
+              //         hasAllPermissionsRecieveClaimcash && {
+              //           id: 'Approve claim',
+              //           title: 'Approve Claim',
+              //           type: 'item',
+              //           url: '/recieveclaimcashlist'
+              //         }
+              //       ]
+              //     }
+              //   : {},
               {
                 id: 'Vouchers',
                 title: 'Vouchers',
