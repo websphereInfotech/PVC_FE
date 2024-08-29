@@ -27,6 +27,7 @@ import Maintenscheduleadd from 'views/machine managenment/mainten shedule/mainte
 import Wallet from 'views/finacial managenment/Wallet/wallet';
 import Cashaccountledgerlist from 'component/reports/financial cash report/cashaccountledgerlist';
 import Cashdaybookledgerlist from 'component/reports/financial cash report/cashdaybookledgerlist';
+import Cashbookledgerlist from 'component/reports/financial cash report/cashbookledgerlist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -655,6 +656,7 @@ const MainRoutes = {
     { path: '/cashdaybookledger', element: <Cashdaybookledgerlist /> },
     { path: '/accountledger', element: <Accountledgerlist /> },
     { path: '/daybookledger', element: <Daybookledgerlist /> },
+    { path: '/cashbookledger', element: <Cashbookledgerlist /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesummary', element: <Salesummary /> },

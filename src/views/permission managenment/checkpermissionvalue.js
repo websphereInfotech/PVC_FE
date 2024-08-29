@@ -849,6 +849,9 @@ const useCan = () => {
   const canseedaybookcashledger = () => {
     return checkPermission('Ledger Cash', 'daybook');
   };
+  const canseecashbookcashledger = () => {
+    return checkPermission('Ledger Cash', 'cashbook');
+  };
   const canseewalletledger = () => {
     return checkPermission('Login', 'wallet_ledger');
   };
@@ -1134,6 +1137,7 @@ const useCan = () => {
     canseeaccountcashledger,
     canseedaybookledger,
     canseedaybookcashledger,
+    canseecashbookcashledger,
     canseewalletledger
   };
 };

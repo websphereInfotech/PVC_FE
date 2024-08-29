@@ -694,6 +694,9 @@ import {
   getAllCashAccountLedgerRequest,
   getAllCashAccountLedgerSuccess,
   getAllCashAccountLedgerFailure,
+  getAllCashbookLedgerRequest,
+  getAllCashbookLedgerSuccess,
+  getAllCashbookLedgerFailure,
   getAllDaybookLedgerRequest,
   getAllDaybookLedgerSuccess,
   getAllDaybookLedgerFailure,
@@ -5082,6 +5085,24 @@ export const getallCashDaybookledger = (formDate, toDate) => {
       return getallCashDaybookledgerlist;
     } catch (error) {
       dispatch(getAllCashDaybookLedgerFailure(error.message));
+      throw error;
+    }
+  };
+};
+export const getallCashbookledger = (formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(getAllCashbookLedgerRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_cashbook/?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getallCashbookledgerlist = response.data.data;
+      dispatch(getAllCashbookLedgerSuccess(getallCashbookledgerlist));
+      return getallCashbookledgerlist;
+    } catch (error) {
+      dispatch(getAllCashbookLedgerFailure(error.message));
       throw error;
     }
   };

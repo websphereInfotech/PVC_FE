@@ -4,11 +4,13 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import Ledgeraccountcashreport from 'component/reports/financial cash report/ledgercashreport';
 import Cashdaybookreport from 'component/reports/financial cash report/cashdaybook';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import Cashbookreport from 'component/reports/financial cash report/cashbookreport';
 
 const Reportcash = () => {
   const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+  const [cashLedgerDialog, setCashLedgerDialog] = useState(false);
   const [opendaybookLedgerDialog, setOpendaybookLedgerDialog] = useState(false);
-  const { canseeaccountcashledger, canseedaybookcashledger } = useCan();
+  const { canseeaccountcashledger, canseedaybookcashledger, canseecashbookcashledger } = useCan();
 
   const handleOpenLedgerDialog = () => {
     setOpenLedgerDialog(true);
@@ -16,6 +18,14 @@ const Reportcash = () => {
 
   const handleCloseLedgerDialog = () => {
     setOpenLedgerDialog(false);
+  };
+
+  const handleOpenCashbookLedgerDialog = () => {
+    setCashLedgerDialog(true);
+  };
+
+  const handleCloseCashbookLedgerDialog = () => {
+    setCashLedgerDialog(false);
   };
 
   const handleOpenLDayBookedgerDialog = () => {
@@ -119,9 +129,19 @@ const Reportcash = () => {
                   </>
                 )}
 
-                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Cashbook Report
-                </Typography>
+                {canseecashbookcashledger() && (
+                  <>
+                    <Typography
+                      variant="body1"
+                      sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
+                      style={{ cursor: 'pointer' }}
+                      onClick={handleOpenCashbookLedgerDialog}
+                    >
+                      Cashbook Report
+                    </Typography>
+                    {cashLedgerDialog && <Cashbookreport Open={handleOpenCashbookLedgerDialog} onClose={handleCloseCashbookLedgerDialog} />}
+                  </>
+                )}
               </CardContent>
             </Card>
           </Grid>
