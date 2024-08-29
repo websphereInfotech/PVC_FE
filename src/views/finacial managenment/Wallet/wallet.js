@@ -186,7 +186,7 @@ const Wallet = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center' }}></TableCell>
+                  {createConfig1() === 'Super Admin' ? <TableCell style={{ textAlign: 'center' }}></TableCell> : ''}
                   <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
                   <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
                   <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
@@ -198,13 +198,17 @@ const Wallet = () => {
                   ?.filter((entry) => entry.creditAmount)
                   .map((entry, index) => (
                     <TableRow key={index}>
-                      <TableCell style={{ textAlign: 'center' }}>
-                        <Checkbox
-                          checked={entry.isApprove === true}
-                          disabled={entry.isApprove === true}
-                          onClick={() => handleCheckboxChange(entry)}
-                        />
-                      </TableCell>
+                      {createConfig1() === 'Super Admin' ? (
+                        <TableCell style={{ textAlign: 'center' }}>
+                          <Checkbox
+                            checked={entry.isApprove === true}
+                            disabled={entry.isApprove === true}
+                            onClick={() => handleCheckboxChange(entry)}
+                          />
+                        </TableCell>
+                      ) : (
+                        ''
+                      )}
                       <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
@@ -238,7 +242,7 @@ const Wallet = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ textAlign: 'center' }}></TableCell>
+                  {createConfig1() === 'Super Admin' ? <TableCell style={{ textAlign: 'center' }}></TableCell> : ''}
                   <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
                   <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
                   <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
@@ -250,13 +254,17 @@ const Wallet = () => {
                   ?.filter((entry) => entry.debitAmount)
                   .map((entry, index) => (
                     <TableRow key={index} style={{ textAlign: 'center' }}>
-                      <TableCell style={{ textAlign: 'center' }}>
-                        <Checkbox
-                          checked={entry.isApprove === true}
-                          disabled={entry.isApprove === true}
-                          onClick={() => handleCheckboxChange(entry)}
-                        />
-                      </TableCell>
+                      {createConfig1() === 'Super Admin' ? (
+                        <TableCell style={{ textAlign: 'center' }}>
+                          <Checkbox
+                            checked={entry.isApprove === true}
+                            disabled={entry.isApprove === true}
+                            onClick={() => handleCheckboxChange(entry)}
+                          />
+                        </TableCell>
+                      ) : (
+                        ''
+                      )}
                       <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
