@@ -5107,15 +5107,12 @@ export const getallCashbookledger = (formDate, toDate) => {
     }
   };
 };
-export const getWallet = (id, formDate, toDate) => {
+export const getWallet = (id) => {
   return async (dispatch) => {
     dispatch(getWalletRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/ledger/C_wallet_ledger/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_wallet/${id}`, config);
       const getWalletlist = response.data.data;
       dispatch(getWalletSuccess(getWalletlist));
       return getWalletlist;

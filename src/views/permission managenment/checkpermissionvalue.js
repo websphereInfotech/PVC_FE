@@ -853,7 +853,7 @@ const useCan = () => {
     return checkPermission('Ledger Cash', 'cashbook');
   };
   const canseewalletledger = () => {
-    return checkPermission('Login', 'wallet_ledger');
+    return checkPermission('Claim Cash', 'view_wallet');
   };
 
   return {
