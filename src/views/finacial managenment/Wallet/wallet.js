@@ -236,13 +236,13 @@ const Wallet = () => {
                     </TableRow>
                   ))}
                 {walletData.walletEntry?.totals && (
-                  <TableRow>
+                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                     <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Credit :</TableCell>
                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData.walletEntry?.totals.totalCredit}</TableCell>
                   </TableRow>
                 )}
                 {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'credit' && (
-                  <TableRow>
+                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                     <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance :</TableCell>
                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
                       {walletData.walletEntry?.closingBalance.amount}
@@ -253,12 +253,8 @@ const Wallet = () => {
             </Table>
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              gutterBottom
-              style={{ textAlign: 'center', marginTop: isSmallScreen ? '20px' : '0px', paddingLeft: '16px' }}
-            >
+          <Grid item xs={12} md={6} sx={{ paddingLeft: { md: '16px' } }}>
+            <Typography variant="h4" gutterBottom style={{ textAlign: 'center', marginTop: isSmallScreen ? '20px' : '0px' }}>
               Debit
             </Typography>
             <Table>
@@ -294,13 +290,13 @@ const Wallet = () => {
                     </TableRow>
                   ))}
                 {walletData.walletEntry?.totals && (
-                  <TableRow>
+                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                     <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Debit :</TableCell>
                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData.walletEntry?.totals.totalDebit}</TableCell>
                   </TableRow>
                 )}
                 {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'debit' && (
-                  <TableRow>
+                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                     <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance :</TableCell>
                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
                       {walletData.walletEntry?.closingBalance.amount}
