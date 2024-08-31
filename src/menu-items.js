@@ -22,6 +22,7 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getallPermissions } from 'store/thunk';
+import Cashbookreport from 'component/reports/financial cash report/cashbookreport';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -50,6 +51,20 @@ const icons = {
 const MenuItem = () => {
   const [permissions, setPermissions] = useState([]);
   const dispatch = useDispatch();
+  const [cashLedgerDialog, setCashLedgerDialog] = useState(false);
+
+  const handleOpenCashbookLedgerDialog = () => {
+    setCashLedgerDialog(true);
+  };
+
+  const handleCloseCashbookLedgerDialog = () => {
+    setCashLedgerDialog(false);
+  };
+  console.log(cashLedgerDialog, 'WHAT');
+
+  {
+    cashLedgerDialog ? <Cashbookreport Open={handleOpenCashbookLedgerDialog} onClose={handleCloseCashbookLedgerDialog} /> : '';
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -369,6 +384,12 @@ const MenuItem = () => {
                     type: 'collapse',
                     icon: icons['PaymentsIcon'],
                     children: [
+                      {
+                        id: 'Cash Book',
+                        title: 'Cash Book',
+                        type: 'item',
+                        onClick: handleOpenCashbookLedgerDialog
+                      },
                       hasAllPermissionsWallet && {
                         id: 'Wallet',
                         title: 'Wallet',

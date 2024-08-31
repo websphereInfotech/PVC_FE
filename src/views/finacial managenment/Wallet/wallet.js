@@ -82,10 +82,6 @@ const Wallet = () => {
     handleApply();
   }, [dispatch, userId]);
 
-  const handleCancel = () => {
-    setWalletData([]);
-  };
-
   const handleCheckboxChange = async (entry) => {
     if (entry.isApprove === false) {
       try {
@@ -112,6 +108,23 @@ const Wallet = () => {
           </Typography>
         </Grid>
 
+        {createConfig1() === 'Super Admin' && (
+          <Grid item container spacing={2}>
+            <Grid item xs={12} sm={6} md={2}>
+              <Typography>Company Name</Typography>
+
+              <input placeholder="Comapny name" value={walletData.userWallet?.incomes} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <Typography variant="subtitle1">Cash On Hand</Typography>
+              <input placeholder="Amount" value={walletData.userWallet?.incomes} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <Typography variant="subtitle1">Total Balance</Typography>
+              <input placeholder="Total balance" value={walletData.userWallet?.balance} />
+            </Grid>
+          </Grid>
+        )}
         <Grid item container spacing={2}>
           <Grid item xs={12} sm={6} md={2}>
             <Typography>User Name</Typography>
@@ -138,56 +151,18 @@ const Wallet = () => {
             <Typography variant="subtitle1">Total Balance</Typography>
             <input placeholder="total balance" value={walletData.userWallet?.balance} />
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <Button variant="contained" color="secondary" onClick={handledemandcash}>
-              Demand Cash
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <Button variant="contained" color="secondary" onClick={handleapprovecash}>
-              Approve Claim
-            </Button>
-          </Grid>
-          {createConfig1() === 'Super Admin' ? (
-            <>
-              <Grid item xs={12} sm={6} md={2}>
-                <Button variant="contained" color="secondary" onClick={handleCancel}>
-                  Cancel
-                </Button>
-              </Grid>
-            </>
-          ) : (
-            ''
-          )}
-          {/* <Grid item xs={12} sm={6} md={3}>
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              dateFormat="dd/MM/yyyy"
-              placeholderText="Start Date"
-              style={{ width: '100%' }}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              dateFormat="dd/MM/yyyy"
-              placeholderText="End Date"
-              style={{ width: '100%' }}
-            />
-          </Grid> */}
-          {/* <Grid item xs={12} sm={6} md={3}>
-            <div style={{ display: 'flex' }}>
-              <Button style={{ marginRight: '20px' }} variant="contained" color="secondary" onClick={handleCancel}>
-                Cancel
+          <Grid item xs={12} sm={6} md={4} container sx={{ marginBottom: '8px' }} justifyContent="flex-start" alignItems="end" spacing={2}>
+            <Grid item>
+              <Button variant="contained" color="secondary" onClick={handledemandcash}>
+                Demand Cash
               </Button>
-              <Button disabled={!canseewalletledger()} variant="contained" color="primary" onClick={handleApply}>
-                Apply
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="secondary" onClick={handleapprovecash}>
+                Transfer Cash
               </Button>
-            </div>
-          </Grid> */}
+            </Grid>
+          </Grid>
         </Grid>
 
         <Grid container style={{ marginTop: '20px', overflowY: 'scroll' }}>
@@ -243,7 +218,7 @@ const Wallet = () => {
                 )}
                 {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'credit' && (
                   <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
-                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance :</TableCell>
+                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
                       {walletData.walletEntry?.closingBalance.amount}
                     </TableCell>
@@ -297,7 +272,7 @@ const Wallet = () => {
                 )}
                 {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'debit' && (
                   <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
-                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance :</TableCell>
+                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
                     <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
                       {walletData.walletEntry?.closingBalance.amount}
                     </TableCell>
@@ -306,26 +281,6 @@ const Wallet = () => {
               </TableBody>
             </Table>
           </Grid>
-          {/* {walletData?.totals && !isSmallScreen && (
-            <>
-              <div>
-                <div>
-                  <TableCell colSpan={6} style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                    Total:
-                  </TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center', paddingLeft: '25px' }}>
-                    {walletData?.totals?.totalCredit}
-                  </TableCell>
-                </div>
-                <div>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Total:</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center', paddingLeft: '25px' }}>
-                    {walletData?.totals?.totalDebit}
-                  </TableCell>
-                </div>
-              </div>
-            </>
-          )} */}
         </Grid>
       </Grid>
     </Paper>
