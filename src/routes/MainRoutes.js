@@ -28,7 +28,7 @@ import Wallet from 'views/finacial managenment/Wallet/wallet';
 import Cashaccountledgerlist from 'component/reports/financial cash report/cashaccountledgerlist';
 import Cashdaybookledgerlist from 'component/reports/financial cash report/cashdaybookledgerlist';
 import Cashbookledgerlist from 'component/reports/financial cash report/cashbookledgerlist';
-import Cashbookreport from 'component/reports/financial cash report/cashbookreport';
+import CashbookReport from 'views/finacial managenment/Wallet/cashbook';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -50,12 +50,10 @@ const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/Pa
 const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymencashtlist')));
 const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecash')));
 const PaymentrecieveList = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecashlist')));
-const Ledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/ledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment bank ++++++++++++++++++++++++++++++++++++++++++++++++
 const Paymentbank = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbank')));
 const Paymentbanklist = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbanklist')));
-const Paymentbankledgerlist = Loadable(lazy(() => import('../views/finacial managenment/Payment Bank/paymentbankledgerlist')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment recieve bank ++++++++++++++++++++++++++++++++++++++++++++++++
 const Paymentrecievebank = Loadable(lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentrecievebank')));
@@ -240,10 +238,6 @@ const MainRoutes = {
       element: <ProtectedRoute element={PaymentrecieveList} resource="Receipt Cash" permissionName="view_all_receipt" />
     },
     {
-      path: '/ledgerlist',
-      element: <ProtectedRoute element={Ledgerlist} resource="Vendor Ledger Cash" permissionName="View_Cash_vendor_Ledger" />
-    },
-    {
       path: '/customerledgerlist',
       element: <ProtectedRoute element={Customerledgerlist} resource="Customer Ledger Cash" permissionName="View_Cash_customer_Ledger" />
     },
@@ -260,10 +254,6 @@ const MainRoutes = {
     {
       path: '/paymentbanklist',
       element: <ProtectedRoute element={Paymentbanklist} resource="Payment" permissionName="view_all_payment" />
-    },
-    {
-      path: '/paymentbankledgerlist',
-      element: <ProtectedRoute element={Paymentbankledgerlist} resource="Vendor Ledger" permissionName="View_vendor_Ledger" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments recieve bank +++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -658,7 +648,7 @@ const MainRoutes = {
     { path: '/accountledger', element: <Accountledgerlist /> },
     { path: '/daybookledger', element: <Daybookledgerlist /> },
     { path: '/cashbookledger', element: <Cashbookledgerlist /> },
-    { path: '/cashbook', element: <Cashbookreport /> },
+    { path: '/cashbook', element: <CashbookReport /> },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
     { path: '/salesummary', element: <Salesummary /> },

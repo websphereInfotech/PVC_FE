@@ -366,10 +366,6 @@ import {
   deleteRecieveCashRequest,
   deleteRecieveCashSuccess,
   deleteRecieveCashFailure,
-  // VENDOR LEDGER +++++++++++
-  getAllvendorLedgerRequest,
-  getAllvendorLedgerSuccess,
-  getAllvendorLedgerFailure,
   // CUSTOMER LEDGER +++++++++++
   getAllcustomerLedgerRequest,
   getAllcustomerLedgerSuccess,
@@ -416,9 +412,6 @@ import {
   fetchallpaymentbankRequest,
   fetchallpaymentbankSuccess,
   fetchallpaymentbankFailure,
-  PaymentBankLedgerRequest,
-  PaymentBankLedgerSuccess,
-  PaymentBankLedgerFailure,
   //  PAYMENT RECIEVE BANK +++++++++++++++
   createPaymentRecievebankRequest,
   createPaymentRecievebankSuccess,
@@ -2958,26 +2951,6 @@ export const deleteRecieveCash = (id) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++ VENDOR LEDGER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const getallVendorledger = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(getAllvendorLedgerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/vendorledger/C_get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const getallvendorledgerlist = response.data.data;
-      dispatch(getAllvendorLedgerSuccess(getallvendorledgerlist));
-      return getallvendorledgerlist;
-    } catch (error) {
-      dispatch(getAllvendorLedgerFailure(error.message));
-      throw error;
-    }
-  };
-};
-
-// +++++++++++++++++++++++++++++++++++++++++++++ VENDOR LEDGER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallCustomerledger = (id, formDate, toDate) => {
   return async (dispatch) => {
     dispatch(getAllcustomerLedgerRequest());
@@ -3278,24 +3251,6 @@ export const getAllPaymentbank = () => {
       return data;
     } catch (error) {
       dispatch(fetchallpaymentbankFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const getAllPaymentbankLedger = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(PaymentBankLedgerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/vendorledger/get_vendorLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const data = response.data.data;
-      dispatch(PaymentBankLedgerSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(PaymentBankLedgerFailure(error.message));
       throw error;
     }
   };

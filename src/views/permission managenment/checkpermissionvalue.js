@@ -459,9 +459,6 @@ const useCan = () => {
   const canViwAllPaymentcash = () => {
     return checkPermission('Payment Cash', 'view_all_payment');
   };
-  const canViwAllPaymentcashLedger = () => {
-    return checkPermission('Vendor Ledger Cash', 'View_Cash_vendor_Ledger');
-  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreatePaymentrecievecash = () => {
@@ -499,9 +496,6 @@ const useCan = () => {
   };
   const canViwAllPaymentBank = () => {
     return checkPermission('Payment', 'view_all_payment');
-  };
-  const canViewAllVendorLedger = () => {
-    return checkPermission('Vendor Ledger', 'View_vendor_Ledger');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT Recieve BANK
@@ -1000,7 +994,6 @@ const useCan = () => {
     canDeletePaymentcash,
     canViewPaymentcash,
     canViwAllPaymentcash,
-    canViwAllPaymentcashLedger,
     // PAYMENT REICEVE CASH +++++++++++
     canCreatePaymentrecievecash,
     canUpdatePaymentrecievecash,
@@ -1023,7 +1016,6 @@ const useCan = () => {
     canDeletePaymentBank,
     canViewPaymentBank,
     canViwAllPaymentBank,
-    canViewAllVendorLedger,
     // PAYMENT RECIEVE BANK +++++
     canCreatePaymentRecieveBank,
     canUpdatePaymentRecieveBank,

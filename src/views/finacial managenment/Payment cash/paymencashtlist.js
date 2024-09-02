@@ -14,19 +14,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
-  Grid,
-  useTheme,
-  useMediaQuery
+  IconButton
 } from '@mui/material';
-import Select from 'react-select';
-import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import { fetchAllCustomers, getallPaymentCash, getallVendorledger, paymentCashDelete, paymentCashview } from 'store/thunk';
+import { getallPaymentCash, paymentCashDelete, paymentCashview } from 'store/thunk';
 import { useNavigate } from 'react-router';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import Ledgerlist from './ledger';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 
@@ -41,23 +33,14 @@ const columns = [
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const PaymentListPage = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash, canViwAllPaymentcashLedger } = useCan();
+  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [vendorId, setvendorId] = useState(null);
-  const [vendor, setvendor] = useState([]);
-  const [vendorname, setvendorname] = useState('');
-  const [toDate, setToDate] = useState(new Date());
-  const [formDate, setFormDate] = useState(new Date());
-  const showLedgerlist = false;
 
   useEffect(() => {
     dispatch(getallPaymentCash())
@@ -75,30 +58,6 @@ const PaymentListPage = () => {
   const handleMakePayment = () => {
     navigate('/paymentcash');
   };
-  const handleformDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setFormDate(formattedDate);
-  };
-  const handletoDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setToDate(formattedDate);
-  };
-  const handleLedger = (vendorId, formDate, toDate) => {
-    dispatch(getallVendorledger(vendorId, formDate, toDate));
-    navigate('/ledgerlist');
-    setSelectedId(vendorId);
-    sessionStorage.setItem('vendorId', vendorId);
-    setFormDate(formDate);
-    sessionStorage.setItem('formDate', formDate);
-    setToDate(toDate);
-    sessionStorage.setItem('toDate', toDate);
-  };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -108,14 +67,6 @@ const PaymentListPage = () => {
   const handleUpdatePayment = (id) => {
     dispatch(paymentCashview(id));
     navigate(`/paymentcash/${id}`);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
-  };
-
-  const handleLedgerClick = () => {
-    setOpenDrawer(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -136,32 +87,9 @@ const PaymentListPage = () => {
       console.error('Error deleting payment cash:', error);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchAllCustomers());
-        if (Array.isArray(response)) {
-          const options = response.map((vendor) => ({ value: vendor.id, label: vendor.vendorname }));
-          setvendor([...options]);
-        }
-      } catch (error) {
-        console.error('Error fetching payment cash:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      setvendorId(selectedOption.value);
-      setvendorname(selectedOption.label);
-    }
-  };
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
-      {showLedgerlist && <Ledgerlist vendorId={vendorId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
         Payment Cash List
       </Typography>
@@ -174,15 +102,6 @@ const PaymentListPage = () => {
           disabled={!canCreatePaymentcash()}
         >
           Payment Cash
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ margin: '16px' }}
-          onClick={handleLedgerClick}
-          disabled={!canViwAllPaymentcashLedger()}
-        >
-          Ledger
         </Button>
       </div>
       <TableContainer>
@@ -272,91 +191,6 @@ const PaymentListPage = () => {
             Yes
           </Button>
         </DialogActions>
-      </Dialog>
-      <Dialog
-        open={openDrawer}
-        onClose={handleCloseDrawer}
-        PaperProps={{
-          style: {
-            height: 'auto',
-            width: isMobile ? '90%' : '18%',
-            margin: isMobile ? '0' : 'auto',
-            maxWidth: isMobile ? '80%' : 'none'
-          }
-        }}
-      >
-        <div style={{ display: 'flex', padding: '0px 24px', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>Ledger Details</h3>
-          <span>
-            <IconButton onClick={handleCloseDrawer} style={{}}>
-              <CloseIcon />
-            </IconButton>
-          </span>
-        </div>
-        <DialogContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '20px' }}>
-              <Typography variant="subtitle1">
-                Vendor : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select
-                color="secondary"
-                options={vendor}
-                value={{ value: vendorId, label: vendorname }}
-                onChange={handleSelectChange}
-                menuPortalTarget={document.body}
-                styles={{
-                  menu: (provided) => ({
-                    ...provided,
-                    zIndex: 9999,
-                    maxHeight: '300px',
-                    overflowY: 'scroll'
-                  }),
-                  container: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  }),
-                  menuPortal: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  })
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">
-                From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formDate}
-                onChange={(date) => handleformDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">
-                To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={toDate}
-                onChange={(date) => handletoDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Button
-              onClick={() => handleLedger(vendorId, formDate, toDate)}
-              variant="contained"
-              color="secondary"
-              style={{ marginLeft: '60%' }}
-            >
-              GO
-            </Button>
-          </Grid>
-        </DialogContent>
       </Dialog>
     </Card>
   );
