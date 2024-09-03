@@ -47,25 +47,7 @@ import {
   fetchPurchaseOrderRequest,
   fetchPurchaseOrderSuccess,
   fetchPurchaseOrderFailure,
-  // CUSTOMER +++++++++++++++++++++++++++++++++++++
-  fetchAllCustomersCashRequest,
-  fetchAllCustomersCashSuccess,
-  fetchAllCustomersCashFailure,
-  fetchAllCustomersRequest,
-  fetchAllCustomersSuccess,
-  fetchAllCustomersFailure,
-  createCustomerRequest,
-  createCustomerSuccess,
-  createCustomerFailure,
-  deleteCustomerRequest,
-  deleteCustomerSuccess,
-  deleteCustomerFailure,
-  viewCustomerRequest,
-  viewCustomerSuccess,
-  viewCustomerFailure,
-  updateCustomerRequest,
-  updateCustomerSuccess,
-  updateCustomerFailure,
+
   // PRODUCT ++++++++++++++++++++++++++++++++++
   fetchAllProdutscashRequest,
   fetchAllProdutscashSuccess,
@@ -366,10 +348,6 @@ import {
   deleteRecieveCashRequest,
   deleteRecieveCashSuccess,
   deleteRecieveCashFailure,
-  // CUSTOMER LEDGER +++++++++++
-  getAllcustomerLedgerRequest,
-  getAllcustomerLedgerSuccess,
-  getAllcustomerLedgerFailure,
   // USER CLAIM +++++++++++
   getAllclaimuserRequest,
   getAllclaimuserSuccess,
@@ -428,9 +406,6 @@ import {
   fetchallpaymentrecievebankRequest,
   fetchallpaymentrecievebankSuccess,
   fetchallpaymentrecievebankFailure,
-  PaymentrecieveBankLedgerRequest,
-  PaymentrecieveBankLedgerSuccess,
-  PaymentrecieveBankLedgerFailure,
   // BILL OF MATERIAL ++++++++++++++
   getAllBomRequest,
   getAllBomSuccess,
@@ -588,18 +563,6 @@ import {
   DeleteBreakdownSuccess,
   DeleteBreakdownFailure,
   // PDF VENDOR BANK +++++++++++
-  VendorbankPdfRequest,
-  VendorbankPdfSuccess,
-  VendorbankPdfFailure,
-  CustomerbankPdfRequest,
-  CustomerbankPdfSuccess,
-  CustomerbankPdfFailure,
-  CustomerCashPdfRequest,
-  CustomerCashPdfSuccess,
-  CustomerCashPdfFailure,
-  VendorCashPdfRequest,
-  VendorCashPdfSuccess,
-  VendorCashPdfFailure,
   SalesCashPdfRequest,
   SalesCashPdfSuccess,
   SalesCashPdfFailure,
@@ -1100,119 +1063,6 @@ export const deleteDileveryChallan = (id) => {
   };
 };
 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CUSTOMER ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const fetchAllCustomersCash = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllCustomersCashRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/C_get_all_customer`, config);
-      const data = response.data.data;
-      dispatch(fetchAllCustomersCashSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllCustomersCashFailure(error.message));
-    }
-  };
-};
-export const fetchAllCustomers = (params = {}) => {
-  return async (dispatch) => {
-    dispatch(fetchAllCustomersRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/get_all_customer?{search}=`, {
-        ...config,
-        params: params
-      });
-      const data = response.data.data;
-      dispatch(fetchAllCustomersSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllCustomersFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createCustomer = (customerData, navigate) => {
-  return async (dispatch) => {
-    dispatch(createCustomerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/customer/create_customer`, customerData, config);
-      const createdCustomer = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(createCustomerSuccess(createdCustomer));
-      return createdCustomer;
-    } catch (error) {
-      dispatch(createCustomerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message, {
-          autoClose: 1000
-        });
-      }
-    }
-  };
-};
-export const DeleteCustomer = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteCustomerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/customer/delete_customer/${id}`, config);
-      const data = response.data.data;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(deleteCustomerSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(deleteCustomerFailure(error.message));
-    }
-  };
-};
-export const viewCustomer = (id) => {
-  return async (dispatch) => {
-    dispatch(viewCustomerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/customer/view_customer/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewCustomerSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewCustomerFailure(error.message));
-    }
-  };
-};
-export const updateCustomer = (id, customerData, navigate) => {
-  return async (dispatch) => {
-    dispatch(updateCustomerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/customer/update_customer/${id}`, customerData, config);
-      const upadteCustomerData = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(updateCustomerSuccess(upadteCustomerData));
-      return upadteCustomerData;
-    } catch (error) {
-      dispatch(updateCustomerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
-};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PRODUCT ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const fetchAllProductsCash = () => {
   return async (dispatch) => {
@@ -2950,26 +2800,6 @@ export const deleteRecieveCash = (id) => {
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++ VENDOR LEDGER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const getallCustomerledger = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(getAllcustomerLedgerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/customerledger/C_get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const getallcustomerledgerlist = response.data.data;
-      dispatch(getAllcustomerLedgerSuccess(getallcustomerledgerlist));
-      return getallcustomerledgerlist;
-    } catch (error) {
-      dispatch(getAllcustomerLedgerFailure(error.message));
-      throw error;
-    }
-  };
-};
-
 // +++++++++++++++++++++++++++++++++++++++++++++ CALAIM+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getallclaimuser = () => {
   return async (dispatch) => {
@@ -3361,26 +3191,6 @@ export const getAllPaymentRecievebank = () => {
     } catch (error) {
       dispatch(fetchallpaymentrecievebankFailure(error.message));
       throw error;
-    }
-  };
-};
-export const getAllPaymentRecievebankLedger = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(PaymentrecieveBankLedgerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/customerledger/get_customerLedger/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const data = response.data.data;
-      dispatch(PaymentrecieveBankLedgerSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(PaymentrecieveBankLedgerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4384,126 +4194,6 @@ export const deleteBreakdown = (id) => {
   };
 };
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor pdf of bank +++++++++++++++++++++++++++++++++++++
-export const BankVendorPDF = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(VendorbankPdfRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/vendorledger/get_vendorLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const base64Data = response.data.data;
-      if (!base64Data) {
-        throw new Error('Base64 data is undefined');
-      }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'vendor_bank_ledger.pdf');
-      dispatch(VendorbankPdfSuccess(base64Data));
-      return base64Data;
-    } catch (error) {
-      console.error('Error fetching PDF:', error);
-      toast.error(error.response?.data?.error || 'An error occurred');
-      dispatch(VendorbankPdfFailure(error.message));
-    }
-  };
-};
-export const BankCustomerPDF = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(CustomerbankPdfRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/customerledger/get_customerLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const base64Data = response.data.data;
-      if (!base64Data) {
-        throw new Error('Base64 data is undefined');
-      }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'customer_bank_ledger.pdf');
-      dispatch(CustomerbankPdfSuccess(base64Data));
-      return base64Data;
-    } catch (error) {
-      console.error('Error fetching PDF:', error);
-      toast.error(error.response?.data?.error || 'An error occurred');
-      dispatch(CustomerbankPdfFailure(error.message));
-    }
-  };
-};
-export const CashCustomerPDF = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(CustomerCashPdfRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/customerledger/C_get_customerLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const base64Data = response.data.data;
-      if (!base64Data) {
-        throw new Error('Base64 data is undefined');
-      }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'customer_cash_ledger.pdf');
-      dispatch(CustomerCashPdfSuccess(base64Data));
-      return base64Data;
-    } catch (error) {
-      console.error('Error fetching PDF:', error);
-      toast.error(error.response?.data?.error || 'An error occurred');
-      dispatch(CustomerCashPdfFailure(error.message));
-    }
-  };
-};
-export const CashVendorPDF = (id, formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(VendorCashPdfRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/vendorledger/C_get_vendorLedger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const base64Data = response.data.data;
-      if (!base64Data) {
-        throw new Error('Base64 data is undefined');
-      }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'vendor_cash_ledger.pdf');
-      dispatch(VendorCashPdfSuccess(base64Data));
-      return base64Data;
-    } catch (error) {
-      console.error('Error fetching PDF:', error);
-      toast.error(error.response?.data?.error || 'An error occurred');
-      dispatch(VendorCashPdfFailure(error.message));
-    }
-  };
-};
 export const SalesCashPDF = (id) => {
   return async (dispatch) => {
     dispatch(SalesCashPdfRequest());

@@ -255,7 +255,7 @@ const Debitnotecash = () => {
         });
         setPurchasedata(purchaseDataCash.purchaseNo);
         setSelectaccount(accountDebitNoCash.id);
-        setAccountname(accountDebitNoCash.accountName);
+        setAccountname(accountDebitNoCash.contactPersonName);
         const updatedRows = response.cashDebitNoteItem.map((item) => ({
           id: item.id,
           productId: item.DebitProductCash.id,

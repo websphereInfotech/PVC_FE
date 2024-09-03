@@ -56,14 +56,6 @@ const Daybookledgerlist = () => {
       });
   }, [dispatch, formData, toDate]);
 
-  // const downloadpdf = () => {
-  //   try {
-  //     dispatch(BankCustomerPDF(formData, toDate));
-  //   } catch (error) {
-  //     console.error('Error fetching pdf:', error);
-  //   }
-  // };
-
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>

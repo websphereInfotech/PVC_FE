@@ -232,7 +232,7 @@ const Creditnotecash = () => {
           });
           setSelectaccount(accountCreditNoCash.id);
           setAccountState(accountCreditNoCash.accountDetail?.state);
-          setAccountname(accountCreditNoCash.accountName);
+          setAccountname(accountCreditNoCash.contactPersonName);
           const updatedRows = response.cashCreditNoteItem.map((item) => ({
             id: item.id,
             productId: item.CreditProductCash.id,

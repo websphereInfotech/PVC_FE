@@ -184,7 +184,7 @@ const Creditnotecashlist = () => {
                     ) : column.id === 'creditdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
-                      row.accountCreditNoCash.accountName
+                      row.accountCreditNoCash.contactPersonName
                     ) : column.id === 'createdBy' ? (
                       row.creditCreateUserCash?.username
                     ) : column.id === 'updatedBy' ? (

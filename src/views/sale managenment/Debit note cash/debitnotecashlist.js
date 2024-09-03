@@ -184,7 +184,7 @@ const Debitnotecashlist = () => {
                     ) : column.id === 'debitdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
-                      row.accountDebitNoCash.accountName
+                      row.accountDebitNoCash.contactPersonName
                     ) : column.id === 'createdBy' ? (
                       row.debitCreateUserCash?.username
                     ) : column.id === 'updatedBy' ? (

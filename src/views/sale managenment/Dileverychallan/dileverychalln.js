@@ -25,7 +25,7 @@ const Deliverychallan = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreateCustomer, canCreateItem } = useCan();
+  const { canseecreateAccount, canCreateItem } = useCan();
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '' }]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [account, setaccount] = useState([]);
@@ -43,12 +43,12 @@ const Deliverychallan = () => {
     challanno: 0,
     saleInvoiceId: ''
   });
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canseecreateAccountValue, setcanseecreateAccountValue] = useState(null);
   const [canCreateProductvalue, setCanCreateProductvalue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
+    setcanseecreateAccountValue(canseecreateAccount());
     setCanCreateProductvalue(canCreateItem());
-  }, [canCreateCustomer, canCreateItem]);
+  }, [canseecreateAccount, canCreateItem]);
   // to add multiple row for product item
   const handleAddRow = () => {
     const newRow = {
@@ -184,7 +184,7 @@ const Deliverychallan = () => {
         if (Array.isArray(response)) {
           const options = response.map((account) => ({ value: account.id, label: account.accountName }));
           setaccount([{ value: 'new', label: 'Create New Party' }, ...options]);
-          if (!canCreateCustomerValue) {
+          if (!canseecreateAccountValue) {
             setaccount(options);
           }
         }
@@ -206,10 +206,10 @@ const Deliverychallan = () => {
         console.error('Error fetching delivery challan:', error);
       }
     };
-    if (canCreateCustomerValue !== null || canCreateProductvalue !== null) {
+    if (canseecreateAccountValue !== null || canCreateProductvalue !== null) {
       fetchData();
     }
-  }, [dispatch, id, canCreateCustomerValue, canCreateProductvalue]);
+  }, [dispatch, id, canseecreateAccountValue, canCreateProductvalue]);
 
   useEffect(() => {
     const data = async () => {

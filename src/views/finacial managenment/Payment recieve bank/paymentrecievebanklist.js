@@ -14,27 +14,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
-  Grid,
-  useMediaQuery
+  IconButton
 } from '@mui/material';
-import Select from 'react-select';
-import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch } from 'react-redux';
-import {
-  deletePaymentRecievebank,
-  fetchAllCustomers,
-  getAllPaymentRecievebank,
-  getAllPaymentRecievebankLedger,
-  viewSinglePaymentRecieveBank
-} from 'store/thunk';
+import { deletePaymentRecievebank, getAllPaymentRecievebank, viewSinglePaymentRecieveBank } from 'store/thunk';
 import { useNavigate } from 'react-router';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
-import Paymentbankrecieveledgerlist from './paymentbankrecieveledgerlist';
 import { Delete, Edit } from '@mui/icons-material';
-import { useTheme } from '@emotion/react';
 
 const columns = [
   { id: 'voucherno', label: 'Voucher No.', align: 'center' },
@@ -46,23 +32,14 @@ const columns = [
   { id: 'action', label: 'Action', align: 'center' }
 ];
 const Paymentrecievebanklist = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentRecieveBank, canUpdatePaymentRecieveBank, canDeletePaymentRecieveBank, canViewAllCustomerLedger } = useCan();
+  const { canCreatePaymentRecieveBank, canUpdatePaymentRecieveBank, canDeletePaymentRecieveBank } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [customerId, setcustomerId] = useState(null);
-  const [customer, setcustomer] = useState([]);
-  const [customername, setcustomername] = useState('');
-  const [toDate, setToDate] = useState(new Date());
-  const [formDate, setFormDate] = useState(new Date());
-  const showLedgerlist = false;
 
   useEffect(() => {
     dispatch(getAllPaymentRecievebank())
@@ -80,30 +57,6 @@ const Paymentrecievebanklist = () => {
   const handleMakePayment = () => {
     navigate('/paymentrecievebank');
   };
-  const handleformDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setFormDate(formattedDate);
-  };
-  const handletoDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setToDate(formattedDate);
-  };
-  const handleLedger = (customerId, formDate, toDate) => {
-    dispatch(getAllPaymentRecievebankLedger(customerId, formDate, toDate));
-    navigate('/paymentrecievebankledgerlist');
-    setcustomerId(customerId);
-    sessionStorage.setItem('PRcustomerId', customerId);
-    setFormDate(formDate);
-    sessionStorage.setItem('PRformDate', formDate);
-    setToDate(toDate);
-    sessionStorage.setItem('PRtoDate', toDate);
-  };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -113,14 +66,6 @@ const Paymentrecievebanklist = () => {
   const handleUpdatePayment = (id) => {
     dispatch(viewSinglePaymentRecieveBank(id));
     navigate(`/paymentrecievebank/${id}`);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
-  };
-
-  const handleLedgerClick = () => {
-    setOpenDrawer(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -142,32 +87,8 @@ const Paymentrecievebanklist = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(fetchAllCustomers());
-        if (Array.isArray(response)) {
-          const options = response.map((customer) => ({ value: customer.id, label: customer.accountname }));
-          setcustomer([...options]);
-        }
-      } catch (error) {
-        console.error('Error fetching payment bank:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleSelectChange = (selectedOption) => {
-    if (selectedOption && selectedOption.label) {
-      setcustomerId(selectedOption.value);
-      setcustomername(selectedOption.label);
-    }
-  };
-
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
-      {showLedgerlist && <Paymentbankrecieveledgerlist customerId={customerId} fromDate={formDate} toDate={toDate} />}
       <Typography variant="h4" align="center" id="mycss">
         Receipt List
       </Typography>
@@ -180,15 +101,6 @@ const Paymentrecievebanklist = () => {
           disabled={!canCreatePaymentRecieveBank()}
         >
           Receipt
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ margin: '16px' }}
-          onClick={handleLedgerClick}
-          disabled={!canViewAllCustomerLedger()}
-        >
-          Ledger
         </Button>
       </div>
       <TableContainer>
@@ -280,91 +192,6 @@ const Paymentrecievebanklist = () => {
             Yes
           </Button>
         </DialogActions>
-      </Dialog>
-      <Dialog
-        open={openDrawer}
-        onClose={handleCloseDrawer}
-        PaperProps={{
-          style: {
-            height: 'auto',
-            width: isMobile ? '90%' : '18%',
-            margin: isMobile ? '0' : 'auto',
-            maxWidth: isMobile ? '80%' : 'none'
-          }
-        }}
-      >
-        <div style={{ display: 'flex', padding: '0px 20px', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>Ledger Details</h3>
-          <span>
-            <IconButton onClick={handleCloseDrawer} style={{}}>
-              <CloseIcon />
-            </IconButton>
-          </span>
-        </div>
-        <DialogContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '20px' }}>
-              <Typography variant="subtitle1">
-                Customer : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <Select
-                color="secondary"
-                options={customer}
-                value={{ value: customerId, label: customername }}
-                onChange={handleSelectChange}
-                menuPortalTarget={document.body}
-                styles={{
-                  menu: (provided) => ({
-                    ...provided,
-                    zIndex: 9999,
-                    maxHeight: '300px',
-                    overflowY: 'scroll'
-                  }),
-                  container: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  }),
-                  menuPortal: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  })
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">
-                From Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={formDate}
-                onChange={(date) => handleformDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">
-                To Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
-              </Typography>
-              <DatePicker
-                selected={toDate}
-                onChange={(date) => handletoDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
-            </Grid>
-            <Button
-              onClick={() => handleLedger(customerId, formDate, toDate)}
-              variant="contained"
-              color="secondary"
-              style={{ marginLeft: '60%' }}
-            >
-              GO
-            </Button>
-          </Grid>
-        </DialogContent>
       </Dialog>
     </Card>
   );

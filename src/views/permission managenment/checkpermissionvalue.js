@@ -200,18 +200,6 @@ const useCan = () => {
   };
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CUSTOMER
-  const canCreateCustomer = () => {
-    return checkPermission('Customer', 'create_customer');
-  };
-  const canUpdateCustomer = () => {
-    return checkPermission('Customer', 'update_customer');
-  };
-  const canDeleteCustomer = () => {
-    return checkPermission('Customer', 'delete_customer');
-  };
-  const canViewCustomer = () => {
-    return checkPermission('Customer', 'view_single_customer');
-  };
   const canViewAllCustomer = () => {
     return checkPermission('Customer', 'view_all_customer');
   };
@@ -476,9 +464,6 @@ const useCan = () => {
   const canViwAllPaymentrecievecash = () => {
     return checkPermission('Receipt Cash', 'view_all_receipt');
   };
-  const canViwAllPaymentrecievecashLedger = () => {
-    return checkPermission('Customer Ledger Cash', 'View_Cash_customer_Ledger');
-  };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT BANK
 
@@ -514,9 +499,6 @@ const useCan = () => {
   };
   const canViwAllPaymentRecieveBank = () => {
     return checkPermission('Receipt', 'get_all_receipt');
-  };
-  const canViewAllCustomerLedger = () => {
-    return checkPermission('Customer Ledger', 'View_customer_Ledger');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY
@@ -904,10 +886,6 @@ const useCan = () => {
     canViewPayment,
     canViewAllPayment,
     // CUSTOMER +++++++++++++++++++++++
-    canCreateCustomer,
-    canUpdateCustomer,
-    canDeleteCustomer,
-    canViewCustomer,
     canViewAllCustomer,
     //  VENDOR ++++++++++++++++++++++++
     canCreateVendor,
@@ -1000,7 +978,6 @@ const useCan = () => {
     canDeletePaymentrecievecash,
     canViewPaymentrecievecash,
     canViwAllPaymentrecievecash,
-    canViwAllPaymentrecievecashLedger,
     // CLAIM CASH +++++++++++
     canCreateClaimcash,
     canUpdateClaimcash,
@@ -1022,7 +999,6 @@ const useCan = () => {
     canDeletePaymentRecieveBank,
     canViewPaymentRecieveBank,
     canViwAllPaymentRecieveBank,
-    canViewAllCustomerLedger,
     // COMPANY ++++++++++++++++++
     canCreateCompany,
     canUpdateCompany,

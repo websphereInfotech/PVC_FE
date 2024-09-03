@@ -24,7 +24,7 @@ const Paymentrecievebank = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateCustomer, canViwAllCompanyBank } = useCan();
+  const { canseecreateAccount, canViwAllCompanyBank } = useCan();
   const [accountname, setaccountname] = useState('');
   const [companyname, setcompanyname] = useState('');
   const [account, setaccount] = useState([]);
@@ -51,10 +51,10 @@ const Paymentrecievebank = () => {
     branch: ''
   });
   console.log(selectaccount, selectcompanyaccount);
-  const [canCreateCustomerValue, setCanCreateCustomerValue] = useState(null);
+  const [canseecreateAccountValue, setcanseecreateAccountValue] = useState(null);
   useEffect(() => {
-    setCanCreateCustomerValue(canCreateCustomer());
-  }, [canCreateCustomer]);
+    setcanseecreateAccountValue(canseecreateAccount());
+  }, [canseecreateAccount]);
 
   const handleDateChange = (date) => {
     setFormData({ ...formData, paymentdate: date });
@@ -133,7 +133,7 @@ const Paymentrecievebank = () => {
           const options = response.map((account) => ({ value: account.id, label: account.accountName }));
           setaccount([{ value: 'new', label: 'Create New Party' }, ...options]);
         }
-        if (!canCreateCustomerValue) {
+        if (!canseecreateAccountValue) {
           setaccount(options);
         }
         const responsecompany = await dispatch(fetchAllCompanyBank());
@@ -168,7 +168,7 @@ const Paymentrecievebank = () => {
         console.error('Error fetching payment recieve bank:', error);
       }
     };
-    if (canCreateCustomerValue !== null) {
+    if (canseecreateAccountValue !== null) {
       fetchData();
     }
     const generateAutoVoucherNumber = async () => {
@@ -205,7 +205,7 @@ const Paymentrecievebank = () => {
     };
     generateAutoVoucherNumber();
     viewData();
-  }, [dispatch, id, canCreateCustomerValue]);
+  }, [dispatch, id, canseecreateAccountValue]);
 
   const handlecreatePaymentCash = async () => {
     try {

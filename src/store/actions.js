@@ -71,26 +71,6 @@ export const UPDATE_PRODUCT_REQUEST = 'UPDATE_PRODUCT_REQUEST';
 export const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS';
 export const UPDATE_PRODUCT_FAILURE = 'UPDATE_PRODUCT_FAILURE';
 
-// ########################################## CUSTOMER ###############################################################################################
-export const FETCH_ALL_CUSTOMERS_CASH_REQUEST = 'FETCH_ALL_CUSTOMERS_CASH_REQUEST';
-export const FETCH_ALL_CUSTOMERS_CASH_SUCCESS = 'FETCH_ALL_CUSTOMERS_CASH_SUCCESS';
-export const FETCH_ALL_CUSTOMERS_CASH_FAILURE = 'FETCH_ALL_CUSTOMERS_CASH_FAILURE';
-export const FETCH_ALL_CUSTOMERS_REQUEST = 'FETCH_ALL_CUSTOMERS_REQUEST';
-export const FETCH_ALL_CUSTOMERS_SUCCESS = 'FETCH_ALL_CUSTOMERS_SUCCESS';
-export const FETCH_ALL_CUSTOMERS_FAILURE = 'FETCH_ALL_CUSTOMERS_FAILURE';
-export const CREATE_CUSTOMER_REQUEST = 'CREATE_CUSTOMER_REQUEST';
-export const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS';
-export const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE';
-export const UPDATE_CUSTOMER_REQUEST = 'UPDATE_CUSTOMER_REQUEST';
-export const UPDATE_CUSTOMER_SUCCESS = 'UPDATE_CUSTOMER_SUCCESS';
-export const UPDATE_CUSTOMER_FAILURE = 'UPDATE_CUSTOMER_FAILURE';
-export const DELETE_CUSTOMER_REQUEST = 'DELETE_CUSTOMER_REQUEST';
-export const DELETE_CUSTOMER_SUCCESS = 'DELETE_CUSTOMER_SUCCESS';
-export const DELETE_CUSTOMER_FAILURE = 'DELETE_CUSTOMER_FAILURE';
-export const VIEW_CUSTOMER_REQUEST = 'VIEW_CUSTOMER_REQUEST';
-export const VIEW_CUSTOMER_SUCCESS = 'VIEW_CUSTOMER_SUCCESS';
-export const VIEW_CUSTOMER_FAILURE = 'VIEW_CUSTOMER_FAILURE';
-
 // ########################################## DELIVERY CHALLAN ###############################################################################################
 export const CREATE_DELIVERY_CHALLAN_REQUEST = 'CREATE_DELIVERY_CHALLAN_REQUEST';
 export const CREATE_DELIVERY_CHALLAN_SUCCESS = 'CREATE_DELIVERY_CHALLAN_SUCCESS';
@@ -411,9 +391,6 @@ export const DELETE_PAYMENT_RECIEVE_BANK_FAILURE = 'DELETE_PAYMENT_RECIEVE_BANK_
 export const FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_REQUEST';
 export const FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_SUCCESS';
 export const FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE = 'FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE';
-export const PAYMENT_RECIEVE_BANK_LEDGER_REQUEST = 'PAYMENT_RECIEVE_BANK_LEDGER_REQUEST';
-export const PAYMENT_RECIEVE_BANK_LEDGER_SUCCESS = 'PAYMENT_RECIEVE_BANK_LEDGER_SUCCESS';
-export const PAYMENT_RECIEVE_BANK_LEDGER_FAILURE = 'PAYMENT_RECIEVE_BANK_LEDGER_FAILURE';
 
 // #################################################################### COMAPNY BANK ###################################################################
 export const CREATE_COMPANY_BANK_REQUEST = 'CREATE_COMPANY_BANK_REQUEST';
@@ -632,20 +609,6 @@ export const DELETE_BREACKDOWN_SUCCESS = 'DELETE_BREACKDOWN_SUCCESS';
 export const DELETE_BREACKDOWN_FAILURE = 'DELETE_BREACKDOWN_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PDF VENDOR BANK ++++++++++++++++++++++++++++++++
-export const GET_VENDOR_BANK_PDF_REQUEST = 'GET_VENDOR_BANK_PDF_REQUEST';
-export const GET_VENDOR_BANK_PDF_SUCCESS = 'GET_VENDOR_BANK_PDF_SUCCESS';
-export const GET_VENDOR_BANK_PDF_FAILURE = 'GET_VENDOR_BANK_PDF_FAILURE';
-export const GET_CUSTOMER_BANK_PDF_REQUEST = 'GET_CUSTOMER_BANK_PDF_REQUEST';
-export const GET_CUSTOMER_BANK_PDF_SUCCESS = 'GET_CUSTOMER_BANK_PDF_SUCCESS';
-export const GET_CUSTOMER_BANK_PDF_FAILURE = 'GET_CUSTOMER_BANK_PDF_FAILURE';
-
-export const GET_CUSTOMER_CASH_PDF_REQUEST = 'GET_CUSTOMER_CASH_PDF_REQUEST';
-export const GET_CUSTOMER_CASH_PDF_SUCCESS = 'GET_CUSTOMER_CASH_PDF_SUCCESS';
-export const GET_CUSTOMER_CASH_PDF_FAILURE = 'GET_CUSTOMER_CASH_PDF_FAILURE';
-export const GET_VENDOR_CASH_PDF_REQUEST = 'GET_VENDOR_CASH_PDF_REQUEST';
-export const GET_VENDOR_CASH_PDF_SUCCESS = 'GET_VENDOR_CASH_PDF_SUCCESS';
-export const GET_VENDOR_CASH_PDF_FAILURE = 'GET_VENDOR_CASH_PDF_FAILURE';
-
 export const GET_SALES_CASH_PDF_REQUEST = 'GET_SALES_CASH_PDF_REQUEST';
 export const GET_SALES_CASH_PDF_SUCCESS = 'GET_SALES_CASH_PDF_SUCCESS';
 export const GET_SALES_CASH_PDF_FAILURE = 'GET_SALES_CASH_PDF_FAILURE';
@@ -905,77 +868,6 @@ export const fetchPurchaseOrderSuccess = (data) => ({
 });
 export const fetchPurchaseOrderFailure = (error) => ({
   type: 'FETCH_PURCHASE_ORDER_FAILURE',
-  payload: error
-});
-// ################################################################ CUSTOMERS ##################################################################################
-export const fetchAllCustomersCashRequest = () => ({
-  type: 'FETCH_ALL_CUSTOMERS_CASH_REQUEST'
-});
-export const fetchAllCustomersCashSuccess = (data) => ({
-  type: 'FETCH_ALL_CUSTOMERS_CASH_SUCCESS',
-  payload: data
-});
-export const fetchAllCustomersCashFailure = (error) => ({
-  type: 'FETCH_ALL_CUSTOMERS_CASH_FAILURE',
-  payload: error
-});
-export const fetchAllCustomersRequest = () => ({
-  type: 'FETCH_ALL_CUSTOMERS_REQUEST'
-});
-export const fetchAllCustomersSuccess = (data) => ({
-  type: 'FETCH_ALL_CUSTOMERS_SUCCESS',
-  payload: data
-});
-export const fetchAllCustomersFailure = (error) => ({
-  type: 'FETCH_ALL_CUSTOMERS_FAILURE',
-  payload: error
-});
-export const createCustomerRequest = (data) => ({
-  type: 'CREATE_CUSTOMER_REQUEST',
-  payload: data
-});
-export const createCustomerSuccess = (data) => ({
-  type: 'CREATE_CUSTOMER_SUCCESS',
-  payload: data
-});
-export const createCustomerFailure = (error) => ({
-  type: 'CREATE_CUSTOMER_FAILURE',
-  payload: error
-});
-export const deleteCustomerRequest = (data) => ({
-  type: 'DELETE_CUSTOMER_REQUEST',
-  payload: data
-});
-export const deleteCustomerSuccess = (data) => ({
-  type: 'DELETE_CUSTOMER_SUCCESS',
-  payload: data
-});
-export const deleteCustomerFailure = (error) => ({
-  type: 'DELETE_CUSTOMER_FAILURE',
-  payload: error
-});
-export const viewCustomerRequest = (data) => ({
-  type: 'VIEW_CUSTOMER_REQUEST',
-  payload: data
-});
-export const viewCustomerSuccess = (data) => ({
-  type: 'VIEW_CUSTOMER_SUCCESS',
-  payload: data
-});
-export const viewCustomerFailure = (error) => ({
-  type: 'VIEW_CUSTOMER_FAILURE',
-  payload: error
-});
-export const updateCustomerRequest = (data) => ({
-  type: 'UPDATE_CUSTOMER_REQUEST',
-  payload: data
-});
-export const updateCustomerSuccess = (data) => ({
-  type: 'UPDATE_CUSTOMER_SUCCESS',
-  payload: data
-});
-export const updateCustomerFailure = (error) => ({
-  type: 'UPDATE_CUSTOMER_FAILURE',
   payload: error
 });
 
@@ -2129,20 +2021,6 @@ export const deleteRecieveCashFailure = (error) => ({
   payload: error
 });
 
-//  ####################################################################### CUSTOMER LEDGER #####################################################
-export const getAllcustomerLedgerRequest = (data) => ({
-  type: 'FETCH_ALL_CUSTOMER_LEDGER_REQUEST',
-  payload: data
-});
-export const getAllcustomerLedgerSuccess = (data) => ({
-  type: 'FETCH_ALL_CUSTOMER_LEDGER_SUCCESS',
-  payload: data
-});
-export const getAllcustomerLedgerFailure = (error) => ({
-  type: 'FETCH_ALL_CUSTOMER_LEDGER_FAILURE',
-  payload: error
-});
-
 //  ####################################################################### CLAIM USER #####################################################
 export const getAllclaimuserRequest = (data) => ({
   type: 'FETCH_ALL_CLAIM_USER_REQUEST',
@@ -2363,17 +2241,6 @@ export const fetchallpaymentrecievebankSuccess = (data) => ({
 });
 export const fetchallpaymentrecievebankFailure = (error) => ({
   type: 'FETCH_ALL_PAYMENT_RECIEVE_BANK_FAILURE',
-  payload: error
-});
-export const PaymentrecieveBankLedgerRequest = () => ({
-  type: 'PAYMENT_RECIEVE_BANK_LEDGER_REQUEST'
-});
-export const PaymentrecieveBankLedgerSuccess = (data) => ({
-  type: 'PAYMENT_RECIEVE_BANK_LEDGER_SUCCESS',
-  payload: data
-});
-export const PaymentrecieveBankLedgerFailure = (error) => ({
-  type: 'PAYMENT_RECIEVE_BANK_LEDGER_FAILURE',
   payload: error
 });
 
@@ -2943,52 +2810,6 @@ export const DeleteBreakdownFailure = (error) => ({
   payload: error
 });
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PDF OF VENDOR BANK ++++++++++++++++++++++++++++++++++++
-
-export const VendorbankPdfRequest = () => ({
-  type: 'GET_VENDOR_BANK_PDF_REQUEST'
-});
-export const VendorbankPdfSuccess = (data) => ({
-  type: 'GET_VENDOR_BANK_PDF_SUCCESS',
-  payload: data
-});
-export const VendorbankPdfFailure = (error) => ({
-  type: 'GET_VENDOR_BANK_PDF_FAILURE',
-  payload: error
-});
-export const CustomerbankPdfRequest = () => ({
-  type: 'GET_CUSTOMER_BANK_PDF_REQUEST'
-});
-export const CustomerbankPdfSuccess = (data) => ({
-  type: 'GET_CUSTOMER_BANK_PDF_SUCCESS',
-  payload: data
-});
-export const CustomerbankPdfFailure = (error) => ({
-  type: 'GET_CUSTOMER_BANK_PDF_FAILURE',
-  payload: error
-});
-
-export const CustomerCashPdfRequest = () => ({
-  type: 'GET_CUSTOMER_CASH_PDF_REQUEST'
-});
-export const CustomerCashPdfSuccess = (data) => ({
-  type: 'GET_CUSTOMER_CASH_PDF_SUCCESS',
-  payload: data
-});
-export const CustomerCashPdfFailure = (error) => ({
-  type: 'GET_CUSTOMER_CASH_PDF_FAILURE',
-  payload: error
-});
-export const VendorCashPdfRequest = () => ({
-  type: 'GET_VENDOR_CASH_PDF_REQUEST'
-});
-export const VendorCashPdfSuccess = (data) => ({
-  type: 'GET_VENDOR_CASH_PDF_SUCCESS',
-  payload: data
-});
-export const VendorCashPdfFailure = (error) => ({
-  type: 'GET_VENDOR_CASH_PDF_FAILURE',
-  payload: error
-});
 export const SalesCashPdfRequest = () => ({
   type: 'GET_SALES_CASH_PDF_REQUEST'
 });

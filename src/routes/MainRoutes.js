@@ -13,7 +13,6 @@ import Payablebillwise from 'component/reports/payable reports/payablebillwise';
 import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
-import Customerledgerlist from 'views/finacial managenment/Recieve cash/customerledgerlist';
 import Pagenotification from 'component/notification';
 import Creditnotecash from 'views/sale managenment/Credit note cash/creditnotecash';
 import Creditnotecashlist from 'views/sale managenment/Credit note cash/creditnotecashlist';
@@ -58,9 +57,6 @@ const Paymentbanklist = Loadable(lazy(() => import('../views/finacial managenmen
 // ++++++++++++++++++++++++++++++++++++++++++++ Routs of payment recieve bank ++++++++++++++++++++++++++++++++++++++++++++++++
 const Paymentrecievebank = Loadable(lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentrecievebank')));
 const Paymentrecievebanklist = Loadable(lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentrecievebanklist')));
-const Paymentbankrecieveledgerlist = Loadable(
-  lazy(() => import('../views/finacial managenment/Payment recieve bank/paymentbankrecieveledgerlist'))
-);
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of quotation +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Proformainvoice = Loadable(lazy(() => import('../views/sale managenment/Proformainvoice/proformainvoice')));
@@ -237,10 +233,6 @@ const MainRoutes = {
       path: '/paymentrecieveList',
       element: <ProtectedRoute element={PaymentrecieveList} resource="Receipt Cash" permissionName="view_all_receipt" />
     },
-    {
-      path: '/customerledgerlist',
-      element: <ProtectedRoute element={Customerledgerlist} resource="Customer Ledger Cash" permissionName="View_Cash_customer_Ledger" />
-    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments bank +++++++++++++++++++++++++++++++++++++++++++++++++++
     {
@@ -268,10 +260,6 @@ const MainRoutes = {
     {
       path: '/paymentrecievebanklist',
       element: <ProtectedRoute element={Paymentrecievebanklist} resource="Receipt" permissionName="get_all_receipt" />
-    },
-    {
-      path: '/paymentrecievebankledgerlist',
-      element: <ProtectedRoute element={Paymentbankrecieveledgerlist} resource="Customer Ledger" permissionName="View_customer_Ledger" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase order +++++++++++++++++++++++++++++++++++++++++++++++++++
