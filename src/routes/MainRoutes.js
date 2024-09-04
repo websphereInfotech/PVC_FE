@@ -3,20 +3,9 @@ import React, { lazy } from 'react';
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
-import Salesummary from 'component/reports/general reports/salesummary';
-import Saleregister from 'component/reports/general reports/saleregister';
-import Purchasesummary from 'component/reports/general reports/purchasesummary';
-import Purchaseregister from 'component/reports/general reports/purchaseregister';
-import Expensesummary from 'component/reports/general reports/expensesummary';
-import Itemratecard from 'component/reports/general reports/itemratecard';
-import Payablebillwise from 'component/reports/payable reports/payablebillwise';
-import Vendorwise from 'component/reports/payable reports/vendorwise';
 import Protected from 'service/Protected';
 import ProtectedRoute from 'service/protectedcash';
 import Pagenotification from 'component/notification';
-import Creditnotecash from 'views/sale managenment/Credit note cash/creditnotecash';
-import Creditnotecashlist from 'views/sale managenment/Credit note cash/creditnotecashlist';
-import CreditnotecashView from 'views/sale managenment/Credit note cash/creditnotecashview';
 import ItemgropuList from 'views/production managenment/Item Group/itemgrouplist';
 import ItemcategoryList from 'views/production managenment/Item Category/itemcategorylist';
 import Accountledgerlist from 'component/reports/financial report/accountledgerlist';
@@ -82,6 +71,11 @@ const Debitnoteview = Loadable(lazy(() => import('../views/sale managenment/Debi
 const Debitnotecash = Loadable(lazy(() => import('../views/sale managenment/Debit note cash/debitnotecash')));
 const Debitnotecashlist = Loadable(lazy(() => import('../views/sale managenment/Debit note cash/debitnotecashlist')));
 const Debitnotecashview = Loadable(lazy(() => import('../views/sale managenment/Debit note cash/debitnotecashview')));
+
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note +++++++++++++++++++++++++++++++++++++++++++++++++++
+const Creditnotecash = Loadable(lazy(() => import('../views/sale managenment/Credit note cash/creditnotecash')));
+const Creditnotecashlist = Loadable(lazy(() => import('../views/sale managenment/Credit note cash/creditnotecashlist')));
+const CreditnotecashView = Loadable(lazy(() => import('../views/sale managenment/Credit note cash/creditnotecashview')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of credit note +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Creditnote = Loadable(lazy(() => import('../views/sale managenment/Credit note/creditnote')));
@@ -636,17 +630,7 @@ const MainRoutes = {
     { path: '/accountledger', element: <Accountledgerlist /> },
     { path: '/daybookledger', element: <Daybookledgerlist /> },
     { path: '/cashbookledger', element: <Cashbookledgerlist /> },
-    { path: '/cashbook', element: <CashbookReport /> },
-
-    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of report ++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/salesummary', element: <Salesummary /> },
-    { path: '/saleregister', element: <Saleregister /> },
-    { path: '/purchasesummary', element: <Purchasesummary /> },
-    { path: '/purchaseregister', element: <Purchaseregister /> },
-    { path: '/expensesummary', element: <Expensesummary /> },
-    { path: '/itemratecard', element: <Itemratecard /> },
-    { path: '/billwise', element: <Payablebillwise /> },
-    { path: '/vendorwise', element: <Vendorwise /> }
+    { path: '/cashbook', element: <CashbookReport /> }
   ]
 };
 

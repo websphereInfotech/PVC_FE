@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { Link } from 'react-router-dom';
 import Ledgeraccountreport from 'component/reports/financial report/ledgerreport';
 import Daybookreport from 'component/reports/financial report/daybook';
 import useCan from 'views/permission managenment/checkpermissionvalue';
@@ -42,45 +41,33 @@ const Reports = () => {
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
-                <Link to="/salesummary" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Sales Summary
-                  </Typography>
-                </Link>
-                <Link to="/saleregister" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Sales Register
-                  </Typography>
-                </Link>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Sales Summary
+                </Typography>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Sales Register
+                </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Sales Return Summary
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Sales Return Item Wise
                 </Typography>
-                <Link to="/purchasesummary" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Purchase Summary
-                  </Typography>
-                </Link>
-                <Link to="/purchaseregister" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Purchase Register
-                  </Typography>
-                </Link>
-                <Link to="/expensesummary" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Expense Summary
-                  </Typography>
-                </Link>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Purchase Summary
+                </Typography>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Purchase Register
+                </Typography>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Expense Summary
+                </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Unbilled Challan
                 </Typography>
-                <Link to="/itemratecard" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ marginTop: '2px' }}>
-                    Item Rate Card
-                  </Typography>
-                </Link>
+                <Typography variant="body1" sx={{ marginTop: '2px' }}>
+                  Item Rate Card
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -177,16 +164,12 @@ const Reports = () => {
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
-                <Link to="/billwise" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Bill Wise
-                  </Typography>
-                </Link>
-                <Link to="/vendorwise" style={{ textDecoration: 'none' }}>
-                  <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                    Vendor Wise
-                  </Typography>
-                </Link>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Bill Wise
+                </Typography>
+                <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
+                  Vendor Wise
+                </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Vendor Wise Total Payable
                 </Typography>

@@ -126,7 +126,7 @@ const Creditnotecash = () => {
         if (Array.isArray(response)) {
           const options = response.map((account) => ({
             value: account.id,
-            label: account.accountName
+            label: account.contactPersonName
           }));
           setaccount([{ value: 'new', label: 'Create New Party', state: '' }, ...options]);
           if (!canCreateAccountValue) {
@@ -296,7 +296,7 @@ const Creditnotecash = () => {
       ...prevAccounts,
       {
         value: newAccountData?.data.data.id,
-        label: newAccountData?.data.data.accountName
+        label: newAccountData?.data.data.contactPersonName
       }
     ]);
     setIsDrawerOpen(false);
