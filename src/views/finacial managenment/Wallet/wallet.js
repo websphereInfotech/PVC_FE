@@ -145,11 +145,11 @@ const Wallet = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1">Cash On Hand</Typography>
-            <input placeholder="Amount" value={walletData.userWallet?.incomes} />
+            <input placeholder="Amount" value={walletData.userWallet?.balance} />
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1">Total Balance</Typography>
-            <input placeholder="total balance" value={walletData.userWallet?.balance} />
+            <input placeholder="total balance" value={walletData.userWallet?.incomes} />
           </Grid>
           <Grid item xs={12} sm={6} md={4} container sx={{ marginBottom: '8px' }} justifyContent="flex-start" alignItems="end" spacing={2}>
             <Grid item>
@@ -164,124 +164,131 @@ const Wallet = () => {
             </Grid>
           </Grid>
         </Grid>
-
-        <Grid container style={{ marginTop: '20px', overflowY: 'scroll' }}>
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{
-              borderRight: { xs: 'none', md: '1px solid #ccc' },
-              paddingRight: { md: '16px' }
-            }}
-          >
-            <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>
-              Credit
-            </Typography>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {createConfig1() === 'Super Admin' ? <TableCell style={{ textAlign: 'center' }}></TableCell> : ''}
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Amount</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {walletData.walletEntry?.records
-                  ?.filter((entry) => entry.creditAmount)
-                  .map((entry, index) => (
-                    <TableRow key={index}>
-                      {createConfig1() === 'Super Admin' ? (
-                        <TableCell style={{ textAlign: 'center' }}>
-                          <Checkbox
-                            checked={entry.isApprove === true}
-                            disabled={entry.isApprove === true}
-                            onClick={() => handleCheckboxChange(entry)}
-                          />
-                        </TableCell>
-                      ) : (
-                        ''
-                      )}
-                      <TableCell style={{ textAlign: 'center' }}>{entry.creditAmount}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
+        {createConfig1() === 'Super Admin' && (
+          <>
+            <Grid container style={{ marginTop: '20px', overflowY: 'scroll' }}>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                sx={{
+                  borderRight: { xs: 'none', md: '1px solid #ccc' },
+                  paddingRight: { md: '16px' }
+                }}
+              >
+                <Typography variant="h4" gutterBottom style={{ textAlign: 'center' }}>
+                  Credit
+                </Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {createConfig1() === 'Super Admin' ? <TableCell style={{ textAlign: 'center' }}></TableCell> : ''}
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Amount</TableCell>
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
                     </TableRow>
-                  ))}
-                {walletData.walletEntry?.totals && (
-                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
-                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Credit :</TableCell>
-                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData.walletEntry?.totals.totalCredit}</TableCell>
-                  </TableRow>
-                )}
-                {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'credit' && (
-                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
-                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
-                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                      {walletData.walletEntry?.closingBalance.amount}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </Grid>
-
-          <Grid item xs={12} md={6} sx={{ paddingLeft: { md: '16px' } }}>
-            <Typography variant="h4" gutterBottom style={{ textAlign: 'center', marginTop: isSmallScreen ? '20px' : '0px' }}>
-              Debit
-            </Typography>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {createConfig1() === 'Super Admin' ? <TableCell style={{ textAlign: 'center' }}></TableCell> : ''}
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Amount</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
-                  <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {walletData.walletEntry?.records
-                  ?.filter((entry) => entry.debitAmount)
-                  .map((entry, index) => (
-                    <TableRow key={index} style={{ textAlign: 'center' }}>
-                      {createConfig1() === 'Super Admin' ? (
-                        <TableCell style={{ textAlign: 'center' }}>
-                          <Checkbox
-                            checked={entry.isApprove === true}
-                            disabled={entry.isApprove === true}
-                            onClick={() => handleCheckboxChange(entry)}
-                          />
+                  </TableHead>
+                  <TableBody>
+                    {walletData.walletEntry?.records
+                      ?.filter((entry) => entry.creditAmount)
+                      .map((entry, index) => (
+                        <TableRow key={index}>
+                          {createConfig1() === 'Super Admin' ? (
+                            <TableCell style={{ textAlign: 'center' }}>
+                              <Checkbox
+                                checked={entry.isApprove === true}
+                                disabled={entry.isApprove === true}
+                                onClick={() => handleCheckboxChange(entry)}
+                              />
+                            </TableCell>
+                          ) : (
+                            ''
+                          )}
+                          <TableCell style={{ textAlign: 'center' }}>{entry.creditAmount}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
+                        </TableRow>
+                      ))}
+                    {walletData.walletEntry?.totals && (
+                      <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
+                        <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Credit :</TableCell>
+                        <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                          {walletData.walletEntry?.totals.totalCredit}
                         </TableCell>
-                      ) : (
-                        ''
-                      )}
-                      <TableCell style={{ textAlign: 'center' }}>{entry.debitAmount}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
+                      </TableRow>
+                    )}
+                    {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'credit' && (
+                      <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
+                        <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
+                        <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                          {walletData.walletEntry?.closingBalance.amount}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </Grid>
+
+              <Grid item xs={12} md={6} sx={{ paddingLeft: { md: '16px' } }}>
+                <Typography variant="h4" gutterBottom style={{ textAlign: 'center', marginTop: isSmallScreen ? '20px' : '0px' }}>
+                  Debit
+                </Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {createConfig1() === 'Super Admin' ? <TableCell style={{ textAlign: 'center' }}></TableCell> : ''}
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Amount</TableCell>
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
+                      <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
                     </TableRow>
-                  ))}
-                {walletData.walletEntry?.totals && (
-                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
-                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Debit :</TableCell>
-                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>{walletData.walletEntry?.totals.totalDebit}</TableCell>
-                  </TableRow>
-                )}
-                {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'debit' && (
-                  <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
-                    <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
-                    <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                      {walletData.walletEntry?.closingBalance.amount}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </Grid>
-        </Grid>
+                  </TableHead>
+                  <TableBody>
+                    {walletData.walletEntry?.records
+                      ?.filter((entry) => entry.debitAmount)
+                      .map((entry, index) => (
+                        <TableRow key={index} style={{ textAlign: 'center' }}>
+                          {createConfig1() === 'Super Admin' ? (
+                            <TableCell style={{ textAlign: 'center' }}>
+                              <Checkbox
+                                checked={entry.isApprove === true}
+                                disabled={entry.isApprove === true}
+                                onClick={() => handleCheckboxChange(entry)}
+                              />
+                            </TableCell>
+                          ) : (
+                            ''
+                          )}
+                          <TableCell style={{ textAlign: 'center' }}>{entry.debitAmount}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
+                          <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
+                        </TableRow>
+                      ))}
+                    {walletData.walletEntry?.totals && (
+                      <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
+                        <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Debit :</TableCell>
+                        <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                          {walletData.walletEntry?.totals.totalDebit}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                    {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'debit' && (
+                      <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
+                        <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
+                        <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                          {walletData.walletEntry?.closingBalance.amount}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </Grid>
+            </Grid>
+          </>
+        )}
       </Grid>
     </Paper>
   );

@@ -14,9 +14,9 @@ const Ledgeraccountcashreport = ({ Open, onClose }) => {
     Open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  // const [openDrawer, setOpenDrawer] = useState(false);
   const [AccountId, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
@@ -25,36 +25,19 @@ const Ledgeraccountcashreport = ({ Open, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const handleCloseDrawer = () => {
-  //   setOpenDrawer(false);
-  // };
-
-  //   const handleLedgerClick = () => {
-  //     setOpenDrawer(true);
-  //   };
-
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label) {
       setAccountId(selectedOption.value);
       setAccountname(selectedOption.label);
-      //   setAccount('');
     }
   };
 
-  const handleformDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setFormDate(formattedDate);
+  const handleFormDateChange = (date) => {
+    setFormDate(date);
   };
 
-  const handletoDateChange = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-    setToDate(formattedDate);
+  const handleToDateChange = (date) => {
+    setToDate(date);
   };
 
   useEffect(() => {
@@ -77,15 +60,14 @@ const Ledgeraccountcashreport = ({ Open, onClose }) => {
     fetchData();
   }, [dispatch]);
 
-  const handleLedger = (AccountId, formDate, toDate) => {
-    dispatch(getallCashAccountledger(AccountId, formDate, toDate));
+  const handleLedger = () => {
+    const formattedFormDate = formDate.toISOString().split('T')[0];
+    const formattedToDate = toDate.toISOString().split('T')[0];
+    dispatch(getallCashAccountledger(AccountId, formattedFormDate, formattedToDate));
     navigate('/cashaccountledger');
-    setAccountId(AccountId);
     sessionStorage.setItem('RCAccountId', AccountId);
-    setFormDate(formDate);
-    sessionStorage.setItem('RCAccountformDate', formDate);
-    setToDate(toDate);
-    sessionStorage.setItem('RCAccounttoDate', toDate);
+    sessionStorage.setItem('RCAccountformDate', formattedFormDate);
+    sessionStorage.setItem('RCAccounttoDate', formattedToDate);
   };
 
   return (
@@ -96,38 +78,32 @@ const Ledgeraccountcashreport = ({ Open, onClose }) => {
         PaperProps={{
           style: {
             height: 'auto',
-            width: isMobile ? '90%' : '18%',
-            margin: isMobile ? '0' : 'auto',
-            maxWidth: isMobile ? '80%' : 'none'
+            width: isMobile ? '90%' : '400px', // Fixed width for desktop, responsive for mobile
+            margin: '20px',
+            padding: '20px',
+            maxWidth: 'none'
           }
         }}
       >
-        <div style={{ display: 'flex', padding: '0px 20px', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>Ledger Details</h3>
-        </div>
+        <Typography variant="h6" style={{ textAlign: 'center', marginBottom: '20px' }}>
+          Ledger Details
+        </Typography>
         <DialogContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} style={{ paddingTop: '20px' }}>
-              <Typography variant="subtitle1">Account :</Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">Account:</Typography>
               <Select
                 options={Account}
-                value={{ value: AccountId, label: Accountname }}
+                value={AccountId ? { value: AccountId, label: Accountname } : null}
                 onChange={handleSelectChange}
                 menuPortalTarget={document.body}
                 styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                   menu: (provided) => ({
                     ...provided,
                     zIndex: 9999,
                     maxHeight: '300px',
                     overflowY: 'scroll'
-                  }),
-                  container: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
-                  }),
-                  menuPortal: (provided) => ({
-                    ...provided,
-                    zIndex: 9999
                   })
                 }}
               />
@@ -136,31 +112,30 @@ const Ledgeraccountcashreport = ({ Open, onClose }) => {
               <Typography variant="subtitle1">From Date:</Typography>
               <DatePicker
                 selected={formDate}
-                onChange={(date) => handleformDateChange(date)}
+                onChange={handleFormDateChange}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
-                showTimeSelect={false}
+                showPopperArrow={false}
+                style={{ width: '100%' }}
               />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">To Date:</Typography>
               <DatePicker
                 selected={toDate}
-                onChange={(date) => handletoDateChange(date)}
+                onChange={handleToDateChange}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
-                showTimeSelect={false}
+                showPopperArrow={false}
+                style={{ width: '100%' }}
               />
             </Grid>
 
-            <Button
-              onClick={() => handleLedger(AccountId, formDate, toDate)}
-              variant="contained"
-              color="secondary"
-              style={{ marginLeft: '60%' }}
-            >
-              GO
-            </Button>
+            <Grid item xs={12} style={{ textAlign: 'center', marginTop: '20px' }}>
+              <Button onClick={handleLedger} variant="contained" color="secondary" style={{ width: '50%' }}>
+                GO
+              </Button>
+            </Grid>
           </Grid>
         </DialogContent>
       </Dialog>

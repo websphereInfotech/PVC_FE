@@ -148,19 +148,20 @@ const Paymentbank = () => {
         if (id) {
           const response = await dispatch(viewSinglePaymentBank(id));
           console.log(response, 'response');
-          const { voucherno, mode, paymentType, amount, paymentBankAccount, accountPayment, paymentdate } = response;
+          const { voucherno, mode, paymentType, amount, paymentBankAccount, accountPayment, paymentdate, transactionType } = response;
           setFormData({
             voucherno,
             mode,
             paymentType,
             amount,
+            transactionType,
             accountId: accountPayment.id,
-            bankAccountId: paymentBankAccount.id,
+            bankAccountId: paymentBankAccount === null ? null : paymentBankAccount.id,
             paymentdate
           });
-          setcompanyname(paymentBankAccount.bankname);
+          setcompanyname(paymentBankAccount === null ? null : paymentBankAccount.bankname);
           setaccountname(accountPayment.accountName);
-          setSelectbankaccount(paymentBankAccount.id);
+          setSelectbankaccount(paymentBankAccount === null ? null : paymentBankAccount.id);
           setSelectaccount(accountPayment.id);
         }
       } catch (error) {

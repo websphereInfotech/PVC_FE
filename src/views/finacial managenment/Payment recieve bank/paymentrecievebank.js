@@ -149,19 +149,20 @@ const Paymentrecievebank = () => {
       try {
         if (id) {
           const response = await dispatch(viewSinglePaymentRecieveBank(id));
-          const { voucherno, mode, paymentType, amount, receiptBankAccount, accountReceipt, paymentdate } = response;
+          const { voucherno, mode, paymentType, transactionType, amount, receiptBankAccount, accountReceipt, paymentdate } = response;
           setFormData({
             voucherno,
             mode,
             paymentType,
+            transactionType,
             amount,
             accountId: accountReceipt.id,
-            bankAccountId: receiptBankAccount.id,
+            bankAccountId: receiptBankAccount === null ? null : receiptBankAccount.id,
             paymentdate
           });
-          setcompanyname(receiptBankAccount.bankname);
+          setcompanyname(receiptBankAccount === null ? null : receiptBankAccount.bankname);
           setaccountname(accountReceipt.accountName);
-          setSelectcompanyaccount(receiptBankAccount.id);
+          setSelectcompanyaccount(receiptBankAccount === null ? null : receiptBankAccount.id);
           setSelectaccount(accountReceipt.id);
         }
       } catch (error) {
