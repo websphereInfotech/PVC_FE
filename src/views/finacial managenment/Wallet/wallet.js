@@ -113,15 +113,15 @@ const Wallet = () => {
             <Grid item xs={12} sm={6} md={2}>
               <Typography>Company Name</Typography>
 
-              <input placeholder="Comapny name" value={walletData.userWallet?.incomes} />
+              <input placeholder="Comapny name" value={walletData?.companyEntry?.name} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Cash On Hand</Typography>
-              <input placeholder="Amount" value={walletData.userWallet?.incomes} />
+              <input placeholder="Amount" value={walletData?.companyEntry?.cashOnHand} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Total Balance</Typography>
-              <input placeholder="Total balance" value={walletData.userWallet?.balance} />
+              <input placeholder="Total balance" value={walletData?.companyEntry?.totalBalance} />
             </Grid>
           </Grid>
         )}
@@ -140,16 +140,16 @@ const Wallet = () => {
                 />
               </div>
             ) : (
-              <input placeholder="User Name" value={walletData.userWallet?.userBalance?.username} />
+              <input placeholder="User Name" value={walletData?.userWallet?.userBalance?.username} />
             )}
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1">Cash On Hand</Typography>
-            <input placeholder="Amount" value={walletData.userWallet?.balance} />
+            <input placeholder="Amount" value={walletData?.userWallet?.balance} />
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1">Total Balance</Typography>
-            <input placeholder="total balance" value={walletData.userWallet?.incomes} />
+            <input placeholder="total balance" value={walletData?.userWallet?.incomes} />
           </Grid>
           <Grid item xs={12} sm={6} md={4} container sx={{ marginBottom: '8px' }} justifyContent="flex-start" alignItems="end" spacing={2}>
             <Grid item>
@@ -190,7 +190,7 @@ const Wallet = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {walletData.walletEntry?.records
+                    {walletData?.walletEntry?.records
                       ?.filter((entry) => entry.creditAmount)
                       .map((entry, index) => (
                         <TableRow key={index}>
@@ -211,19 +211,19 @@ const Wallet = () => {
                           <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
                         </TableRow>
                       ))}
-                    {walletData.walletEntry?.totals && (
+                    {walletData?.walletEntry?.totals && (
                       <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                         <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Credit :</TableCell>
                         <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                          {walletData.walletEntry?.totals.totalCredit}
+                          {walletData?.walletEntry?.totals.totalCredit}
                         </TableCell>
                       </TableRow>
                     )}
-                    {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'credit' && (
+                    {walletData?.walletEntry?.closingBalance && walletData?.walletEntry?.closingBalance.type === 'credit' && (
                       <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                         <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
                         <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                          {walletData.walletEntry?.closingBalance.amount}
+                          {walletData?.walletEntry?.closingBalance.amount}
                         </TableCell>
                       </TableRow>
                     )}
@@ -246,7 +246,7 @@ const Wallet = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {walletData.walletEntry?.records
+                    {walletData?.walletEntry?.records
                       ?.filter((entry) => entry.debitAmount)
                       .map((entry, index) => (
                         <TableRow key={index} style={{ textAlign: 'center' }}>
@@ -267,19 +267,19 @@ const Wallet = () => {
                           <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
                         </TableRow>
                       ))}
-                    {walletData.walletEntry?.totals && (
+                    {walletData?.walletEntry?.totals && (
                       <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                         <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Total Debit :</TableCell>
                         <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                          {walletData.walletEntry?.totals.totalDebit}
+                          {walletData?.walletEntry?.totals.totalDebit}
                         </TableCell>
                       </TableRow>
                     )}
-                    {walletData.walletEntry?.closingBalance && walletData.walletEntry?.closingBalance.type === 'debit' && (
+                    {walletData?.walletEntry?.closingBalance && walletData?.walletEntry?.closingBalance.type === 'debit' && (
                       <TableRow style={{ borderBottom: '0.2px solid lightgrey' }}>
                         <TableCell style={{ textAlign: 'end', fontWeight: 'bold' }}>Closing Balance:</TableCell>
                         <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                          {walletData.walletEntry?.closingBalance.amount}
+                          {walletData?.walletEntry?.closingBalance.amount}
                         </TableCell>
                       </TableRow>
                     )}
