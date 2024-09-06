@@ -80,7 +80,7 @@ const PaymentListPage = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(paymentCashDelete(selectedId));
+      await dispatch(paymentCashDelete(selectedId, navigate));
       setOpenConfirmation(false);
       setPayments((prevPayments) => prevPayments.filter((payment) => payment.id !== selectedId));
     } catch (error) {

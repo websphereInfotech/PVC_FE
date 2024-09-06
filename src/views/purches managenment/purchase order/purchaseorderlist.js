@@ -90,7 +90,7 @@ export default function Purchaseorderlist() {
 
   const handleDeleteQuotation = async () => {
     try {
-      await dispatch(deletePurchaseOrder(selectedId));
+      await dispatch(deletePurchaseOrder(selectedId, navigate));
       setOpenConfirmation(false);
       setPurchaseorder((prevQuotation) => prevQuotation.filter((purchaseorder) => purchaseorder.id !== selectedId));
     } catch (error) {

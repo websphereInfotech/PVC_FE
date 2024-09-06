@@ -102,7 +102,6 @@ export default function UserList() {
     const fetchData = async () => {
       try {
         const response = await dispatch(getallusers());
-        // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
         setData(response[0].users);
       } catch (error) {
         if (error?.response?.status === 401) {
@@ -136,10 +135,9 @@ export default function UserList() {
 
   const handleDeleteUser = async () => {
     try {
-      await dispatch(deleteUser(selectedUserId));
+      await dispatch(deleteUser(selectedUserId, navigate));
       setOpenConfirmation(false);
       const response = await dispatch(getallusers());
-      // const filteredData = response[0].users?.filter((user) => user.role !== 'Super Admin');
       setData(response[0].users);
     } catch (error) {
       console.error('Error deleting user:', error);

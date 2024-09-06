@@ -95,7 +95,7 @@ const DileveryChallanList = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(deleteDileveryChallan(selectedUserId));
+      await dispatch(deleteDileveryChallan(selectedUserId, navigate));
       setOpenConfirmation(false);
       setdeliverychallan((preDeliveryChallan) => preDeliveryChallan.filter((deliverychallans) => deliverychallans.id !== selectedUserId));
     } catch (error) {

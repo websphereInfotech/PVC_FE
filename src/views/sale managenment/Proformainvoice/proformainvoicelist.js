@@ -76,7 +76,7 @@ export default function ProformainvoiceList() {
 
   // use for view single button passed id of data
   const handleViewQuotation = (id) => {
-    dispatch(Proformainvoiceview(id));
+    dispatch(Proformainvoiceview(id, navigate));
     navigate(`/proformainvoiceviewpage/${id}`);
   };
   const handleaddproforma = () => {
@@ -95,7 +95,7 @@ export default function ProformainvoiceList() {
 
   const handleDeleteQuotation = async () => {
     try {
-      await dispatch(deleteProformainvoice(selectedId));
+      await dispatch(deleteProformainvoice(selectedId, navigate));
       setOpenConfirmation(false);
       setQuotations((prevQuotation) => prevQuotation.filter((quotations) => quotations.id !== selectedId));
     } catch (error) {

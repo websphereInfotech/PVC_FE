@@ -38,14 +38,14 @@ const NotificationSection = () => {
     const datanotification = async () => {
       try {
         const value = 'true';
-        const data = await dispatch(getAllNotification(value));
+        const data = await dispatch(getAllNotification(value, navigate));
         setNotifications(data);
       } catch (error) {
         console.log(error, 'fetching notification');
       }
     };
     datanotification();
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);

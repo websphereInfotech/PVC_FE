@@ -73,12 +73,12 @@ const Billofmateriallist = () => {
   };
 
   const handleUpdateBom = (id) => {
-    dispatch(viewSingleBom(id));
+    dispatch(viewSingleBom(id, navigate));
     navigate(`/addbillofmaterial/${id}`);
   };
 
   const handleViewBom = (id) => {
-    dispatch(viewSingleBom(id));
+    dispatch(viewSingleBom(id, navigate));
     navigate(`/billofmaterialview/${id}`);
   };
 

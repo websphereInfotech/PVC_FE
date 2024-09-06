@@ -65,7 +65,7 @@ const Paymentbanklist = () => {
   };
 
   const handleUpdatePayment = (id) => {
-    dispatch(viewSinglePaymentBank(id));
+    dispatch(viewSinglePaymentBank(id, navigate));
     navigate(`/paymentbank/${id}`);
   };
 
@@ -80,7 +80,7 @@ const Paymentbanklist = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(deletePaymentbank(selectedId));
+      await dispatch(deletePaymentbank(selectedId, navigate));
       setOpenConfirmation(false);
       setPayments((prevPayment) => prevPayment.filter((payments) => payments.id !== selectedId));
     } catch (error) {

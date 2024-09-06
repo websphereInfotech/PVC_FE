@@ -174,7 +174,7 @@ export default function CollapsibleTable() {
         permissionValue: updatedPermissions[permissionId]
       }))
     };
-    dispatch(updatePermission(data));
+    dispatch(updatePermission(data, navigate));
   };
 
   return (

@@ -93,7 +93,7 @@ const Salesinvoicelist = () => {
 
   const handleDeleteSalesInvoice = async () => {
     try {
-      await dispatch(deleteSalesinvoice(selectedId));
+      await dispatch(deleteSalesinvoice(selectedId, navigate));
       setOpenConfirmation(false);
       setsalesinvoice((prevInvoice) => prevInvoice.filter((invoice) => invoice.id !== selectedId));
     } catch (error) {

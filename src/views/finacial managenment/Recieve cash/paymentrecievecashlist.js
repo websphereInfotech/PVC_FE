@@ -80,7 +80,7 @@ const PaymentrecieveList = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(deleteRecieveCash(selectedId));
+      await dispatch(deleteRecieveCash(selectedId, navigate));
       setOpenConfirmation(false);
 
       setPayments((prevPayment) => prevPayment.filter((payment) => payment.id !== selectedId));

@@ -104,7 +104,7 @@ const Claimcashlist = () => {
   };
 
   const handleUpdatePayment = (id) => {
-    dispatch(viewSingleclaimCash(id));
+    dispatch(viewSingleclaimCash(id, navigate));
     navigate(`/claimcash/${id}`);
   };
 
@@ -119,7 +119,7 @@ const Claimcashlist = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(deleteClaimCash(selectedId));
+      await dispatch(deleteClaimCash(selectedId, navigate));
       setOpenConfirmation(false);
       setPayments((prevpayment) => prevpayment.filter((payment) => payment.id !== selectedId));
     } catch (error) {

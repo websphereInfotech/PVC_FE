@@ -19,9 +19,6 @@ import {
   createProformainvoiceRequest,
   createProformainvoiceSuccess,
   createProformainvoiceFailure,
-  deleteProformainvoiceItemRequest,
-  deleteProformainvoiceItemSuccess,
-  deleteProformainvoiceItemFailure,
   deleteProformainvoiceRequest,
   deleteProformainvoiceSuccess,
   deleteProformainvoiceFailure,
@@ -163,35 +160,6 @@ import {
   deletePurchaseinvoiceCashRequest,
   deletePurchaseinvoiceCashSuccess,
   deletePurchaseinvoiceCashFailure,
-  // EXPENSE +++++++++++++++++++++++++
-  createExpenseRequest,
-  createExpenseFailure,
-  createExpenseSuccess,
-  createExpenseItemRequest,
-  createExpenseItemFailure,
-  createExpenseItemSuccess,
-  getAllExpenseRequest,
-  getAllExpenseSuccess,
-  getAllExpenseFailure,
-  viewExpenseRequest,
-  viewExpenseSuccess,
-  viewExpenseFailure,
-  updateExpenseRequest,
-  updateExpenseSuccess,
-  updateExpenseFailure,
-  updateExpenseItemSuccess,
-  updateExpenseItemRequest,
-  updateExpenseItemFailure,
-  deleteExpenseItemRequest,
-  deleteExpenseItemSuccess,
-  deleteExpenseItemFailure,
-  // PURCHASE RETURN +++++++++++++++++++
-  getAllPurchasereturnRequest,
-  getAllPurchasereturnSuccess,
-  getAllPurchasereturnFailure,
-  viewPurchasereturnRequest,
-  viewPurchasereturnSuccess,
-  viewPurchasereturnFailure,
   // PERMISSION ++++++++++++++++++++++
   getAllPermissionsRequest,
   getAllPermissionsSuccess,
@@ -668,7 +636,6 @@ import {
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
-
 const createConfig = () => {
   const token = sessionStorage.getItem('token');
   return {
@@ -751,7 +718,6 @@ export const fetchproformainvoiceList = () => {
       return data;
     } catch (error) {
       dispatch(fetchProformainvoiceFailure(error));
-      throw error;
     }
   };
 };
@@ -807,23 +773,6 @@ export const updateProformainvoice = (id, formData, navigate) => {
     }
   };
 };
-export const deleteProformainvoiceItem = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteProformainvoiceItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/profromainvoice/delete_ProFormaInvoiceItem/${id}`, config);
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(deleteProformainvoiceItemSuccess());
-    } catch (error) {
-      toast.error(error.response.data.message);
-      dispatch(deleteProformainvoiceItemFailure());
-    }
-  };
-};
 export const Proformainvoiceview = (id) => {
   return async (dispatch) => {
     dispatch(viewProformainvoiceRequest());
@@ -834,12 +783,11 @@ export const Proformainvoiceview = (id) => {
       dispatch(viewProformainvoiceSuccess(data));
       return data;
     } catch (error) {
-      toast.error(error.response.data.error);
       dispatch(viewProformainvoiceFailure(error.message));
     }
   };
 };
-export const deleteProformainvoice = (id) => {
+export const deleteProformainvoice = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteProformainvoiceRequest());
     try {
@@ -851,8 +799,14 @@ export const deleteProformainvoice = (id) => {
       });
       dispatch(deleteProformainvoiceSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteProformainvoiceFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -909,7 +863,7 @@ export const updatePurchaseOrder = (id, formData, navigate) => {
     }
   };
 };
-export const deletePurchaseOrder = (id) => {
+export const deletePurchaseOrder = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deletePurchaseOrderRequest());
     try {
@@ -921,8 +875,14 @@ export const deletePurchaseOrder = (id) => {
       });
       dispatch(deletePurchaseOrderSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deletePurchaseOrderFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -936,7 +896,6 @@ export const PurchaseorderView = (id) => {
       dispatch(viewPurchaseOrderSuccess(data));
       return data;
     } catch (error) {
-      toast.error(error.response.data.error);
       dispatch(viewPurchaseOrderFailure(error.message));
     }
   };
@@ -952,7 +911,6 @@ export const fetchpurchaseorderList = () => {
       return data;
     } catch (error) {
       dispatch(fetchPurchaseOrderFailure(error));
-      throw error;
     }
   };
 };
@@ -968,7 +926,6 @@ export const getallDeliverychallan = () => {
       return getallDeliverychallan;
     } catch (error) {
       dispatch(getAllDeliverychallanFailure(error));
-      throw error;
     }
   };
 };
@@ -1011,7 +968,6 @@ export const Deliverychallanview = (id) => {
       return data;
     } catch (error) {
       dispatch(viewDeliverychallanFailure(error));
-      throw error;
     }
   };
 };
@@ -1045,7 +1001,7 @@ export const updateDileveryChallan = (id, ChallanData, navigate) => {
     }
   };
 };
-export const deleteDileveryChallan = (id) => {
+export const deleteDileveryChallan = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteDileverychallanItemRequest());
     try {
@@ -1057,8 +1013,13 @@ export const deleteDileveryChallan = (id) => {
       return deleteChallanItem;
     } catch (error) {
       dispatch(deleteDileverychallanItemFailure(error.message));
-      toast.error(error.response.data.message);
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1092,7 +1053,6 @@ export const fetchAllProducts = (params = {}) => {
       return data;
     } catch (error) {
       dispatch(fetchAllProdutrsFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1108,7 +1068,6 @@ export const createProduct = (data, navigate) => {
         autoClose: 1000
       });
       dispatch(createProductSuccess(createProductData));
-      // window.location.reload();
       return createProductData;
     } catch (error) {
       dispatch(createProductFailure(error.message));
@@ -1120,7 +1079,7 @@ export const createProduct = (data, navigate) => {
     }
   };
 };
-export const DeleteProduct = (id) => {
+export const DeleteProduct = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteProductRequest());
     try {
@@ -1135,6 +1094,13 @@ export const DeleteProduct = (id) => {
       return data;
     } catch (error) {
       dispatch(deleteProductFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1149,7 +1115,6 @@ export const viewProduct = (id) => {
       return data;
     } catch (error) {
       dispatch(viewProductFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1215,7 +1180,6 @@ export const getallPaymentCash = () => {
       return getallpaymentCash;
     } catch (error) {
       dispatch(getallPaymentCashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1259,7 +1223,7 @@ export const updatePaymentCash = (id, formData, navigate) => {
     }
   };
 };
-export const paymentCashDelete = (id) => {
+export const paymentCashDelete = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deletePaymentCashRequest());
     try {
@@ -1274,6 +1238,13 @@ export const paymentCashDelete = (id) => {
       return data;
     } catch (error) {
       dispatch(deletePaymentCashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1315,7 +1286,6 @@ export const getallSalesInvoice = () => {
       return getallSalesinvoice;
     } catch (error) {
       dispatch(getAllSalesinvoiceFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1330,7 +1300,6 @@ export const SalesInvoiceview = (id) => {
       return data;
     } catch (error) {
       dispatch(viewSalesinvoiceFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1360,7 +1329,7 @@ export const updateSalesinvoice = (id, payload, navigate) => {
     }
   };
 };
-export const deleteSalesinvoice = (id) => {
+export const deleteSalesinvoice = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteSalesinvoiceRequest());
     try {
@@ -1372,8 +1341,14 @@ export const deleteSalesinvoice = (id) => {
       });
       dispatch(deleteSalesinvoiceSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteSalesinvoiceFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1416,7 +1391,6 @@ export const getallSalesInvoiceCash = () => {
       return getallSalesinvoiceCash;
     } catch (error) {
       dispatch(getAllSalesinvoicecashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1431,7 +1405,6 @@ export const SalesInvoiceCashview = (id) => {
       return data;
     } catch (error) {
       dispatch(viewSalesinvoicecashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1461,7 +1434,7 @@ export const updateSalesinvoiceCash = (id, payload, navigate) => {
     }
   };
 };
-export const deleteSalesinvoicecash = (id) => {
+export const deleteSalesinvoicecash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteSalesinvoicecashRequest());
     try {
@@ -1473,8 +1446,14 @@ export const deleteSalesinvoicecash = (id) => {
       });
       dispatch(deleteSalesinvoicecashSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteSalesinvoicecashFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1517,7 +1496,6 @@ export const getallDebitnote = () => {
       return getallDebitnote;
     } catch (error) {
       dispatch(getAllDebitnoteFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1532,7 +1510,6 @@ export const Debitnoteviewdata = (id) => {
       return data;
     } catch (error) {
       dispatch(viewDebitnoteFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1562,7 +1539,7 @@ export const updateDebitnote = (id, payload, navigate) => {
     }
   };
 };
-export const deleteDebitnote = (id) => {
+export const deleteDebitnote = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteDebitnoteRequest());
     try {
@@ -1574,8 +1551,14 @@ export const deleteDebitnote = (id) => {
       });
       dispatch(deleteDebitnoteSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteDebitnoteFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1618,7 +1601,6 @@ export const getallDebitnotecash = () => {
       return getallDebitnotecash;
     } catch (error) {
       dispatch(getAllDebitnotecashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1633,7 +1615,6 @@ export const Debitnotecashviewdata = (id) => {
       return data;
     } catch (error) {
       dispatch(viewDebitnotecashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1663,7 +1644,7 @@ export const updateDebitnotecash = (id, payload, navigate) => {
     }
   };
 };
-export const deleteDebitnotecash = (id) => {
+export const deleteDebitnotecash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteDebitnotecashRequest());
     try {
@@ -1675,8 +1656,14 @@ export const deleteDebitnotecash = (id) => {
       });
       dispatch(deleteDebitnotecashSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteDebitnotecashFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1718,7 +1705,6 @@ export const getallCreditnote = () => {
       return getallCreditnote;
     } catch (error) {
       dispatch(getAllCreditnoteFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1733,7 +1719,6 @@ export const Creditnoteviewdata = (id) => {
       return data;
     } catch (error) {
       dispatch(viewCreditnoteFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1763,7 +1748,7 @@ export const updateCreditnote = (id, payload, navigate) => {
     }
   };
 };
-export const deleteCreditnote = (id) => {
+export const deleteCreditnote = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteCreditnoteRequest());
     try {
@@ -1775,8 +1760,14 @@ export const deleteCreditnote = (id) => {
       });
       dispatch(deleteCreditnoteSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteCreditnoteFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1819,7 +1810,6 @@ export const getallCreditnotecash = () => {
       return getallCreditnotecash;
     } catch (error) {
       dispatch(getAllCreditnotecashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1834,7 +1824,6 @@ export const Creditnotecashviewdata = (id) => {
       return data;
     } catch (error) {
       dispatch(viewCreditnotecashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1864,7 +1853,7 @@ export const updateCreditnotecash = (id, payload, navigate) => {
     }
   };
 };
-export const deleteCreditnotecash = (id) => {
+export const deleteCreditnotecash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteCreditnotecashRequest());
     try {
@@ -1876,8 +1865,14 @@ export const deleteCreditnotecash = (id) => {
       });
       dispatch(deleteCreditnotecashSuccess());
     } catch (error) {
-      toast.error(error.response.data.message);
       dispatch(deleteCreditnotecashFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -1920,7 +1915,6 @@ export const getallPurchaseinvoice = () => {
       return getallPurchasebill;
     } catch (error) {
       dispatch(getAllPurchaseinvoiceFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1935,7 +1929,6 @@ export const viewPurchaseinvoice = (id) => {
       return data;
     } catch (error) {
       dispatch(viewPurchaseinvoiceFailure(error.message));
-      throw error;
     }
   };
 };
@@ -1965,7 +1958,7 @@ export const updatePurchaseinvoice = (id, payload, navigate) => {
     }
   };
 };
-export const deletePurchaseinvoice = (id) => {
+export const deletePurchaseinvoice = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deletePurchaseinvoiceRequest());
     try {
@@ -1977,8 +1970,13 @@ export const deletePurchaseinvoice = (id) => {
       return deletePurchasebillData;
     } catch (error) {
       dispatch(deletePurchaseinvoiceFailure(error.message));
-      toast.error(error.response.data.message, { autoClose: 1000 });
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2026,7 +2024,6 @@ export const getallPurchaseInvoiceCash = () => {
       return getallPurchasebillcash;
     } catch (error) {
       dispatch(getAllPurchaseinvoiceCashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2041,7 +2038,6 @@ export const PurchaseInvoiceviewCash = (id) => {
       return data;
     } catch (error) {
       dispatch(viewPurchaseinvoiceCashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2071,7 +2067,7 @@ export const updatePurchaseInvoiceCash = (id, payload, navigate) => {
     }
   };
 };
-export const deletePurchaseInvoiceCash = (id) => {
+export const deletePurchaseInvoiceCash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deletePurchaseinvoiceCashRequest());
     try {
@@ -2085,145 +2081,14 @@ export const deletePurchaseInvoiceCash = (id) => {
       });
       return deletePurchasebillData;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deletePurchaseinvoiceCashFailure(error.message));
-      throw error;
-    }
-  };
-};
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ EXPENSE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createExpenseItem = (payload) => {
-  return async (dispatch) => {
-    dispatch(createExpenseItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expenseItem`, payload, config);
-      const expenceItem = response;
-      dispatch(createExpenseItemSuccess(expenceItem));
-      return expenceItem;
-    } catch (error) {
-      dispatch(createExpenseItemFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const getallExpense = () => {
-  return async (dispatch) => {
-    dispatch(getAllExpenseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_expense`, config);
-      const getallExpense = response.data;
-      dispatch(getAllExpenseSuccess(getallExpense));
-      return getallExpense;
-    } catch (error) {
-      dispatch(getAllExpenseFailure(error.message));
-    }
-  };
-};
-export const Expenseview = (id) => {
-  return async (dispatch) => {
-    dispatch(viewExpenseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_expense/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewExpenseSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewExpenseFailure(error.message));
-    }
-  };
-};
-export const updateExpense = (id, formData) => {
-  return async (dispatch) => {
-    dispatch(updateExpenseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_expense/${id}`, formData, config);
-      const updateExpenseData = response;
-      dispatch(updateExpenseSuccess(updateExpenseData));
-      return updateExpenseData;
-    } catch (error) {
-      dispatch(updateExpenseFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const updateExpenseItem = (id, updateData) => {
-  return async (dispatch) => {
-    dispatch(updateExpenseItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/update_expenseItem/${id}`, updateData, config);
-      const updateExpenseItemData = response;
-      dispatch(updateExpenseItemSuccess(updateExpenseItemData));
-      return updateExpenseItemData;
-    } catch (error) {
-      dispatch(updateExpenseItemFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deleteExpense = (id) => {
-  return async (dispatch) => {
-    dispatch(deleteExpenseItemRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete_expenseItem/${id}`, config);
-      const deleteExpenseItem = response;
-      dispatch(deleteExpenseItemSuccess(deleteExpenseItem));
-      return deleteExpenseItem;
-    } catch (error) {
-      dispatch(deleteExpenseItemFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const createExpense = (data) => {
-  return async (dispatch) => {
-    dispatch(createExpenseRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/create_expense`, data, config);
-      const expenceData = response;
-      dispatch(createExpenseSuccess(expenceData));
-      return expenceData;
-    } catch (error) {
-      dispatch(createExpenseFailure(error.message));
-      throw error;
-    }
-  };
-};
-
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE RETURN +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const getallPurchaseReturn = () => {
-  return async (dispatch) => {
-    dispatch(getAllPurchasereturnRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_purchaseReturn`, config);
-      const getallPurchasereturn = response.data.data;
-      dispatch(getAllPurchasereturnSuccess(getallPurchasereturn));
-      return getallPurchasereturn;
-    } catch (error) {
-      dispatch(getAllPurchasereturnFailure(error.message));
-    }
-  };
-};
-export const PurchaseReturnview = (id) => {
-  return async (dispatch) => {
-    dispatch(viewPurchasereturnRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/view_purchaseReturn/${id}`, config);
-      const data = response.data.data;
-      dispatch(viewPurchasereturnSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(viewPurchasereturnFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2240,11 +2105,10 @@ export const getallPermissions = () => {
       return getallPermission;
     } catch (error) {
       dispatch(getAllPermissionsFailure(error.message));
-      throw error;
     }
   };
 };
-export const updatePermission = (data) => {
+export const updatePermission = (data, navigate) => {
   return async (dispatch) => {
     dispatch(updatePermissionsRequest());
     try {
@@ -2255,7 +2119,9 @@ export const updatePermission = (data) => {
       return updatePermissionData;
     } catch (error) {
       dispatch(updatePermissionsFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -2300,7 +2166,6 @@ export const getallusers = (params = {}) => {
       return getallUsers;
     } catch (error) {
       dispatch(getallUserFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2316,7 +2181,6 @@ export const Userview = (id) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(viewUserFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2348,7 +2212,7 @@ export const updateUser = (id, formData, navigate) => {
     }
   };
 };
-export const deleteUser = (id) => {
+export const deleteUser = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteUserRequest());
     try {
@@ -2362,11 +2226,14 @@ export const deleteUser = (id) => {
       dispatch(deleteUserSuccess(deleteUser));
       return deleteUser;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deleteUserFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2394,11 +2261,10 @@ export const Checkuser = (data) => {
       dispatch(CheckUserSuccess(userData));
       return userData;
     } catch (error) {
+      dispatch(CheckUserFailure(error.message));
       toast.error(error.response.data.message, {
         autoClose: 1000
       });
-      dispatch(CheckUserFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2412,11 +2278,14 @@ export const Adduser = (userid) => {
       dispatch(addUserSuccess(userData));
       return userData;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(addUserFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2432,11 +2301,14 @@ export const createCompany = (data) => {
       dispatch(CreateCompanySuccess(Companydata));
       return Companydata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(CreateCompanyFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2478,13 +2350,14 @@ export const Companyview = (id) => {
       dispatch(ViewCompanySuccess(data));
       return data;
     } catch (error) {
-      toast.error(error.response.data.error);
       dispatch(ViewCompanyFailure(error.message));
-      throw error;
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
     }
   };
 };
-export const deleteCompany = (id) => {
+export const deleteCompany = (id, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteCompanyRequest());
     try {
@@ -2498,11 +2371,14 @@ export const deleteCompany = (id) => {
       dispatch(DeleteCompanySuccess(deletecompany));
       return deletecompany;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(DeleteCompanyFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2531,7 +2407,6 @@ export const fetchuserwiseCompany = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllCompanyFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2592,11 +2467,14 @@ export const createCompanyBank = (bankdetails) => {
       dispatch(CreateCompanyBankSuccess(Companybankdata));
       return Companybankdata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(CreateCompanyBankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2614,11 +2492,14 @@ export const updateCompanyBank = (id, formData) => {
       });
       return updateCompanyBankData;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(UpdateCompanyBankFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2632,12 +2513,14 @@ export const CompanyBankview = (id) => {
       dispatch(ViewCompanyBankSuccess(data));
       return data;
     } catch (error) {
-      toast.error(error.response.data.error);
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(ViewCompanyBankFailure(error.message));
     }
   };
 };
-export const deleteCompanyBank = (id) => {
+export const deleteCompanyBank = (id, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteCompanyBankRequest());
     try {
@@ -2651,11 +2534,14 @@ export const deleteCompanyBank = (id) => {
       dispatch(DeleteCompanyBankSuccess(deleteCompanybank));
       return deleteCompanybank;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(DeleteCompanyBankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2731,7 +2617,6 @@ export const getallRecieveCash = () => {
       return getallRecievecash;
     } catch (error) {
       dispatch(getAllRecieveCashFailure(error.message));
-      throw error;
     }
   };
 };
@@ -2777,7 +2662,7 @@ export const updateRecieveCash = (id, formData, navigate) => {
     }
   };
 };
-export const deleteRecieveCash = (id) => {
+export const deleteRecieveCash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteRecieveCashRequest());
     try {
@@ -2791,11 +2676,14 @@ export const deleteRecieveCash = (id) => {
       dispatch(deleteRecieveCashSuccess(deleteRecievecash));
       return deleteRecievecash;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deleteRecieveCashFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2812,6 +2700,9 @@ export const getallclaimuser = () => {
       return getallclaimuserlist;
     } catch (error) {
       dispatch(getAllclaimuserFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -2854,11 +2745,10 @@ export const viewClaimCash = () => {
       return data;
     } catch (error) {
       dispatch(viewClaimCashFailure(error.message));
-      throw error;
     }
   };
 };
-export const viewSingleclaimCash = (id) => {
+export const viewSingleclaimCash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(viewsingleClaimCashRequest());
     try {
@@ -2869,6 +2759,9 @@ export const viewSingleclaimCash = (id) => {
       return data;
     } catch (error) {
       dispatch(viewsingleClaimCashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -2900,7 +2793,7 @@ export const updateClaimCash = (id, formData, navigate) => {
     }
   };
 };
-export const deleteClaimCash = (id) => {
+export const deleteClaimCash = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteClaimCashRequest());
     try {
@@ -2914,11 +2807,14 @@ export const deleteClaimCash = (id) => {
       dispatch(deleteClaimCashSuccess(deleteClaimcash));
       return deleteClaimcash;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deleteClaimCashFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2933,11 +2829,10 @@ export const viewRecieveClaimCash = () => {
       return data;
     } catch (error) {
       dispatch(viewRecieveClaimCashFailure(error.message));
-      throw error;
     }
   };
 };
-export const IsStatusclaimCash = (id, toUserId, isApproved) => {
+export const IsStatusclaimCash = (id, toUserId, isApproved, navigate) => {
   return async (dispatch) => {
     dispatch(viewsingleClaimCashRequest());
     try {
@@ -2948,10 +2843,13 @@ export const IsStatusclaimCash = (id, toUserId, isApproved) => {
       return data;
     } catch (error) {
       dispatch(viewsingleClaimCashFailure(error.message));
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -2968,11 +2866,10 @@ export const fetchAllClaimcashLedger = (formDate, toDate) => {
       dispatch(fetchAllclaimcashledgerSuccess(data));
       return data;
     } catch (error) {
+      dispatch(fetchAllclaimcashledgerFailure(error.message));
       toast.error(error.response.data.message, {
         autoClose: 1000
       });
-      dispatch(fetchAllclaimcashledgerFailure(error.message));
-      throw error;
     }
   };
 };
@@ -3006,7 +2903,7 @@ export const createPaymentBank = (formData, navigate) => {
     }
   };
 };
-export const viewSinglePaymentBank = (id) => {
+export const viewSinglePaymentBank = (id, navigate) => {
   return async (dispatch) => {
     dispatch(ViewsinglepaymentbankRequest());
     try {
@@ -3017,6 +2914,9 @@ export const viewSinglePaymentBank = (id) => {
       return data;
     } catch (error) {
       dispatch(ViewsinglepaymentbankFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -3048,7 +2948,7 @@ export const updatePaymentbank = (id, formData, navigate) => {
     }
   };
 };
-export const deletePaymentbank = (id) => {
+export const deletePaymentbank = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deletepaymentbankRequest());
     try {
@@ -3062,11 +2962,14 @@ export const deletePaymentbank = (id) => {
       dispatch(deletepaymentbankSuccess(deletepaymentbank));
       return deletepaymentbank;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deletepaymentbankFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3081,7 +2984,6 @@ export const getAllPaymentbank = () => {
       return data;
     } catch (error) {
       dispatch(fetchallpaymentbankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -3115,7 +3017,7 @@ export const createPaymentRecieveBank = (formData, navigate) => {
     }
   };
 };
-export const viewSinglePaymentRecieveBank = (id) => {
+export const viewSinglePaymentRecieveBank = (id, navigate) => {
   return async (dispatch) => {
     dispatch(ViewsinglepaymentrecievebankRequest());
     try {
@@ -3126,6 +3028,9 @@ export const viewSinglePaymentRecieveBank = (id) => {
       return data;
     } catch (error) {
       dispatch(ViewsinglepaymentrecievebankFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -3157,7 +3062,7 @@ export const updatePaymentRecievebank = (id, formData, navigate) => {
     }
   };
 };
-export const deletePaymentRecievebank = (id) => {
+export const deletePaymentRecievebank = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deletepaymentrecievebankRequest());
     try {
@@ -3171,11 +3076,14 @@ export const deletePaymentRecievebank = (id) => {
       dispatch(deletepaymentrecievebankSuccess(deletepaymentbank));
       return deletepaymentbank;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deletepaymentrecievebankFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3190,7 +3098,6 @@ export const getAllPaymentRecievebank = () => {
       return data;
     } catch (error) {
       dispatch(fetchallpaymentrecievebankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -3224,7 +3131,7 @@ export const createBom = (formData, navigate) => {
     }
   };
 };
-export const viewSingleBom = (id) => {
+export const viewSingleBom = (id, navigate) => {
   return async (dispatch) => {
     dispatch(viewBomRequest());
     try {
@@ -3235,7 +3142,9 @@ export const viewSingleBom = (id) => {
       return data;
     } catch (error) {
       dispatch(viewBomFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -3267,7 +3176,7 @@ export const updateBom = (id, formData, navigate) => {
     }
   };
 };
-export const deleteBom = (id) => {
+export const deleteBom = (id, navigate) => {
   return async (dispatch) => {
     dispatch(deleteBomRequest());
     try {
@@ -3281,11 +3190,14 @@ export const deleteBom = (id) => {
       dispatch(deleteBomSuccess(deleteBom));
       return deleteBom;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(deleteBomFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3300,7 +3212,6 @@ export const getAllBom = () => {
       return data;
     } catch (error) {
       dispatch(getAllBomFailure(error.message));
-      throw error;
     }
   };
 };
@@ -3317,11 +3228,10 @@ export const getAllStoke = (params = {}) => {
       return data;
     } catch (error) {
       dispatch(getAllStokeFailure(error.message));
-      throw error;
     }
   };
 };
-export const viewSingleStoke = (id) => {
+export const viewSingleStoke = (id, navigate) => {
   return async (dispatch) => {
     dispatch(viewStokeRequest());
     try {
@@ -3332,7 +3242,9 @@ export const viewSingleStoke = (id) => {
       return data;
     } catch (error) {
       dispatch(viewStokeFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -3366,7 +3278,7 @@ export const updateStoke = (id, formData, navigate) => {
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Notification ++++++++++++++++++++++++++
-export const getAllNotification = (value) => {
+export const getAllNotification = (value, navigate) => {
   return async (dispatch) => {
     dispatch(getAllNotificationRequest());
     try {
@@ -3377,7 +3289,9 @@ export const getAllNotification = (value) => {
       return data;
     } catch (error) {
       dispatch(getAllNotificationFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -3412,7 +3326,6 @@ export const createUserBank = (bankdetails) => {
         autoClose: 1000
       });
       dispatch(CreateUserBankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -4516,6 +4429,13 @@ export const DeleteItemcategory = (id) => {
       return data;
     } catch (error) {
       dispatch(DeleteItemCategoryFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4533,6 +4453,9 @@ export const getAllcategory = (params = {}) => {
       return data;
     } catch (error) {
       dispatch(getAllItemCategoryFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4550,6 +4473,9 @@ export const fetchAllAccountOptions = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllAccountOptionsFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4567,11 +4493,14 @@ export const createAccounts = (data) => {
       });
       return additemgroup;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateAccountFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4585,8 +4514,12 @@ export const viewAccount = (accountId) => {
       dispatch(ViewAccountSuccess(data));
       return data;
     } catch (error) {
-      toast.error(error.response.data.error);
       dispatch(ViewAccountFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.error);
+      }
     }
   };
 };
@@ -4604,6 +4537,9 @@ export const fetchAllAccounts = (params = {}) => {
       return data;
     } catch (error) {
       dispatch(fetchAllAccountsFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4622,11 +4558,14 @@ export const updateAccount = (accountId, formData, navigate) => {
       navigate('/accountlist');
       return upadateAccountdata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(UpdateAccountFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4644,11 +4583,14 @@ export const deleteAccount = (accountId) => {
       dispatch(DeleteAccountSuccess(deleteAccountdata));
       return deleteAccountdata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(DeleteAccountFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4663,6 +4605,9 @@ export const fetchAllAccountCash = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllAccountcashFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4682,7 +4627,9 @@ export const getallAccountledger = (id, formDate, toDate) => {
       return getallAccountledgerlist;
     } catch (error) {
       dispatch(getAllAccountLedgerFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4700,7 +4647,9 @@ export const getallCashAccountledger = (id, formDate, toDate) => {
       return getallCashAccountledgerlist;
     } catch (error) {
       dispatch(getAllCashAccountLedgerFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4715,7 +4664,9 @@ export const getallDaybookledger = (formDate, toDate) => {
       return getallDaybookledgerlist;
     } catch (error) {
       dispatch(getAllDaybookLedgerFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4730,7 +4681,9 @@ export const getallCashDaybookledger = (formDate, toDate) => {
       return getallCashDaybookledgerlist;
     } catch (error) {
       dispatch(getAllCashDaybookLedgerFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4748,7 +4701,9 @@ export const getallCashbookledger = (formDate, toDate) => {
       return getallCashbookledgerlist;
     } catch (error) {
       dispatch(getAllCashbookLedgerFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4763,7 +4718,9 @@ export const getWallet = (id) => {
       return getWalletlist;
     } catch (error) {
       dispatch(getWalletFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };

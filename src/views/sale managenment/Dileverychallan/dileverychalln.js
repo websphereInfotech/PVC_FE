@@ -90,7 +90,6 @@ const Deliverychallan = () => {
     const updatedRows = [...rows];
     updatedRows.splice(index, 1);
     setRows(updatedRows);
-    // dispatch(deleteDileveryChallan(id));
   };
 
   //use for select customer name from dropdown

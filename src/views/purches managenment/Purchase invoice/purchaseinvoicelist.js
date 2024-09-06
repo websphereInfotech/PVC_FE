@@ -80,7 +80,7 @@ export default function PurchaseinvoiceList() {
 
   const handleDeletePurchasebill = async () => {
     try {
-      await dispatch(deletePurchaseinvoice(billid));
+      await dispatch(deletePurchaseinvoice(billid, navigate));
       setOpenConfirmation(false);
       setPurchasebill((prevPurchase) => prevPurchase.filter((purchase) => purchase.id !== billid));
     } catch (error) {

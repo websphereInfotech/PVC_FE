@@ -365,7 +365,7 @@ const Addbillofmaterial = () => {
             <Typography variant="subtitle1">
               QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
-            <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: e.target.value })} />
+            <input placeholder="QTY" value={formData.qty} onChange={(e) => setFormData({ ...formData, qty: parseFloat(e.target.value) })} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
@@ -459,8 +459,9 @@ const Addbillofmaterial = () => {
             </Typography>
             <input
               placeholder="QTY"
+              type="number"
               value={formData.wastageQty}
-              onChange={(e) => setFormData({ ...formData, wastageQty: e.target.value })}
+              onChange={(e) => setFormData({ ...formData, wastageQty: parseFloat(e.target.value) })}
             />
           </Grid>
         </Grid>

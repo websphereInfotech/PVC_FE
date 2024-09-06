@@ -159,7 +159,7 @@ const Rawmateriallist = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteProduct(selectedId));
+      await dispatch(DeleteProduct(selectedId, navigate));
       setOpenConfirmation(false);
       setProduct((prevRawMaterial) => prevRawMaterial.filter((rawMaterial) => rawMaterial.id !== selectedId));
     } catch (error) {

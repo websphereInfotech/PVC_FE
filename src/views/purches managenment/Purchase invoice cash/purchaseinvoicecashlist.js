@@ -89,7 +89,7 @@ const Purchaseinvoicecashlist = () => {
 
   const handledeletesalescash = async () => {
     try {
-      await dispatch(deletePurchaseInvoiceCash(selectedId));
+      await dispatch(deletePurchaseInvoiceCash(selectedId, navigate));
       setOpenConfirmation(false);
       setPurchasebillcash((prevPurchase) => prevPurchase.filter((purchaseCash) => purchaseCash.id !== selectedId));
     } catch (error) {

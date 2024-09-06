@@ -82,7 +82,7 @@ const Product = (GroupId, CategoryId, Query) => {
   };
 
   const handleViewLowStock = async (id) => {
-    const data = await dispatch(viewSingleStoke(id));
+    const data = await dispatch(viewSingleStoke(id, navigate));
     setViewStock(data);
     setOpenViewDialog(true);
   };

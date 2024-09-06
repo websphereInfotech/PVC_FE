@@ -94,7 +94,7 @@ const Debitnotecashlist = () => {
 
   const handleDeleteDebitnote = async () => {
     try {
-      await dispatch(deleteDebitnotecash(selectedId));
+      await dispatch(deleteDebitnotecash(selectedId, navigate));
       setOpenConfirmation(false);
       setDebitnote((prevDebitNote) => prevDebitNote.filter((Debitnote) => Debitnote.id !== selectedId));
     } catch (error) {

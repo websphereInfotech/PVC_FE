@@ -38,9 +38,6 @@ export const FETCH_PRO_FORMA_INVOICE_FAILURE = 'FETCH_PRO_FORMA_INVOICE_FAILURE'
 export const CREATE_PRO_FORMA_INVOICE_REQUEST = 'CREATE_PRO_FORMA_INVOICE_REQUEST';
 export const CREATE_PRO_FORMA_INVOICE_SUCCESS = 'CREATE_PRO_FORMA_INVOICE_SUCCESS';
 export const CREATE_PRO_FORMA_INVOICE_FAILURE = 'CREATE_PRO_FORMA_INVOICE_FAILURE';
-export const DELETE_PRO_FORMA_INVOICE_ITEM_REQUEST = 'DELETE_PRO_FORMA_INVOICE_ITEM_REQUEST';
-export const DELETE_PRO_FORMA_INVOICE_ITEM_SUCCESS = 'DELETE_PRO_FORMA_INVOICE_ITEM_SUCCESS';
-export const DELETE_PRO_FORMA_INVOICE_ITEM_FAILURE = 'DELETE_PRO_FORMA_INVOICE_ITEM_FAILURE';
 export const DELETE_PRO_FORMA_INVOICE_REQUEST = 'DELETE_PRO_FORMA_INVOICE_REQUEST';
 export const DELETE_PRO_FORMA_INVOICE_SUCCESS = 'DELETE_PRO_FORMA_INVOICE_SUCCESS';
 export const DELETE_PRO_FORMA_INVOICE_FAILURE = 'DELETE_PRO_FORMA_INVOICE_FAILURE';
@@ -224,29 +221,6 @@ export const VIEW_CREDIT_NOTE_CASH_REQUEST = 'VIEW_CREDIT_NOTE_CASH_REQUEST';
 export const VIEW_CREDIT_NOTE_CASH_SUCCESS = 'VIEW_CREDIT_NOTE_CASH_SUCCESS';
 export const VIEW_CREDIT_NOTE_CASH_FAILURE = 'VIEW_CREDIT_NOTE_CASH_FAILURE';
 
-// ########################################## EXPENSE ###############################################################################################
-export const CREATE_EXPENCE_REQUEST = 'CREATE_EXPENCE_REQUEST';
-export const CREATE_EXPENSE_SUCCESS = 'CREATE_EXPENSE_SUCCESS';
-export const CREATE_EXPENCE_FAILURE = 'CREATE_EXPENSE_FAILURE';
-export const CREATE_EXPENSE_ITEM_REQUEST = 'CREATE_EXPENSE_ITEM_REQUEST';
-export const CREATE_EXPENSE_ITEM_SUCCESS = 'CREATE_EXPENSE_ITEM_SUCCESS';
-export const CREATE_EXPENSE_ITEM_FAILURE = 'CREATE_EXPENSE_ITEM_FAILURE';
-export const UPDATE_EXPENCE_REQUEST = 'UPDATE_EXPENCE_REQUEST';
-export const UPDATE_EXPENSE_SUCCESS = 'UPDATE_EXPENSE_SUCCESS';
-export const UPDATE_EXPENCE_FAILURE = 'UPDATE_EXPENSE_FAILURE';
-export const UPDATE_EXPENSE_ITEM_REQUEST = 'UPDATE_EXPENSE_ITEM_REQUEST';
-export const UPDATE_EXPENSE_ITEM_SUCCESS = 'UPDATE_EXPENSE_ITEM_SUCCESS';
-export const UPDATE_EXPENSE_ITEM_FAILURE = 'UPDATE_EXPENSE_ITEM_FAILURE';
-export const FETCH_ALL_EXPENSE_REQUEST = 'FETCH_ALL_EXPENSE_REQUEST';
-export const FETCH_ALL_EXPENSE_SUCCESS = 'FETCH_ALL_EXPENSE_SUCCESS';
-export const FETCH_ALL_EXPENSE_FAILURE = 'FETCH_ALL_EXPENSE_FAILURE';
-export const VIEW_EXPENSE_REQUEST = 'VIEW_EXPENSE_REQUEST';
-export const VIEW_EXPENSE_SUCCESS = 'VIEW_EXPENSE_SUCCESS';
-export const VIEW_EXPENSE_FAILURE = 'VIEW_EXPENSE_FAILURE';
-export const DELETE_EXPENSE_ITEM_REQUEST = 'DELETE_EXPENSE_ITEM_REQUEST';
-export const DELETE_EXPENSE_ITEM_SUCCESS = 'DELETE_EXPENSE_ITEM_SUCCESS';
-export const DELETE_EXPENSE_ITEM_FAILURE = 'DELETE_EXPENSE_ITEM_FAILURE';
-
 // ########################################## PURCHASE INVOICE ###############################################################################################
 export const FETCH_ALL_PURCHASE_INVOICE_REQUEST = 'FETCH_ALL_PURCHASE_INVOICE_REQUEST';
 export const FETCH_ALL_PURCHASE_INVOICE_SUCCESS = 'FETCH_ALL_PURCHASE_INVOICE_SUCCESS';
@@ -280,14 +254,6 @@ export const UPDATE_PURCHASE_INVOICE_CASH_FAILURE = 'UPDATE_PURCHASE_INVOICE_CAS
 export const DELETE_PURCHASE_INVOICE_CASH_REQUEST = 'DELETE_PURCHASE_INVOICE_CASH_REQUEST';
 export const DELETE_PURCHASE_INVOICE_CASH_SUCCESS = 'DELETE_PURCHASE_INVOICE_CASH_SUCCESS';
 export const DELETE_PURCHASE_INVOICE_CASH_FAILURE = 'DELETE_PURCHASE_INVOICE_CASH_FAILURE';
-
-// ########################################## PURCHASE RETURN ###############################################################################################
-export const FETCH_ALL_PURCHASERETURN_REQUEST = 'FETCH_ALL_PURCHASERETURN_REQUEST';
-export const FETCH_ALL_PURCHASERETURN_SUCCESS = 'FETCH_ALL_PURCHASERETURN_SUCCESS';
-export const FETCH_ALL_PURCHASERETURN_FAILURE = 'FETCH_ALL_PURCHASERETURN_FAILURE';
-export const VIEW_PURCHASERETURN_REQUEST = 'VIEW_PURCHASERETURN_REQUEST';
-export const VIEW_PURCHASERETURN_SUCCESS = 'VIEW_PURCHASERETURN_SUCCESS';
-export const VIEW_PURCHASERETURN_FAILURE = 'VIEW_PURCHASEBILL_FAILURE';
 
 // #################################################################### PERMISSIONS ###################################################################
 export const FETCH_ALL_PERMISSIONS_REQUEST = 'FETCH_ALL_PERMISSIONS_REQUEST';
@@ -760,18 +726,6 @@ export const createProformainvoiceSuccess = (data) => ({
 });
 export const createProformainvoiceFailure = (error) => ({
   type: 'CREATE_PRO_FORMA_INVOICE_FAILURE',
-  payload: error
-});
-export const deleteProformainvoiceItemRequest = (data) => ({
-  type: 'DELETE_PRO_FORMA_INVOICE_ITEM_REQUEST',
-  payload: data
-});
-export const deleteProformainvoiceItemSuccess = (data) => ({
-  type: 'DELETE_PRO_FORMA_INVOICE_ITEM_SUCCESS',
-  payload: data
-});
-export const deleteProformainvoiceItemFailure = (error) => ({
-  type: 'DELETE_PRO_FORMA_INVOICE_ITEM_FAILURE',
   payload: error
 });
 export const deleteProformainvoiceRequest = (data) => ({
@@ -1317,118 +1271,6 @@ export const updateProductFailure = (error) => ({
   payload: error
 });
 
-// ################################################################ EXPENSE #############################################################################
-
-export const createExpenseRequest = (data) => ({
-  type: 'CREATE_EXPENCE_REQUEST',
-  payload: data
-});
-export const createExpenseSuccess = (data) => ({
-  type: 'CREATE_EXPENSE_SUCCESS',
-  payload: data
-});
-export const createExpenseFailure = (error) => ({
-  type: 'CREATE_EXPENSE_FAILURE',
-  payload: error
-});
-export const createExpenseItemRequest = (data) => ({
-  type: 'CREATE_EXPENSE_ITEM_REQUEST',
-  payload: data
-});
-export const createExpenseItemSuccess = (data) => ({
-  type: 'CREATE_EXPENSE_ITEM_SUCCESS',
-  payload: data
-});
-export const createExpenseItemFailure = (error) => ({
-  type: 'CREATE_EXPENSE_ITEM_FAILURE',
-  payload: error
-});
-export const getAllExpenseRequest = (data) => ({
-  type: 'FETCH_ALL_EXPENSE_REQUEST',
-  payload: data
-});
-export const getAllExpenseSuccess = (data) => ({
-  type: 'FETCH_ALL_EXPENSE_SUCCESS',
-  payload: data
-});
-export const getAllExpenseFailure = (error) => ({
-  type: 'FETCH_ALL_EXPENSE_FAILURE',
-  payload: error
-});
-export const viewExpenseRequest = (data) => ({
-  type: 'VIEW_EXPENSE_REQUEST',
-  payload: data
-});
-export const viewExpenseSuccess = (data) => ({
-  type: 'VIEW_EXPENSE_SUCCESS',
-  payload: data
-});
-export const viewExpenseFailure = (error) => ({
-  type: 'VIEW_EXPENSE_FAILURE',
-  payload: error
-});
-export const deleteExpenseItemRequest = (data) => ({
-  type: 'DELETE_EXPENSE_ITEM_REQUEST',
-  payload: data
-});
-export const deleteExpenseItemSuccess = (data) => ({
-  type: 'DELETE_EXPENSE_ITEM_SUCCESS',
-  payload: data
-});
-export const deleteExpenseItemFailure = (error) => ({
-  type: 'DELETE_EXPENSE_ITEM_FAILURE',
-  payload: error
-});
-export const updateExpenseRequest = (data) => ({
-  type: 'UPDATE_EXPENCE_REQUEST',
-  payload: data
-});
-export const updateExpenseSuccess = (data) => ({
-  type: 'UPDATE_EXPENSE_SUCCESS',
-  payload: data
-});
-export const updateExpenseFailure = (error) => ({
-  type: 'UPDATE_EXPENCE_FAILURE',
-  payload: error
-});
-export const updateExpenseItemRequest = (data) => ({
-  type: 'UPDATE_EXPENSE_ITEM_REQUEST',
-  payload: data
-});
-export const updateExpenseItemSuccess = (data) => ({
-  type: 'UPDATE_EXPENSE_ITEM_SUCCESS',
-  payload: data
-});
-export const updateExpenseItemFailure = (error) => ({
-  type: 'UPDATE_EXPENSE_ITEM_FAILURE',
-  payload: error
-});
-
-// ############################################################## PURCHASE RETURN ###########################################################################
-export const getAllPurchasereturnRequest = (data) => ({
-  type: 'FETCH_ALL_PURCHASERETURN_REQUEST',
-  payload: data
-});
-export const getAllPurchasereturnSuccess = (data) => ({
-  type: 'FETCH_ALL_PURCHASERETURN_SUCCESS',
-  payload: data
-});
-export const getAllPurchasereturnFailure = (error) => ({
-  type: 'FETCH_ALL_PURCHASERETURN_FAILURE',
-  payload: error
-});
-export const viewPurchasereturnRequest = (data) => ({
-  type: 'VIEW_PURCHASERETURN_REQUEST',
-  payload: data
-});
-export const viewPurchasereturnSuccess = (data) => ({
-  type: 'VIEW_PURCHASERETURN_SUCCESS',
-  payload: data
-});
-export const viewPurchasereturnFailure = (error) => ({
-  type: 'VIEW_PURCHASERETURN_FAILURE',
-  payload: error
-});
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PERMISSIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const getAllPermissionsRequest = (data) => ({
   type: 'FETCH_ALL_PERMISSIONS_REQUEST',

@@ -92,9 +92,9 @@ const Creditnotecashlist = () => {
     setSelectedId(id);
   };
 
-  const handleDeleteDebitnote = async () => {
+  const handleDeleteCreditnote = async () => {
     try {
-      await dispatch(deleteCreditnotecash(selectedId));
+      await dispatch(deleteCreditnotecash(selectedId, navigate));
       setOpenConfirmation(false);
       setCreditnote((preCreditNote) => preCreditNote.filter((creditnote) => creditnote.id !== selectedId));
     } catch (error) {
@@ -215,7 +215,7 @@ const Creditnotecashlist = () => {
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleDeleteDebitnote} variant="contained" color="secondary">
+          <Button onClick={handleDeleteCreditnote} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

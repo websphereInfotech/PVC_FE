@@ -89,7 +89,7 @@ const Salescashlist = () => {
 
   const handledeletesalescash = async () => {
     try {
-      await dispatch(deleteSalesinvoicecash(selectedId));
+      await dispatch(deleteSalesinvoicecash(selectedId, navigate));
       setOpenConfirmation(false);
       setsalescash((prevcash) => prevcash.filter((invoice) => invoice.id !== selectedId));
     } catch (error) {

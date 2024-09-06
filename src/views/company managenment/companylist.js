@@ -101,7 +101,7 @@ const CompanyList = () => {
 
   const handlecompanydelete = async () => {
     try {
-      await dispatch(deleteCompany(selectedId));
+      await dispatch(deleteCompany(selectedId, navigate));
       setOpenConfirmation(false);
       const data = await dispatch(fetchuserwiseCompany());
       setCompany(data);

@@ -162,7 +162,7 @@ const Sparelist = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteProduct(selectedId));
+      await dispatch(DeleteProduct(selectedId, navigate));
       setOpenConfirmation(false);
       setProduct((prevProduct) => prevProduct.filter((product) => product.id !== selectedId));
     } catch (error) {

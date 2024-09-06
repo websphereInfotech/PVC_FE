@@ -169,7 +169,7 @@ const CompanyviewPage = () => {
 
   const handleDeleteBank = async () => {
     try {
-      await dispatch(deleteCompanyBank(selectedId));
+      await dispatch(deleteCompanyBank(selectedId, navigate));
       setOpenConfirmation(false);
       setData((prevData) => ({
         ...prevData,
