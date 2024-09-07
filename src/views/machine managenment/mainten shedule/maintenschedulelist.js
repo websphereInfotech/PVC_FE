@@ -81,7 +81,7 @@ const Maintenchedulelist = () => {
   };
   const handleDeleteMachine = async () => {
     try {
-      await dispatch(deleteMachineSchedule(selectedMachineId));
+      await dispatch(deleteMachineSchedule(selectedMachineId, navigate));
       setOpenConfirmation(false);
       const response = await dispatch(fetchAllMachineSchedule());
       setMachineData(response);

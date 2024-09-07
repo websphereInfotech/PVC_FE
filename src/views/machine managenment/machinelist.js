@@ -78,7 +78,7 @@ const MachineList = () => {
   };
   const handleDeleteMachine = async () => {
     try {
-      await dispatch(deleteMachine(selectedMachineId));
+      await dispatch(deleteMachine(selectedMachineId, navigate));
       setOpenConfirmation(false);
       const response = await dispatch(fetchAllMachine());
       setMachineData(response);

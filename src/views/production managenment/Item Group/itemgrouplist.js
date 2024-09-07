@@ -152,7 +152,7 @@ const ItemgropuList = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteItemgroup(selectedId));
+      await dispatch(DeleteItemgroup(selectedId, navigate));
       setOpenConfirmation(false);
       setItemgroup((prevgroup) => prevgroup.filter((group) => group.id !== selectedId));
     } catch (error) {

@@ -7,10 +7,12 @@ import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createWastage } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const Wastage = ({ open, onClose, onnewadded }) => {
   const [WastageName, setWastageName] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   Wastage.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -20,7 +22,7 @@ const Wastage = ({ open, onClose, onnewadded }) => {
 
   const handleSave = async () => {
     const payload = { name: WastageName };
-    const response = await dispatch(createWastage(payload));
+    const response = await dispatch(createWastage(payload, navigate));
     onnewadded(response.data.data);
     onClose();
     setWastageName('');

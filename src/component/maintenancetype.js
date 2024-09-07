@@ -7,10 +7,12 @@ import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createMaintenancType, MaintenanceTypeview, updateMaintenanceType } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const Maintenancetype = ({ open, onClose, id }) => {
   const [MaintenancetypeName, setMaintenancetypeName] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   Maintenancetype.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -24,11 +26,9 @@ const Maintenancetype = ({ open, onClose, id }) => {
     try {
       const payload = { name: MaintenancetypeName };
       if (id) {
-        await dispatch(updateMaintenanceType(id, payload));
-        // onnewgroupUpdated(response.data.data);
+        await dispatch(updateMaintenanceType(id, payload, navigate));
       } else {
-        await dispatch(createMaintenancType(payload));
-        // onnewgroupadded(response.data.data);
+        await dispatch(createMaintenancType(payload, navigate));
         setMaintenancetypeName('');
       }
     } catch (error) {
@@ -47,10 +47,13 @@ const Maintenancetype = ({ open, onClose, id }) => {
         }
       } catch (error) {
         console.error('Error view item group', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       }
     };
     fetchdata();
-  }, [id, dispatch]);
+  }, [id, dispatch, navigate]);
 
   const list = (
     <Box sx={{ width: { xs: 320, sm: 420 }, overflowX: 'hidden' }} role="presentation">

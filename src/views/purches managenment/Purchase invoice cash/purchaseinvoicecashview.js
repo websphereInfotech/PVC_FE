@@ -29,7 +29,7 @@ const Purchaseinvoicecashview = () => {
   }, [dispatch, id, navigate]);
 
   const handledownloadpdf = async () => {
-    await dispatch(PurchaseCashPDF(id));
+    await dispatch(PurchaseCashPDF(id, navigate));
   };
 
   return (

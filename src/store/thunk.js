@@ -3312,7 +3312,7 @@ export const getAllEmployeeSalary = () => {
   };
 };
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createUserBank = (bankdetails) => {
+export const createUserBank = (bankdetails, navigate) => {
   return async (dispatch) => {
     dispatch(CreateUserBankRequest());
     try {
@@ -3322,14 +3322,18 @@ export const createUserBank = (bankdetails) => {
       dispatch(CreateUserBankSuccess(Userbankdata));
       return Userbankdata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(CreateUserBankFailure(error.message));
     }
   };
 };
-export const updateUserBank = (accountId, formData) => {
+export const updateUserBank = (accountId, formData, navigate) => {
   return async (dispatch) => {
     dispatch(UpdateUserBankRequest());
     try {
@@ -3343,11 +3347,14 @@ export const updateUserBank = (accountId, formData) => {
       });
       return updateUserBankData;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(UpdateUserBankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -3366,7 +3373,7 @@ export const UserBankview = (id) => {
     }
   };
 };
-export const deleteUserBank = (id) => {
+export const deleteUserBank = (id, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteUserBankRequest());
     try {
@@ -3380,11 +3387,14 @@ export const deleteUserBank = (id) => {
       dispatch(DeleteUserBankSuccess(deleteUserbank));
       return deleteUserbank;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
       dispatch(DeleteUserBankFailure(error.message));
-      throw error;
     }
   };
 };
@@ -3418,11 +3428,14 @@ export const createEmployeesalary = (salaryId, data, navigate) => {
       navigate('/employeedirectory');
       return employeesalarydata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateemployeesalaryFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3448,21 +3461,6 @@ export const updateEmployeesalary = (salaryPaymentId, formData) => {
     }
   };
 };
-// export const Employeesalaryview = (id) => {
-//   return async (dispatch) => {
-//     dispatch(ViewemployeesalaryRequest());
-//     try {
-//       const config = createConfig();
-//       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salary/view_user_bank_account/${id}`, config);
-//       const data = response.data.data;
-//       dispatch(ViewemployeesalarySuccess(data));
-//       return data;
-//     } catch (error) {
-//       toast.error(error.response.data.error);
-//       dispatch(ViewemployeesalaryFailure(error.message));
-//     }
-//   };
-// };
 export const deleteEmployeesalary = (salaryPaymentId) => {
   return async (dispatch) => {
     dispatch(DeleteemployeesalaryRequest());
@@ -3515,11 +3513,14 @@ export const createMachine = (data, navigate) => {
       navigate('/machinelist');
       return addMachinedata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateMachineFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3567,15 +3568,18 @@ export const updateMachine = (machineId, formData, navigate) => {
       navigate('/machinelist');
       return updatemachinedata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(UpdateMachineFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
-export const deleteMachine = (machineId) => {
+export const deleteMachine = (machineId, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteMachineRequest());
     try {
@@ -3589,17 +3593,20 @@ export const deleteMachine = (machineId) => {
       dispatch(DeleteMachineSuccess(deletemachinedata));
       return deletemachinedata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(DeleteMachineFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++ MAINTENANCE TYPE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createMaintenancType = (data) => {
+export const createMaintenancType = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateMaintenanceTypeRequest());
     try {
@@ -3613,15 +3620,18 @@ export const createMaintenancType = (data) => {
       });
       return addMaintenancedata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateMaintenanceTypeFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
-export const updateMaintenanceType = (MaintenanceTypeId, formData) => {
+export const updateMaintenanceType = (MaintenanceTypeId, formData, navigate) => {
   return async (dispatch) => {
     dispatch(UpdateMaintenanceTypeRequest());
     try {
@@ -3639,11 +3649,14 @@ export const updateMaintenanceType = (MaintenanceTypeId, formData) => {
       });
       return updateMaintenanceTypedata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(UpdateMaintenanceTypeFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3697,11 +3710,14 @@ export const createMachineSchedule = (data, navigate) => {
       navigate('/machineschedulelist');
       return addMachinescheduledata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateMachineScheduleFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -3749,15 +3765,18 @@ export const updateMachineSchedule = (machineId, formData, navigate) => {
       navigate('/machineschedulelist');
       return updatemachineScheduledata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(UpdateMachineScheduleFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
-export const deleteMachineSchedule = (machineId) => {
+export const deleteMachineSchedule = (machineId, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteMachineScheduleRequest());
     try {
@@ -3771,11 +3790,14 @@ export const deleteMachineSchedule = (machineId) => {
       dispatch(DeleteMachineScheduleSuccess(deletemachineScheduledata));
       return deletemachineScheduledata;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(DeleteMachineScheduleFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4107,7 +4129,7 @@ export const deleteBreakdown = (id) => {
   };
 };
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor pdf of bank +++++++++++++++++++++++++++++++++++++
-export const SalesCashPDF = (id) => {
+export const SalesCashPDF = (id, navigate) => {
   return async (dispatch) => {
     dispatch(SalesCashPdfRequest());
     try {
@@ -4129,12 +4151,18 @@ export const SalesCashPDF = (id) => {
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
-      toast.error(error.response?.data?.error || 'An error occurred');
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
       dispatch(SalesCashPdfFailure(error.message));
     }
   };
 };
-export const PurchaseCashPDF = (id) => {
+export const PurchaseCashPDF = (id, navigate) => {
   return async (dispatch) => {
     dispatch(PurchaseCashPdfRequest());
     try {
@@ -4156,7 +4184,13 @@ export const PurchaseCashPDF = (id) => {
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
-      toast.error(error.response?.data?.error || 'An error occurred');
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
       dispatch(PurchaseCashPdfFailure(error.message));
     }
   };
@@ -4194,7 +4228,7 @@ export const TotalPurchaseDashboard = () => {
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++++++++++++++++++++
-export const createItemgroup = (data) => {
+export const createItemgroup = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateItemGroupRequest());
     try {
@@ -4208,11 +4242,14 @@ export const createItemgroup = (data) => {
       });
       return additemgroup;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateItemGroupFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4268,7 +4305,7 @@ export const updateItemgroup = (id, data, navigate) => {
     }
   };
 };
-export const DeleteItemgroup = (id) => {
+export const DeleteItemgroup = (id, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteItemGroupRequest());
     try {
@@ -4283,6 +4320,13 @@ export const DeleteItemgroup = (id) => {
       return data;
     } catch (error) {
       dispatch(DeleteItemGroupFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4302,11 +4346,7 @@ export const createWastage = (data) => {
       });
       return addWastage;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateWastageFailure(error.message));
-      throw error;
     }
   };
 };

@@ -92,7 +92,7 @@ const Userviewpage = () => {
       };
       console.log(bankdetails, 'bankdetails');
       if (selectedBank) {
-        await dispatch(updateUserBank(selectedBank, bankdetails));
+        await dispatch(updateUserBank(selectedBank, bankdetails, navigate));
         setData((prevData) => ({
           ...prevData,
           userBankAccount: prevData.userBankAccount.map((bank) => (bank.id === selectedBank ? bankdetails : bank))
@@ -120,7 +120,7 @@ const Userviewpage = () => {
 
   const handleDeleteBank = async () => {
     try {
-      await dispatch(deleteUserBank(selectedId));
+      await dispatch(deleteUserBank(selectedId, navigate));
       setOpenConfirmation(false);
       setData((prevData) => ({
         ...prevData,

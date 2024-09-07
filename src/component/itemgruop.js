@@ -7,10 +7,12 @@ import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createItemgroup, ItemGroupview, updateItemgroup } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const ItemGroup = ({ open, onClose, id, onnewgroupadded, onnewgroupUpdated }) => {
   const [itemGroupName, setItemGroupName] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   ItemGroup.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -24,10 +26,10 @@ const ItemGroup = ({ open, onClose, id, onnewgroupadded, onnewgroupUpdated }) =>
     try {
       const payload = { name: itemGroupName };
       if (id) {
-        const response = await dispatch(updateItemgroup(id, payload));
+        const response = await dispatch(updateItemgroup(id, payload, navigate));
         onnewgroupUpdated(response.data.data);
       } else {
-        const response = await dispatch(createItemgroup(payload));
+        const response = await dispatch(createItemgroup(payload, navigate));
         onnewgroupadded(response.data.data);
         setItemGroupName('');
       }
