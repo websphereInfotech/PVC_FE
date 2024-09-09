@@ -570,6 +570,12 @@ import {
   ViewWastageRequest,
   ViewWastageSuccess,
   ViewWastageFailure,
+  UpdateWastageRequest,
+  UpdateWastageSuccess,
+  UpdateWastageFailure,
+  DeleteWastageRequest,
+  DeleteWastageSuccess,
+  DeleteWastageFailure,
   // ITEM Category +++++++++++++
   CreateItemCategoryRequest,
   CreateItemCategorySuccess,
@@ -4332,7 +4338,7 @@ export const DeleteItemgroup = (id, navigate) => {
 };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE +++++++++++++++++++++++++++++++++++++++++++++
-export const createWastage = (data) => {
+export const createWastage = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateWastageRequest());
     try {
@@ -4347,6 +4353,9 @@ export const createWastage = (data) => {
       return addWastage;
     } catch (error) {
       dispatch(CreateWastageFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
     }
   };
 };
@@ -4376,6 +4385,54 @@ export const Wastageview = (id) => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(ViewWastageFailure(error.message));
+    }
+  };
+};
+export const updateWastage = (id, data, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateWastageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/wastage/update_wastage/${id}`, data, config);
+      const upadteWastageData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(UpdateWastageSuccess(upadteWastageData));
+      return upadteWastageData;
+    } catch (error) {
+      dispatch(UpdateWastageFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const DeleteWastage = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DeleteWastageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/wastage/delete_wastage/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteWastageSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(DeleteWastageFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };

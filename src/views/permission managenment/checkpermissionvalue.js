@@ -747,6 +747,12 @@ const useCan = () => {
   const canseewastage = () => {
     return checkPermission('Wastage', 'create_wastage');
   };
+  const canseeupdatewastage = () => {
+    return checkPermission('Wastage', 'update_wastage');
+  };
+  const canseedeletewastage = () => {
+    return checkPermission('Wastage', 'delete_wastage');
+  };
   const canseeviewwastage = () => {
     return checkPermission('Wastage', 'view_single_wastage');
   };
@@ -1081,6 +1087,8 @@ const useCan = () => {
     canseewastage,
     canseeviewwastage,
     canseeviewAllwastage,
+    canseeupdatewastage,
+    canseedeletewastage,
     // ITEM CATEGORY ++++++++++
     canseeitemcategory,
     canseeviewitemcategory,

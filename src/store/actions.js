@@ -614,6 +614,12 @@ export const CREATE_WASTAGE_FAILURE = 'CREATE_WASTAGE_FAILURE';
 export const VIEW_WASTAGE_REQUEST = 'VIEW_WASTAGE_REQUEST';
 export const VIEW_WASTAGE_SUCCESS = 'VIEW_WASTAGE_SUCCESS';
 export const VIEW_WASTAGE_FAILURE = 'VIEW_WASTAGE_FAILURE';
+export const UPDATE_WASTAGE_REQUEST = 'UPDATE_WASTAGE_REQUEST';
+export const UPDATE_WASTAGE_SUCCESS = 'UPDATE_WASTAGE_SUCCESS';
+export const UPDATE_WASTAGE_FAILURE = 'UPDATE_WASTAGE_FAILURE';
+export const DELETE_WASTAGE_REQUEST = 'DELETE_WASTAGE_REQUEST';
+export const DELETE_WASTAGE_SUCCESS = 'DELETE_WASTAGE_SUCCESS';
+export const DELETE_WASTAGE_FAILURE = 'DELETE_WASTAGE_FAILURE';
 export const GET_ALL_WASTAGE_REQUEST = 'GET_ALL_WASTAGE_REQUEST';
 export const GET_ALL_WASTAGE_SUCCESS = 'GET_ALL_WASTAGE_SUCCESS';
 export const GET_ALL_WASTAGE_FAILURE = 'GET_ALL_WASTAGE_FAILURE';
@@ -2719,6 +2725,28 @@ export const ViewWastageSuccess = (data) => ({
 });
 export const ViewWastageFailure = (error) => ({
   type: 'VIEW_WASTAGE_FAILURE',
+  payload: error
+});
+export const UpdateWastageRequest = () => ({
+  type: 'UPDATE_WASTAGE_REQUEST'
+});
+export const UpdateWastageSuccess = (data) => ({
+  type: 'UPDATE_WASTAGE_SUCCESS',
+  payload: data
+});
+export const UpdateWastageFailure = (error) => ({
+  type: 'UPDATE_WASTAGE_FAILURE',
+  payload: error
+});
+export const DeleteWastageRequest = () => ({
+  type: 'DELETE_WASTAGE_REQUEST'
+});
+export const DeleteWastageSuccess = (data) => ({
+  type: 'DELETE_WASTAGE_SUCCESS',
+  payload: data
+});
+export const DeleteWastageFailure = (error) => ({
+  type: 'DELETE_WASTAGE_FAILURE',
   payload: error
 });
 export const fetchAllWastageRequest = () => ({

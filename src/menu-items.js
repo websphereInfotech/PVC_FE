@@ -733,6 +733,12 @@ const MenuItem = () => {
                 title: 'Item Category',
                 type: 'item',
                 url: '/itemcategorylist'
+              },
+              {
+                id: 'Wastage',
+                title: 'Wastage',
+                type: 'item',
+                url: '/wastagelist'
               }
             ]
           }
