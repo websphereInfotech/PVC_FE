@@ -136,7 +136,7 @@ const AccountList = () => {
 
   const handleDelete = async () => {
     try {
-      await dispatch(deleteAccount(selectedId));
+      await dispatch(deleteAccount(selectedId, navigate));
       setOpenConfirmation(false);
       setAccount((preAccount) => preAccount.filter((account) => account.id !== selectedId));
     } catch (error) {
@@ -162,6 +162,9 @@ const AccountList = () => {
       })
       .catch((error) => {
         console.error('Error fetching updated Account data:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       });
   };
 

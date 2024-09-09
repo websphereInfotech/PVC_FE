@@ -1,6 +1,7 @@
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { getallCashbookledger } from 'store/thunk';
 
 const formatDate = (dateString) => {
@@ -20,7 +21,7 @@ const formatDate = (dateString) => {
 
 const Cashbookledgerlist = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [payments, setPayments] = useState({});
   const [getdata, setGetdata] = useState({});
   const formData = sessionStorage.getItem('RCashbookformDate');
@@ -34,8 +35,11 @@ const Cashbookledgerlist = () => {
       })
       .catch((error) => {
         console.error('Error fetching payment ledger data:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       });
-  }, [dispatch, formData, toDate]);
+  }, [dispatch, formData, toDate, navigate]);
 
   const renderRecordsByDate = (date, data) => {
     const { totals, closingBalance, records } = data;

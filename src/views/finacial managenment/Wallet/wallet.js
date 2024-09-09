@@ -69,10 +69,10 @@ const Wallet = () => {
     const handleApply = async () => {
       try {
         if (userId) {
-          const data = await dispatch(getWallet(userId));
+          const data = await dispatch(getWallet(userId, navigate));
           setWalletData(data);
         } else {
-          const newdata = await dispatch(getWallet('me'));
+          const newdata = await dispatch(getWallet('me', navigate));
           setWalletData(newdata);
         }
       } catch (error) {
@@ -80,7 +80,7 @@ const Wallet = () => {
       }
     };
     handleApply();
-  }, [dispatch, userId]);
+  }, [dispatch, userId, navigate]);
 
   const handleCheckboxChange = async (entry) => {
     if (entry.isApprove === false) {

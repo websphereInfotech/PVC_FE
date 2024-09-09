@@ -7,12 +7,14 @@ import { Grid, Typography, Card } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { createItemcategory, fetchAllItemGroup, ItemCategoryview, updateItemcategory } from 'store/thunk';
+import { useNavigate } from 'react-router';
 
 const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewCategoryupdated, id, ItemGroupOptions }) => {
   const [itemGroupOptions, setItemGroupOptions] = React.useState([]);
   const [selectedItemGroup, setSelectedItemGroup] = React.useState(null);
   const [categoryName, setCategoryName] = React.useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchItemGroups = React.useCallback(async () => {
     try {
@@ -25,9 +27,12 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewCategoryupdated,
       const updatedOptions = ItemGroupOptions.slice(1);
       setItemGroupOptions(updatedOptions);
     } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      }
       console.error('fetch all item groups', error);
     }
-  }, [dispatch, ItemGroupOptions]);
+  }, [dispatch, ItemGroupOptions, navigate]);
 
   React.useEffect(() => {
     fetchItemGroups();
@@ -45,11 +50,14 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewCategoryupdated,
           setCategoryName('');
         }
       } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
         console.error('Error view item group', error);
       }
     };
     fetchdata();
-  }, [id, dispatch]);
+  }, [id, dispatch, navigate]);
 
   const handleSave = async () => {
     try {
@@ -58,10 +66,10 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewCategoryupdated,
         name: categoryName
       };
       if (id) {
-        const response = await dispatch(updateItemcategory(id, payload));
+        const response = await dispatch(updateItemcategory(id, payload, navigate));
         onnewCategoryupdated(response.data.data);
       } else {
-        const response = await dispatch(createItemcategory(payload));
+        const response = await dispatch(createItemcategory(payload, navigate));
         onnewCategoryadded(response.data.data);
         setSelectedItemGroup('');
         setCategoryName('');

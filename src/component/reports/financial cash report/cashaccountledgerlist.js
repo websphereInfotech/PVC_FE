@@ -50,6 +50,9 @@ const Cashaccountledgerlist = () => {
           setTotalAmount(data.totalAmount);
         } else {
           console.error('Data or data.records is undefined.');
+          if (error.response.status === 401) {
+            navigate('/');
+          }
         }
       })
       .catch((error) => {

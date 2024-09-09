@@ -4380,7 +4380,7 @@ export const Wastageview = (id) => {
   };
 };
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM CATEGORY +++++++++++++++++++++++++++++++++++++++++++++
-export const createItemcategory = (data) => {
+export const createItemcategory = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateItemCategoryRequest());
     try {
@@ -4394,11 +4394,14 @@ export const createItemcategory = (data) => {
       });
       return additemgroup;
     } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
       dispatch(CreateItemCategoryFailure(error.message));
-      throw error;
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };
@@ -4454,7 +4457,7 @@ export const updateItemcategory = (id, data, navigate) => {
     }
   };
 };
-export const DeleteItemcategory = (id) => {
+export const DeleteItemcategory = (id, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteItemCategoryRequest());
     try {
@@ -4502,7 +4505,7 @@ export const getAllcategory = (params = {}) => {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SELECT LEDGR GROUP +++++++++++++++++++++++++++++++++++++++++++++
 
-export const fetchAllAccountOptions = () => {
+export const fetchAllAccountOptions = (navigate) => {
   return async (dispatch) => {
     dispatch(fetchAllAccountOptionsRequest());
     try {
@@ -4519,7 +4522,7 @@ export const fetchAllAccountOptions = () => {
     }
   };
 };
-export const createAccounts = (data) => {
+export const createAccounts = (data, navigate) => {
   return async (dispatch) => {
     dispatch(CreateAccountRequest());
     try {
@@ -4555,11 +4558,6 @@ export const viewAccount = (accountId) => {
       return data;
     } catch (error) {
       dispatch(ViewAccountFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.error);
-      }
     }
   };
 };
@@ -4577,9 +4575,6 @@ export const fetchAllAccounts = (params = {}) => {
       return data;
     } catch (error) {
       dispatch(fetchAllAccountsFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4609,7 +4604,7 @@ export const updateAccount = (accountId, formData, navigate) => {
     }
   };
 };
-export const deleteAccount = (accountId) => {
+export const deleteAccount = (accountId, navigate) => {
   return async (dispatch) => {
     dispatch(DeleteAccountRequest());
     try {
@@ -4645,9 +4640,6 @@ export const fetchAllAccountCash = () => {
       return data;
     } catch (error) {
       dispatch(fetchAllAccountcashFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4667,9 +4659,6 @@ export const getallAccountledger = (id, formDate, toDate) => {
       return getallAccountledgerlist;
     } catch (error) {
       dispatch(getAllAccountLedgerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4687,9 +4676,6 @@ export const getallCashAccountledger = (id, formDate, toDate) => {
       return getallCashAccountledgerlist;
     } catch (error) {
       dispatch(getAllCashAccountLedgerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4704,9 +4690,6 @@ export const getallDaybookledger = (formDate, toDate) => {
       return getallDaybookledgerlist;
     } catch (error) {
       dispatch(getAllDaybookLedgerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4721,9 +4704,6 @@ export const getallCashDaybookledger = (formDate, toDate) => {
       return getallCashDaybookledgerlist;
     } catch (error) {
       dispatch(getAllCashDaybookLedgerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
@@ -4741,13 +4721,10 @@ export const getallCashbookledger = (formDate, toDate) => {
       return getallCashbookledgerlist;
     } catch (error) {
       dispatch(getAllCashbookLedgerFailure(error.message));
-      if (error.response.status === 401) {
-        navigate('/');
-      }
     }
   };
 };
-export const getWallet = (id) => {
+export const getWallet = (id, navigate) => {
   return async (dispatch) => {
     dispatch(getWalletRequest());
     try {

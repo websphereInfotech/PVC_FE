@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createClaimcash, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
+import { createClaimcash, fetchAllWastage, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
+import Purpose from 'component/purposecliam';
 
 const Cliamcashpage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -16,12 +17,15 @@ const Cliamcashpage = () => {
   const [user, setuser] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const fromUserId = sessionStorage.getItem('userId');
+  const [purposeOptions, setpurposeOptions] = React.useState([]);
+  const [purposename, setpurposename] = React.useState('');
+  const [purposeDrawerOpen, setpurposeDrawerOpen] = React.useState(false);
   const [formData, setFormData] = useState({
     toUserId: '',
     fromUserId,
     amount: Number(),
     description: '',
-    purpose: ''
+    purposeId: ''
   });
 
   const handleSelectChange = (selectedOption) => {
@@ -61,9 +65,39 @@ const Cliamcashpage = () => {
         console.error('Error fetching cliam:', error);
       }
     };
+    const wastage = async () => {
+      try {
+        const wastage = await dispatch(fetchAllWastage());
+        if (Array.isArray(wastage)) {
+          const options = wastage.map((product) => ({
+            value: product.id,
+            label: product.name
+          }));
+          setpurposeOptions([{ value: 'new_group', label: 'Create New Purpose' }, ...options]);
+          if (!canCreateWastagevalue) {
+            setpurposeOptions(options);
+          }
+        }
+      } catch (error) {
+        console.log(error, 'fetch item Group');
+      }
+    };
+    wastage();
     viewData();
     fetchData();
   }, [dispatch, id]);
+
+  const handleNewgroupadded = (newWastage) => {
+    const updatedwastagelist = [
+      ...purposeOptions,
+      {
+        value: newWastage.id,
+        label: newWastage.name
+      }
+    ];
+    setpurposeOptions(updatedwastagelist);
+    setpurposeDrawerOpen(false);
+  };
 
   const handlecreatePaymentCash = async () => {
     try {
@@ -84,14 +118,13 @@ const Cliamcashpage = () => {
     }));
   };
   const handlepurposeChange = (selectedOption) => {
-    setFormData({ ...formData, purpose: selectedOption.value });
+    if (selectedOption && selectedOption.label === 'Create New Purpose') {
+      setpurposeDrawerOpen(true);
+    } else {
+      setpurposename(selectedOption.label);
+      setFormData({ ...formData, purposeId: selectedOption.value });
+    }
   };
-
-  const purposeOptions = [
-    { value: 'Salary', label: 'Salary' },
-    { value: 'Advance', label: 'Advance' },
-    { value: 'Expense', label: 'Expense' }
-  ];
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
@@ -141,12 +174,25 @@ const Cliamcashpage = () => {
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Purpose: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Wastage :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
+                id="itemgroup"
                 options={purposeOptions}
-                value={purposeOptions.find((option) => option.value === formData.purpose)}
-                onChange={handlepurposeChange}
+                value={{ value: formData.purposeId, label: purposename }}
+                onChange={(selectedOption) => handlepurposeChange(selectedOption)}
+                styles={{
+                  container: (base) => ({
+                    ...base,
+                    width: '80%'
+                  })
+                }}
+              />
+              <Purpose
+                anchor="Right"
+                onnewadded={handleNewgroupadded}
+                open={purposeDrawerOpen}
+                onClose={() => setpurposeDrawerOpen(false)}
               />
             </Grid>
           </Grid>

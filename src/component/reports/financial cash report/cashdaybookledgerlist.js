@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { getallCashDaybookledger } from 'store/thunk';
+import { useNavigate } from 'react-router';
 // import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
@@ -24,6 +25,7 @@ const formatDate = (dateString) => {
 
 const Cashdaybookledgerlist = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
   const [getdata, setGetdata] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
@@ -48,12 +50,15 @@ const Cashdaybookledgerlist = () => {
           setTotalAmount(data.totalAmount);
         } else {
           console.error('Data or data.records is undefined.');
+          if (error.response.status === 401) {
+            navigate('/');
+          }
         }
       })
       .catch((error) => {
         console.error('Error fetching payment ledger data:', error);
       });
-  }, [dispatch, formData, toDate]);
+  }, [dispatch, formData, toDate, navigate]);
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>

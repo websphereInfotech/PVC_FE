@@ -179,7 +179,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
 
     const data = async () => {
       try {
-        const fetchdata = await dispatch(fetchAllAccountOptions());
+        const fetchdata = await dispatch(fetchAllAccountOptions(navigate));
         const options = fetchdata.map((account) => ({
           value: account.id,
           label: account.name
@@ -191,7 +191,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
     };
     fetchData();
     data();
-  }, [id, dispatch]);
+  }, [id, dispatch, navigate]);
 
   const handlesave = async () => {
     const payload = {
@@ -257,7 +257,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
         const response = await dispatch(updateAccount(id, payload, navigate));
         onAccountUpdated(response);
       } else {
-        const response = await dispatch(createAccounts(payload));
+        const response = await dispatch(createAccounts(payload, navigate));
         onAccountCreate(response);
       }
       setFormData({

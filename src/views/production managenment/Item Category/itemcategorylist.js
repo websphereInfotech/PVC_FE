@@ -137,9 +137,12 @@ const ItemcategoryList = () => {
       })
       .catch((error) => {
         console.error('Error fetching updated product data:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       });
   };
-
+  ``;
   const handleItemCategoryAdded = () => {
     dispatch(getAllcategory())
       .then((data) => {
@@ -148,12 +151,15 @@ const ItemcategoryList = () => {
       })
       .catch((error) => {
         console.error('Error fetching updated product data:', error);
+        if (error.response.status === 401) {
+          navigate('/');
+        }
       });
   };
 
   const handleDelete = async () => {
     try {
-      await dispatch(DeleteItemcategory(selectedId));
+      await dispatch(DeleteItemcategory(selectedId, navigate));
       setOpenConfirmation(false);
       setItemcategoty((prevcategory) => prevcategory.filter((category) => category.id !== selectedId));
     } catch (error) {
