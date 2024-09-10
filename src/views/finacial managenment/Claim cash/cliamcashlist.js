@@ -214,6 +214,8 @@ const Claimcashlist = () => {
                       )
                     ) : column.id === 'fromUserId' ? (
                       payment.toUser?.username
+                    ) : column.id === 'purpose' ? (
+                      payment.claimPurpose?.name
                     ) : column.id === 'isApproved' ? (
                       <span style={{ color: payment.isApproved === true ? '#00CE00' : payment.isApproved === false ? 'red' : 'blue' }}>
                         {payment.isApproved === true ? 'Approve' : payment.isApproved === false ? 'Reject' : 'Pending'}

@@ -5,13 +5,14 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { createPurpose } from 'store/thunk';
 
 const Purpose = ({ open, onClose, onnewadded }) => {
   const [PurposeName, setPurposeName] = useState('');
-  //   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   Purpose.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -21,8 +22,8 @@ const Purpose = ({ open, onClose, onnewadded }) => {
 
   const handleSave = async () => {
     const payload = { name: PurposeName };
-    // const response = await dispatch(createPurpose(payload, navigate));
-    onnewadded(payload);
+    const response = await dispatch(createPurpose(payload, navigate));
+    onnewadded(response.data.data);
     onClose();
     setPurposeName('');
   };

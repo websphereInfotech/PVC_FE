@@ -483,6 +483,9 @@ export const CREATE_MAINTENANCE_TYPE_FAILURE = 'CREATE_MAINTENANCE_TYPE_FAILURE'
 export const UPDATE_MAINTENANCE_TYPE_REQUEST = 'UPDATE_MAINTENANCE_TYPE_REQUEST';
 export const UPDATE_MAINTENANCE_TYPE_SUCCESS = 'UPDATE_MAINTENANCE_TYPE_SUCCESS';
 export const UPDATE_MAINTENANCE_TYPE_FAILURE = 'UPDATE_MAINTENANCE_TYPE_FAILURE';
+export const DELETE_MAINTENANCE_TYPE_REQUEST = 'DELETE_MAINTENANCE_TYPE_REQUEST';
+export const DELETE_MAINTENANCE_TYPE_SUCCESS = 'DELETE_MAINTENANCE_TYPE_SUCCESS';
+export const DELETE_MAINTENANCE_TYPE_FAILURE = 'DELETE_MAINTENANCE_TYPE_FAILURE';
 export const VIEW_SINGLE_MAINTENANCE_TYPE_REQUEST = 'VIEW_SINGLE_MAINTENANCE_TYPE_REQUEST';
 export const VIEW_SINGLE_MAINTENANCE_TYPE_SUCCESS = 'VIEW_SINGLE_MAINTENANCE_TYPE_SUCCESS';
 export const VIEW_SINGLE_MAINTENANCE_TYPE_FAILURE = 'VIEW_SINGLE_MAINTENANCE_TYPE_FAILURE';
@@ -607,7 +610,24 @@ export const DELETE_ITEM_GROUP_REQUEST = 'DELETE_ITEM_GROUP_REQUEST';
 export const DELETE_ITEM_GROUP_SUCCESS = 'DELETE_ITEM_GROUP_SUCCESS';
 export const DELETE_ITEM_GROUP_FAILURE = 'DELETE_ITEM_GROUP_FAILURE';
 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURPOSE +++++++++++++++++++++++++++
+export const CREATE_PURPOSE_REQUEST = 'CREATE_PURPOSE_REQUEST';
+export const CREATE_PURPOSE_SUCCESS = 'CREATE_PURPOSE_SUCCESS';
+export const CREATE_PURPOSE_FAILURE = 'CREATE_PURPOSE_FAILURE';
+export const VIEW_PURPOSE_REQUEST = 'VIEW_PURPOSE_REQUEST';
+export const VIEW_PURPOSE_SUCCESS = 'VIEW_PURPOSE_SUCCESS';
+export const VIEW_PURPOSE_FAILURE = 'VIEW_PURPOSE_FAILURE';
+export const UPDATE_PURPOSE_REQUEST = 'UPDATE_PURPOSE_REQUEST';
+export const UPDATE_PURPOSE_SUCCESS = 'UPDATE_PURPOSE_SUCCESS';
+export const UPDATE_PURPOSE_FAILURE = 'UPDATE_PURPOSE_FAILURE';
+export const DELETE_PURPOSE_REQUEST = 'DELETE_PURPOSE_REQUEST';
+export const DELETE_PURPOSE_SUCCESS = 'DELETE_PURPOSE_SUCCESS';
+export const DELETE_PURPOSE_FAILURE = 'DELETE_PURPOSE_FAILURE';
+export const GET_ALL_PURPOSE_REQUEST = 'GET_ALL_PURPOSE_REQUEST';
+export const GET_ALL_PURPOSE_SUCCESS = 'GET_ALL_PURPOSE_SUCCESS';
+export const GET_ALL_PURPOSE_FAILURE = 'GET_ALL_PURPOSE_FAILURE';
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE +++++++++++++++++++++++++++
 export const CREATE_WASTAGE_REQUEST = 'CREATE_WASTAGE_REQUEST';
 export const CREATE_WASTAGE_SUCCESS = 'CREATE_WASTAGE_SUCCESS';
 export const CREATE_WASTAGE_FAILURE = 'CREATE_WASTAGE_FAILURE';
@@ -2352,6 +2372,17 @@ export const UpdateMaintenanceTypeFailure = (error) => ({
   type: 'UPDATE_MAINTENANCE_TYPE_FAILURE',
   payload: error
 });
+export const DeleteMaintenanceTypeRequest = () => ({
+  type: 'DELETE_MAINTENANCE_TYPE_REQUEST'
+});
+export const DeleteMaintenanceTypeSuccess = (data) => ({
+  type: 'DELETE_MAINTENANCE_TYPE_SUCCESS',
+  payload: data
+});
+export const DeleteMaintenanceTypeFailure = (error) => ({
+  type: 'DELETE_MAINTENANCE_TYPE_FAILURE',
+  payload: error
+});
 
 export const ViewsingleMaintenancetypeRequest = () => ({
   type: 'VIEW_SINGLE_MAINTENANCE_TYPE_REQUEST'
@@ -2704,7 +2735,7 @@ export const GetTotalSalesFailure = (error) => ({
   type: 'GET_TOTAL_SALES_FAILURE',
   payload: error
 });
-// +++++++++++++++++++++++++++++++++++++++++++++++ITEM GROUP ++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE ++++++++++++++++++++++++++++++++++++
 export const CreateWastageRequest = () => ({
   type: 'CREATE_WASTAGE_REQUEST'
 });
@@ -2760,7 +2791,62 @@ export const fetchAllWastageFailure = (error) => ({
   type: 'GET_ALL_WASTAGE_FAILURE',
   payload: error
 });
-
+// +++++++++++++++++++++++++++++++++++++++++++++++ PURPOSE ++++++++++++++++++++++++++++++++++++
+export const CreatePurposeRequest = () => ({
+  type: 'CREATE_PURPOSE_REQUEST'
+});
+export const CreatePurposeSuccess = (data) => ({
+  type: 'CREATE_PURPOSE_SUCCESS',
+  payload: data
+});
+export const CreatePurposeFailure = (error) => ({
+  type: 'CREATE_PURPOSE_FAILURE',
+  payload: error
+});
+export const ViewPurposeRequest = () => ({
+  type: 'VIEW_PURPOSE_REQUEST'
+});
+export const ViewPurposeSuccess = (data) => ({
+  type: 'VIEW_PURPOSE_SUCCESS',
+  payload: data
+});
+export const ViewPurposeFailure = (error) => ({
+  type: 'VIEW_PURPOSE_FAILURE',
+  payload: error
+});
+export const UpdatePurposeRequest = () => ({
+  type: 'UPDATE_PURPOSE_REQUEST'
+});
+export const UpdatePurposeSuccess = (data) => ({
+  type: 'UPDATE_PURPOSE_SUCCESS',
+  payload: data
+});
+export const UpdatePurposeFailure = (error) => ({
+  type: 'UPDATE_PURPOSE_FAILURE',
+  payload: error
+});
+export const DeletePurposeRequest = () => ({
+  type: 'DELETE_PURPOSE_REQUEST'
+});
+export const DeletePurposeSuccess = (data) => ({
+  type: 'DELETE_PURPOSE_SUCCESS',
+  payload: data
+});
+export const DeletePurposeFailure = (error) => ({
+  type: 'DELETE_PURPOSE_FAILURE',
+  payload: error
+});
+export const fetchAllPurposeRequest = () => ({
+  type: 'GET_ALL_PURPOSE_REQUEST'
+});
+export const fetchAllPurposeSuccess = (data) => ({
+  type: 'GET_ALL_PURPOSE_SUCCESS',
+  payload: data
+});
+export const fetchAllPurposeFailure = (error) => ({
+  type: 'GET_ALL_PURPOSE_FAILURE',
+  payload: error
+});
 // +++++++++++++++++++++++++++++++++++++++++++++++ITEM GROUP ++++++++++++++++++++++++++++++++++++
 export const CreateItemGroupRequest = () => ({
   type: 'CREATE_ITEM_GROUP_REQUEST'

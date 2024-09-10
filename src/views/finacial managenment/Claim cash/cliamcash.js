@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
-import { createClaimcash, fetchAllWastage, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
+import { createClaimcash, fetchAllPurpose, getallclaimuser, updateClaimCash, viewSingleclaimCash } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
@@ -54,10 +54,10 @@ const Cliamcashpage = () => {
       try {
         if (id) {
           const response = await dispatch(viewSingleclaimCash(id));
-          const { amount, description, toUser, purpose } = response;
+          const { amount, description, toUser, claimPurpose } = response;
           console.log(response, 'response');
-          setFormData({ amount, description, purpose, toUserId: toUser.id });
-
+          setFormData({ amount, description, purposeId: claimPurpose.id, toUserId: toUser.id });
+          setpurposename(claimPurpose.name);
           setusername(toUser.username);
           setSelectuser(toUser.id);
         }
@@ -65,16 +65,16 @@ const Cliamcashpage = () => {
         console.error('Error fetching cliam:', error);
       }
     };
-    const wastage = async () => {
+    const purpose = async () => {
       try {
-        const wastage = await dispatch(fetchAllWastage());
-        if (Array.isArray(wastage)) {
-          const options = wastage.map((product) => ({
+        const purpose = await dispatch(fetchAllPurpose());
+        if (Array.isArray(purpose)) {
+          const options = purpose.map((product) => ({
             value: product.id,
             label: product.name
           }));
           setpurposeOptions([{ value: 'new_group', label: 'Create New Purpose' }, ...options]);
-          if (!canCreateWastagevalue) {
+          if (!canCreatepurposevalue) {
             setpurposeOptions(options);
           }
         }
@@ -82,20 +82,20 @@ const Cliamcashpage = () => {
         console.log(error, 'fetch item Group');
       }
     };
-    wastage();
+    purpose();
     viewData();
     fetchData();
   }, [dispatch, id]);
 
-  const handleNewgroupadded = (newWastage) => {
-    const updatedwastagelist = [
+  const handleNewgroupadded = (newpurpose) => {
+    const updatedpurposelist = [
       ...purposeOptions,
       {
-        value: newWastage.id,
-        label: newWastage.name
+        value: newpurpose.id,
+        label: newpurpose.name
       }
     ];
-    setpurposeOptions(updatedwastagelist);
+    setpurposeOptions(updatedpurposelist);
     setpurposeDrawerOpen(false);
   };
 
@@ -174,7 +174,7 @@ const Cliamcashpage = () => {
 
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
-                Wastage :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                Purpose :<span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select
                 id="itemgroup"

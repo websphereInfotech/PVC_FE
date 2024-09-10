@@ -444,6 +444,9 @@ import {
   UpdateMaintenanceTypeRequest,
   UpdateMaintenanceTypeSuccess,
   UpdateMaintenanceTypeFailure,
+  DeleteMaintenanceTypeRequest,
+  DeleteMaintenanceTypeSuccess,
+  DeleteMaintenanceTypeFailure,
   ViewsingleMaintenancetypeRequest,
   ViewsingleMaintenancetypeSuccess,
   ViewsingleMaintenancetypeFailure,
@@ -576,6 +579,22 @@ import {
   DeleteWastageRequest,
   DeleteWastageSuccess,
   DeleteWastageFailure,
+  // PURPOSE ++++++++++++
+  CreatePurposeRequest,
+  CreatePurposeSuccess,
+  CreatePurposeFailure,
+  fetchAllPurposeRequest,
+  fetchAllPurposeSuccess,
+  fetchAllPurposeFailure,
+  ViewPurposeRequest,
+  ViewPurposeSuccess,
+  ViewPurposeFailure,
+  UpdatePurposeRequest,
+  UpdatePurposeSuccess,
+  UpdatePurposeFailure,
+  DeletePurposeRequest,
+  DeletePurposeSuccess,
+  DeletePurposeFailure,
   // ITEM Category +++++++++++++
   CreateItemCategoryRequest,
   CreateItemCategorySuccess,
@@ -3684,7 +3703,34 @@ export const MaintenanceTypeview = (machineId) => {
     }
   };
 };
-
+export const deleteMaintenanceType = (MaintenanceTypeId, navigate) => {
+  return async (dispatch) => {
+    dispatch(DeleteMaintenanceTypeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/maintenanceType/delete_maintenanceType/${MaintenanceTypeId}`,
+        config
+      );
+      const deleteMaintenanceTypedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteMaintenanceTypeSuccess(deleteMaintenanceTypedata));
+      return deleteMaintenanceTypedata;
+    } catch (error) {
+      dispatch(DeleteMaintenanceTypeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
 export const fetchAllMaintenanceType = () => {
   return async (dispatch) => {
     dispatch(fetchAllMaintenanceTypeRequest());
@@ -4426,6 +4472,106 @@ export const DeleteWastage = (id, navigate) => {
       return data;
     } catch (error) {
       dispatch(DeleteWastageFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURPOSE [CLIAM] +++++++++++++++++++++++++++++++++++++++++++++
+export const createPurpose = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreatePurposeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/Purpose/create_Purpose`, data, config);
+      const addPurpose = response;
+      dispatch(CreatePurposeSuccess(addPurpose));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return addPurpose;
+    } catch (error) {
+      dispatch(CreatePurposeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
+    }
+  };
+};
+export const fetchAllPurpose = () => {
+  return async (dispatch) => {
+    dispatch(fetchAllPurposeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Purpose/get_all_Purpose`, config);
+      const data = response.data.data;
+      dispatch(fetchAllPurposeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllPurposeFailure(error.message));
+    }
+  };
+};
+export const Purposeview = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewPurposeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Purpose/view_single_Purpose/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewPurposeSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewPurposeFailure(error.message));
+    }
+  };
+};
+export const updatePurpose = (id, data, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdatePurposeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/Purpose/update_Purpose/${id}`, data, config);
+      const upadtePurposeData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(UpdatePurposeSuccess(upadtePurposeData));
+      return upadtePurposeData;
+    } catch (error) {
+      dispatch(UpdatePurposeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const DeletePurpose = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DeletePurposeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/Purpose/delete_Purpose/${id}`, config);
+      const data = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeletePurposeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(DeletePurposeFailure(error.message));
       if (error.response.status === 401) {
         navigate('/');
       } else {

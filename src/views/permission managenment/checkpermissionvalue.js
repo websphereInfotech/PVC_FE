@@ -838,6 +838,24 @@ const useCan = () => {
     return checkPermission('Claim Cash', 'view_wallet');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Maintenance Type
+
+  const canCreateMaintenanceType = () => {
+    return checkPermission('Maintenance Type', 'create_maintenanceType');
+  };
+  const canViewAllMaintenanceType = () => {
+    return checkPermission('Maintenance Type', 'view_all_maintenanceType');
+  };
+  const canViewSingleMaintenanceType = () => {
+    return checkPermission('Maintenance Type', 'view_single_maintenanceType');
+  };
+  const canUpdateMaintenanceType = () => {
+    return checkPermission('Maintenance Type', 'update_maintenanceType');
+  };
+  const canDeleteMaintenanceType = () => {
+    return checkPermission('Maintenance Type', 'delete_maintenanceType');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -1114,7 +1132,13 @@ const useCan = () => {
     canseedaybookledger,
     canseedaybookcashledger,
     canseecashbookcashledger,
-    canseewalletledger
+    canseewalletledger,
+    // MAINTENANCE TYPE ++++++++++
+    canDeleteMaintenanceType,
+    canUpdateMaintenanceType,
+    canViewSingleMaintenanceType,
+    canViewAllMaintenanceType,
+    canCreateMaintenanceType
   };
 };
 

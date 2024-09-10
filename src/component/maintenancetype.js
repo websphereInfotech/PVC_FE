@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { createMaintenancType, MaintenanceTypeview, updateMaintenanceType } from 'store/thunk';
 import { useNavigate } from 'react-router';
 
-const Maintenancetype = ({ open, onClose, id }) => {
+const Maintenancetype = ({ open, onClose, id, onnewadded, onnewUpdated }) => {
   const [MaintenancetypeName, setMaintenancetypeName] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ const Maintenancetype = ({ open, onClose, id }) => {
   Maintenancetype.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    // onnewgroupadded: PropTypes.func.isRequired,
-    // onnewgroupUpdated: PropTypes.func.isRequired,
+    onnewadded: PropTypes.func.isRequired,
+    onnewUpdated: PropTypes.func.isRequired,
     id: PropTypes.string
   };
 
@@ -26,10 +26,13 @@ const Maintenancetype = ({ open, onClose, id }) => {
     try {
       const payload = { name: MaintenancetypeName };
       if (id) {
-        await dispatch(updateMaintenanceType(id, payload, navigate));
+        const response = await dispatch(updateMaintenanceType(id, payload, navigate));
+        onnewUpdated(response.data.data);
       } else {
-        await dispatch(createMaintenancType(payload, navigate));
+        const response = await dispatch(createMaintenancType(payload, navigate));
+        onnewadded(response.data.data);
         setMaintenancetypeName('');
+        onClose();
       }
     } catch (error) {
       console.error('Error creating item group', error);
