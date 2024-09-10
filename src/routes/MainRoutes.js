@@ -19,6 +19,7 @@ import Cashbookledgerlist from 'component/reports/financial cash report/cashbook
 import CashbookReport from 'views/finacial managenment/Wallet/cashbook';
 import Wastagelist from 'views/general managenment/wastage/wastagelist';
 import Maintenancelist from 'views/general managenment/maintenance/maintenancelist';
+import Purposelist from 'views/general managenment/claim purpose/purposelist';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -633,11 +634,15 @@ const MainRoutes = {
     { path: '/daybookledger', element: <Daybookledgerlist /> },
     { path: '/cashbookledger', element: <Cashbookledgerlist /> },
     { path: '/cashbook', element: <CashbookReport /> },
+    { path: '/cashbook', element: <Purposelist /> },
     {
       path: '/maintenancelist',
       element: <ProtectedRoute element={Maintenancelist} resource="Maintenance Type" permissionName="view_all_maintenanceType" />
     },
-
+    {
+      path: '/purposelist',
+      element: <ProtectedRoute element={Purposelist} resource="Purpose" permissionName="view_all_purpose" />
+    },
     { path: '/wastagelist', element: <ProtectedRoute element={Wastagelist} resource="Wastage" permissionName="view_all_wastage" /> }
   ]
 };

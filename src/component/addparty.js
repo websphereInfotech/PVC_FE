@@ -259,36 +259,35 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
       } else {
         const response = await dispatch(createAccounts(payload, navigate));
         onAccountCreate(response);
-        setFormData({
-          accountname: '',
-          shortname: '',
-          contactpersonname: '',
-          accountGroupId: ''
-        });
-        setSundryDetails({
-          email: '',
-          mobileNo: '',
-          panNo: null,
-          state: '',
-          city: '',
-          address1: '',
-          address2: null,
-          pincode: '',
-          balance: '',
-          gstnumber: null,
-          creditperiod: 0
-        });
-        setBankDetail(false);
-        setCreditlimit(false);
-        setBankName('');
-        setAccountNumber('');
-        setAccountHolderName('');
-        setIfscCode('');
-        setTotalCredit('');
-        setSelectedGroup(null);
-        setregistrationType('Composition');
-        onClose();
       }
+      setFormData({
+        accountname: '',
+        shortname: '',
+        contactpersonname: '',
+        accountGroupId: ''
+      });
+      setSundryDetails({
+        email: '',
+        mobileNo: '',
+        panNo: null,
+        state: '',
+        city: '',
+        address1: '',
+        address2: null,
+        pincode: '',
+        balance: '',
+        gstnumber: null,
+        creditperiod: 0
+      });
+      setBankDetail(false);
+      setCreditlimit(false);
+      setBankName('');
+      setAccountNumber('');
+      setAccountHolderName('');
+      setIfscCode('');
+      setTotalCredit('');
+      setSelectedGroup(null);
+      setregistrationType('Composition');
     } catch (error) {
       console.error('Error saving account:', error);
     } finally {

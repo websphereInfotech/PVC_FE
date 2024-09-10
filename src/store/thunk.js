@@ -3731,12 +3731,15 @@ export const deleteMaintenanceType = (MaintenanceTypeId, navigate) => {
     }
   };
 };
-export const fetchAllMaintenanceType = () => {
+export const fetchAllMaintenanceType = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllMaintenanceTypeRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/maintenanceType/get_all_maintenanceType`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/maintenanceType/get_all_maintenanceType`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllMaintenanceTypeSuccess(data));
       return data;
@@ -4405,12 +4408,15 @@ export const createWastage = (data, navigate) => {
     }
   };
 };
-export const fetchAllWastage = () => {
+export const fetchAllWastage = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllWastageRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wastage/get_all_wastage`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wastage/get_all_wastage`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllWastageSuccess(data));
       return data;
@@ -4489,7 +4495,7 @@ export const createPurpose = (data, navigate) => {
     dispatch(CreatePurposeRequest());
     try {
       const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/Purpose/create_Purpose`, data, config);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/purpose/create_purpose`, data, config);
       const addPurpose = response;
       dispatch(CreatePurposeSuccess(addPurpose));
       toast.success(response.data.message, {
@@ -4505,12 +4511,15 @@ export const createPurpose = (data, navigate) => {
     }
   };
 };
-export const fetchAllPurpose = () => {
+export const fetchAllPurpose = (params = {}) => {
   return async (dispatch) => {
     dispatch(fetchAllPurposeRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Purpose/get_all_Purpose`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purpose/get_all_purpose`, {
+        ...config,
+        params: params
+      });
       const data = response.data.data;
       dispatch(fetchAllPurposeSuccess(data));
       return data;
@@ -4524,7 +4533,7 @@ export const Purposeview = (id) => {
     dispatch(ViewPurposeRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Purpose/view_single_Purpose/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purpose/view_purpose/${id}`, config);
       const data = response.data.data;
       dispatch(ViewPurposeSuccess(data));
       return data;
@@ -4539,7 +4548,7 @@ export const updatePurpose = (id, data, navigate) => {
     dispatch(UpdatePurposeRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/Purpose/update_Purpose/${id}`, data, config);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/purpose/update_purpose/${id}`, data, config);
       const upadtePurposeData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4562,7 +4571,7 @@ export const DeletePurpose = (id, navigate) => {
     dispatch(DeletePurposeRequest());
     try {
       const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/Purpose/delete_Purpose/${id}`, config);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/purpose/delete_purpose/${id}`, config);
       const data = response.data.data;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,

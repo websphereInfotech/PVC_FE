@@ -7,9 +7,9 @@ import { Grid, Typography, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { createPurpose } from 'store/thunk';
+import { createPurpose, Purposeview, updatePurpose } from 'store/thunk';
 
-const Purpose = ({ open, onClose, onnewadded }) => {
+const Purpose = ({ open, onClose, onnewadded, onnewUpdated, id }) => {
   const [PurposeName, setPurposeName] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,15 +17,41 @@ const Purpose = ({ open, onClose, onnewadded }) => {
   Purpose.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onnewadded: PropTypes.func.isRequired
+    onnewadded: PropTypes.func.isRequired,
+    onnewUpdated: PropTypes.func.isRequired,
+    id: PropTypes.string
   };
+
+  React.useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(Purposeview(id));
+          setPurposeName(response.name);
+        } else {
+          setPurposeName('');
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate('/');
+        }
+        console.error('Error view item group', error);
+      }
+    };
+    fetchdata();
+  }, [id, dispatch, navigate]);
 
   const handleSave = async () => {
     const payload = { name: PurposeName };
-    const response = await dispatch(createPurpose(payload, navigate));
-    onnewadded(response.data.data);
-    onClose();
-    setPurposeName('');
+    if (id) {
+      const response = await dispatch(updatePurpose(id, payload, navigate));
+      onnewUpdated(response.data.data);
+    } else {
+      const response = await dispatch(createPurpose(payload, navigate));
+      onnewadded(response.data.data);
+      onClose();
+      setPurposeName('');
+    }
   };
 
   const list = (

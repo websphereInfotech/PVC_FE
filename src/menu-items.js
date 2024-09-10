@@ -745,6 +745,12 @@ const MenuItem = () => {
                 title: 'Maintenance Type',
                 type: 'item',
                 url: '/maintenancelist'
+              },
+              {
+                id: 'Purpose',
+                title: 'Purpose',
+                type: 'item',
+                url: '/purposelist'
               }
             ]
           }

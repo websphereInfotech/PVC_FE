@@ -742,7 +742,7 @@ const useCan = () => {
     return checkPermission('Company Cash', 'view_company_cash_balance');
   };
 
-  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Group ++++++++++++++++++++++++
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE ++++++++++++++++++++++++
 
   const canseewastage = () => {
     return checkPermission('Wastage', 'create_wastage');
@@ -758,6 +758,23 @@ const useCan = () => {
   };
   const canseeviewAllwastage = () => {
     return checkPermission('Wastage', 'view_all_wastage');
+  };
+  //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE ++++++++++++++++++++++++
+
+  const canseepurpose = () => {
+    return checkPermission('Purpose', 'create_purpose');
+  };
+  const canseeupdatepurpose = () => {
+    return checkPermission('Purpose', 'update_purpose');
+  };
+  const canseedeletepurpose = () => {
+    return checkPermission('Purpose', 'delete_purpose');
+  };
+  const canseeviewpurpose = () => {
+    return checkPermission('Purpose', 'view_single_purpose');
+  };
+  const canseeviewAllpurpose = () => {
+    return checkPermission('Purpose', 'view_all_purpose');
   };
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Item Category ++++++++++++++++++++++++
@@ -1107,6 +1124,12 @@ const useCan = () => {
     canseeviewAllwastage,
     canseeupdatewastage,
     canseedeletewastage,
+    // PURPOSE ++++++++++++
+    canseepurpose,
+    canseeviewpurpose,
+    canseeviewAllpurpose,
+    canseeupdatepurpose,
+    canseedeletepurpose,
     // ITEM CATEGORY ++++++++++
     canseeitemcategory,
     canseeviewitemcategory,
