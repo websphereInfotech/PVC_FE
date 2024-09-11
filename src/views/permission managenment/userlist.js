@@ -154,8 +154,8 @@ export default function UserList() {
         setNewUser({ mobileno: '', email: '' });
       }
     } catch (error) {
-      console.error('Error checking user:', error.response.status);
-      if (error.response && error.response.status === 404) {
+      console.log('Error checking user:', error.response);
+      if (error === 400) {
         navigate('/adduser');
         setOpenCreateDialog(false);
         setNewUser({ mobileno: '', email: '' });

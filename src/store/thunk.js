@@ -4741,11 +4741,11 @@ export const createAccounts = (data, navigate) => {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/account/create_account`, data, config);
       const additemgroup = response;
-      dispatch(CreateAccountSuccess(additemgroup));
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000
       });
+      dispatch(CreateAccountSuccess(additemgroup));
       return additemgroup;
     } catch (error) {
       dispatch(CreateAccountFailure(error.message));

@@ -194,71 +194,71 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   }, [id, dispatch, navigate]);
 
   const handlesave = async () => {
-    const payload = {
-      accountGroupId: formData.accountGroupId,
-      accountName: formData.accountname,
-      shortName: formData.shortname,
-      contactPersonName: formData.contactpersonname,
-      accountDetail: {}
-    };
-
-    if (
-      selectedGroup?.label === 'Sundry Creditors' ||
-      selectedGroup?.label === 'Sundry Debtors' ||
-      selectedGroup?.label === 'Unsecured Loans'
-    ) {
-      payload.accountDetail = {
-        ...payload.accountDetail,
-        email: sundryDetails.email,
-        mobileNo: sundryDetails.mobileNo,
-        panNo: sundryDetails.panNo,
-        address1: sundryDetails.address1,
-        address2: sundryDetails.address2,
-        city: sundryDetails.city,
-        state: sundryDetails.state,
-        pincode: sundryDetails.pincode,
-        bankDetail: bankdetail
-      };
-    }
-
-    if (selectedGroup?.label === 'Sundry Creditors' || selectedGroup?.label === 'Sundry Debtors') {
-      payload.accountDetail = {
-        ...payload.accountDetail,
-        gstNumber: sundryDetails.gstnumber,
-        balance: sundryDetails.balance,
-        creditPeriod: sundryDetails.creditperiod,
-        creditLimit: creditlimit,
-        registrationType: registrationType
-      };
-
-      if (registrationType === 'Regular') {
-        payload.accountDetail.gstNumber = sundryDetails.gstnumber;
-      }
-    }
-
-    if (creditlimit === true) {
-      payload.accountDetail.totalCredit = totalCredit;
-    }
-
-    if (bankdetail === true || selectedGroup?.label === 'Bank Account') {
-      payload.accountDetail = {
-        ...payload.accountDetail,
-        bankName: bankName,
-        accountNumber: accountNumber,
-        accountHolderName: accountHolderName,
-        ifscCode: ifscCode
-      };
-    }
     if (loading) return;
 
     setLoading(true);
     try {
+      const payload = {
+        accountGroupId: formData.accountGroupId,
+        accountName: formData.accountname,
+        shortName: formData.shortname,
+        contactPersonName: formData.contactpersonname,
+        accountDetail: {}
+      };
+
+      if (
+        selectedGroup?.label === 'Sundry Creditors' ||
+        selectedGroup?.label === 'Sundry Debtors' ||
+        selectedGroup?.label === 'Unsecured Loans'
+      ) {
+        payload.accountDetail = {
+          ...payload.accountDetail,
+          email: sundryDetails.email,
+          mobileNo: sundryDetails.mobileNo,
+          panNo: sundryDetails.panNo,
+          address1: sundryDetails.address1,
+          address2: sundryDetails.address2,
+          city: sundryDetails.city,
+          state: sundryDetails.state,
+          pincode: sundryDetails.pincode,
+          bankDetail: bankdetail
+        };
+      }
+
+      if (selectedGroup?.label === 'Sundry Creditors' || selectedGroup?.label === 'Sundry Debtors') {
+        payload.accountDetail = {
+          ...payload.accountDetail,
+          gstNumber: sundryDetails.gstnumber,
+          balance: sundryDetails.balance,
+          creditPeriod: sundryDetails.creditperiod,
+          creditLimit: creditlimit,
+          registrationType: registrationType
+        };
+
+        if (registrationType === 'Regular') {
+          payload.accountDetail.gstNumber = sundryDetails.gstnumber;
+        }
+      }
+
+      if (creditlimit === true) {
+        payload.accountDetail.totalCredit = totalCredit;
+      }
+
+      if (bankdetail === true || selectedGroup?.label === 'Bank Account') {
+        payload.accountDetail = {
+          ...payload.accountDetail,
+          bankName: bankName,
+          accountNumber: accountNumber,
+          accountHolderName: accountHolderName,
+          ifscCode: ifscCode
+        };
+      }
       if (id) {
         const response = await dispatch(updateAccount(id, payload, navigate));
         onAccountUpdated(response);
       } else {
         const response = await dispatch(createAccounts(payload, navigate));
-        onAccountCreate(response);
+        onAccountCreate(response.data.data);
       }
       setFormData({
         accountname: '',
@@ -288,6 +288,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
       setTotalCredit('');
       setSelectedGroup(null);
       setregistrationType('Composition');
+      onClose();
     } catch (error) {
       console.error('Error saving account:', error);
     } finally {
