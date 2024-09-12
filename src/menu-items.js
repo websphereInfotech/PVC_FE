@@ -306,7 +306,7 @@ const MenuItem = () => {
   //   'delete_preventive_maintenance'
   // ]);
 
-  const hasAllPermissionsWallet = checkAllPermissions('Login', ['wallet_ledger']);
+  const hasAllPermissionsWallet = checkAllPermissions('Claim Cash', ['view_wallet']);
 
   return {
     items: [

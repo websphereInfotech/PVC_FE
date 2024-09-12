@@ -655,6 +655,9 @@ import {
   getWalletRequest,
   getWalletSuccess,
   getWalletFailure,
+  getWalletuserRequest,
+  getWalletuserSuccess,
+  getWalletuserFailure,
   approveWalletRequest,
   approveWalletSuccess,
   approveWalletFailure
@@ -4936,20 +4939,37 @@ export const getallCashbookledger = (formDate, toDate) => {
     }
   };
 };
-export const getWallet = (id, formDate, toDate, navigate) => {
+export const getWallet = (id, navigate) => {
   return async (dispatch) => {
     dispatch(getWalletRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/claim/view_wallet/${id}?formDate=${formDate}&toDate=${toDate}`,
-        config
-      );
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_wallet/${id}`, config);
       const getWalletlist = response.data.data;
       dispatch(getWalletSuccess(getWalletlist));
       return getWalletlist;
     } catch (error) {
       dispatch(getWalletFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
+    }
+  };
+};
+export const getWalletnormaluser = (formDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(getWalletuserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_wallet_ledger/?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const getWalletlist = response.data.data;
+      dispatch(getWalletuserSuccess(getWalletlist));
+      return getWalletlist;
+    } catch (error) {
+      dispatch(getWalletuserFailure(error.message));
       if (error.response.status === 401) {
         navigate('/');
       }
