@@ -854,6 +854,9 @@ const useCan = () => {
   const canseewalletledger = () => {
     return checkPermission('Claim Cash', 'view_wallet');
   };
+  const canseewalletuserledger = () => {
+    return checkPermission('Ledger Cash', 'wallet_ledger');
+  };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Maintenance Type
 
@@ -1156,6 +1159,7 @@ const useCan = () => {
     canseedaybookcashledger,
     canseecashbookcashledger,
     canseewalletledger,
+    canseewalletuserledger,
     // MAINTENANCE TYPE ++++++++++
     canDeleteMaintenanceType,
     canUpdateMaintenanceType,

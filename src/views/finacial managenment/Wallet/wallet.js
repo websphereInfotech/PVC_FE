@@ -20,6 +20,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
 import { ApproveWallet, getallusers, getWallet, getWalletnormaluser } from 'store/thunk';
 import { useNavigate } from 'react-router';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Wallet = () => {
   const [users, setUsers] = useState([]);
@@ -31,6 +32,7 @@ const Wallet = () => {
   const [walletuserData, setWalletuserData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { canseewalletuserledger } = useCan();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const getRoleFromSessionStorage = () => {
@@ -175,7 +177,7 @@ const Wallet = () => {
             </Grid>
           </Grid>
         </Grid>
-        {createConfig1() !== 'Super Admin' && (
+        {createConfig1() !== 'Super Admin' && canseewalletuserledger() && (
           <Grid item container spacing={2}>
             <Grid item xs={12} md={2} sm={6}>
               <Typography variant="subtitle1">From Date:</Typography>
@@ -317,7 +319,7 @@ const Wallet = () => {
             </Grid>
           </>
         )}
-        {createConfig1() !== 'Super Admin' && (
+        {createConfig1() !== 'Super Admin' && canseewalletuserledger() && (
           <>
             <Grid container style={{ marginTop: '20px', overflowY: 'scroll' }}>
               <Grid
