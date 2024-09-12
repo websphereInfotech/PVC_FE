@@ -79,7 +79,6 @@ const Wallet = () => {
         } else {
           const newdata = await dispatch(getWallet('me', formDate, toDate, navigate));
           setWalletData(newdata);
-          console.log(newdata);
         }
       } catch (error) {
         console.log('fetch data of wallet:', error);
