@@ -4936,12 +4936,15 @@ export const getallCashbookledger = (formDate, toDate) => {
     }
   };
 };
-export const getWallet = (id, navigate) => {
+export const getWallet = (id, formDate, toDate, navigate) => {
   return async (dispatch) => {
     dispatch(getWalletRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_wallet/${id}`, config);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/claim/view_wallet/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
       const getWalletlist = response.data.data;
       dispatch(getWalletSuccess(getWalletlist));
       return getWalletlist;
