@@ -31,7 +31,7 @@ const Debitnotecash = () => {
     accountId: '',
     debitdate: convertToIST(new Date()),
     debitnoteno: '',
-    purchaseId: '',
+    purchaseId: null,
     purchaseDate: convertToIST(new Date()),
     totalMrp: 0,
     mainTotal: 0

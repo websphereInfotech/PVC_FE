@@ -60,7 +60,7 @@ const Cashbookledgerlist = () => {
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Amount</TableCell>
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
-                <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
+                <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>User Name</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -72,7 +72,7 @@ const Cashbookledgerlist = () => {
                       <TableCell style={{ textAlign: 'center' }}>{entry.creditAmount}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
+                      <TableCell style={{ textAlign: 'center' }}>{entry.username}</TableCell>
                     </TableRow>
                   ))}
               {totals && (
@@ -103,7 +103,7 @@ const Cashbookledgerlist = () => {
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Amount</TableCell>
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Name</TableCell>
                 <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Particulars</TableCell>
-                <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>Date</TableCell>
+                <TableCell style={{ fontWeight: 'bold', textAlign: 'center' }}>User Name</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,7 +115,7 @@ const Cashbookledgerlist = () => {
                       <TableCell style={{ textAlign: 'center' }}>{entry.debitAmount}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.personName}</TableCell>
                       <TableCell style={{ textAlign: 'center' }}>{entry.details}</TableCell>
-                      <TableCell style={{ textAlign: 'center' }}>{new Date(entry.date).toLocaleDateString('en-GB')}</TableCell>
+                      <TableCell style={{ textAlign: 'center' }}>{entry.username}</TableCell>
                     </TableRow>
                   ))}
               {totals && (

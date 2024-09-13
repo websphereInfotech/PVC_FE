@@ -27,12 +27,9 @@ const Itemcategory = ({ open, onClose, onnewCategoryadded, onnewCategoryupdated,
       const updatedOptions = ItemGroupOptions.slice(1);
       setItemGroupOptions(updatedOptions);
     } catch (error) {
-      if (error.response.status === 401) {
-        navigate('/');
-      }
       console.error('fetch all item groups', error);
     }
-  }, [dispatch, ItemGroupOptions, navigate]);
+  }, [dispatch, ItemGroupOptions]);
 
   React.useEffect(() => {
     fetchItemGroups();
