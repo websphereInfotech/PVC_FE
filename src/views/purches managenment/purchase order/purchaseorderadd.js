@@ -21,6 +21,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { convertToIST } from 'component/details';
 
 const Purchaseorder = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -40,7 +41,7 @@ const Purchaseorder = () => {
   const [gststate, setGststate] = useState('');
   const [formData, setFormData] = useState({
     accountId: '',
-    date: new Date(),
+    date: convertToIST(new Date()),
     purchaseOrder_no: '',
     destination: null,
     dispatchThrough: null,
@@ -380,7 +381,7 @@ const Purchaseorder = () => {
   };
 
   const handleValidTillDateChange = (date) => {
-    setFormData({ ...formData, validtill: date });
+    setFormData({ ...formData, validtill: convertToIST(date) });
   };
 
   const calculateValidTillDate = (proformaInvoiceDate) => {
@@ -391,15 +392,15 @@ const Purchaseorder = () => {
   };
 
   const handleQuotationDateChange = (date) => {
-    const newValidTill = calculateValidTillDate(date);
-    setFormData({ ...formData, date, validtill: newValidTill });
+    const newValidTill = convertToIST(calculateValidTillDate(date));
+    setFormData({ ...formData, date: convertToIST(date), validtill: newValidTill });
   };
 
   useEffect(() => {
     const initialValidTill = calculateValidTillDate(formData.date);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      validtill: initialValidTill
+      validtill: convertToIST(initialValidTill)
     }));
     const generateAutoPurchaseOrderNumber = async () => {
       if (!id) {
@@ -489,7 +490,7 @@ const Purchaseorder = () => {
                 Purchae Order Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.date}
+                selected={formData.date ? new Date(formData.date) : null}
                 onChange={(date) => handleQuotationDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
@@ -502,7 +503,7 @@ const Purchaseorder = () => {
                 Valid Till : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.validtill}
+                selected={formData.validtill ? new Date(formData.validtill) : null}
                 onChange={(date) => handleValidTillDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}

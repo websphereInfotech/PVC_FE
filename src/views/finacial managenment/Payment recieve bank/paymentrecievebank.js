@@ -18,6 +18,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const Paymentrecievebank = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -34,7 +35,7 @@ const Paymentrecievebank = () => {
   const [selectcompanyaccount, setSelectcompanyaccount] = useState([]);
   const [formData, setFormData] = useState({
     accountId: null,
-    paymentdate: new Date(),
+    paymentdate: convertToIST(new Date()),
     amount: 0,
     paymentType: '',
     mode: null,
@@ -57,7 +58,11 @@ const Paymentrecievebank = () => {
   }, [canseecreateAccount]);
 
   const handleDateChange = (date) => {
-    setFormData({ ...formData, paymentdate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, paymentdate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleDateChange:', date);
+    }
   };
 
   const handleaccountChange = (field, value) => {
@@ -280,7 +285,12 @@ const Paymentrecievebank = () => {
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <DatePicker id="date" selected={formData.paymentdate} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
+              <DatePicker
+                id="date"
+                selected={formData.paymentdate ? new Date(formData.paymentdate) : null}
+                onChange={(date) => handleDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

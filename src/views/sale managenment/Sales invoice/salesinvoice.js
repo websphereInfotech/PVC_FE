@@ -22,6 +22,7 @@ import {
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AnchorProductDrawer from 'component/productadd';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const Salesinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -51,7 +52,7 @@ const Salesinvoice = () => {
     LL_RR_no: null,
     motorVehicleNo: null,
     invoiceno: null,
-    invoicedate: new Date(),
+    invoicedate: convertToIST(new Date()),
     termsOfDelivery: '',
     terms: '',
     proFormaNo: ''
@@ -135,7 +136,11 @@ const Salesinvoice = () => {
   };
 
   const handleInvoiceDateChange = (date) => {
-    setFormData({ ...formData, invoicedate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, invoicedate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleInvoiceDateChange:', date);
+    }
   };
 
   useEffect(() => {
@@ -246,7 +251,11 @@ const Salesinvoice = () => {
     };
     setAccountname(selectedOption.accountProForma.accountName);
     setAccountState(selectedOption.accountProForma.accountDetail?.state);
-    setFormData({ ...updatedFormData, invoiceno: formData.invoiceno, dispatchno: formData.invoiceno });
+    setFormData({
+      ...updatedFormData,
+      invoiceno: formData.invoiceno,
+      dispatchno: formData.invoiceno
+    });
     console.log(updatedFormData, 'form');
     const selectedProFormaItems = selectedOption.items.map((item) => ({
       productId: item.product.id,
@@ -279,7 +288,7 @@ const Salesinvoice = () => {
         terms: item.terms,
         accountId: item.accountId,
         customer: item.customer,
-        invoicedate: new Date(),
+        invoicedate: convertToIST(new Date()),
         items: item.items,
         accountProForma: item.accountProForma
       }));
@@ -510,7 +519,7 @@ const Salesinvoice = () => {
                 Invoice Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.invoicedate}
+                selected={formData.invoicedate ? new Date(formData.invoicedate) : null}
                 onChange={(date) => handleInvoiceDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}

@@ -21,6 +21,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import AnchorProductDrawer from 'component/productadd';
+import { convertToIST } from 'component/details';
 
 const Purchaseinvoice = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -42,9 +43,9 @@ const Purchaseinvoice = () => {
   const [productResponse, setProductResponse] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [formData, setFormData] = useState({
-    invoicedate: new Date(),
+    invoicedate: convertToIST(new Date()),
     accountId: '',
-    duedate: new Date(),
+    duedate: convertToIST(new Date()),
     voucherno: '',
     supplyInvoiceNo: '',
     totalSgst: 0,
@@ -389,12 +390,21 @@ const Purchaseinvoice = () => {
   };
 
   const handleInvoiceDateChange = (date) => {
-    setFormData({ ...formData, invoicedate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, invoicedate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleInvoiceDateChange:', date);
+    }
   };
 
   const handledueDateChange = (date) => {
-    setFormData({ ...formData, duedate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, duedate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handledueDateChange:', date);
+    }
   };
+
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
       {id ? (
@@ -450,7 +460,7 @@ const Purchaseinvoice = () => {
             Inv. Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
           <DatePicker
-            selected={formData.invoicedate}
+            selected={formData.invoicedate ? new Date(formData.invoicedate) : null}
             onChange={(date) => handleInvoiceDateChange(date)}
             dateFormat="dd/MM/yyyy"
             isClearable={false}
@@ -462,7 +472,7 @@ const Purchaseinvoice = () => {
             Due Date: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
           <DatePicker
-            selected={formData.duedate}
+            selected={formData.duedate ? new Date(formData.duedate) : null}
             onChange={(date) => handledueDateChange(date)}
             dateFormat="dd/MM/yyyy"
             isClearable={false}

@@ -20,6 +20,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const Creditnote = () => {
   const { canDeleteCreditnote, canseecreateAccount, canCreateItem } = useCan();
@@ -28,8 +29,8 @@ const Creditnote = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     accountId: '',
-    creditdate: new Date(),
-    org_invoicedate: new Date(),
+    creditdate: convertToIST(new Date()),
+    org_invoicedate: convertToIST(new Date()),
     creditnoteNo: '',
     org_invoiceno: '',
     LL_RR_no: 0,
@@ -218,11 +219,21 @@ const Creditnote = () => {
   }, [rows]);
 
   const handleCreditDateChange = (date) => {
-    setFormData({ ...formData, creditdate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, creditdate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleCreditDateChange:', date);
+    }
   };
+
   const handleInvoiceDateChange = (date) => {
-    setFormData({ ...formData, org_invoicedate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, org_invoicedate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleInvoiceDateChange:', date);
+    }
   };
+
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
       if (rowIndex === index) {
@@ -463,7 +474,7 @@ const Creditnote = () => {
                 Credit Note Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.creditdate}
+                selected={formData.creditdate ? new Date(formData.creditdate) : null}
                 onChange={(date) => handleCreditDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
@@ -488,7 +499,7 @@ const Creditnote = () => {
                 Org. Invoice Date. : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.org_invoicedate}
+                selected={formData.org_invoicedate ? new Date(formData.org_invoicedate) : null}
                 onChange={(date) => handleInvoiceDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}

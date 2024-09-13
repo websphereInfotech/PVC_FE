@@ -21,6 +21,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const DebitNote = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -29,10 +30,10 @@ const DebitNote = () => {
   const [rows, setRows] = useState([{ product: '', unit: '', qty: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     accountId: '',
-    debitdate: new Date(),
+    debitdate: convertToIST(new Date()),
     debitnoteno: '',
     pinvoiceno: '',
-    pdate: new Date(),
+    pdate: convertToIST(new Date()),
     totalSgst: 0,
     totalIgst: 0,
     totalMrp: 0,
@@ -219,11 +220,19 @@ const DebitNote = () => {
   }, [rows]);
 
   const handleDebitDateChange = (date) => {
-    setFormData({ ...formData, debitdate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, debitdate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleDebitDateChange:', date);
+    }
   };
 
   const handlePurchaseDateChange = (date) => {
-    setFormData({ ...formData, pdate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, pdate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handlePurchaseDateChange:', date);
+    }
   };
 
   //manage value of input of row
@@ -291,7 +300,6 @@ const DebitNote = () => {
   useEffect(() => {
     const data = async () => {
       const purchseinvoice = await dispatch(getallPurchaseinvoice());
-      console.log(purchseinvoice, 'Purchase');
 
       const options = purchseinvoice.data.map((item) => ({
         value: item.id,
@@ -461,7 +469,7 @@ const DebitNote = () => {
                 Debit Note Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.debitdate}
+                selected={formData.debitdate ? new Date(formData.debitdate) : null}
                 onChange={(date) => handleDebitDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
@@ -484,7 +492,7 @@ const DebitNote = () => {
                 Purchase Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.pdate}
+                selected={formData.pdate ? new Date(formData.pdate) : null}
                 onChange={(date) => handlePurchaseDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}

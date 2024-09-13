@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const Deliverychallan = () => {
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -39,7 +40,7 @@ const Deliverychallan = () => {
   const [isproductDrawerOpen, setIsproductDrawerOpen] = useState(false);
   const [formData, setFormData] = useState({
     accountId: '',
-    date: new Date(),
+    date: convertToIST(new Date()),
     challanno: 0,
     saleInvoiceId: ''
   });
@@ -166,9 +167,15 @@ const Deliverychallan = () => {
     setProduct(updatedProductList);
     setIsproductDrawerOpen(false);
   };
+
   const handleChallanDateChange = (date) => {
-    setFormData({ ...formData, date: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, date: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleChallanDateChange:', date);
+    }
   };
+
   // call all customer and all product api's
   useEffect(() => {
     const fetchData = async () => {
@@ -217,7 +224,6 @@ const Deliverychallan = () => {
           console.log(id, 'viewid');
           const response = await dispatch(Deliverychallanview(id));
           const { accountDelivery, date, challanno, saleDeliveryChallan } = response;
-          console.log(response, 'response');
           setFormData({ accountId: accountDelivery.id, date, challanno, saleInvoiceId: saleDeliveryChallan.id });
           setSelectaccount(accountDelivery.id);
           setAccountname(accountDelivery.accountName);
@@ -369,7 +375,7 @@ const Deliverychallan = () => {
                 Challan Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.date}
+                selected={formData.date ? new Date(formData.date) : null}
                 onChange={(date) => handleChallanDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
