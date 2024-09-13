@@ -19,6 +19,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const Creditnotecash = () => {
   const { canseecreateAccount, canCreateItem } = useCan();
@@ -27,7 +28,7 @@ const Creditnotecash = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     accountId: '',
-    creditdate: new Date(),
+    creditdate: convertToIST(new Date()),
     creditnoteNo: '',
     LL_RR_no: 0,
     dispatchThrough: '',
@@ -187,8 +188,13 @@ const Creditnotecash = () => {
   }, [rows]);
 
   const handleCreditDateChange = (date) => {
-    setFormData({ ...formData, creditdate: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, creditdate: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleDateChange:', date);
+    }
   };
+
   const handleInputChange = (index, field, value) => {
     const updatedRows = rows.map((row, rowIndex) => {
       if (rowIndex === index) {
@@ -255,7 +261,6 @@ const Creditnotecash = () => {
       if (!id) {
         try {
           const CreditnoteResponse = await dispatch(getallCreditnotecash());
-          console.log(CreditnoteResponse, 'MSHIUIKHYU');
 
           let nextCreditnoteNumber = 1;
           if (CreditnoteResponse.length === 0) {
@@ -371,7 +376,7 @@ const Creditnotecash = () => {
                 Credit Note Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.creditdate}
+                selected={formData.creditdate ? new Date(formData.creditdate) : null}
                 onChange={(date) => handleCreditDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}

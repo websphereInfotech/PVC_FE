@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import Select from 'react-select';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const PaymentPage = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -20,9 +21,17 @@ const PaymentPage = () => {
   const [account, setaccount] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectaccount, setSelectaccount] = useState([]);
+
+  const handleDateChange = (date) => {
+    if (date instanceof Date) {
+      setFormData({ ...formData, date: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleDateChange:', date);
+    }
+  };
   const [formData, setFormData] = useState({
     accountId: '',
-    date: new Date(),
+    date: convertToIST(new Date()),
     amount: Number(),
     description: '',
     paymentNo: ''
@@ -33,9 +42,6 @@ const PaymentPage = () => {
     setCanCreateAccountValue(canseecreateAccount());
   }, [canseecreateAccount]);
 
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, date: date });
-  };
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Party') {
       setIsDrawerOpen(true);
@@ -172,7 +178,12 @@ const PaymentPage = () => {
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
-              <DatePicker id="date" selected={formData.date} onChange={(date) => handleDateChange(date)} dateFormat="dd/MM/yyyy" />
+              <DatePicker
+                id="date"
+                selected={formData.date ? new Date(formData.date) : null}
+                onChange={(date) => handleDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">

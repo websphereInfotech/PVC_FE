@@ -19,6 +19,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { convertToIST } from 'component/details';
 
 const Salescash = () => {
   const { canDeleteSalescash, canseecreateAccount, canCreateItem } = useCan();
@@ -27,7 +28,7 @@ const Salescash = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     accountId: '',
-    date: new Date(),
+    date: convertToIST(new Date()),
     saleNo: ''
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -157,7 +158,11 @@ const Salescash = () => {
   }, [rows]);
 
   const handleDateChange = (date) => {
-    setFormData({ ...formData, date: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, date: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleDateChange:', date);
+    }
   };
 
   //manage value of input of row
@@ -320,7 +325,7 @@ const Salescash = () => {
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.date}
+                selected={formData.date ? new Date(formData.date) : null}
                 onChange={(date) => handleDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}

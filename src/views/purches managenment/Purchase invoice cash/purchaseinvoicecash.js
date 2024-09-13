@@ -19,6 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import AnchorTemporaryDrawer from '../../../component/addparty';
 import AnchorProductDrawer from 'component/productadd';
+import { convertToIST } from 'component/details';
 
 const Purchaseinvoicecash = () => {
   const { canDeleteSalescash, canseecreateAccount, canCreateItem } = useCan();
@@ -27,7 +28,7 @@ const Purchaseinvoicecash = () => {
   const [rows, setRows] = useState([{ product: '', qty: '', unit: '', rate: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     accountId: '',
-    date: new Date(),
+    date: convertToIST(new Date()),
     purchaseNo: ''
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -153,18 +154,14 @@ const Purchaseinvoicecash = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
-    // const updateTotalQuantity = () => {
-    //   let total = 0;
-    //   rows.forEach((row) => {
-    //     total += parseInt(row.qty);
-    //   });
-    //   setTotalQuantity(total);
-    // };
-    // updateTotalQuantity();
   }, [rows]);
 
   const handleDateChange = (date) => {
-    setFormData({ ...formData, date: date });
+    if (date instanceof Date) {
+      setFormData({ ...formData, date: convertToIST(date) });
+    } else {
+      console.error('Invalid date provided to handleDateChange:', date);
+    }
   };
 
   //manage value of input of row
@@ -180,11 +177,6 @@ const Purchaseinvoicecash = () => {
       row.mrp = amount;
     });
     setRows(updatedRows);
-    // let total = 0;
-    // rows.forEach((row) => {
-    //   total += parseInt(row.qty);
-    // });
-    // setTotalQuantity(total);
   };
 
   useEffect(() => {
@@ -337,7 +329,7 @@ const Purchaseinvoicecash = () => {
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <DatePicker
-                selected={formData.date}
+                selected={formData.date ? new Date(formData.date) : null}
                 onChange={(date) => handleDateChange(date)}
                 dateFormat="dd/MM/yyyy"
                 isClearable={false}
