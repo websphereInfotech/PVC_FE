@@ -87,6 +87,9 @@ const Wallet = () => {
         if (userId) {
           const data = await dispatch(getWallet(userId, navigate));
           setWalletData(data);
+        }else{
+          const data = await dispatch(getWallet('me', navigate));
+          setWalletData(data);
         }
       } catch (error) {
         console.log('fetch data of wallet:', error);
