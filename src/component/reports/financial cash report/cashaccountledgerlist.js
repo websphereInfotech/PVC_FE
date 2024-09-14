@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { getallCashAccountledger } from 'store/thunk';
-// import useCan from 'views/permission managenment/checkpermissionvalue';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -24,12 +24,11 @@ const formatDate = (dateString) => {
 
 const Cashaccountledgerlist = () => {
   const dispatch = useDispatch();
-  const [payments, setPayments] = useState([]);
+  const navigate = useNavigate();
+  const [yearData, setYearData] = useState({});
   const [getdata, setGetdata] = useState({});
   const [gettodata, setGettodata] = useState({});
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [totals, setTotals] = useState({ totalCredit: 0, totalDebit: 0 });
-  const [closingBalance, setClosingBalance] = useState({ type: '', amount: 0 });
+
   const AccountId = sessionStorage.getItem('RCAccountId');
   const formData = sessionStorage.getItem('RCAccountformDate');
   const toDate = sessionStorage.getItem('RCAccounttoDate');
@@ -37,19 +36,12 @@ const Cashaccountledgerlist = () => {
   useEffect(() => {
     dispatch(getallCashAccountledger(AccountId, formData, toDate))
       .then((data) => {
-        if (data && data.records) {
-          const recordsArray = Object.values(data.records).flat();
-          setPayments(recordsArray);
+        if (data) {
+          setYearData(data.years || {});
           setGetdata(data.form);
           setGettodata(data.to);
-          setTotals({
-            totalCredit: data.totals.totalCredit || 0,
-            totalDebit: data.totals.totalDebit || 0
-          });
-          setClosingBalance(data.closingBalance);
-          setTotalAmount(data.totalAmount);
         } else {
-          console.error('Data or data.records is undefined.');
+          console.error('Data is undefined.');
           if (error.response.status === 401) {
             navigate('/');
           }
@@ -58,7 +50,7 @@ const Cashaccountledgerlist = () => {
       .catch((error) => {
         console.error('Error fetching payment ledger data:', error);
       });
-  }, [dispatch, AccountId, formData, toDate]);
+  }, [dispatch, AccountId, formData, toDate, navigate]);
 
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
@@ -73,103 +65,106 @@ const Cashaccountledgerlist = () => {
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">To:</Typography>
-          <Typography variant="h4">{gettodata.contactPersonName}</Typography>
+          <Typography variant="h4">{gettodata.accountName}</Typography>
           <Typography>{gettodata.address1}</Typography>
           <Typography>
             {gettodata.city} {gettodata.state} {gettodata.pincode}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" align="center">
-            {formatDate(formData)} to {formatDate(toDate)}
-          </Typography>
-        </Grid>
       </Grid>
 
-      <TableContainer component={Paper}>
-        <Table style={{ border: '1px solid lightgrey' }}>
-          <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
-            <TableRow sx={{ padding: '5px 0px' }}>
-              {columns.map((column) => (
-                <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {payments.map((payment, index) => (
-              <CustomTableRow key={index}>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ color: column.id === 'creditAmount' ? '#00CE00' : column.id === 'debitAmount' ? 'red' : 'inherit' }}
-                  >
-                    {column.id === 'creditAmount' && payment[column.id] !== 0 ? payment[column.id] : ''}
-                    {column.id === 'debitAmount' && payment[column.id] !== 0 ? payment[column.id] : ''}
-                    {column.id === 'date' && (index === 0 || payments[index - 1]?.date !== payment.date)
-                      ? formatDate(payment[column.id])
-                      : ''}
-                    {column.id !== 'creditAmount' && column.id !== 'debitAmount' && column.id !== 'date' && payment[column.id]}
+      {Object.entries(yearData).map(([year, data]) => (
+        <React.Fragment key={year}>
+          <Typography variant="h6" align="center" style={{ marginTop: '20px' }}>
+            {data.dateRange}
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table style={{ border: '1px solid lightgrey' }}>
+              <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
+                <TableRow sx={{ padding: '5px 0px' }}>
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {console.log(data.records, 'recoderd')}
+                {Object.entries(data.records).map(([date, records]) =>
+                  Array.isArray(records) ? (
+                    records.map((record, idx) => (
+                      <CustomTableRow key={`${date}-${idx}`}>
+                        {columns.map((column) => (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={{
+                              color: column.id === 'creditAmount' ? '#00CE00' : column.id === 'debitAmount' ? 'red' : 'inherit'
+                            }}
+                          >
+                            {column.id === 'creditAmount' && record[column.id] !== 0 ? record[column.id] : ''}
+                            {column.id === 'debitAmount' && record[column.id] !== 0 ? record[column.id] : ''}
+                            {column.id === 'date' && (idx === 0 || records[idx - 1]?.date !== record.date)
+                              ? formatDate(record[column.id])
+                              : ''}
+                            {column.id !== 'creditAmount' && column.id !== 'debitAmount' && column.id !== 'date' && record[column.id]}
+                          </TableCell>
+                        ))}
+                      </CustomTableRow>
+                    ))
+                  ) : (
+                    <TableRow key={''}>
+                      <TableCell colSpan={columns.length} align="center">
+                        No records available
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+              <TableBody>
+                {data.closingBalance.type === 'credit' && (
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell align="center">Closing Balance :</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell align="center" style={{ color: '#00CE00' }}>
+                      {data.closingBalance.amount.toFixed(2)}
+                    </TableCell>
+                  </TableRow>
+                )}
+                {data.closingBalance.type === 'debit' && (
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell align="center">Closing Balance :</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell align="center" style={{ color: 'red' }}>
+                      {data.closingBalance.amount.toFixed(2)}
+                    </TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                )}
+                <TableRow>
+                  <TableCell colSpan={4} align="right"></TableCell>
+                  <TableCell align="center">
+                    <Typography variant="subtitle1" style={{ color: 'red' }}>
+                      {data.totals.totalDebit.toFixed(2)}
+                    </Typography>
                   </TableCell>
-                ))}
-              </CustomTableRow>
-            ))}
-          </TableBody>
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={4} align="right"></TableCell>
-              <TableCell align="center">
-                <Typography variant="subtitle1" style={{ color: 'red' }}>
-                  {totals.totalDebit.toFixed(2)}
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography variant="subtitle1" style={{ color: '#00CE00' }}>
-                  {totals.totalCredit.toFixed(2)}
-                </Typography>
-              </TableCell>
-            </TableRow>
-            {closingBalance.type === 'credit' && (
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell align="center">Closing Balance :</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell align="center" style={{ color: '#00CE00' }}>
-                  {closingBalance.amount.toFixed(2)}
-                </TableCell>
-              </TableRow>
-            )}
-            {closingBalance.type === 'debit' && (
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell align="center">Closing Balance :</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell align="center" style={{ color: 'red' }}>
-                  {closingBalance.amount.toFixed(2)}
-                </TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            )}
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell align="center">
-                <Typography variant="subtitle1">{totalAmount.toFixed(2)}</Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography variant="subtitle1">{totalAmount.toFixed(2)}</Typography>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <TableCell align="center">
+                    <Typography variant="subtitle1" style={{ color: '#00CE00' }}>
+                      {data.totals.totalCredit.toFixed(2)}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </React.Fragment>
+      ))}
     </Card>
   );
 };
