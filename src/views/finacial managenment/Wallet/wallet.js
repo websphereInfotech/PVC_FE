@@ -18,7 +18,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
-import { ApproveWallet, getallusers, getWallet, getWalletnormaluser } from 'store/thunk';
+import { ApproveWallet, getallusers, getWallet, getWalletcompanybalance, getWalletnormaluser } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 
@@ -30,6 +30,7 @@ const Wallet = () => {
   const [formDate, setFormDate] = useState(new Date());
   const [walletData, setWalletData] = useState([]);
   const [walletuserData, setWalletuserData] = useState([]);
+  const [walletcompanybalanceData, setWalletcompanyData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { canseewalletuserledger } = useCan();
@@ -82,6 +83,14 @@ const Wallet = () => {
     }
   };
   useEffect(() => {
+    const handlecompanybalance = async () => {
+      try {
+        const data = await dispatch(getWalletcompanybalance(navigate));
+        setWalletcompanyData(data);
+      } catch (error) {
+        console.log('fetch data of wallet:', error);
+      }
+    };
     const handleApply = async () => {
       try {
         if (userId) {
@@ -96,6 +105,7 @@ const Wallet = () => {
       }
     };
     handleApply();
+    handlecompanybalance();
   }, [dispatch, userId, navigate]);
 
   const handleCheckboxChange = async (entry) => {
@@ -129,15 +139,15 @@ const Wallet = () => {
             <Grid item xs={12} sm={6} md={2}>
               <Typography>Company Name</Typography>
 
-              <input placeholder="Comapny name" value={walletData?.companyEntry?.name} />
+              <input placeholder="Comapny name" value={walletcompanybalanceData?.name} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Cash On Hand</Typography>
-              <input placeholder="Amount" value={walletData?.companyEntry?.cashOnHand} />
+              <input placeholder="Amount" value={walletcompanybalanceData?.cashOnHand} />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Total Balance</Typography>
-              <input placeholder="Total balance" value={walletData?.companyEntry?.totalBalance} />
+              <input placeholder="Total balance" value={walletcompanybalanceData?.totalBalance} />
             </Grid>
           </Grid>
         )}

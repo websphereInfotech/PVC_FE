@@ -47,7 +47,7 @@ const Reportcash = () => {
               <CardContent sx={{ borderBottom: '0.2px solid grey' }}>
                 <Typography variant="h5" component="h2" style={{ display: 'flex', alignItems: 'center' }}>
                   <BarChartIcon sx={{ fontSize: '30px', marginRight: '10px' }} />
-                  General Report
+                  General
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
@@ -87,7 +87,7 @@ const Reportcash = () => {
               <CardContent sx={{ borderBottom: '0.2px solid grey' }}>
                 <Typography variant="h5" component="h2" style={{ display: 'flex', alignItems: 'center' }}>
                   <BarChartIcon sx={{ fontSize: '30px', marginRight: '10px' }} />
-                  Financial Report
+                  Financial
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
@@ -98,7 +98,7 @@ const Reportcash = () => {
                   Balance Sheet
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Profit and Lost Report
+                  Profit and Lost
                 </Typography>
                 {canseeaccountcashledger() && (
                   <>
@@ -108,7 +108,7 @@ const Reportcash = () => {
                       onClick={handleOpenLedgerDialog}
                       style={{ cursor: 'pointer' }}
                     >
-                      Ledger Report
+                      Ledger
                     </Typography>
                     {openLedgerDialog && <Ledgeraccountcashreport Open={handleOpenLedgerDialog} onClose={handleCloseLedgerDialog} />}
                   </>
@@ -121,7 +121,7 @@ const Reportcash = () => {
                       onClick={handleOpenLDayBookedgerDialog}
                       style={{ cursor: 'pointer' }}
                     >
-                      Daybook Reports
+                      Daybook
                     </Typography>
                     {opendaybookLedgerDialog && (
                       <Cashdaybookreport Open={handleOpenLDayBookedgerDialog} onClose={handleCloseDayBookLedgerDialog} />
@@ -137,7 +137,7 @@ const Reportcash = () => {
                       style={{ cursor: 'pointer' }}
                       onClick={handleOpenCashbookLedgerDialog}
                     >
-                      Cashbook Report
+                      Cashbook
                     </Typography>
                     {cashLedgerDialog && <Cashbookreport Open={handleOpenCashbookLedgerDialog} onClose={handleCloseCashbookLedgerDialog} />}
                   </>
@@ -150,7 +150,7 @@ const Reportcash = () => {
               <CardContent sx={{ borderBottom: '0.2px solid grey' }}>
                 <Typography variant="h5" component="h2" style={{ display: 'flex', alignItems: 'center' }}>
                   <BarChartIcon sx={{ fontSize: '30px', marginRight: '10px' }} />
-                  Receivable Report
+                  Receivable
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
@@ -167,13 +167,13 @@ const Reportcash = () => {
                   Customer Outstanding
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Accont Receivable Aging Detail Report
+                  Accont Receivable Aging Detail
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Payment Receivable
                 </Typography>
                 <Typography variant="body1" sx={{ marginTop: '2px' }}>
-                  Customer Wise Pending Invoice Report
+                  Customer Wise Pending Invoice
                 </Typography>
               </CardContent>
             </Card>
@@ -185,7 +185,7 @@ const Reportcash = () => {
               <CardContent sx={{ borderBottom: '0.2px solid grey' }}>
                 <Typography variant="h5" component="h2" style={{ display: 'flex', alignItems: 'center' }}>
                   <BarChartIcon sx={{ fontSize: '30px', marginRight: '10px' }} />
-                  Payable Report
+                  Payable
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
@@ -205,7 +205,7 @@ const Reportcash = () => {
                   Vendor Outstanding
                 </Typography>
                 <Typography variant="body1" sx={{ marginTop: '2px' }}>
-                  Purchase Payment Report
+                  Purchase Payment
                 </Typography>
               </CardContent>
             </Card>
@@ -215,15 +215,15 @@ const Reportcash = () => {
               <CardContent sx={{ borderBottom: '0.2px solid grey' }}>
                 <Typography variant="h5" component="h2" style={{ display: 'flex', alignItems: 'center' }}>
                   <BarChartIcon sx={{ fontSize: '30px', marginRight: '10px' }} />
-                  Item Report
+                  Item
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Stoke Summary (Inventory Report)
+                  Stoke Summary (Inventory)
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Stoke Valuation Report
+                  Stoke Valuation
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Item Sales Summary (Item Wise Sales)
@@ -235,25 +235,25 @@ const Reportcash = () => {
                   Stoke Register
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Item Report Customer Wise
+                  Item Customer Wise
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Item Report Vendor Wise
+                  Item Vendor Wise
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
                   Betch Wise Stoke
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Item Costing Analyze Report
+                  Item Costing Analyze
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Adjusted Costing Report
+                  Adjusted Costing
                 </Typography>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  Item Report Date and Customer Wise
+                  Item Date and Customer Wise
                 </Typography>
                 <Typography variant="body1" sx={{ marginTop: '2px' }}>
-                  Item Report Date and Vendor Wise
+                  Item Date and Vendor Wise
                 </Typography>
               </CardContent>
             </Card>
@@ -263,15 +263,15 @@ const Reportcash = () => {
               <CardContent sx={{ borderBottom: '0.2px solid grey' }}>
                 <Typography variant="h5" component="h2" style={{ display: 'flex', alignItems: 'center' }}>
                   <BarChartIcon sx={{ fontSize: '30px', marginRight: '10px' }} />
-                  Statutory Report
+                  Statutory
                 </Typography>
               </CardContent>
               <CardContent sx={{ height: '230px', overflowY: 'auto', '&::-webkit-scrollbar': { width: '0' } }}>
                 <Typography variant="body1" sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}>
-                  TDS Report
+                  TDS
                 </Typography>
                 <Typography variant="body1" sx={{ marginTop: '2px' }}>
-                  TCS Report
+                  TCS
                 </Typography>
               </CardContent>
             </Card>

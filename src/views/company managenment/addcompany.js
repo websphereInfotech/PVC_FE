@@ -141,9 +141,6 @@ const AddCompanyForm = () => {
         }
       }
     } catch (error) {
-      if (error.response.status === 401) {
-        navigate('/');
-      }
       console.error('Error creating company:', error);
     }
   };

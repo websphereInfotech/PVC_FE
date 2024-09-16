@@ -655,6 +655,9 @@ import {
   getWalletRequest,
   getWalletSuccess,
   getWalletFailure,
+  getWalletBalanceRequest,
+  getWalletBalanceSuccess,
+  getWalletBalanceFailure,
   getWalletuserRequest,
   getWalletuserSuccess,
   getWalletuserFailure,
@@ -2495,13 +2498,9 @@ export const createCompanyBank = (bankdetails) => {
       dispatch(CreateCompanyBankSuccess(Companybankdata));
       return Companybankdata;
     } catch (error) {
-      if (error.response.status === 401) {
-        navigate('/');
-      } else {
-        toast.error(error.response.data.message, {
-          autoClose: 1000
-        });
-      }
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
       dispatch(CreateCompanyBankFailure(error.message));
     }
   };
@@ -4950,6 +4949,23 @@ export const getWallet = (id, navigate) => {
       return getWalletlist;
     } catch (error) {
       dispatch(getWalletFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      }
+    }
+  };
+};
+export const getWalletcompanybalance = (navigate) => {
+  return async (dispatch) => {
+    dispatch(getWalletBalanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_balance`, config);
+      const getWalletBalancelist = response.data.data;
+      dispatch(getWalletBalanceSuccess(getWalletBalancelist));
+      return getWalletBalancelist;
+    } catch (error) {
+      dispatch(getWalletBalanceFailure(error.message));
       if (error.response.status === 401) {
         navigate('/');
       }

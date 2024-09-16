@@ -705,6 +705,9 @@ export const GET_ALL_CASH_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_CASH_DAY_BOOK_LEDGE
 export const GET_WALLET_REQUEST = 'GET_WALLET_REQUEST';
 export const GET_WALLET_SUCCESS = 'GET_WALLET_SUCCESS';
 export const GET_WALLET_FAILURE = 'GET_WALLET_FAILURE';
+export const GET_WALLET_BALANCE_REQUEST = 'GET_WALLET_BALANCE_REQUEST';
+export const GET_WALLET_BALANCE_SUCCESS = 'GET_WALLET_BALANCE_SUCCESS';
+export const GET_WALLET_BALANCE_FAILURE = 'GET_WALLET_BALANCE_FAILURE';
 export const GET_WALLET_USER_REQUEST = 'GET_WALLET_USER_REQUEST';
 export const GET_WALLET_USER_SUCCESS = 'GET_WALLET_USER_SUCCESS';
 export const GET_WALLET_USER_FAILURE = 'GET_WALLET_USER_FAILURE';
@@ -3126,6 +3129,18 @@ export const getWalletSuccess = (data) => ({
 });
 export const getWalletFailure = (error) => ({
   type: 'GET_WALLET_FAILURE',
+  payload: error
+});
+export const getWalletBalanceRequest = (data) => ({
+  type: 'GET_WALLET_BALANCE_REQUEST',
+  payload: data
+});
+export const getWalletBalanceSuccess = (data) => ({
+  type: 'GET_WALLET_BALANCE_SUCCESS',
+  payload: data
+});
+export const getWalletBalanceFailure = (error) => ({
+  type: 'GET_WALLET_BALANCE_FAILURE',
   payload: error
 });
 export const getWalletuserRequest = (data) => ({
