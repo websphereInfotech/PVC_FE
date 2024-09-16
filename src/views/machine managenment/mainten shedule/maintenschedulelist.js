@@ -17,17 +17,15 @@ import {
   DialogContent
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteMachineSchedule, fetchAllMachineSchedule, MachineScheduleview } from 'store/thunk';
+import { deleteAddMaintenance, fetchAllAddMaintenance, viewAddMaintenance } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit, Delete } from '@mui/icons-material';
 
 const columns = [
   { id: 'name', label: 'Machine Name', align: 'center' },
-  { id: 'frequency', label: 'Frequency', align: 'center' },
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'type', label: 'Type', align: 'center' },
-  { id: 'interval', label: 'Interval', align: 'center' },
   { id: 'maintenanceType', label: 'Maintenance Type', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
@@ -46,7 +44,7 @@ const Maintenchedulelist = () => {
   useEffect(() => {
     const fetchSalaryData = async () => {
       try {
-        const response = await dispatch(fetchAllMachineSchedule());
+        const response = await dispatch(fetchAllAddMaintenance());
         setMachineData(response);
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -69,11 +67,11 @@ const Maintenchedulelist = () => {
   };
 
   const handleaddmachine = () => {
-    navigate('/machinescheduleadd');
+    navigate('/maintenscheduleadd');
   };
   const handleUpdateMachine = (id) => {
-    dispatch(MachineScheduleview(id));
-    navigate(`/updatemachineschedule/${id}`);
+    dispatch(viewAddMaintenance(id));
+    navigate(`/updatemaintenscheduleadd/${id}`);
   };
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -81,9 +79,9 @@ const Maintenchedulelist = () => {
   };
   const handleDeleteMachine = async () => {
     try {
-      await dispatch(deleteMachineSchedule(selectedMachineId, navigate));
+      await dispatch(deleteAddMaintenance(selectedMachineId, navigate));
       setOpenConfirmation(false);
-      const response = await dispatch(fetchAllMachineSchedule());
+      const response = await dispatch(fetchAllAddMaintenance());
       setMachineData(response);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -122,7 +120,7 @@ const Maintenchedulelist = () => {
                     {column.id === 'date' ? (
                       new Date(row.date).toLocaleDateString('en-GB')
                     ) : column.id === 'name' ? (
-                      row.scheduleMachine.name
+                      row.machineMaintenance.name
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <IconButton

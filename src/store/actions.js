@@ -492,6 +492,7 @@ export const VIEW_SINGLE_MAINTENANCE_TYPE_FAILURE = 'VIEW_SINGLE_MAINTENANCE_TYP
 export const GET_ALL_MAINTENANCE_TYPE_REQUEST = 'GET_ALL_MAINTENANCE_TYPE_REQUEST';
 export const GET_ALL_MAINTENANCE_TYPE_SUCCESS = 'GET_ALL_MAINTENANCE_TYPE_SUCCESS';
 export const GET_ALL_MAINTENANCE_TYPE_FAILURE = 'GET_ALL_MAINTENANCE_TYPE_FAILURE';
+
 // #################################################################### MACHINE ################################################################
 export const CREATE_MACHINE_REQUEST = 'CREATE_MACHINE_REQUEST';
 export const CREATE_MACHINE_SUCCESS = 'CREATE_MACHINE_SUCCESS';
@@ -714,6 +715,24 @@ export const GET_WALLET_USER_FAILURE = 'GET_WALLET_USER_FAILURE';
 export const APPROVE_WALLET_REQUEST = 'APPROVE_WALLET_REQUEST';
 export const APPROVE_WALLET_SUCCESS = 'APPROVE_WALLET_SUCCESS';
 export const APPROVE_WALLET_FAILURE = 'APPROVE_WALLET_FAILURE';
+
+// #################################################################### ADD MAINTENANCE ################################################################
+export const CREATE_ADD_MAINTENANCE_REQUEST = 'CREATE_ADD_MAINTENANCE_REQUEST';
+export const CREATE_ADD_MAINTENANCE_SUCCESS = 'CREATE_ADD_MAINTENANCE_SUCCESS';
+export const CREATE_ADD_MAINTENANCE_FAILURE = 'CREATE_ADD_MAINTENANCE_FAILURE';
+export const UPDATE_ADD_MAINTENANCE_REQUEST = 'UPDATE_ADD_MAINTENANCE_REQUEST';
+export const UPDATE_ADD_MAINTENANCE_SUCCESS = 'UPDATE_ADD_MAINTENANCE_SUCCESS';
+export const UPDATE_ADD_MAINTENANCE_FAILURE = 'UPDATE_ADD_MAINTENANCE_FAILURE';
+export const DELETE_ADD_MAINTENANCE_REQUEST = 'DELETE_ADD_MAINTENANCE_REQUEST';
+export const DELETE_ADD_MAINTENANCE_SUCCESS = 'DELETE_ADD_MAINTENANCE_SUCCESS';
+export const DELETE_ADD_MAINTENANCE_FAILURE = 'DELETE_ADD_MAINTENANCE_FAILURE';
+export const VIEW_SINGLE_ADD_MAINTENANCE_REQUEST = 'VIEW_SINGLE_ADD_MAINTENANCE_REQUEST';
+export const VIEW_SINGLE_ADD_MAINTENANCE_SUCCESS = 'VIEW_SINGLE_ADD_MAINTENANCE_SUCCESS';
+export const VIEW_SINGLE_ADD_MAINTENANCE_FAILURE = 'VIEW_SINGLE_ADD_MAINTENANCE_FAILURE';
+export const GET_ALL_ADD_MAINTENANCE_REQUEST = 'GET_ALL_ADD_MAINTENANCE_REQUEST';
+export const GET_ALL_ADD_MAINTENANCE_SUCCESS = 'GET_ALL_ADD_MAINTENANCE_SUCCESS';
+export const GET_ALL_ADD_MAINTENANCE_FAILURE = 'GET_ALL_ADD_MAINTENANCE_FAILURE';
+
 // ###################################################################### LOGIN #####################################################################
 export const loginRequest = () => ({
   type: 'LOGIN_REQUEST'
@@ -3165,5 +3184,61 @@ export const approveWalletSuccess = (data) => ({
 });
 export const approveWalletFailure = (error) => ({
   type: 'APPROVE_WALLET_FAILURE',
+  payload: error
+});
+// ++++++++++++++++++++++++++++++++++++++++++ ADD MAINTENANCE ++++++++++++++
+export const CreateAddMaintenanceRequest = () => ({
+  type: 'CREATE_ADD_MAINTENANCE_REQUEST'
+});
+export const CreateAddMaintenanceSuccess = (data) => ({
+  type: 'CREATE_ADD_MAINTENANCE_SUCCESS',
+  payload: data
+});
+export const CreateAddMaintenanceFailure = (error) => ({
+  type: 'CREATE_ADD_MAINTENANCE_FAILURE',
+  payload: error
+});
+export const UpdateAddMaintenanceRequest = () => ({
+  type: 'UPDATE_ADD_MAINTENANCE_REQUEST'
+});
+export const UpdateAddMaintenanceSuccess = (data) => ({
+  type: 'UPDATE_ADD_MAINTENANCE_SUCCESS',
+  payload: data
+});
+export const UpdateAddMaintenanceFailure = (error) => ({
+  type: 'UPDATE_ADD_MAINTENANCE_FAILURE',
+  payload: error
+});
+export const ViewsingleAddMaintenanceRequest = () => ({
+  type: 'VIEW_SINGLE_ADD_MAINTENANCE_REQUEST'
+});
+export const ViewsingleAddMaintenanceSuccess = (data) => ({
+  type: 'VIEW_SINGLE_ADD_MAINTENANCE_SUCCESS',
+  payload: data
+});
+export const ViewsingleAddMaintenanceFailure = (error) => ({
+  type: 'VIEW_SINGLE_ADD_MAINTENANCE_FAILURE',
+  payload: error
+});
+export const DeleteAddMaintenanceRequest = () => ({
+  type: 'DELETE_ADD_MAINTENANCE_REQUEST'
+});
+export const DeleteAddMaintenanceSuccess = (data) => ({
+  type: 'DELETE_ADD_MAINTENANCE_SUCCESS',
+  payload: data
+});
+export const DeleteAddMaintenanceFailure = (error) => ({
+  type: 'DELETE_ADD_MAINTENANCE_FAILURE',
+  payload: error
+});
+export const fetchAllAddMaintenanceRequest = () => ({
+  type: 'GET_ALL_ADD_MAINTENANCE_REQUEST'
+});
+export const fetchAllAddMaintenanceSuccess = (data) => ({
+  type: 'GET_ALL_ADD_MAINTENANCE_SUCCESS',
+  payload: data
+});
+export const fetchAllAddMaintenanceFailure = (error) => ({
+  type: 'GET_ALL_ADD_MAINTENANCE_FAILURE',
   payload: error
 });

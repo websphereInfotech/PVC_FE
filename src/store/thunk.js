@@ -663,7 +663,23 @@ import {
   getWalletuserFailure,
   approveWalletRequest,
   approveWalletSuccess,
-  approveWalletFailure
+  approveWalletFailure,
+  // ADD MAINTENANCE+++++++++++++
+  CreateAddMaintenanceRequest,
+  CreateAddMaintenanceSuccess,
+  CreateAddMaintenanceFailure,
+  UpdateAddMaintenanceRequest,
+  UpdateAddMaintenanceSuccess,
+  UpdateAddMaintenanceFailure,
+  DeleteAddMaintenanceRequest,
+  DeleteAddMaintenanceSuccess,
+  DeleteAddMaintenanceFailure,
+  ViewsingleAddMaintenanceRequest,
+  ViewsingleAddMaintenanceSuccess,
+  ViewsingleAddMaintenanceFailure,
+  fetchAllAddMaintenanceRequest,
+  fetchAllAddMaintenanceSuccess,
+  fetchAllAddMaintenanceFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
 import { saveAs } from 'file-saver';
@@ -5004,6 +5020,116 @@ export const ApproveWallet = (id) => {
     } catch (error) {
       dispatch(approveWalletFailure(error.message));
       throw error;
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++ ADD MAINTENANCE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createAddMaintenance = (data, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreateAddMaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/maintenance/create_maintenance`, data, config);
+      const addMaintenancedata = response;
+      dispatch(CreateAddMaintenanceSuccess(addMaintenancedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/maintenschedulelist');
+      return addMaintenancedata;
+    } catch (error) {
+      dispatch(CreateAddMaintenanceFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const updateAddMaintenance = (Id, formData, navigate) => {
+  return async (dispatch) => {
+    dispatch(UpdateAddMaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/maintenance/update_maintenance/${Id}`, formData, config);
+      const updateAddMaintenancedata = response.data.data;
+      dispatch(UpdateAddMaintenanceSuccess(updateAddMaintenancedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/maintenschedulelist');
+      return updateAddMaintenancedata;
+    } catch (error) {
+      dispatch(UpdateAddMaintenanceFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const viewAddMaintenance = (id) => {
+  return async (dispatch) => {
+    dispatch(ViewsingleAddMaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/maintenance/view_one_maintenance/${id}`, config);
+      const data = response.data.data;
+      dispatch(ViewsingleAddMaintenanceSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(ViewsingleAddMaintenanceFailure(error.message));
+    }
+  };
+};
+export const deleteAddMaintenance = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DeleteAddMaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/maintenance/delete_maintenance/${id}`, config);
+      const deleteAddMaintenancedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      dispatch(DeleteAddMaintenanceSuccess(deleteAddMaintenancedata));
+      return deleteAddMaintenancedata;
+    } catch (error) {
+      dispatch(DeleteAddMaintenanceFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const fetchAllAddMaintenance = (params = {}) => {
+  return async (dispatch) => {
+    dispatch(fetchAllAddMaintenanceRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/maintenance/view_all_maintenance`, {
+        ...config,
+        params: params
+      });
+      const data = response.data.data;
+      dispatch(fetchAllAddMaintenanceSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(fetchAllAddMaintenanceFailure(error.message));
     }
   };
 };

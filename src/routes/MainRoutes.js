@@ -544,6 +544,10 @@ const MainRoutes = {
       element: <Maintenscheduleadd />
     },
     {
+      path: '/updatemaintenscheduleadd/:id',
+      element: <Maintenscheduleadd />
+    },
+    {
       path: '/machineschedulelist',
       element: <ProtectedRoute element={Machineschedulelist} resource="Machine Schedule" permissionName="view_all_machine_schedule" />
     },
