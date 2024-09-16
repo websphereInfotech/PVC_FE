@@ -123,6 +123,19 @@ const Cashaccountledgerlist = () => {
                 )}
               </TableBody>
               <TableBody>
+                <TableRow>
+                  <TableCell colSpan={4} align="right"></TableCell>
+                  <TableCell align="center">
+                    <Typography variant="subtitle1" style={{ color: 'red' }}>
+                      {data.totals.totalDebit.toFixed(2)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="subtitle1" style={{ color: '#00CE00' }}>
+                      {data.totals.totalCredit.toFixed(2)}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
                 {data.closingBalance.type === 'credit' && (
                   <TableRow>
                     <TableCell></TableCell>
@@ -151,12 +164,12 @@ const Cashaccountledgerlist = () => {
                   <TableCell colSpan={4} align="right"></TableCell>
                   <TableCell align="center">
                     <Typography variant="subtitle1" style={{ color: 'red' }}>
-                      {data.totals.totalDebit.toFixed(2)}
+                      {data.totalAmount.toFixed(2)}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="subtitle1" style={{ color: '#00CE00' }}>
-                      {data.totals.totalCredit.toFixed(2)}
+                      {data.totalAmount.toFixed(2)}
                     </Typography>
                   </TableCell>
                 </TableRow>
