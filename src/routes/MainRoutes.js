@@ -20,6 +20,7 @@ import CashbookReport from 'views/finacial managenment/Wallet/cashbook';
 import Wastagelist from 'views/general managenment/wastage/wastagelist';
 import Maintenancelist from 'views/general managenment/maintenance/maintenancelist';
 import Purposelist from 'views/general managenment/claim purpose/purposelist';
+import Employeeentry from 'views/employee management/employeeentry';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -530,6 +531,7 @@ const MainRoutes = {
       path: '/employeestatus/:id',
       element: <ProtectedRoute element={Employeeview} resource="Salary" permissionName="view_all_salary_payment" />
     },
+    { path: 'employeeentry', element: <Employeeentry /> },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },

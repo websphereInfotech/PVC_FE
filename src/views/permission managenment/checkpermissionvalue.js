@@ -876,6 +876,24 @@ const useCan = () => {
     return checkPermission('Maintenance Type', 'delete_maintenanceType');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Add Maintenance
+
+  const canCreateAddMaintenance = () => {
+    return checkPermission('Maintenance', 'create_maintenance');
+  };
+  const canViewAllAddMaintenance = () => {
+    return checkPermission('Maintenance', 'view_all_maintenance');
+  };
+  const canViewSingleAddMaintenance = () => {
+    return checkPermission('Maintenance', 'view_one_maintenance');
+  };
+  const canUpdateAddMaintenance = () => {
+    return checkPermission('Maintenance', 'update_maintenance');
+  };
+  const canDeleteAddMaintenance = () => {
+    return checkPermission('Maintenance', 'delete_maintenance');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -1165,7 +1183,13 @@ const useCan = () => {
     canUpdateMaintenanceType,
     canViewSingleMaintenanceType,
     canViewAllMaintenanceType,
-    canCreateMaintenanceType
+    canCreateMaintenanceType,
+    // MAINTENANC ++++++++++
+    canDeleteAddMaintenance,
+    canUpdateAddMaintenance,
+    canViewSingleAddMaintenance,
+    canViewAllAddMaintenance,
+    canCreateAddMaintenance
   };
 };
 

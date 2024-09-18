@@ -39,7 +39,7 @@ const Maintenchedulelist = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateMachineSchedule, canDeleteMachineSchedule, canUpdateMachineSchedule } = useCan();
+  const { canCreateAddMaintenance, canDeleteAddMaintenance, canUpdateAddMaintenance } = useCan();
 
   useEffect(() => {
     const fetchSalaryData = async () => {
@@ -97,7 +97,7 @@ const Maintenchedulelist = () => {
         color="secondary"
         style={{ margin: '16px' }}
         onClick={handleaddmachine}
-        disabled={!canCreateMachineSchedule()}
+        disabled={!canCreateAddMaintenance()}
       >
         Add Mainten Schedule
       </Button>
@@ -126,30 +126,30 @@ const Maintenchedulelist = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdateMachineSchedule() ? 'green' : 'gray',
-                            color: canUpdateMachineSchedule() ? 'white' : 'white',
+                            backgroundColor: canUpdateAddMaintenance() ? 'green' : 'gray',
+                            color: canUpdateAddMaintenance() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdateMachineSchedule() && { opacity: 1 }),
-                            ...(!canUpdateMachineSchedule() && { opacity: 0.5 }),
-                            ...(!canUpdateMachineSchedule() && { backgroundColor: 'gray' })
+                            ...(canUpdateAddMaintenance() && { opacity: 1 }),
+                            ...(!canUpdateAddMaintenance() && { opacity: 0.5 }),
+                            ...(!canUpdateAddMaintenance() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateMachine(row.id)}
-                          disabled={!canUpdateMachineSchedule()}
+                          disabled={!canUpdateAddMaintenance()}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteMachineSchedule() ? 'Red' : 'gray',
-                            color: canDeleteMachineSchedule() ? 'white' : 'white',
+                            backgroundColor: canDeleteAddMaintenance() ? 'Red' : 'gray',
+                            color: canDeleteAddMaintenance() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canDeleteMachineSchedule() && { opacity: 1 }),
-                            ...(!canDeleteMachineSchedule() && { opacity: 0.5 }),
-                            ...(!canDeleteMachineSchedule() && { backgroundColor: 'gray' })
+                            ...(canDeleteAddMaintenance() && { opacity: 1 }),
+                            ...(!canDeleteAddMaintenance() && { opacity: 0.5 }),
+                            ...(!canDeleteAddMaintenance() && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDeleteConfirmation(row.id)}
-                          disabled={!canDeleteMachineSchedule()}
+                          disabled={!canDeleteAddMaintenance()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>

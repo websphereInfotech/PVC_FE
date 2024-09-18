@@ -585,13 +585,13 @@ const MenuItem = () => {
                 title: 'Employee Directory',
                 type: 'item',
                 url: '/employeedirectory'
+              },
+              {
+                id: 'Employee',
+                title: 'Employee',
+                type: 'item',
+                url: '/employeeentry'
               }
-              // {
-              //   id: 'Employee Status',
-              //   title: 'Employee Status',
-              //   type: 'item',
-              //   url: '/employeestatus'
-              // },
               // {
               //   id: 'employee salary',
               //   title: 'Employee Salary',
