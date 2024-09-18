@@ -65,7 +65,7 @@ const Cashaccountledgerlist = () => {
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">To:</Typography>
-          <Typography variant="h4">{gettodata.accountName}</Typography>
+          <Typography variant="h4">{gettodata.contactPersonName}</Typography>
           <Typography>{gettodata.address1}</Typography>
           <Typography>
             {gettodata.city} {gettodata.state} {gettodata.pincode}
