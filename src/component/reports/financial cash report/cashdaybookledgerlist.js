@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TableHead,
+  TableContainer,
+  Grid,
+  Paper,
+  styled,
+  Button
+} from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { getallCashDaybookledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 // import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
@@ -33,6 +48,8 @@ const Cashdaybookledgerlist = () => {
   const [closingBalance, setClosingBalance] = useState({ type: '', amount: 0 });
   const formData = sessionStorage.getItem('RCDaybookformDate');
   const toDate = sessionStorage.getItem('RCDaybooktoDate');
+  const [toDatec, setToDate] = useState(new Date());
+  const [formDatec, setFormDate] = useState(new Date());
   // const { canDownloadPdfBankCustomer } = useCan();
 
   useEffect(() => {
@@ -59,9 +76,68 @@ const Cashdaybookledgerlist = () => {
         console.error('Error fetching payment ledger data:', error);
       });
   }, [dispatch, formData, toDate, navigate]);
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
 
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
+  const handleLedger = async (formDatec, toDatec) => {
+    const data = await dispatch(getallCashDaybookledger(formDatec, toDatec));
+    const recordsArray = Object.values(data.records).flat();
+    setPayments(recordsArray);
+    setGetdata(data.form);
+    setTotals({
+      totalCredit: data.totals.totalCredit || 0,
+      totalDebit: data.totals.totalDebit || 0
+    });
+    setClosingBalance(data.closingBalance);
+    setTotalAmount(data.totalAmount);
+    navigate('/cashdaybookledger');
+    setFormDate(formDatec);
+    sessionStorage.setItem('RCDaybookformDate', formDatec);
+    setToDate(toDatec);
+    sessionStorage.setItem('RCDaybooktoDate', toDatec);
+  };
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
+      <Grid container style={{ marginBottom: '20px' }}>
+        <Grid item xs={12} md={3} sm={6}>
+          <Typography variant="subtitle1">From Date:</Typography>
+          <DatePicker
+            selected={formDatec}
+            onChange={(date) => handleformDateChange(date)}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showTimeSelect={false}
+          />
+        </Grid>
+        <Grid item xs={12} md={3} sm={6}>
+          <Typography variant="subtitle1">To Date:</Typography>
+          <DatePicker
+            selected={toDatec}
+            onChange={(date) => handletoDateChange(date)}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showTimeSelect={false}
+          />
+        </Grid>
+        <Grid item xs={12} md={3} sm={6} alignContent={'center'} sx={{ marginTop: '10px' }}>
+          <Button onClick={() => handleLedger(formDatec, toDatec)} variant="contained" color="secondary">
+            GO
+          </Button>
+        </Grid>
+      </Grid>
       <Grid container spacing={2}>
         {/* <Grid item xs={12} align="end">
           <Button
@@ -74,6 +150,7 @@ const Cashdaybookledgerlist = () => {
             Download PDF
           </Button>
         </Grid> */}
+
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
           <Typography variant="h4">{getdata.companyname}</Typography>

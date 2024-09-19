@@ -385,7 +385,8 @@ const Machinescheduleadd = () => {
 
   const Types = [
     { value: 'Regular', label: 'Regular' },
-    { value: 'Preventive', label: 'Preventive' }
+    { value: 'Preventive', label: 'Preventive' },
+    { value: 'Break Down', label: 'Break Down' }
   ];
 
   const Frequency = [
@@ -405,6 +406,18 @@ const Machinescheduleadd = () => {
         maintenanceType: selectedValues
       }));
     }
+  };
+
+  const handleNewMaintenanceAdded = (type) => {
+    const data = [
+      ...maintenanceTypeOptions,
+      {
+        value: type.id,
+        label: type.name
+      }
+    ];
+    setmaintenanceTypeOptions(data);
+    setmaintenanceTypeDrawerOpen(false);
   };
 
   return (
@@ -477,7 +490,12 @@ const Machinescheduleadd = () => {
                 Maintenance Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select options={maintenanceTypeOptions} isMulti value={selectedmaintenanceType} onChange={handleMaintenanceTypeChange} />
-              <Maintenancetype anchor="Right" open={maintenanceTypeDrawerOpen} onClose={() => setmaintenanceTypeDrawerOpen(false)} />
+              <Maintenancetype
+                anchor="Right"
+                open={maintenanceTypeDrawerOpen}
+                onClose={() => setmaintenanceTypeDrawerOpen(false)}
+                onnewadded={handleNewMaintenanceAdded}
+              />
             </Grid>
           </Grid>
 

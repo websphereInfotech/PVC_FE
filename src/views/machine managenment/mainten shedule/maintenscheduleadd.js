@@ -201,9 +201,22 @@ const Maintenscheduleadd = () => {
     }
   };
 
+  const handleNewMaintenanceAdded = (type) => {
+    const data = [
+      ...maintenanceTypeOptions,
+      {
+        value: type.id,
+        label: type.name
+      }
+    ];
+    setmaintenanceTypeOptions(data);
+    setmaintenanceTypeDrawerOpen(false);
+  };
+
   const Types = [
     { value: 'Regular', label: 'Regular' },
-    { value: 'Preventive', label: 'Preventive' }
+    { value: 'Preventive', label: 'Preventive' },
+    { value: 'Break Down', label: 'Break Down' }
   ];
 
   const handleMaintenanceTypeChange = (selectedOptions) => {
@@ -219,16 +232,28 @@ const Maintenscheduleadd = () => {
     }
   };
 
+  const handleNewProductAdded = (newProduct) => {
+    const updatedProductList = [
+      ...product,
+      {
+        value: newProduct.id,
+        label: newProduct.productname
+      }
+    ];
+    setProduct(updatedProductList);
+    setIsproductDrawerOpen(false);
+  };
+
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Machine Schedule
+            Update Mainten Schedule
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Add Machine Schedule
+            Add Mainten Schedule
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
@@ -269,7 +294,12 @@ const Maintenscheduleadd = () => {
                 Machine Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
               </Typography>
               <Select options={maintenanceTypeOptions} isMulti value={selectedmaintenanceType} onChange={handleMaintenanceTypeChange} />
-              <Maintenancetype anchor="Right" open={maintenanceTypeDrawerOpen} onClose={() => setmaintenanceTypeDrawerOpen(false)} />
+              <Maintenancetype
+                anchor="Right"
+                open={maintenanceTypeDrawerOpen}
+                onClose={() => setmaintenanceTypeDrawerOpen(false)}
+                onnewadded={handleNewMaintenanceAdded}
+              />
             </Grid>
           </Grid>
           <Grid item xs={12} style={isMobileX ? { overflowX: 'auto' } : {}}>
@@ -299,7 +329,7 @@ const Maintenscheduleadd = () => {
                         open={isproductDrawerOpen}
                         onClose={() => setIsproductDrawerOpen(false)}
                         onSelectProduct={(selectedOption) => handleSelectproductChange(selectedOption, index)}
-                        // onNewProductAdded={handleNewProductAdded}
+                        onNewProductAdded={handleNewProductAdded}
                       />
                       <TableCell id="newcs">
                         <input placeholder="qty" value={row.qty} onChange={(e) => handleInputChange(index, 'qty', e.target.value)} />

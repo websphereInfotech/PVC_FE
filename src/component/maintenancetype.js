@@ -13,7 +13,7 @@ const Maintenancetype = ({ open, onClose, id, onnewadded, onnewUpdated }) => {
   const [MaintenancetypeName, setMaintenancetypeName] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = React.useState(false);
+  // const [loading, setLoading] = React.useState(false);
 
   Maintenancetype.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -24,20 +24,18 @@ const Maintenancetype = ({ open, onClose, id, onnewadded, onnewUpdated }) => {
   };
 
   const handleSave = async () => {
-    if (loading) return;
+    // if (loading) return;
 
-    setLoading(true);
+    // setLoading(true);
     try {
       const payload = { name: MaintenancetypeName };
       if (id) {
         const response = await dispatch(updateMaintenanceType(id, payload, navigate));
-        console.log(response, 'demo');
         onnewUpdated(response);
       } else {
         const response = await dispatch(createMaintenancType(payload, navigate));
-        onClose();
-        setMaintenancetypeName('');
         onnewadded(response.data.data);
+        setMaintenancetypeName('');
       }
     } catch (error) {
       console.error('Error creating maintenance', error);
@@ -82,8 +80,8 @@ const Maintenancetype = ({ open, onClose, id, onnewadded, onnewUpdated }) => {
           </button>
         </div>
         <div style={{ display: 'flex' }}>
-          <button id="savebtncs" onClick={handleSave} disabled={loading}>
-            {loading ? 'Save' : 'Save'}
+          <button id="savebtncs" onClick={handleSave}>
+            Save
           </button>
         </div>
       </Grid>

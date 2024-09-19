@@ -141,11 +141,11 @@ const Employeeentry = () => {
       <div>
         {bomId ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Production
+            Update Employee
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Create Production
+            Create Employee
           </Typography>
         )}
         <Grid container spacing={2} style={{ marginBottom: '16px' }}>

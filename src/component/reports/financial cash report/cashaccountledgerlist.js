@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Table, TableBody, TableRow, TableCell, Card, TableHead, TableContainer, Grid, Paper, styled } from '@mui/material';
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Card,
+  TableHead,
+  TableContainer,
+  Grid,
+  Paper,
+  styled,
+  Button
+} from '@mui/material';
+import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import { getallCashAccountledger } from 'store/thunk';
+import { fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -25,10 +41,15 @@ const formatDate = (dateString) => {
 const Cashaccountledgerlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [AccountIdc, setAccountId] = useState(null);
+  const [Account, setAccount] = useState([]);
+  const [Accountname, setAccountname] = useState('');
   const [yearData, setYearData] = useState({});
   const [getdata, setGetdata] = useState({});
   const [gettodata, setGettodata] = useState({});
-
+  const [toDatec, setToDate] = useState(new Date());
+  const [formDatec, setFormDate] = useState(new Date());
   const AccountId = sessionStorage.getItem('RCAccountId');
   const formData = sessionStorage.getItem('RCAccountformDate');
   const toDate = sessionStorage.getItem('RCAccounttoDate');
@@ -52,8 +73,104 @@ const Cashaccountledgerlist = () => {
       });
   }, [dispatch, AccountId, formData, toDate, navigate]);
 
+  const handleSelectChange = (selectedOption) => {
+    if (selectedOption && selectedOption.label) {
+      setAccountId(selectedOption.value);
+      setAccountname(selectedOption.label);
+    }
+  };
+
+  const handleFormDateChange = (date) => {
+    setFormDate(date);
+  };
+
+  const handleToDateChange = (date) => {
+    setToDate(date);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchAllAccountCash());
+
+        if (Array.isArray(response)) {
+          const options = response.map((account) => ({
+            value: account.id,
+            label: account.contactPersonName
+          }));
+          setAccount(options);
+        }
+      } catch (error) {
+        console.error('Error fetching ledger:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const handleLedger = async () => {
+    const formattedFormDate = formDatec.toISOString().split('T')[0];
+    const formattedToDate = toDatec.toISOString().split('T')[0];
+    const data = await dispatch(getallCashAccountledger(AccountIdc, formattedFormDate, formattedToDate));
+    setYearData(data.years || {});
+    setGetdata(data.form);
+    setGettodata(data.to);
+    navigate('/cashaccountledger');
+    sessionStorage.setItem('RCAccountId', AccountId);
+    sessionStorage.setItem('RCAccountformDate', formattedFormDate);
+    sessionStorage.setItem('RCAccounttoDate', formattedToDate);
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
+      <Grid container>
+        <Grid item xs={12} md={3} sm={6}>
+          <Typography variant="subtitle1">Account:</Typography>
+          <Select
+            options={Account}
+            value={AccountIdc ? { value: AccountIdc, label: Accountname } : null}
+            onChange={handleSelectChange}
+            menuPortalTarget={document.body}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              menu: (provided) => ({
+                ...provided,
+                zIndex: 9999,
+                maxHeight: '300px',
+                overflowY: 'scroll'
+              })
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} md={3} sm={6}>
+          <Typography variant="subtitle1">From Date:</Typography>
+          <DatePicker
+            selected={formDatec}
+            onChange={handleFormDateChange}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showPopperArrow={false}
+            style={{ width: '100%' }}
+          />
+        </Grid>
+        <Grid item xs={12} md={3} sm={6}>
+          <Typography variant="subtitle1">To Date:</Typography>
+          <DatePicker
+            selected={toDatec}
+            onChange={handleToDateChange}
+            dateFormat="dd/MM/yyyy"
+            isClearable={false}
+            showPopperArrow={false}
+            style={{ width: '100%' }}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={3} sm={6} justifyContent={'start'} style={{ marginTop: '20px' }}>
+          <Button onClick={handleLedger} variant="contained" color="secondary">
+            GO
+          </Button>
+        </Grid>
+      </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
