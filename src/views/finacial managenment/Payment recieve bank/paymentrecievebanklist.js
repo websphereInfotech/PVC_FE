@@ -81,7 +81,8 @@ const Paymentrecievebanklist = () => {
     try {
       await dispatch(deletePaymentRecievebank(selectedId, navigate));
       setOpenConfirmation(false);
-      setPayments((prevPayment) => prevPayment.filter((payment) => payment.id !== selectedId));
+      const data = await dispatch(getAllPaymentRecievebank());
+      setPayments(data);
     } catch (error) {
       console.error('Error deleting pyament recieve bank:', error);
     }

@@ -154,7 +154,8 @@ const Wastagelist = () => {
     try {
       await dispatch(DeleteWastage(selectedId, navigate));
       setOpenConfirmation(false);
-      setWastage((prevgroup) => prevgroup.filter((group) => group.id !== selectedId));
+      const data = await dispatch(fetchAllWastage());
+      setWastage(data);
     } catch (error) {
       console.error('Error deleting group:', error);
     }

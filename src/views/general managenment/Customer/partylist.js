@@ -138,7 +138,8 @@ const AccountList = () => {
     try {
       await dispatch(deleteAccount(selectedId, navigate));
       setOpenConfirmation(false);
-      setAccount((preAccount) => preAccount.filter((account) => account.id !== selectedId));
+      const data = await dispatch(fetchAllAccounts());
+      setAccount(data);
     } catch (error) {
       console.error('Error deleting account:', error);
     }

@@ -154,7 +154,8 @@ const ItemgropuList = () => {
     try {
       await dispatch(DeleteItemgroup(selectedId, navigate));
       setOpenConfirmation(false);
-      setItemgroup((prevgroup) => prevgroup.filter((group) => group.id !== selectedId));
+      const data = await dispatch(fetchAllItemGroup());
+      setItemgroup(data);
     } catch (error) {
       console.error('Error deleting group:', error);
     }

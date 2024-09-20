@@ -82,8 +82,8 @@ const PaymentrecieveList = () => {
     try {
       await dispatch(deleteRecieveCash(selectedId, navigate));
       setOpenConfirmation(false);
-
-      setPayments((prevPayment) => prevPayment.filter((payment) => payment.id !== selectedId));
+      const data = await dispatch(getallRecieveCash());
+      setPayments(data);
     } catch (error) {
       console.error('Error deleting user:', error);
     }

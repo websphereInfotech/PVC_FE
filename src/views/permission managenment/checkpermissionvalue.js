@@ -562,9 +562,6 @@ const useCan = () => {
   const canIsapproveClaimcash = () => {
     return checkPermission('Claim Cash', 'isapproved_claim');
   };
-  const canViwAllClaimcashLedger = () => {
-    return checkPermission('Claim Cash', 'view_claimBalance_ledger');
-  };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ BILL OF MATERIAL
 
@@ -1048,7 +1045,6 @@ const useCan = () => {
     canViwAllClaimcash,
     canViwAllRecieveClaimcash,
     canIsapproveClaimcash,
-    canViwAllClaimcashLedger,
     // PAYMENT BANK ++++++++++++
     canCreatePaymentBank,
     canUpdatePaymentBank,

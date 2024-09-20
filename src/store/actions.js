@@ -296,11 +296,6 @@ export const FETCH_ALL_CUSTOMER_LEDGER_REQUEST = 'FETCH_ALL_CUSTOMER_LEDGER_REQU
 export const FETCH_ALL_CUSTOMER_LEDGER_SUCCESS = 'FETCH_ALL_CUSTOMER_LEDGER_SUCCESS';
 export const FETCH_ALL_CUSTOMER_LEDGER_FAILURE = 'FETCH_ALL_CUSTOMER_LEDGER_FAILURE';
 
-// #################################################################### USER LEDGER ###################################################################
-export const FETCH_ALL_USER_LEDGER_REQUEST = 'FETCH_ALL_USER_LEDGER_REQUEST';
-export const FETCH_ALL_USER_LEDGER_SUCCESS = 'FETCH_ALL_USER_LEDGER_SUCCESS';
-export const FETCH_ALL_USER_LEDGER_FAILURE = 'FETCH_ALL_USER_LEDGER_FAILURE';
-
 // #################################################################### VENDOR LEDGER ###################################################################
 export const FETCH_ALL_CLAIM_USER_REQUEST = 'FETCH_ALL_CLAIM_USER_REQUEST';
 export const FETCH_ALL_CLAIM_USER_SUCCESS = 'FETCH_ALL_CLAIM_USER_SUCCESS';
@@ -1997,19 +1992,6 @@ export const viewRecieveClaimCashSuccess = (data) => ({
 });
 export const viewRecieveClaimCashFailure = (error) => ({
   type: 'VIEW_RECIEVE_CLAIM_CASH_FAILURE',
-  payload: error
-});
-
-//  ####################################################################### CLAIM USER LEDGER #####################################################
-export const fetchAllclaimcashledgerRequest = () => ({
-  type: 'FETCH_ALL_USER_LEDGER_REQUEST'
-});
-export const fetchAllclaimcashledgerSuccess = (data) => ({
-  type: 'FETCH_ALL_USER_LEDGER_SUCCESS',
-  payload: data
-});
-export const fetchAllclaimcashledgerFailure = (error) => ({
-  type: 'FETCH_ALL_USER_LEDGER_FAILURE',
   payload: error
 });
 

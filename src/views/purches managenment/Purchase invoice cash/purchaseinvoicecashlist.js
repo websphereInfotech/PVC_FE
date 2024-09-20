@@ -91,7 +91,8 @@ const Purchaseinvoicecashlist = () => {
     try {
       await dispatch(deletePurchaseInvoiceCash(selectedId, navigate));
       setOpenConfirmation(false);
-      setPurchasebillcash((prevPurchase) => prevPurchase.filter((purchaseCash) => purchaseCash.id !== selectedId));
+      const data = await dispatch(getallPurchaseInvoiceCash());
+      setPurchasebillcash(data);
     } catch (error) {
       console.error('Error deleting purchase invoice cash:', error);
     }

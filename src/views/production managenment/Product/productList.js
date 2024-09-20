@@ -164,7 +164,8 @@ const ProductList = () => {
     try {
       await dispatch(DeleteProduct(selectedId, navigate));
       setOpenConfirmation(false);
-      setProduct((prevProduct) => prevProduct.filter((product) => product.id !== selectedId));
+      const data = await dispatch(fetchAllProducts());
+      setProduct(data);
     } catch (error) {
       console.error('Error deleting product:', error);
     }

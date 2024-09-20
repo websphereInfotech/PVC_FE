@@ -96,7 +96,8 @@ const Debitnotelist = () => {
     try {
       await dispatch(deleteDebitnote(selectedId, navigate));
       setOpenConfirmation(false);
-      setDebitnote((prevDebitNote) => prevDebitNote.filter((Debitnote) => Debitnote.id !== selectedId));
+      const data = await dispatch(getallDebitnote());
+      setDebitnote(data);
     } catch (error) {
       console.error('Error deleting debit note:', error);
     }

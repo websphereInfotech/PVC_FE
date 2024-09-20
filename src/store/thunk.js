@@ -338,10 +338,6 @@ import {
   viewRecieveClaimCashRequest,
   viewRecieveClaimCashSuccess,
   viewRecieveClaimCashFailure,
-  // CLAIMCASH LEDGER ++++++++++
-  fetchAllclaimcashledgerRequest,
-  fetchAllclaimcashledgerSuccess,
-  fetchAllclaimcashledgerFailure,
   // PAYMENT BANK +++++++++++++
   createPaymentbankRequest,
   createPaymentbankSuccess,
@@ -2893,26 +2889,6 @@ export const IsStatusclaimCash = (id, toUserId, isApproved, navigate) => {
           autoClose: 1000
         });
       }
-    }
-  };
-};
-export const fetchAllClaimcashLedger = (formDate, toDate) => {
-  return async (dispatch) => {
-    dispatch(fetchAllclaimcashledgerRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/claim/view_claimBalance_ledger?fromDate=${formDate}&toDate=${toDate}`,
-        config
-      );
-      const data = response.data.data;
-      dispatch(fetchAllclaimcashledgerSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllclaimcashledgerFailure(error.message));
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
     }
   };
 };

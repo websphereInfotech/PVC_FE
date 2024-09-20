@@ -92,7 +92,8 @@ export default function Purchaseorderlist() {
     try {
       await dispatch(deletePurchaseOrder(selectedId, navigate));
       setOpenConfirmation(false);
-      setPurchaseorder((prevQuotation) => prevQuotation.filter((purchaseorder) => purchaseorder.id !== selectedId));
+      const data = await dispatch(fetchpurchaseorderList());
+      setPurchaseorder(data);
     } catch (error) {
       console.error('Error deleting proformainvoice:', error);
     }

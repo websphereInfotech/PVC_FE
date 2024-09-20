@@ -154,7 +154,8 @@ const Maintenancelist = () => {
     try {
       await dispatch(deleteMaintenanceType(selectedId, navigate));
       setOpenConfirmation(false);
-      setMaintenance((prevgroup) => prevgroup.filter((group) => group.id !== selectedId));
+      const data = await dispatch(fetchAllMaintenanceType());
+      setMaintenance(data);
     } catch (error) {
       console.error('Error deleting group:', error);
     }

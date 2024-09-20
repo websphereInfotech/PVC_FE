@@ -82,7 +82,8 @@ export default function PurchaseinvoiceList() {
     try {
       await dispatch(deletePurchaseinvoice(billid, navigate));
       setOpenConfirmation(false);
-      setPurchasebill((prevPurchase) => prevPurchase.filter((purchase) => purchase.id !== billid));
+      const data = await dispatch(getallPurchaseinvoice());
+      setPurchasebill(data);
     } catch (error) {
       console.error('Error deleting purchase invoice:', error);
     }

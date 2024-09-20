@@ -82,7 +82,8 @@ const PaymentListPage = () => {
     try {
       await dispatch(paymentCashDelete(selectedId, navigate));
       setOpenConfirmation(false);
-      setPayments((prevPayments) => prevPayments.filter((payment) => payment.id !== selectedId));
+      const data = await dispatch(getallPaymentCash());
+      setPayments(data);
     } catch (error) {
       console.error('Error deleting payment cash:', error);
     }

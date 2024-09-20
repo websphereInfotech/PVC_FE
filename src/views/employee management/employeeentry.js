@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Paper } from '@mui/material';
 import Select from 'react-select';
-import { useMediaQuery } from '@mui/material';
-import { createBom, getAllBom, updateBom, viewSingleBom } from 'store/thunk';
+import { getAllBom, viewSingleBom } from 'store/thunk';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
 
 const Employeeentry = () => {
-  const isMobile = useMediaQuery('(max-width:600px)');
-  const [rows, setRows] = useState([{ product: '', qty: null, unit: '', wastage: 0 }]);
   const [formData, setFormData] = useState({
     bomNo: 0,
     date: new Date(),
@@ -27,7 +24,7 @@ const Employeeentry = () => {
   const [endTime, setendTime] = useState('');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { bomId } = useParams();
 
   //   const handleDateChange = (date) => {
@@ -66,14 +63,6 @@ const Employeeentry = () => {
         setstartTime(startTime);
         setendTime(endTime);
         setFormData({ wastageId: bomWastage.id, date, bomNo, weight, qty, productId: bomProduct.id, unit, shift, wastageQty });
-        const updatedRows = response.bomItems.map((item) => ({
-          id: item.id,
-          productId: item.bomItemsProduct.id,
-          productname: item.bomItemsProduct.productname,
-          unit: item.unit,
-          qty: item.qty
-        }));
-        setRows(updatedRows);
       }
     };
 
@@ -113,28 +102,28 @@ const Employeeentry = () => {
     fetchData();
   }, [dispatch, bomId]);
 
-  const handleCreateOrUpdateInvoice = async () => {
-    try {
-      const payload = {
-        ...formData,
-        startTime,
-        endTime,
-        items: rows.map((row) => ({
-          id: row.id || null,
-          productId: row.productId,
-          qty: row.qty,
-          unit: row.unit
-        }))
-      };
-      if (bomId) {
-        await dispatch(updateBom(bomId, payload, navigate));
-      } else {
-        await dispatch(createBom(payload, navigate));
-      }
-    } catch (error) {
-      console.error('Error creating or updating invoice:', error);
-    }
-  };
+  // const handleCreateOrUpdateInvoice = async () => {
+  //   try {
+  //     const payload = {
+  //       ...formData,
+  //       startTime,
+  //       endTime,
+  //       items: rows.map((row) => ({
+  //         id: row.id || null,
+  //         productId: row.productId,
+  //         qty: row.qty,
+  //         unit: row.unit
+  //       }))
+  //     };
+  //     if (bomId) {
+  //       await dispatch(updateBom(bomId, payload, navigate));
+  //     } else {
+  //       await dispatch(createBom(payload, navigate));
+  //     }
+  //   } catch (error) {
+  //     console.error('Error creating or updating invoice:', error);
+  //   }
+  // };
 
   return (
     <Paper elevation={4} style={{ padding: '24px' }}>
@@ -239,7 +228,7 @@ const Employeeentry = () => {
           </Grid>
         </Grid>
 
-        {isMobile ? (
+        {/* {isMobile ? (
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
               <Link to="/billofmateriallist" style={{ textDecoration: 'none' }}>
@@ -265,7 +254,7 @@ const Employeeentry = () => {
               </button>
             </div>
           </Grid>
-        )}
+        )} */}
       </div>
     </Paper>
   );

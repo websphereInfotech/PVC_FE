@@ -154,9 +154,10 @@ const Purposelist = () => {
     try {
       await dispatch(DeletePurpose(selectedId, navigate));
       setOpenConfirmation(false);
-      setPurpose((prevgroup) => prevgroup.filter((group) => group.id !== selectedId));
+      const data = await dispatch(fetchAllPurpose());
+      setPurpose(data);
     } catch (error) {
-      console.error('Error deleting group:', error);
+      console.error('Error deleting purpose:', error);
     }
   };
 

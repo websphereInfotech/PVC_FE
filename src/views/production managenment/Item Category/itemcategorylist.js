@@ -161,7 +161,8 @@ const ItemcategoryList = () => {
     try {
       await dispatch(DeleteItemcategory(selectedId, navigate));
       setOpenConfirmation(false);
-      setItemcategoty((prevcategory) => prevcategory.filter((category) => category.id !== selectedId));
+      const data = await dispatch(getAllcategory());
+      setItemcategoty(data);
     } catch (error) {
       console.error('Error deleting category:', error);
     }
