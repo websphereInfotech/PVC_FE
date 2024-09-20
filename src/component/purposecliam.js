@@ -59,7 +59,7 @@ const Purpose = ({ open, onClose, onnewadded, onnewUpdated, id }) => {
       <Grid container spacing={2} sx={{ margin: '1px', paddingTop: '50px' }}>
         <Grid item sm={12}>
           <Typography variant="subtitle1">Purpose Name</Typography>
-          <input placeholder="Enter Item Group" value={PurposeName} onChange={(e) => setPurposeName(e.target.value)} />
+          <input placeholder="Enter Purpose Name" value={PurposeName} onChange={(e) => setPurposeName(e.target.value)} />
         </Grid>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '20px 10px' }}>
