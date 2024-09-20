@@ -116,7 +116,7 @@ const Cashaccountledgerlist = () => {
     setGetdata(data.form);
     setGettodata(data.to);
     navigate('/cashaccountledger');
-    sessionStorage.setItem('RCAccountId', AccountId);
+    sessionStorage.setItem('RCAccountId', AccountIdc);
     sessionStorage.setItem('RCAccountformDate', formattedFormDate);
     sessionStorage.setItem('RCAccounttoDate', formattedToDate);
   };
