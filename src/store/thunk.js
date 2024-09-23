@@ -252,6 +252,9 @@ import {
   deleteDebitnoteRequest,
   deleteDebitnoteSuccess,
   deleteDebitnoteFailure,
+  DebitnotecashPdfRequest,
+  DebitnotecashPdfSuccess,
+  DebitnotecashPdfFailure,
   // DEBIT NOTE+++++++++++++++++++++
   createDebitnotecashRequest,
   createDebitnotecashSuccess,
@@ -300,6 +303,9 @@ import {
   deleteCreditnotecashRequest,
   deleteCreditnotecashSuccess,
   deleteCreditnotecashFailure,
+  CreditnotecashPdfRequest,
+  CreditnotecashPdfSuccess,
+  CreditnotecashPdfFailure,
   // ECIEVE CASH +++++++++++++
   createRecieveCashRequest,
   createRecieveCashSuccess,
@@ -533,6 +539,9 @@ import {
   SalesCashPdfRequest,
   SalesCashPdfSuccess,
   SalesCashPdfFailure,
+  SalesInvoicePdfRequest,
+  SalesInvoicePdfSuccess,
+  SalesInvoicePdfFailure,
   PurchaseCashPdfRequest,
   PurchaseCashPdfSuccess,
   PurchaseCashPdfFailure,
@@ -642,6 +651,9 @@ import {
   getAllCashAccountLedgerRequest,
   getAllCashAccountLedgerSuccess,
   getAllCashAccountLedgerFailure,
+  AccountCashPdfRequest,
+  AccountCashPdfSuccess,
+  AccountCashPdfFailure,
   getAllCashbookLedgerRequest,
   getAllCashbookLedgerSuccess,
   getAllCashbookLedgerFailure,
@@ -1713,6 +1725,39 @@ export const deleteDebitnotecash = (id, navigate) => {
     }
   };
 };
+export const DebitnoteCashPDF = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DebitnotecashPdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/C_debitNote_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'debit_note_cash.pdf');
+      dispatch(DebitnotecashPdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(DebitnotecashPdfFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createCreditnote = (payload, navigate) => {
   return async (dispatch) => {
@@ -1919,6 +1964,39 @@ export const deleteCreditnotecash = (id, navigate) => {
           autoClose: 1000
         });
       }
+    }
+  };
+};
+export const CreditnoteCashPDF = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreditnotecashPdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/C_creditNote_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'credit_note_cash.pdf');
+      dispatch(CreditnotecashPdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(CreditnotecashPdfFailure(error.message));
     }
   };
 };
@@ -4214,6 +4292,39 @@ export const SalesCashPDF = (id, navigate) => {
     }
   };
 };
+export const SalesInvoicePDF = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(SalesInvoicePdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'sales_cash.pdf');
+      dispatch(SalesInvoicePdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(SalesInvoicePdfFailure(error.message));
+    }
+  };
+};
 export const PurchaseCashPDF = (id, navigate) => {
   return async (dispatch) => {
     dispatch(PurchaseCashPdfRequest());
@@ -4871,12 +4982,15 @@ export const getallAccountledger = (id, formDate, toDate) => {
     }
   };
 };
-export const AccountPDF = (id, navigate) => {
+export const AccountPDF = (id, formDate, toDate, navigate) => {
   return async (dispatch) => {
     dispatch(AccountPdfRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/ledger/account_ledger_pdf/${id}`, config);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/account_ledger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
       const base64Data = response.data.data;
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
@@ -4918,6 +5032,42 @@ export const getallCashAccountledger = (id, formDate, toDate) => {
       return getallCashAccountledgerlist;
     } catch (error) {
       dispatch(getAllCashAccountLedgerFailure(error.message));
+    }
+  };
+};
+export const AccountCashPDF = (id, formDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(AccountCashPdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_account_ledger_pdf/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'cash_account_ledger.pdf');
+      dispatch(AccountCashPdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(AccountCashPdfFailure(error.message));
     }
   };
 };

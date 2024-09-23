@@ -15,10 +15,11 @@ import {
 } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import { fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
+import { AccountCashPDF, fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -41,7 +42,7 @@ const formatDate = (dateString) => {
 const Cashaccountledgerlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { canaccountcashpdf } = useCan();
   const [AccountIdc, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
@@ -121,6 +122,14 @@ const Cashaccountledgerlist = () => {
     sessionStorage.setItem('RCAccounttoDate', formattedToDate);
   };
 
+  const handlepdf = async () => {
+    if (AccountIdc) {
+      await dispatch(AccountCashPDF(AccountIdc, formDatec, toDatec, navigate));
+    } else {
+      await dispatch(AccountCashPDF(AccountId, formData, toDate, navigate));
+    }
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container>
@@ -171,8 +180,8 @@ const Cashaccountledgerlist = () => {
           </Button>
         </Grid>
         <Grid item xs={12} md={2} sm={6} justifyContent={'flex-end'} style={{ marginTop: '20px' }}>
-          <Button onClick={handleLedger} variant="contained" color="secondary">
-            Pdf Download
+          <Button onClick={handlepdf} variant="contained" color="secondary" disabled={!canaccountcashpdf()}>
+            Download Pdf
           </Button>
         </Grid>
       </Grid>

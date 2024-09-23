@@ -50,7 +50,6 @@ const Cashdaybookledgerlist = () => {
   const toDate = sessionStorage.getItem('RCDaybooktoDate');
   const [toDatec, setToDate] = useState(new Date());
   const [formDatec, setFormDate] = useState(new Date());
-  // const { canDownloadPdfBankCustomer } = useCan();
 
   useEffect(() => {
     dispatch(getallCashDaybookledger(formData, toDate))
@@ -139,18 +138,6 @@ const Cashdaybookledgerlist = () => {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-        {/* <Grid item xs={12} align="end">
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ margin: '16px' }}
-            onClick={downloadpdf}
-            disabled={!canDownloadPdfBankCustomer()}
-          >
-            Download PDF
-          </Button>
-        </Grid> */}
-
         <Grid item xs={12} align="center">
           <Typography variant="h6">From:</Typography>
           <Typography variant="h4">{getdata.companyname}</Typography>

@@ -358,6 +358,9 @@ const useCan = () => {
   const canViwAllDebitnotecash = () => {
     return checkPermission('Debit Note Cash', 'view_all_debitNote');
   };
+  const canDebitnotecashpdf = () => {
+    return checkPermission('Debit Note Cash', 'debitNote_pdf');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE
 
   const canCreateCreditnote = () => {
@@ -393,7 +396,9 @@ const useCan = () => {
   const canViwAllCreditnotecash = () => {
     return checkPermission('Credit Note Cash', 'view_all_creditNote');
   };
-
+  const canCreditnotecashpdf = () => {
+    return checkPermission('Credit Note Cash', 'creditNote_pdf');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALES CASH
 
   const canCreateSalescash = () => {
@@ -708,20 +713,11 @@ const useCan = () => {
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ customer ledger
 
-  const canDownloadPdfBankCustomer = () => {
-    return checkPermission('Customer Ledger', 'Pdf_Download');
-  };
-  const canDownloadPdfBankVendor = () => {
-    return checkPermission('Vendor Ledger', 'Pdf_Download');
-  };
-  const canDownloadPdfCashCustomer = () => {
-    return checkPermission('Customer Ledger Cash', 'Pdf_Download');
-  };
-  const canDownloadPdfCashVendor = () => {
-    return checkPermission('Vendor Ledger Cash', 'Pdf_Download');
-  };
   const canDownloadPdfCashSales = () => {
     return checkPermission('Sales Cash', 'view_sales_cash_pdf');
+  };
+  const canDownloadPdfSalesinvoice = () => {
+    return checkPermission('Sales Invoice', 'salesInvoice_pdf');
   };
   const canDownloadPdfCashPurchase = () => {
     return checkPermission('Purchase Cash', 'view_purchase_cash_pdf');
@@ -891,6 +887,14 @@ const useCan = () => {
     return checkPermission('Maintenance', 'delete_maintenance');
   };
 
+  // PDF +++++++++++++++++++++++++++++++++++
+  const canaccountpdf = () => {
+    return checkPermission('Ledger', 'account_ledger_pdf');
+  };
+  const canaccountcashpdf = () => {
+    return checkPermission('Ledger Cash', 'account_ledger_pdf');
+  };
+
   return {
     // PROFORMAINVOICE +++++++++++++++++++++++
     checkPermission,
@@ -1001,6 +1005,7 @@ const useCan = () => {
     canDeleteDebitnotecash,
     canViewDebitnotecash,
     canViwAllDebitnotecash,
+    canDebitnotecashpdf,
     //  CREDIT NOTE ++++++++++++++++++
     canCreateCreditnote,
     canUpdateCreditnote,
@@ -1013,6 +1018,7 @@ const useCan = () => {
     canDeleteCreditnotecash,
     canViewCreditnotecash,
     canViwAllCreditnotecash,
+    canCreditnotecashpdf,
     // SALES CASH ++++++++++++++++++++
     canCreateSalescash,
     canUpdateSalescash,
@@ -1125,11 +1131,8 @@ const useCan = () => {
     canUpdateBreakdown,
     canDeleteBreakdown,
     // PDF OF LEDGER +++++++++
-    canDownloadPdfBankCustomer,
-    canDownloadPdfBankVendor,
-    canDownloadPdfCashCustomer,
-    canDownloadPdfCashVendor,
     canDownloadPdfCashSales,
+    canDownloadPdfSalesinvoice,
     canDownloadPdfCashPurchase,
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
@@ -1185,7 +1188,10 @@ const useCan = () => {
     canUpdateAddMaintenance,
     canViewSingleAddMaintenance,
     canViewAllAddMaintenance,
-    canCreateAddMaintenance
+    canCreateAddMaintenance,
+    // PDF +++++++++++
+    canaccountpdf,
+    canaccountcashpdf
   };
 };
 

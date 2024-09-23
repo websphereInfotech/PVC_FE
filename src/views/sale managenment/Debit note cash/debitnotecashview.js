@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
+import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow, Button } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Debitnotecashviewdata } from 'store/thunk';
+import { DebitnoteCashPDF, Debitnotecashviewdata } from 'store/thunk';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const Debitnotecashview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -12,6 +13,7 @@ const Debitnotecashview = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
+  const { canDebitnotecashpdf } = useCan();
 
   useEffect(() => {
     dispatch(Debitnotecashviewdata(id, navigate))
@@ -25,6 +27,11 @@ const Debitnotecashview = () => {
         console.error('Error fetching debit note data:', error);
       });
   }, [dispatch, id, navigate]);
+
+  const handlepdf = async () => {
+    await dispatch(DebitnoteCashPDF(id, navigate));
+  };
+
   const maintotal = data.mainTotal ? data.mainTotal : 0;
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
@@ -43,6 +50,11 @@ const Debitnotecashview = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Debit Note No.</Typography>
           <Typography variant="subtitle2">{data.debitnoteno}</Typography>
+        </Grid>
+        <Grid item xs={12} md={3} sm={6}>
+          <Button onClick={handlepdf} variant="contained" color="secondary" disabled={!canDebitnotecashpdf()}>
+            Download Pdf
+          </Button>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Purchase No.</Typography>

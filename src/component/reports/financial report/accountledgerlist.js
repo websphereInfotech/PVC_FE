@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import useCan from 'views/permission managenment/checkpermissionvalue';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -49,6 +50,7 @@ const Accountledgerlist = () => {
   const [AccountIdc, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
+  const { canaccountpdf } = useCan();
 
   const handleSelectChange = (selectedOption) => {
     if (selectedOption && selectedOption.label) {
@@ -122,7 +124,11 @@ const Accountledgerlist = () => {
   };
 
   const handlepdf = async () => {
-    await dispatch(AccountPDF(AccountId));
+    if (AccountIdc) {
+      await dispatch(AccountPDF(AccountIdc, formDatec, toDatec, navigate));
+    } else {
+      await dispatch(AccountPDF(AccountId, formData, toDate, navigate));
+    }
   };
 
   return (
@@ -174,7 +180,7 @@ const Accountledgerlist = () => {
           </Button>
         </Grid>
         <Grid item xs={12} md={2} sm={6} style={{ marginTop: '20px' }}>
-          <Button onClick={handlepdf} variant="contained" color="secondary">
+          <Button onClick={handlepdf} variant="contained" color="secondary" disabled={!canaccountpdf()}>
             Download Pdf
           </Button>
         </Grid>
@@ -185,16 +191,18 @@ const Accountledgerlist = () => {
           <Typography variant="h4">{getdata.companyname}</Typography>
           <Typography>{getdata.address1}</Typography>
           <Typography>
-            {getdata.city}, {getdata.state}, {getdata.pincode}
+            {getdata.city} {getdata.state} {getdata.pincode}
           </Typography>
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6">To:</Typography>
           <Typography variant="h4">{gettodata.accountName}</Typography>
-          <Typography>{gettodata.address1}</Typography>
+          <Typography>Ledger Account</Typography>
+          <Typography>{gettodata.accountDetail?.address1}</Typography>
           <Typography>
-            {gettodata.city} {gettodata.state} {gettodata.pincode}
+            {gettodata.accountDetail?.city} {gettodata.accountDetail?.state} {gettodata.accountDetail?.pincode}
           </Typography>
+          <Typography>Email: {gettodata.accountDetail?.email}</Typography>
         </Grid>
       </Grid>
 

@@ -139,7 +139,7 @@ export const VIEW_SALESINVOICE_FAILURE = 'VIEW_SALESINVOICE_FAILURE';
 // ########################################## SALES INVOICE CASH ###############################################################################################
 export const CREATE_SALES_INVOICE_CASH_REQUEST = 'CREATE_SALES_INVOICE_CASH_REQUEST';
 export const CREATE_SALES_INVOICE_CASH_SUCCESS = 'CREATE_SALES_INVOICE_CASH_SUCCESS';
-export const CREATE_SALES_INVOICE_CASH_FAILURE = 'CREATE_SALES_INVOICE_FAILURE';
+export const CREATE_SALES_INVOICE_CASH_FAILURE = 'CREATE_SALES_INVOICE_CASH_FAILURE';
 export const DELETE_SALES_INVOICE_CASH_REQUEST = 'DELETE_SALES_INVOICE_CASH_REQUEST';
 export const DELETE_SALES_INVOICE_CASH_SUCCESS = 'DELETE_SALES_INVOICE_CASH_SUCCESS';
 export const DELETE_SALES_INVOICE_CASH_FAILURE = 'DELETE_SALES_INVOICE_CASH_FAILURE';
@@ -186,6 +186,9 @@ export const FETCH_ALL_DEBIT_NOTE_CASH_FAILURE = 'FETCH_ALL_DEBIT_NOTE_CASH_FAIL
 export const VIEW_DEBIT_NOTE_CASH_REQUEST = 'VIEW_DEBIT_NOTE_CASH_REQUEST';
 export const VIEW_DEBIT_NOTE_CASH_SUCCESS = 'VIEW_DEBIT_NOTE_CASH_SUCCESS';
 export const VIEW_DEBIT_NOTE_CASH_FAILURE = 'VIEW_DEBIT_NOTE_CASH_FAILURE';
+export const DEBIT_NOTE_CASH_PDF_REQUEST = 'DEBIT_NOTE_CASH_PDF_REQUEST';
+export const DEBIT_NOTE_CASH_PDF_SUCCESS = 'DEBIT_NOTE_CASH_PDF_SUCCESS';
+export const DEBIT_NOTE_CASH_PDF_FAILURE = 'DEBIT_NOTE_CASH_PDF_FAILURE';
 
 // ########################################## CREDIT NOTE ###############################################################################################
 export const CREATE_CREDIT_NOTE_REQUEST = 'CREATE_CREDIT_NOTE_REQUEST';
@@ -203,6 +206,9 @@ export const FETCH_ALL_CREDITNOTE_FAILURE = 'FETCH_ALL_CREDITNOTE_FAILURE';
 export const VIEW_CREDIT_NOTE_REQUEST = 'VIEW_CREDIT_NOTE_REQUEST';
 export const VIEW_CREDIT_NOTE_SUCCESS = 'VIEW_CREDIT_NOTE_SUCCESS';
 export const VIEW_CREDIT_NOTE_FAILURE = 'VIEW_CREDIT_NOTE_FAILURE';
+export const CREDIT_NOTE_CASH_PDF_REQUEST = 'CREDIT_NOTE_CASH_PDF_REQUEST';
+export const CREDIT_NOTE_CASH_PDF_SUCCESS = 'CREDIT_NOTE_CASH_PDF_SUCCESS';
+export const CREDIT_NOTE_CASH_PDF_FAILURE = 'CREDIT_NOTE_CASH_PDF_FAILURE';
 
 // ########################################## CREDIT NOTE ###############################################################################################
 export const CREATE_CREDIT_NOTE_CASH_REQUEST = 'CREATE_CREDIT_NOTE_CASH_REQUEST';
@@ -577,6 +583,9 @@ export const DELETE_BREACKDOWN_FAILURE = 'DELETE_BREACKDOWN_FAILURE';
 export const GET_SALES_CASH_PDF_REQUEST = 'GET_SALES_CASH_PDF_REQUEST';
 export const GET_SALES_CASH_PDF_SUCCESS = 'GET_SALES_CASH_PDF_SUCCESS';
 export const GET_SALES_CASH_PDF_FAILURE = 'GET_SALES_CASH_PDF_FAILURE';
+export const GET_SALES_INVOICE_PDF_REQUEST = 'GET_SALES_INVOICE_PDF_REQUEST';
+export const GET_SALES_INVOICE_PDF_SUCCESS = 'GET_SALES_INVOICE_PDF_SUCCESS';
+export const GET_SALES_INVOICE_PDF_FAILURE = 'GET_SALES_INVOICE_PDF_FAILURE';
 export const GET_PURCHASE_CASH_PDF_REQUEST = 'GET_PURCHASE_CASH_PDF_REQUEST';
 export const GET_PURCHASE_CASH_PDF_SUCCESS = 'GET_PURCHASE_CASH_PDF_SUCCESS';
 export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
@@ -693,6 +702,9 @@ export const GET_ACCOUNT_PDF_FAILURE = 'GET_ACCOUNT_PDF_FAILURE';
 export const GET_ALL_CASH_ACCOUNT_LEDGER_REQUEST = 'GET_ALL_CASH_ACCOUNT_LEDGER_REQUEST';
 export const GET_ALL_CASH_ACCOUNT_LEDGER_SUCCESS = 'GET_ALL_CASH_ACCOUNT_LEDGER_SUCCESS';
 export const GET_ALL_CASH_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_CASH_ACCOUNT_LEDGER_FAILURE';
+export const GET_ACCOUNT_CASH_PDF_REQUEST = 'GET_ACCOUNT_CASH_PDF_REQUEST';
+export const GET_ACCOUNT_CASH_PDF_SUCCESS = 'GET_ACCOUNT_CASH_PDF_SUCCESS';
+export const GET_ACCOUNT_CASH_PDF_FAILURE = 'GET_ACCOUNT_CASH_PDF_FAILURE';
 export const GET_ALL_DAY_BOOK_LEDGER_REQUEST = 'GET_ALL_DAY_BOOK_LEDGER_REQUEST';
 export const GET_ALL_DAY_BOOK_LEDGER_SUCCESS = 'GET_ALL_DAY_BOOK_LEDGER_SUCCESS';
 export const GET_ALL_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_DAY_BOOK_LEDGER_FAILURE';
@@ -1725,6 +1737,18 @@ export const viewDebitnotecashFailure = (error) => ({
   type: 'VIEW_DEBIT_NOTE_CASH_FAILURE',
   payload: error
 });
+export const DebitnotecashPdfRequest = (data) => ({
+  type: 'DEBIT_NOTE_CASH_PDF_REQUEST',
+  payload: data
+});
+export const DebitnotecashPdfSuccess = (data) => ({
+  type: 'DEBIT_NOTE_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const DebitnotecashPdfFailure = (error) => ({
+  type: 'DEBIT_NOTE_CASH_PDF_FAILURE',
+  payload: error
+});
 
 // ##################################################################################### CREDIT NOTE ################################################################
 
@@ -1786,6 +1810,18 @@ export const viewCreditnoteSuccess = (data) => ({
 });
 export const viewCreditnoteFailure = (error) => ({
   type: 'VIEW_CREDIT_NOTE_FAILURE',
+  payload: error
+});
+export const CreditnotecashPdfRequest = (data) => ({
+  type: 'CREDIT_NOTE_CASH_PDF_REQUEST',
+  payload: data
+});
+export const CreditnotecashPdfSuccess = (data) => ({
+  type: 'CREDIT_NOTE_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const CreditnotecashPdfFailure = (error) => ({
+  type: 'CREDIT_NOTE_CASH_PDF_FAILURE',
   payload: error
 });
 
@@ -2711,6 +2747,17 @@ export const SalesCashPdfFailure = (error) => ({
   type: 'GET_SALES_CASH_PDF_FAILURE',
   payload: error
 });
+export const SalesInvoicePdfRequest = () => ({
+  type: 'GET_SALES_INVOICE_PDF_REQUEST'
+});
+export const SalesInvoicePdfSuccess = (data) => ({
+  type: 'GET_SALES_INVOICE_PDF_SUCCESS',
+  payload: data
+});
+export const SalesInvoicePdfFailure = (error) => ({
+  type: 'GET_SALES_INVOICE_PDF_FAILURE',
+  payload: error
+});
 export const PurchaseCashPdfRequest = () => ({
   type: 'GET_PURCHASE_CASH_PDF_REQUEST'
 });
@@ -3096,6 +3143,17 @@ export const getAllCashAccountLedgerSuccess = (data) => ({
 });
 export const getAllCashAccountLedgerFailure = (error) => ({
   type: 'GET_ALL_CASH_ACCOUNT_LEDGER_FAILURE',
+  payload: error
+});
+export const AccountCashPdfRequest = () => ({
+  type: 'GET_ACCOUNT_CASH_PDF_REQUEST'
+});
+export const AccountCashPdfSuccess = (data) => ({
+  type: 'GET_ACCOUNT_CASH_PDF_SUCCESS',
+  payload: data
+});
+export const AccountCashPdfFailure = (error) => ({
+  type: 'GET_ACCOUNT_CASH_PDF_FAILURE',
   payload: error
 });
 export const getAllDaybookLedgerRequest = (data) => ({

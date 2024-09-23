@@ -113,17 +113,6 @@ const Daybookledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container spacing={2}>
-        {/* <Grid item xs={12} align="end">
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ margin: '16px' }}
-            onClick={downloadpdf}
-            disabled={!canDownloadPdfBankCustomer()}
-          >
-            Download PDF
-          </Button>
-        </Grid> */}
         <Grid container spacing={2}>
           <Grid item xs={12} md={3} sm={6}>
             <Typography variant="subtitle1">From Date:</Typography>
