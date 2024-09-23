@@ -284,7 +284,7 @@ const Deliverychallan = () => {
 
   //create new account after show in dropdwon
   const handleNewAccount = (newAccountData) => {
-    setaccount((prevAccounts) => [...prevAccounts, { value: newAccountData.data.data.id, label: newAccountData.data.data.accountName }]);
+    setaccount((prevAccounts) => [...prevAccounts, { value: newAccountData.id, label: newAccountData.accountName }]);
     setIsDrawerOpen(false);
   };
   //call craete and update deliverychallan and deliverychallan items

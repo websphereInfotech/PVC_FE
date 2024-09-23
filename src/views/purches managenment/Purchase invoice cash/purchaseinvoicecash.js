@@ -240,8 +240,8 @@ const Purchaseinvoicecash = () => {
     setAccount((preAccount) => [
       ...preAccount,
       {
-        value: newAccountData?.data.data.id,
-        label: newAccountData?.data.data.contactPersonName
+        value: newAccountData?.id,
+        label: newAccountData?.contactPersonName
       }
     ]);
     setIsDrawerOpen(false);

@@ -124,7 +124,7 @@ const Cashaccountledgerlist = () => {
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container>
-        <Grid item xs={12} md={3} sm={6}>
+        <Grid item xs={12} md={2} sm={6}>
           <Typography variant="subtitle1">Account:</Typography>
           <Select
             options={Account}
@@ -142,7 +142,7 @@ const Cashaccountledgerlist = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+        <Grid item xs={12} md={2} sm={6}>
           <Typography variant="subtitle1">From Date:</Typography>
           <DatePicker
             selected={formDatec}
@@ -153,7 +153,7 @@ const Cashaccountledgerlist = () => {
             style={{ width: '100%' }}
           />
         </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+        <Grid item xs={12} md={2} sm={6}>
           <Typography variant="subtitle1">To Date:</Typography>
           <DatePicker
             selected={toDatec}
@@ -165,9 +165,14 @@ const Cashaccountledgerlist = () => {
           />
         </Grid>
 
-        <Grid item xs={12} md={3} sm={6} justifyContent={'start'} style={{ marginTop: '20px' }}>
+        <Grid item xs={12} md={2} sm={4} justifyContent={'start'} style={{ marginTop: '20px' }}>
           <Button onClick={handleLedger} variant="contained" color="secondary">
             GO
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={2} sm={6} justifyContent={'flex-end'} style={{ marginTop: '20px' }}>
+          <Button onClick={handleLedger} variant="contained" color="secondary">
+            Pdf Download
           </Button>
         </Grid>
       </Grid>

@@ -14,7 +14,7 @@ import {
   Button
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { fetchAllAccounts, getallAccountledger } from 'store/thunk';
+import { AccountPDF, fetchAllAccounts, getallAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
@@ -121,10 +121,14 @@ const Accountledgerlist = () => {
     sessionStorage.setItem('RAccounttoDate', formattedToDate);
   };
 
+  const handlepdf = async () => {
+    await dispatch(AccountPDF(AccountId));
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container>
-        <Grid item xs={12} md={3} sm={6}>
+        <Grid item xs={12} md={2} sm={6}>
           <Typography variant="subtitle1">Account:</Typography>
           <Select
             options={Account}
@@ -142,7 +146,7 @@ const Accountledgerlist = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+        <Grid item xs={12} md={2} sm={6}>
           <Typography variant="subtitle1">From Date:</Typography>
           <DatePicker
             selected={formDatec}
@@ -153,7 +157,7 @@ const Accountledgerlist = () => {
             style={{ width: '100%' }}
           />
         </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+        <Grid item xs={12} md={2} sm={6}>
           <Typography variant="subtitle1">To Date:</Typography>
           <DatePicker
             selected={toDatec}
@@ -164,9 +168,14 @@ const Accountledgerlist = () => {
             style={{ width: '100%' }}
           />
         </Grid>
-        <Grid item xs={12} md={3} sm={6} style={{ marginTop: '20px' }}>
+        <Grid item xs={12} md={2} sm={6} style={{ marginTop: '20px' }}>
           <Button onClick={handleLedger} variant="contained" color="secondary">
             GO
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={2} sm={6} style={{ marginTop: '20px' }}>
+          <Button onClick={handlepdf} variant="contained" color="secondary">
+            Download Pdf
           </Button>
         </Grid>
       </Grid>

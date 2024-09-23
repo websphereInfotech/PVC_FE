@@ -217,8 +217,8 @@ const Paymentbank = () => {
     setaccount((prevVendor) => [
       ...prevVendor,
       {
-        value: newVendorData?.data.data.id,
-        label: newVendorData?.data.data.accountName
+        value: newVendorData?.id,
+        label: newVendorData?.accountName
       }
     ]);
     setIsDrawerOpen(false);

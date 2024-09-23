@@ -383,9 +383,9 @@ const DebitNote = () => {
     setaccount((prevAccounts) => [
       ...prevAccounts,
       {
-        value: newAccountData?.data.data.id,
-        label: newAccountData?.data.data.accountName,
-        state: newAccountData?.data.data.accountDetail?.state
+        value: newAccountData?.id,
+        label: newAccountData?.accountName,
+        state: newAccountData?.accountDetail?.state
       }
     ]);
     setIsDrawerOpen(false);

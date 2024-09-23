@@ -686,6 +686,10 @@ export const GET_ALL_ACCOUNTS_CASH_FAILURE = 'GET_ALL_ACCOUNTS_CASH_FAILURE';
 export const GET_ALL_ACCOUNT_LEDGER_REQUEST = 'GET_ALL_ACCOUNT_LEDGER_REQUEST';
 export const GET_ALL_ACCOUNT_LEDGER_SUCCESS = 'GET_ALL_ACCOUNT_LEDGER_SUCCESS';
 export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
+
+export const GET_ACCOUNT_PDF_REQUEST = 'GET_ACCOUNT_PDF_REQUEST';
+export const GET_ACCOUNT_PDF_SUCCESS = 'GET_ACCOUNT_PDF_SUCCESS';
+export const GET_ACCOUNT_PDF_FAILURE = 'GET_ACCOUNT_PDF_FAILURE';
 export const GET_ALL_CASH_ACCOUNT_LEDGER_REQUEST = 'GET_ALL_CASH_ACCOUNT_LEDGER_REQUEST';
 export const GET_ALL_CASH_ACCOUNT_LEDGER_SUCCESS = 'GET_ALL_CASH_ACCOUNT_LEDGER_SUCCESS';
 export const GET_ALL_CASH_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_CASH_ACCOUNT_LEDGER_FAILURE';
@@ -2708,14 +2712,14 @@ export const SalesCashPdfFailure = (error) => ({
   payload: error
 });
 export const PurchaseCashPdfRequest = () => ({
-  type: 'GET_PURCHSE_CASH_PDF_REQUEST'
+  type: 'GET_PURCHASE_CASH_PDF_REQUEST'
 });
 export const PurchaseCashPdfSuccess = (data) => ({
-  type: 'GET_PURCHSE_CASH_PDF_SUCCESS',
+  type: 'GET_PURCHASE_CASH_PDF_SUCCESS',
   payload: data
 });
 export const PurchaseCashPdfFailure = (error) => ({
-  type: 'GET_PURCHSE_CASH_PDF_FAILURE',
+  type: 'GET_PURCHASE_CASH_PDF_FAILURE',
   payload: error
 });
 
@@ -3069,6 +3073,17 @@ export const getAllAccountLedgerSuccess = (data) => ({
 });
 export const getAllAccountLedgerFailure = (error) => ({
   type: 'GET_ALL_ACCOUNT_LEDGER_FAILURE',
+  payload: error
+});
+export const AccountPdfRequest = () => ({
+  type: 'GET_ACCOUNT_PDF_REQUEST'
+});
+export const AccountPdfSuccess = (data) => ({
+  type: 'GET_ACCOUNT_PDF_SUCCESS',
+  payload: data
+});
+export const AccountPdfFailure = (error) => ({
+  type: 'GET_ACCOUNT_PDF_FAILURE',
   payload: error
 });
 export const getAllCashAccountLedgerRequest = (data) => ({

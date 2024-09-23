@@ -237,10 +237,7 @@ const Salescash = () => {
   }, [dispatch, id]);
   //create new customer after show in dropdwon
   const handleNewAccount = (newAccountData) => {
-    setAccount((prevAccounts) => [
-      ...prevAccounts,
-      { value: newAccountData.data.data.id, label: newAccountData.data.data.contactPersonName }
-    ]);
+    setAccount((prevAccounts) => [...prevAccounts, { value: newAccountData.id, label: newAccountData.contactPersonName }]);
     setIsDrawerOpen(false);
   };
 

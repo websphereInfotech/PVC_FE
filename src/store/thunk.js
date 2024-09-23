@@ -636,6 +636,9 @@ import {
   getAllAccountLedgerRequest,
   getAllAccountLedgerSuccess,
   getAllAccountLedgerFailure,
+  AccountPdfRequest,
+  AccountPdfSuccess,
+  AccountPdfFailure,
   getAllCashAccountLedgerRequest,
   getAllCashAccountLedgerSuccess,
   getAllCashAccountLedgerFailure,
@@ -4865,6 +4868,39 @@ export const getallAccountledger = (id, formDate, toDate) => {
       return getallAccountledgerlist;
     } catch (error) {
       dispatch(getAllAccountLedgerFailure(error.message));
+    }
+  };
+};
+export const AccountPDF = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(AccountPdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/ledger/account_ledger_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'account_ledger.pdf');
+      dispatch(AccountPdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(AccountPdfFailure(error.message));
     }
   };
 };

@@ -120,10 +120,7 @@ const Paymentrecieve = () => {
   }, [dispatch, id, canCreateAccountValue]);
   //create new customer after show in dropdwon
   const handleNewAccount = (newAccountData) => {
-    setaccount((prevAccounts) => [
-      ...prevAccounts,
-      { value: newAccountData?.data.data.id, label: newAccountData?.data.data.contactPersonName }
-    ]);
+    setaccount((prevAccounts) => [...prevAccounts, { value: newAccountData?.id, label: newAccountData?.contactPersonName }]);
     setIsDrawerOpen(false);
   };
   const handlecreatepayment = async () => {

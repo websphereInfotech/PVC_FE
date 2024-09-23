@@ -227,7 +227,7 @@ const Paymentrecievebank = () => {
 
   //create new account after show in dropdwon
   const handleNewAccount = (newAccountData) => {
-    setaccount((prevAccount) => [...prevAccount, { value: newAccountData?.data.data.id, label: newAccountData?.data.data.accountName }]);
+    setaccount((prevAccount) => [...prevAccount, { value: newAccountData?.id, label: newAccountData?.accountName }]);
     setIsDrawerOpen(false);
   };
 
