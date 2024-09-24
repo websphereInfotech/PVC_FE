@@ -18,11 +18,12 @@ import {
   IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
+import { DebitnotePDF, Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -34,7 +35,7 @@ const columns = [
 ];
 
 const Debitnotelist = () => {
-  const { canUpdateDebitnote, canViewDebitnote, canCreateDebitnote, canDeleteDebitnote } = useCan();
+  const { canUpdateDebitnote, canViewDebitnote, canDebitnotepdf, canCreateDebitnote, canDeleteDebitnote } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -101,6 +102,10 @@ const Debitnotelist = () => {
     } catch (error) {
       console.error('Error deleting debit note:', error);
     }
+  };
+
+  const handlepdf = async (id) => {
+    await dispatch(DebitnotePDF(id, navigate));
   };
 
   return (
@@ -180,6 +185,21 @@ const Debitnotelist = () => {
                           disabled={!canDeleteDebitnote()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDebitnotepdf() ? '#425466' : 'gray',
+                            color: canDebitnotepdf() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDebitnotepdf() && { opacity: 1 }),
+                            ...(!canDebitnotepdf() && { opacity: 0.5 }),
+                            ...(!canDebitnotepdf() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handlepdf(row.id)}
+                          disabled={!canDebitnotepdf()}
+                        >
+                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'debitdate' ? (
