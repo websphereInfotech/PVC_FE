@@ -18,11 +18,12 @@ import {
   IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Creditnotecashviewdata, deleteCreditnotecash, getallCreditnotecash } from 'store/thunk';
+import { CreditnoteCashPDF, Creditnotecashviewdata, deleteCreditnotecash, getallCreditnotecash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
@@ -34,7 +35,8 @@ const columns = [
 ];
 
 const Creditnotecashlist = () => {
-  const { canUpdateCreditnotecash, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash } = useCan();
+  const { canUpdateCreditnotecash, canCreditnotecashpdf, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash } =
+    useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -101,6 +103,10 @@ const Creditnotecashlist = () => {
     } catch (error) {
       console.error('Error deleting credit note:', error);
     }
+  };
+
+  const handlepdf = async (id) => {
+    await dispatch(CreditnoteCashPDF(id, navigate));
   };
 
   return (
@@ -180,6 +186,21 @@ const Creditnotecashlist = () => {
                           disabled={!canDeleteCreditnotecash()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canCreditnotecashpdf() ? '#425466' : 'gray',
+                            color: canCreditnotecashpdf() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canCreditnotecashpdf() && { opacity: 1 }),
+                            ...(!canCreditnotecashpdf() && { opacity: 0.5 }),
+                            ...(!canCreditnotecashpdf() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handlepdf(row.id)}
+                          disabled={!canCreditnotecashpdf()}
+                        >
+                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'creditdate' ? (

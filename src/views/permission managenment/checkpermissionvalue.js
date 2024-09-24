@@ -722,6 +722,9 @@ const useCan = () => {
   const canDownloadPdfCashPurchase = () => {
     return checkPermission('Purchase Cash', 'view_purchase_cash_pdf');
   };
+  const canDownloadPdfPurchaseInvoice = () => {
+    return checkPermission('Purchase Invoice', 'purchaseInvoice_pdf');
+  };
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ dash board ++++++++++++++++++++++++
 
@@ -1134,6 +1137,7 @@ const useCan = () => {
     canDownloadPdfCashSales,
     canDownloadPdfSalesinvoice,
     canDownloadPdfCashPurchase,
+    canDownloadPdfPurchaseInvoice,
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
     canSeeTotalPurchase,

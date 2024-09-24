@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow, Button } from '@mui/material';
+import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { CreditnoteCashPDF, Creditnotecashviewdata } from 'store/thunk';
-import useCan from 'views/permission managenment/checkpermissionvalue';
+import { Creditnotecashviewdata } from 'store/thunk';
 
 const CreditnotecashView = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -13,7 +12,6 @@ const CreditnotecashView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
-  const { canCreditnotecashpdf } = useCan();
 
   useEffect(() => {
     dispatch(Creditnotecashviewdata(id))
@@ -28,10 +26,6 @@ const CreditnotecashView = () => {
       });
   }, [dispatch, id, navigate]);
 
-  const handlepdf = async () => {
-    await dispatch(CreditnoteCashPDF(id, navigate));
-  };
-
   const maintotal = data.mainTotal ? data.mainTotal : 0;
   return (
     <Paper elevation={3} style={{ padding: '24px' }}>
@@ -45,16 +39,11 @@ const CreditnotecashView = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Date</Typography>
-          <Typography variant="subtitle2">{new Date(data.creditdate).toLocaleDateString()}</Typography>
+          <Typography variant="subtitle2">{new Date(data.creditdate).toLocaleDateString('en-GB')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1">Debit Note No.</Typography>
+          <Typography variant="subtitle1">Credit Note No.</Typography>
           <Typography variant="subtitle2">{data.creditnoteNo}</Typography>
-        </Grid>
-        <Grid item xs={12} md={3} sm={6}>
-          <Button onClick={handlepdf} variant="contained" color="secondary" disabled={!canCreditnotecashpdf()}>
-            Download Pdf
-          </Button>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">RR-No.</Typography>

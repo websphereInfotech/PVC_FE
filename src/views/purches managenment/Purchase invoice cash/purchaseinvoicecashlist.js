@@ -18,11 +18,12 @@ import {
   IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { PurchaseInvoiceviewCash, deletePurchaseInvoiceCash, getallPurchaseInvoiceCash } from 'store/thunk';
+import { PurchaseCashPDF, PurchaseInvoiceviewCash, deletePurchaseInvoiceCash, getallPurchaseInvoiceCash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const columns = [
   { id: 'purchaseNo', label: 'Purchase No', align: 'center' },
@@ -34,7 +35,13 @@ const columns = [
 ];
 
 const Purchaseinvoicecashlist = () => {
-  const { canCreatePurchasebillcash, canUpdatePurchasebillcash, canViewPurchasebillcash, canDeletePurchasebillcash } = useCan();
+  const {
+    canCreatePurchasebillcash,
+    canDownloadPdfCashPurchase,
+    canUpdatePurchasebillcash,
+    canViewPurchasebillcash,
+    canDeletePurchasebillcash
+  } = useCan();
   const navigate = useNavigate();
   const [purchasebillcash, setPurchasebillcash] = useState([]);
   const [page, setPage] = useState(0);
@@ -96,6 +103,10 @@ const Purchaseinvoicecashlist = () => {
     } catch (error) {
       console.error('Error deleting purchase invoice cash:', error);
     }
+  };
+
+  const handledownloadpdf = async (id) => {
+    await dispatch(PurchaseCashPDF(id, navigate));
   };
 
   return (
@@ -175,6 +186,21 @@ const Purchaseinvoicecashlist = () => {
                           disabled={!canDeletePurchasebillcash()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDownloadPdfCashPurchase() ? '#425466' : 'gray',
+                            color: canDownloadPdfCashPurchase() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDownloadPdfCashPurchase() && { opacity: 1 }),
+                            ...(!canDownloadPdfCashPurchase() && { opacity: 0.5 }),
+                            ...(!canDownloadPdfCashPurchase() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handledownloadpdf(row.id)}
+                          disabled={!canDownloadPdfCashPurchase()}
+                        >
+                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'date' ? (

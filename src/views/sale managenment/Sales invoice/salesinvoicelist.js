@@ -17,11 +17,12 @@ import {
   IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
+import { SalesInvoicePDF, SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const columns = [
   { id: 'invoiceno', label: 'Invocie No', align: 'center' },
@@ -33,7 +34,7 @@ const columns = [
 ];
 
 const Salesinvoicelist = () => {
-  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
+  const { canUpdateSalesinvoice, canViewalesinvoice, canDownloadPdfSalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [salesinvoice, setsalesinvoice] = useState([]);
@@ -100,6 +101,10 @@ const Salesinvoicelist = () => {
     } catch (error) {
       console.error('Error deleting sales invoice:', error);
     }
+  };
+
+  const handledownloadpdf = async (id) => {
+    await dispatch(SalesInvoicePDF(id, navigate));
   };
 
   return (
@@ -179,6 +184,21 @@ const Salesinvoicelist = () => {
                           disabled={!canDeleteSalesinvoice()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDownloadPdfSalesinvoice() ? '#425466' : 'gray',
+                            color: canDownloadPdfSalesinvoice() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDownloadPdfSalesinvoice() && { opacity: 1 }),
+                            ...(!canDownloadPdfSalesinvoice() && { opacity: 0.5 }),
+                            ...(!canDownloadPdfSalesinvoice() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handledownloadpdf(row.id)}
+                          disabled={!canDownloadPdfSalesinvoice()}
+                        >
+                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'invoicedate' ? (

@@ -18,11 +18,12 @@ import {
   IconButton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Debitnotecashviewdata, deleteDebitnotecash, getallDebitnotecash } from 'store/thunk';
+import { DebitnoteCashPDF, Debitnotecashviewdata, deleteDebitnotecash, getallDebitnotecash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -34,7 +35,7 @@ const columns = [
 ];
 
 const Debitnotecashlist = () => {
-  const { canUpdateDebitnotecash, canViewDebitnotecash, canCreateDebitnotecash, canDeleteDebitnotecash } = useCan();
+  const { canUpdateDebitnotecash, canViewDebitnotecash, canDebitnotecashpdf, canCreateDebitnotecash, canDeleteDebitnotecash } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -101,6 +102,10 @@ const Debitnotecashlist = () => {
     } catch (error) {
       console.error('Error deleting debit note:', error);
     }
+  };
+
+  const handlepdf = async (id) => {
+    await dispatch(DebitnoteCashPDF(id, navigate));
   };
 
   return (
@@ -180,6 +185,21 @@ const Debitnotecashlist = () => {
                           disabled={!canDeleteDebitnotecash()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDebitnotecashpdf() ? '#425466' : 'gray',
+                            color: canDebitnotecashpdf() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDebitnotecashpdf() && { opacity: 1 }),
+                            ...(!canDebitnotecashpdf() && { opacity: 0.5 }),
+                            ...(!canDebitnotecashpdf() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handlepdf(row.id)}
+                          disabled={!canDebitnotecashpdf()}
+                        >
+                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'debitdate' ? (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { viewPurchaseinvoice, deletePurchaseinvoice, getallPurchaseinvoice } from 'store/thunk';
+import { viewPurchaseinvoice, deletePurchaseinvoice, getallPurchaseinvoice, PurchaseInvoicePDF } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
@@ -26,7 +27,13 @@ const columns = [
 ];
 
 export default function PurchaseinvoiceList() {
-  const { canViewPurchaseinvoice, canDeletePurchaseinvoice, canUpdatePurchaseinvoice, canCreatePurchaseinvoice } = useCan();
+  const {
+    canViewPurchaseinvoice,
+    canDeletePurchaseinvoice,
+    canDownloadPdfPurchaseInvoice,
+    canUpdatePurchaseinvoice,
+    canCreatePurchaseinvoice
+  } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
@@ -87,6 +94,10 @@ export default function PurchaseinvoiceList() {
     } catch (error) {
       console.error('Error deleting purchase invoice:', error);
     }
+  };
+
+  const handledownloadpdf = async (id) => {
+    await dispatch(PurchaseInvoicePDF(id, navigate));
   };
 
   return (
@@ -165,6 +176,21 @@ export default function PurchaseinvoiceList() {
                           disabled={!canDeletePurchaseinvoice()}
                         >
                           <Delete style={{ fontSize: '16px' }} />
+                        </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canDownloadPdfPurchaseInvoice() ? '#425466' : 'gray',
+                            color: canDownloadPdfPurchaseInvoice() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canDownloadPdfPurchaseInvoice() && { opacity: 1 }),
+                            ...(!canDownloadPdfPurchaseInvoice() && { opacity: 0.5 }),
+                            ...(!canDownloadPdfPurchaseInvoice() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handledownloadpdf(row.id)}
+                          disabled={!canDownloadPdfPurchaseInvoice()}
+                        >
+                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
                         </IconButton>
                       </div>
                     ) : column.id === 'invoicedate' ? (

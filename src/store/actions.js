@@ -589,6 +589,9 @@ export const GET_SALES_INVOICE_PDF_FAILURE = 'GET_SALES_INVOICE_PDF_FAILURE';
 export const GET_PURCHASE_CASH_PDF_REQUEST = 'GET_PURCHASE_CASH_PDF_REQUEST';
 export const GET_PURCHASE_CASH_PDF_SUCCESS = 'GET_PURCHASE_CASH_PDF_SUCCESS';
 export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
+export const GET_PURCHASE_INVOICE_PDF_REQUEST = 'GET_PURCHASE_INVOICE_PDF_REQUEST';
+export const GET_PURCHASE_INVOICE_PDF_SUCCESS = 'GET_PURCHASE_INVOICE_PDF_SUCCESS';
+export const GET_PURCHASE_INVOICE_PDF_FAILURE = 'GET_PURCHASE_INVOICE_PDF_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++
 export const GET_TOTAL_SALES_REQUEST = 'GET_TOTAL_SALES_REQUEST';
@@ -2767,6 +2770,17 @@ export const PurchaseCashPdfSuccess = (data) => ({
 });
 export const PurchaseCashPdfFailure = (error) => ({
   type: 'GET_PURCHASE_CASH_PDF_FAILURE',
+  payload: error
+});
+export const PurchaseInvoicePdfRequest = () => ({
+  type: 'GET_PURCHASE_INVOICE_PDF_REQUEST'
+});
+export const PurchaseInvoicePdfSuccess = (data) => ({
+  type: 'GET_PURCHASE_INVOICE_PDF_SUCCESS',
+  payload: data
+});
+export const PurchaseInvoicePdfFailure = (error) => ({
+  type: 'GET_PURCHASE_INVOICE_PDF_FAILURE',
   payload: error
 });
 

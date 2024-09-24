@@ -370,12 +370,10 @@ const Purchaseinvoice = () => {
 
       const gstState = companystate === accountstate ? 'true' : 'false';
       if (gstState === 'true') {
-        payload.totalSgst = plusgst / 2;
-        payload.totalCgst = plusgst / 2;
+        payload.totalSgst = plusgst;
         payload.totalIgst = 0;
       } else {
         payload.totalSgst = 0;
-        payload.totalCgst = 0;
         payload.totalIgst = plusgst;
       }
 

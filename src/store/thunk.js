@@ -545,6 +545,9 @@ import {
   PurchaseCashPdfRequest,
   PurchaseCashPdfSuccess,
   PurchaseCashPdfFailure,
+  PurchaseInvoicePdfRequest,
+  PurchaseInvoicePdfSuccess,
+  PurchaseInvoicePdfFailure,
   // DASHBORAD +++++++++++++++
   GetTotalPurchaseRequest,
   GetTotalPurchaseSuccess,
@@ -4355,6 +4358,39 @@ export const PurchaseCashPDF = (id, navigate) => {
         });
       }
       dispatch(PurchaseCashPdfFailure(error.message));
+    }
+  };
+};
+export const PurchaseInvoicePDF = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(PurchaseInvoicePdfRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/purchaseInvoice_pdf/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      saveAs(blob, 'purchase_invoice.pdf');
+      dispatch(PurchaseInvoicePdfSuccess(base64Data));
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(PurchaseInvoicePdfFailure(error.message));
     }
   };
 };

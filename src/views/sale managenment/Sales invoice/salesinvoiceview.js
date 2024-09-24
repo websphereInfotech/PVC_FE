@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow, Button } from '@mui/material';
+import { Typography, Grid, Paper, Table, TableHead, TableCell, TableBody, TableRow } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { SalesInvoicePDF, SalesInvoiceview } from 'store/thunk';
-import useCan from 'views/permission managenment/checkpermissionvalue';
+import { SalesInvoiceview } from 'store/thunk';
 
 const Salesinvoiceview = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -13,7 +12,6 @@ const Salesinvoiceview = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState({});
-  const { canDownloadPdfSalesinvoice } = useCan();
 
   useEffect(() => {
     dispatch(SalesInvoiceview(id))
@@ -27,10 +25,6 @@ const Salesinvoiceview = () => {
         console.error('Error fetching sales invoice data:', error);
       });
   }, [dispatch, id, navigate]);
-
-  const handledownloadpdf = async () => {
-    await dispatch(SalesInvoicePDF(id, navigate));
-  };
 
   const subtotal = data.totalMrp ? data.totalMrp : 0;
   const maintotal = data.mainTotal ? data.mainTotal : 0;
@@ -54,11 +48,6 @@ const Salesinvoiceview = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Invoice No.</Typography>
           <Typography variant="subtitle2">{data.invoiceno}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <Button variant="contained" color="secondary" onClick={handledownloadpdf} disabled={!canDownloadPdfSalesinvoice()}>
-            Download Pdf
-          </Button>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Invoice Date</Typography>
