@@ -1,6 +1,7 @@
 // thunks.js
 import axios from 'axios';
 // import React from 'react';
+import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -708,7 +709,6 @@ import {
   fetchAllAddMaintenanceFailure
 } from './actions';
 import { jwtDecode } from 'jwt-decode';
-import { saveAs } from 'file-saver';
 const createConfig = () => {
   const token = sessionStorage.getItem('token');
   return {
@@ -4420,26 +4420,45 @@ export const SalesInvoicePDF = (id, navigate) => {
     }
   };
 };
-export const SalesInvoiceExcel = (formDate, toDate, navigate) => {
+export const SalesInvoiceExcel = (fromDate, toDate, navigate) => {
   return async (dispatch) => {
     dispatch(SalesInvoiceExcelRequest());
     try {
       const config = createConfig();
+
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_excel/?formDate=${formDate}&toDate=${toDate}`,
-        {
-          ...config,
-          responseType: 'blob'
-        }
+        `${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_excel?fromDate=${fromDate}&toDate=${toDate}`,
+        config
       );
 
-      const blob = new Blob([response.data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
+      const contentType = response.headers['content-type'];
+      console.log('Content-Type:', contentType);
 
-      saveAs(blob, 'sales_invoice.xlsx');
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        console.log('Error response:', jsonResponse);
 
-      dispatch(SalesInvoiceExcelSuccess());
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+          saveAs(blob, `sales_invoice_${fromDate}_to_${toDate}.xlsx`);
+          dispatch(SalesInvoiceExcelSuccess(base64Data));
+          toast.success(jsonResponse.message);
+          return base64Data;
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
     } catch (error) {
       console.error('Error downloading Excel:', error);
       if (error.response?.status === 401) {
@@ -4453,6 +4472,7 @@ export const SalesInvoiceExcel = (formDate, toDate, navigate) => {
     }
   };
 };
+
 export const PurchaseCashPDF = (id, navigate) => {
   return async (dispatch) => {
     dispatch(PurchaseCashPdfRequest());

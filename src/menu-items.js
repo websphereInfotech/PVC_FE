@@ -375,6 +375,12 @@ const MenuItem = () => {
                         type: 'item',
                         url: '/cashbook'
                       },
+                      {
+                        id: 'Pass Book',
+                        title: 'Pass Book',
+                        type: 'item',
+                        url: '/cashbook'
+                      },
                       hasAllPermissionsWallet && {
                         id: 'Wallet',
                         title: 'Wallet',
