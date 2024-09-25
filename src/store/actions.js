@@ -372,9 +372,6 @@ export const CREATE_COMPANY_BANK_FAILURE = 'CREATE_COMPANY_BANK_FAILURE';
 export const UPDATE_COMPANY_BANK_REQUEST = 'UPDATE_COMPANY_BANK_REQUEST';
 export const UPDATE_COMPANY_BANK_SUCCESS = 'UPDATE_COMPANY_BANK_SUCCESS';
 export const UPDATE_COMPANY_BANK_FAILURE = 'UPDATE_COMPANY_BANK_FAILURE';
-export const VIEW_COMPANY_BANK_REQUEST = 'VIEW_COMPANY_BANK_REQUEST';
-export const VIEW_COMPANY_BANK_SUCCESS = 'VIEW_COMPANY_BANK_SUCCESS';
-export const VIEW_COMPANY_BANK_FAILURE = 'VIEW_COMPANY_BANK_FAILURE';
 export const DELETE_COMPANY_BANK_REQUEST = 'DELETE_COMPANY_BANK_REQUEST';
 export const DELETE_COMPANY_BANK_SUCCESS = 'DELETE_COMPANY_BANK_SUCCESS';
 export const DELETE_COMPANY_BANK_FAILURE = 'DELETE_COMPANY_BANK_FAILURE';
@@ -598,6 +595,10 @@ export const GET_SALES_INVOICE_PDF_FAILURE = 'GET_SALES_INVOICE_PDF_FAILURE';
 export const GET_SALES_INVOICE_EXCEL_REQUEST = 'GET_SALES_INVOICE_EXCEL_REQUEST';
 export const GET_SALES_INVOICE_EXCEL_SUCCESS = 'GET_SALES_INVOICE_EXCEL_SUCCESS';
 export const GET_SALES_INVOICE_EXCEL_FAILURE = 'GET_SALES_INVOICE_EXCEL_FAILURE';
+
+export const GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST = 'GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST';
+export const GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS = 'GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS';
+export const GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE = 'GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE';
 export const GET_PURCHASE_CASH_PDF_REQUEST = 'GET_PURCHASE_CASH_PDF_REQUEST';
 export const GET_PURCHASE_CASH_PDF_SUCCESS = 'GET_PURCHASE_CASH_PDF_SUCCESS';
 export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
@@ -1570,17 +1571,6 @@ export const CreateCompanyBankSuccess = (data) => ({
 });
 export const CreateCompanyBankFailure = (error) => ({
   type: 'CREATE_COMPANY_BANK_FAILURE',
-  payload: error
-});
-export const ViewCompanyBankRequest = () => ({
-  type: 'VIEW_COMPANY_BANK_REQUEST'
-});
-export const ViewCompanyBankSuccess = (data) => ({
-  type: 'VIEW_COMPANY_BANK_SUCCESS',
-  payload: data
-});
-export const ViewCompanyBankFailure = (error) => ({
-  type: 'VIEW_COMPANY_BANK_FAILURE',
   payload: error
 });
 export const UpdateCompanyBankRequest = () => ({
@@ -2818,6 +2808,18 @@ export const SalesInvoiceExcelSuccess = (data) => ({
 });
 export const SalesInvoiceExcelFailure = (error) => ({
   type: 'GET_SALES_INVOICE_EXCEL_FAILURE',
+  payload: error
+});
+
+export const SalesInvoiceSingleExcelRequest = () => ({
+  type: 'GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST'
+});
+export const SalesInvoiceSingleExcelSuccess = (data) => ({
+  type: 'GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS',
+  payload: data
+});
+export const SalesInvoiceSingleExcelFailure = (error) => ({
+  type: 'GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE',
   payload: error
 });
 export const PurchaseCashPdfRequest = () => ({

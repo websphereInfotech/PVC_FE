@@ -15,7 +15,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton
+  IconButton,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { DebitnoteCashPDF, Debitnotecashviewdata, deleteDebitnotecash, getallDebitnotecash } from 'store/thunk';
@@ -23,7 +25,9 @@ import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { BiSolidFilePdf } from 'react-icons/bi';
+import { MdLocalPrintshop } from 'react-icons/md';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -35,7 +39,7 @@ const columns = [
 ];
 
 const Debitnotecashlist = () => {
-  const { canUpdateDebitnotecash, canViewDebitnotecash, canDebitnotecashpdf, canCreateDebitnotecash, canDeleteDebitnotecash } = useCan();
+  const { canUpdateDebitnotecash, canViewDebitnotecash, canCreateDebitnotecash, canDeleteDebitnotecash } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -43,6 +47,8 @@ const Debitnotecashlist = () => {
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     const fetchDebitNote = async () => {
@@ -105,7 +111,43 @@ const Debitnotecashlist = () => {
   };
 
   const handlepdf = async (id) => {
-    await dispatch(DebitnoteCashPDF(id, navigate));
+    await dispatch(DebitnoteCashPDF(id, navigate, true));
+  };
+
+  const handlePrint = async (id) => {
+    const base64Data = await dispatch(DebitnoteCashPDF(id, navigate, false)); // Do not download
+    if (!base64Data) {
+      toast.error('Unable to retrieve PDF for printing');
+      return;
+    }
+    const binaryString = atob(base64Data);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const printWindow = window.open(blobUrl);
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        URL.revokeObjectURL(blobUrl);
+      };
+    };
+  };
+
+  const handleMenuClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedId(id);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -186,21 +228,17 @@ const Debitnotecashlist = () => {
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{
-                            backgroundColor: canDebitnotecashpdf() ? '#425466' : 'gray',
-                            color: canDebitnotecashpdf() ? 'white' : 'white',
-                            borderRadius: 0.8,
-                            ...(canDebitnotecashpdf() && { opacity: 1 }),
-                            ...(!canDebitnotecashpdf() && { opacity: 0.5 }),
-                            ...(!canDebitnotecashpdf() && { backgroundColor: 'gray' })
-                          }}
-                          onClick={() => handlepdf(row.id)}
-                          disabled={!canDebitnotecashpdf()}
-                        >
-                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
+                        <IconButton sizeSmall onClick={(event) => handleMenuClick(event, row.id)} style={{ color: 'gray' }}>
+                          <MoreVertIcon />
                         </IconButton>
+                        <Menu anchorEl={anchorEl} open={open && selectedId === row.id} onClose={handleMenuClose}>
+                          <MenuItem onClick={() => handlepdf(row.id)}>
+                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                          </MenuItem>
+                          <MenuItem onClick={() => handlePrint(row.id)}>
+                            <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+                          </MenuItem>
+                        </Menu>
                       </div>
                     ) : column.id === 'debitdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')

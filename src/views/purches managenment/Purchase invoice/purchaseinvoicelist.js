@@ -254,9 +254,10 @@ import { useNavigate } from 'react-router-dom';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { toast } from 'react-toastify';
+import { BiSolidFilePdf } from 'react-icons/bi';
+import { MdLocalPrintshop } from 'react-icons/md';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
@@ -338,7 +339,7 @@ export default function PurchaseinvoiceList() {
 
   const handledownloadpdf = async (id) => {
     const base64Data = await dispatch(PurchaseInvoicePDF(id, navigate, true));
-    return base64Data; // Return the base64 data for use in printing
+    return base64Data;
   };
 
   const handlePrint = async (id) => {
@@ -459,10 +460,10 @@ export default function PurchaseinvoiceList() {
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={open && selectedInvoiceId === row.id} onClose={handleMenuClose}>
                           <MenuItem onClick={() => handledownloadpdf(row.id)}>
-                            <PictureAsPdfIcon style={{ marginRight: '8px' }} /> PDF
+                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
                           </MenuItem>
                           <MenuItem onClick={() => handlePrint(row.id)}>
-                            <PictureAsPdfIcon style={{ marginRight: '8px' }} /> Print
+                            <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
                         </Menu>
                       </div>

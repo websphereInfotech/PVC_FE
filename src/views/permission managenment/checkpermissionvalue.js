@@ -540,9 +540,6 @@ const useCan = () => {
   const canDeleteCompanyBank = () => {
     return checkPermission('Company Bank Details', 'delete_company_bankDetails');
   };
-  const canViewCompanyBank = () => {
-    return checkPermission('Company Bank Details', 'view_company_bankDetails');
-  };
   const canViwAllCompanyBank = () => {
     return checkPermission('Company Bank Details', 'view_all_company_bankDetails');
   };
@@ -1086,7 +1083,6 @@ const useCan = () => {
     canCreateCompanyBank,
     canUpdateCompanyBank,
     canDeleteCompanyBank,
-    canViewCompanyBank,
     canViwAllCompanyBank,
     canViewCompanyBankLedger,
     // BILL OF MATERIAL +++++++++

@@ -16,32 +16,40 @@ import {
   DialogTitle,
   IconButton,
   Grid,
-  useMediaQuery
+  Menu,
+  MenuItem
 } from '@mui/material';
-import { useTheme } from '@emotion/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
-import { SalesInvoiceExcel, SalesInvoicePDF, SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
+import {
+  SalesInvoiceExcel,
+  SalesInvoicePDF,
+  SalesInvoiceSingleExcel,
+  SalesInvoiceview,
+  deleteSalesinvoice,
+  getallSalesInvoice
+} from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { BiSolidFilePdf } from 'react-icons/bi';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import { MdLocalPrintshop } from 'react-icons/md';
 
 const columns = [
-  { id: 'invoiceno', label: 'Invocie No', align: 'center' },
+  { id: 'invoiceno', label: 'Invoice No', align: 'center' },
   { id: 'party', label: 'Party', align: 'center' },
-  { id: 'invoicedate', label: 'Date.', align: 'center' },
-  { id: 'createdBy', label: 'Create By', align: 'center' },
-  { id: 'updatedBy', label: 'Update By', align: 'center' },
+  { id: 'invoicedate', label: 'Date', align: 'center' },
+  { id: 'createdBy', label: 'Created By', align: 'center' },
+  { id: 'updatedBy', label: 'Updated By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
 
 const Salesinvoicelist = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { canUpdateSalesinvoice, canViewalesinvoice, canDownloadPdfSalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
+  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [salesinvoice, setsalesinvoice] = useState([]);
@@ -52,6 +60,9 @@ const Salesinvoicelist = () => {
   const [toDate, setToDate] = useState(new Date());
   const [formDate, setFormDate] = useState(new Date());
   const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
+  const openMenu = Boolean(anchorEl);
 
   const handleOpenLedgerDialog = () => {
     setOpenLedgerDialog(true);
@@ -59,6 +70,16 @@ const Salesinvoicelist = () => {
 
   const handleCloseLedgerDialog = () => {
     setOpenLedgerDialog(false);
+  };
+
+  const handleMenuClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedInvoiceId(id);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedInvoiceId(null);
   };
 
   useEffect(() => {
@@ -120,6 +141,7 @@ const Salesinvoicelist = () => {
       console.error('Error deleting sales invoice:', error);
     }
   };
+
   const handleformDateChange = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -136,21 +158,48 @@ const Salesinvoicelist = () => {
     setToDate(formattedDate);
   };
 
-  const handleLedger = (formDate, toDate) => {
+  const handledownloadexcel = (formDate, toDate) => {
     dispatch(SalesInvoiceExcel(formDate, toDate));
-    // navigate('/daybookledger');
     setFormDate(formDate);
-    // sessionStorage.setItem('RDaybookformDate', formDate);
     setToDate(toDate);
-    // sessionStorage.setItem('RDaybooktoDate', toDate);
   };
 
   const handledownloadpdf = async (id) => {
-    await dispatch(SalesInvoicePDF(id, navigate));
+    await dispatch(SalesInvoicePDF(id, navigate, true));
+  };
+
+  const handlePrint = async (id) => {
+    const base64Data = await dispatch(SalesInvoicePDF(id, navigate, false));
+    if (!base64Data) {
+      toast.error('Unable to retrieve PDF for printing');
+      return;
+    }
+    const binaryString = atob(base64Data);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const printWindow = window.open(blobUrl);
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        URL.revokeObjectURL(blobUrl);
+      };
+    };
+  };
+
+  const handledownloadsingleexcel = async (id) => {
+    await dispatch(SalesInvoiceSingleExcel(id, navigate));
   };
 
   return (
-    // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Sales Invoice List
@@ -220,7 +269,7 @@ const Salesinvoicelist = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canDeleteSalesinvoice() ? 'Red' : 'gray',
+                            backgroundColor: canDeleteSalesinvoice() ? 'red' : 'gray',
                             color: canDeleteSalesinvoice() ? 'white' : 'white',
                             borderRadius: 0.8,
                             ...(canDeleteSalesinvoice() && { opacity: 1 }),
@@ -232,21 +281,20 @@ const Salesinvoicelist = () => {
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{
-                            backgroundColor: canDownloadPdfSalesinvoice() ? '#425466' : 'gray',
-                            color: canDownloadPdfSalesinvoice() ? 'white' : 'white',
-                            borderRadius: 0.8,
-                            ...(canDownloadPdfSalesinvoice() && { opacity: 1 }),
-                            ...(!canDownloadPdfSalesinvoice() && { opacity: 0.5 }),
-                            ...(!canDownloadPdfSalesinvoice() && { backgroundColor: 'gray' })
-                          }}
-                          onClick={() => handledownloadpdf(row.id)}
-                          disabled={!canDownloadPdfSalesinvoice()}
-                        >
-                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
+                        <IconButton sizeSmall style={{ color: 'gray' }} onClick={(event) => handleMenuClick(event, row.id)}>
+                          <MoreVertIcon />
                         </IconButton>
+                        <Menu anchorEl={anchorEl} open={openMenu && selectedInvoiceId === row.id} onClose={handleMenuClose}>
+                          <MenuItem onClick={() => handledownloadpdf(row.id)}>
+                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                          </MenuItem>
+                          <MenuItem onClick={() => handledownloadsingleexcel(row.id)}>
+                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                          </MenuItem>
+                          <MenuItem onClick={() => handlePrint(row.id)}>
+                            <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+                          </MenuItem>
+                        </Menu>
                       </div>
                     ) : column.id === 'invoicedate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')
@@ -269,70 +317,49 @@ const Salesinvoicelist = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={salesinvoice?.length || 0}
+        count={salesinvoice.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this Sale Invoice?</DialogContent>
+      <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)}>
+        <DialogTitle>Delete Confirmation</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this sales invoice?</Typography>
+        </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
+          <Button onClick={() => setOpenConfirmation(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteSalesInvoice} variant="contained" color="secondary">
-            Yes
+          <Button onClick={handleDeleteSalesInvoice} color="secondary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        open={openLedgerDialog}
-        onClose={handleCloseLedgerDialog}
-        PaperProps={{
-          style: {
-            height: 'auto',
-            width: isMobile ? '90%' : '18%',
-            margin: isMobile ? '0' : 'auto',
-            maxWidth: isMobile ? '80%' : 'none'
-          }
-        }}
-      >
-        <div style={{ display: 'flex', padding: '0px 20px', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>Excel Details</h3>
-        </div>
+      <Dialog open={openLedgerDialog} onClose={handleCloseLedgerDialog}>
+        <DialogTitle>Download Sales Invoices</DialogTitle>
         <DialogContent>
+          <Typography>Select Date Range:</Typography>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="subtitle1">From Date:</Typography>
-              <DatePicker
-                selected={formDate}
-                onChange={(date) => handleformDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
+              <DatePicker selected={formDate} onChange={handleformDateChange} dateFormat="dd-MM-yyyy" />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="subtitle1">To Date:</Typography>
-              <DatePicker
-                selected={toDate}
-                onChange={(date) => handletoDateChange(date)}
-                dateFormat="dd/MM/yyyy"
-                isClearable={false}
-                showTimeSelect={false}
-              />
+              <DatePicker selected={toDate} onChange={handletoDateChange} dateFormat="dd-MM-yyyy" />
             </Grid>
-
-            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
-              GO
-            </Button>
           </Grid>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseLedgerDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => handledownloadexcel(formDate, toDate)} color="secondary">
+            Download Excel
+          </Button>
+        </DialogActions>
       </Dialog>
     </Card>
-    // </Container>
   );
 };
 

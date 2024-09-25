@@ -15,7 +15,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton
+  IconButton,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CreditnoteCashPDF, Creditnotecashviewdata, deleteCreditnotecash, getallCreditnotecash } from 'store/thunk';
@@ -23,7 +25,9 @@ import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { BiSolidFilePdf } from 'react-icons/bi';
+import { MdLocalPrintshop } from 'react-icons/md';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
@@ -35,8 +39,7 @@ const columns = [
 ];
 
 const Creditnotecashlist = () => {
-  const { canUpdateCreditnotecash, canCreditnotecashpdf, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash } =
-    useCan();
+  const { canUpdateCreditnotecash, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash } = useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -44,6 +47,8 @@ const Creditnotecashlist = () => {
   const dispatch = useDispatch();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     const fetchcreditnote = async () => {
@@ -106,7 +111,43 @@ const Creditnotecashlist = () => {
   };
 
   const handlepdf = async (id) => {
-    await dispatch(CreditnoteCashPDF(id, navigate));
+    await dispatch(CreditnoteCashPDF(id, navigate, true));
+  };
+
+  const handlePrint = async (id) => {
+    const base64Data = await dispatch(CreditnoteCashPDF(id, navigate, false)); // Do not download
+    if (!base64Data) {
+      toast.error('Unable to retrieve PDF for printing');
+      return;
+    }
+    const binaryString = atob(base64Data);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const printWindow = window.open(blobUrl);
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        URL.revokeObjectURL(blobUrl);
+      };
+    };
+  };
+
+  const handleMenuClick = (event, id) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedId(id);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -187,21 +228,17 @@ const Creditnotecashlist = () => {
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{
-                            backgroundColor: canCreditnotecashpdf() ? '#425466' : 'gray',
-                            color: canCreditnotecashpdf() ? 'white' : 'white',
-                            borderRadius: 0.8,
-                            ...(canCreditnotecashpdf() && { opacity: 1 }),
-                            ...(!canCreditnotecashpdf() && { opacity: 0.5 }),
-                            ...(!canCreditnotecashpdf() && { backgroundColor: 'gray' })
-                          }}
-                          onClick={() => handlepdf(row.id)}
-                          disabled={!canCreditnotecashpdf()}
-                        >
-                          <PictureAsPdfIcon style={{ fontSize: '16px' }} />
+                        <IconButton sizeSmall onClick={(event) => handleMenuClick(event, row.id)} style={{ color: 'gray' }}>
+                          <MoreVertIcon />
                         </IconButton>
+                        <Menu anchorEl={anchorEl} open={open && selectedId === row.id} onClose={handleMenuClose}>
+                          <MenuItem onClick={() => handlepdf(row.id)}>
+                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                          </MenuItem>
+                          <MenuItem onClick={() => handlePrint(row.id)}>
+                            <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+                          </MenuItem>
+                        </Menu>
                       </div>
                     ) : column.id === 'creditdate' ? (
                       new Date(row[column.id]).toLocaleDateString('en-GB')

@@ -222,9 +222,6 @@ import {
   CreateCompanyBankRequest,
   CreateCompanyBankSuccess,
   CreateCompanyBankFailure,
-  ViewCompanyBankRequest,
-  ViewCompanyBankSuccess,
-  ViewCompanyBankFailure,
   UpdateCompanyBankRequest,
   UpdateCompanyBankSuccess,
   UpdateCompanyBankFailure,
@@ -555,6 +552,9 @@ import {
   SalesInvoiceExcelRequest,
   SalesInvoiceExcelSuccess,
   SalesInvoiceExcelFailure,
+  SalesInvoiceSingleExcelRequest,
+  SalesInvoiceSingleExcelSuccess,
+  SalesInvoiceSingleExcelFailure,
   PurchaseCashPdfRequest,
   PurchaseCashPdfSuccess,
   PurchaseCashPdfFailure,
@@ -1635,7 +1635,7 @@ export const deleteDebitnote = (id, navigate) => {
     }
   };
 };
-export const DebitnotePDF = (id, navigate) => {
+export const DebitnotePDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(DebitnotePdfRequest());
     try {
@@ -1645,15 +1645,23 @@ export const DebitnotePDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'debit_note.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'debit_note.pdf');
       dispatch(DebitnotePdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -1773,7 +1781,7 @@ export const deleteDebitnotecash = (id, navigate) => {
     }
   };
 };
-export const DebitnoteCashPDF = (id, navigate) => {
+export const DebitnoteCashPDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(DebitnotecashPdfRequest());
     try {
@@ -1783,15 +1791,23 @@ export const DebitnoteCashPDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'debit_note_cash.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'debit_note_cash.pdf');
       dispatch(DebitnotecashPdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -1910,7 +1926,7 @@ export const deleteCreditnote = (id, navigate) => {
     }
   };
 };
-export const CreditnotePDF = (id, navigate) => {
+export const CreditnotePDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(CreditnotePdfRequest());
     try {
@@ -1920,15 +1936,25 @@ export const CreditnotePDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'credit_note.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'credit_note.pdf');
       dispatch(CreditnotePdfSuccess(base64Data));
+
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -2047,7 +2073,7 @@ export const deleteCreditnotecash = (id, navigate) => {
     }
   };
 };
-export const CreditnoteCashPDF = (id, navigate) => {
+export const CreditnoteCashPDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(CreditnotecashPdfRequest());
     try {
@@ -2057,15 +2083,23 @@ export const CreditnoteCashPDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'credit_note_cash.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'credit_note_cash.pdf');
       dispatch(CreditnotecashPdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -2700,23 +2734,6 @@ export const updateCompanyBank = (id, formData) => {
           autoClose: 1000
         });
       }
-    }
-  };
-};
-export const CompanyBankview = (id) => {
-  return async (dispatch) => {
-    dispatch(ViewCompanyBankRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/companybank/view_company_bankDetails/${id}`, config);
-      const data = response.data.data;
-      dispatch(ViewCompanyBankSuccess(data));
-      return data;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(ViewCompanyBankFailure(error.message));
     }
   };
 };
@@ -4354,7 +4371,7 @@ export const deleteBreakdown = (id) => {
   };
 };
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor pdf of bank +++++++++++++++++++++++++++++++++++++
-export const SalesCashPDF = (id, navigate) => {
+export const SalesCashPDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(SalesCashPdfRequest());
     try {
@@ -4364,15 +4381,23 @@ export const SalesCashPDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'sales_cash.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'sales_cash.pdf');
       dispatch(SalesCashPdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -4387,7 +4412,7 @@ export const SalesCashPDF = (id, navigate) => {
     }
   };
 };
-export const SalesInvoicePDF = (id, navigate) => {
+export const SalesInvoicePDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(SalesInvoicePdfRequest());
     try {
@@ -4397,15 +4422,23 @@ export const SalesInvoicePDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'sales_invoice.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'sales_cash.pdf');
       dispatch(SalesInvoicePdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -4427,19 +4460,16 @@ export const SalesInvoiceExcel = (fromDate, toDate, navigate) => {
       const config = createConfig();
 
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_excel?fromDate=${fromDate}&toDate=${toDate}`,
+        `${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_excel?formDate=${fromDate}&toDate=${toDate}`,
         config
       );
 
       const contentType = response.headers['content-type'];
-      console.log('Content-Type:', contentType);
-
       if (contentType && contentType.includes('application/json')) {
         const jsonResponse = response.data;
-        console.log('Error response:', jsonResponse);
-
         if (jsonResponse.status === 'true' || jsonResponse.status === true) {
           const base64Data = jsonResponse.data;
+
           const byteCharacters = atob(base64Data);
           const byteNumbers = new Array(byteCharacters.length);
           for (let i = 0; i < byteCharacters.length; i++) {
@@ -4449,10 +4479,13 @@ export const SalesInvoiceExcel = (fromDate, toDate, navigate) => {
           const blob = new Blob([byteArray], {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
+
           saveAs(blob, `sales_invoice_${fromDate}_to_${toDate}.xlsx`);
-          dispatch(SalesInvoiceExcelSuccess(base64Data));
-          toast.success(jsonResponse.message);
-          return base64Data;
+          dispatch(SalesInvoiceExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
         } else {
           toast.error('Failed to generate Excel. Please try again.');
         }
@@ -4472,8 +4505,56 @@ export const SalesInvoiceExcel = (fromDate, toDate, navigate) => {
     }
   };
 };
+export const SalesInvoiceSingleExcel = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(SalesInvoiceSingleExcelRequest());
+    try {
+      const config = createConfig();
 
-export const PurchaseCashPDF = (id, navigate) => {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/view_salesInvoice_excel/${id}`, config);
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `sales_invoice_${id}.xlsx`);
+          dispatch(SalesInvoiceSingleExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(SalesInvoiceSingleExcelFailure(error.message));
+    }
+  };
+};
+export const PurchaseCashPDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(PurchaseCashPdfRequest());
     try {
@@ -4483,15 +4564,23 @@ export const PurchaseCashPDF = (id, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'purchase_cash.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'purchase_cash.pdf');
       dispatch(PurchaseCashPdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -4527,6 +4616,13 @@ export const PurchaseInvoicePDF = (id, navigate, shouldDownload = true) => {
         saveAs(blob, 'purchase_invoice.pdf');
       }
       dispatch(PurchaseInvoicePdfSuccess(base64Data));
+
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
@@ -5165,7 +5261,7 @@ export const getallAccountledger = (id, formDate, toDate) => {
     }
   };
 };
-export const AccountPDF = (id, formDate, toDate, navigate) => {
+export const AccountPDF = (id, formDate, toDate, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(AccountPdfRequest());
     try {
@@ -5178,15 +5274,23 @@ export const AccountPDF = (id, formDate, toDate, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'account_ledger.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'account_ledger.pdf');
       dispatch(AccountPdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
