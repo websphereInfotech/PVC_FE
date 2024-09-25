@@ -448,7 +448,9 @@ export const FETCH_ALL_NOTIFICATION_FAILURE = 'FETCH_ALL_NOTIFICATION_FAILURE';
 export const FETCH_ALL_EMPLOYEE_SALARY_REQUEST = 'FETCH_ALL_EMPLOYEE_SALARY_REQUEST';
 export const FETCH_ALL_EMPLOYEE_SALARY_SUCCESS = 'FETCH_ALL_EMPLOYEE_SALARY_SUCCESS';
 export const FETCH_ALL_EMPLOYEE_SALARY_FAILURE = 'FETCH_ALL_EMPLOYEE_SALARY_FAILURE';
-
+export const EMPLOYEE_REQUEST = 'EMPLOYEE_REQUEST';
+export const EMPLOYEE_SUCCESS = 'EMPLOYEE_SUCCESS';
+export const EMPLOYEE_FAILURE = 'EMPLOYEE_FAILURE';
 // #################################################################### USER BANK ###################################################################
 export const CREATE_USER_BANK_REQUEST = 'CREATE_USER_BANK_REQUEST';
 export const CREATE_USER_BANK_SUCCESS = 'CREATE_USER_BANK_SUCCESS';
@@ -592,6 +594,10 @@ export const GET_SALES_CASH_PDF_FAILURE = 'GET_SALES_CASH_PDF_FAILURE';
 export const GET_SALES_INVOICE_PDF_REQUEST = 'GET_SALES_INVOICE_PDF_REQUEST';
 export const GET_SALES_INVOICE_PDF_SUCCESS = 'GET_SALES_INVOICE_PDF_SUCCESS';
 export const GET_SALES_INVOICE_PDF_FAILURE = 'GET_SALES_INVOICE_PDF_FAILURE';
+
+export const GET_SALES_INVOICE_EXCEL_REQUEST = 'GET_SALES_INVOICE_EXCEL_REQUEST';
+export const GET_SALES_INVOICE_EXCEL_SUCCESS = 'GET_SALES_INVOICE_EXCEL_SUCCESS';
+export const GET_SALES_INVOICE_EXCEL_FAILURE = 'GET_SALES_INVOICE_EXCEL_FAILURE';
 export const GET_PURCHASE_CASH_PDF_REQUEST = 'GET_PURCHASE_CASH_PDF_REQUEST';
 export const GET_PURCHASE_CASH_PDF_SUCCESS = 'GET_PURCHASE_CASH_PDF_SUCCESS';
 export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
@@ -2316,6 +2322,18 @@ export const getAllEmployeesalaryFailure = (error) => ({
   type: 'FETCH_ALL_EMPLOYEE_SALARY_FAILURE',
   payload: error
 });
+export const EmployeeRequest = (data) => ({
+  type: 'FETCH_ALL_EMPLOYEE_REQUEST',
+  payload: data
+});
+export const EmployeeSuccess = (data) => ({
+  type: 'FETCH_ALL_EMPLOYEE_SUCCESS',
+  payload: data
+});
+export const EmployeeFailure = (error) => ({
+  type: 'FETCH_ALL_EMPLOYEE_FAILURE',
+  payload: error
+});
 // +++++++++++++++++++++++++++++++++++++++++++++++ USER BANK ++++++++++++++++++++++++++++++++++++
 export const CreateUserBankRequest = () => ({
   type: 'CREATE_USER_BANK_REQUEST'
@@ -2789,6 +2807,17 @@ export const SalesInvoicePdfSuccess = (data) => ({
 });
 export const SalesInvoicePdfFailure = (error) => ({
   type: 'GET_SALES_INVOICE_PDF_FAILURE',
+  payload: error
+});
+export const SalesInvoiceExcelRequest = () => ({
+  type: 'GET_SALES_INVOICE_EXCEL_REQUEST'
+});
+export const SalesInvoiceExcelSuccess = (data) => ({
+  type: 'GET_SALES_INVOICE_EXCEL_SUCCESS',
+  payload: data
+});
+export const SalesInvoiceExcelFailure = (error) => ({
+  type: 'GET_SALES_INVOICE_EXCEL_FAILURE',
   payload: error
 });
 export const PurchaseCashPdfRequest = () => ({

@@ -416,6 +416,9 @@ import {
   getAllEmployeesalaryRequest,
   getAllEmployeesalarySuccess,
   getAllEmployeesalaryFailure,
+  EmployeeRequest,
+  EmployeeSuccess,
+  EmployeeFailure,
   //  USER BANK ++++++++++++++++++++++++
   CreateUserBankRequest,
   CreateUserBankSuccess,
@@ -548,6 +551,9 @@ import {
   SalesInvoicePdfRequest,
   SalesInvoicePdfSuccess,
   SalesInvoicePdfFailure,
+  SalesInvoiceExcelRequest,
+  SalesInvoiceExcelSuccess,
+  SalesInvoiceExcelFailure,
   PurchaseCashPdfRequest,
   PurchaseCashPdfSuccess,
   PurchaseCashPdfFailure,
@@ -3485,6 +3491,21 @@ export const getAllEmployeeSalary = () => {
     }
   };
 };
+export const Employee = () => {
+  return async (dispatch) => {
+    dispatch(EmployeeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salary/employee`, config);
+      const data = response.data.data;
+      dispatch(EmployeeSuccess(data));
+      return data;
+    } catch (error) {
+      dispatch(EmployeeFailure(error.message));
+      throw error;
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ COMPANY ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createUserBank = (bankdetails, navigate) => {
   return async (dispatch) => {
@@ -4396,6 +4417,39 @@ export const SalesInvoicePDF = (id, navigate) => {
         });
       }
       dispatch(SalesInvoicePdfFailure(error.message));
+    }
+  };
+};
+export const SalesInvoiceExcel = (formDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(SalesInvoiceExcelRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_excel/?formDate=${formDate}&toDate=${toDate}`,
+        {
+          ...config,
+          responseType: 'blob'
+        }
+      );
+
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+
+      saveAs(blob, 'sales_invoice.xlsx');
+
+      dispatch(SalesInvoiceExcelSuccess());
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(SalesInvoiceExcelFailure(error.message));
     }
   };
 };

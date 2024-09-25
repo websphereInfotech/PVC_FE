@@ -526,8 +526,10 @@ const MainRoutes = {
       path: '/employeestatus/:id',
       element: <ProtectedRoute element={Employeeview} resource="Salary" permissionName="view_all_salary_payment" />
     },
-    { path: 'employeeentry', element: <Employeeentry /> },
-
+    {
+      path: '/employeeentry',
+      element: <ProtectedRoute element={Employeeentry} resource="Salary" permissionName="employee" />
+    },
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
     { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },

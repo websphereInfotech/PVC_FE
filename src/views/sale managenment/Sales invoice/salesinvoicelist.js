@@ -14,10 +14,15 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton
+  IconButton,
+  Grid,
+  useMediaQuery
 } from '@mui/material';
+import { useTheme } from '@emotion/react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
-import { SalesInvoicePDF, SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
+import { SalesInvoiceExcel, SalesInvoicePDF, SalesInvoiceview, deleteSalesinvoice, getallSalesInvoice } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -34,6 +39,8 @@ const columns = [
 ];
 
 const Salesinvoicelist = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { canUpdateSalesinvoice, canViewalesinvoice, canDownloadPdfSalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,6 +49,17 @@ const Salesinvoicelist = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
+  const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+
+  const handleOpenLedgerDialog = () => {
+    setOpenLedgerDialog(true);
+  };
+
+  const handleCloseLedgerDialog = () => {
+    setOpenLedgerDialog(false);
+  };
 
   useEffect(() => {
     const fetchSalesinvoice = async () => {
@@ -102,6 +120,30 @@ const Salesinvoicelist = () => {
       console.error('Error deleting sales invoice:', error);
     }
   };
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
+  const handleLedger = (formDate, toDate) => {
+    dispatch(SalesInvoiceExcel(formDate, toDate));
+    // navigate('/daybookledger');
+    setFormDate(formDate);
+    // sessionStorage.setItem('RDaybookformDate', formDate);
+    setToDate(toDate);
+    // sessionStorage.setItem('RDaybooktoDate', toDate);
+  };
 
   const handledownloadpdf = async (id) => {
     await dispatch(SalesInvoicePDF(id, navigate));
@@ -113,15 +155,20 @@ const Salesinvoicelist = () => {
       <Typography variant="h4" align="center" id="mycss">
         Sales Invoice List
       </Typography>
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{ margin: '10px' }}
-        onClick={handleAddSalesinvoice}
-        disabled={!canCreateSalesinvoice()}
-      >
-        Create Sales Invoice
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddSalesinvoice}
+          disabled={!canCreateSalesinvoice()}
+        >
+          Create Sales Invoice
+        </Button>
+        <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleOpenLedgerDialog}>
+          Download Excel
+        </Button>
+      </div>
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
@@ -239,6 +286,50 @@ const Salesinvoicelist = () => {
             Yes
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openLedgerDialog}
+        onClose={handleCloseLedgerDialog}
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+      >
+        <div style={{ display: 'flex', padding: '0px 20px', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3>Excel Details</h3>
+        </div>
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">From Date:</Typography>
+              <DatePicker
+                selected={formDate}
+                onChange={(date) => handleformDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">To Date:</Typography>
+              <DatePicker
+                selected={toDate}
+                onChange={(date) => handletoDateChange(date)}
+                dateFormat="dd/MM/yyyy"
+                isClearable={false}
+                showTimeSelect={false}
+              />
+            </Grid>
+
+            <Button onClick={() => handleLedger(formDate, toDate)} variant="contained" color="secondary" style={{ marginLeft: '60%' }}>
+              GO
+            </Button>
+          </Grid>
+        </DialogContent>
       </Dialog>
     </Card>
     // </Container>

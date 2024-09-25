@@ -625,6 +625,9 @@ const useCan = () => {
   const canViwAllEmployeeSalary = () => {
     return checkPermission('Salary', 'view_all_salary_payment');
   };
+  const canEmployee = () => {
+    return checkPermission('Salary', 'employee');
+  };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE
 
@@ -1110,6 +1113,7 @@ const useCan = () => {
     canDeleteEmployeeSalary,
     canViewAllEmployeeSalary,
     canViwAllEmployeeSalary,
+    canEmployee,
     // MACHINE ++++++++++++++++++
     canCreateMachine,
     canViewAllMachine,
