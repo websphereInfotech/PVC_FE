@@ -798,8 +798,14 @@ const useCan = () => {
   const canseecashbookcashledger = () => {
     return checkPermission('Ledger Cash', 'cashbook');
   };
+  const canseePassbookcashledger = () => {
+    return checkPermission('Ledger Cash', 'passbook');
+  };
   const canseewalletledger = () => {
     return checkPermission('Claim Cash', 'view_wallet');
+  };
+  const canseecompanybalacewallet = () => {
+    return checkPermission('Claim Cash', 'view_company_wallet');
   };
   const canseewalletuserledger = () => {
     return checkPermission('Ledger Cash', 'wallet_ledger');
@@ -1115,6 +1121,8 @@ const useCan = () => {
     canseedaybookcashledger,
     canseecashbookcashledger,
     canseewalletledger,
+    canseePassbookcashledger,
+    canseecompanybalacewallet,
     canseewalletuserledger,
     // MAINTENANCE TYPE ++++++++++
     canDeleteMaintenanceType,

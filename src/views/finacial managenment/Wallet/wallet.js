@@ -33,7 +33,7 @@ const Wallet = () => {
   const [walletcompanybalanceData, setWalletcompanyData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canseewalletuserledger } = useCan();
+  const { canseewalletuserledger, canseecompanybalacewallet } = useCan();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const getRoleFromSessionStorage = () => {
@@ -134,7 +134,7 @@ const Wallet = () => {
           </Typography>
         </Grid>
 
-        {createConfig1() === 'Super Admin' && (
+        {canseecompanybalacewallet() && (
           <Grid item container spacing={2}>
             <Grid item xs={12} sm={6} md={2}>
               <Typography>Company Name</Typography>
@@ -148,6 +148,10 @@ const Wallet = () => {
             <Grid item xs={12} sm={6} md={2}>
               <Typography variant="subtitle1">Total Balance</Typography>
               <input placeholder="Total balance" value={walletcompanybalanceData?.totalBalance} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <Typography variant="subtitle1">Bank Balance</Typography>
+              <input placeholder="Total balance" value={walletcompanybalanceData?.bankBalance} />
             </Grid>
           </Grid>
         )}

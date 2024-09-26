@@ -676,6 +676,9 @@ export const GET_ALL_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_DAY_BOOK_LEDGER_FAILURE'
 export const GET_ALL_CASH_BOOK_LEDGER_REQUEST = 'GET_ALL_CASH_BOOK_LEDGER_REQUEST';
 export const GET_ALL_CASH_BOOK_LEDGER_SUCCESS = 'GET_ALL_CASH_BOOK_LEDGER_SUCCESS';
 export const GET_ALL_CASH_BOOK_LEDGER_FAILURE = 'GET_ALL_CASH_BOOK_LEDGER_FAILURE';
+export const GET_ALL_PASS_BOOK_LEDGER_REQUEST = 'GET_ALL_PASS_BOOK_LEDGER_REQUEST';
+export const GET_ALL_PASS_BOOK_LEDGER_SUCCESS = 'GET_ALL_PASS_BOOK_LEDGER_SUCCESS';
+export const GET_ALL_PASS_BOOK_LEDGER_FAILURE = 'GET_ALL_PASS_BOOK_LEDGER_FAILURE';
 export const GET_ALL_CASH_DAY_BOOK_LEDGER_REQUEST = 'GET_ALL_CASH_DAY_BOOK_LEDGER_REQUEST';
 export const GET_ALL_CASH_DAY_BOOK_LEDGER_SUCCESS = 'GET_ALL_CASH_DAY_BOOK_LEDGER_SUCCESS';
 export const GET_ALL_CASH_DAY_BOOK_LEDGER_FAILURE = 'GET_ALL_CASH_DAY_BOOK_LEDGER_FAILURE';
@@ -3047,6 +3050,18 @@ export const getAllCashbookLedgerSuccess = (data) => ({
 });
 export const getAllCashbookLedgerFailure = (error) => ({
   type: 'GET_ALL_CASH_BOOK_LEDGER_FAILURE',
+  payload: error
+});
+export const getAllPassbookLedgerRequest = (data) => ({
+  type: 'GET_ALL_PASS_BOOK_LEDGER_REQUEST',
+  payload: data
+});
+export const getAllPassbookLedgerSuccess = (data) => ({
+  type: 'GET_ALL_PASS_BOOK_LEDGER_SUCCESS',
+  payload: data
+});
+export const getAllPassbookLedgerFailure = (error) => ({
+  type: 'GET_ALL_PASS_BOOK_LEDGER_FAILURE',
   payload: error
 });
 export const getWalletRequest = (data) => ({

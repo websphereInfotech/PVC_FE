@@ -5,12 +5,14 @@ import Ledgeraccountcashreport from 'component/reports/financial cash report/led
 import Cashdaybookreport from 'component/reports/financial cash report/cashdaybook';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import Cashbookreport from 'component/reports/financial cash report/cashbookreport';
+import Passbookreport from 'component/reports/financial cash report/passbookreport';
 
 const Reportcash = () => {
   const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
   const [cashLedgerDialog, setCashLedgerDialog] = useState(false);
+  const [passbookLedgerDialog, setPassbookLedgerDialog] = useState(false);
   const [opendaybookLedgerDialog, setOpendaybookLedgerDialog] = useState(false);
-  const { canseeaccountcashledger, canseedaybookcashledger, canseecashbookcashledger } = useCan();
+  const { canseeaccountcashledger, canseedaybookcashledger, canseecashbookcashledger, canseePassbookcashledger } = useCan();
 
   const handleOpenLedgerDialog = () => {
     setOpenLedgerDialog(true);
@@ -26,6 +28,14 @@ const Reportcash = () => {
 
   const handleCloseCashbookLedgerDialog = () => {
     setCashLedgerDialog(false);
+  };
+
+  const handleOpenPassbookLedgerDialog = () => {
+    setPassbookLedgerDialog(true);
+  };
+
+  const handleClosePassbookLedgerDialog = () => {
+    setPassbookLedgerDialog(false);
   };
 
   const handleOpenLDayBookedgerDialog = () => {
@@ -140,6 +150,21 @@ const Reportcash = () => {
                       Cashbook
                     </Typography>
                     {cashLedgerDialog && <Cashbookreport Open={handleOpenCashbookLedgerDialog} onClose={handleCloseCashbookLedgerDialog} />}
+                  </>
+                )}
+                {canseePassbookcashledger() && (
+                  <>
+                    <Typography
+                      variant="body1"
+                      sx={{ borderBottom: '0.2px solid lightgrey', marginTop: '2px' }}
+                      style={{ cursor: 'pointer' }}
+                      onClick={handleOpenPassbookLedgerDialog}
+                    >
+                      Passbook
+                    </Typography>
+                    {passbookLedgerDialog && (
+                      <Passbookreport Open={handleOpenPassbookLedgerDialog} onClose={handleClosePassbookLedgerDialog} />
+                    )}
                   </>
                 )}
               </CardContent>

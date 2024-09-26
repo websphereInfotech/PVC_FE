@@ -290,13 +290,8 @@ const MenuItem = () => {
     'delete_machine_schedule'
   ]);
 
-  // const hasAllPermissionsRegularmaintenance = checkAllPermissions('Regular Maintenance', [
-  //   'create_regular_maintenance',
-  //   'view_all_regular_maintenance',
-  //   'view_one_regular_maintenance',
-  //   'update_regular_maintenance',
-  //   'delete_regular_maintenance'
-  // ]);
+  const hasAllPermissionspassbook = checkAllPermissions('Ledger Cash', ['passbook']);
+  const hasAllPermissionscashbook = checkAllPermissions('Ledger Cash', ['cashbook']);
 
   // const hasAllPermissionsPreventivemaintenance = checkAllPermissions('Preventive Maintenance', [
   //   'create_preventive_maintenance',
@@ -369,17 +364,17 @@ const MenuItem = () => {
                     type: 'collapse',
                     icon: icons['PaymentsIcon'],
                     children: [
-                      {
+                      hasAllPermissionscashbook && {
                         id: 'Cash Book',
                         title: 'Cash Book',
                         type: 'item',
                         url: '/cashbook'
                       },
-                      {
+                      hasAllPermissionspassbook && {
                         id: 'Pass Book',
                         title: 'Pass Book',
                         type: 'item',
-                        url: '/cashbook'
+                        url: '/passbook'
                       },
                       hasAllPermissionsWallet && {
                         id: 'Wallet',
