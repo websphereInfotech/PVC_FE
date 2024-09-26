@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   Typography,
@@ -145,6 +144,7 @@ const Accountledgerlist = () => {
       const accountIdToUse = AccountIdc ? AccountIdc : AccountId;
       const formDataToUse = AccountIdc ? formDatec : formData;
       const toDateToUse = AccountIdc ? toDatec : toDate;
+
       const base64Data = await dispatch(AccountPDF(accountIdToUse, formDataToUse, toDateToUse, navigate, false));
 
       if (!base64Data) {
@@ -152,7 +152,6 @@ const Accountledgerlist = () => {
         return;
       }
 
-      // Convert base64 string to binary
       const binaryString = atob(base64Data);
       const len = binaryString.length;
       const bytes = new Uint8Array(len);
@@ -161,31 +160,23 @@ const Accountledgerlist = () => {
         bytes[i] = binaryString.charCodeAt(i);
       }
 
-      // Create a blob from the binary data
       const blob = new Blob([bytes], { type: 'application/pdf' });
       const blobUrl = URL.createObjectURL(blob);
 
-      // Open the blob URL in a new window and print
       const printWindow = window.open(blobUrl);
       if (!printWindow || printWindow.closed || typeof printWindow.closed === 'undefined') {
         toast.error('Print window blocked by browser. Please enable popups for this site.');
         return;
       }
-  
-      // Wait until the document is ready before printing
-      const checkIfLoaded = () => {
-        if (printWindow.document.readyState === 'complete') {
-          printWindow.print();
-          printWindow.onafterprint = () => {
-            printWindow.close();
-            URL.revokeObjectURL(blobUrl);
-          };
-        } else {
-          setTimeout(checkIfLoaded, 500); // Retry after 500ms if not yet ready
-        }
+
+      printWindow.onload = () => {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.onafterprint = () => {
+          printWindow.close();
+          URL.revokeObjectURL(blobUrl);
+        };
       };
-  
-      printWindow.onload = checkIfLoaded;
     } catch (error) {
       console.error('Error printing the PDF:', error);
       toast.error('An error occurred while trying to print the PDF');

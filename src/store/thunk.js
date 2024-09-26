@@ -494,54 +494,6 @@ import {
   DeleteMachineScheduleRequest,
   DeleteMachineScheduleSuccess,
   DeleteMachineScheduleFailure,
-  // REGULAR MAINTENANCE ++++++++++++
-  CreateRegularmaintenanceRequest,
-  CreateRegularmaintenanceSuccess,
-  CreateRegularmaintenanceFailure,
-  fetchAllRegularmaintenanceRequest,
-  fetchAllRegularmaintenanceSuccess,
-  fetchAllRegularmaintenanceFailure,
-  ViewsingleregularRequest,
-  ViewsingleregularSuccess,
-  ViewsingleregularFailure,
-  UpdateRegularRequest,
-  UpdateRegularSuccess,
-  UpdateRegularFailure,
-  DeleteRegularRequest,
-  DeleteRegularSuccess,
-  DeleteRegularFailure,
-  // PREVENTIVE MAINTENANCE ++++++++++++
-  CreatePreventiveRequest,
-  CreatePreventiveSuccess,
-  CreatePreventiveFailure,
-  fetchAllPreventiveRequest,
-  fetchAllPreventiveSuccess,
-  fetchAllPreventiveFailure,
-  ViewsinglepreventiveRequest,
-  ViewsinglepreventiveSuccess,
-  ViewsinglepreventiveFailure,
-  UpdatePreventiveRequest,
-  UpdatePreventiveSuccess,
-  UpdatePreventiveFailure,
-  DeletePreventiveRequest,
-  DeletePreventiveSuccess,
-  DeletePreventiveFailure,
-  // BREACKDOWN MAINTENANCE ++++++++++++
-  CreateBreakdownRequest,
-  CreateBreakdownSuccess,
-  CreateBreakdownFailure,
-  fetchAllBreakdownRequest,
-  fetchAllBreakdownSuccess,
-  fetchAllBreakdownFailure,
-  ViewsingleBreakdownRequest,
-  ViewsingleBreakdownSuccess,
-  ViewsingleBreakdownFailure,
-  UpdateBreakdownRequest,
-  UpdateBreakdownSuccess,
-  UpdateBreakdownFailure,
-  DeleteBreakdownRequest,
-  DeleteBreakdownSuccess,
-  DeleteBreakdownFailure,
   // PDF VENDOR BANK +++++++++++
   SalesCashPdfRequest,
   SalesCashPdfSuccess,
@@ -4044,332 +3996,6 @@ export const deleteMachineSchedule = (machineId, navigate) => {
   };
 };
 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ REGULAR MAINTENANCE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createregular = (data, navigate) => {
-  return async (dispatch) => {
-    dispatch(CreateRegularmaintenanceRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/create_regular_maintenance`, data, config);
-      const addregularmaintenancedata = response;
-      dispatch(CreateRegularmaintenanceSuccess(addregularmaintenancedata));
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      navigate('/regularmaintenancelist');
-      return addregularmaintenancedata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(CreateRegularmaintenanceFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const fetchAllregularMaintenance = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllRegularmaintenanceRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/view_all_regular_maintenance`, config);
-      const data = response.data.data;
-      dispatch(fetchAllRegularmaintenanceSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllRegularmaintenanceFailure(error.message));
-    }
-  };
-};
-export const Regularview = (id) => {
-  return async (dispatch) => {
-    dispatch(ViewsingleregularRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/view_one_regular_maintenance/${id}`, config);
-      const data = response.data.data;
-      dispatch(ViewsingleregularSuccess(data));
-      return data;
-    } catch (error) {
-      toast.error(error.response.data.error);
-      dispatch(ViewsingleregularFailure(error.message));
-    }
-  };
-};
-export const updateRegular = (id, formData, navigate) => {
-  return async (dispatch) => {
-    dispatch(UpdateRegularRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/regularMaintenance/update_regular_maintenance/${id}`,
-        formData,
-        config
-      );
-      const upadateregulardata = response.data.data;
-      dispatch(UpdateRegularSuccess(upadateregulardata));
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      navigate('/regularmaintenancelist');
-      return upadateregulardata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(UpdateRegularFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deleteRegular = (id) => {
-  return async (dispatch) => {
-    dispatch(DeleteRegularRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/regularMaintenance/delete_regular_maintenance/${id}`, config);
-      const deleteregulardata = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(DeleteRegularSuccess(deleteregulardata));
-      return deleteregulardata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(DeleteRegularFailure(error.message));
-      throw error;
-    }
-  };
-};
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PREVENTIVE MAINTENANCE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createpreventive = (data, navigate) => {
-  return async (dispatch) => {
-    dispatch(CreatePreventiveRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/create_preventive_maintenance`,
-        data,
-        config
-      );
-      const addpreventivemaintenancedata = response;
-      dispatch(CreatePreventiveSuccess(addpreventivemaintenancedata));
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      navigate('/preventivemaintenancelist');
-      return addpreventivemaintenancedata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(CreatePreventiveFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const fetchAllpreventiveMaintenance = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllPreventiveRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/view_all_preventive_maintenance`, config);
-      const data = response.data.data;
-      dispatch(fetchAllPreventiveSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllPreventiveFailure(error.message));
-    }
-  };
-};
-export const Preventiveview = (id) => {
-  return async (dispatch) => {
-    dispatch(ViewsinglepreventiveRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/view_one_preventive_maintenance/${id}`,
-        config
-      );
-      const data = response.data.data;
-      dispatch(ViewsinglepreventiveSuccess(data));
-      return data;
-    } catch (error) {
-      toast.error(error.response.data.error);
-      dispatch(ViewsinglepreventiveFailure(error.message));
-    }
-  };
-};
-export const updatePreventive = (id, formData, navigate) => {
-  return async (dispatch) => {
-    dispatch(UpdatePreventiveRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/update_preventive_maintenance/${id}`,
-        formData,
-        config
-      );
-      const upadatepreventivedata = response.data.data;
-      dispatch(UpdatePreventiveSuccess(upadatepreventivedata));
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      navigate('/preventivemaintenancelist');
-      return upadatepreventivedata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(UpdatePreventiveFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deletePreventive = (id) => {
-  return async (dispatch) => {
-    dispatch(DeletePreventiveRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/preventiveMaintenance/delete_preventive_maintenance/${id}`,
-        config
-      );
-      const deletepreventivedata = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(DeletePreventiveSuccess(deletepreventivedata));
-      return deletepreventivedata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(DeletePreventiveFailure(error.message));
-      throw error;
-    }
-  };
-};
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ BREACKDOWN MAINTENANCE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createbreackdown = (data, navigate) => {
-  return async (dispatch) => {
-    dispatch(CreateBreakdownRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/create_breakdown_maintenance`,
-        data,
-        config
-      );
-      const addbreakdowndata = response;
-      dispatch(CreateBreakdownSuccess(addbreakdowndata));
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      navigate('/breakdownmaintenancelist');
-      return addbreakdowndata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(CreateBreakdownFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const fetchAllbreackdownMaintenance = () => {
-  return async (dispatch) => {
-    dispatch(fetchAllBreakdownRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/view_all_breakdown_maintenance`, config);
-      const data = response.data.data;
-      dispatch(fetchAllBreakdownSuccess(data));
-      return data;
-    } catch (error) {
-      dispatch(fetchAllBreakdownFailure(error.message));
-    }
-  };
-};
-export const Breakdownview = (id) => {
-  return async (dispatch) => {
-    dispatch(ViewsingleBreakdownRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/view_one_breakdown_maintenance/${id}`,
-        config
-      );
-      const data = response.data.data;
-      dispatch(ViewsingleBreakdownSuccess(data));
-      return data;
-    } catch (error) {
-      toast.error(error.response.data.error);
-      dispatch(ViewsingleBreakdownFailure(error.message));
-    }
-  };
-};
-export const updateBreakdown = (id, formData, navigate) => {
-  return async (dispatch) => {
-    dispatch(UpdateBreakdownRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/update_breakdown_maintenance/${id}`,
-        formData,
-        config
-      );
-      const upadateBreakdowndata = response.data.data;
-      dispatch(UpdateBreakdownSuccess(upadateBreakdowndata));
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      navigate('/breakdownmaintenancelist');
-      return upadateBreakdowndata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(UpdateBreakdownFailure(error.message));
-      throw error;
-    }
-  };
-};
-export const deleteBreakdown = (id) => {
-  return async (dispatch) => {
-    dispatch(DeleteBreakdownRequest());
-    try {
-      const config = createConfig();
-      const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/breakdownMaintenance/delete_breakdown_maintenance/${id}`,
-        config
-      );
-      const deleteBreakdowndata = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000
-      });
-      dispatch(DeleteBreakdownSuccess(deleteBreakdowndata));
-      return deleteBreakdowndata;
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000
-      });
-      dispatch(DeleteBreakdownFailure(error.message));
-      throw error;
-    }
-  };
-};
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Vendor pdf of bank +++++++++++++++++++++++++++++++++++++
 export const SalesCashPDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
@@ -5322,7 +4948,7 @@ export const getallCashAccountledger = (id, formDate, toDate) => {
     }
   };
 };
-export const AccountCashPDF = (id, formDate, toDate, navigate) => {
+export const AccountCashPDF = (id, formDate, toDate, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(AccountCashPdfRequest());
     try {
@@ -5335,15 +4961,23 @@ export const AccountCashPDF = (id, formDate, toDate, navigate) => {
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
       }
-      const binaryString = atob(base64Data);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        saveAs(blob, 'cash_account_ledger.pdf');
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      saveAs(blob, 'cash_account_ledger.pdf');
       dispatch(AccountCashPdfSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);

@@ -142,18 +142,6 @@ const Machineadd = Loadable(lazy(() => import('../views/machine managenment/mach
 const MachineList = Loadable(lazy(() => import('../views/machine managenment/machinelist')));
 const Machinescheduleadd = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machinescheduleadd')));
 const Machineschedulelist = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machineschedulelist')));
-const Regularmaintenanceadd = Loadable(lazy(() => import('../views/machine managenment/regular maintenance/regularmaintenanceadd')));
-const RegularmaintenanceList = Loadable(lazy(() => import('../views/machine managenment/regular maintenance/regularmaintenancelist')));
-const Preventivemaintenanceadd = Loadable(
-  lazy(() => import('../views/machine managenment/preventive maintenance/preventivemaintenanceadd'))
-);
-const PreventivemaintenanceList = Loadable(
-  lazy(() => import('../views/machine managenment/preventive maintenance/preventivemaintenancelist'))
-);
-const Breakdownmaintenanceadd = Loadable(lazy(() => import('../views/machine managenment/breakdown maintenance/breakdownmaintenanceadd')));
-const BreakdownmaintenanceList = Loadable(
-  lazy(() => import('../views/machine managenment/breakdown maintenance/breakdownmaintenancelist'))
-);
 
 const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
 const Employeeview = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
@@ -557,74 +545,6 @@ const MainRoutes = {
     {
       path: '/updatemachineschedule/:id',
       element: <ProtectedRoute element={Machinescheduleadd} resource="Machine Schedule" permissionName="update_machine_schedule" />
-    },
-    {
-      path: '/regularmaintenanceadd',
-      element: <ProtectedRoute element={Regularmaintenanceadd} resource="Regular Maintenance" permissionName="create_regular_maintenance" />
-    },
-    {
-      path: '/regularmaintenanceupdate/:id',
-      element: <ProtectedRoute element={Regularmaintenanceadd} resource="Regular Maintenance" permissionName="update_regular_maintenance" />
-    },
-    {
-      path: '/regularmaintenancelist',
-      element: (
-        <ProtectedRoute element={RegularmaintenanceList} resource="Regular Maintenance" permissionName="view_all_regular_maintenance" />
-      )
-    },
-
-    {
-      path: '/preventivemaintenanceadd',
-      element: (
-        <ProtectedRoute
-          element={Preventivemaintenanceadd}
-          resource="Preventive Maintenance"
-          permissionName="create_preventive_maintenance"
-        />
-      )
-    },
-    {
-      path: '/preventivemaintenanceupdate/:id',
-      element: (
-        <ProtectedRoute
-          element={Preventivemaintenanceadd}
-          resource="Preventive Maintenance"
-          permissionName="update_preventive_maintenance"
-        />
-      )
-    },
-    {
-      path: '/preventivemaintenancelist',
-      element: (
-        <ProtectedRoute
-          element={PreventivemaintenanceList}
-          resource="Preventive Maintenance"
-          permissionName="view_all_preventive_maintenance"
-        />
-      )
-    },
-
-    {
-      path: '/breakdownmaintenanceadd',
-      element: (
-        <ProtectedRoute element={Breakdownmaintenanceadd} resource="Breakdown Maintenance" permissionName="create_breakdown_maintenance" />
-      )
-    },
-    {
-      path: '/breakdownmaintenanceupdate/:id',
-      element: (
-        <ProtectedRoute element={Breakdownmaintenanceadd} resource="Breakdown Maintenance" permissionName="update_breakdown_maintenance" />
-      )
-    },
-    {
-      path: '/breakdownmaintenancelist',
-      element: (
-        <ProtectedRoute
-          element={BreakdownmaintenanceList}
-          resource="Breakdown Maintenance"
-          permissionName="view_all_breakdown_maintenance"
-        />
-      )
     },
 
     // { path: '/stock', element: <StockManagement /> },

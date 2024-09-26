@@ -662,60 +662,6 @@ const useCan = () => {
     return checkPermission('Machine Schedule', 'delete_machine_schedule');
   };
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Regular
-
-  const canCreateRegular = () => {
-    return checkPermission('Regular Maintenance', 'create_regular_maintenance');
-  };
-  const canViewAllRegular = () => {
-    return checkPermission('Regular Maintenance', 'view_all_regular_maintenance');
-  };
-  const canViewSingleRegular = () => {
-    return checkPermission('Regular Maintenance', 'view_one_regular_maintenance');
-  };
-  const canUpdateRegular = () => {
-    return checkPermission('Regular Maintenance', 'update_regular_maintenance');
-  };
-  const canDeleteRegular = () => {
-    return checkPermission('Regular Maintenance', 'delete_regular_maintenance');
-  };
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Preventive
-
-  const canCreatePreventive = () => {
-    return checkPermission('Preventive Maintenance', 'create_preventive_maintenance');
-  };
-  const canViewAllPreventive = () => {
-    return checkPermission('Preventive Maintenance', 'view_all_preventive_maintenance');
-  };
-  const canViewSinglePreventive = () => {
-    return checkPermission('Preventive Maintenance', 'view_one_preventive_maintenance');
-  };
-  const canUpdatePreventive = () => {
-    return checkPermission('Preventive Maintenance', 'update_preventive_maintenance');
-  };
-  const canDeletePreventive = () => {
-    return checkPermission('Preventive Maintenance', 'delete_preventive_maintenance');
-  };
-
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Breakdown
-
-  const canCreateBreakdown = () => {
-    return checkPermission('Breakdown Maintenance', 'create_breakdown_maintenance');
-  };
-  const canViewAllBreakdown = () => {
-    return checkPermission('Breakdown Maintenance', 'view_all_breakdown_maintenance');
-  };
-  const canViewSingleBreakdown = () => {
-    return checkPermission('Breakdown Maintenance', 'view_one_breakdown_maintenance');
-  };
-  const canUpdateBreakdown = () => {
-    return checkPermission('Breakdown Maintenance', 'update_breakdown_maintenance');
-  };
-  const canDeleteBreakdown = () => {
-    return checkPermission('Breakdown Maintenance', 'delete_breakdown_maintenance');
-  };
-
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ customer ledger
 
   const canDownloadPdfCashSales = () => {
@@ -1122,24 +1068,6 @@ const useCan = () => {
     canViewSingleMachineSchedule,
     canUpdateMachineSchedule,
     canDeleteMachineSchedule,
-    // REGULAR MAINTENANCE +++++++
-    canCreateRegular,
-    canViewAllRegular,
-    canViewSingleRegular,
-    canUpdateRegular,
-    canDeleteRegular,
-    // PREVENTIVE MAINTENANCE +++++++
-    canCreatePreventive,
-    canViewAllPreventive,
-    canViewSinglePreventive,
-    canUpdatePreventive,
-    canDeletePreventive,
-    // BREACKDOWN MAINTENANCE +++++++
-    canCreateBreakdown,
-    canViewAllBreakdown,
-    canViewSingleBreakdown,
-    canUpdateBreakdown,
-    canDeleteBreakdown,
     // PDF OF LEDGER +++++++++
     canDownloadPdfCashSales,
     canDownloadPdfSalesinvoice,

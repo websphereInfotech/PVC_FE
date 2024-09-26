@@ -11,7 +11,10 @@ import {
   Grid,
   Paper,
   styled,
-  Button
+  Button,
+  Menu,
+  MenuItem,
+  IconButton
 } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
@@ -20,6 +23,9 @@ import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useCan from 'views/permission managenment/checkpermissionvalue';
+import { IoMdMenu } from 'react-icons/io';
+import { BiSolidFilePdf } from 'react-icons/bi';
+import { MdLocalPrintshop } from 'react-icons/md';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -51,6 +57,8 @@ const Cashaccountledgerlist = () => {
   const [gettodata, setGettodata] = useState({});
   const [toDatec, setToDate] = useState(new Date());
   const [formDatec, setFormDate] = useState(new Date());
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
   const AccountId = sessionStorage.getItem('RCAccountId');
   const formData = sessionStorage.getItem('RCAccountformDate');
   const toDate = sessionStorage.getItem('RCAccounttoDate');
@@ -130,6 +138,52 @@ const Cashaccountledgerlist = () => {
     }
   };
 
+  const handlePrint = async () => {
+    try {
+      const accountIdToUse = AccountIdc ? AccountIdc : AccountId;
+      const formDataToUse = AccountIdc ? formDatec : formData;
+      const toDateToUse = AccountIdc ? toDatec : toDate;
+      const base64Data = await dispatch(AccountCashPDF(accountIdToUse, formDataToUse, toDateToUse, navigate, false));
+
+      if (!base64Data) {
+        toast.error('Unable to retrieve PDF for printing');
+        return;
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const blobUrl = URL.createObjectURL(blob);
+      const printWindow = window.open(blobUrl);
+      if (!printWindow || printWindow.closed || typeof printWindow.closed === 'undefined') {
+        toast.error('Print window blocked by browser. Please enable popups for this site.');
+        return;
+      }
+      printWindow.onload = () => {
+        printWindow.print();
+        printWindow.onafterprint = () => {
+          printWindow.close();
+          URL.revokeObjectURL(blobUrl);
+        };
+      };
+    } catch (error) {
+      console.error('Error printing the PDF:', error);
+      toast.error('An error occurred while trying to print the PDF');
+    }
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Grid container>
@@ -179,10 +233,18 @@ const Cashaccountledgerlist = () => {
             GO
           </Button>
         </Grid>
-        <Grid item xs={12} md={2} sm={6} justifyContent={'flex-end'} style={{ marginTop: '20px' }}>
-          <Button onClick={handlepdf} variant="contained" color="secondary" disabled={!canaccountcashpdf()}>
-            Download Pdf
-          </Button>
+        <Grid item style={{ marginTop: '20px' }}>
+          <IconButton onClick={handleMenuOpen}>
+            <IoMdMenu />
+          </IconButton>
+          <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
+            <MenuItem onClick={handlepdf} disabled={!canaccountcashpdf()}>
+              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+            </MenuItem>
+            <MenuItem onClick={handlePrint}>
+              <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+            </MenuItem>
+          </Menu>
         </Grid>
       </Grid>
       <Grid container spacing={2}>

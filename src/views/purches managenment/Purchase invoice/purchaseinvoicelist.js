@@ -360,6 +360,10 @@ export default function PurchaseinvoiceList() {
     const blobUrl = URL.createObjectURL(blob);
 
     const printWindow = window.open(blobUrl);
+    if (!printWindow || printWindow.closed || typeof printWindow.closed === 'undefined') {
+      toast.error('Print window blocked by browser. Please enable popups for this site.');
+      return;
+    }
     printWindow.onload = () => {
       printWindow.print();
       printWindow.onafterprint = () => {
