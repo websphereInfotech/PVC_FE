@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   Typography,
@@ -167,17 +168,24 @@ const Accountledgerlist = () => {
       // Open the blob URL in a new window and print
       const printWindow = window.open(blobUrl);
       if (!printWindow || printWindow.closed || typeof printWindow.closed === 'undefined') {
-        throw new Error('Print window blocked or failed to open.');
+        toast.error('Print window blocked by browser. Please enable popups for this site.');
+        return;
       }
-
-      // Ensure the print happens after the window is loaded
-      printWindow.onload = () => {
-        printWindow.print();
-        printWindow.onafterprint = () => {
-          printWindow.close();
-          URL.revokeObjectURL(blobUrl);
-        };
+  
+      // Wait until the document is ready before printing
+      const checkIfLoaded = () => {
+        if (printWindow.document.readyState === 'complete') {
+          printWindow.print();
+          printWindow.onafterprint = () => {
+            printWindow.close();
+            URL.revokeObjectURL(blobUrl);
+          };
+        } else {
+          setTimeout(checkIfLoaded, 500); // Retry after 500ms if not yet ready
+        }
       };
+  
+      printWindow.onload = checkIfLoaded;
     } catch (error) {
       console.error('Error printing the PDF:', error);
       toast.error('An error occurred while trying to print the PDF');
