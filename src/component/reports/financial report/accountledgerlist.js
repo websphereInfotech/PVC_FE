@@ -345,6 +345,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import { IoMdMenu } from 'react-icons/io';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -376,8 +377,6 @@ const Accountledgerlist = () => {
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
   const { canaccountpdf } = useCan();
-
-  // Menu state
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -429,7 +428,6 @@ const Accountledgerlist = () => {
           setGettodata(data.to);
         } else {
           console.error('Data is undefined.');
-          // Handle error properly
           if (error.response && error.response.status === 401) {
             navigate('/');
           }
@@ -568,7 +566,7 @@ const Accountledgerlist = () => {
               <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
             </MenuItem>
             <MenuItem onClick={handlePrint}>
-              <MdLocalPrintshop style={{ marginRight: '8px' }} /> PDF
+              <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
             </MenuItem>
           </Menu>
         </Grid>
