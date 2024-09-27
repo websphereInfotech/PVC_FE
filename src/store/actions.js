@@ -537,14 +537,18 @@ export const DELETE_MACHINE_SCHEDULE_FAILURE = 'DELETE_MACHINE_SCHEDULE_FAILURE'
 export const GET_SALES_CASH_PDF_REQUEST = 'GET_SALES_CASH_PDF_REQUEST';
 export const GET_SALES_CASH_PDF_SUCCESS = 'GET_SALES_CASH_PDF_SUCCESS';
 export const GET_SALES_CASH_PDF_FAILURE = 'GET_SALES_CASH_PDF_FAILURE';
+export const GET_SALES_CASH_IMAGE_REQUEST = 'GET_SALES_CASH_IMAGE_REQUEST';
+export const GET_SALES_CASH_IMAGE_SUCCESS = 'GET_SALES_CASH_IMAGE_SUCCESS';
+export const GET_SALES_CASH_IMAGE_FAILURE = 'GET_SALES_CASH_IMAGE_FAILURE';
 export const GET_SALES_INVOICE_PDF_REQUEST = 'GET_SALES_INVOICE_PDF_REQUEST';
 export const GET_SALES_INVOICE_PDF_SUCCESS = 'GET_SALES_INVOICE_PDF_SUCCESS';
 export const GET_SALES_INVOICE_PDF_FAILURE = 'GET_SALES_INVOICE_PDF_FAILURE';
-
+export const GET_SALES_INVOICE_IMAGE_REQUEST = 'GET_SALES_INVOICE_IMAGE_REQUEST';
+export const GET_SALES_INVOICE_IMAGE_SUCCESS = 'GET_SALES_INVOICE_IMAGE_SUCCESS';
+export const GET_SALES_INVOICE_IMAGE_FAILURE = 'GET_SALES_INVOICE_IMAGE_FAILURE';
 export const GET_SALES_INVOICE_EXCEL_REQUEST = 'GET_SALES_INVOICE_EXCEL_REQUEST';
 export const GET_SALES_INVOICE_EXCEL_SUCCESS = 'GET_SALES_INVOICE_EXCEL_SUCCESS';
 export const GET_SALES_INVOICE_EXCEL_FAILURE = 'GET_SALES_INVOICE_EXCEL_FAILURE';
-
 export const GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST = 'GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST';
 export const GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS = 'GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS';
 export const GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE = 'GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE';
@@ -554,6 +558,9 @@ export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
 export const GET_PURCHASE_INVOICE_PDF_REQUEST = 'GET_PURCHASE_INVOICE_PDF_REQUEST';
 export const GET_PURCHASE_INVOICE_PDF_SUCCESS = 'GET_PURCHASE_INVOICE_PDF_SUCCESS';
 export const GET_PURCHASE_INVOICE_PDF_FAILURE = 'GET_PURCHASE_INVOICE_PDF_FAILURE';
+export const GET_PURCHASE_INVOICE_IMAGE_REQUEST = 'GET_PURCHASE_INVOICE_IMAGE_REQUEST';
+export const GET_PURCHASE_INVOICE_IMAGE_SUCCESS = 'GET_PURCHASE_INVOICE_IMAGE_SUCCESS';
+export const GET_PURCHASE_INVOICE_IMAGE_FAILURE = 'GET_PURCHASE_INVOICE_IMAGE_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++
 export const GET_TOTAL_SALES_REQUEST = 'GET_TOTAL_SALES_REQUEST';
@@ -2568,6 +2575,17 @@ export const SalesCashPdfSuccess = (data) => ({
   type: 'GET_SALES_CASH_PDF_SUCCESS',
   payload: data
 });
+export const SalesCashImageFailure = (error) => ({
+  type: 'GET_SALES_CASH_IMAGE_FAILURE',
+  payload: error
+});
+export const SalesCashImageRequest = () => ({
+  type: 'GET_SALES_CASH_IMAGE_REQUEST'
+});
+export const SalesCashImageSuccess = (data) => ({
+  type: 'GET_SALES_CASH_IMAGE_SUCCESS',
+  payload: data
+});
 export const SalesCashPdfFailure = (error) => ({
   type: 'GET_SALES_CASH_PDF_FAILURE',
   payload: error
@@ -2581,6 +2599,18 @@ export const SalesInvoicePdfSuccess = (data) => ({
 });
 export const SalesInvoicePdfFailure = (error) => ({
   type: 'GET_SALES_INVOICE_PDF_FAILURE',
+  payload: error
+});
+
+export const SalesInvoiceImageRequest = () => ({
+  type: 'GET_SALES_INVOICE_IMAGE_REQUEST'
+});
+export const SalesInvoiceImageSuccess = (data) => ({
+  type: 'GET_SALES_INVOICE_IMAGE_SUCCESS',
+  payload: data
+});
+export const SalesInvoiceImageFailure = (error) => ({
+  type: 'GET_SALES_INVOICE_IMAGE_FAILURE',
   payload: error
 });
 export const SalesInvoiceExcelRequest = () => ({
@@ -2626,6 +2656,17 @@ export const PurchaseInvoicePdfSuccess = (data) => ({
 });
 export const PurchaseInvoicePdfFailure = (error) => ({
   type: 'GET_PURCHASE_INVOICE_PDF_FAILURE',
+  payload: error
+});
+export const PurchaseInvoiceImageRequest = () => ({
+  type: 'GET_PURCHASE_INVOICE_IMAGE_REQUEST'
+});
+export const PurchaseInvoiceImageSuccess = (data) => ({
+  type: 'GET_PURCHASE_INVOICE_IMAGE_SUCCESS',
+  payload: data
+});
+export const PurchaseInvoiceImageFailure = (error) => ({
+  type: 'GET_PURCHASE_INVOICE_IMAGE_FAILURE',
   payload: error
 });
 

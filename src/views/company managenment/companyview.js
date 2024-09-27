@@ -29,13 +29,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CloseIcon from '@mui/icons-material/Close';
 import Singlebankledgerlist from './singlebankledger';
 import { Delete, Edit } from '@mui/icons-material';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const CompanyviewPage = () => {
   const theme = useTheme();
   const isMobiledialog = useMediaQuery(theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
-  const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank, canViewCompanyBankLedger, canViwAllCompanyBank } = useCan();
+  const { canCreateCompanyBank, canUpdateCompanyBank, canDeleteCompanyBank, canViwAllCompanyBank } = useCan();
   const [open, setOpen] = useState(false);
   const [openLedger, setOpenLedger] = useState(false);
   const [ledgerBankId, setLedgerBankId] = useState(null);
@@ -82,11 +81,6 @@ const CompanyviewPage = () => {
     setLedgerBankId(null);
   };
 
-  const handleOpenLedgerDialog = (bankId) => {
-    setLedgerBankId(bankId);
-    setOpenLedger(true);
-  };
-
   const handleformDateChange = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -119,9 +113,6 @@ const CompanyviewPage = () => {
         setData(data);
       })
       .catch((error) => {
-        if (error.response.status === 401) {
-          navigate('/');
-        }
         console.error('Error fetching Company data:', error);
       });
   }, [dispatch, id, navigate]);
@@ -284,21 +275,6 @@ const CompanyviewPage = () => {
                               disabled={!canDeleteCompanyBank()}
                             >
                               <Delete style={{ fontSize: '16px' }} />
-                            </IconButton>
-                            <IconButton
-                              sizeSmall
-                              style={{
-                                backgroundColor: canViewCompanyBankLedger() ? 'blue' : 'gray',
-                                color: canViewCompanyBankLedger() ? 'white' : 'white',
-                                borderRadius: 0.8,
-                                ...(canViewCompanyBankLedger() && { opacity: 1 }),
-                                ...(!canViewCompanyBankLedger() && { opacity: 0.5 }),
-                                ...(!canViewCompanyBankLedger() && { backgroundColor: 'gray' })
-                              }}
-                              onClick={() => handleOpenLedgerDialog(bank.id)}
-                              disabled={!canViewCompanyBankLedger()}
-                            >
-                              <AccountBalanceWalletIcon style={{ fontSize: '16px' }} />
                             </IconButton>
                           </div>
                         </TableCell>

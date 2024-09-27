@@ -239,7 +239,7 @@
 // }
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { viewPurchaseinvoice, deletePurchaseinvoice, getallPurchaseinvoice, PurchaseInvoicePDF } from 'store/thunk';
+import { viewPurchaseinvoice, deletePurchaseinvoice, getallPurchaseinvoice, PurchaseInvoicePDF, PurchaseInvoiceImage } from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -258,6 +258,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { toast } from 'react-toastify';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
+import { IoImage } from 'react-icons/io5';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
@@ -382,6 +383,10 @@ export default function PurchaseinvoiceList() {
     setAnchorEl(null);
   };
 
+  const handledownloadImage = async (id) => {
+    await dispatch(PurchaseInvoiceImage(id, navigate));
+  };
+
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -468,6 +473,9 @@ export default function PurchaseinvoiceList() {
                           </MenuItem>
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+                          </MenuItem>
+                          <MenuItem onClick={() => handledownloadImage(row.id)}>
+                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
                           </MenuItem>
                         </Menu>
                       </div>

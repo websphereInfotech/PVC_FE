@@ -24,6 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import {
   SalesInvoiceExcel,
+  SalesInvoiceImage,
   SalesInvoicePDF,
   SalesInvoiceSingleExcel,
   SalesInvoiceview,
@@ -39,6 +40,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import { IoImage } from 'react-icons/io5';
 
 const columns = [
   { id: 'invoiceno', label: 'Invoice No', align: 'center' },
@@ -167,6 +169,10 @@ const Salesinvoicelist = () => {
 
   const handledownloadpdf = async (id) => {
     await dispatch(SalesInvoicePDF(id, navigate, true));
+  };
+
+  const handledownloaImage = async (id) => {
+    await dispatch(SalesInvoiceImage(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -298,6 +304,9 @@ const Salesinvoicelist = () => {
                           </MenuItem>
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+                          </MenuItem>
+                          <MenuItem onClick={() => handledownloaImage(row.id)}>
+                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
                           </MenuItem>
                         </Menu>
                       </div>
