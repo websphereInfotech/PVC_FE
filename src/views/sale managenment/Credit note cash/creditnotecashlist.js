@@ -30,6 +30,7 @@ import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
@@ -41,7 +42,8 @@ const columns = [
 ];
 
 const Creditnotecashlist = () => {
-  const { canUpdateCreditnotecash, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash } = useCan();
+  const { canUpdateCreditnotecash, canViewCreditnotecash, canCreateCreditnotecash, canDeleteCreditnotecash, canCreditnotecashpdf } =
+    useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -238,14 +240,19 @@ const Creditnotecashlist = () => {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={open && selectedId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handlepdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
+                          {canCreditnotecashpdf() && (
+                            <MenuItem onClick={() => handlepdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
                           <MenuItem>
                             <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                          </MenuItem>
+                          <MenuItem>
+                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
                         </Menu>
                       </div>

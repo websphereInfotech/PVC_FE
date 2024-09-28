@@ -20,7 +20,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { CreditnotePDF, Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
+import { CreditnoteImage, CreditnotePDF, Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -30,6 +30,7 @@ import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
@@ -41,7 +42,8 @@ const columns = [
 ];
 
 const Creditnotelist = () => {
-  const { canUpdateCreditnote, canViewCreditnote, canCreateCreditnote, canDeleteCreditnote } = useCan();
+  const { canUpdateCreditnote, canViewCreditnote, canCreateCreditnote, canDeleteCreditnote, canCreditnotepdf, canCreditnoteImage } =
+    useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -114,6 +116,10 @@ const Creditnotelist = () => {
 
   const handlepdf = async (id) => {
     await dispatch(CreditnotePDF(id, navigate, true));
+  };
+
+  const handleImage = async (id) => {
+    await dispatch(CreditnoteImage(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -238,14 +244,21 @@ const Creditnotelist = () => {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={open && selectedId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handlepdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
+                          {canCreditnotepdf() && (
+                            <MenuItem onClick={() => handlepdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
+                          {canCreditnoteImage() && (
+                            <MenuItem onClick={() => handleImage(row.id)}>
+                              <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            </MenuItem>
+                          )}
                           <MenuItem>
-                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
                         </Menu>
                       </div>

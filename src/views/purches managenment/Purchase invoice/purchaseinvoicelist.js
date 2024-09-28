@@ -259,6 +259,7 @@ import { toast } from 'react-toastify';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { IoImage } from 'react-icons/io5';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
@@ -270,7 +271,14 @@ const columns = [
 ];
 
 export default function PurchaseinvoiceList() {
-  const { canViewPurchaseinvoice, canDeletePurchaseinvoice, canUpdatePurchaseinvoice, canCreatePurchaseinvoice } = useCan();
+  const {
+    canViewPurchaseinvoice,
+    canDeletePurchaseinvoice,
+    canUpdatePurchaseinvoice,
+    canCreatePurchaseinvoice,
+    canDownloadPdfPurchaseInvoice,
+    canDownloadImagePurchaseInvoice
+  } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
@@ -468,14 +476,21 @@ export default function PurchaseinvoiceList() {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={open && selectedInvoiceId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handledownloadpdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
+                          {canDownloadPdfPurchaseInvoice() && (
+                            <MenuItem onClick={() => handledownloadpdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem onClick={() => handledownloadImage(row.id)}>
-                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                          {canDownloadImagePurchaseInvoice() && (
+                            <MenuItem onClick={() => handledownloadImage(row.id)}>
+                              <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            </MenuItem>
+                          )}
+                          <MenuItem>
+                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
                         </Menu>
                       </div>

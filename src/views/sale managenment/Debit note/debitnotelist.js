@@ -20,7 +20,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { DebitnotePDF, Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
+import { DebitnoteImage, DebitnotePDF, Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -41,7 +41,7 @@ const columns = [
 ];
 
 const Debitnotelist = () => {
-  const { canUpdateDebitnote, canViewDebitnote, canCreateDebitnote, canDeleteDebitnote } = useCan();
+  const { canUpdateDebitnote, canViewDebitnote, canCreateDebitnote, canDeleteDebitnote, canDebitnotepdf, canDebitnoteImage } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -114,6 +114,10 @@ const Debitnotelist = () => {
 
   const handlepdf = async (id) => {
     await dispatch(DebitnotePDF(id, navigate, true));
+  };
+
+  const handleImage = async (id) => {
+    await dispatch(DebitnoteImage(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -238,15 +242,19 @@ const Debitnotelist = () => {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={open && selectedId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handlepdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
+                          {canDebitnotepdf() && (
+                            <MenuItem onClick={() => handlepdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem>
-                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
-                          </MenuItem>
+                          {canDebitnoteImage() && (
+                            <MenuItem onClick={() => handleImage(roe.id)}>
+                              <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'debitdate' ? (

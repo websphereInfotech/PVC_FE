@@ -41,6 +41,7 @@ import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'invoiceno', label: 'Invoice No', align: 'center' },
@@ -52,7 +53,16 @@ const columns = [
 ];
 
 const Salesinvoicelist = () => {
-  const { canUpdateSalesinvoice, canViewalesinvoice, canDeleteSalesinvoice, canCreateSalesinvoice } = useCan();
+  const {
+    canUpdateSalesinvoice,
+    canViewalesinvoice,
+    canDeleteSalesinvoice,
+    canCreateSalesinvoice,
+    canDownloadPdfSalesinvoice,
+    canDownloadExcelCashSales,
+    canSingleExcelSalesinvoice,
+    canDownloadSalesinvoiceImage
+  } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [salesinvoice, setsalesinvoice] = useState([]);
@@ -225,7 +235,13 @@ const Salesinvoicelist = () => {
         >
           Create Sales Invoice
         </Button>
-        <Button variant="contained" color="secondary" style={{ margin: '10px' }} onClick={handleOpenLedgerDialog}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleOpenLedgerDialog}
+          disabled={!canSingleExcelSalesinvoice()}
+        >
           Download Excel
         </Button>
       </div>
@@ -296,17 +312,26 @@ const Salesinvoicelist = () => {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={openMenu && selectedInvoiceId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handledownloadpdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
-                          <MenuItem onClick={() => handledownloadsingleexcel(row.id)}>
-                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-                          </MenuItem>
+                          {canDownloadPdfSalesinvoice() && (
+                            <MenuItem onClick={() => handledownloadpdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
+                          {canDownloadExcelCashSales() && (
+                            <MenuItem onClick={() => handledownloadsingleexcel(row.id)}>
+                              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem onClick={() => handledownloaImage(row.id)}>
-                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                          {canDownloadSalesinvoiceImage() && (
+                            <MenuItem onClick={() => handledownloaImage(row.id)}>
+                              <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            </MenuItem>
+                          )}
+                          <MenuItem>
+                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
                         </Menu>
                       </div>

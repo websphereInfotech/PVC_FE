@@ -30,6 +30,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'saleNo', label: 'Sale No', align: 'center' },
@@ -41,7 +42,7 @@ const columns = [
 ];
 
 const Salescashlist = () => {
-  const { canCreateSalescash, canUpdateSalescash, canViewSalescash, canDeleteSalescash } = useCan();
+  const { canCreateSalescash, canUpdateSalescash, canViewSalescash, canDeleteSalescash, canDownloadPdfCashSales } = useCan();
   const navigate = useNavigate();
   const [salescash, setsalescash] = useState([]);
   const [page, setPage] = useState(0);
@@ -235,14 +236,19 @@ const Salescashlist = () => {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={openMenu && selectedInvoiceId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handledownloadpdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
+                          {canDownloadPdfCashSales() && (
+                            <MenuItem onClick={() => handledownloadpdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
                           <MenuItem>
                             <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                          </MenuItem>
+                          <MenuItem>
+                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
                         </Menu>
                       </div>

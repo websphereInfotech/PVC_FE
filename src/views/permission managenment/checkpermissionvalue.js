@@ -270,26 +270,6 @@ const useCan = () => {
     return checkPermission('Purchase Invoice', 'view_all_purchase_Invoice');
   };
 
-  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHSE RETURN
-  const canCreatePurchasereturn = () => {
-    return checkPermission('Purchase Return', 'create_purchaseReturn');
-  };
-  const canUpdatePurchasereturn = () => {
-    return checkPermission('Purchase Return', 'update_purchaseReturn');
-  };
-  const canDeletePurchasereturn = () => {
-    return checkPermission('Purchase Return', 'delete_purchasereturn');
-  };
-  const canDeletePurchasereturnItem = () => {
-    return checkPermission('Purchase Return', 'delete_purchaseReturn_item');
-  };
-  const canViewPurchasereturn = () => {
-    return checkPermission('Purchase Return', 'view_single_purchaseReturn');
-  };
-  const canViewAllPurchasereturn = () => {
-    return checkPermission('Purchase Return', 'view_all_purchaseReturn');
-  };
-
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ RECEIPT
   const canCreateReceipt = () => {
     return checkPermission('Receipt', 'create_receipt');
@@ -344,6 +324,9 @@ const useCan = () => {
   const canDebitnotepdf = () => {
     return checkPermission('Debit Note', 'debitNote_pdf');
   };
+  const canDebitnoteImage = () => {
+    return checkPermission('Debit Note', 'debitNote_jpg');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE CASH
 
   const canCreateDebitnotecash = () => {
@@ -383,6 +366,9 @@ const useCan = () => {
   };
   const canCreditnotepdf = () => {
     return checkPermission('Credit Note', 'creditNote_pdf');
+  };
+  const canCreditnoteImage = () => {
+    return checkPermission('Credit Note', 'creditNote_jpg');
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE CASH
 
@@ -670,11 +656,23 @@ const useCan = () => {
   const canDownloadPdfSalesinvoice = () => {
     return checkPermission('Sales Invoice', 'salesInvoice_pdf');
   };
+  const canDownloadSalesinvoiceImage = () => {
+    return checkPermission('Sales Invoice', 'view_salesInvoice_jpg');
+  };
+  const canDownloadExcelCashSales = () => {
+    return checkPermission('Sales Cash', 'salesInvoice_excel');
+  };
+  const canSingleExcelSalesinvoice = () => {
+    return checkPermission('Sales Invoice', 'view_salesInvoice_excel');
+  };
   const canDownloadPdfCashPurchase = () => {
     return checkPermission('Purchase Cash', 'view_purchase_cash_pdf');
   };
   const canDownloadPdfPurchaseInvoice = () => {
     return checkPermission('Purchase Invoice', 'purchaseInvoice_pdf');
+  };
+  const canDownloadImagePurchaseInvoice = () => {
+    return checkPermission('Purchase Invoice', 'purchaseInvoice_jpg');
   };
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ dash board ++++++++++++++++++++++++
@@ -934,13 +932,6 @@ const useCan = () => {
     canDeletePurchaseinvoice,
     canViewPurchaseinvoice,
     canViewAllPurchaseinvoice,
-    // PURCHSE RETURN +++++++++++++++++
-    canCreatePurchasereturn,
-    canUpdatePurchasereturn,
-    canDeletePurchasereturn,
-    canDeletePurchasereturnItem,
-    canViewPurchasereturn,
-    canViewAllPurchasereturn,
     // RECEIPT ++++++++++++++++++++++++
     canCreateReceipt,
     canUpdateReceipt,
@@ -960,6 +951,7 @@ const useCan = () => {
     canViewDebitnote,
     canViwAllDebitnote,
     canDebitnotepdf,
+    canDebitnoteImage,
     //  DEBIT NOTE CASH++++++++++++++++++
     canCreateDebitnotecash,
     canUpdateDebitnotecash,
@@ -974,6 +966,7 @@ const useCan = () => {
     canViewCreditnote,
     canViwAllCreditnote,
     canCreditnotepdf,
+    canCreditnoteImage,
     //  CREDIT NOTE CASH ++++++++++++++++++
     canCreateCreditnotecash,
     canUpdateCreditnotecash,
@@ -1077,8 +1070,12 @@ const useCan = () => {
     // PDF OF LEDGER +++++++++
     canDownloadPdfCashSales,
     canDownloadPdfSalesinvoice,
+    canDownloadSalesinvoiceImage,
+    canSingleExcelSalesinvoice,
+    canDownloadExcelCashSales,
     canDownloadPdfCashPurchase,
     canDownloadPdfPurchaseInvoice,
+    canDownloadImagePurchaseInvoice,
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
     canSeeTotalPurchase,

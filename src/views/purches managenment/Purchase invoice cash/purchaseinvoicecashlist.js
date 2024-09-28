@@ -30,6 +30,7 @@ import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'purchaseNo', label: 'Purchase No', align: 'center' },
@@ -41,7 +42,13 @@ const columns = [
 ];
 
 const Purchaseinvoicecashlist = () => {
-  const { canCreatePurchasebillcash, canUpdatePurchasebillcash, canViewPurchasebillcash, canDeletePurchasebillcash } = useCan();
+  const {
+    canCreatePurchasebillcash,
+    canUpdatePurchasebillcash,
+    canViewPurchasebillcash,
+    canDeletePurchasebillcash,
+    canDownloadPdfCashPurchase
+  } = useCan();
   const navigate = useNavigate();
   const [purchasebillcash, setPurchasebillcash] = useState([]);
   const [page, setPage] = useState(0);
@@ -233,14 +240,19 @@ const Purchaseinvoicecashlist = () => {
                           <MoreVertIcon />
                         </IconButton>
                         <Menu anchorEl={anchorEl} open={open && selectedId === row.id} onClose={handleMenuClose}>
-                          <MenuItem onClick={() => handledownloadpdf(row.id)}>
-                            <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-                          </MenuItem>
+                          {canDownloadPdfCashPurchase() && (
+                            <MenuItem onClick={() => handledownloadpdf(row.id)}>
+                              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+                            </MenuItem>
+                          )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
                           <MenuItem>
                             <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                          </MenuItem>
+                          <MenuItem>
+                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
                         </Menu>
                       </div>

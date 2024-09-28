@@ -172,6 +172,9 @@ export const VIEW_DEBIT_NOTE_FAILURE = 'VIEW_DEBIT_NOTE_FAILURE';
 export const DEBIT_NOTE_PDF_REQUEST = 'DEBIT_NOTE_PDF_REQUEST';
 export const DEBIT_NOTE_PDF_SUCCESS = 'DEBIT_NOTE_PDF_SUCCESS';
 export const DEBIT_NOTE_PDF_FAILURE = 'DEBIT_NOTE_PDF_FAILURE';
+export const DEBIT_NOTE_IMAGE_REQUEST = 'DEBIT_NOTE_IMAGE_REQUEST';
+export const DEBIT_NOTE_IMAGE_SUCCESS = 'DEBIT_NOTE_IMAGE_SUCCESS';
+export const DEBIT_NOTE_IMAGE_FAILURE = 'DEBIT_NOTE_IMAGE_FAILURE';
 
 // ########################################## DEBIT NOTE ###############################################################################################
 export const CREATE_DEBIT_NOTE_CASH_REQUEST = 'CREATE_DEBIT_NOTE_CASH_REQUEST';
@@ -212,6 +215,9 @@ export const VIEW_CREDIT_NOTE_FAILURE = 'VIEW_CREDIT_NOTE_FAILURE';
 export const CREDIT_NOTE_PDF_REQUEST = 'CREDIT_NOTE_PDF_REQUEST';
 export const CREDIT_NOTE_PDF_SUCCESS = 'CREDIT_NOTE_PDF_SUCCESS';
 export const CREDIT_NOTE_PDF_FAILURE = 'CREDIT_NOTE_PDF_FAILURE';
+export const CREDIT_NOTE_IMAGE_REQUEST = 'CREDIT_NOTE_IMAGE_REQUEST';
+export const CREDIT_NOTE_IMAGE_SUCCESS = 'CREDIT_NOTE_IMAGE_SUCCESS';
+export const CREDIT_NOTE_IMAGE_FAILURE = 'CREDIT_NOTE_IMAGE_FAILURE';
 
 // ########################################## CREDIT NOTE ###############################################################################################
 export const CREATE_CREDIT_NOTE_CASH_REQUEST = 'CREATE_CREDIT_NOTE_CASH_REQUEST';
@@ -1650,6 +1656,18 @@ export const DebitnotePdfFailure = (error) => ({
   type: 'DEBIT_NOTE_PDF_FAILURE',
   payload: error
 });
+export const DebitnoteImageRequest = (data) => ({
+  type: 'DEBIT_NOTE_IMAGE_REQUEST',
+  payload: data
+});
+export const DebitnoteImageSuccess = (data) => ({
+  type: 'DEBIT_NOTE_IMAGE_SUCCESS',
+  payload: data
+});
+export const DebitnoteImageFailure = (error) => ({
+  type: 'DEBIT_NOTE_IMAGE_FAILURE',
+  payload: error
+});
 
 // ##################################################################################### DEBIT NOTE ################################################################
 
@@ -1798,6 +1816,18 @@ export const CreditnotePdfSuccess = (data) => ({
 });
 export const CreditnotePdfFailure = (error) => ({
   type: 'CREDIT_NOTE_PDF_FAILURE',
+  payload: error
+});
+export const CreditnoteImageRequest = (data) => ({
+  type: 'CREDIT_NOTE_IMAGE_REQUEST',
+  payload: data
+});
+export const CreditnoteImageSuccess = (data) => ({
+  type: 'CREDIT_NOTE_IMAGE_SUCCESS',
+  payload: data
+});
+export const CreditnoteImageFailure = (error) => ({
+  type: 'CREDIT_NOTE_IMAGE_FAILURE',
   payload: error
 });
 
