@@ -347,6 +347,9 @@ const useCan = () => {
   const canDebitnotecashpdf = () => {
     return checkPermission('Debit Note Cash', 'debitNote_pdf');
   };
+  const canDebitnotecashImage = () => {
+    return checkPermission('Debit Note Cash', 'debitNote_jpg');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE
 
   const canCreateCreditnote = () => {
@@ -389,6 +392,9 @@ const useCan = () => {
   };
   const canCreditnotecashpdf = () => {
     return checkPermission('Credit Note Cash', 'creditNote_pdf');
+  };
+  const canCreditnotecashImage = () => {
+    return checkPermission('Credit Note Cash', 'creditNote_jpg');
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALES CASH
 
@@ -653,20 +659,26 @@ const useCan = () => {
   const canDownloadPdfCashSales = () => {
     return checkPermission('Sales Cash', 'view_sales_cash_pdf');
   };
+  const canDownloadImageCashSales = () => {
+    return checkPermission('Sales Cash', 'view_sales_cash_jpg');
+  };
   const canDownloadPdfSalesinvoice = () => {
     return checkPermission('Sales Invoice', 'salesInvoice_pdf');
   };
   const canDownloadSalesinvoiceImage = () => {
     return checkPermission('Sales Invoice', 'view_salesInvoice_jpg');
   };
-  const canDownloadExcelCashSales = () => {
-    return checkPermission('Sales Cash', 'salesInvoice_excel');
+  const canDownloadExcelSales = () => {
+    return checkPermission('Sales Invoice', 'salesInvoice_excel');
   };
   const canSingleExcelSalesinvoice = () => {
     return checkPermission('Sales Invoice', 'view_salesInvoice_excel');
   };
   const canDownloadPdfCashPurchase = () => {
     return checkPermission('Purchase Cash', 'view_purchase_cash_pdf');
+  };
+  const canDownloadImageCashPurchase = () => {
+    return checkPermission('Purchase Cash', 'view_purchase_cash_jpg');
   };
   const canDownloadPdfPurchaseInvoice = () => {
     return checkPermission('Purchase Invoice', 'purchaseInvoice_pdf');
@@ -959,6 +971,7 @@ const useCan = () => {
     canViewDebitnotecash,
     canViwAllDebitnotecash,
     canDebitnotecashpdf,
+    canDebitnotecashImage,
     //  CREDIT NOTE ++++++++++++++++++
     canCreateCreditnote,
     canUpdateCreditnote,
@@ -974,6 +987,7 @@ const useCan = () => {
     canViewCreditnotecash,
     canViwAllCreditnotecash,
     canCreditnotecashpdf,
+    canCreditnotecashImage,
     // SALES CASH ++++++++++++++++++++
     canCreateSalescash,
     canUpdateSalescash,
@@ -1069,11 +1083,13 @@ const useCan = () => {
     canDeleteMachineSchedule,
     // PDF OF LEDGER +++++++++
     canDownloadPdfCashSales,
+    canDownloadImageCashSales,
     canDownloadPdfSalesinvoice,
     canDownloadSalesinvoiceImage,
     canSingleExcelSalesinvoice,
-    canDownloadExcelCashSales,
+    canDownloadExcelSales,
     canDownloadPdfCashPurchase,
+    canDownloadImageCashPurchase,
     canDownloadPdfPurchaseInvoice,
     canDownloadImagePurchaseInvoice,
     // DASH BOARD +++++++++++++

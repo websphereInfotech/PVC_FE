@@ -195,6 +195,9 @@ export const VIEW_DEBIT_NOTE_CASH_FAILURE = 'VIEW_DEBIT_NOTE_CASH_FAILURE';
 export const DEBIT_NOTE_CASH_PDF_REQUEST = 'DEBIT_NOTE_CASH_PDF_REQUEST';
 export const DEBIT_NOTE_CASH_PDF_SUCCESS = 'DEBIT_NOTE_CASH_PDF_SUCCESS';
 export const DEBIT_NOTE_CASH_PDF_FAILURE = 'DEBIT_NOTE_CASH_PDF_FAILURE';
+export const DEBIT_NOTE_CASH_IMAGE_REQUEST = 'DEBIT_NOTE_CASH_IMAGE_REQUEST';
+export const DEBIT_NOTE_CASH_IMAGE_SUCCESS = 'DEBIT_NOTE_CASH_IMAGE_SUCCESS';
+export const DEBIT_NOTE_CASH_IMAGE_FAILURE = 'DEBIT_NOTE_CASH_IMAGE_FAILURE';
 
 // ########################################## CREDIT NOTE ###############################################################################################
 export const CREATE_CREDIT_NOTE_REQUEST = 'CREATE_CREDIT_NOTE_REQUEST';
@@ -238,6 +241,9 @@ export const VIEW_CREDIT_NOTE_CASH_FAILURE = 'VIEW_CREDIT_NOTE_CASH_FAILURE';
 export const CREDIT_NOTE_CASH_PDF_REQUEST = 'CREDIT_NOTE_CASH_PDF_REQUEST';
 export const CREDIT_NOTE_CASH_PDF_SUCCESS = 'CREDIT_NOTE_CASH_PDF_SUCCESS';
 export const CREDIT_NOTE_CASH_PDF_FAILURE = 'CREDIT_NOTE_CASH_PDF_FAILURE';
+export const CREDIT_NOTE_CASH_IMAGE_REQUEST = 'CREDIT_NOTE_CASH_IMAGE_REQUEST';
+export const CREDIT_NOTE_CASH_IMAGE_SUCCESS = 'CREDIT_NOTE_CASH_IMAGE_SUCCESS';
+export const CREDIT_NOTE_CASH_IMAGE_FAILURE = 'CREDIT_NOTE_CASH_IMAGE_FAILURE';
 
 // ########################################## PURCHASE INVOICE ###############################################################################################
 export const FETCH_ALL_PURCHASE_INVOICE_REQUEST = 'FETCH_ALL_PURCHASE_INVOICE_REQUEST';
@@ -1743,7 +1749,18 @@ export const DebitnotecashPdfFailure = (error) => ({
   type: 'DEBIT_NOTE_CASH_PDF_FAILURE',
   payload: error
 });
-
+export const DebitnoteCashImageRequest = (data) => ({
+  type: 'DEBIT_NOTE_CASH_IMAGE_REQUEST',
+  payload: data
+});
+export const DebitnoteCashImageSuccess = (data) => ({
+  type: 'DEBIT_NOTE_CASH_IMAGE_SUCCESS',
+  payload: data
+});
+export const DebitnoteCashImageFailure = (error) => ({
+  type: 'DEBIT_NOTE_CASH_IMAGE_FAILURE',
+  payload: error
+});
 // ##################################################################################### CREDIT NOTE ################################################################
 
 export const createCreditnoteRequest = (data) => ({
@@ -1902,6 +1919,18 @@ export const CreditnotecashPdfSuccess = (data) => ({
 });
 export const CreditnotecashPdfFailure = (error) => ({
   type: 'CREDIT_NOTE_CASH_PDF_FAILURE',
+  payload: error
+});
+export const CreditnoteCashImageRequest = (data) => ({
+  type: 'CREDIT_NOTE_CASH_IMAGE_REQUEST',
+  payload: data
+});
+export const CreditnoteCashImageSuccess = (data) => ({
+  type: 'CREDIT_NOTE_CASH_IMAGE_SUCCESS',
+  payload: data
+});
+export const CreditnoteCashImageFailure = (error) => ({
+  type: 'CREDIT_NOTE_CASH_IMAGE_FAILURE',
   payload: error
 });
 // ##################################################################################### PAYMENT RECIEVE CASH ######################################################
@@ -2699,7 +2728,17 @@ export const PurchaseInvoiceImageFailure = (error) => ({
   type: 'GET_PURCHASE_INVOICE_IMAGE_FAILURE',
   payload: error
 });
-
+export const PurchaseInvoiceCashImageRequest = () => ({
+  type: 'GET_PURCHASE_INVOICE_CASH_IMAGE_REQUEST'
+});
+export const PurchaseInvoiceCashImageSuccess = (data) => ({
+  type: 'GET_PURCHASE_INVOICE_CASH_IMAGE_SUCCESS',
+  payload: data
+});
+export const PurchaseInvoiceCashImageFailure = (error) => ({
+  type: 'GET_PURCHASE_INVOICE_CASH_IMAGE_FAILURE',
+  payload: error
+});
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++++++++++
 export const GetTotalPurchaseRequest = () => ({
   type: 'GET_TOTAL_PURCHASE_REQUEST'

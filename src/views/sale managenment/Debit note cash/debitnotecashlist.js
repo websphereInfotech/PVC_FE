@@ -20,7 +20,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { DebitnoteCashPDF, Debitnotecashviewdata, deleteDebitnotecash, getallDebitnotecash } from 'store/thunk';
+import { DebitnoteCashImage, DebitnoteCashPDF, Debitnotecashviewdata, deleteDebitnotecash, getallDebitnotecash } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -42,7 +42,14 @@ const columns = [
 ];
 
 const Debitnotecashlist = () => {
-  const { canUpdateDebitnotecash, canViewDebitnotecash, canCreateDebitnotecash, canDeleteDebitnotecash, canDebitnotecashpdf } = useCan();
+  const {
+    canUpdateDebitnotecash,
+    canDebitnotecashImage,
+    canViewDebitnotecash,
+    canCreateDebitnotecash,
+    canDeleteDebitnotecash,
+    canDebitnotecashpdf
+  } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -115,6 +122,10 @@ const Debitnotecashlist = () => {
 
   const handlepdf = async (id) => {
     await dispatch(DebitnoteCashPDF(id, navigate, true));
+  };
+
+  const handleImage = async (id) => {
+    await dispatch(DebitnoteCashImage(id, navigate, true));
   };
 
   const handlePrint = async (id) => {
@@ -247,9 +258,11 @@ const Debitnotecashlist = () => {
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem>
-                            <IoImage style={{ marginRight: '8px' }} /> JPEG image
-                          </MenuItem>
+                          {canDebitnotecashImage() && (
+                            <MenuItem onClick={() => handleImage(row.id)}>
+                              <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            </MenuItem>
+                          )}
                           <MenuItem>
                             <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>

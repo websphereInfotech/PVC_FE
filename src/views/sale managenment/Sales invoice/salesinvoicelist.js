@@ -59,7 +59,7 @@ const Salesinvoicelist = () => {
     canDeleteSalesinvoice,
     canCreateSalesinvoice,
     canDownloadPdfSalesinvoice,
-    canDownloadExcelCashSales,
+    canDownloadExcelSales,
     canSingleExcelSalesinvoice,
     canDownloadSalesinvoiceImage
   } = useCan();
@@ -240,7 +240,7 @@ const Salesinvoicelist = () => {
           color="secondary"
           style={{ margin: '10px' }}
           onClick={handleOpenLedgerDialog}
-          disabled={!canSingleExcelSalesinvoice()}
+          disabled={!canDownloadExcelSales()}
         >
           Download Excel
         </Button>
@@ -317,7 +317,7 @@ const Salesinvoicelist = () => {
                               <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
                             </MenuItem>
                           )}
-                          {canDownloadExcelCashSales() && (
+                          {canSingleExcelSalesinvoice() && (
                             <MenuItem onClick={() => handledownloadsingleexcel(row.id)}>
                               <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
                             </MenuItem>

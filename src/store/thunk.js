@@ -275,6 +275,9 @@ import {
   DebitnotecashPdfRequest,
   DebitnotecashPdfSuccess,
   DebitnotecashPdfFailure,
+  DebitnoteCashImageRequest,
+  DebitnoteCashImageSuccess,
+  DebitnoteCashImageFailure,
   // Credit NOTE+++++++++++++++++++++
   createCreditnoteRequest,
   createCreditnoteSuccess,
@@ -316,6 +319,9 @@ import {
   CreditnotecashPdfRequest,
   CreditnotecashPdfSuccess,
   CreditnotecashPdfFailure,
+  CreditnoteCashImageRequest,
+  CreditnoteCashImageSuccess,
+  CreditnoteCashImageFailure,
   // ECIEVE CASH +++++++++++++
   createRecieveCashRequest,
   createRecieveCashSuccess,
@@ -528,6 +534,9 @@ import {
   PurchaseInvoiceImageRequest,
   PurchaseInvoiceImageSuccess,
   PurchaseInvoiceImageFailure,
+  PurchaseInvoiceCashImageRequest,
+  PurchaseInvoiceCashImageSuccess,
+  PurchaseInvoiceCashImageFailure,
   // DASHBORAD +++++++++++++++
   GetTotalPurchaseRequest,
   GetTotalPurchaseSuccess,
@@ -1828,6 +1837,43 @@ export const DebitnoteCashPDF = (id, navigate, shouldDownload = true) => {
     }
   };
 };
+export const DebitnoteCashImage = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DebitnoteCashImageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/C_debitNote_jpg/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'image/jpeg' });
+      saveAs(blob, `debitnote_cash_${id}.jpeg`);
+      dispatch(DebitnoteCashImageSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(DebitnoteCashImageFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createCreditnote = (payload, navigate) => {
   return async (dispatch) => {
@@ -2157,6 +2203,47 @@ export const CreditnoteCashPDF = (id, navigate, shouldDownload = true) => {
         });
       }
       dispatch(CreditnotecashPdfFailure(error.message));
+    }
+  };
+};
+export const CreditnoteCashImage = (id, navigate, shouldDownload = true) => {
+  return async (dispatch) => {
+    dispatch(CreditnoteCashImageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/C_creditNote_jpg/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'image/jpeg' });
+        saveAs(blob, `creditnote_cash_${id}.jpeg`);
+      }
+      dispatch(CreditnoteCashImageSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(CreditnoteCashImageFailure(error.message));
     }
   };
 };
@@ -4137,7 +4224,7 @@ export const SalesCashImage = (id, navigate) => {
     dispatch(SalesCashImageRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_view_salesInvoice_pdf/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_view_salesInvoice_jpg/${id}`, config);
       const base64Data = response.data.data;
       if (!base64Data) {
         throw new Error('Base64 data is undefined');
@@ -4228,7 +4315,7 @@ export const SalesInvoiceImage = (id, navigate) => {
         bytes[i] = binaryString.charCodeAt(i);
       }
       const blob = new Blob([bytes], { type: 'image/jpeg' });
-      saveAs(blob, `sales_invoice_${id}.jpeg`);
+      saveAs(blob, `sales_cash_${id}.jpeg`);
       dispatch(SalesInvoiceImageSuccess(base64Data));
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4466,6 +4553,43 @@ export const PurchaseInvoiceImage = (id, navigate) => {
         });
       }
       dispatch(PurchaseInvoiceImageFailure(error.message));
+    }
+  };
+};
+export const PurchaseInvoiceCashImage = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(PurchaseInvoiceCashImageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_view_purchaseCash_jpg/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'image/jpeg' });
+      saveAs(blob, `purchase_cash_${id}.jpeg`);
+      dispatch(PurchaseInvoiceCashImageSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(PurchaseInvoiceCashImageFailure(error.message));
     }
   };
 };
