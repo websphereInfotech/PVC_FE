@@ -31,6 +31,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
+import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 
 const columns = [
   { id: 'saleNo', label: 'Sale No', align: 'center' },
@@ -260,6 +261,9 @@ const Salescashlist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
+                          <MenuItem>
+                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                          </MenuItem>
                           <MenuItem>
                             <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>

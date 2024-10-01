@@ -37,6 +37,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
+import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 
 const columns = [
   { id: 'purchaseNo', label: 'Purchase No', align: 'center' },
@@ -258,6 +259,9 @@ const Purchaseinvoicecashlist = () => {
                           )}
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+                          </MenuItem>
+                          <MenuItem>
+                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
                           </MenuItem>
                           {canDownloadImageCashPurchase() && (
                             <MenuItem onClick={() => handledownloadImage(row.id)}>

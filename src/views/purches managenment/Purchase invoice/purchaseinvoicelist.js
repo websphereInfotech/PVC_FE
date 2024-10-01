@@ -260,6 +260,7 @@ import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
+import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 
 const columns = [
   { id: 'invoicedate', label: 'Invoice Date', minWidth: 100, align: 'center' },
@@ -489,6 +490,9 @@ export default function PurchaseinvoiceList() {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
+                          <MenuItem>
+                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                          </MenuItem>
                           <MenuItem>
                             <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>

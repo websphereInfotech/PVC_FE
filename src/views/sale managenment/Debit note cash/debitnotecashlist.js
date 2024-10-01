@@ -31,6 +31,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
+import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -263,6 +264,9 @@ const Debitnotecashlist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
+                          <MenuItem>
+                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                          </MenuItem>
                           <MenuItem>
                             <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>
