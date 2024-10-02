@@ -525,9 +525,15 @@ import {
   SalesInvoiceSingleExcelRequest,
   SalesInvoiceSingleExcelSuccess,
   SalesInvoiceSingleExcelFailure,
+  SalesCashSingleExcelRequest,
+  SalesCashSingleExcelSuccess,
+  SalesCashSingleExcelFailure,
   PurchaseCashPdfRequest,
   PurchaseCashPdfSuccess,
   PurchaseCashPdfFailure,
+  PurchaseInvoiceSingleExcelRequest,
+  PurchaseInvoiceSingleExcelSuccess,
+  PurchaseInvoiceSingleExcelFailure,
   PurchaseInvoicePdfRequest,
   PurchaseInvoicePdfSuccess,
   PurchaseInvoicePdfFailure,
@@ -4436,6 +4442,55 @@ export const SalesInvoiceSingleExcel = (id, navigate) => {
     }
   };
 };
+export const SalesCashSingleExcel = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(SalesCashSingleExcelRequest());
+    try {
+      const config = createConfig();
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_view_salesInvoice_excel/${id}`, config);
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `sales_cash_${id}.xlsx`);
+          dispatch(SalesCashSingleExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(SalesCashSingleExcelFailure(error.message));
+    }
+  };
+};
 export const PurchaseCashPDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(PurchaseCashPdfRequest());
@@ -4474,6 +4529,55 @@ export const PurchaseCashPDF = (id, navigate, shouldDownload = true) => {
         });
       }
       dispatch(PurchaseCashPdfFailure(error.message));
+    }
+  };
+};
+export const purchaseInvoiceSingleExcel = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(PurchaseInvoiceSingleExcelRequest());
+    try {
+      const config = createConfig();
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/purchaseInvoice_excel/${id}`, config);
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `purchase_invoice_${id}.xlsx`);
+          dispatch(PurchaseInvoiceSingleExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(PurchaseInvoiceSingleExcelFailure(error.message));
     }
   };
 };

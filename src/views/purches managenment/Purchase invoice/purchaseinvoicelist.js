@@ -239,7 +239,14 @@
 // }
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { viewPurchaseinvoice, deletePurchaseinvoice, getallPurchaseinvoice, PurchaseInvoicePDF, PurchaseInvoiceImage } from 'store/thunk';
+import {
+  viewPurchaseinvoice,
+  deletePurchaseinvoice,
+  getallPurchaseinvoice,
+  PurchaseInvoicePDF,
+  PurchaseInvoiceImage,
+  purchaseInvoiceSingleExcel
+} from 'store/thunk';
 import { Card, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -278,7 +285,8 @@ export default function PurchaseinvoiceList() {
     canUpdatePurchaseinvoice,
     canCreatePurchaseinvoice,
     canDownloadPdfPurchaseInvoice,
-    canDownloadImagePurchaseInvoice
+    canDownloadImagePurchaseInvoice,
+    canDownloadPurchaseInvoiceExcel
   } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -396,6 +404,10 @@ export default function PurchaseinvoiceList() {
     await dispatch(PurchaseInvoiceImage(id, navigate));
   };
 
+  const handledownloadExcel = async (id) => {
+    await dispatch(purchaseInvoiceSingleExcel(id, navigate));
+  };
+
   return (
     <Card sx={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
@@ -490,9 +502,11 @@ export default function PurchaseinvoiceList() {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-                          </MenuItem>
+                          {canDownloadPurchaseInvoiceExcel() && (
+                            <MenuItem onClick={() => handledownloadExcel(row.id)}>
+                              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                            </MenuItem>
+                          )}
                           <MenuItem>
                             <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>

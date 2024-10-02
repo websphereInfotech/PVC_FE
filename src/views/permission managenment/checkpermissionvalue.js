@@ -674,6 +674,9 @@ const useCan = () => {
   const canSingleExcelSalesinvoice = () => {
     return checkPermission('Sales Invoice', 'view_salesInvoice_excel');
   };
+  const canSingleExcelSalesCash = () => {
+    return checkPermission('Sales Cash', 'view_sales_cash_excel');
+  };
   const canDownloadPdfCashPurchase = () => {
     return checkPermission('Purchase Cash', 'view_purchase_cash_pdf');
   };
@@ -685,6 +688,9 @@ const useCan = () => {
   };
   const canDownloadImagePurchaseInvoice = () => {
     return checkPermission('Purchase Invoice', 'purchaseInvoice_jpg');
+  };
+  const canDownloadPurchaseInvoiceExcel = () => {
+    return checkPermission('Purchase Invoice', 'purchaseInvoice_excel');
   };
 
   //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ dash board ++++++++++++++++++++++++
@@ -1087,11 +1093,13 @@ const useCan = () => {
     canDownloadPdfSalesinvoice,
     canDownloadSalesinvoiceImage,
     canSingleExcelSalesinvoice,
+    canSingleExcelSalesCash,
     canDownloadExcelSales,
     canDownloadPdfCashPurchase,
     canDownloadImageCashPurchase,
     canDownloadPdfPurchaseInvoice,
     canDownloadImagePurchaseInvoice,
+    canDownloadPurchaseInvoiceExcel,
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
     canSeeTotalPurchase,

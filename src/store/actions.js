@@ -564,12 +564,18 @@ export const GET_SALES_INVOICE_EXCEL_FAILURE = 'GET_SALES_INVOICE_EXCEL_FAILURE'
 export const GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST = 'GET_SALES_INVOICE_SINGLE_EXCEL_REQUEST';
 export const GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS = 'GET_SALES_INVOICE_SINGLE_EXCEL_SUCCESS';
 export const GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE = 'GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE';
+export const GET_SALES_CASH_SINGLE_EXCEL_REQUEST = 'GET_SALES_CASH_SINGLE_EXCEL_REQUEST';
+export const GET_SALES_CASH_SINGLE_EXCEL_SUCCESS = 'GET_SALES_CASH_SINGLE_EXCEL_SUCCESS';
+export const GET_SALES_CASH_SINGLE_EXCEL_FAILURE = 'GET_SALES_CASH_SINGLE_EXCEL_FAILURE';
 export const GET_PURCHASE_CASH_PDF_REQUEST = 'GET_PURCHASE_CASH_PDF_REQUEST';
 export const GET_PURCHASE_CASH_PDF_SUCCESS = 'GET_PURCHASE_CASH_PDF_SUCCESS';
 export const GET_PURCHASE_CASH_PDF_FAILURE = 'GET_PURCHASE_CASH_PDF_FAILURE';
 export const GET_PURCHASE_INVOICE_PDF_REQUEST = 'GET_PURCHASE_INVOICE_PDF_REQUEST';
 export const GET_PURCHASE_INVOICE_PDF_SUCCESS = 'GET_PURCHASE_INVOICE_PDF_SUCCESS';
 export const GET_PURCHASE_INVOICE_PDF_FAILURE = 'GET_PURCHASE_INVOICE_PDF_FAILURE';
+export const GET_PURCHASE_INVOICE_EXCEL_REQUEST = 'GET_PURCHASE_INVOICE_EXCEL_REQUEST';
+export const GET_PURCHASE_INVOICE_EXCEL_SUCCESS = 'GET_PURCHASE_INVOICE_EXCEL_SUCCESS';
+export const GET_PURCHASE_INVOICE_EXCEL_FAILURE = 'GET_PURCHASE_INVOICE_EXCEL_FAILURE';
 export const GET_PURCHASE_INVOICE_IMAGE_REQUEST = 'GET_PURCHASE_INVOICE_IMAGE_REQUEST';
 export const GET_PURCHASE_INVOICE_IMAGE_SUCCESS = 'GET_PURCHASE_INVOICE_IMAGE_SUCCESS';
 export const GET_PURCHASE_INVOICE_IMAGE_FAILURE = 'GET_PURCHASE_INVOICE_IMAGE_FAILURE';
@@ -2695,6 +2701,17 @@ export const SalesInvoiceSingleExcelFailure = (error) => ({
   type: 'GET_SALES_INVOICE_SINGLE_EXCEL_FAILURE',
   payload: error
 });
+export const SalesCashSingleExcelRequest = () => ({
+  type: 'GET_SALES_CASH_SINGLE_EXCEL_REQUEST'
+});
+export const SalesCashSingleExcelSuccess = (data) => ({
+  type: 'GET_SALES_CASH_SINGLE_EXCEL_SUCCESS',
+  payload: data
+});
+export const SalesCashSingleExcelFailure = (error) => ({
+  type: 'GET_SALES_CASH_SINGLE_EXCEL_FAILURE',
+  payload: error
+});
 export const PurchaseCashPdfRequest = () => ({
   type: 'GET_PURCHASE_CASH_PDF_REQUEST'
 });
@@ -2737,6 +2754,17 @@ export const PurchaseInvoiceCashImageSuccess = (data) => ({
 });
 export const PurchaseInvoiceCashImageFailure = (error) => ({
   type: 'GET_PURCHASE_INVOICE_CASH_IMAGE_FAILURE',
+  payload: error
+});
+export const PurchaseInvoiceSingleExcelRequest = () => ({
+  type: 'GET_PURCHASE_INVOICE_EXCEL_REQUEST'
+});
+export const PurchaseInvoiceSingleExcelSuccess = (data) => ({
+  type: 'GET_PURCHASE_INVOICE_EXCEL_SUCCESS',
+  payload: data
+});
+export const PurchaseInvoiceSingleExcelFailure = (error) => ({
+  type: 'GET_PURCHASE_INVOICE_EXCEL_FAILURE',
   payload: error
 });
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++++++++++
