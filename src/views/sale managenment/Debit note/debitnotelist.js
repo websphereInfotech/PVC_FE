@@ -20,7 +20,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { DebitnoteImage, DebitnotePDF, Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
+import { DebitnoteImage, DebitnotePDF, DebitnoteSingleExcel, Debitnoteviewdata, deleteDebitnote, getallDebitnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -42,7 +42,15 @@ const columns = [
 ];
 
 const Debitnotelist = () => {
-  const { canUpdateDebitnote, canViewDebitnote, canCreateDebitnote, canDeleteDebitnote, canDebitnotepdf, canDebitnoteImage } = useCan();
+  const {
+    canUpdateDebitnote,
+    canViewDebitnote,
+    canCreateDebitnote,
+    canDeleteDebitnote,
+    canDebitnotepdf,
+    canDebitnoteImage,
+    canDebitnoteExcel
+  } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -119,6 +127,10 @@ const Debitnotelist = () => {
 
   const handleImage = async (id) => {
     await dispatch(DebitnoteImage(id, navigate));
+  };
+
+  const handleExcel = async (id) => {
+    await dispatch(DebitnoteSingleExcel(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -251,9 +263,11 @@ const Debitnotelist = () => {
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem>
-                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-                          </MenuItem>
+                          {canDebitnoteExcel() && (
+                            <MenuItem onClick={() => handleExcel(row.id)}>
+                              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                            </MenuItem>
+                          )}
                           {canDebitnoteImage() && (
                             <MenuItem onClick={() => handleImage(roe.id)}>
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image

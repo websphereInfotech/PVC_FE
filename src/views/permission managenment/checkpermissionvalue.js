@@ -327,6 +327,9 @@ const useCan = () => {
   const canDebitnoteImage = () => {
     return checkPermission('Debit Note', 'debitNote_jpg');
   };
+  const canDebitnoteExcel = () => {
+    return checkPermission('Debit Note', 'debitNote_single_excel');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE CASH
 
   const canCreateDebitnotecash = () => {
@@ -349,6 +352,9 @@ const useCan = () => {
   };
   const canDebitnotecashImage = () => {
     return checkPermission('Debit Note Cash', 'debitNote_jpg');
+  };
+  const canDebitnotecashExcel = () => {
+    return checkPermission('Debit Note Cash', 'debitNote_single_excel');
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE
 
@@ -373,6 +379,9 @@ const useCan = () => {
   const canCreditnoteImage = () => {
     return checkPermission('Credit Note', 'creditNote_jpg');
   };
+  const canCreditnotesingleexcel = () => {
+    return checkPermission('Credit Note', 'creditNote_single_excel');
+  };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE CASH
 
   const canCreateCreditnotecash = () => {
@@ -395,6 +404,9 @@ const useCan = () => {
   };
   const canCreditnotecashImage = () => {
     return checkPermission('Credit Note Cash', 'creditNote_jpg');
+  };
+  const canCreditnotecashsingleexcel = () => {
+    return checkPermission('Credit Note Cash', 'creditNote_single_excel');
   };
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SALES CASH
 
@@ -683,6 +695,9 @@ const useCan = () => {
   const canDownloadImageCashPurchase = () => {
     return checkPermission('Purchase Cash', 'view_purchase_cash_jpg');
   };
+  const canDownloadExcelCashPurchase = () => {
+    return checkPermission('Purchase Cash', 'view_purchase_cash_excel');
+  };
   const canDownloadPdfPurchaseInvoice = () => {
     return checkPermission('Purchase Invoice', 'purchaseInvoice_pdf');
   };
@@ -970,6 +985,7 @@ const useCan = () => {
     canViwAllDebitnote,
     canDebitnotepdf,
     canDebitnoteImage,
+    canDebitnoteExcel,
     //  DEBIT NOTE CASH++++++++++++++++++
     canCreateDebitnotecash,
     canUpdateDebitnotecash,
@@ -978,6 +994,7 @@ const useCan = () => {
     canViwAllDebitnotecash,
     canDebitnotecashpdf,
     canDebitnotecashImage,
+    canDebitnotecashExcel,
     //  CREDIT NOTE ++++++++++++++++++
     canCreateCreditnote,
     canUpdateCreditnote,
@@ -986,6 +1003,7 @@ const useCan = () => {
     canViwAllCreditnote,
     canCreditnotepdf,
     canCreditnoteImage,
+    canCreditnotesingleexcel,
     //  CREDIT NOTE CASH ++++++++++++++++++
     canCreateCreditnotecash,
     canUpdateCreditnotecash,
@@ -994,6 +1012,7 @@ const useCan = () => {
     canViwAllCreditnotecash,
     canCreditnotecashpdf,
     canCreditnotecashImage,
+    canCreditnotecashsingleexcel,
     // SALES CASH ++++++++++++++++++++
     canCreateSalescash,
     canUpdateSalescash,
@@ -1096,6 +1115,7 @@ const useCan = () => {
     canSingleExcelSalesCash,
     canDownloadExcelSales,
     canDownloadPdfCashPurchase,
+    canDownloadExcelCashPurchase,
     canDownloadImageCashPurchase,
     canDownloadPdfPurchaseInvoice,
     canDownloadImagePurchaseInvoice,

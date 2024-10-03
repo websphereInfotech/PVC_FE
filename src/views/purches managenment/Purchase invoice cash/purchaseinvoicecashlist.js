@@ -25,7 +25,8 @@ import {
   PurchaseInvoiceCashImage,
   PurchaseInvoiceviewCash,
   deletePurchaseInvoiceCash,
-  getallPurchaseInvoiceCash
+  getallPurchaseInvoiceCash,
+  purchaseCashSingleExcel
 } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
@@ -55,7 +56,8 @@ const Purchaseinvoicecashlist = () => {
     canViewPurchasebillcash,
     canDeletePurchasebillcash,
     canDownloadPdfCashPurchase,
-    canDownloadImageCashPurchase
+    canDownloadImageCashPurchase,
+    canDownloadExcelCashPurchase
   } = useCan();
   const navigate = useNavigate();
   const [purchasebillcash, setPurchasebillcash] = useState([]);
@@ -128,6 +130,10 @@ const Purchaseinvoicecashlist = () => {
 
   const handledownloadImage = async (id) => {
     await dispatch(PurchaseInvoiceCashImage(id, navigate));
+  };
+
+  const handledownloadExcel = async (id) => {
+    await dispatch(purchaseCashSingleExcel(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -260,9 +266,11 @@ const Purchaseinvoicecashlist = () => {
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem>
-                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-                          </MenuItem>
+                          {canDownloadExcelCashPurchase() && (
+                            <MenuItem onClick={() => handledownloadExcel(row.id)}>
+                              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                            </MenuItem>
+                          )}
                           {canDownloadImageCashPurchase() && (
                             <MenuItem onClick={() => handledownloadImage(row.id)}>
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image

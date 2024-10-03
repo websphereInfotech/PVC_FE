@@ -20,7 +20,14 @@ import {
   MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { DebitnoteCashImage, DebitnoteCashPDF, Debitnotecashviewdata, deleteDebitnotecash, getallDebitnotecash } from 'store/thunk';
+import {
+  DebitnoteCashImage,
+  DebitnoteCashPDF,
+  DebitnoteCashSingleExcel,
+  Debitnotecashviewdata,
+  deleteDebitnotecash,
+  getallDebitnotecash
+} from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -49,7 +56,8 @@ const Debitnotecashlist = () => {
     canViewDebitnotecash,
     canCreateDebitnotecash,
     canDeleteDebitnotecash,
-    canDebitnotecashpdf
+    canDebitnotecashpdf,
+    canDebitnotecashExcel
   } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
@@ -127,6 +135,10 @@ const Debitnotecashlist = () => {
 
   const handleImage = async (id) => {
     await dispatch(DebitnoteCashImage(id, navigate, true));
+  };
+
+  const handleExcel = async (id) => {
+    await dispatch(DebitnoteCashSingleExcel(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -264,9 +276,11 @@ const Debitnotecashlist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-                          </MenuItem>
+                          {canDebitnotecashExcel() && (
+                            <MenuItem onClick={() => handleExcel(row.id)}>
+                              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                            </MenuItem>
+                          )}
                           <MenuItem>
                             <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                           </MenuItem>

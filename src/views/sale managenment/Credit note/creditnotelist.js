@@ -20,7 +20,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { CreditnoteImage, CreditnotePDF, Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
+import { CreditnoteImage, CreditnotePDF, CreditnoteSingleExcel, Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -43,8 +43,15 @@ const columns = [
 ];
 
 const Creditnotelist = () => {
-  const { canUpdateCreditnote, canViewCreditnote, canCreateCreditnote, canDeleteCreditnote, canCreditnotepdf, canCreditnoteImage } =
-    useCan();
+  const {
+    canUpdateCreditnote,
+    canViewCreditnote,
+    canCreateCreditnote,
+    canDeleteCreditnote,
+    canCreditnotepdf,
+    canCreditnoteImage,
+    canCreditnotesingleexcel
+  } = useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
   const [page, setPage] = useState(0);
@@ -121,6 +128,10 @@ const Creditnotelist = () => {
 
   const handleImage = async (id) => {
     await dispatch(CreditnoteImage(id, navigate));
+  };
+
+  const handleExcel = async (id) => {
+    await dispatch(CreditnoteSingleExcel(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -253,9 +264,11 @@ const Creditnotelist = () => {
                           <MenuItem onClick={() => handlePrint(row.id)}>
                             <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
                           </MenuItem>
-                          <MenuItem>
-                            <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-                          </MenuItem>
+                          {canCreditnotesingleexcel() && (
+                            <MenuItem onClick={() => handleExcel(row.id)}>
+                              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+                            </MenuItem>
+                          )}
                           {canCreditnoteImage() && (
                             <MenuItem onClick={() => handleImage(row.id)}>
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
