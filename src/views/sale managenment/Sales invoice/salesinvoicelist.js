@@ -17,7 +17,8 @@ import {
   IconButton,
   Grid,
   Menu,
-  MenuItem
+  MenuItem,
+  useMediaQuery
 } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -42,6 +43,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
+import { useTheme } from '@emotion/react';
 
 const columns = [
   { id: 'invoiceno', label: 'Invoice No', align: 'center' },
@@ -76,6 +78,8 @@ const Salesinvoicelist = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
   const openMenu = Boolean(anchorEl);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleOpenLedgerDialog = () => {
     setOpenLedgerDialog(true);
@@ -368,15 +372,26 @@ const Salesinvoicelist = () => {
           <Typography>Are you sure you want to delete this sales invoice?</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenConfirmation(false)} color="primary">
+          <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteSalesInvoice} color="secondary">
+          <Button variant="contained" onClick={handleDeleteSalesInvoice} color="secondary">
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openLedgerDialog} onClose={handleCloseLedgerDialog}>
+      <Dialog
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+        open={openLedgerDialog}
+        onClose={handleCloseLedgerDialog}
+      >
         <DialogTitle>Download Sales Invoices</DialogTitle>
         <DialogContent>
           <Typography>Select Date Range:</Typography>
@@ -390,10 +405,10 @@ const Salesinvoicelist = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseLedgerDialog} color="primary">
+          <Button variant="contained" onClick={handleCloseLedgerDialog} color="primary" style={{ marginRight: '10px' }}>
             Cancel
           </Button>
-          <Button onClick={() => handledownloadexcel(formDate, toDate)} color="secondary">
+          <Button variant="contained" onClick={() => handledownloadexcel(formDate, toDate)} color="secondary">
             Download Excel
           </Button>
         </DialogActions>

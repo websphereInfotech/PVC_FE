@@ -17,10 +17,14 @@ import {
   DialogTitle,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  useMediaQuery,
+  Grid,
+  useTheme
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
+  DebitnoteCashExcel,
   DebitnoteCashImage,
   DebitnoteCashPDF,
   DebitnoteCashSingleExcel,
@@ -39,6 +43,8 @@ import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -57,7 +63,8 @@ const Debitnotecashlist = () => {
     canCreateDebitnotecash,
     canDeleteDebitnotecash,
     canDebitnotecashpdf,
-    canDebitnotecashExcel
+    canDebitnotecashExcel,
+    canDebitnoteAllCashExcel
   } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
@@ -68,6 +75,11 @@ const Debitnotecashlist = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
+  const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const fetchDebitNote = async () => {
@@ -118,6 +130,32 @@ const Debitnotecashlist = () => {
     setSelectedId(id);
   };
 
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
+  const handleOpenLedgerDialog = () => {
+    setOpenLedgerDialog(true);
+  };
+
+  const handleCloseLedgerDialog = () => {
+    setOpenLedgerDialog(false);
+    setFormDate(new Date());
+    setToDate(new Date());
+  };
+
   const handleDeleteDebitnote = async () => {
     try {
       await dispatch(deleteDebitnotecash(selectedId, navigate));
@@ -139,6 +177,12 @@ const Debitnotecashlist = () => {
 
   const handleExcel = async (id) => {
     await dispatch(DebitnoteCashSingleExcel(id, navigate));
+  };
+
+  const handledownloadexcel = (formDate, toDate) => {
+    dispatch(DebitnoteCashExcel(formDate, toDate));
+    setFormDate(formDate);
+    setToDate(toDate);
   };
 
   const handlePrint = async (id) => {
@@ -187,15 +231,26 @@ const Debitnotecashlist = () => {
       <Typography variant="h4" align="center" id="mycss">
         Debit Note Cash List
       </Typography>
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{ margin: '10px' }}
-        onClick={handleAddDebitnote}
-        disabled={!canCreateDebitnotecash()}
-      >
-        Create Debit Note Cash
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddDebitnote}
+          disabled={!canCreateDebitnotecash()}
+        >
+          Create Debit Note Cash
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleOpenLedgerDialog}
+          disabled={!canDebitnoteAllCashExcel()}
+        >
+          Download Excel
+        </Button>
+      </div>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
@@ -322,6 +377,39 @@ const Debitnotecashlist = () => {
           </Button>
           <Button onClick={handleDeleteDebitnote} variant="contained" color="secondary">
             Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+        open={openLedgerDialog}
+        onClose={handleCloseLedgerDialog}
+      >
+        <DialogTitle>Download Debit Note Cash</DialogTitle>
+        <DialogContent>
+          <Typography>Select Date Range:</Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <DatePicker selected={formDate} onChange={handleformDateChange} dateFormat="dd-MM-yyyy" />
+            </Grid>
+            <Grid item xs={12}>
+              <DatePicker selected={toDate} onChange={handletoDateChange} dateFormat="dd-MM-yyyy" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseLedgerDialog} color="primary" style={{ marginRight: '10px' }}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={() => handledownloadexcel(formDate, toDate)} color="secondary">
+            Download Excel
           </Button>
         </DialogActions>
       </Dialog>

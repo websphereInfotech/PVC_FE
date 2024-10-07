@@ -17,13 +17,19 @@ import {
   DialogTitle,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  Grid,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import {
+  SalesCashExcel,
   SalesCashImage,
   SalesCashPDF,
   SalesCashSingleExcel,
@@ -57,7 +63,8 @@ const Salescashlist = () => {
     canDeleteSalescash,
     canDownloadPdfCashSales,
     canDownloadImageCashSales,
-    canSingleExcelSalesCash
+    canSingleExcelSalesCash,
+    canDownloadExcelSalescash
   } = useCan();
   const navigate = useNavigate();
   const [salescash, setsalescash] = useState([]);
@@ -69,6 +76,11 @@ const Salescashlist = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
   const openMenu = Boolean(anchorEl);
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
+  const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const fetchsalesinvoicecash = async () => {
@@ -90,9 +102,31 @@ const Salescashlist = () => {
     setPage(newPage);
   };
 
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handledownloadexcel = (formDate, toDate) => {
+    dispatch(SalesCashExcel(formDate, toDate));
+    setFormDate(formDate);
+    setToDate(toDate);
   };
 
   const handleAddSalescash = () => {
@@ -123,6 +157,16 @@ const Salescashlist = () => {
     } catch (error) {
       console.error('Error deleting sales cash:', error);
     }
+  };
+
+  const handleOpenLedgerDialog = () => {
+    setOpenLedgerDialog(true);
+  };
+
+  const handleCloseLedgerDialog = () => {
+    setOpenLedgerDialog(false);
+    setFormDate(new Date());
+    setToDate(new Date());
   };
 
   const handledownloadpdf = async (id) => {
@@ -182,15 +226,26 @@ const Salescashlist = () => {
       <Typography variant="h4" align="center" id="mycss">
         Sales Cash List
       </Typography>
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{ margin: '10px' }}
-        onClick={handleAddSalescash}
-        disabled={!canCreateSalescash()}
-      >
-        Create Sales Cash
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddSalescash}
+          disabled={!canCreateSalescash()}
+        >
+          Create Sales Cash
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleOpenLedgerDialog}
+          disabled={!canDownloadExcelSalescash()}
+        >
+          Download Excel
+        </Button>
+      </div>
       <TableContainer sx={{ maxHeight: 575 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
@@ -317,6 +372,39 @@ const Salescashlist = () => {
           </Button>
           <Button onClick={handledeletesalescash} variant="contained" color="secondary">
             Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+        open={openLedgerDialog}
+        onClose={handleCloseLedgerDialog}
+      >
+        <DialogTitle>Download Sales Cash Invoices</DialogTitle>
+        <DialogContent>
+          <Typography>Select Date Range:</Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <DatePicker selected={formDate} onChange={handleformDateChange} dateFormat="dd-MM-yyyy" />
+            </Grid>
+            <Grid item xs={12}>
+              <DatePicker selected={toDate} onChange={handletoDateChange} dateFormat="dd-MM-yyyy" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseLedgerDialog} color="primary" style={{ marginRight: '10px' }}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={() => handledownloadexcel(formDate, toDate)} color="secondary">
+            Download Excel
           </Button>
         </DialogActions>
       </Dialog>

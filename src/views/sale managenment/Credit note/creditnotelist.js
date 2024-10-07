@@ -17,10 +17,21 @@ import {
   DialogTitle,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  useTheme,
+  useMediaQuery,
+  Grid
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { CreditnoteImage, CreditnotePDF, CreditnoteSingleExcel, Creditnoteviewdata, deleteCreditnote, getallCreditnote } from 'store/thunk';
+import {
+  CreditnoteExcel,
+  CreditnoteImage,
+  CreditnotePDF,
+  CreditnoteSingleExcel,
+  Creditnoteviewdata,
+  deleteCreditnote,
+  getallCreditnote
+} from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -32,6 +43,8 @@ import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { BiSolidFileHtml } from 'react-icons/bi';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const columns = [
   { id: 'creditnoteNo', label: 'Credit Note No', minWidth: 170, align: 'center' },
@@ -50,7 +63,8 @@ const Creditnotelist = () => {
     canDeleteCreditnote,
     canCreditnotepdf,
     canCreditnoteImage,
-    canCreditnotesingleexcel
+    canCreditnotesingleexcel,
+    canCreditnoteexcel
   } = useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
@@ -60,7 +74,20 @@ const Creditnotelist = () => {
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
+  const [openLedgerDialog, setOpenLedgerDialog] = useState(false);
   const open = Boolean(anchorEl);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const handleOpenLedgerDialog = () => {
+    setOpenLedgerDialog(true);
+  };
+
+  const handleCloseLedgerDialog = () => {
+    setOpenLedgerDialog(false);
+  };
 
   useEffect(() => {
     const fetchcreditnote = async () => {
@@ -122,6 +149,28 @@ const Creditnotelist = () => {
     }
   };
 
+  const handleformDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setFormDate(formattedDate);
+  };
+
+  const handletoDateChange = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setToDate(formattedDate);
+  };
+
+  const handledownloadexcel = (formDate, toDate) => {
+    dispatch(CreditnoteExcel(formDate, toDate));
+    setFormDate(formDate);
+    setToDate(toDate);
+  };
+
   const handlepdf = async (id) => {
     await dispatch(CreditnotePDF(id, navigate, true));
   };
@@ -180,15 +229,26 @@ const Creditnotelist = () => {
       <Typography variant="h4" align="center" id="mycss">
         Credit Note List
       </Typography>
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{ margin: '10px' }}
-        onClick={handleAddCreditnote}
-        disabled={!canCreateCreditnote()}
-      >
-        Create Credit Note
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleAddCreditnote}
+          disabled={!canCreateCreditnote()}
+        >
+          Create Credit Note
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: '10px' }}
+          onClick={handleOpenLedgerDialog}
+          disabled={!canCreditnoteexcel()}
+        >
+          Download Excel
+        </Button>
+      </div>
       <TableContainer sx={{ maxHeight: 500 }}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
@@ -315,6 +375,39 @@ const Creditnotelist = () => {
           </Button>
           <Button onClick={handleDeleteCreditnote} variant="contained" color="secondary">
             Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        PaperProps={{
+          style: {
+            height: 'auto',
+            width: isMobile ? '90%' : '18%',
+            margin: isMobile ? '0' : 'auto',
+            maxWidth: isMobile ? '80%' : 'none'
+          }
+        }}
+        open={openLedgerDialog}
+        onClose={handleCloseLedgerDialog}
+      >
+        <DialogTitle>Download Credit Notes</DialogTitle>
+        <DialogContent>
+          <Typography>Select Date Range:</Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <DatePicker selected={formDate} onChange={handleformDateChange} dateFormat="dd-MM-yyyy" />
+            </Grid>
+            <Grid item xs={12}>
+              <DatePicker selected={toDate} onChange={handletoDateChange} dateFormat="dd-MM-yyyy" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseLedgerDialog} color="primary" style={{ marginRight: '10px' }}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={() => handledownloadexcel(formDate, toDate)} color="secondary">
+            Download Excel
           </Button>
         </DialogActions>
       </Dialog>

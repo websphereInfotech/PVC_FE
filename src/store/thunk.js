@@ -259,6 +259,9 @@ import {
   DebitnoteSingleExcelRequest,
   DebitnoteSingleExcelSuccess,
   DebitnoteSingleExcelFailure,
+  DebitnoteExcelRequest,
+  DebitnoteExcelSuccess,
+  DebitnoteExcelFailure,
   // DEBIT NOTE+++++++++++++++++++++
   createDebitnotecashRequest,
   createDebitnotecashSuccess,
@@ -312,6 +315,9 @@ import {
   CreditnoteSingleExcelRequest,
   CreditnoteSingleExcelSuccess,
   CreditnoteSingleExcelFailure,
+  CreditnoteExcelRequest,
+  CreditnoteExcelSuccess,
+  CreditnoteExcelFailure,
   // Credit NOTE CASH +++++++++++++++++++++
   createCreditnotecashRequest,
   createCreditnotecashSuccess,
@@ -570,6 +576,9 @@ import {
   PurchaseInvoiceCashImageRequest,
   PurchaseInvoiceCashImageSuccess,
   PurchaseInvoiceCashImageFailure,
+  PurchaseInvoiceExcelRequest,
+  PurchaseInvoiceExcelSuccess,
+  PurchaseInvoiceExcelFailure,
   // DASHBORAD +++++++++++++++
   GetTotalPurchaseRequest,
   GetTotalPurchaseSuccess,
@@ -1774,7 +1783,58 @@ export const DebitnoteSingleExcel = (id, navigate) => {
     }
   };
 };
+export const DebitnoteExcel = (fromDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(DebitnoteExcelRequest());
+    try {
+      const config = createConfig();
 
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/debitnote/debitNote_excel?formDate=${fromDate}&toDate=${toDate}`,
+        config
+      );
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `debit_note.xlsx`);
+          dispatch(DebitnoteExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(DebitnoteExcelFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DEBIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createDebitnotecash = (payload, navigate) => {
   return async (dispatch) => {
@@ -2033,7 +2093,7 @@ export const DebitnoteCashExcel = (fromDate, toDate, navigate) => {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
 
-          saveAs(blob, `debit_note${fromDate}_to_${toDate}.xlsx`);
+          saveAs(blob, `debit_note_cash.xlsx`);
           dispatch(DebitnoteCashExcelSuccess());
           toast.success(response.data.message, {
             icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -2294,7 +2354,58 @@ export const CreditnoteSingleExcel = (id, navigate) => {
     }
   };
 };
+export const CreditnoteExcel = (fromDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreditnoteExcelRequest());
+    try {
+      const config = createConfig();
 
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/creditnote/creditNote_excel?formDate=${fromDate}&toDate=${toDate}`,
+        config
+      );
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `credit_note.xlsx`);
+          dispatch(CreditnoteExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(CreditnoteExcelFailure(error.message));
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CREDIT NOTE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createCreditnotecash = (payload, navigate) => {
   return async (dispatch) => {
@@ -2557,7 +2668,7 @@ export const CreditnoteCashExcel = (fromDate, toDate, navigate) => {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
 
-          saveAs(blob, `debit_note${fromDate}_to_${toDate}.xlsx`);
+          saveAs(blob, `credit_note_cash.xlsx`);
           dispatch(CreditnoteCashExcelSuccess());
           toast.success(response.data.message, {
             icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4696,7 +4807,7 @@ export const SalesInvoiceExcel = (fromDate, toDate, navigate) => {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
 
-          saveAs(blob, `sales_invoice_${fromDate}_to_${toDate}.xlsx`);
+          saveAs(blob, `sales_invoice.xlsx`);
           dispatch(SalesInvoiceExcelSuccess());
           toast.success(response.data.message, {
             icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4846,7 +4957,7 @@ export const SalesCashExcel = (fromDate, toDate, navigate) => {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
 
-          saveAs(blob, `sales_invoice_${fromDate}_to_${toDate}.xlsx`);
+          saveAs(blob, `sales_cash.xlsx`);
           dispatch(SalesCashExcelSuccess());
           toast.success(response.data.message, {
             icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4961,6 +5072,58 @@ export const purchaseInvoiceSingleExcel = (id, navigate) => {
     }
   };
 };
+export const PurchaseInvoiceExcel = (fromDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(PurchaseInvoiceExcelRequest());
+    try {
+      const config = createConfig();
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/purchaseinvoice/get_all_purchaseInvoice_excel?formDate=${fromDate}&toDate=${toDate}`,
+        config
+      );
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `purchase_invoice.xlsx`);
+          dispatch(PurchaseInvoiceExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(PurchaseInvoiceExcelFailure(error.message));
+    }
+  };
+};
 export const PurchaseCashExcel = (fromDate, toDate, navigate) => {
   return async (dispatch) => {
     dispatch(PurchaseCashExcelRequest());
@@ -4988,7 +5151,7 @@ export const PurchaseCashExcel = (fromDate, toDate, navigate) => {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           });
 
-          saveAs(blob, `purchase_cash_${fromDate}_to_${toDate}.xlsx`);
+          saveAs(blob, `purchase_cash.xlsx`);
           dispatch(PurchaseCashExcelSuccess());
           toast.success(response.data.message, {
             icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
