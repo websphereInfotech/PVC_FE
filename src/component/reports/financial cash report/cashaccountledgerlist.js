@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import { AccountCashPDF, fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
+import { AccountCashExcel, AccountCashPDF, fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,6 +26,8 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import { IoMdMenu } from 'react-icons/io';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
+// import { IoImage } from 'react-icons/io5';
+import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -138,6 +140,22 @@ const Cashaccountledgerlist = () => {
     }
   };
 
+  // const handleImage = async () => {
+  //   if (AccountIdc) {
+  //     await dispatch(AccountledgerImage(AccountIdc, formDatec, toDatec, navigate));
+  //   } else {
+  //     await dispatch(AccountledgerImage(AccountId, formData, toDate, navigate));
+  //   }
+  // };
+
+  const handleExcel = async () => {
+    if (AccountIdc) {
+      await dispatch(AccountCashExcel(AccountIdc, formDatec, toDatec, navigate));
+    } else {
+      await dispatch(AccountCashExcel(AccountId, formData, toDate, navigate));
+    }
+  };
+
   const handlePrint = async () => {
     try {
       const accountIdToUse = AccountIdc ? AccountIdc : AccountId;
@@ -243,6 +261,12 @@ const Cashaccountledgerlist = () => {
             </MenuItem>
             <MenuItem onClick={handlePrint}>
               <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
+            </MenuItem>
+            {/* <MenuItem onClick={handleImage}>
+              <IoImage style={{ marginRight: '8px' }} /> JPEG Image
+            </MenuItem> */}
+            <MenuItem onClick={handleExcel}>
+              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
             </MenuItem>
           </Menu>
         </Grid>

@@ -679,6 +679,15 @@ import {
   getAllAccountLedgerRequest,
   getAllAccountLedgerSuccess,
   getAllAccountLedgerFailure,
+  AccountExcelRequest,
+  AccountExcelSuccess,
+  AccountExcelFailure,
+  AccountCashExcelRequest,
+  AccountCashExcelSuccess,
+  AccountCashExcelFailure,
+  AccountImageRequest,
+  AccountImageSuccess,
+  AccountImageFailure,
   AccountPdfRequest,
   AccountPdfSuccess,
   AccountPdfFailure,
@@ -5962,6 +5971,150 @@ export const getallAccountledger = (id, formDate, toDate) => {
       return getallAccountledgerlist;
     } catch (error) {
       dispatch(getAllAccountLedgerFailure(error.message));
+    }
+  };
+};
+export const AccountledgerImage = (id, formDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(AccountImageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/account_ledger_jpg/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'image/jpeg' });
+      saveAs(blob, `Account_${id}.jpeg`);
+      dispatch(AccountImageSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(AccountImageFailure(error.message));
+    }
+  };
+};
+export const AccountExcel = (id, fromDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(AccountExcelRequest());
+    try {
+      const config = createConfig();
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/account_ledger_excel/${id}?formDate=${fromDate}&toDate=${toDate}`,
+        config
+      );
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `Account_ledger_${id}.xlsx`);
+          dispatch(AccountExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(AccountExcelFailure(error.message));
+    }
+  };
+};
+export const AccountCashExcel = (id, fromDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(AccountCashExcelRequest());
+    try {
+      const config = createConfig();
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_account_ledger_excel/${id}?formDate=${fromDate}&toDate=${toDate}`,
+        config
+      );
+
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const jsonResponse = response.data;
+        if (jsonResponse.status === 'true' || jsonResponse.status === true) {
+          const base64Data = jsonResponse.data;
+
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+
+          saveAs(blob, `Account_ledger_Cash_${id}.xlsx`);
+          dispatch(AccountCashExcelSuccess());
+          toast.success(response.data.message, {
+            icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+            autoClose: 1000
+          });
+        } else {
+          toast.error('Failed to generate Excel. Please try again.');
+        }
+      } else {
+        toast.error('Unexpected response format. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error downloading Excel:', error);
+      if (error.response?.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(AccountCashExcelFailure(error.message));
     }
   };
 };

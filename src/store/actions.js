@@ -721,7 +721,15 @@ export const GET_ALL_ACCOUNTS_CASH_FAILURE = 'GET_ALL_ACCOUNTS_CASH_FAILURE';
 export const GET_ALL_ACCOUNT_LEDGER_REQUEST = 'GET_ALL_ACCOUNT_LEDGER_REQUEST';
 export const GET_ALL_ACCOUNT_LEDGER_SUCCESS = 'GET_ALL_ACCOUNT_LEDGER_SUCCESS';
 export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
-
+export const ACCOUNT_IMAGE_REQUEST = 'ACCOUNT_IMAGE_REQUEST';
+export const ACCOUNT_IMAGE_SUCCESS = 'ACCOUNT_IMAGE_SUCCESS';
+export const ACCOUNT_IMAGE_FAILURE = 'ACCOUNT_IMAGE_FAILURE';
+export const ACCOUNT_CASH_EXCEL_REQUEST = 'ACCOUNT_CASH_EXCEL_REQUEST';
+export const ACCOUNT_CASH_EXCEL_SUCCESS = 'ACCOUNT_CASH_EXCEL_SUCCESS';
+export const ACCOUNT_CASH_EXCEL_FAILURE = 'ACCOUNT_CASH_EXCEL_FAILURE';
+export const ACCOUNT_EXCEL_REQUEST = 'ACCOUNT_EXCEL_REQUEST';
+export const ACCOUNT_EXCEL_SUCCESS = 'ACCOUNT_EXCEL_SUCCESS';
+export const ACCOUNT_EXCEL_FAILURE = 'ACCOUNT_EXCEL_FAILURE';
 export const GET_ACCOUNT_PDF_REQUEST = 'GET_ACCOUNT_PDF_REQUEST';
 export const GET_ACCOUNT_PDF_SUCCESS = 'GET_ACCOUNT_PDF_SUCCESS';
 export const GET_ACCOUNT_PDF_FAILURE = 'GET_ACCOUNT_PDF_FAILURE';
@@ -3290,6 +3298,42 @@ export const getAllAccountLedgerSuccess = (data) => ({
 });
 export const getAllAccountLedgerFailure = (error) => ({
   type: 'GET_ALL_ACCOUNT_LEDGER_FAILURE',
+  payload: error
+});
+export const AccountImageRequest = (data) => ({
+  type: 'ACCOUNT_IMAGE_REQUEST',
+  payload: data
+});
+export const AccountImageSuccess = (data) => ({
+  type: 'ACCOUNT_IMAGE_SUCCESS',
+  payload: data
+});
+export const AccountImageFailure = (error) => ({
+  type: 'ACCOUNT_IMAGE_FAILURE',
+  payload: error
+});
+export const AccountExcelRequest = (data) => ({
+  type: 'ACCOUNT_EXCEL_REQUEST',
+  payload: data
+});
+export const AccountExcelSuccess = (data) => ({
+  type: 'ACCOUNT_EXCEL_SUCCESS',
+  payload: data
+});
+export const AccountExcelFailure = (error) => ({
+  type: 'ACCOUNT_EXCEL_FAILURE',
+  payload: error
+});
+export const AccountCashExcelRequest = (data) => ({
+  type: 'ACCOUNT_CASH_EXCEL_REQUEST',
+  payload: data
+});
+export const AccountCashExcelSuccess = (data) => ({
+  type: 'ACCOUNT_CASH_EXCEL_SUCCESS',
+  payload: data
+});
+export const AccountCashExcelFailure = (error) => ({
+  type: 'ACCOUNT_CASH_EXCEL_FAILURE',
   payload: error
 });
 export const AccountPdfRequest = () => ({
