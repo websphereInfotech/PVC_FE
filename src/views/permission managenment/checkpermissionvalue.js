@@ -841,6 +841,18 @@ const useCan = () => {
   const canseeaccountcashledger = () => {
     return checkPermission('Ledger Cash', 'account_ledger');
   };
+  const canseeaccountledgerjpg = () => {
+    return checkPermission('Ledger', 'account_ledger_jpg');
+  };
+  const canseeaccountcashledgerjpg = () => {
+    return checkPermission('Ledger Cash', 'account_ledger_jpg');
+  };
+  const canseeaccountledgerexcel = () => {
+    return checkPermission('Ledger', 'account_ledger_excel');
+  };
+  const canseeaccountcashledgerexcel = () => {
+    return checkPermission('Ledger Cash', 'account_ledger_excel');
+  };
   const canseedaybookledger = () => {
     return checkPermission('Ledger', 'daybook');
   };
@@ -1186,6 +1198,10 @@ const useCan = () => {
     // LEDGERS ++++++++++++++++++
     canseeaccountledger,
     canseeaccountcashledger,
+    canseeaccountledgerjpg,
+    canseeaccountcashledgerjpg,
+    canseeaccountledgerexcel,
+    canseeaccountcashledgerexcel,
     canseedaybookledger,
     canseedaybookcashledger,
     canseecashbookcashledger,

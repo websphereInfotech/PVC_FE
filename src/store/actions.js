@@ -724,6 +724,9 @@ export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
 export const ACCOUNT_IMAGE_REQUEST = 'ACCOUNT_IMAGE_REQUEST';
 export const ACCOUNT_IMAGE_SUCCESS = 'ACCOUNT_IMAGE_SUCCESS';
 export const ACCOUNT_IMAGE_FAILURE = 'ACCOUNT_IMAGE_FAILURE';
+export const ACCOUNT_CASH_IMAGE_REQUEST = 'ACCOUNT_CASH_IMAGE_REQUEST';
+export const ACCOUNT_CASH_IMAGE_SUCCESS = 'ACCOUNT_CASH_IMAGE_SUCCESS';
+export const ACCOUNT_CASH_IMAGE_FAILURE = 'ACCOUNT_CASH_IMAGE_FAILURE';
 export const ACCOUNT_CASH_EXCEL_REQUEST = 'ACCOUNT_CASH_EXCEL_REQUEST';
 export const ACCOUNT_CASH_EXCEL_SUCCESS = 'ACCOUNT_CASH_EXCEL_SUCCESS';
 export const ACCOUNT_CASH_EXCEL_FAILURE = 'ACCOUNT_CASH_EXCEL_FAILURE';
@@ -3298,6 +3301,18 @@ export const getAllAccountLedgerSuccess = (data) => ({
 });
 export const getAllAccountLedgerFailure = (error) => ({
   type: 'GET_ALL_ACCOUNT_LEDGER_FAILURE',
+  payload: error
+});
+export const AccountCashImageRequest = (data) => ({
+  type: 'ACCOUNT_CASH_IMAGE_REQUEST',
+  payload: data
+});
+export const AccountCashImageSuccess = (data) => ({
+  type: 'ACCOUNT_CASH_IMAGE_SUCCESS',
+  payload: data
+});
+export const AccountCashImageFailure = (error) => ({
+  type: 'ACCOUNT_CASH_IMAGE_FAILURE',
   payload: error
 });
 export const AccountImageRequest = (data) => ({

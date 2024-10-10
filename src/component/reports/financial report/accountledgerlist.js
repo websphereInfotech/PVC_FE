@@ -59,7 +59,7 @@ const Accountledgerlist = () => {
   const [AccountIdc, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
-  const { canaccountpdf } = useCan();
+  const { canaccountpdf, canseeaccountledgerexcel, canseeaccountledgerjpg } = useCan();
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -270,10 +270,10 @@ const Accountledgerlist = () => {
             <MenuItem onClick={handlePrint}>
               <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
             </MenuItem>
-            <MenuItem onClick={handleImage}>
+            <MenuItem onClick={handleImage} disabled={!canseeaccountledgerjpg()}>
               <IoImage style={{ marginRight: '8px' }} /> JPEG Image
             </MenuItem>
-            <MenuItem onClick={handleExcel}>
+            <MenuItem onClick={handleExcel} disabled={!canseeaccountledgerexcel()}>
               <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
             </MenuItem>
           </Menu>

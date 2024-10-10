@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import { AccountCashExcel, AccountCashPDF, fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
+import { AccountCashExcel, AccountCashledgerImage, AccountCashPDF, fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,7 +26,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import { IoMdMenu } from 'react-icons/io';
 import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
-// import { IoImage } from 'react-icons/io5';
+import { IoImage } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 
 const columns = [
@@ -50,7 +50,7 @@ const formatDate = (dateString) => {
 const Cashaccountledgerlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canaccountcashpdf } = useCan();
+  const { canaccountcashpdf, canseeaccountcashledgerexcel, canseeaccountcashledgerjpg } = useCan();
   const [AccountIdc, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
@@ -140,13 +140,13 @@ const Cashaccountledgerlist = () => {
     }
   };
 
-  // const handleImage = async () => {
-  //   if (AccountIdc) {
-  //     await dispatch(AccountledgerImage(AccountIdc, formDatec, toDatec, navigate));
-  //   } else {
-  //     await dispatch(AccountledgerImage(AccountId, formData, toDate, navigate));
-  //   }
-  // };
+  const handleImage = async () => {
+    if (AccountIdc) {
+      await dispatch(AccountCashledgerImage(AccountIdc, formDatec, toDatec, navigate));
+    } else {
+      await dispatch(AccountCashledgerImage(AccountId, formData, toDate, navigate));
+    }
+  };
 
   const handleExcel = async () => {
     if (AccountIdc) {
@@ -262,10 +262,10 @@ const Cashaccountledgerlist = () => {
             <MenuItem onClick={handlePrint}>
               <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
             </MenuItem>
-            {/* <MenuItem onClick={handleImage}>
+            <MenuItem onClick={handleImage} disabled={!canseeaccountcashledgerjpg()}>
               <IoImage style={{ marginRight: '8px' }} /> JPEG Image
-            </MenuItem> */}
-            <MenuItem onClick={handleExcel}>
+            </MenuItem>
+            <MenuItem onClick={handleExcel} disabled={!canseeaccountcashledgerexcel()}>
               <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
             </MenuItem>
           </Menu>

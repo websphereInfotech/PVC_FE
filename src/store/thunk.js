@@ -688,6 +688,9 @@ import {
   AccountImageRequest,
   AccountImageSuccess,
   AccountImageFailure,
+  AccountCashImageRequest,
+  AccountCashImageSuccess,
+  AccountCashImageFailure,
   AccountPdfRequest,
   AccountPdfSuccess,
   AccountPdfFailure,
@@ -6011,6 +6014,46 @@ export const AccountledgerImage = (id, formDate, toDate, navigate) => {
         });
       }
       dispatch(AccountImageFailure(error.message));
+    }
+  };
+};
+export const AccountCashledgerImage = (id, formDate, toDate, navigate) => {
+  return async (dispatch) => {
+    dispatch(AccountCashImageRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_account_ledger_jpg/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'image/jpeg' });
+      saveAs(blob, `Account_Cash_${id}.jpeg`);
+      dispatch(AccountCashImageSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(AccountCashImageFailure(error.message));
     }
   };
 };
