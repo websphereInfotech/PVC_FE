@@ -30,6 +30,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import {
   SalesCashExcel,
+  SalesCashHtml,
   SalesCashImage,
   SalesCashPDF,
   SalesCashSingleExcel,
@@ -64,7 +65,8 @@ const Salescashlist = () => {
     canDownloadPdfCashSales,
     canDownloadImageCashSales,
     canSingleExcelSalesCash,
-    canDownloadExcelSalescash
+    canDownloadExcelSalescash,
+    canSalesCashHtml
   } = useCan();
   const navigate = useNavigate();
   const [salescash, setsalescash] = useState([]);
@@ -178,6 +180,9 @@ const Salescashlist = () => {
   };
   const handledownloadExcel = async (id) => {
     await dispatch(SalesCashSingleExcel(id, navigate));
+  };
+  const handledownloadHtml = async (id) => {
+    await dispatch(SalesCashHtml(id, navigate));
   };
   const handleMenuClick = (event, id) => {
     setAnchorEl(event.currentTarget);
@@ -331,9 +336,11 @@ const Salescashlist = () => {
                               <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canSalesCashHtml() && (
+                            <MenuItem onClick={() => handledownloadHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'date' ? (

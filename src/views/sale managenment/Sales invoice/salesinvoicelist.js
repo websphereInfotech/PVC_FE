@@ -25,6 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import {
   SalesInvoiceExcel,
+  SalesInvoiceHtml,
   SalesInvoiceImage,
   SalesInvoicePDF,
   SalesInvoiceSingleExcel,
@@ -63,7 +64,8 @@ const Salesinvoicelist = () => {
     canDownloadPdfSalesinvoice,
     canDownloadExcelSales,
     canSingleExcelSalesinvoice,
-    canDownloadSalesinvoiceImage
+    canDownloadSalesinvoiceImage,
+    canDownloadSalesHtml
   } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -187,6 +189,10 @@ const Salesinvoicelist = () => {
 
   const handledownloaImage = async (id) => {
     await dispatch(SalesInvoiceImage(id, navigate));
+  };
+
+  const handledownloadhtml = async (id) => {
+    await dispatch(SalesInvoiceHtml(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -334,9 +340,11 @@ const Salesinvoicelist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canDownloadSalesHtml() && (
+                            <MenuItem onClick={() => handledownloadhtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'invoicedate' ? (

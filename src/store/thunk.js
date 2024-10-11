@@ -537,6 +537,12 @@ import {
   SalesCashImageRequest,
   SalesCashImageSuccess,
   SalesCashImageFailure,
+  SalesInvoiceHtmlRequest,
+  SalesInvoiceHtmlSuccess,
+  SalesInvoiceHtmlFailure,
+  SalesCashHtmlRequest,
+  SalesCashHtmlSuccess,
+  SalesCashHtmlFailure,
   SalesInvoicePdfRequest,
   SalesInvoicePdfSuccess,
   SalesInvoicePdfFailure,
@@ -688,6 +694,12 @@ import {
   AccountImageRequest,
   AccountImageSuccess,
   AccountImageFailure,
+  AccountHtmlRequest,
+  AccountHtmlSuccess,
+  AccountHtmlFailure,
+  AccountCashHtmlRequest,
+  AccountCashHtmlSuccess,
+  AccountCashHtmlFailure,
   AccountCashImageRequest,
   AccountCashImageSuccess,
   AccountCashImageFailure,
@@ -4714,6 +4726,44 @@ export const SalesCashImage = (id, navigate) => {
     }
   };
 };
+export const SalesCashHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(SalesCashHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_salesInvoice_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `sales_cash_${id}.html`);
+
+      dispatch(SalesCashHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(SalesCashHtmlFailure(error.message));
+    }
+  };
+};
 export const SalesInvoicePDF = (id, navigate, shouldDownload = true) => {
   return async (dispatch) => {
     dispatch(SalesInvoicePdfRequest());
@@ -4772,7 +4822,7 @@ export const SalesInvoiceImage = (id, navigate) => {
         bytes[i] = binaryString.charCodeAt(i);
       }
       const blob = new Blob([bytes], { type: 'image/jpeg' });
-      saveAs(blob, `sales_cash_${id}.jpeg`);
+      saveAs(blob, `sales_invoice_${id}.jpeg`);
       dispatch(SalesInvoiceImageSuccess(base64Data));
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
@@ -4789,6 +4839,43 @@ export const SalesInvoiceImage = (id, navigate) => {
         });
       }
       dispatch(SalesInvoiceImageFailure(error.message));
+    }
+  };
+};
+export const SalesInvoiceHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(SalesInvoiceHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/salesInvoice_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `salesinvoice_${id}.html`);
+      dispatch(SalesInvoiceHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(SalesInvoiceHtmlFailure(error.message));
     }
   };
 };
@@ -6017,6 +6104,42 @@ export const AccountledgerImage = (id, formDate, toDate, navigate) => {
     }
   };
 };
+export const AccountledgerHtml = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(AccountHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/account_ledger_html/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `Account_${id}.html`);
+      dispatch(AccountHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching html:', error);
+      toast.error(error.response?.data?.error || 'An error occurred', {
+        autoClose: 1000
+      });
+      dispatch(AccountHtmlFailure(error.message));
+    }
+  };
+};
 export const AccountCashledgerImage = (id, formDate, toDate, navigate) => {
   return async (dispatch) => {
     dispatch(AccountCashImageRequest());
@@ -6054,6 +6177,42 @@ export const AccountCashledgerImage = (id, formDate, toDate, navigate) => {
         });
       }
       dispatch(AccountCashImageFailure(error.message));
+    }
+  };
+};
+export const AccountCashledgerHtml = (id, formDate, toDate) => {
+  return async (dispatch) => {
+    dispatch(AccountCashHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/ledger/C_account_ledger_html/${id}?formDate=${formDate}&toDate=${toDate}`,
+        config
+      );
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `Account_Cash${id}.html`);
+      dispatch(AccountCashHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching html:', error);
+      toast.error(error.response?.data?.error || 'An error occurred', {
+        autoClose: 1000
+      });
+      dispatch(AccountCashHtmlFailure(error.message));
     }
   };
 };

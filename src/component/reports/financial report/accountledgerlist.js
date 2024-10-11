@@ -17,7 +17,7 @@ import {
   IconButton
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { AccountExcel, AccountledgerImage, AccountPDF, fetchAllAccounts, getallAccountledger } from 'store/thunk';
+import { AccountExcel, AccountledgerHtml, AccountledgerImage, AccountPDF, fetchAllAccounts, getallAccountledger } from 'store/thunk';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
@@ -29,6 +29,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -59,7 +60,7 @@ const Accountledgerlist = () => {
   const [AccountIdc, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
-  const { canaccountpdf, canseeaccountledgerexcel, canseeaccountledgerjpg } = useCan();
+  const { canaccountpdf, canseeaccountledgerexcel, canseeaccountledgerjpg, canseeaccountledgerhtml } = useCan();
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -147,6 +148,14 @@ const Accountledgerlist = () => {
       await dispatch(AccountledgerImage(AccountIdc, formDatec, toDatec, navigate));
     } else {
       await dispatch(AccountledgerImage(AccountId, formData, toDate, navigate));
+    }
+  };
+
+  const handleHtml = async () => {
+    if (AccountIdc) {
+      await dispatch(AccountledgerHtml(AccountIdc, formDatec, toDatec, navigate));
+    } else {
+      await dispatch(AccountledgerHtml(AccountId, formData, toDate, navigate));
     }
   };
 
@@ -264,18 +273,29 @@ const Accountledgerlist = () => {
             <IoMdMenu />
           </IconButton>
           <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
-            <MenuItem onClick={handlepdf} disabled={!canaccountpdf()}>
-              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-            </MenuItem>
+            {canaccountpdf() && (
+              <MenuItem onClick={handlepdf}>
+                <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+              </MenuItem>
+            )}
             <MenuItem onClick={handlePrint}>
               <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
             </MenuItem>
-            <MenuItem onClick={handleImage} disabled={!canseeaccountledgerjpg()}>
-              <IoImage style={{ marginRight: '8px' }} /> JPEG Image
-            </MenuItem>
-            <MenuItem onClick={handleExcel} disabled={!canseeaccountledgerexcel()}>
-              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-            </MenuItem>
+            {canseeaccountledgerjpg() && (
+              <MenuItem onClick={handleImage}>
+                <IoImage style={{ marginRight: '8px' }} /> JPEG Image
+              </MenuItem>
+            )}
+            {canseeaccountledgerexcel() && (
+              <MenuItem onClick={handleExcel}>
+                <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+              </MenuItem>
+            )}
+            {canseeaccountledgerhtml() && (
+              <MenuItem onClick={handleHtml}>
+                <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+              </MenuItem>
+            )}
           </Menu>
         </Grid>
       </Grid>

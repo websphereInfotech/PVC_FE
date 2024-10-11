@@ -18,7 +18,14 @@ import {
 } from '@mui/material';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
-import { AccountCashExcel, AccountCashledgerImage, AccountCashPDF, fetchAllAccountCash, getallCashAccountledger } from 'store/thunk';
+import {
+  AccountCashExcel,
+  AccountCashledgerHtml,
+  AccountCashledgerImage,
+  AccountCashPDF,
+  fetchAllAccountCash,
+  getallCashAccountledger
+} from 'store/thunk';
 import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -28,6 +35,7 @@ import { BiSolidFilePdf } from 'react-icons/bi';
 import { MdLocalPrintshop } from 'react-icons/md';
 import { IoImage } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -50,7 +58,7 @@ const formatDate = (dateString) => {
 const Cashaccountledgerlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canaccountcashpdf, canseeaccountcashledgerexcel, canseeaccountcashledgerjpg } = useCan();
+  const { canaccountcashpdf, canseeaccountcashledgerexcel, canseeaccountcashledgerjpg, canseeaccountcashledgerhtml } = useCan();
   const [AccountIdc, setAccountId] = useState(null);
   const [Account, setAccount] = useState([]);
   const [Accountname, setAccountname] = useState('');
@@ -156,6 +164,14 @@ const Cashaccountledgerlist = () => {
     }
   };
 
+  const handleHtml = async () => {
+    if (AccountIdc) {
+      await dispatch(AccountCashledgerHtml(AccountIdc, formDatec, toDatec, navigate));
+    } else {
+      await dispatch(AccountCashledgerHtml(AccountId, formData, toDate, navigate));
+    }
+  };
+
   const handlePrint = async () => {
     try {
       const accountIdToUse = AccountIdc ? AccountIdc : AccountId;
@@ -256,18 +272,29 @@ const Cashaccountledgerlist = () => {
             <IoMdMenu />
           </IconButton>
           <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
-            <MenuItem onClick={handlepdf} disabled={!canaccountcashpdf()}>
-              <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
-            </MenuItem>
+            {canaccountcashpdf() && (
+              <MenuItem onClick={handlepdf}>
+                <BiSolidFilePdf style={{ marginRight: '8px' }} /> PDF
+              </MenuItem>
+            )}
             <MenuItem onClick={handlePrint}>
               <MdLocalPrintshop style={{ marginRight: '8px' }} /> Print
             </MenuItem>
-            <MenuItem onClick={handleImage} disabled={!canseeaccountcashledgerjpg()}>
-              <IoImage style={{ marginRight: '8px' }} /> JPEG Image
-            </MenuItem>
-            <MenuItem onClick={handleExcel} disabled={!canseeaccountcashledgerexcel()}>
-              <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
-            </MenuItem>
+            {canseeaccountcashledgerjpg() && (
+              <MenuItem onClick={handleImage}>
+                <IoImage style={{ marginRight: '8px' }} /> JPEG Image
+              </MenuItem>
+            )}
+            {canseeaccountcashledgerexcel() && (
+              <MenuItem onClick={handleExcel}>
+                <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
+              </MenuItem>
+            )}
+            {canseeaccountcashledgerhtml() && (
+              <MenuItem onClick={handleHtml} disabled={!canseeaccountcashledgerhtml()}>
+                <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+              </MenuItem>
+            )}
           </Menu>
         </Grid>
       </Grid>

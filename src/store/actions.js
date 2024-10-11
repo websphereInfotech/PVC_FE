@@ -576,6 +576,12 @@ export const GET_SALES_CASH_PDF_FAILURE = 'GET_SALES_CASH_PDF_FAILURE';
 export const GET_SALES_CASH_IMAGE_REQUEST = 'GET_SALES_CASH_IMAGE_REQUEST';
 export const GET_SALES_CASH_IMAGE_SUCCESS = 'GET_SALES_CASH_IMAGE_SUCCESS';
 export const GET_SALES_CASH_IMAGE_FAILURE = 'GET_SALES_CASH_IMAGE_FAILURE';
+export const GET_SALES_CASH_HTML_REQUEST = 'GET_SALES_CASH_HTML_REQUEST';
+export const GET_SALES_CASH_HTML_SUCCESS = 'GET_SALES_CASH_HTML_SUCCESS';
+export const GET_SALES_CASH_HTML_FAILURE = 'GET_SALES_CASH_HTML_FAILURE';
+export const GET_SALES_INVOICE_HTML_REQUEST = 'GET_SALES_INVOICE_HTML_REQUEST';
+export const GET_SALES_INVOICE_HTML_SUCCESS = 'GET_SALES_INVOICE_HTML_SUCCESS';
+export const GET_SALES_INVOICE_HTML_FAILURE = 'GET_SALES_INVOICE_HTML_FAILURE';
 export const GET_SALES_INVOICE_PDF_REQUEST = 'GET_SALES_INVOICE_PDF_REQUEST';
 export const GET_SALES_INVOICE_PDF_SUCCESS = 'GET_SALES_INVOICE_PDF_SUCCESS';
 export const GET_SALES_INVOICE_PDF_FAILURE = 'GET_SALES_INVOICE_PDF_FAILURE';
@@ -724,6 +730,12 @@ export const GET_ALL_ACCOUNT_LEDGER_FAILURE = 'GET_ALL_ACCOUNT_LEDGER_FAILURE';
 export const ACCOUNT_IMAGE_REQUEST = 'ACCOUNT_IMAGE_REQUEST';
 export const ACCOUNT_IMAGE_SUCCESS = 'ACCOUNT_IMAGE_SUCCESS';
 export const ACCOUNT_IMAGE_FAILURE = 'ACCOUNT_IMAGE_FAILURE';
+export const ACCOUNT_HTML_REQUEST = 'ACCOUNT_HTML_REQUEST';
+export const ACCOUNT_HTML_SUCCESS = 'ACCOUNT_HTML_SUCCESS';
+export const ACCOUNT_HTML_FAILURE = 'ACCOUNT_HTML_FAILURE';
+export const ACCOUNT_CASH_HTML_REQUEST = 'ACCOUNT_CASH_HTML_REQUEST';
+export const ACCOUNT_CASH_HTML_SUCCESS = 'ACCOUNT_CASH_HTML_SUCCESS';
+export const ACCOUNT_CASH_HTML_FAILURE = 'ACCOUNT_CASH_HTML_FAILURE';
 export const ACCOUNT_CASH_IMAGE_REQUEST = 'ACCOUNT_CASH_IMAGE_REQUEST';
 export const ACCOUNT_CASH_IMAGE_SUCCESS = 'ACCOUNT_CASH_IMAGE_SUCCESS';
 export const ACCOUNT_CASH_IMAGE_FAILURE = 'ACCOUNT_CASH_IMAGE_FAILURE';
@@ -2781,6 +2793,10 @@ export const SalesCashPdfSuccess = (data) => ({
   type: 'GET_SALES_CASH_PDF_SUCCESS',
   payload: data
 });
+export const SalesCashPdfFailure = (error) => ({
+  type: 'GET_SALES_CASH_PDF_FAILURE',
+  payload: error
+});
 export const SalesCashImageFailure = (error) => ({
   type: 'GET_SALES_CASH_IMAGE_FAILURE',
   payload: error
@@ -2792,9 +2808,16 @@ export const SalesCashImageSuccess = (data) => ({
   type: 'GET_SALES_CASH_IMAGE_SUCCESS',
   payload: data
 });
-export const SalesCashPdfFailure = (error) => ({
-  type: 'GET_SALES_CASH_PDF_FAILURE',
+export const SalesCashHtmlFailure = (error) => ({
+  type: 'GET_SALES_CASH_HTML_FAILURE',
   payload: error
+});
+export const SalesCashHtmlRequest = () => ({
+  type: 'GET_SALES_CASH_HTML_REQUEST'
+});
+export const SalesCashHtmlSuccess = (data) => ({
+  type: 'GET_SALES_CASH_HTML_SUCCESS',
+  payload: data
 });
 export const SalesInvoicePdfRequest = () => ({
   type: 'GET_SALES_INVOICE_PDF_REQUEST'
@@ -2807,7 +2830,17 @@ export const SalesInvoicePdfFailure = (error) => ({
   type: 'GET_SALES_INVOICE_PDF_FAILURE',
   payload: error
 });
-
+export const SalesInvoiceHtmlRequest = () => ({
+  type: 'GET_SALES_INVOICE_HTML_REQUEST'
+});
+export const SalesInvoiceHtmlSuccess = (data) => ({
+  type: 'GET_SALES_INVOICE_HTML_SUCCESS',
+  payload: data
+});
+export const SalesInvoiceHtmlFailure = (error) => ({
+  type: 'GET_SALES_INVOICE_HTML_FAILURE',
+  payload: error
+});
 export const SalesInvoiceImageRequest = () => ({
   type: 'GET_SALES_INVOICE_IMAGE_REQUEST'
 });
@@ -3325,6 +3358,30 @@ export const AccountImageSuccess = (data) => ({
 });
 export const AccountImageFailure = (error) => ({
   type: 'ACCOUNT_IMAGE_FAILURE',
+  payload: error
+});
+export const AccountHtmlRequest = (data) => ({
+  type: 'ACCOUNT_HTML_REQUEST',
+  payload: data
+});
+export const AccountHtmlSuccess = (data) => ({
+  type: 'ACCOUNT_HTML_SUCCESS',
+  payload: data
+});
+export const AccountHtmlFailure = (error) => ({
+  type: 'ACCOUNT_HTML_FAILURE',
+  payload: error
+});
+export const AccountCashHtmlRequest = (data) => ({
+  type: 'ACCOUNT_CASH_HTML_REQUEST',
+  payload: data
+});
+export const AccountCashHtmlSuccess = (data) => ({
+  type: 'ACCOUNT_CASH_HTML_SUCCESS',
+  payload: data
+});
+export const AccountCashHtmlFailure = (error) => ({
+  type: 'ACCOUNT_CASH_HTML_FAILURE',
   payload: error
 });
 export const AccountExcelRequest = (data) => ({

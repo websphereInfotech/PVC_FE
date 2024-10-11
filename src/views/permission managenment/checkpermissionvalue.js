@@ -695,11 +695,17 @@ const useCan = () => {
   const canDownloadExcelSales = () => {
     return checkPermission('Sales Invoice', 'salesInvoice_excel');
   };
+  const canDownloadSalesHtml = () => {
+    return checkPermission('Sales Invoice', 'salesInvoice_html');
+  };
   const canSingleExcelSalesinvoice = () => {
     return checkPermission('Sales Invoice', 'view_salesInvoice_excel');
   };
   const canSingleExcelSalesCash = () => {
     return checkPermission('Sales Cash', 'view_sales_cash_excel');
+  };
+  const canSalesCashHtml = () => {
+    return checkPermission('Sales Cash', 'sales_cash_html');
   };
   const canDownloadExcelSalescash = () => {
     return checkPermission('Sales Cash', 'sales_cash_excel');
@@ -844,8 +850,14 @@ const useCan = () => {
   const canseeaccountledgerjpg = () => {
     return checkPermission('Ledger', 'account_ledger_jpg');
   };
+  const canseeaccountledgerhtml = () => {
+    return checkPermission('Ledger', 'account_ledger_html');
+  };
   const canseeaccountcashledgerjpg = () => {
     return checkPermission('Ledger Cash', 'account_ledger_jpg');
+  };
+  const canseeaccountcashledgerhtml = () => {
+    return checkPermission('Ledger Cash', 'account_ledger_html');
   };
   const canseeaccountledgerexcel = () => {
     return checkPermission('Ledger', 'account_ledger_excel');
@@ -1148,6 +1160,8 @@ const useCan = () => {
     canDownloadImageCashSales,
     canDownloadPdfSalesinvoice,
     canDownloadSalesinvoiceImage,
+    canDownloadSalesHtml,
+    canSalesCashHtml,
     canSingleExcelSalesinvoice,
     canDownloadExcelSalescash,
     canSingleExcelSalesCash,
@@ -1200,6 +1214,8 @@ const useCan = () => {
     canseeaccountcashledger,
     canseeaccountledgerjpg,
     canseeaccountcashledgerjpg,
+    canseeaccountcashledgerhtml,
+    canseeaccountledgerhtml,
     canseeaccountledgerexcel,
     canseeaccountcashledgerexcel,
     canseedaybookledger,
