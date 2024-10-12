@@ -25,6 +25,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import {
   CreditnoteExcel,
+  CreditnoteHtml,
   CreditnoteImage,
   CreditnotePDF,
   CreditnoteSingleExcel,
@@ -64,7 +65,8 @@ const Creditnotelist = () => {
     canCreditnotepdf,
     canCreditnoteImage,
     canCreditnotesingleexcel,
-    canCreditnoteexcel
+    canCreditnoteexcel,
+    canCreditnoteHtml
   } = useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
@@ -181,6 +183,10 @@ const Creditnotelist = () => {
 
   const handleExcel = async (id) => {
     await dispatch(CreditnoteSingleExcel(id, navigate));
+  };
+
+  const handleHtml = async (id) => {
+    await dispatch(CreditnoteHtml(id, navigate));
   };
 
   const handlePrint = async (id) => {
@@ -334,9 +340,11 @@ const Creditnotelist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canCreditnoteHtml() && (
+                            <MenuItem onClick={() => handleHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'creditdate' ? (

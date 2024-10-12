@@ -175,6 +175,9 @@ export const DEBIT_NOTE_PDF_FAILURE = 'DEBIT_NOTE_PDF_FAILURE';
 export const DEBIT_NOTE_IMAGE_REQUEST = 'DEBIT_NOTE_IMAGE_REQUEST';
 export const DEBIT_NOTE_IMAGE_SUCCESS = 'DEBIT_NOTE_IMAGE_SUCCESS';
 export const DEBIT_NOTE_IMAGE_FAILURE = 'DEBIT_NOTE_IMAGE_FAILURE';
+export const DEBIT_NOTE_HTML_REQUEST = 'DEBIT_NOTE_HTML_REQUEST';
+export const DEBIT_NOTE_HTML_SUCCESS = 'DEBIT_NOTE_HTML_SUCCESS';
+export const DEBIT_NOTE_HTML_FAILURE = 'DEBIT_NOTE_HTML_FAILURE';
 export const DEBIT_NOTE_SINGLE_EXCEL_REQUEST = 'DEBIT_NOTE_SINGLE_EXCEL_REQUEST';
 export const DEBIT_NOTE_SINGLE_EXCEL_SUCCESS = 'DEBIT_NOTE_SINGLE_EXCEL_SUCCESS';
 export const DEBIT_NOTE_SINGLE_EXCEL_FAILURE = 'DEBIT_NOTE_SINGLE_EXCEL_FAILURE';
@@ -204,6 +207,9 @@ export const DEBIT_NOTE_CASH_PDF_FAILURE = 'DEBIT_NOTE_CASH_PDF_FAILURE';
 export const DEBIT_NOTE_CASH_IMAGE_REQUEST = 'DEBIT_NOTE_CASH_IMAGE_REQUEST';
 export const DEBIT_NOTE_CASH_IMAGE_SUCCESS = 'DEBIT_NOTE_CASH_IMAGE_SUCCESS';
 export const DEBIT_NOTE_CASH_IMAGE_FAILURE = 'DEBIT_NOTE_CASH_IMAGE_FAILURE';
+export const DEBIT_NOTE_CASH_HTML_REQUEST = 'DEBIT_NOTE_CASH_HTML_REQUEST';
+export const DEBIT_NOTE_CASH_HTML_SUCCESS = 'DEBIT_NOTE_CASH_HTML_SUCCESS';
+export const DEBIT_NOTE_CASH_HTML_FAILURE = 'DEBIT_NOTE_CASH_HTML_FAILURE';
 export const DEBIT_NOTE_CASH_SINGLE_EXCEL_REQUEST = 'DEBIT_NOTE_CASH_SINGLE_EXCEL_REQUEST';
 export const DEBIT_NOTE_CASH_SINGLE_EXCEL_SUCCESS = 'DEBIT_NOTE_CASH_SINGLE_EXCEL_SUCCESS';
 export const DEBIT_NOTE_CASH_SINGLE_EXCEL_FAILURE = 'DEBIT_NOTE_CASH_SINGLE_EXCEL_FAILURE';
@@ -233,6 +239,9 @@ export const CREDIT_NOTE_PDF_FAILURE = 'CREDIT_NOTE_PDF_FAILURE';
 export const CREDIT_NOTE_IMAGE_REQUEST = 'CREDIT_NOTE_IMAGE_REQUEST';
 export const CREDIT_NOTE_IMAGE_SUCCESS = 'CREDIT_NOTE_IMAGE_SUCCESS';
 export const CREDIT_NOTE_IMAGE_FAILURE = 'CREDIT_NOTE_IMAGE_FAILURE';
+export const CREDIT_NOTE_HTML_REQUEST = 'CREDIT_NOTE_HTML_REQUEST';
+export const CREDIT_NOTE_HTML_SUCCESS = 'CREDIT_NOTE_HTML_SUCCESS';
+export const CREDIT_NOTE_HTML_FAILURE = 'CREDIT_NOTE_HTML_FAILURE';
 export const CREDIT_NOTE_SINGLE_EXCEL_REQUEST = 'CREDIT_NOTE_SINGLE_EXCEL_REQUEST';
 export const CREDIT_NOTE_SINGLE_EXCEL_SUCCESS = 'CREDIT_NOTE_SINGLE_EXCEL_SUCCESS';
 export const CREDIT_NOTE_SINGLE_EXCEL_FAILURE = 'CREDIT_NOTE_SINGLE_EXCEL_FAILURE';
@@ -268,6 +277,9 @@ export const CREDIT_NOTE_CASH_SINGLE_EXCEL_FAILURE = 'CREDIT_NOTE_CASH_SINGLE_EX
 export const CREDIT_NOTE_CASH_EXCEL_REQUEST = 'CREDIT_NOTE_CASH_EXCEL_REQUEST';
 export const CREDIT_NOTE_CASH_EXCEL_SUCCESS = 'CREDIT_NOTE_CASH_EXCEL_SUCCESS';
 export const CREDIT_NOTE_CASH_EXCEL_FAILURE = 'CREDIT_NOTE_CASH_EXCEL_FAILURE';
+export const CREDIT_NOTE_CASH_HTML_REQUEST = 'CREDIT_NOTE_CASH_HTML_REQUEST';
+export const CREDIT_NOTE_CASH_HTML_SUCCESS = 'CREDIT_NOTE_CASH_HTML_SUCCESS';
+export const CREDIT_NOTE_CASH_HTML_FAILURE = 'CREDIT_NOTE_CASH_HTML_FAILURE';
 
 // ########################################## PURCHASE INVOICE ###############################################################################################
 export const FETCH_ALL_PURCHASE_INVOICE_REQUEST = 'FETCH_ALL_PURCHASE_INVOICE_REQUEST';
@@ -621,6 +633,15 @@ export const GET_PURCHASE_CASH_EXCEL_FAILURE = 'GET_PURCHASE_CASH_EXCEL_FAILURE'
 export const GET_PURCHASE_INVOICE_IMAGE_REQUEST = 'GET_PURCHASE_INVOICE_IMAGE_REQUEST';
 export const GET_PURCHASE_INVOICE_IMAGE_SUCCESS = 'GET_PURCHASE_INVOICE_IMAGE_SUCCESS';
 export const GET_PURCHASE_INVOICE_IMAGE_FAILURE = 'GET_PURCHASE_INVOICE_IMAGE_FAILURE';
+export const GET_PURCHASE_INVOICE_HTML_REQUEST = 'GET_PURCHASE_INVOICE_HTML_REQUEST';
+export const GET_PURCHASE_INVOICE_HTML_SUCCESS = 'GET_PURCHASE_INVOICE_HTML_SUCCESS';
+export const GET_PURCHASE_INVOICE_HTML_FAILURE = 'GET_PURCHASE_INVOICE_HTML_FAILURE';
+export const GET_PURCHASE_INVOICE_CASH_IMAGE_REQUEST = 'GET_PURCHASE_INVOICE_CASH_IMAGE_REQUEST';
+export const GET_PURCHASE_INVOICE_CASH_IMAGE_SUCCESS = 'GET_PURCHASE_INVOICE_CASH_IMAGE_SUCCESS';
+export const GET_PURCHASE_INVOICE_CASH_IMAGE_FAILURE = 'GET_PURCHASE_INVOICE_CASH_IMAGE_FAILURE';
+export const GET_PURCHASE_INVOICE_CASH_HTML_REQUEST = 'GET_PURCHASE_INVOICE_CASH_HTML_REQUEST';
+export const GET_PURCHASE_INVOICE_CASH_HTML_SUCCESS = 'GET_PURCHASE_INVOICE_CASH_HTML_SUCCESS';
+export const GET_PURCHASE_INVOICE_CASH_HTML_FAILURE = 'GET_PURCHASE_INVOICE_CASH_HTML_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ DASHBOARD ++++++++++++++++++++++++++++++++
 export const GET_TOTAL_SALES_REQUEST = 'GET_TOTAL_SALES_REQUEST';
@@ -1739,6 +1760,18 @@ export const DebitnoteImageFailure = (error) => ({
   type: 'DEBIT_NOTE_IMAGE_FAILURE',
   payload: error
 });
+export const DebitnoteHtmlRequest = (data) => ({
+  type: 'DEBIT_NOTE_HTML_REQUEST',
+  payload: data
+});
+export const DebitnoteHtmlSuccess = (data) => ({
+  type: 'DEBIT_NOTE_HTML_SUCCESS',
+  payload: data
+});
+export const DebitnoteHtmlFailure = (error) => ({
+  type: 'DEBIT_NOTE_HTML_FAILURE',
+  payload: error
+});
 export const DebitnoteSingleExcelRequest = (data) => ({
   type: 'DEBIT_NOTE_SINGLE_EXCEL_REQUEST',
   payload: data
@@ -1847,6 +1880,18 @@ export const DebitnoteCashImageSuccess = (data) => ({
 });
 export const DebitnoteCashImageFailure = (error) => ({
   type: 'DEBIT_NOTE_CASH_IMAGE_FAILURE',
+  payload: error
+});
+export const DebitnoteCashHtmlRequest = (data) => ({
+  type: 'DEBIT_NOTE_CASH_HTML_REQUEST',
+  payload: data
+});
+export const DebitnoteCashHtmlSuccess = (data) => ({
+  type: 'DEBIT_NOTE_CASH_HTML_SUCCESS',
+  payload: data
+});
+export const DebitnoteCashHtmlFailure = (error) => ({
+  type: 'DEBIT_NOTE_CASH_HTML_FAILURE',
   payload: error
 });
 export const DebitnoteCashSingleExcelRequest = (data) => ({
@@ -1959,6 +2004,18 @@ export const CreditnoteImageFailure = (error) => ({
   type: 'CREDIT_NOTE_IMAGE_FAILURE',
   payload: error
 });
+export const CreditnoteHtmlRequest = (data) => ({
+  type: 'CREDIT_NOTE_HTML_REQUEST',
+  payload: data
+});
+export const CreditnoteHtmlSuccess = (data) => ({
+  type: 'CREDIT_NOTE_HTML_SUCCESS',
+  payload: data
+});
+export const CreditnoteHtmlFailure = (error) => ({
+  type: 'CREDIT_NOTE_HTML_FAILURE',
+  payload: error
+});
 export const CreditnoteSingleExcelRequest = (data) => ({
   type: 'CREDIT_NOTE_SINGLE_EXCEL_REQUEST',
   payload: data
@@ -2066,6 +2123,18 @@ export const CreditnoteCashImageSuccess = (data) => ({
 });
 export const CreditnoteCashImageFailure = (error) => ({
   type: 'CREDIT_NOTE_CASH_IMAGE_FAILURE',
+  payload: error
+});
+export const CreditnoteCashHtmlRequest = (data) => ({
+  type: 'CREDIT_NOTE_CASH_HTML_REQUEST',
+  payload: data
+});
+export const CreditnoteCashHtmlSuccess = (data) => ({
+  type: 'CREDIT_NOTE_CASH_HTML_SUCCESS',
+  payload: data
+});
+export const CreditnoteCashHtmlFailure = (error) => ({
+  type: 'CREDIT_NOTE_CASH_HTML_FAILURE',
   payload: error
 });
 export const CreditnoteCashSingleExcelRequest = (data) => ({
@@ -2929,6 +2998,17 @@ export const PurchaseInvoiceImageFailure = (error) => ({
   type: 'GET_PURCHASE_INVOICE_IMAGE_FAILURE',
   payload: error
 });
+export const PurchaseInvoiceHtmlRequest = () => ({
+  type: 'GET_PURCHASE_INVOICE_HTML_REQUEST'
+});
+export const PurchaseInvoiceHtmlSuccess = (data) => ({
+  type: 'GET_PURCHASE_INVOICE_HTML_SUCCESS',
+  payload: data
+});
+export const PurchaseInvoiceHtmlFailure = (error) => ({
+  type: 'GET_PURCHASE_INVOICE_HTML_FAILURE',
+  payload: error
+});
 export const PurchaseInvoiceCashImageRequest = () => ({
   type: 'GET_PURCHASE_INVOICE_CASH_IMAGE_REQUEST'
 });
@@ -2938,6 +3018,17 @@ export const PurchaseInvoiceCashImageSuccess = (data) => ({
 });
 export const PurchaseInvoiceCashImageFailure = (error) => ({
   type: 'GET_PURCHASE_INVOICE_CASH_IMAGE_FAILURE',
+  payload: error
+});
+export const PurchaseInvoiceCashHtmlRequest = () => ({
+  type: 'GET_PURCHASE_INVOICE_CASH_HTML_REQUEST'
+});
+export const PurchaseInvoiceCashHtmlSuccess = (data) => ({
+  type: 'GET_PURCHASE_INVOICE_CASH_HTML_SUCCESS',
+  payload: data
+});
+export const PurchaseInvoiceCashHtmlFailure = (error) => ({
+  type: 'GET_PURCHASE_INVOICE_CASH_HTML_FAILURE',
   payload: error
 });
 export const PurchaseCashExcelRequest = () => ({

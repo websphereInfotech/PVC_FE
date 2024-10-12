@@ -25,6 +25,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import {
   DebitnoteCashExcel,
+  DebitnoteCashHtml,
   DebitnoteCashImage,
   DebitnoteCashPDF,
   DebitnoteCashSingleExcel,
@@ -64,7 +65,8 @@ const Debitnotecashlist = () => {
     canDeleteDebitnotecash,
     canDebitnotecashpdf,
     canDebitnotecashExcel,
-    canDebitnoteAllCashExcel
+    canDebitnoteAllCashExcel,
+    canDebitnotecashHtml
   } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
@@ -177,6 +179,10 @@ const Debitnotecashlist = () => {
 
   const handleExcel = async (id) => {
     await dispatch(DebitnoteCashSingleExcel(id, navigate));
+  };
+
+  const handleHtml = async (id) => {
+    await dispatch(DebitnoteCashHtml(id, navigate));
   };
 
   const handledownloadexcel = (formDate, toDate) => {
@@ -336,9 +342,11 @@ const Debitnotecashlist = () => {
                               <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canDebitnotecashHtml() && (
+                            <MenuItem onClick={() => handleHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'debitdate' ? (

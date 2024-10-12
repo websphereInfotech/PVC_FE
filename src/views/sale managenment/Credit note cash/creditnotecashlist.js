@@ -19,11 +19,13 @@ import {
   Menu,
   MenuItem,
   useTheme,
-  Grid
+  Grid,
+  useMediaQuery
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
   CreditnoteCashExcel,
+  CreditnoteCashHtml,
   CreditnoteCashImage,
   CreditnoteCashPDF,
   CreditnoteCashSingleExcel,
@@ -63,7 +65,8 @@ const Creditnotecashlist = () => {
     canDeleteCreditnotecash,
     canCreditnotecashpdf,
     canCreditnotecashsingleexcel,
-    canCreditnotecashexcel
+    canCreditnotecashexcel,
+    canCreditnotecashHtml
   } = useCan();
   const navigate = useNavigate();
   const [Creditnote, setCreditnote] = useState([]);
@@ -222,6 +225,10 @@ const Creditnotecashlist = () => {
     setAnchorEl(null);
   };
 
+  const handleHtml = async (id) => {
+    await dispatch(CreditnoteCashHtml(id, navigate));
+  };
+
   return (
     // <Container>
     <Card style={{ width: 'auto', padding: '20px' }}>
@@ -333,9 +340,11 @@ const Creditnotecashlist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canCreditnotecashHtml() && (
+                            <MenuItem onClick={() => handleHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'creditdate' ? (

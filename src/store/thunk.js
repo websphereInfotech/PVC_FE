@@ -256,6 +256,9 @@ import {
   DebitnoteImageRequest,
   DebitnoteImageSuccess,
   DebitnoteImageFailure,
+  DebitnoteHtmlRequest,
+  DebitnoteHtmlSuccess,
+  DebitnoteHtmlFailure,
   DebitnoteSingleExcelRequest,
   DebitnoteSingleExcelSuccess,
   DebitnoteSingleExcelFailure,
@@ -284,6 +287,9 @@ import {
   DebitnoteCashImageRequest,
   DebitnoteCashImageSuccess,
   DebitnoteCashImageFailure,
+  DebitnoteCashHtmlRequest,
+  DebitnoteCashHtmlSuccess,
+  DebitnoteCashHtmlFailure,
   DebitnoteCashExcelRequest,
   DebitnoteCashExcelSuccess,
   DebitnoteCashExcelFailure,
@@ -312,6 +318,9 @@ import {
   CreditnoteImageRequest,
   CreditnoteImageSuccess,
   CreditnoteImageFailure,
+  CreditnoteHtmlRequest,
+  CreditnoteHtmlSuccess,
+  CreditnoteHtmlFailure,
   CreditnoteSingleExcelRequest,
   CreditnoteSingleExcelSuccess,
   CreditnoteSingleExcelFailure,
@@ -346,6 +355,9 @@ import {
   CreditnoteCashExcelRequest,
   CreditnoteCashExcelSuccess,
   CreditnoteCashExcelFailure,
+  CreditnoteCashHtmlRequest,
+  CreditnoteCashHtmlSuccess,
+  CreditnoteCashHtmlFailure,
   // ECIEVE CASH +++++++++++++
   createRecieveCashRequest,
   createRecieveCashSuccess,
@@ -579,9 +591,15 @@ import {
   PurchaseInvoiceImageRequest,
   PurchaseInvoiceImageSuccess,
   PurchaseInvoiceImageFailure,
+  PurchaseInvoiceHtmlRequest,
+  PurchaseInvoiceHtmlSuccess,
+  PurchaseInvoiceHtmlFailure,
   PurchaseInvoiceCashImageRequest,
   PurchaseInvoiceCashImageSuccess,
   PurchaseInvoiceCashImageFailure,
+  PurchaseInvoiceCashHtmlRequest,
+  PurchaseInvoiceCashHtmlSuccess,
+  PurchaseInvoiceCashHtmlFailure,
   PurchaseInvoiceExcelRequest,
   PurchaseInvoiceExcelSuccess,
   PurchaseInvoiceExcelFailure,
@@ -1758,6 +1776,43 @@ export const DebitnoteImage = (id, navigate) => {
     }
   };
 };
+export const DebitnoteHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DebitnoteHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/debitNote_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `debitnote_${id}.html`);
+      dispatch(DebitnoteHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(DebitnoteHtmlFailure(error.message));
+    }
+  };
+};
 export const DebitnoteSingleExcel = (id, navigate) => {
   return async (dispatch) => {
     dispatch(DebitnoteSingleExcelRequest());
@@ -2038,6 +2093,43 @@ export const DebitnoteCashImage = (id, navigate) => {
         });
       }
       dispatch(DebitnoteCashImageFailure(error.message));
+    }
+  };
+};
+export const DebitnoteCashHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(DebitnoteCashHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/debitnote/C_debitNote_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `debitnote_cash_${id}.html`);
+      dispatch(DebitnoteCashHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(DebitnoteCashHtmlFailure(error.message));
     }
   };
 };
@@ -2329,6 +2421,46 @@ export const CreditnoteImage = (id, navigate) => {
     }
   };
 };
+export const CreditnoteHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(CreditnoteHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/creditNote_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `creditnote_${id}.html`);
+
+      dispatch(CreditnoteHtmlSuccess(base64Data));
+
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(CreditnoteHtmlFailure(error.message));
+    }
+  };
+};
 export const CreditnoteSingleExcel = (id, navigate) => {
   return async (dispatch) => {
     dispatch(CreditnoteSingleExcelRequest());
@@ -2613,6 +2745,47 @@ export const CreditnoteCashImage = (id, navigate, shouldDownload = true) => {
         });
       }
       dispatch(CreditnoteCashImageFailure(error.message));
+    }
+  };
+};
+export const CreditnoteCashHtml = (id, navigate, shouldDownload = true) => {
+  return async (dispatch) => {
+    dispatch(CreditnoteCashHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/creditnote/C_creditNote_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      if (shouldDownload) {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'text/html' });
+        saveAs(blob, `creditnote_cash_${id}.html`);
+      }
+      dispatch(CreditnoteCashHtmlSuccess(base64Data));
+      if (shouldDownload) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000
+        });
+      }
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(CreditnoteCashHtmlFailure(error.message));
     }
   };
 };
@@ -5403,6 +5576,44 @@ export const PurchaseInvoiceImage = (id, navigate) => {
     }
   };
 };
+export const PurchaseInvoiceHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(PurchaseInvoiceHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/purchaseInvoice_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `purchaseinvoice_${id}.html`);
+      dispatch(PurchaseInvoiceHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(PurchaseInvoiceHtmlFailure(error.message));
+    }
+  };
+};
 export const PurchaseInvoiceCashImage = (id, navigate) => {
   return async (dispatch) => {
     dispatch(PurchaseInvoiceCashImageRequest());
@@ -5437,6 +5648,44 @@ export const PurchaseInvoiceCashImage = (id, navigate) => {
         });
       }
       dispatch(PurchaseInvoiceCashImageFailure(error.message));
+    }
+  };
+};
+export const PurchaseInvoiceCashHtml = (id, navigate) => {
+  return async (dispatch) => {
+    dispatch(PurchaseInvoiceCashHtmlRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/purchaseinvoice/C_purchaseCash_html/${id}`, config);
+      const base64Data = response.data.data;
+      if (!base64Data) {
+        throw new Error('Base64 data is undefined');
+      }
+      const binaryString = atob(base64Data);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      const blob = new Blob([bytes], { type: 'text/html' });
+      saveAs(blob, `purchase_cash_${id}.html`);
+      dispatch(PurchaseInvoiceCashHtmlSuccess(base64Data));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return base64Data;
+    } catch (error) {
+      console.error('Error fetching PDF:', error);
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response?.data?.error || 'An error occurred', {
+          autoClose: 1000
+        });
+      }
+      dispatch(PurchaseInvoiceCashHtmlFailure(error.message));
     }
   };
 };

@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   PurchaseCashExcel,
   PurchaseCashPDF,
+  PurchaseInvoiceCashHtml,
   PurchaseInvoiceCashImage,
   PurchaseInvoiceviewCash,
   deletePurchaseInvoiceCash,
@@ -64,7 +65,8 @@ const Purchaseinvoicecashlist = () => {
     canDownloadPdfCashPurchase,
     canDownloadImageCashPurchase,
     canDownloadAllExcelCashPurchase,
-    canDownloadExcelCashPurchase
+    canDownloadExcelCashPurchase,
+    canDownloadHtmlPurchaseInvoice
   } = useCan();
   const navigate = useNavigate();
   const [purchasebillcash, setPurchasebillcash] = useState([]);
@@ -174,6 +176,10 @@ const Purchaseinvoicecashlist = () => {
 
   const handledownloadImage = async (id) => {
     await dispatch(PurchaseInvoiceCashImage(id, navigate));
+  };
+
+  const handledownloadHtml = async (id) => {
+    await dispatch(PurchaseInvoiceCashHtml(id, navigate));
   };
 
   const handledownloadExcel = async (id) => {
@@ -331,9 +337,11 @@ const Purchaseinvoicecashlist = () => {
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canDownloadHtmlPurchaseInvoice() && (
+                            <MenuItem onClick={() => handledownloadHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'date' ? (

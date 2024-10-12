@@ -27,6 +27,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import {
   DebitnoteExcel,
+  DebitnoteHtml,
   DebitnoteImage,
   DebitnotePDF,
   DebitnoteSingleExcel,
@@ -44,6 +45,7 @@ import { MdLocalPrintshop } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { IoImage } from 'react-icons/io5';
 import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
+import { BiSolidFileHtml } from 'react-icons/bi';
 
 const columns = [
   { id: 'debitnoteno', label: 'Debit Note No', minWidth: 100, align: 'center' },
@@ -63,7 +65,8 @@ const Debitnotelist = () => {
     canDebitnotepdf,
     canDebitnoteImage,
     canDebitnoteExcel,
-    canAllDebitnoteExcel
+    canAllDebitnoteExcel,
+    canDebitnoteHtml
   } = useCan();
   const navigate = useNavigate();
   const [Debitnote, setDebitnote] = useState([]);
@@ -176,6 +179,10 @@ const Debitnotelist = () => {
 
   const handleImage = async (id) => {
     await dispatch(DebitnoteImage(id, navigate));
+  };
+
+  const handleHtml = async (id) => {
+    await dispatch(DebitnoteHtml(id, navigate));
   };
 
   const handleExcel = async (id) => {
@@ -331,6 +338,11 @@ const Debitnotelist = () => {
                           {canDebitnoteImage() && (
                             <MenuItem onClick={() => handleImage(roe.id)}>
                               <IoImage style={{ marginRight: '8px' }} /> JPEG image
+                            </MenuItem>
+                          )}
+                          {canDebitnoteHtml() && (
+                            <MenuItem onClick={() => handleHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
                             </MenuItem>
                           )}
                         </Menu>

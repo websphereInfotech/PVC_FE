@@ -246,7 +246,8 @@ import {
   PurchaseInvoicePDF,
   PurchaseInvoiceImage,
   purchaseInvoiceSingleExcel,
-  PurchaseInvoiceExcel
+  PurchaseInvoiceExcel,
+  PurchaseInvoiceHtml
 } from 'store/thunk';
 import {
   Card,
@@ -302,7 +303,8 @@ export default function PurchaseinvoiceList() {
     canDownloadPdfPurchaseInvoice,
     canDownloadImagePurchaseInvoice,
     canDownloadPurchaseInvoiceExcel,
-    canDownloadAllPurchaseInvoiceExcel
+    canDownloadAllPurchaseInvoiceExcel,
+    canDownloadHtmlPurchaseInvoice
   } = useCan();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -434,6 +436,10 @@ export default function PurchaseinvoiceList() {
 
   const handledownloadExcel = async (id) => {
     await dispatch(purchaseInvoiceSingleExcel(id, navigate));
+  };
+
+  const handledownloadHtml = async (id) => {
+    await dispatch(PurchaseInvoiceHtml(id, navigate));
   };
 
   const handleformDateChange = (date) => {
@@ -568,9 +574,11 @@ export default function PurchaseinvoiceList() {
                               <PiMicrosoftExcelLogoFill style={{ marginRight: '8px' }} /> Excel
                             </MenuItem>
                           )}
-                          <MenuItem>
-                            <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
-                          </MenuItem>
+                          {canDownloadHtmlPurchaseInvoice() && (
+                            <MenuItem onClick={() => handledownloadHtml(row.id)}>
+                              <BiSolidFileHtml style={{ marginRight: '8px' }} /> Html document
+                            </MenuItem>
+                          )}
                         </Menu>
                       </div>
                     ) : column.id === 'invoicedate' ? (
