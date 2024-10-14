@@ -88,8 +88,6 @@ const Purchaseinvoicecashlist = () => {
       try {
         const response = await dispatch(getallPurchaseInvoiceCash());
         const data = response.data;
-        console.log(data, 'dtaa');
-
         setPurchasebillcash(Array.isArray(data) ? data : []);
       } catch (error) {
         if (error.response.status === 401) {
