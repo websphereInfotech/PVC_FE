@@ -237,7 +237,7 @@ const CompanyviewPage = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data.comapnyBank.map((bank, index) => (
+                    {data?.comapnyBank?.map((bank, index) => (
                       <TableRow key={index}>
                         <TableCell align="center">{bank.accountname}</TableCell>
                         <TableCell align="center">{bank.bankname}</TableCell>

@@ -216,7 +216,7 @@ const Maintenscheduleadd = () => {
   const Types = [
     { value: 'Regular', label: 'Regular' },
     { value: 'Preventive', label: 'Preventive' },
-    { value: 'Break Down', label: 'Break Down' }
+    { value: 'Breakdown', label: 'Break Down' }
   ];
 
   const handleMaintenanceTypeChange = (selectedOptions) => {

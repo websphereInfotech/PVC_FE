@@ -86,8 +86,11 @@ const Purchaseinvoicecashlist = () => {
   useEffect(() => {
     const fetchsalesinvoicecash = async () => {
       try {
-        const data = await dispatch(getallPurchaseInvoiceCash());
-        setPurchasebillcash(data.data);
+        const response = await dispatch(getallPurchaseInvoiceCash());
+        const data = response.data;
+        console.log(data, 'dtaa');
+
+        setPurchasebillcash(Array.isArray(data) ? data : []);
       } catch (error) {
         if (error.response.status === 401) {
           navigate('/');
@@ -159,12 +162,12 @@ const Purchaseinvoicecashlist = () => {
     setSelectedId(id);
   };
 
-  const handledeletesalescash = async () => {
+  const handledeletepurchasecash = async () => {
     try {
       await dispatch(deletePurchaseInvoiceCash(selectedId, navigate));
       setOpenConfirmation(false);
       const data = await dispatch(getallPurchaseInvoiceCash());
-      setPurchasebillcash(data);
+      setPurchasebillcash(data.data);
     } catch (error) {
       console.error('Error deleting purchase invoice cash:', error);
     }
@@ -378,7 +381,7 @@ const Purchaseinvoicecashlist = () => {
           <Button onClick={() => setOpenConfirmation(false)} color="secondary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handledeletesalescash} variant="contained" color="secondary">
+          <Button onClick={handledeletepurchasecash} variant="contained" color="secondary">
             Yes
           </Button>
         </DialogActions>

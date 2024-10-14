@@ -155,7 +155,7 @@ const Salesinvoicelist = () => {
       await dispatch(deleteSalesinvoice(selectedId, navigate));
       setOpenConfirmation(false);
       const data = await dispatch(getallSalesInvoice());
-      setsalesinvoice(data);
+      setsalesinvoice(data.data);
     } catch (error) {
       console.error('Error deleting sales invoice:', error);
     }

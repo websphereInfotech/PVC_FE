@@ -77,9 +77,9 @@ const Recieveclaimcashlist = () => {
         }, {});
         setStatuses(initialStatuses);
       } catch (error) {
-        if (error.response.status === 401) {
-          navigate('/');
-        }
+        // if (error.response.status === 401) {
+        //   navigate('/');
+        // }
         console.error('Error fetching receive claim cash data:', error);
       }
     };
