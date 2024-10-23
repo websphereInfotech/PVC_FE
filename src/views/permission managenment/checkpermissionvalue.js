@@ -761,6 +761,18 @@ const useCan = () => {
   const canSeeTotalPurchase = () => {
     return checkPermission('Dashboard', 'total_purchase');
   };
+  const canSeeTotalReceive = () => {
+    return checkPermission('Dashboard', 'total_receive');
+  };
+  const canSeeTotalPayment = () => {
+    return checkPermission('Dashboard', 'total_payment');
+  };
+  const canSeeTotalCashReceive = () => {
+    return checkPermission('Dashboard Cash', 'total_receive');
+  };
+  const canSeeTotalCashPayment = () => {
+    return checkPermission('Dashboard Cash', 'total_payment');
+  };
   const canSeeCompanyCashbalance = () => {
     return checkPermission('Company Cash', 'view_company_cash_balance');
   };
@@ -1201,6 +1213,10 @@ const useCan = () => {
     // DASH BOARD +++++++++++++
     canSeeTotalSales,
     canSeeTotalPurchase,
+    canSeeTotalReceive,
+    canSeeTotalPayment,
+    canSeeTotalCashReceive,
+    canSeeTotalCashPayment,
     canSeeCompanyCashbalance,
     // WAASTAGE ++++++++++++
     canseewastage,

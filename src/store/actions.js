@@ -650,6 +650,18 @@ export const GET_TOTAL_SALES_FAILURE = 'GET_TOTAL_SALES_FAILURE';
 export const GET_TOTAL_PURCHASE_REQUEST = 'GET_TOTAL_PURCHASE_REQUEST';
 export const GET_TOTAL_PURCHASE_SUCCESS = 'GET_TOTAL_PURCHASE_SUCCESS';
 export const GET_TOTAL_PURCHASE_FAILURE = 'GET_TOTAL_PURCHASE_FAILURE';
+export const GET_TOTAL_RECEIVE_REQUEST = 'GET_TOTAL_RECEIVE_REQUEST';
+export const GET_TOTAL_RECEIVE_SUCCESS = 'GET_TOTAL_RECEIVE_SUCCESS';
+export const GET_TOTAL_RECEIVE_FAILURE = 'GET_TOTAL_RECEIVE_FAILURE';
+export const GET_TOTAL_PAYMENT_REQUEST = 'GET_TOTAL_PAYMENT_REQUEST';
+export const GET_TOTAL_PAYMENT_SUCCESS = 'GET_TOTAL_PAYMENT_SUCCESS';
+export const GET_TOTAL_PAYMENT_FAILURE = 'GET_TOTAL_PAYMENT_FAILURE';
+export const GET_TOTAL_CASH_RECEIVE_REQUEST = 'GET_TOTAL_CASH_RECEIVE_REQUEST';
+export const GET_TOTAL_CASH_RECEIVE_SUCCESS = 'GET_TOTAL_CASH_RECEIVE_SUCCESS';
+export const GET_TOTAL_CASH_RECEIVE_FAILURE = 'GET_TOTAL_CASH_RECEIVE_FAILURE';
+export const GET_TOTAL_CASH_PAYMENT_REQUEST = 'GET_TOTAL_CASH_PAYMENT_REQUEST';
+export const GET_TOTAL_CASH_PAYMENT_SUCCESS = 'GET_TOTAL_CASH_PAYMENT_SUCCESS';
+export const GET_TOTAL_CASH_PAYMENT_FAILURE = 'GET_TOTAL_CASH_PAYMENT_FAILURE';
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ITEM GROUP +++++++++++++++++++++++++++
 export const CREATE_ITEM_GROUP_REQUEST = 'CREATE_ITEM_GROUP_REQUEST';
@@ -3096,6 +3108,50 @@ export const GetTotalSalesSuccess = (data) => ({
 });
 export const GetTotalSalesFailure = (error) => ({
   type: 'GET_TOTAL_SALES_FAILURE',
+  payload: error
+});
+export const GetTotalReceiveRequest = () => ({
+  type: 'GET_TOTAL_RECEIVE_REQUEST'
+});
+export const GetTotalReceiveSuccess = (data) => ({
+  type: 'GET_TOTAL_RECEIVE_SUCCESS',
+  payload: data
+});
+export const GetTotalReceiveFailure = (error) => ({
+  type: 'GET_TOTAL_RECEIVE_FAILURE',
+  payload: error
+});
+export const GetTotalPaymentRequest = () => ({
+  type: 'GET_TOTAL_PAYMENT_REQUEST'
+});
+export const GetTotalPaymentSuccess = (data) => ({
+  type: 'GET_TOTAL_PAYMENT_SUCCESS',
+  payload: data
+});
+export const GetTotalPaymentFailure = (error) => ({
+  type: 'GET_TOTAL_PAYMENT_FAILURE',
+  payload: error
+});
+export const GetTotalCashReceiveRequest = () => ({
+  type: 'GET_TOTAL_CASH_RECEIVE_REQUEST'
+});
+export const GetTotalCashReceiveSuccess = (data) => ({
+  type: 'GET_TOTAL_CASH_RECEIVE_SUCCESS',
+  payload: data
+});
+export const GetTotalCashReceiveFailure = (error) => ({
+  type: 'GET_TOTAL_CASH_RECEIVE_FAILURE',
+  payload: error
+});
+export const GetTotalCashPaymentRequest = () => ({
+  type: 'GET_TOTAL_CASH_PAYMENT_REQUEST'
+});
+export const GetTotalCashPaymentSuccess = (data) => ({
+  type: 'GET_TOTAL_CASH_PAYMENT_SUCCESS',
+  payload: data
+});
+export const GetTotalCashPaymentFailure = (error) => ({
+  type: 'GET_TOTAL_CASH_PAYMENT_FAILURE',
   payload: error
 });
 // +++++++++++++++++++++++++++++++++++++++++++++++ WASTAGE ++++++++++++++++++++++++++++++++++++

@@ -610,6 +610,18 @@ import {
   GetTotalSalesRequest,
   GetTotalSalesSuccess,
   GetTotalSalesFailure,
+  GetTotalReceiveRequest,
+  GetTotalReceiveSuccess,
+  GetTotalReceiveFailure,
+  GetTotalPaymentRequest,
+  GetTotalPaymentSuccess,
+  GetTotalPaymentFailure,
+  GetTotalCashReceiveRequest,
+  GetTotalCashReceiveSuccess,
+  GetTotalCashReceiveFailure,
+  GetTotalCashPaymentRequest,
+  GetTotalCashPaymentSuccess,
+  GetTotalCashPaymentFailure,
   // ITEM GROUP +++++++++++++
   CreateItemGroupRequest,
   CreateItemGroupSuccess,
@@ -5717,6 +5729,66 @@ export const TotalPurchaseDashboard = () => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(GetTotalPurchaseFailure(error.message));
+    }
+  };
+};
+export const TotalReceiveDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalReceiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Dashboard/total_receive`, config);
+      const data = response.data.data;
+      dispatch(GetTotalReceiveSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalReceiveFailure(error.message));
+    }
+  };
+};
+export const TotalPaymentDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalPaymentRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Dashboard/total_payment`, config);
+      const data = response.data.data;
+      dispatch(GetTotalPaymentSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalPaymentFailure(error.message));
+    }
+  };
+};
+export const TotalCashReceiveDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalCashReceiveRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Dashboard/C_total_receive`, config);
+      const data = response.data.data;
+      dispatch(GetTotalCashReceiveSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalCashReceiveFailure(error.message));
+    }
+  };
+};
+export const TotalCashPaymentDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalCashPaymentRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Dashboard/C_total_payment`, config);
+      const data = response.data.data;
+      dispatch(GetTotalCashPaymentSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalCashPaymentFailure(error.message));
     }
   };
 };

@@ -21,7 +21,16 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 // import ThumbUpAltTwoTone from '@mui/icons-material/ThumbUpAltTwoTone';
 // import BadgeIcon from '@mui/icons-material/Badge';
 import { useDispatch } from 'react-redux';
-import { getCompanyBankBalance, getCompanyCashBalance, TotalSalesDashboard, TotalPurchaseDashboard } from 'store/thunk';
+import {
+  getCompanyBankBalance,
+  getCompanyCashBalance,
+  TotalSalesDashboard,
+  TotalPurchaseDashboard,
+  TotalReceiveDashboard,
+  TotalCashReceiveDashboard,
+  TotalPaymentDashboard,
+  TotalCashPaymentDashboard
+} from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 // import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
 
@@ -47,7 +56,19 @@ const Default = () => {
   const [Cbalance, setCBalance] = useState(0);
   const [salesbalance, setSalesBalance] = useState(0);
   const [purchasebalance, setPurchaseBalance] = useState(0);
-  const { canSeeCompanyCashbalance } = useCan();
+  const [receiveable, setReceiveable] = useState(0);
+  const [cashreceiveable, setCashReceiveable] = useState(0);
+  const [payable, setPayable] = useState(0);
+  const [cashpayable, setCashPayable] = useState(0);
+  const { canSeeCompanyCashbalance, canSeeTotalReceive, canSeeTotalCashReceive, canSeeTotalPayment, canSeeTotalCashPayment } = useCan();
+
+  const getRoleFromSessionStorage = () => {
+    return sessionStorage.getItem('type');
+  };
+  const createConfig1 = () => {
+    const type = getRoleFromSessionStorage();
+    return type;
+  };
   useEffect(() => {
     const fetchbankbalance = async () => {
       try {
@@ -81,10 +102,46 @@ const Default = () => {
         console.log(error, 'fetch total purchase');
       }
     };
+    const fetchtotalreceiveable = async () => {
+      try {
+        const data = await dispatch(TotalReceiveDashboard());
+        setReceiveable(data);
+      } catch (error) {
+        console.log(error, 'fetch total receive');
+      }
+    };
+    const fetchtotalcashreceiveable = async () => {
+      try {
+        const data = await dispatch(TotalCashReceiveDashboard());
+        setCashReceiveable(data);
+      } catch (error) {
+        console.log(error, 'fetch total cash receive');
+      }
+    };
+    const fetchtotalpayable = async () => {
+      try {
+        const data = await dispatch(TotalPaymentDashboard());
+        setPayable(data);
+      } catch (error) {
+        console.log(error, 'fetch total payment');
+      }
+    };
+    const fetchtotalcashpayable = async () => {
+      try {
+        const data = await dispatch(TotalCashPaymentDashboard());
+        setCashPayable(data);
+      } catch (error) {
+        console.log(error, 'fetch total cash payment');
+      }
+    };
     fetchbankbalance();
     fetchcashbalance();
     fetchtotalsalesbalance();
     fetchtotalpurchasebalance();
+    fetchtotalreceiveable();
+    fetchtotalcashreceiveable();
+    fetchtotalpayable();
+    fetchtotalcashpayable();
   });
   return (
     <Grid container spacing={gridSpacing}>
@@ -100,7 +157,7 @@ const Default = () => {
               // iconFooter={TrendingUpIcon}
             />
           </Grid>
-          {canSeeCompanyCashbalance() && (
+          {canSeeCompanyCashbalance() && createConfig1() === 'C' && (
             <Grid item lg={4} sm={8} xs={12}>
               <ReportCard
                 primary={Cbalance}
@@ -122,26 +179,50 @@ const Default = () => {
               // iconFooter={TrendingUpIcon}
             />
           </Grid>
-          <Grid item lg={4} sm={8} xs={12}>
-            <ReportCard
-              primary="500"
-              secondary="Total Productions"
-              color={theme.palette.primary.main}
-              footerData="1k total productions"
-              // iconPrimary={ThumbUpAltTwoTone}
-              // iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-          <Grid item lg={4} sm={8} xs={12}>
-            <ReportCard
-              primary="14"
-              secondary="Total Recieve"
-              color={theme.palette.info.main}
-              footerData="28% employee growth"
-              // iconPrimary={BadgeIcon}
-              // iconFooter={TrendingDownIcon}
-            />
-          </Grid>
+          {canSeeTotalPayment() && createConfig1() === '' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={payable}
+                secondary="Total Payable"
+                color={theme.palette.primary.main}
+                footerData="Payable Amount"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
+          {canSeeTotalCashPayment() && createConfig1() === 'C' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={cashpayable}
+                secondary="Total Payable"
+                color={theme.palette.primary.main}
+                footerData="Payable Amount"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
+          {canSeeTotalReceive() && createConfig1() === '' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={receiveable}
+                secondary="Total Recieve"
+                color={theme.palette.info.main}
+                footerData="Receiveable Amount"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
+          {canSeeTotalCashReceive() && createConfig1() === 'C' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={cashreceiveable}
+                secondary="Total Recieve"
+                color={theme.palette.info.main}
+                footerData="Receiveable Amount"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
           <Grid item lg={4} sm={8} xs={12}>
             <ReportCard
               primary={purchasebalance}
