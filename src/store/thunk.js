@@ -604,9 +604,15 @@ import {
   PurchaseInvoiceExcelSuccess,
   PurchaseInvoiceExcelFailure,
   // DASHBORAD +++++++++++++++
+  GetTotalCashPurchaseRequest,
+  GetTotalCashPurchaseSuccess,
+  GetTotalCashPurchaseFailure,
   GetTotalPurchaseRequest,
   GetTotalPurchaseSuccess,
   GetTotalPurchaseFailure,
+  GetTotalCashSalesRequest,
+  GetTotalCashSalesSuccess,
+  GetTotalCashSalesFailure,
   GetTotalSalesRequest,
   GetTotalSalesSuccess,
   GetTotalSalesFailure,
@@ -5717,6 +5723,21 @@ export const TotalSalesDashboard = () => {
     }
   };
 };
+export const TotalCashSalesDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalCashSalesRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/dashboard/C_total_sales`, config);
+      const data = response.data.data;
+      dispatch(GetTotalCashSalesSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalCashSalesFailure(error.message));
+    }
+  };
+};
 export const TotalPurchaseDashboard = () => {
   return async (dispatch) => {
     dispatch(GetTotalPurchaseRequest());
@@ -5729,6 +5750,21 @@ export const TotalPurchaseDashboard = () => {
     } catch (error) {
       toast.error(error.response.data.error);
       dispatch(GetTotalPurchaseFailure(error.message));
+    }
+  };
+};
+export const TotalCashPurchaseDashboard = () => {
+  return async (dispatch) => {
+    dispatch(GetTotalCashPurchaseRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/Dashboard/C_total_purchase`, config);
+      const data = response.data.data;
+      dispatch(GetTotalCashPurchaseSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      dispatch(GetTotalCashPurchaseFailure(error.message));
     }
   };
 };

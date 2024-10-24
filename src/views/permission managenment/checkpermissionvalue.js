@@ -773,6 +773,12 @@ const useCan = () => {
   const canSeeTotalCashPayment = () => {
     return checkPermission('Dashboard Cash', 'total_payment');
   };
+  const canSeeTotalCashSales = () => {
+    return checkPermission('Dashboard Cash', 'total_sales');
+  };
+  const canSeeTotalCashPurchase = () => {
+    return checkPermission('Dashboard Cash', 'total_purchase');
+  };
   const canSeeCompanyCashbalance = () => {
     return checkPermission('Company Cash', 'view_company_cash_balance');
   };
@@ -1215,6 +1221,8 @@ const useCan = () => {
     canSeeTotalPurchase,
     canSeeTotalReceive,
     canSeeTotalPayment,
+    canSeeTotalCashSales,
+    canSeeTotalCashPurchase,
     canSeeTotalCashReceive,
     canSeeTotalCashPayment,
     canSeeCompanyCashbalance,

@@ -29,7 +29,9 @@ import {
   TotalReceiveDashboard,
   TotalCashReceiveDashboard,
   TotalPaymentDashboard,
-  TotalCashPaymentDashboard
+  TotalCashPaymentDashboard,
+  TotalCashSalesDashboard,
+  TotalCashPurchaseDashboard
 } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 // import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
@@ -56,11 +58,23 @@ const Default = () => {
   const [Cbalance, setCBalance] = useState(0);
   const [salesbalance, setSalesBalance] = useState(0);
   const [purchasebalance, setPurchaseBalance] = useState(0);
+  const [salescashbalance, setSalesCashBalance] = useState(0);
+  const [purchasecashbalance, setPurchaseCashBalance] = useState(0);
   const [receiveable, setReceiveable] = useState(0);
   const [cashreceiveable, setCashReceiveable] = useState(0);
   const [payable, setPayable] = useState(0);
   const [cashpayable, setCashPayable] = useState(0);
-  const { canSeeCompanyCashbalance, canSeeTotalReceive, canSeeTotalCashReceive, canSeeTotalPayment, canSeeTotalCashPayment } = useCan();
+  const {
+    canSeeCompanyCashbalance,
+    canSeeTotalReceive,
+    canSeeTotalCashReceive,
+    canSeeTotalPayment,
+    canSeeTotalCashPayment,
+    canSeeTotalSales,
+    canSeeTotalCashSales,
+    canSeeTotalPurchase,
+    canSeeTotalCashPurchase
+  } = useCan();
 
   const getRoleFromSessionStorage = () => {
     return sessionStorage.getItem('type');
@@ -134,6 +148,22 @@ const Default = () => {
         console.log(error, 'fetch total cash payment');
       }
     };
+    const fetchtotalcashsalesbalance = async () => {
+      try {
+        const data = await dispatch(TotalCashSalesDashboard());
+        setSalesCashBalance(data);
+      } catch (error) {
+        console.log(error, 'fetch total cash sales');
+      }
+    };
+    const fetchtotalcashpurchasebalance = async () => {
+      try {
+        const data = await dispatch(TotalCashPurchaseDashboard());
+        setPurchaseCashBalance(data);
+      } catch (error) {
+        console.log(error, 'fetch total cash purchase');
+      }
+    };
     fetchbankbalance();
     fetchcashbalance();
     fetchtotalsalesbalance();
@@ -142,6 +172,8 @@ const Default = () => {
     fetchtotalcashreceiveable();
     fetchtotalpayable();
     fetchtotalcashpayable();
+    fetchtotalcashsalesbalance();
+    fetchtotalcashpurchasebalance();
   });
   return (
     <Grid container spacing={gridSpacing}>
@@ -169,16 +201,28 @@ const Default = () => {
               />
             </Grid>
           )}
-          <Grid item lg={4} sm={8} xs={12}>
-            <ReportCard
-              primary={salesbalance}
-              secondary="Total Sales"
-              color={theme.palette.success.main}
-              footerData="Total Sales"
-              iconPrimary={CurrencyRupeeIcon}
-              // iconFooter={TrendingUpIcon}
-            />
-          </Grid>
+          {canSeeTotalSales() && createConfig1() === '' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={salesbalance}
+                secondary="Total Sales"
+                color={theme.palette.success.main}
+                footerData="Total Sales"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
+          {canSeeTotalCashSales() && createConfig1() === 'C' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={salescashbalance}
+                secondary="Total Cash Sales"
+                color={theme.palette.success.main}
+                footerData="Total Cash Sales"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
           {canSeeTotalPayment() && createConfig1() === '' && (
             <Grid item lg={4} sm={8} xs={12}>
               <ReportCard
@@ -223,16 +267,28 @@ const Default = () => {
               />
             </Grid>
           )}
-          <Grid item lg={4} sm={8} xs={12}>
-            <ReportCard
-              primary={purchasebalance}
-              secondary="Total Purchase"
-              color={theme.palette.secondary.main}
-              footerData="Total Purchase"
-              iconPrimary={CurrencyRupeeIcon}
-              // iconFooter={TrendingUpIcon}
-            />
-          </Grid>
+          {canSeeTotalPurchase() && createConfig1() === '' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={purchasebalance}
+                secondary="Total Purchase"
+                color={theme.palette.secondary.main}
+                footerData="Total Purchase"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
+          {canSeeTotalCashPurchase() && createConfig1() === 'C' && (
+            <Grid item lg={4} sm={8} xs={12}>
+              <ReportCard
+                primary={purchasecashbalance}
+                secondary="Total Cash Purchase"
+                color={theme.palette.secondary.main}
+                footerData="Total Cash Purchase"
+                iconPrimary={CurrencyRupeeIcon}
+              />
+            </Grid>
+          )}
         </Grid>
       </Grid>
       {/* <Grid item xs={12}>

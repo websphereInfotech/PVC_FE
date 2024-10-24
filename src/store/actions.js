@@ -647,9 +647,15 @@ export const GET_PURCHASE_INVOICE_CASH_HTML_FAILURE = 'GET_PURCHASE_INVOICE_CASH
 export const GET_TOTAL_SALES_REQUEST = 'GET_TOTAL_SALES_REQUEST';
 export const GET_TOTAL_SALES_SUCCESS = 'GET_TOTAL_SALES_SUCCESS';
 export const GET_TOTAL_SALES_FAILURE = 'GET_TOTAL_SALES_FAILURE';
+export const GET_TOTAL_CASH_SALES_REQUEST = 'GET_TOTAL_CASH_SALES_REQUEST';
+export const GET_TOTAL_CASH_SALES_SUCCESS = 'GET_TOTAL_CASH_SALES_SUCCESS';
+export const GET_TOTAL_CASH_SALES_FAILURE = 'GET_TOTAL_CASH_SALES_FAILURE';
 export const GET_TOTAL_PURCHASE_REQUEST = 'GET_TOTAL_PURCHASE_REQUEST';
 export const GET_TOTAL_PURCHASE_SUCCESS = 'GET_TOTAL_PURCHASE_SUCCESS';
 export const GET_TOTAL_PURCHASE_FAILURE = 'GET_TOTAL_PURCHASE_FAILURE';
+export const GET_TOTAL_CASH_PURCHASE_REQUEST = 'GET_TOTAL_CASH_PURCHASE_REQUEST';
+export const GET_TOTAL_CASH_PURCHASE_SUCCESS = 'GET_TOTAL_CASH_PURCHASE_SUCCESS';
+export const GET_TOTAL_CASH_PURCHASE_FAILURE = 'GET_TOTAL_CASH_PURCHASE_FAILURE';
 export const GET_TOTAL_RECEIVE_REQUEST = 'GET_TOTAL_RECEIVE_REQUEST';
 export const GET_TOTAL_RECEIVE_SUCCESS = 'GET_TOTAL_RECEIVE_SUCCESS';
 export const GET_TOTAL_RECEIVE_FAILURE = 'GET_TOTAL_RECEIVE_FAILURE';
@@ -3099,6 +3105,17 @@ export const GetTotalPurchaseFailure = (error) => ({
   type: 'GET_TOTAL_PURCHASE_FAILURE',
   payload: error
 });
+export const GetTotalCashPurchaseRequest = () => ({
+  type: 'GET_TOTAL_CASH_PURCHASE_REQUEST'
+});
+export const GetTotalCashPurchaseSuccess = (data) => ({
+  type: 'GET_TOTAL_CASH_PURCHASE_SUCCESS',
+  payload: data
+});
+export const GetTotalCashPurchaseFailure = (error) => ({
+  type: 'GET_TOTAL_CASH_PURCHASE_FAILURE',
+  payload: error
+});
 export const GetTotalSalesRequest = () => ({
   type: 'GET_TOTAL_SALES_REQUEST'
 });
@@ -3108,6 +3125,17 @@ export const GetTotalSalesSuccess = (data) => ({
 });
 export const GetTotalSalesFailure = (error) => ({
   type: 'GET_TOTAL_SALES_FAILURE',
+  payload: error
+});
+export const GetTotalCashSalesRequest = () => ({
+  type: 'GET_TOTAL_CASH_SALES_REQUEST'
+});
+export const GetTotalCashSalesSuccess = (data) => ({
+  type: 'GET_TOTAL_CASH_SALES_SUCCESS',
+  payload: data
+});
+export const GetTotalCashSalesFailure = (error) => ({
+  type: 'GET_TOTAL_CASH_SALES_FAILURE',
   payload: error
 });
 export const GetTotalReceiveRequest = () => ({
