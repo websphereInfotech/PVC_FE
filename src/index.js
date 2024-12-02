@@ -10,6 +10,7 @@ import 'assets/scss/style.scss';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
+
 // project import
 import App from 'layout/App';
 import reducer from 'store/reducer';
