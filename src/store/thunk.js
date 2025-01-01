@@ -6849,7 +6849,7 @@ export const getWallet = (id, navigate) => {
     dispatch(getWalletRequest());
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_wallet/${id}`, config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/claim/view_all_wallet/${id}`, config);
       const getWalletlist = response.data.data;
       dispatch(getWalletSuccess(getWalletlist));
       return getWalletlist;
