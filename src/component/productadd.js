@@ -30,6 +30,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
   const [nagativeqty, setNagativeQty] = React.useState(false);
   const [lowstock, setLowStock] = React.useState(false);
   const [cess, setCess] = React.useState(true);
+  const [isWastage, setIsWastage] = React.useState(false);
   const [selectedGST, setSelectedGST] = React.useState('');
   const [selectedItemGroup, setSelectedItemGroup] = React.useState('');
   const [itemGroupDrawerOpen, setItemGroupDrawerOpen] = React.useState(false);
@@ -92,6 +93,10 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
     setCess(e.target.value === 'true');
   };
 
+  const handleWastage = (e) => {
+    setIsWastage(e.target.value === 'true');
+  };
+
   React.useEffect(() => {
     const itemgroup = async () => {
       try {
@@ -147,6 +152,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           setNagativeQty(productData.nagativeqty);
           setLowStock(productData.lowstock);
           setCess(productData.cess);
+          setIsWastage(productData.isWastage);
           setItemType(productData.itemtype);
           setSelectedItemGroup(productData.itemgroup);
           setItemgroupname(productData.itemGroup?.name);
@@ -198,7 +204,8 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         openingstock,
         nagativeqty,
         lowstock,
-        cess
+        cess,
+        isWastage
       };
       if (id) {
         const newdata = await dispatch(updateProduct(id, data, navigate));
@@ -225,6 +232,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
       setNagativeQty(false);
       setLowStock(false);
       setCess(true);
+      setIsWastage(false);
       setItemType('Product');
       setSelectedItemGroup('');
     } catch (error) {
@@ -485,6 +493,15 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
           <Grid item sx={{ margin: '0px 0px' }} sm={6}>
             <Typography variant="subtitle1">Cess Enable</Typography>
             <RadioGroup row defaultValue="No" value={cess} onChange={handleCess}>
+              <FormControlLabel value="true" control={<Radio />} label="Yes" />
+              <FormControlLabel value="false" control={<Radio />} label="No" />
+            </RadioGroup>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ margin: '1px' }}>
+          <Grid item sx={{ margin: '0px 0px' }} sm={6}>
+            <Typography variant="subtitle1">Is Wastage?</Typography>
+            <RadioGroup row defaultValue="No" value={isWastage } onChange={handleWastage}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>

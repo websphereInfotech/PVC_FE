@@ -171,7 +171,7 @@ const Addbillofmaterial = () => {
         if (Array.isArray(wastage)) {
           const options = wastage.map((product) => ({
             value: product.id,
-            label: product.name
+            label: product.productname
           }));
           setWastageOptions([{ value: 'new_group', label: 'Create New Wastage' }, ...options]);
           if (!canCreateWastagevalue) {
@@ -230,7 +230,8 @@ const Addbillofmaterial = () => {
 
   const handlewastageChange = (selectedOption) => {
     if (selectedOption && selectedOption.label === 'Create New Wastage') {
-      setWastageDrawerOpen(true);
+      // setWastageDrawerOpen(true);
+      setIsrowproductDrawerOpen(true);
     } else {
       setWastagename(selectedOption.label);
       setFormData({ ...formData, wastageId: selectedOption.value });
@@ -245,7 +246,7 @@ const Addbillofmaterial = () => {
         setProductname(bomProduct.productname);
         setstartTime(startTime);
         setendTime(endTime);
-        setWastagename(bomWastage.name);
+        setWastagename(bomWastage.productname);
         setFormData({ wastageId: bomWastage.id, date, bomNo, weight, qty, productId: bomProduct.id, unit, shift, wastageQty });
         const updatedRows = response.bomItems.map((item) => ({
           id: item.id,

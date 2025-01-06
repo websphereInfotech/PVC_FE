@@ -70,7 +70,7 @@ const Bomview = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Wastage Name</Typography>
-          <Typography variant="subtitle2">{data.bomWastage?.name}</Typography>
+          <Typography variant="subtitle2">{data.bomWastage?.productname}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1">Wastage Qty</Typography>
