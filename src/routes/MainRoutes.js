@@ -23,6 +23,7 @@ import Purposelist from 'views/general managenment/claim purpose/purposelist';
 import Employeeentry from 'views/employee management/employeeentry';
 import Passbookreport from 'views/finacial managenment/Wallet/passbook';
 import Passbookbookledgerlist from 'component/reports/financial cash report/passbookledgerlist';
+import Maintenscheduleview from 'views/machine managenment/mainten shedule/maintenscheduleview';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -531,6 +532,10 @@ const MainRoutes = {
     {
       path: '/maintenscheduleadd',
       element: <Maintenscheduleadd />
+    },
+    {
+      path: '/viewmaintenscheduleadd/:id',
+      element: <Maintenscheduleview />
     },
     {
       path: '/updatemaintenscheduleadd/:id',
