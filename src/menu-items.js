@@ -735,12 +735,12 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/itemcategorylist'
               },
-              {
-                id: 'Wastage',
-                title: 'Wastage',
-                type: 'item',
-                url: '/wastagelist'
-              },
+              // {
+              //   id: 'Wastage',
+              //   title: 'Wastage',
+              //   type: 'item',
+              //   url: '/wastagelist'
+              // },
               {
                 id: 'Maintenance Type',
                 title: 'Maintenance Type',
