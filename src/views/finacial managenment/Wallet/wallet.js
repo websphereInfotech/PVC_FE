@@ -62,6 +62,13 @@ const Wallet = () => {
             label: user.username
           }));
           setUsers([...options]);
+          const username = sessionStorage.getItem('username');
+          const currentUser = options.find((value)=>value.label===username);
+          if(currentUser){
+            setUserId(currentUser.value);
+            setUsername(currentUser.label);
+            handleApplyForUser();
+          }
         }
       };
       fetchData();
