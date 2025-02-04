@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Select from 'react-select';
 import { useMediaQuery } from '@mui/material';
-import { fetchAllProducts } from "store/thunk";
+import { fetchAllProducts, getAllStoke } from "store/thunk";
 import { useDispatch } from "react-redux";
 
 const Orderprocessing = () => {
@@ -80,7 +80,7 @@ const Orderprocessing = () => {
                     console.error('fetchAllProductsCash returned an unexpected response:', productResponse);
                 }
 
-                const updatedData = await dispatch(getAllStoke(query));
+                const updatedData = await dispatch(getAllStoke());
                 setStoke(updatedData);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -104,13 +104,13 @@ const Orderprocessing = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell width={500} sx={{ fontSize: '12px' }}>
-                                        Product Name :
+                                        Product Name
                                     </TableCell>
                                     <TableCell sx={{ fontSize: '12px' }}>
-                                        QTY :
+                                        QTY
                                     </TableCell>
-                                    <TableCell sx={{ fontSize: '12px' }}>UNIT :</TableCell>
-                                    <TableCell sx={{ fontSize: '12px' }}>AVALIABLE :</TableCell>
+                                    <TableCell sx={{ fontSize: '12px' }}>UNIT</TableCell>
+                                    <TableCell sx={{ fontSize: '12px' }}>AVALIABLE</TableCell>
                                     <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                                 </TableRow>
                             </TableHead>
