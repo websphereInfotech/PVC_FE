@@ -156,7 +156,7 @@ const useCan = () => {
     return checkPermission('Expense', 'delete_expenseItem');
   };
   const canViewExpense = () => {
-    return checkPermission('Expense', 'view_single_expense');
+    return checkPermission('Expense', 'view_expense');
   };
   const canViewAllExpense = () => {
     return checkPermission('Expense', 'view_all_expense');

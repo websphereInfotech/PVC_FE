@@ -183,6 +183,14 @@ const MenuItem = () => {
     'view_all_purchase_cash'
   ]);
 
+  const hasAllPermissionExpense = checkAllPermissions('Expense', [
+    'create_expense',
+    'update_expense',
+    'delete_expense',
+    'view_expense',
+    'view_all_expense'
+  ]);
+
   const hasAllPermissionPaymentCash = checkAllPermissions('Payment Cash', [
     'create_payment',
     'update_payment',
@@ -264,6 +272,10 @@ const MenuItem = () => {
     'view_single_itemCategory',
     'update_itemCategory',
     'view_all_itemCategory_group'
+  ]);
+
+  const hasAllPermissionsOp = checkAllPermissions('Order Processing', [
+    'view_orderProcessing'
   ]);
 
   const hasAllPermissionsBom = checkAllPermissions('Production', [
@@ -393,6 +405,12 @@ const MenuItem = () => {
                         title: 'Purchase Cash',
                         type: 'item',
                         url: '/purchaseinvoicecashList'
+                      },
+                      hasAllPermissionExpense && {
+                        id: 'expense',
+                        title: 'Expense',
+                        type: 'item',
+                        url: '/expenselist'
                       },
                       hasAllPermissionPaymentCash && {
                         id: 'payment Cash',
@@ -560,6 +578,12 @@ const MenuItem = () => {
                   // }
                   // ]
                   // },
+                  hasAllPermissionsOp && {
+                    id: 'Order Processing',
+                    title: 'Order Processing',
+                    type: 'item',
+                    url: '/orderprocessing'
+                  },
                   hasAllPermissionsBom && {
                     id: 'production',
                     title: 'Production',

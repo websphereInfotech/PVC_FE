@@ -40,6 +40,8 @@ const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/Sale
 const Salescashview = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashview')));
 //
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+const ExpenseListPage = Loadable(lazy(() => import('../views/finacial managenment/expense/expenselist')));
+const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expense/expense')));
 const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymentcash')));
 const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymencashtlist')));
 const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecash')));
@@ -110,6 +112,7 @@ const CompanyviewPage = Loadable(lazy(() => import('../views/company managenment
 const Singlebankledgerlist = Loadable(lazy(() => import('../views/company managenment/singlebankledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
+const OrderProcessing = Loadable(lazy(() => import('../views/production managenment/Order Processing/orderprocessing')));
 const Billofmateriallist = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmateriallist')));
 const Addbillofmaterial = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/addbillofmaterial')));
 const Bomview = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmaterialview')));
@@ -190,6 +193,19 @@ const MainRoutes = {
     {
       path: '/salescashview/:id',
       element: <ProtectedRoute element={Salescashview} resource="Sales Cash" permissionName="view_sales_cash" />
+    },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/expense',
+      element: <ProtectedRoute element={ExpensePage} resource="Expense" permissionName="create_expense" />
+    },
+    {
+      path: '/expense/:id',
+      element: <ProtectedRoute element={ExpensePage} resource="Expense" permissionName="update_expense" />
+    },
+    {
+      path: '/expenselist',
+      element: <ProtectedRoute element={ExpenseListPage} resource="Expense" permissionName="view_all_expense" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -473,6 +489,10 @@ const MainRoutes = {
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    {
+      path: '/orderprocessing',
+      element: <ProtectedRoute element={OrderProcessing} resource="Order Processing" permissionName="view_orderProcessing" />
+    },
     {
       path: '/billofmateriallist',
       element: <ProtectedRoute element={Billofmateriallist} resource="Production" permissionName="view_all_production" />

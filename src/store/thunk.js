@@ -1297,18 +1297,22 @@ export const updateProduct = (id, data, navigate) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPaymentCash = (formData, navigate) => {
+export const createPaymentCash = (formData, navigate, isFromExpense=false) => {
   return async (dispatch) => {
     dispatch(createPaymentCashRequest());
     try {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/payment/C_create_paymentCash`, formData, config);
       const createdpayment = response;
-      toast.success(response.data.message, {
+      toast.success(isFromExpense?'Expense Created Successfully':response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/paymentcashlist');
+          if(isFromExpense) {
+            navigate('/expenselist');
+          } else {
+            navigate('/paymentcashlist');
+          }
         }
       });
       dispatch(createPaymentCashSuccess(createdpayment));
@@ -1351,18 +1355,22 @@ export const paymentCashview = (id) => {
     }
   };
 };
-export const updatePaymentCash = (id, formData, navigate) => {
+export const updatePaymentCash = (id, formData, navigate, isFromExpense=false) => {
   return async (dispatch) => {
     dispatch(updatePaymentCashRequest());
     try {
       const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/C_update_paymentCash/${id}`, formData, config);
       const upadtePaymentCashData = response;
-      toast.success(response.data.message, {
+      toast.success(isFromExpense?'Expense Updated Successfully':response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          navigate('/paymentcashlist');
+          if(isFromExpense) {
+            navigate('/expenselist');
+          } else {
+            navigate('/paymentcashlist');
+          }
         }
       });
       dispatch(updatePaymentCashSuccess(upadtePaymentCashData));
