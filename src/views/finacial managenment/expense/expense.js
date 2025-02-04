@@ -16,7 +16,7 @@ const ExpensePage = () => {
         date: convertToIST(new Date()),
         amount: Number(),
         description: '',
-        accountId: 2,
+        accountId: 3,
         paymentNo: ''
     });
 
