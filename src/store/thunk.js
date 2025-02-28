@@ -1297,18 +1297,18 @@ export const updateProduct = (id, data, navigate) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPaymentCash = (formData, navigate, isFromExpense=false) => {
+export const createPaymentCash = (formData, navigate, isFromExpense = false) => {
   return async (dispatch) => {
     dispatch(createPaymentCashRequest());
     try {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/payment/C_create_paymentCash`, formData, config);
       const createdpayment = response;
-      toast.success(isFromExpense?'Expense Created Successfully':response.data.message, {
+      toast.success(isFromExpense ? 'Expense Created Successfully' : response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          if(isFromExpense) {
+          if (isFromExpense) {
             navigate('/expenselist');
           } else {
             navigate('/paymentcashlist');
@@ -1355,18 +1355,18 @@ export const paymentCashview = (id) => {
     }
   };
 };
-export const updatePaymentCash = (id, formData, navigate, isFromExpense=false) => {
+export const updatePaymentCash = (id, formData, navigate, isFromExpense = false) => {
   return async (dispatch) => {
     dispatch(updatePaymentCashRequest());
     try {
       const config = createConfig();
       const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/C_update_paymentCash/${id}`, formData, config);
       const upadtePaymentCashData = response;
-      toast.success(isFromExpense?'Expense Updated Successfully':response.data.message, {
+      toast.success(isFromExpense ? 'Expense Updated Successfully' : response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
         autoClose: 1000,
         onClose: () => {
-          if(isFromExpense) {
+          if (isFromExpense) {
             navigate('/expenselist');
           } else {
             navigate('/paymentcashlist');
@@ -4507,6 +4507,313 @@ export const fetchAllEmployeeSalary = (salaryId) => {
       return data;
     } catch (error) {
       dispatch(fetchAllemployeesalaryFailure(error.message));
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  EMPLOYEE  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createEmployee = (data, navigate) => {
+  return async () => {
+    // dispatch(CreateEmployeeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/employee/create_employee`, data, config);
+      const addemployeedata = response;
+      // dispatch(CreateEmployeeSuccess(addemployeedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/employeelist');
+      return addemployeedata;
+    } catch (error) {
+      // dispatch(CreateEmployeeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const fetchAllEmployee = () => {
+  return async () => {
+    // dispatch(fetchAllEmployeeRequest());
+    try {
+      let config = createConfig();
+
+      // config.params = {};
+      // if (search) config.params.search = search;
+      // if (pageNo) config.params.pageNo = pageNo;
+      // if (pageSize) config.params.pageSize = pageSize;
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/employee/view_all_employees`, config);
+      const data = response.data.data;
+      // dispatch(fetchAllEmployeeSuccess(data));
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(fetchAllEmployeeFailure(error.message));
+    }
+  };
+};
+export const Employeeview = (employeeId) => {
+  return async () => {
+    // dispatch(ViewsingleEmployeeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/employee/view_employee/${employeeId}`, config);
+      const data = response.data.data;
+      // dispatch(ViewsingleEmployeeSuccess(data));
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      // dispatch(ViewsingleEmployeeFailure(error.message));
+    }
+  };
+};
+export const updateEmployee = (employeeId, formData, navigate) => {
+  return async () => {
+    // dispatch(UpdateEmployeeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/employee/update_employee/${employeeId}`, formData, config);
+      const updateemployeedata = response.data.data;
+      // dispatch(UpdateEmployeeSuccess(updateemployeedata));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/employeelist');
+      return updateemployeedata;
+    } catch (error) {
+      // dispatch(UpdateEmployeeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const deleteEmployee = (employeeId, navigate) => {
+  return async () => {
+    // dispatch(DeleteEmployeeRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/employee/delete_employee/${employeeId}`, config);
+      const deleteemployeedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      // dispatch(DeleteEmployeeSuccess(deleteemployeedata));
+      return deleteemployeedata;
+    } catch (error) {
+      // dispatch(DeleteEmployeeFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const getAttendances = (employeeId, date) => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      config.params = {};
+      if (employeeId) config.params.employeeId = employeeId;
+      if (date) config.params.date = date;
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/attendance/view_all_attendances`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(getAttendancesFailure(error.message));
+    }
+  };
+};
+export const getLeave = (employeeId, date) => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      config.params = {};
+      if (employeeId) config.params.employeeId = employeeId;
+      if (date) config.params.date = date;
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/leave/view_all_leave_requests`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(getAttendancesFailure(error.message));
+    }
+  };
+};
+export const fetchBonusConfig = (search) => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      config.params = {};
+      if (search) config.params.search = search;
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/bonusConfiguration/view_all_bonus_configurations`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return [];
+    }
+  };
+};
+export const updateBonusConfig = (data) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/bonusConfiguration/update_bonus_configuration`, data, config);
+      const updateBonusConfig = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return updateBonusConfig;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const getPenalty = () => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/systemSettings/view_system_setting_by_name?name=penalty`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+    }
+  };
+};
+export const updatePenalty = (value) => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/systemSettings/update_system_setting/1`,
+        { field: 'penalty', value },
+        config
+      );
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+    }
+  };
+};
+export const updateLeaveStatus = (id, data) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/leave/update_leave_request_status/${id}`, data, config);
+      const updateLeaveStatus = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return updateLeaveStatus;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  SHIFT  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createShift = (data, navigate) => {
+  return async () => {
+    // dispatch(CreateShiftRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/shift/create_shift`, data, config);
+      const createShiftData = response;
+      // dispatch(CreateShiftSuccess(createShiftData));
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return createShiftData;
+    } catch (error) {
+      // dispatch(CreateShiftFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const fetchAllShift = () => {
+  return async () => {
+    // dispatch(fetchAllShiftRequest());
+    try {
+      let config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/shift/view_all_shift`, config);
+      const data = response.data.data;
+      // dispatch(fetchAllShiftSuccess(data));
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(fetchAllShiftFailure(error.message));
+    }
+  };
+};
+export const updateShift = (id, data, navigate) => {
+  return async () => {
+    // dispatch(updateShiftRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/shift/update_shift/${id}`, data, config);
+      const upadteShiftData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      // dispatch(updateShiftSuccess(upadteShiftData));
+      return upadteShiftData;
+    } catch (error) {
+      // dispatch(updateShiftFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
     }
   };
 };

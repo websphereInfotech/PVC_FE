@@ -20,7 +20,6 @@ import CashbookReport from 'views/finacial managenment/Wallet/cashbook';
 import Wastagelist from 'views/general managenment/wastage/wastagelist';
 import Maintenancelist from 'views/general managenment/maintenance/maintenancelist';
 import Purposelist from 'views/general managenment/claim purpose/purposelist';
-import Employeeentry from 'views/employee management/employeeentry';
 import Passbookreport from 'views/finacial managenment/Wallet/passbook';
 import Passbookbookledgerlist from 'component/reports/financial cash report/passbookledgerlist';
 import Maintenscheduleview from 'views/machine managenment/mainten shedule/maintenscheduleview';
@@ -149,10 +148,15 @@ const MachineList = Loadable(lazy(() => import('../views/machine managenment/mac
 const Machinescheduleadd = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machinescheduleadd')));
 const Machineschedulelist = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machineschedulelist')));
 
-const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
-const Employeeview = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
-const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/addemployesalary')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee ++++++++++++++++++++++++
+const EmployeePage = Loadable(lazy(() => import('../views/employees management/employeelist')));
+const Employeeadd = Loadable(lazy(() => import('../views/employees management/employeeadd')));
+const Employeeview = Loadable(lazy(() => import('../views/employees management/employeeview')));
+
+const BonusConfigPage = Loadable(lazy(() => import('../views/employees management/bonus config/bonusConfig')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
@@ -527,20 +531,29 @@ const MainRoutes = {
       element: <ProtectedRoute element={Pagenotification} resource="Notification" permissionName="view_all_notification" />
     },
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee salary ++++++++++++++++++++++++
-    { path: '/employeedirectory', element: <ProtectedRoute element={Employeesalary} resource="Salary" permissionName="view_all_salary" /> },
-    {
-      path: '/employeesalary',
-      element: <ProtectedRoute element={PerformanceManagementPage} resource="Salary" permissionName="add_salary_payment" />
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee ++++++++++++++++++++++++
+    { 
+      path: '/employeelist', 
+      element: <ProtectedRoute element={EmployeePage} resource="Employee" permissionName="view_all_employee" />
     },
-    {
-      path: '/employeestatus/:id',
-      element: <ProtectedRoute element={Employeeview} resource="Salary" permissionName="view_all_salary_payment" />
+    { 
+      path: '/employeeadd', 
+      element: <ProtectedRoute element={Employeeadd} resource="Employee" permissionName="create_employee" />
     },
-    {
-      path: '/employeeentry',
-      element: <ProtectedRoute element={Employeeentry} resource="Salary" permissionName="employee" />
+    { 
+      path: '/employeeupdate/:id', 
+      element: <ProtectedRoute element={Employeeadd} resource="Employee" permissionName="update_employee" />
     },
+    { 
+      path: '/employeeview/:id', 
+      element: <ProtectedRoute element={Employeeview} resource="Employee" permissionName="view_one_employee" />
+    },
+    { 
+      path: '/bonusconfig', 
+      element: <ProtectedRoute element={BonusConfigPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
     { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },

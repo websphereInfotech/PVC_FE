@@ -315,6 +315,21 @@ const MenuItem = () => {
 
   const hasAllPermissionsWallet = checkAllPermissions('Claim Cash', ['view_wallet']);
 
+  const hasAllPermissionsEmployee = checkAllPermissions('Employee', [
+    'create_employee',
+    'update_employee',
+    'view_all_employee',
+    'view_one_employee',
+    'delete_employee'
+  ]);
+
+  const hasAllPermissionsBonus = checkAllPermissions('Bonus Config', [
+    "create_bonus",
+    "update_bonus",
+    "view_bonus",
+    "delete_bonus"
+  ]);
+
   return {
     items: [
       {
@@ -605,18 +620,25 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['ContactMailIcon'],
             children: [
-              {
-                id: 'employee directory',
-                title: 'Employee Directory',
+              // {
+              //   id: 'employee directory',
+              //   title: 'Employee Directory',
+              //   type: 'item',
+              //   url: '/employeedirectory'
+              // },
+              hasAllPermissionsBonus && {
+                id: 'Bonus Config',
+                title: 'Bonus Config',
                 type: 'item',
-                url: '/employeedirectory'
+                url: '/bonusconfig'
               },
-              {
+              hasAllPermissionsEmployee && {
                 id: 'Employee',
                 title: 'Employee',
                 type: 'item',
-                url: '/employeeentry'
-              }
+                url: '/employeelist'
+              },
+              
               // {
               //   id: 'employee salary',
               //   title: 'Employee Salary',
