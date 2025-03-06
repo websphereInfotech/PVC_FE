@@ -4731,6 +4731,41 @@ export const updatePenalty = (value) => {
     }
   };
 };
+export const getDesciplineReward = () => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/systemSettings/view_system_setting_by_name?name=desciplineReward`,
+        config
+      );
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+    }
+  };
+};
+export const updateDesciplineReward = (value) => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/systemSettings/update_system_setting/2`,
+        { field: 'desciplineReward', value },
+        config
+      );
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+    }
+  };
+};
 export const updateLeaveStatus = (id, data) => {
   return async () => {
     try {
@@ -4742,6 +4777,143 @@ export const updateLeaveStatus = (id, data) => {
         autoClose: 1000
       });
       return updateLeaveStatus;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const getpenaltyConfig = () => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      // config.params = {};
+      // if (search) config.params.search = search;
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/penaltyConfiguration/view_all_penalty_configurations`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+    }
+  };
+};
+export const updatepenaltyConfig = (data) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/penaltyConfiguration/update_penalty_configuration`, data, config);
+      const updatedpenaltyConfig = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return updatedpenaltyConfig;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const createholiday = (data, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/holiday/create_holiday`, data, config);
+      const addholidaydata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/holidayconfig');
+      return addholidaydata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const fetchAllholiday = (search) => {
+  console.log('search: ', search);
+  return async () => {
+    try {
+      let config = createConfig();
+
+      // config.params = {};
+      // if (search) config.params.search = search;
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/holiday/view_all_holidays`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+};
+export const getholiday = (holidayId) => {
+  return async () => {
+    try {
+      let config = createConfig();
+
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/holiday/view_holiday/${holidayId}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+};
+export const updateholiday = (holidayId, formData, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/holiday/update_holiday/${holidayId}`, formData, config);
+      const updateholidaydata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/holidayconfig');
+      return updateholidaydata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const deleteholiday = (holidayId, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/holiday/delete_holiday/${holidayId}`, config);
+      const deleteholidaydata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return deleteholidaydata;
     } catch (error) {
       if (error.response.status === 401) {
         navigate('/');

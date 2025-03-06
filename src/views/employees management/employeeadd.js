@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import AnchorShiftDrawer from './anchoreShiftDrawer';
-import { createEmployee, Employeeview, fetchAllShift, updateEmployee } from 'store/thunk';
+import { createEmployee, Employeeview, fetchAllEmployee, fetchAllShift, updateEmployee } from 'store/thunk';
 
 const EmployeeAdd = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -26,11 +26,14 @@ const EmployeeAdd = () => {
     role: '',
     salaryPerDay: '',
     hireDate: '',
-    sickLeaves: '',
-    casualLeaves: ''
+    personalLeaves: '',
+    emergencyLeaves: '',
+    referredBy: null
   });
   const [shiftOptions, setShiftOptions] = useState([]);
   const [shiftname, setShiftname] = useState('');
+  const [userList, setUserList] = useState([]);
+  const [referredByname, setReferredByname] = useState('');
   const [isShiftDrawerOpen, setIsShiftDrawerOpen] = useState(false);
 
   const handleInputChange = (fieldName, value) => {
@@ -73,6 +76,14 @@ const EmployeeAdd = () => {
     }
   };
 
+  const handleReferredBySelect = (selectedOption) => {
+    setReferredByname(selectedOption.label);
+    setFormData({
+      ...formData,
+      referredBy: selectedOption.value
+    });
+  };
+
   const handelNewShiftAdd = (shift) => {
     const shiftOptionsList = [
       ...shiftOptions,
@@ -96,9 +107,9 @@ const EmployeeAdd = () => {
             label: shift.shiftName
           }));
           setShiftOptions([{ value: 'new', label: 'Create New Shift' }, ...options]);
-          if (!canCreateShiftvalue) {
-            setShiftOptions(options);
-          }
+          // if (!canCreateShiftvalue) {
+          //   setShiftOptions(options);
+          // }
         } else {
           console.error('fetchAllShiftsCash returned an unexpected response:', shiftResponse);
         }
@@ -107,14 +118,26 @@ const EmployeeAdd = () => {
       }
     };
     fetchData();
+    const fetchEmployeeData = async () => {
+      const response = await dispatch(fetchAllEmployee());
+      const options = response.map((emp) => ({
+        value: emp.id,
+        label: emp.firstName + ' ' + emp.lastName
+      }));
+      setUserList(options);
+    };
+    fetchEmployeeData();
     const viewData = async () => {
       try {
         if (id) {
           const response = await dispatch(Employeeview(id));
           // const { firstName, lastName, email, phoneNumber, address, dob, panNumber, aadharNumber, shiftId, role, salaryPerDay, hireDate, leaveBalance } = response;
-          console.log(response, 'response');
-          setShiftname( response.shift.shiftName);
+          setShiftname(response.shift.shiftName);
           setFormData({ ...response, shiftId: response.shift.id });
+          const referredUser = userList.find((user) => user.value === response.referredBy);
+          if (referredUser) {
+            setReferredByname(referredUser.label);
+          }
           console.log('{ ...response, shiftId: response.shift.id }: ', { ...response, shiftId: response.shift.id });
         }
       } catch (error) {
@@ -272,24 +295,33 @@ const EmployeeAdd = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
-              Sick Leaves Balance : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              Personal Leaves Balance : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input
-              placeholder="Enter Leave Balance"
-              id="sickLeaves"
-              value={formData.sickLeaves}
-              onChange={(e) => handleInputChange('sickLeaves', e.target.value)}
+              placeholder="Enter Personal Leave Balance"
+              id="personalLeaves"
+              value={formData.personalLeaves}
+              onChange={(e) => handleInputChange('personalLeaves', e.target.value)}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Typography variant="subtitle1">
-              Casual Leaves Balance : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+              Emergency Leaves Balance : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
             </Typography>
             <input
-              placeholder="Enter Leave Balance"
-              id="casualLeaves"
-              value={formData.casualLeaves}
-              onChange={(e) => handleInputChange('casualLeaves', e.target.value)}
+              placeholder="Enter Emergency Leave Balance"
+              id="emergencyLeaves"
+              value={formData.emergencyLeaves}
+              onChange={(e) => handleInputChange('emergencyLeaves', e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="subtitle1">Referred By :</Typography>
+            <Select
+              color="secondary"
+              onChange={(selectedOption) => handleReferredBySelect(selectedOption)}
+              options={userList}
+              value={{ value: formData.referredBy, label: referredByname }}
             />
           </Grid>
         </Grid>

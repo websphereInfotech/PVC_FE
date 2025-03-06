@@ -15,36 +15,15 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { fetchBonusConfig, getPenalty, updateBonusConfig, updatePenalty } from 'store/thunk';
-// import Select from 'react-select';
-
-// const yearOptions = [
-//     { value: "2024", label: "2024" },
-//     { value: "2025", label: "2025" },
-//     { value: "2026", label: "2026" },
-// ];
+import { fetchBonusConfig, getDesciplineReward, updateBonusConfig, updateDesciplineReward } from 'store/thunk';
 
 const BonusConfigPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [bonusData, setBonusData] = useState([]);
   const [yearOptions, setYearOptions] = useState([]);
-  const [penalty, setPenalty] = useState('');
+  const [desciplineReward, setDesciplineReward] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
-  const monthMap = {
-    Jan: '01',
-    Feb: '02',
-    Mar: '03',
-    Apr: '04',
-    May: '05',
-    Jun: '06',
-    Jul: '07',
-    Aug: '08',
-    Sep: '09',
-    Oct: '10',
-    Nov: '11',
-    Dec: '12'
-  };
 
   const handelYearChange = (value) => {
     setSelectedYear(value);
@@ -58,53 +37,40 @@ const BonusConfigPage = () => {
   };
 
   const handleSave = async () => {
-    const data = transformed(bonusData);
+    const data = convertToApiFormat(bonusData, selectedYear);
     updateBonusConfigs(data);
-    await dispatch(updatePenalty(penalty));
+    await dispatch(updateDesciplineReward(desciplineReward));
   };
 
   const updateBonusConfigs = async (value) => {
     await dispatch(updateBonusConfig(value));
   };
 
-  const transformed = (months) => {
-    return months.flatMap(({ month, ...ranges }) => {
-      const monthNumber = monthMap[month];
-      const monthString = `${selectedYear}-${monthNumber}`;
+  const convertToApiFormat = (data, year = '2025') => {
+    const monthMap = {
+      Jan: '01',
+      Feb: '02',
+      Mar: '03',
+      Apr: '04',
+      May: '05',
+      Jun: '06',
+      Jul: '07',
+      Aug: '08',
+      Sep: '09',
+      Oct: '10',
+      Nov: '11',
+      Dec: '12'
+    };
 
-      return [
-        {
-          month: monthString,
-          minAttendance: 0,
-          maxAttendance: 50,
-          bonusPercentage: parseInt(ranges.range_0_50, 10)
-        },
-        {
-          month: monthString,
-          minAttendance: 51,
-          maxAttendance: 70,
-          bonusPercentage: parseInt(ranges.range_51_70, 10)
-        },
-        {
-          month: monthString,
-          minAttendance: 71,
-          maxAttendance: 80,
-          bonusPercentage: parseInt(ranges.range_71_80, 10)
-        },
-        {
-          month: monthString,
-          minAttendance: 81,
-          maxAttendance: 90,
-          bonusPercentage: parseInt(ranges.range_81_90, 10)
-        },
-        {
-          month: monthString,
-          minAttendance: 91,
-          maxAttendance: 100,
-          bonusPercentage: parseInt(ranges.range_91_100, 10)
-        }
-      ];
-    });
+    return data.map((item) => ({
+      month: `${year}-${monthMap[item.month]}`,
+      duty0To50: Number(item.duty0To50 || 0),
+      duty51To75: Number(item.duty51To75 || 0),
+      duty76To90: Number(item.duty76To90 || 0),
+      duty91To100: Number(item.duty91To100 || 0),
+      dutyAbove100: Number(item.dutyAbove100 || 0),
+      workingDays: Number(item.workingDays || 0)
+    }));
   };
 
   const fetchBonusConfigs = async (value) => {
@@ -122,15 +88,15 @@ const BonusConfigPage = () => {
     }
   };
 
-  const fetchPenalty = async () => {
+  const fetchDesciplineReward = async () => {
     try {
-      const response = await dispatch(getPenalty());
-      setPenalty(response.value);
+      const response = await dispatch(getDesciplineReward());
+      setDesciplineReward(response.value);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         navigate('/');
       }
-      setPenalty('');
+      setDesciplineReward('');
       console.error('Error fetching employee data:', error);
     }
   };
@@ -146,19 +112,21 @@ const BonusConfigPage = () => {
       '07': 'Jul',
       '08': 'Aug',
       '09': 'Sep',
-      10: 'Oct',
-      11: 'Nov',
-      12: 'Dec'
+      '10': 'Oct',
+      '11': 'Nov',
+      '12': 'Dec'
     };
+
     const orderedMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     const result = orderedMonths.map((monthName) => ({
       month: monthName,
-      range_0_50: '0',
-      range_51_70: '0',
-      range_71_80: '0',
-      range_81_90: '0',
-      range_91_100: '0'
+      duty0To50: '0',
+      duty51To75: '0',
+      duty76To90: '0',
+      duty91To100: '0',
+      dutyAbove100: '0',
+      workingDays: '0'
     }));
 
     const getMonthName = (monthStr) => {
@@ -171,19 +139,12 @@ const BonusConfigPage = () => {
       const monthEntry = result.find((r) => r.month === monthName);
 
       if (monthEntry) {
-        const bonusPercentage = String(item.bonusPercentage);
-
-        if (item.minAttendance === 0 && item.maxAttendance === 50) {
-          monthEntry.range_0_50 = bonusPercentage;
-        } else if (item.minAttendance === 51 && item.maxAttendance === 70) {
-          monthEntry.range_51_70 = bonusPercentage;
-        } else if (item.minAttendance === 71 && item.maxAttendance === 80) {
-          monthEntry.range_71_80 = bonusPercentage;
-        } else if (item.minAttendance === 81 && item.maxAttendance === 90) {
-          monthEntry.range_81_90 = bonusPercentage;
-        } else if (item.minAttendance === 91 && item.maxAttendance === 100) {
-          monthEntry.range_91_100 = bonusPercentage;
-        }
+        monthEntry.duty0To50 = String(item.duty0To50 || 0);
+        monthEntry.duty51To75 = String(item.duty51To75 || 0);
+        monthEntry.duty76To90 = String(item.duty76To90 || 0);
+        monthEntry.duty91To100 = String(item.duty91To100 || 0);
+        monthEntry.dutyAbove100 = String(item.dutyAbove100 || 0);
+        monthEntry.workingDays = String(item.workingDays || 0);
       }
     });
 
@@ -193,14 +154,14 @@ const BonusConfigPage = () => {
   useEffect(() => {
     const currentYear = new Date().getFullYear();
     const yearsArray = [];
-    for (let i = currentYear - 2; i <= currentYear + 2; i++) {
+    for (let i = currentYear - 1; i <= currentYear + 2; i++) {
       yearsArray.push(i);
     }
     setYearOptions(yearsArray);
     setSelectedYear(currentYear);
 
     fetchBonusConfigs(currentYear);
-    fetchPenalty();
+    fetchDesciplineReward();
   }, [navigate]);
 
   return (
@@ -209,13 +170,13 @@ const BonusConfigPage = () => {
         Bonus Configuration
       </Typography>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-        <Typography variant="subtitle1">Penalty :</Typography>
+        <Typography variant="subtitle1">Descipline Reward :</Typography>
         <input
-          placeholder="Enter Penalty"
-          id="penalty"
-          value={penalty}
-          onChange={(e) => setPenalty(e.target.value)}
-          style={{ width: '15%' }}
+          placeholder="Enter Descipline Reward"
+          id="desciplineReward"
+          value={desciplineReward}
+          onChange={(e) => setDesciplineReward(e.target.value)}
+          style={{ width: '18%' }}
         />
       </div>
       <TableContainer component={Paper}>
@@ -234,10 +195,11 @@ const BonusConfigPage = () => {
                 </Select>
               </TableCell>
               <TableCell align="center">0-50%</TableCell>
-              <TableCell align="center">51-70%</TableCell>
-              <TableCell align="center">71-80%</TableCell>
-              <TableCell align="center">81-90%</TableCell>
+              <TableCell align="center">51-75%</TableCell>
+              <TableCell align="center">76-90%</TableCell>
               <TableCell align="center">91-100%</TableCell>
+              <TableCell align="center">100% +</TableCell>
+              <TableCell align="center">Working Days</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -245,19 +207,22 @@ const BonusConfigPage = () => {
               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                 <TableCell align="center">{row.month}</TableCell>
                 <TableCell align="center">
-                  <input value={row.range_0_50} onChange={(e) => handleInputChange(index, 'range_0_50', e.target.value)} />
+                  <input value={row.duty0To50} onChange={(e) => handleInputChange(index, 'duty0To50', e.target.value)} />
                 </TableCell>
                 <TableCell align="center">
-                  <input value={row.range_51_70} onChange={(e) => handleInputChange(index, 'range_51_70', e.target.value)} />
+                  <input value={row.duty51To75} onChange={(e) => handleInputChange(index, 'duty51To75', e.target.value)} />
                 </TableCell>
                 <TableCell align="center">
-                  <input value={row.range_71_80} onChange={(e) => handleInputChange(index, 'range_71_80', e.target.value)} />
+                  <input value={row.duty76To90} onChange={(e) => handleInputChange(index, 'duty76To90', e.target.value)} />
                 </TableCell>
                 <TableCell align="center">
-                  <input value={row.range_81_90} onChange={(e) => handleInputChange(index, 'range_81_90', e.target.value)} />
+                  <input value={row.duty91To100} onChange={(e) => handleInputChange(index, 'duty91To100', e.target.value)} />
                 </TableCell>
                 <TableCell align="center">
-                  <input value={row.range_91_100} onChange={(e) => handleInputChange(index, 'range_91_100', e.target.value)} />
+                  <input value={row.dutyAbove100} onChange={(e) => handleInputChange(index, 'dutyAbove100', e.target.value)} />
+                </TableCell>
+                <TableCell align="center">
+                  <input value={row.workingDays} onChange={(e) => handleInputChange(index, 'workingDays', e.target.value)} />
                 </TableCell>
               </TableRow>
             ))}

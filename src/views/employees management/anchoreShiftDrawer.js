@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 import { format } from 'date-fns';
 
 const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated }) => {
-  AnchorShiftDrawer.PropTypes = {
+  AnchorShiftDrawer.prototypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     id: PropTypes.string,

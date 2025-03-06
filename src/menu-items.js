@@ -626,19 +626,32 @@ const MenuItem = () => {
               //   type: 'item',
               //   url: '/employeedirectory'
               // },
-              hasAllPermissionsBonus && {
-                id: 'Bonus Config',
-                title: 'Bonus Config',
-                type: 'item',
-                url: '/bonusconfig'
-              },
+
               hasAllPermissionsEmployee && {
                 id: 'Employee',
                 title: 'Employee',
                 type: 'item',
                 url: '/employeelist'
               },
-              
+              hasAllPermissionsBonus && {
+                id: 'Bonus Config',
+                title: 'Bonus Config',
+                type: 'item',
+                url: '/bonusconfig'
+              },
+              hasAllPermissionsBonus && {
+                id: 'Penalty Config',
+                title: 'Penalty Config',
+                type: 'item',
+                url: '/penaltyconfig'
+              },
+              hasAllPermissionsBonus && {
+                id: 'Holiday List',
+                title: 'Holiday List',
+                type: 'item',
+                url: '/holidayconfig'
+              }
+
               // {
               //   id: 'employee salary',
               //   title: 'Employee Salary',
