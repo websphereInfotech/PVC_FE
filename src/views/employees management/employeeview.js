@@ -206,12 +206,12 @@ const EmployeeviewPage = () => {
           <Typography variant="subtitle2">{data?.hireDate}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1"> Sick Leaves Balance </Typography>
-          <Typography variant="subtitle2">{data?.sickLeaves}</Typography>
+          <Typography variant="subtitle1"> Personal Leaves Balance </Typography>
+          <Typography variant="subtitle2">{data?.personalLeaves}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="subtitle1"> Casual Leaves Balance </Typography>
-          <Typography variant="subtitle2">{data?.casualLeaves}</Typography>
+          <Typography variant="subtitle1"> Emergency Leaves Balance </Typography>
+          <Typography variant="subtitle2">{data?.emergencyLeaves}</Typography>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'space-between' }}>
           <Button variant="outlined" color="secondary" id="savebtncs" onClick={handleClickAttendance}>

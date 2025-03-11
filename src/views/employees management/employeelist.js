@@ -24,6 +24,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
+  { id: 'id', label: 'Employee No.', align: 'center' },
   { id: 'firstName', label: 'Employee Name', align: 'center' },
   { id: 'role', label: 'Role', align: 'center' },
   { id: 'phoneNumber', label: 'Phone No.', align: 'center' },
