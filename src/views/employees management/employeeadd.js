@@ -104,7 +104,7 @@ const EmployeeAdd = () => {
         if (Array.isArray(shiftResponse)) {
           const options = shiftResponse.map((shift) => ({
             value: shift.id,
-            label: shift.shiftName
+            label: `${shift.shiftName} (${shift.shiftStartTime}-${shift.shiftEndTime})`
           }));
           setShiftOptions([{ value: 'new', label: 'Create New Shift' }, ...options]);
           // if (!canCreateShiftvalue) {

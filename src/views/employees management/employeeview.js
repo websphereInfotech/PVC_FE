@@ -192,6 +192,7 @@ const EmployeeviewPage = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Shift </Typography>
           <Typography variant="subtitle2">{data?.shift?.shiftName}</Typography>
+          <Typography variant="subtitle2">{data?.shift?.shiftStartTime} - {data?.shift?.shiftEndTime}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Role </Typography>
