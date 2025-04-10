@@ -156,7 +156,7 @@ const useCan = () => {
     return checkPermission('Expense', 'delete_expenseItem');
   };
   const canViewExpense = () => {
-    return checkPermission('Expense', 'view_single_expense');
+    return checkPermission('Expense', 'view_expense');
   };
   const canViewAllExpense = () => {
     return checkPermission('Expense', 'view_all_expense');
@@ -635,23 +635,39 @@ const useCan = () => {
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ EMPLOYEE SALARY
 
-  const canCreateEmployeeSalary = () => {
-    return checkPermission('Salary', 'add_salary_payment');
+  // const canCreateEmployeeSalary = () => {
+  //   return checkPermission('Salary', 'add_salary_payment');
+  // };
+  // const canUpdateEmployeeSalary = () => {
+  //   return checkPermission('Salary', 'edit_salary_payment');
+  // };
+  // const canDeleteEmployeeSalary = () => {
+  //   return checkPermission('Salary', 'delete_salary_payment');
+  // };
+  // const canViewAllEmployeeSalary = () => {
+  //   return checkPermission('Salary', 'view_all_salary');
+  // };
+  // const canViwAllEmployeeSalary = () => {
+  //   return checkPermission('Salary', 'view_all_salary_payment');
+  // };
+  // const canEmployee = () => {
+  //   return checkPermission('Salary', 'employee');
+  // };
+
+  const canCreateEmployee = () => {
+    return checkPermission('Employee', 'create_employee');
   };
-  const canUpdateEmployeeSalary = () => {
-    return checkPermission('Salary', 'edit_salary_payment');
+
+  const canViewEmployee = () => {
+    return checkPermission('Employee', 'view_one_employee');
   };
-  const canDeleteEmployeeSalary = () => {
-    return checkPermission('Salary', 'delete_salary_payment');
+
+  const canUpdateEmployee = () => {
+    return checkPermission('Employee', 'update_employee');
   };
-  const canViewAllEmployeeSalary = () => {
-    return checkPermission('Salary', 'view_all_salary');
-  };
-  const canViwAllEmployeeSalary = () => {
-    return checkPermission('Salary', 'view_all_salary_payment');
-  };
-  const canEmployee = () => {
-    return checkPermission('Salary', 'employee');
+
+  const canDeleteEmployee = () => {
+    return checkPermission('Employee', 'delete_employee');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE
@@ -1177,12 +1193,16 @@ const useCan = () => {
     canUserViewAllBank,
     canUserDeleteBank,
     // EMPLOYEE SALARY +++++++++++
-    canCreateEmployeeSalary,
-    canUpdateEmployeeSalary,
-    canDeleteEmployeeSalary,
-    canViewAllEmployeeSalary,
-    canViwAllEmployeeSalary,
-    canEmployee,
+    // canCreateEmployeeSalary,
+    // canUpdateEmployeeSalary,
+    // canDeleteEmployeeSalary,
+    // canViewAllEmployeeSalary,
+    // canViwAllEmployeeSalary,
+    // canEmployee,
+    canCreateEmployee,
+    canViewEmployee,
+    canUpdateEmployee,
+    canDeleteEmployee,
     // MACHINE ++++++++++++++++++
     canCreateMachine,
     canViewAllMachine,

@@ -20,9 +20,9 @@ import CashbookReport from 'views/finacial managenment/Wallet/cashbook';
 import Wastagelist from 'views/general managenment/wastage/wastagelist';
 import Maintenancelist from 'views/general managenment/maintenance/maintenancelist';
 import Purposelist from 'views/general managenment/claim purpose/purposelist';
-import Employeeentry from 'views/employee management/employeeentry';
 import Passbookreport from 'views/finacial managenment/Wallet/passbook';
 import Passbookbookledgerlist from 'component/reports/financial cash report/passbookledgerlist';
+import Maintenscheduleview from 'views/machine managenment/mainten shedule/maintenscheduleview';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
@@ -39,6 +39,8 @@ const Salescashlist = Loadable(lazy(() => import('../views/sale managenment/Sale
 const Salescashview = Loadable(lazy(() => import('../views/sale managenment/Sales cash/salescashview')));
 //
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payment cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+const ExpenseListPage = Loadable(lazy(() => import('../views/finacial managenment/expense/expenselist')));
+const ExpensePage = Loadable(lazy(() => import('../views/finacial managenment/expense/expense')));
 const PaymentPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymentcash')));
 const PaymentListPage = Loadable(lazy(() => import('../views/finacial managenment/Payment cash/paymencashtlist')));
 const Paymentrecieve = Loadable(lazy(() => import('../views/finacial managenment/Recieve cash/paymentrecievecash')));
@@ -109,6 +111,7 @@ const CompanyviewPage = Loadable(lazy(() => import('../views/company managenment
 const Singlebankledgerlist = Loadable(lazy(() => import('../views/company managenment/singlebankledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
+const OrderProcessing = Loadable(lazy(() => import('../views/production managenment/Order Processing/orderprocessing')));
 const Billofmateriallist = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmateriallist')));
 const Addbillofmaterial = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/addbillofmaterial')));
 const Bomview = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmaterialview')));
@@ -145,10 +148,17 @@ const MachineList = Loadable(lazy(() => import('../views/machine managenment/mac
 const Machinescheduleadd = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machinescheduleadd')));
 const Machineschedulelist = Loadable(lazy(() => import('../views/machine managenment/machineschedule/machineschedulelist')));
 
-const Employeesalary = Loadable(lazy(() => import('../views/employee management/employeedirectory')));
-const Employeeview = Loadable(lazy(() => import('../views/employee management/EmployeeStatus')));
-const PerformanceManagementPage = Loadable(lazy(() => import('../views/employee management/addemployesalary')));
 const ReportPage = Loadable(lazy(() => import('../views/production managenment/productionreport')));
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee ++++++++++++++++++++++++
+const EmployeePage = Loadable(lazy(() => import('../views/employees management/employeelist')));
+const Employeeadd = Loadable(lazy(() => import('../views/employees management/employeeadd')));
+const Employeeview = Loadable(lazy(() => import('../views/employees management/employeeview')));
+
+const BonusConfigPage = Loadable(lazy(() => import('../views/employees management/bonus config/bonusConfig')));
+const PenaltyConfigPage = Loadable(lazy(() => import('../views/employees management/penalty config/penaltyConfig')));
+const HolidayConfigPage = Loadable(lazy(() => import('../views/employees management/holiday config/holidayConfig')));
+const AddHolidayPage = Loadable(lazy(() => import('../views/employees management/holiday config/addHoliday')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
@@ -189,6 +199,19 @@ const MainRoutes = {
     {
       path: '/salescashview/:id',
       element: <ProtectedRoute element={Salescashview} resource="Sales Cash" permissionName="view_sales_cash" />
+    },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/expense',
+      element: <ProtectedRoute element={ExpensePage} resource="Expense" permissionName="create_expense" />
+    },
+    {
+      path: '/expense/:id',
+      element: <ProtectedRoute element={ExpensePage} resource="Expense" permissionName="update_expense" />
+    },
+    {
+      path: '/expenselist',
+      element: <ProtectedRoute element={ExpenseListPage} resource="Expense" permissionName="view_all_expense" />
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of payments cash +++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -473,6 +496,10 @@ const MainRoutes = {
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
 
     {
+      path: '/orderprocessing',
+      element: <ProtectedRoute element={OrderProcessing} resource="Order Processing" permissionName="view_orderProcessing" />
+    },
+    {
       path: '/billofmateriallist',
       element: <ProtectedRoute element={Billofmateriallist} resource="Production" permissionName="view_all_production" />
     },
@@ -506,20 +533,44 @@ const MainRoutes = {
       element: <ProtectedRoute element={Pagenotification} resource="Notification" permissionName="view_all_notification" />
     },
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee salary ++++++++++++++++++++++++
-    { path: '/employeedirectory', element: <ProtectedRoute element={Employeesalary} resource="Salary" permissionName="view_all_salary" /> },
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Employee ++++++++++++++++++++++++
     {
-      path: '/employeesalary',
-      element: <ProtectedRoute element={PerformanceManagementPage} resource="Salary" permissionName="add_salary_payment" />
+      path: '/employeelist',
+      element: <ProtectedRoute element={EmployeePage} resource="Employee" permissionName="view_all_employee" />
     },
     {
-      path: '/employeestatus/:id',
-      element: <ProtectedRoute element={Employeeview} resource="Salary" permissionName="view_all_salary_payment" />
+      path: '/employeeadd',
+      element: <ProtectedRoute element={Employeeadd} resource="Employee" permissionName="create_employee" />
     },
     {
-      path: '/employeeentry',
-      element: <ProtectedRoute element={Employeeentry} resource="Salary" permissionName="employee" />
+      path: '/employeeupdate/:id',
+      element: <ProtectedRoute element={Employeeadd} resource="Employee" permissionName="update_employee" />
     },
+    {
+      path: '/employeeview/:id',
+      element: <ProtectedRoute element={Employeeview} resource="Employee" permissionName="view_one_employee" />
+    },
+    {
+      path: '/bonusconfig',
+      element: <ProtectedRoute element={BonusConfigPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/penaltyconfig',
+      element: <ProtectedRoute element={PenaltyConfigPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/holidayconfig',
+      element: <ProtectedRoute element={HolidayConfigPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/addholiday',
+      element: <ProtectedRoute element={AddHolidayPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/updateholiday/:id',
+      element: <ProtectedRoute element={AddHolidayPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
     { path: '/machineadd', element: <ProtectedRoute element={Machineadd} resource="Machine" permissionName="create_machine" /> },
@@ -531,6 +582,10 @@ const MainRoutes = {
     {
       path: '/maintenscheduleadd',
       element: <Maintenscheduleadd />
+    },
+    {
+      path: '/viewmaintenscheduleadd/:id',
+      element: <Maintenscheduleview />
     },
     {
       path: '/updatemaintenscheduleadd/:id',

@@ -183,6 +183,14 @@ const MenuItem = () => {
     'view_all_purchase_cash'
   ]);
 
+  const hasAllPermissionExpense = checkAllPermissions('Expense', [
+    'create_expense',
+    'update_expense',
+    'delete_expense',
+    'view_expense',
+    'view_all_expense'
+  ]);
+
   const hasAllPermissionPaymentCash = checkAllPermissions('Payment Cash', [
     'create_payment',
     'update_payment',
@@ -266,6 +274,10 @@ const MenuItem = () => {
     'view_all_itemCategory_group'
   ]);
 
+  const hasAllPermissionsOp = checkAllPermissions('Order Processing', [
+    'view_orderProcessing'
+  ]);
+
   const hasAllPermissionsBom = checkAllPermissions('Production', [
     'create_production',
     'update_production',
@@ -302,6 +314,21 @@ const MenuItem = () => {
   // ]);
 
   const hasAllPermissionsWallet = checkAllPermissions('Claim Cash', ['view_wallet']);
+
+  const hasAllPermissionsEmployee = checkAllPermissions('Employee', [
+    'create_employee',
+    'update_employee',
+    'view_all_employee',
+    'view_one_employee',
+    'delete_employee'
+  ]);
+
+  const hasAllPermissionsBonus = checkAllPermissions('Bonus Config', [
+    "create_bonus",
+    "update_bonus",
+    "view_bonus",
+    "delete_bonus"
+  ]);
 
   return {
     items: [
@@ -393,6 +420,12 @@ const MenuItem = () => {
                         title: 'Purchase Cash',
                         type: 'item',
                         url: '/purchaseinvoicecashList'
+                      },
+                      hasAllPermissionExpense && {
+                        id: 'expense',
+                        title: 'Expense',
+                        type: 'item',
+                        url: '/expenselist'
                       },
                       hasAllPermissionPaymentCash && {
                         id: 'payment Cash',
@@ -560,6 +593,12 @@ const MenuItem = () => {
                   // }
                   // ]
                   // },
+                  hasAllPermissionsOp && {
+                    id: 'Order Processing',
+                    title: 'Order Processing',
+                    type: 'item',
+                    url: '/orderprocessing'
+                  },
                   hasAllPermissionsBom && {
                     id: 'production',
                     title: 'Production',
@@ -581,18 +620,38 @@ const MenuItem = () => {
             type: 'collapse',
             icon: icons['ContactMailIcon'],
             children: [
-              {
-                id: 'employee directory',
-                title: 'Employee Directory',
-                type: 'item',
-                url: '/employeedirectory'
-              },
-              {
+              // {
+              //   id: 'employee directory',
+              //   title: 'Employee Directory',
+              //   type: 'item',
+              //   url: '/employeedirectory'
+              // },
+
+              hasAllPermissionsEmployee && {
                 id: 'Employee',
                 title: 'Employee',
                 type: 'item',
-                url: '/employeeentry'
+                url: '/employeelist'
+              },
+              hasAllPermissionsBonus && {
+                id: 'Bonus Config',
+                title: 'Bonus Config',
+                type: 'item',
+                url: '/bonusconfig'
+              },
+              hasAllPermissionsBonus && {
+                id: 'Penalty Config',
+                title: 'Penalty Config',
+                type: 'item',
+                url: '/penaltyconfig'
+              },
+              hasAllPermissionsBonus && {
+                id: 'Holiday List',
+                title: 'Holiday List',
+                type: 'item',
+                url: '/holidayconfig'
               }
+
               // {
               //   id: 'employee salary',
               //   title: 'Employee Salary',
@@ -735,12 +794,12 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/itemcategorylist'
               },
-              {
-                id: 'Wastage',
-                title: 'Wastage',
-                type: 'item',
-                url: '/wastagelist'
-              },
+              // {
+              //   id: 'Wastage',
+              //   title: 'Wastage',
+              //   type: 'item',
+              //   url: '/wastagelist'
+              // },
               {
                 id: 'Maintenance Type',
                 title: 'Maintenance Type',

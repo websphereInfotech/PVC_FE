@@ -53,7 +53,7 @@ const Wallet = () => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem('role') === 'Super Admin') {
+    if (sessionStorage.getItem('role') === 'Super Admin' || sessionStorage.getItem('role') === 'Admin') {
       const fetchData = async () => {
         const userResponse = await dispatch(getallusers());
         if (Array.isArray(userResponse[0]?.users)) {
@@ -62,6 +62,13 @@ const Wallet = () => {
             label: user.username
           }));
           setUsers([...options]);
+          const username = sessionStorage.getItem('username');
+          const currentUser = options.find((value)=>value.label===username);
+          if(currentUser){
+            setUserId(currentUser.value);
+            setUsername(currentUser.label);
+            handleApplyForUser();
+          }
         }
       };
       fetchData();
@@ -159,7 +166,7 @@ const Wallet = () => {
           <Grid item xs={12} sm={6} md={2}>
             <Typography>User Name</Typography>
 
-            {createConfig1() === 'Super Admin' ? (
+            {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') ? (
               <div style={{ display: 'flex', width: '80%' }}>
                 <Select
                   styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}

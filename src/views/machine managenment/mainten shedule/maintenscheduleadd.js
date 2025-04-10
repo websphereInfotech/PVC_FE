@@ -98,8 +98,8 @@ const Maintenscheduleadd = () => {
           setFormData({
             machineId,
             date: new Date(date),
-            type,
-            maintenanceType: mMaintenanceTypes.map((mt) => mt.id)
+            type
+            // maintenanceType: mMaintenanceTypes.map((mt) => mt.id)
           });
           setmachinename(machineMaintenance.name);
           const updatedRows = maintenanceItems.map((item) => ({
@@ -110,7 +110,7 @@ const Maintenscheduleadd = () => {
           }));
           setRows(updatedRows);
           // Set selected maintenance types
-          const selectedOptions = maintenanceTypeOptions.filter((option) => mMaintenanceTypes.some((mt) => mt.id === option.value));
+          const selectedOptions = maintenanceTypeOptions?.filter((option) => mMaintenanceTypes?.some((mt) => mt.id === option.value));
           setSelectedmaintenanceType(selectedOptions);
         }
       } catch (error) {

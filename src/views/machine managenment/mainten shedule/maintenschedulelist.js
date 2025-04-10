@@ -21,6 +21,7 @@ import { deleteAddMaintenance, fetchAllAddMaintenance, viewAddMaintenance } from
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Edit, Delete } from '@mui/icons-material';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const columns = [
   { id: 'name', label: 'Machine Name', align: 'center' },
@@ -39,7 +40,7 @@ const Maintenchedulelist = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { canCreateAddMaintenance, canDeleteAddMaintenance, canUpdateAddMaintenance } = useCan();
+  const { canCreateAddMaintenance, canDeleteAddMaintenance, canUpdateAddMaintenance, canViewSingleAddMaintenance } = useCan();
 
   useEffect(() => {
     const fetchSalaryData = async () => {
@@ -68,6 +69,10 @@ const Maintenchedulelist = () => {
 
   const handleaddmachine = () => {
     navigate('/maintenscheduleadd');
+  };
+  const handleViewAddMaintenance = (id) => {
+    dispatch(viewAddMaintenance(id, navigate));
+    navigate(`/viewmaintenscheduleadd/${id}`);
   };
   const handleUpdateMachine = (id) => {
     dispatch(viewAddMaintenance(id));
@@ -123,6 +128,21 @@ const Maintenchedulelist = () => {
                       row.machineMaintenance.name
                     ) : column.id === 'action' ? (
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewSingleAddMaintenance() ? 'Blue' : 'gray',
+                            color: canViewSingleAddMaintenance() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewSingleAddMaintenance() && { opacity: 1 }),
+                            ...(!canViewSingleAddMaintenance() && { opacity: 0.5 }),
+                            ...(!canViewSingleAddMaintenance() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleViewAddMaintenance(row.id)}
+                          disabled={!canViewSingleAddMaintenance()}
+                        >
+                          <RemoveRedEyeIcon style={{ fontSize: '16px' }} />
+                        </IconButton>
                         <IconButton
                           sizeSmall
                           style={{
