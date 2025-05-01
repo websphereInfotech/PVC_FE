@@ -23,7 +23,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Employeeview, getAttendances, getLeave, updateLeaveStatus } from 'store/thunk';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -131,9 +131,9 @@ const EmployeeviewPage = () => {
       });
   };
 
-  const formatDateTime = (datetime) =>{ 
-    datetime ? format(new Date(datetime), "dd-MMM-yyyy hh:mm a") : "-";
-  }
+  // const formatDateTime = (datetime) =>{ 
+  //   datetime ? format(new Date(datetime), "dd-MMM-yyyy hh:mm a") : "-";
+  // }
 
   useEffect(() => {
     dispatch(Employeeview(id))
@@ -355,10 +355,10 @@ const EmployeeviewPage = () => {
                   <TableRow key={row.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                     {columns.map((column) => (
                       <TableCell key={column.id} align={column.align}>
-                        {/* {row[column.id]} */}
-                        {["date", "inTime", "outTime", "breakStart", "breakEnd"].includes(column.id)
+                        {row[column.id]}
+                        {/* {["date", "inTime", "outTime", "breakStart", "breakEnd"].includes(column.id)
                           ? formatDateTime(row[column.id])
-                          : row[column.id]}
+                          : row[column.id]} */}
                       </TableCell>
                     ))}
                   </TableRow>
