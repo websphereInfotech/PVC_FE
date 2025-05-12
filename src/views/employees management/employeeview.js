@@ -134,8 +134,8 @@ const EmployeeviewPage = () => {
   const formatDateTime = (datetime, name) => {
     if (!datetime) return "-";
   
-    const date = format(new Date(datetime), "dd-MM-yyyy");
-    const time = format(new Date(datetime), "hh:mm a");
+    const date = format(new Date(datetime.replace("Z", "")), "dd-MM-yyyy");
+    const time = format(new Date(datetime.replace("Z", "")), "hh:mm a");
   
     return name === "date" ? date : (
       <>
