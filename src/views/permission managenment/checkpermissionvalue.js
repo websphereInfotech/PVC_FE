@@ -450,6 +450,24 @@ const useCan = () => {
     return checkPermission('Sales Cash', 'view_all_sales_cash');
   };
 
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ORDER PROCESSING
+
+  const canCreateOrderProcessing = () => {
+    return checkPermission('Order Processing', 'create_order_processing');
+  };
+  const canUpdateOrderProcessing = () => {
+    return checkPermission('Order Processing', 'update_order_processing');
+  };
+  const canDeleteOrderProcessing = () => {
+    return checkPermission('Order Processing', 'delete_order_processing');
+  };
+  const canViewOrderProcessing = () => {
+    return checkPermission('Order Processing', 'view_order_processing');
+  };
+  const canViwAllOrderProcessing = () => {
+    return checkPermission('Order Processing', 'view_all_order_processing');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PURCHASE BILL CASH
 
   const canCreatePurchasebillcash = () => {
@@ -1124,6 +1142,12 @@ const useCan = () => {
     canDeleteSalescash,
     canViewSalescash,
     canViwAllSalescash,
+    // ORDER PROCESSING ++++++++++++++++++++
+    canCreateOrderProcessing,
+    canUpdateOrderProcessing,
+    canDeleteOrderProcessing,
+    canViewOrderProcessing,
+    canViwAllOrderProcessing,
     // PURCHASE BILL CASH ++++++++++++
     canCreatePurchasebillcash,
     canUpdatePurchasebillcash,

@@ -275,7 +275,11 @@ const MenuItem = () => {
   ]);
 
   const hasAllPermissionsOp = checkAllPermissions('Order Processing', [
-    'view_orderProcessing'
+    'create_order_processing',
+    'update_order_processing',
+    'delete_order_processing',
+    'view_order_processing',
+    'view_all_order_processing'
   ]);
 
   const hasAllPermissionsBom = checkAllPermissions('Production', [
@@ -593,17 +597,23 @@ const MenuItem = () => {
                   // }
                   // ]
                   // },
-                  hasAllPermissionsOp && {
-                    id: 'Order Processing',
-                    title: 'Order Processing',
-                    type: 'item',
-                    url: '/orderprocessing'
-                  },
+                  // hasAllPermissionsOp && {
+                  //   id: 'Order Processing',
+                  //   title: 'Order Processing',
+                  //   type: 'item',
+                  //   url: '/orderprocessing'
+                  // },
                   hasAllPermissionsBom && {
                     id: 'production',
                     title: 'Production',
                     type: 'item',
                     url: '/billofmateriallist'
+                  },
+                  hasAllPermissionsOp && {
+                    id: 'order processing',
+                    title: 'Order Processing',
+                    type: 'item',
+                    url: '/orderprocessinglist'
                   }
                 ]
               }

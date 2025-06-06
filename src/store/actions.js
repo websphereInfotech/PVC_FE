@@ -136,6 +136,16 @@ export const VIEW_SALESINVOICE_REQUEST = 'VIEW_SALESINVOICE_REQUEST';
 export const VIEW_SALESINVOICE_SUCCESS = 'VIEW_SALESINVOICE_SUCCESS';
 export const VIEW_SALESINVOICE_FAILURE = 'VIEW_SALESINVOICE_FAILURE';
 
+// ########################################## ORDER PROCESSING ###############################################################################################
+export const CREATE_ORDER_PROCESSING_REQUEST = 'CREATE_ORDER_PROCESSING_REQUEST';
+export const CREATE_ORDER_PROCESSING_SUCCESS = 'CREATE_ORDER_PROCESSING_SUCCESS';
+export const CREATE_ORDER_PROCESSING_FAILURE = 'CREATE_ORDER_PROCESSING_FAILURE';
+export const UPDATE_ORDER_PROCESSING_REQUEST = 'UPDATE_ORDER_PROCESSING_REQUEST';
+export const UPDATE_ORDER_PROCESSING_SUCCESS = 'UPDATE_ORDER_PROCESSING_SUCCESS';
+export const UPDATE_ORDER_PROCESSING_FAILURE = 'UPDATE_ORDER_PROCESSING_FAILURE';
+export const DELETE_ORDER_PROCESSING_REQUEST = 'DELETE_ORDER_PROCESSING_REQUEST';
+export const DELETE_ORDER_PROCESSING_SUCCESS = 'DELETE_ORDER_PROCESSING_SUCCESS';
+
 // ########################################## SALES INVOICE CASH ###############################################################################################
 export const CREATE_SALES_INVOICE_CASH_REQUEST = 'CREATE_SALES_INVOICE_CASH_REQUEST';
 export const CREATE_SALES_INVOICE_CASH_SUCCESS = 'CREATE_SALES_INVOICE_CASH_SUCCESS';
@@ -1165,6 +1175,34 @@ export const viewSalesinvoiceFailure = (error) => ({
   payload: error
 });
 
+// ##################################################################################### Order Processing ####################################
+export const createOrderprocessingRequest = (data) => ({
+  type: 'CREATE_ORDER_PROCESSING_REQUEST',
+  payload: data
+});
+
+export const createOrderprocessingSuccess = (data) => ({
+  type: 'CREATE_ORDER_PROCESSING_SUCCESS',
+  payload: data
+});
+
+export const createOrderprocessingFailure = (error) => ({
+  type: 'CREATE_ORDER_PROCESSING_FAILURE',
+  payload: error
+});
+
+export const updateOrderprocessingRequest = (data) => ({
+  type: 'UPDATE_ORDER_PROCESSING_REQUEST',
+  payload: data
+});
+export const updateOrderprocessingSuccess = (data) => ({
+  type: 'UPDATE_ORDER_PROCESSING_SUCCESS',
+  payload: data
+});
+export const updateOrderprocessingFailure = (data) => ({
+  type: 'UPDATE_ORDER_PROCESSING_FAILURE',
+  payload: data
+});
 // ##################################################################################### SALES INVOICE CASH ####################################
 
 export const createSalesinvoicecashRequest = (data) => ({
