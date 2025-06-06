@@ -94,6 +94,10 @@ const Salesinvoice = Loadable(lazy(() => import('../views/sale managenment/Sales
 const Salesinvoicelist = Loadable(lazy(() => import('../views/sale managenment/Sales invoice/salesinvoicelist')));
 const Salesinvoiceview = Loadable(lazy(() => import('../views/sale managenment/Sales invoice/salesinvoiceview')));
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Order processing ++++++++++++++++++++++++
+const Orderprocessing = Loadable(lazy(() => import('../views/sale managenment/Order processing/orderprocessing')));
+const Orderprocessinglist = Loadable(lazy(() => import('../views/sale managenment/Order processing/orderprocessinglist')));
+
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of purchase bill +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Purchaseinvoice = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice/purchaseinvoice')));
 const PurchaseinvoiceList = Loadable(lazy(() => import('../views/purches managenment/Purchase invoice/purchaseinvoicelist')));
@@ -111,7 +115,6 @@ const CompanyviewPage = Loadable(lazy(() => import('../views/company managenment
 const Singlebankledgerlist = Loadable(lazy(() => import('../views/company managenment/singlebankledger')));
 
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
-const OrderProcessing = Loadable(lazy(() => import('../views/production managenment/Order Processing/orderprocessing')));
 const Billofmateriallist = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmateriallist')));
 const Addbillofmaterial = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/addbillofmaterial')));
 const Bomview = Loadable(lazy(() => import('../views/production managenment/Bill Of Material/billofmaterialview')));
@@ -494,11 +497,6 @@ const MainRoutes = {
     },
 
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of production +++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    {
-      path: '/orderprocessing',
-      element: <ProtectedRoute element={OrderProcessing} resource="Order Processing" permissionName="view_orderProcessing" />
-    },
     {
       path: '/billofmateriallist',
       element: <ProtectedRoute element={Billofmateriallist} resource="Production" permissionName="view_all_production" />
@@ -626,7 +624,25 @@ const MainRoutes = {
       path: '/purposelist',
       element: <ProtectedRoute element={Purposelist} resource="Purpose" permissionName="view_all_purpose" />
     },
-    { path: '/wastagelist', element: <ProtectedRoute element={Wastagelist} resource="Wastage" permissionName="view_all_wastage" /> }
+    { path: '/wastagelist', element: <ProtectedRoute element={Wastagelist} resource="Wastage" permissionName="view_all_wastage" /> },
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Order processing ++++++++++++++++++++++++
+    { 
+      path: '/orderprocessing', 
+      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="create_order_processing" /> 
+    },
+    { 
+      path: '/orderprocessing/:id', 
+      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="update_order_processing" /> 
+    },
+    { 
+      path: '/orderprocessinglist', 
+      element: <ProtectedRoute element={Orderprocessinglist} resource="Order Processing" permissionName="view_all_order_processing" /> 
+    },
+    // {
+    //   path: '/orderprocessingview/:id',
+    //   element: <ProtectedRoute element={Salesinvoiceview} resource="Sales Invoice" permissionName="view_single_salesInvoice" />
+    // },
   ]
 };
 

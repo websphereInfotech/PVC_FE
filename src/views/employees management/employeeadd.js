@@ -120,7 +120,7 @@ const EmployeeAdd = () => {
     fetchData();
     const fetchEmployeeData = async () => {
       const response = await dispatch(fetchAllEmployee());
-      const options = response.map((emp) => ({
+      const options = response?.map((emp) => ({
         value: emp.id,
         label: emp.firstName + ' ' + emp.lastName
       }));

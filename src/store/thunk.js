@@ -129,6 +129,13 @@ import {
   viewSalesinvoicecashRequest,
   viewSalesinvoicecashSuccess,
   viewSalesinvoicecashFailure,
+  // ORDER PROCESSING ++++++++++++++++++++++
+  createOrderprocessingRequest,
+  createOrderprocessingSuccess,
+  createOrderprocessingFailure,
+  updateOrderprocessingRequest,
+  updateOrderprocessingSuccess,
+  updateOrderprocessingFailure,
   // PURCHASE INVOICE +++++++++++++++
   createPurchaseinvoiceRequest,
   createPurchaseinvoiceSuccess,
@@ -1615,6 +1622,151 @@ export const deleteSalesinvoicecash = (id, navigate) => {
         toast.error(error.response.data.message, {
           autoClose: 1000
         });
+      }
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ORDER PROCESSING ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createOrderprocessing = (payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(createOrderprocessingRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/orderProcessing/create_order_processing`, payload, config);
+      const createOrderprocessing = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/orderprocessinglist');
+        }
+      });
+      dispatch(createOrderprocessingSuccess(createOrderprocessing));
+      return createOrderprocessing;
+    } catch (error) {
+      dispatch(createOrderprocessingFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+export const getallOrderprocessing = () => {
+  return async () => {
+    // dispatch(getAllOrderprocessingRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/orderProcessing/get_all_order_processing`, config);
+      const getallOrderprocessing = response.data;
+      // dispatch(getAllOrderprocessingSuccess(getallOrderprocessing));
+      return getallOrderprocessing;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+      // dispatch(getAllOrderprocessingFailure(error.message));
+    }
+  };
+};
+export const Orderprocessingview = (id) => {
+  return async () => {
+    // dispatch(viewOrderprocessingRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/orderProcessing/view_order_processing/${id}`, config);
+      const data = response.data.data;
+      // dispatch(viewOrderprocessingSuccess(data));
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+      // dispatch(viewOrderprocessingFailure(error.message));
+    }
+  };
+};
+export const updateOrderprocessing = (id, payload, navigate) => {
+  return async (dispatch) => {
+    dispatch(updateOrderprocessingRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/orderProcessing/update_order_processing/${id}`, payload, config);
+      const updateOrderData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/orderprocessinglist');
+        }
+      });
+      dispatch(updateOrderprocessingSuccess(updateOrderData));
+      return updateOrderData;
+    } catch (error) {
+      dispatch(updateOrderprocessingFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
+      }
+    }
+  };
+};
+export const deleteOrderprocessing = (id, navigate) => {
+  return async () => {
+    // dispatch(deleteOrderprocessingRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/orderProcessing/delete_order_processing/${id}`, config);
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      // dispatch(deleteOrderprocessingSuccess());
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(deleteOrderprocessingFailure());
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const getallOrderItems = () => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/orderProcessing/get_all_order_items`, config);
+      return response.data.data;
+    } catch (error) {
+      console.log('error: ', error);
+      return {};
+    }
+  };
+};
+export const changeOrderStatus = (id, payload, navigate) => {
+return async (dispatch) => {
+    dispatch(updateOrderprocessingRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/orderProcessing/update_status_order_processing/${id}`, payload, config);
+      const updateOrderStatusData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+      });
+      dispatch(updateOrderprocessingSuccess(updateOrderStatusData));
+      return updateOrderStatusData;
+    } catch (error) {
+      dispatch(updateOrderprocessingFailure(error.message));
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, { autoClose: 1000 });
       }
     }
   };

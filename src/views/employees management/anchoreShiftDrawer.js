@@ -42,7 +42,7 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
     console.log(format(time, 'hh:mm:ss a'));
     setFormData((prevData) => ({
       ...prevData,
-      [fieldName]: format(time, 'hh:mm:ss a')
+      [fieldName]: new Date(time)
     }));
   };
 
@@ -52,10 +52,24 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
     setLoading(true);
     try {
       if (id) {
-        const newdata = await dispatch(updateShift(id, formData, navigate));
+        let data = {
+          ...formData,
+          shiftStartTime: format(formData.shiftStartTime, 'hh:mm:ss a'),
+          shiftEndTime: format(formData.shiftEndTime, 'hh:mm:ss a'),
+          breakStartTime: format(formData.breakStartTime, 'hh:mm:ss a'),
+          breakEndTime: format(formData.breakEndTime, 'hh:mm:ss a'),
+        };
+        const newdata = await dispatch(updateShift(id, data, navigate));
         onShiftUpdated(newdata.data.data);
       } else {
-        const newdata = await dispatch(createShift(formData, navigate));
+        let data = {
+          ...formData,
+          shiftStartTime: format(formData.shiftStartTime, 'hh:mm:ss a'),
+          shiftEndTime: format(formData.shiftEndTime, 'hh:mm:ss a'),
+          breakStartTime: format(formData.breakStartTime, 'hh:mm:ss a'),
+          breakEndTime: format(formData.breakEndTime, 'hh:mm:ss a'),
+        };
+        const newdata = await dispatch(createShift(data, navigate));
         console.log('newdata: ', newdata);
         onNewShiftAdded(newdata.data.data);
       }

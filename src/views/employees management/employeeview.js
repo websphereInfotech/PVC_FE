@@ -23,6 +23,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import { Employeeview, getAttendances, getLeave, updateLeaveStatus } from 'store/thunk';
+import { format } from 'date-fns';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
@@ -130,6 +131,21 @@ const EmployeeviewPage = () => {
       });
   };
 
+  const formatDateTime = (datetime, name) => {
+    if (!datetime) return "-";
+  
+    const date = format(new Date(datetime.replace("Z", "")), "dd-MM-yyyy");
+    const time = format(new Date(datetime.replace("Z", "")), "hh:mm a");
+  
+    return name === "date" ? date : (
+      <>
+        {date}
+        <br />
+        {time}
+      </>
+    );
+  };
+
   useEffect(() => {
     dispatch(Employeeview(id))
       .then((data) => {
@@ -179,7 +195,7 @@ const EmployeeviewPage = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Date of Birth </Typography>
-          <Typography variant="subtitle2">{data?.dob}</Typography>
+          <Typography variant="subtitle2">{formatDateTime(data?.dob, 'date')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> PAN No. </Typography>
@@ -204,7 +220,7 @@ const EmployeeviewPage = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Hire Date </Typography>
-          <Typography variant="subtitle2">{data?.hireDate}</Typography>
+          <Typography variant="subtitle2">{formatDateTime(data?.hireDate, 'date')}</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Personal Leaves Balance </Typography>
@@ -350,7 +366,9 @@ const EmployeeviewPage = () => {
                   <TableRow key={row.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                     {columns.map((column) => (
                       <TableCell key={column.id} align={column.align}>
-                        {row[column.id]}
+                        {["date", "inTime", "outTime", "breakStart", "breakEnd"].includes(column.id)
+                          ? formatDateTime(row[column.id], column.id)
+                          : row[column.id]}
                       </TableCell>
                     ))}
                   </TableRow>
