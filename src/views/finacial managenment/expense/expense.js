@@ -87,6 +87,10 @@ const ExpensePage = () => {
         }));
     };
 
+    const handleDateChange = (date) => {
+        setFormData({ ...formData, date: date });
+    };
+
 
     return (
         <Paper elevation={4} style={{ padding: '24px' }}>

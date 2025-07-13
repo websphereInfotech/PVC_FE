@@ -592,6 +592,20 @@ const useCan = () => {
   const canViewCompanyBankLedger = () => {
     return checkPermission('Company Bank Details', 'view_single_bankLedger');
   };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SELF EXPENSE
+  const canCreateSelfExpense = () => {
+    return checkPermission('Self Expense', 'create_selfExpense');
+  };
+  const canUpdateSelfExpense = () => {
+    return checkPermission('Self Expense', 'update_selfExpense');
+  };
+  const canDeleteSelfExpense = () => {
+    return checkPermission('Self Expense', 'delete_selfExpense');
+  };
+  const canViewSelfExpense = () => {
+    return checkPermission('Self Expense', 'view_selfExpense');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreateClaimcash = () => {
@@ -1166,6 +1180,11 @@ const useCan = () => {
     canDeletePaymentrecievecash,
     canViewPaymentrecievecash,
     canViwAllPaymentrecievecash,
+    // SELF EXPENSE +++++++++++
+    canCreateSelfExpense,
+    canUpdateSelfExpense,
+    canDeleteSelfExpense,
+    canViewSelfExpense,
     // CLAIM CASH +++++++++++
     canCreateClaimcash,
     canUpdateClaimcash,

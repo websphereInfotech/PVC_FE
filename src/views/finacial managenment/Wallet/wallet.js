@@ -63,8 +63,8 @@ const Wallet = () => {
           }));
           setUsers([...options]);
           const username = sessionStorage.getItem('username');
-          const currentUser = options.find((value)=>value.label===username);
-          if(currentUser){
+          const currentUser = options.find((value) => value.label === username);
+          if (currentUser) {
             setUserId(currentUser.value);
             setUsername(currentUser.label);
             handleApplyForUser();
@@ -132,6 +132,10 @@ const Wallet = () => {
   const handleapprovecash = () => {
     navigate('/recieveclaimcashlist');
   };
+  const handleSelfExpense = () => {
+    navigate('/selfExpenselist');
+  };
+
   return (
     <Paper elevation={4} style={{ padding: '20px' }}>
       <Grid container spacing={2}>
@@ -160,13 +164,17 @@ const Wallet = () => {
               <Typography variant="subtitle1">Bank Balance</Typography>
               <input placeholder="Total balance" value={walletcompanybalanceData?.bankBalance} />
             </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <Typography variant="subtitle1">Self Expense</Typography>
+              <input placeholder="Self expense" value={walletcompanybalanceData?.selfExpense} />
+            </Grid>
           </Grid>
         )}
         <Grid item container spacing={2}>
           <Grid item xs={12} sm={6} md={2}>
             <Typography>User Name</Typography>
 
-            {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') ? (
+            {createConfig1() === 'Super Admin' || createConfig1() === 'Admin' ? (
               <div style={{ display: 'flex', width: '80%' }}>
                 <Select
                   styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
@@ -186,9 +194,18 @@ const Wallet = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={2}>
             <Typography variant="subtitle1">Total Balance</Typography>
-            <input placeholder="total balance" value={walletData?.userWallet?.incomes} />
+            <input placeholder="Total balance" value={walletData?.userWallet?.incomes} />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} container sx={{ marginBottom: '8px' }} justifyContent="flex-start" alignItems="end" spacing={2}>
+          <Grid item xs={12} sm={12} md={6} container sx={{ marginBottom: '8px' }} justifyContent="flex-start" alignItems="end" spacing={2}>
+            <Grid item>
+              <Typography variant="subtitle1">Self Expense</Typography>
+              <input placeholder="Self expense" value={walletData?.userWallet?.selfExpense} />
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="secondary" onClick={handleSelfExpense}>
+                Self Expense
+              </Button>
+            </Grid>
             <Grid item>
               <Button variant="contained" color="secondary" onClick={handledemandcash}>
                 Demand Cash

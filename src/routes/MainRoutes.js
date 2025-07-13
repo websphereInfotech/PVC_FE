@@ -28,6 +28,9 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 const Reports = Loadable(lazy(() => import('../views/finacial managenment/Ledgers/reports')));
 const Reportcash = Loadable(lazy(() => import('../views/finacial managenment/Ledgers/reportscash')));
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of Self Expense +++++++++++++++++++++++++++++++++++++++++++++++++++
+const SelfExpenseList = Loadable(lazy(() => import('../views/finacial managenment/Self Expense/selfExpenseList')));
+const SelfExpensepage = Loadable(lazy(() => import('../views/finacial managenment/Self Expense/selfExpense')));
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcashlist')));
 const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcash')));
@@ -182,6 +185,11 @@ const MainRoutes = {
       )
     },
     { path: '/profile', element: <SamplePage /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Self Expense +++++++++++++++++++++++++++++++++++++++++++++++++++
+    { path: '/selfExpense', element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="create_selfExpense" /> },
+    { path: '/selfExpense/:id', element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="update_selfExpense" /> },
+    { path: '/selfExpenselist', element: <ProtectedRoute element={SelfExpenseList} resource="Self Expense" permissionName="view_selfExpense" /> },
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
     { path: 'wallet', element: <ProtectedRoute element={Wallet} resource="Claim Cash" permissionName="view_wallet" /> },
     { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="create_claim" /> },

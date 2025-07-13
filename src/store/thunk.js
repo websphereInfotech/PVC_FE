@@ -1303,7 +1303,103 @@ export const updateProduct = (id, data, navigate) => {
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SELF EXPENSE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallSelfExpense = () => {
+  return async () => {
+    // dispatch(getallPaymentCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_get_all_selfExpense`, config);
+      const getallSelfExpense = response.data.data;
+      // dispatch(getallPaymentCashSuccess(getallpaymentCash));
+      return getallSelfExpense;
+    } catch (error) {
+      console.log('error: ', error);
+      toast.error(error.response.data.error);
+      // dispatch(getallPaymentCashFailure(error.message));
+    }
+  };
+};
+export const deleteSelfExpense = async () => {
+  try {
+    const config = createConfig();
+    const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_delete_selfExpense/${id}`, config);
+    const data = response.data.data;
+    toast.success(response.data.message, {
+      icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+      autoClose: 1000
+    });
+    return data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      navigate('/');
+    } else {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+    }
+  }
+};
+export const selfExpenseview = (id) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense/${id}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('view Self Expense Failure: ', error);
+    }
+  };
+};
+export const createSelfExpense = (formData, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_create_selfExpense`, formData, config);
+      const createdSelfExpense = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/selfExpenselist');
+        }
+      });
+      return createdSelfExpense;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const updateSelfExpense = (id, formData, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_update_selfExpense/${id}`, formData, config);
+      const upadteSelfExpenseData = response;
+      toast.success( response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/selfExpenselist');
+        }
+      });
+      return upadteSelfExpenseData;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPaymentCash = (formData, navigate, isFromExpense = false) => {
   return async (dispatch) => {
     dispatch(createPaymentCashRequest());
@@ -1749,15 +1845,19 @@ export const getallOrderItems = () => {
   };
 };
 export const changeOrderStatus = (id, payload, navigate) => {
-return async (dispatch) => {
+  return async (dispatch) => {
     dispatch(updateOrderprocessingRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/orderProcessing/update_status_order_processing/${id}`, payload, config);
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/orderProcessing/update_status_order_processing/${id}`,
+        payload,
+        config
+      );
       const updateOrderStatusData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
+        autoClose: 1000
       });
       dispatch(updateOrderprocessingSuccess(updateOrderStatusData));
       return updateOrderStatusData;
