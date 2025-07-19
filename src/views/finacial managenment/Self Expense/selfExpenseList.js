@@ -157,7 +157,7 @@ const SelfExpenseList = () => {
           Create Self Expense
         </Button>
         {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') && (
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', width: '20%' }}>
             <Select
               options={users}
               onChange={handleUserSelectChange}
