@@ -1398,6 +1398,18 @@ export const updateSelfExpense = (id, formData, navigate) => {
     }
   };
 };
+export const getAllSelfExpenseByUserId = (id) => {
+ return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('view Self Expense Failure: ', error);
+    }
+  };
+};
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createPaymentCash = (formData, navigate, isFromExpense = false) => {
