@@ -20,7 +20,8 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { deleteSelfExpense, getallSelfExpense } from 'store/thunk';
+import { deleteSelfExpense, getallSelfExpense, getAllSelfExpenseByUserId, getallusers } from 'store/thunk';
+import Select from 'react-select';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
@@ -38,8 +39,50 @@ const SelfExpenseList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedId, setSelectedId] = useState(null);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
+    getAllSelfExpense();
+    if (sessionStorage.getItem('role') === 'Super Admin' || sessionStorage.getItem('role') === 'Admin') {
+      const fetchData = async () => {
+        const userResponse = await dispatch(getallusers());
+        if (Array.isArray(userResponse[0]?.users)) {
+          const options = userResponse[0]?.users?.map((user) => ({
+            value: user.id,
+            label: user.username
+          }));
+          setUsers([...options]);
+          const username = sessionStorage.getItem('username');
+          const currentUser = options.find((value) => value.label === username);
+          if (currentUser) {
+            setUserId(currentUser.value);
+            setUsername(currentUser.label);
+          }
+        }
+      };
+      fetchData();
+    }
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getAllSelfExpenseByUserId(userId))
+        .then((data) => {
+          console.log('data: ', data);
+          setselfExpense(data);
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            navigate('/');
+          }
+          console.error('Error fetching self expense data:', error);
+        });
+    }
+  }, [userId]);
+
+  const getAllSelfExpense = () => {
     dispatch(getallSelfExpense())
       .then((data) => {
         console.log('data: ', data);
@@ -51,7 +94,14 @@ const SelfExpenseList = () => {
         }
         console.error('Error fetching self expense data:', error);
       });
-  }, [dispatch, navigate]);
+  };
+
+  const handleUserSelectChange = (selectedOption) => {
+    if (selectedOption) {
+      setUserId(selectedOption.value);
+      setUsername(selectedOption.label);
+    }
+  };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
@@ -86,12 +136,17 @@ const SelfExpenseList = () => {
     setPage(newPage);
   };
 
+  const createConfig1 = () => {
+    const role = sessionStorage.getItem('role');
+    return role;
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
         Self Expense List
       </Typography>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Button
           variant="contained"
           color="secondary"
@@ -101,6 +156,16 @@ const SelfExpenseList = () => {
         >
           Create Self Expense
         </Button>
+        {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') && (
+          <div style={{ display: 'flex' }}>
+            <Select
+              options={users}
+              onChange={handleUserSelectChange}
+              value={{ value: userId, label: username }}
+              placeholder="Select User"
+            />
+          </div>
+        )}
       </div>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
