@@ -45,7 +45,7 @@ const PaymentListPage = () => {
   useEffect(() => {
     dispatch(getallPaymentCash())
       .then((data) => {
-        const filterData = data.data.filter((item)=>item.accountPaymentCash.accountName !== 'Expense');
+        const filterData = data.data.filter((item)=>(item.accountPaymentCash.accountName !== 'Expense' && item.accountPaymentCash.accountName !== 'SelfExpense' ) );
         setPayments(filterData);
       })
       .catch((error) => {

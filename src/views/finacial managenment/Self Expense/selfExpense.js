@@ -2,7 +2,7 @@ import { Grid, Paper, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { createSelfExpense, selfExpenseview, updateSelfExpense } from 'store/thunk';
+import { createSelfExpense, getExpenseAccount, selfExpenseview, updateSelfExpense } from 'store/thunk';
 import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import { convertToIST } from 'component/details';
@@ -16,7 +16,8 @@ const SelfExpense = () => {
   const [formData, setFormData] = useState({
     date: convertToIST(new Date()),
     amount: Number(),
-    description: ''
+    description: '',
+    accountId:2
   });
 
   useEffect(() => {
@@ -32,6 +33,19 @@ const SelfExpense = () => {
       }
     };
     viewData();
+    const getExpendeAccountId = async () => {
+      try {
+        const response = await dispatch(getExpenseAccount());
+        const expenseId = response.find((res) => res.accountGroup.name === 'Expenses (self)')?.id;
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          accountId: Number(expenseId)
+        }));
+      } catch (error) {
+        console.error('Error fetching payment cash:', error);
+      }
+    };
+    getExpendeAccountId();
   }, [dispatch, id]);
 
   const handlecreateSelfExpense = async () => {

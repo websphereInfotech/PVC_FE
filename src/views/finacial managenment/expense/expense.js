@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Paper, Grid, useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { createPaymentCash, paymentCashview, getallPaymentCash, updatePaymentCash } from 'store/thunk';
+import { createPaymentCash, paymentCashview, getallPaymentCash, updatePaymentCash, getExpenseAccount } from 'store/thunk';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -66,6 +66,21 @@ const ExpensePage = () => {
         };
         generateAutoPaymentcashNumber();
         viewData();
+        const getExpendeAccountId = async () => {
+            if (!id) {
+                try { 
+                    const response = await dispatch(getExpenseAccount());
+                    const expenseId = response.find((res) => res.accountGroup.name === 'Expenses (Company)').id;
+                    setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        accountId: Number(expenseId)
+                    }));
+                } catch (error) {
+                    console.error('Error fetching payment cash:', error);
+                }
+            }
+        };
+        getExpendeAccountId();
     }, [dispatch, id]);
 
     const handlecreatePaymentCash = async () => {
@@ -142,7 +157,7 @@ const ExpensePage = () => {
                     {isMobile ? (
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
+                                <Link to="/expenselist" style={{ textDecoration: 'none' }}>
                                     <button id="savebtncs">Cancel</button>
                                 </Link>
                                 <button id="savebtncs" onClick={handlecreatePaymentCash}>
@@ -153,7 +168,7 @@ const ExpensePage = () => {
                     ) : (
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
                             <div>
-                                <Link to="/paymentCashlist" style={{ textDecoration: 'none' }}>
+                                <Link to="/expenselist" style={{ textDecoration: 'none' }}>
                                     <button id="savebtncs">Cancel</button>
                                 </Link>
                             </div>

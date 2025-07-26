@@ -110,7 +110,7 @@ const SelfExpenseList = () => {
 
   const handledelete = async () => {
     try {
-      await dispatch(deleteSelfExpense(selectedId, navigate));
+      await deleteSelfExpense(selectedId, navigate);
       setOpenConfirmation(false);
       const data = await dispatch(getallSelfExpense());
       setselfExpense(data);

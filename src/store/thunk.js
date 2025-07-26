@@ -1320,7 +1320,7 @@ export const getallSelfExpense = () => {
     }
   };
 };
-export const deleteSelfExpense = async () => {
+export const deleteSelfExpense = async (id, navigate) => {
   try {
     const config = createConfig();
     const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_delete_selfExpense/${id}`, config);
@@ -7153,6 +7153,18 @@ export const fetchAllAccountCash = () => {
     }
   };
 };
+export const getExpenseAccount = () => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/C_get_expense_account`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+}
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT LEDGER +++++++++++++++++++++++++++++++++++++
 export const getallAccountledger = (id, formDate, toDate) => {
