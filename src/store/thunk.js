@@ -1352,19 +1352,21 @@ export const selfExpenseview = (id) => {
     }
   };
 };
-export const createSelfExpense = (formData, navigate) => {
+export const createSelfExpense = (formData, navigate, isNeedToNavigate = true) => {
   return async () => {
     try {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_create_selfExpense`, formData, config);
       const createdSelfExpense = response;
-      toast.success(response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
-        onClose: () => {
-          navigate('/selfExpenselist');
-        }
-      });
+      if (isNeedToNavigate) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000,
+          onClose: () => {
+            navigate('/selfExpenselist');
+          }
+        });
+      }
       return createdSelfExpense;
     } catch (error) {
       if (error.response.status === 401) {
@@ -1372,6 +1374,7 @@ export const createSelfExpense = (formData, navigate) => {
       } else {
         toast.error(error.response.data.message);
       }
+      throw error;
     }
   };
 };
@@ -5189,6 +5192,40 @@ export const deleteholiday = (holidayId, navigate) => {
     }
   };
 };
+export const fetchSalarySummary = (employeeId) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/employee/get_salary_summary/${employeeId}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
+}
+export const addAdvance = (data, navigate) => {
+    return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/employee/add_advance`, data, config);
+      const addemployeedata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return addemployeedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+}
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  SHIFT  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createShift = (data, navigate) => {
   return async () => {

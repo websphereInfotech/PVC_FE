@@ -1,4 +1,4 @@
-import { Delete, Edit } from '@mui/icons-material';
+import { CurrencyRupee, Delete, Edit } from '@mui/icons-material';
 import {
   Button,
   Card,
@@ -6,7 +6,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  Grid,
   IconButton,
+  Radio,
+  RadioGroup,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +23,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { deleteEmployee, fetchAllEmployee } from 'store/thunk';
+import { addAdvance, createSelfExpense, deleteEmployee, fetchAllEmployee, fetchSalarySummary, getExpenseAccount } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
@@ -41,6 +45,14 @@ const EmployeeList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [itemtype, setItemType] = useState('Advance');
+  const [amount,setAmount] = useState(0);
+  const [advanceAmount,setAdvanceAmount] = useState(0);
+  const [paidAmount,setPaidAmount] = useState(0);
+  const [netSalary,setNetSalary] = useState(0);
+  const [accountId, setAccountId] = useState(2);
 
   const handleaddemployee = () => {
     navigate('/employeeadd');
@@ -58,7 +70,6 @@ const EmployeeList = () => {
   const handleDeleteEmployee = async () => {
     try {
       await dispatch(deleteEmployee(selectedEmployeeId, navigate));
-      console.log('selectedEmployeeId: ', selectedEmployeeId);
       setOpenConfirmation(false);
       const response = await dispatch(fetchAllEmployee());
       setEmployeeData(response);
@@ -67,9 +78,10 @@ const EmployeeList = () => {
     }
   };
 
-  const handleDeleteConfirmation = (id) => {
+  const handleDeleteConfirmation = (employee) => {
     setOpenConfirmation(true);
-    setSelectedEmployeeId(id);
+    setSelectedEmployeeId(employee.id);
+    setSelectedEmployee(employee);
   };
 
   const handleUpdateEmployee = (id) => {
@@ -78,6 +90,64 @@ const EmployeeList = () => {
 
   const handleEmployeeview = (id) => {
     navigate(`/employeeview/${id}`);
+  };
+
+  const handleCloseAdvanveDialog = () => {
+    setOpenDialog(false);
+    setSelectedEmployeeId(null);
+    setSelectedEmployee(null);
+    setAmount(0);
+  }
+
+  const handleItem = (e) => {
+    setItemType(e.target.value);
+  };
+
+  const handleAddAmount = async(employee) =>{
+    const salarySummary = await dispatch(fetchSalarySummary(employee.id))
+    console.log('salarySummary: ', salarySummary);
+    setAdvanceAmount(salarySummary.currentMonth.advanceAmount);
+    setPaidAmount(salarySummary.lastMonth.paidAmount);
+    setNetSalary(salarySummary.lastMonth.netSalary);
+    setOpenDialog(true);
+    setSelectedEmployeeId(employee.id);
+    setSelectedEmployee(employee);
+  }
+
+  const handleSaveAdvance = async() => {
+    const payload ={
+      employeeId: selectedEmployeeId
+    };
+    const expenseData ={
+      date: new Date(),
+      amount: +amount,
+      description: '',
+      employeeId: selectedEmployeeId,
+      accountId
+    }
+    if(itemtype === 'Advance') {
+      payload.advanceAmount = +amount;
+      expenseData.description = `Advance to ${selectedEmployee.firstName}`;
+      expenseData.isAdvance = true;
+    } else {
+      payload.paidAmount = +amount;
+      expenseData.description = `Paid to ${selectedEmployee.firstName}`;
+      expenseData.isAdvance = false;
+    }
+    
+    try {
+      await dispatch(createSelfExpense(expenseData, navigate, false));
+    } catch (e) {
+      console.error("Failed to create self expense:", e);
+      return; // Stop further execution
+    }
+    try {
+      const data = await dispatch(addAdvance(payload, navigate));
+      console.log("response data: ", data);
+      handleCloseAdvanveDialog();
+    } catch (e) {
+      console.error("Failed to add advance:", e);
+    }
   };
 
   useEffect(() => {
@@ -95,6 +165,16 @@ const EmployeeList = () => {
     };
 
     fetchEmployeeData();
+    const getExpendeAccountId = async () => {
+      try {
+        const response = await dispatch(getExpenseAccount());
+        const expenseId = response.find((res) => res.accountGroup.name === 'Expenses (self)')?.id;
+        setAccountId(Number(expenseId));
+      } catch (error) {
+        console.error('Error fetching Account Id:', error);
+      }
+    };
+    getExpendeAccountId();
   }, [dispatch, navigate, id]);
 
   return (
@@ -171,6 +251,21 @@ const EmployeeList = () => {
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
+                        <IconButton
+                          sizeSmall
+                          style={{
+                            backgroundColor: canViewEmployee() ? 'Blue' : 'gray',
+                            color: canViewEmployee() ? 'white' : 'white',
+                            borderRadius: 0.8,
+                            ...(canViewEmployee() && { opacity: 1 }),
+                            ...(!canViewEmployee() && { opacity: 0.5 }),
+                            ...(!canViewEmployee() && { backgroundColor: 'gray' })
+                          }}
+                          onClick={() => handleAddAmount(row)}
+                          disabled={!canViewEmployee()}
+                        >
+                          <CurrencyRupee style={{ fontSize: '16px' }} />
+                        </IconButton>
                       </div>
                     ) : (
                       row[column.id]
@@ -200,6 +295,54 @@ const EmployeeList = () => {
           </Button>
           <Button variant="contained" onClick={handleDeleteEmployee} color="secondary">
             Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDialog} onClose={handleCloseAdvanveDialog} fullWidth maxWidth="sm">
+        <DialogTitle>
+          <Typography variant="h5" align="center">
+            Add Salary
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={3} justifyContent="center">
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" gutterBottom>
+                Select Payment Type
+              </Typography>
+              <RadioGroup row defaultValue="Advance" value={itemtype} onChange={handleItem}>
+                <FormControlLabel value="Salary" control={<Radio />} label="Salary" />
+                <FormControlLabel value="Advance" control={<Radio />} label="Advance" />
+              </RadioGroup>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" gutterBottom>
+                Amount
+              </Typography>
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {itemtype === "Salary" ? (
+                <>
+                  <Typography>Net Salary: ₹{netSalary}</Typography>
+                  <Typography>Paid Amount: ₹{paidAmount}</Typography>
+                </>
+              ) : (
+                <Typography>Advance Paid This Month: ₹{advanceAmount}</Typography>
+              )}
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAdvanveDialog} color="secondary" id="savebtncs" variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={handleSaveAdvance} color="secondary" id="savebtncs" variant="outlined">
+            Save
           </Button>
         </DialogActions>
       </Dialog>
