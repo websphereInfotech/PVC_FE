@@ -1401,11 +1401,11 @@ export const updateSelfExpense = (id, formData, navigate) => {
     }
   };
 };
-export const getAllSelfExpenseByUserId = (id, month, year) => {
+export const getAllSelfExpenseByUserId = (id, fromDate, toDate) => {
  return async () => {
     try {
       const config = createConfig();
-      const queryParams = `?month=${month}&year=${year}`;
+      const queryParams = `?fromDate=${fromDate}&toDate=${toDate}`;
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}${queryParams}`, config);
       const data = response.data.data;
       return data;

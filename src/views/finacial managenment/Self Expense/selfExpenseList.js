@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { deleteSelfExpense, getallcompanyusers, getallSelfExpense, getAllSelfExpenseByUserId } from 'store/thunk';
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
 
 const columns = [
   { id: 'date', label: 'Date', align: 'center', minWidth: 100 },
@@ -42,7 +43,8 @@ const SelfExpenseList = () => {
   const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [toDate, setToDate] = useState(new Date());
+  const [formDate, setFormDate] = useState(new Date());
 
   useEffect(() => {
     getAllSelfExpense();
@@ -68,11 +70,11 @@ const SelfExpenseList = () => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    if (userId && selectedMonth) {
-      const currentYear = new Date().getFullYear();
-      dispatch(getAllSelfExpenseByUserId(userId, selectedMonth, currentYear))
+    if (userId && formDate && toDate) {
+      const from = formDate ? formDate.toISOString().split('T')[0] : null;
+      const to = toDate ? toDate.toISOString().split('T')[0] : null;
+      dispatch(getAllSelfExpenseByUserId(userId, from, to))
         .then((data) => {
-          console.log('data: ', data);
           setselfExpense(data);
         })
         .catch((error) => {
@@ -82,12 +84,11 @@ const SelfExpenseList = () => {
           console.error('Error fetching self expense data:', error);
         });
     }
-  }, [userId, selectedMonth]);
+  }, [userId, formDate, toDate]);
 
   const getAllSelfExpense = () => {
     dispatch(getallSelfExpense())
       .then((data) => {
-        console.log('data: ', data);
         setselfExpense(data);
       })
       .catch((error) => {
@@ -148,37 +149,35 @@ const SelfExpenseList = () => {
       <Typography variant="h4" align="center" id="mycss">
         Self Expense List
       </Typography>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '16px 0 16px 0' }}>
         <Button
           variant="contained"
           color="secondary"
-          style={{ margin: '16px' }}
           onClick={handleCreateSelfExpense}
           disabled={!canCreateSelfExpense()}
         >
           Create Self Expense
         </Button>
         {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') && (
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <Select
-              options={users}
-              onChange={handleUserSelectChange}
-              value={{ value: userId, label: username }}
-              placeholder="Select User"
-            />
-            <Select
-              options={Array.from({ length: 12 }, (_, i) => ({
-                value: i + 1,
-                label: new Date(0, i).toLocaleString('default', { month: 'long' })
-              }))}
-              onChange={(selectedOption) => setSelectedMonth(selectedOption.value)}
-              value={{
-                value: selectedMonth,
-                label: new Date(0, selectedMonth - 1).toLocaleString('default', { month: 'long' })
-              }}
-              placeholder="Select Month"
-            />
-          </div>
+          <>
+            <div style={{ width: '25%' }}>
+              <Typography variant="subtitle1">User:</Typography>
+              <Select
+                options={users}
+                onChange={handleUserSelectChange}
+                value={{ value: userId, label: username }}
+                placeholder="Select User"
+              />
+            </div>
+            <div>
+              <Typography variant="subtitle1">From Date:</Typography>
+              <DatePicker selected={formDate} onChange={setFormDate} dateFormat="dd/MM/yyyy" />
+            </div>
+            <div>
+              <Typography variant="subtitle1">To Date:</Typography>
+              <DatePicker selected={toDate} onChange={setToDate} dateFormat="dd/MM/yyyy" />
+            </div>
+          </>
         )}
       </div>
       <TableContainer>
