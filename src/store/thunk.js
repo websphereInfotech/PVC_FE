@@ -1401,11 +1401,12 @@ export const updateSelfExpense = (id, formData, navigate) => {
     }
   };
 };
-export const getAllSelfExpenseByUserId = (id) => {
+export const getAllSelfExpenseByUserId = (id, month, year) => {
  return async () => {
     try {
       const config = createConfig();
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}`, config);
+      const queryParams = `?month=${month}&year=${year}`;
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}${queryParams}`, config);
       const data = response.data.data;
       return data;
     } catch (error) {
@@ -3467,6 +3468,20 @@ export const getallusers = (params = {}) => {
     try {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user?{search}=`, { ...config, params: params });
+      const getallUsers = response.data.data;
+      dispatch(getallUserSuccess(getallUsers));
+      return getallUsers;
+    } catch (error) {
+      dispatch(getallUserFailure(error.message));
+    }
+  };
+};
+export const getallcompanyusers = (params = {}) => {
+  return async (dispatch) => {
+    dispatch(getallUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_company_user?{search}=`, { ...config, params: params });
       const getallUsers = response.data.data;
       dispatch(getallUserSuccess(getallUsers));
       return getallUsers;

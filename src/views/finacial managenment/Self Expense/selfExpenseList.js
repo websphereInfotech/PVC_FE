@@ -20,7 +20,7 @@ import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { deleteSelfExpense, getallSelfExpense, getAllSelfExpenseByUserId, getallusers } from 'store/thunk';
+import { deleteSelfExpense, getallcompanyusers, getallSelfExpense, getAllSelfExpenseByUserId } from 'store/thunk';
 import Select from 'react-select';
 
 const columns = [
@@ -42,12 +42,13 @@ const SelfExpenseList = () => {
   const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
   useEffect(() => {
     getAllSelfExpense();
     if (sessionStorage.getItem('role') === 'Super Admin' || sessionStorage.getItem('role') === 'Admin') {
       const fetchData = async () => {
-        const userResponse = await dispatch(getallusers());
+        const userResponse = await dispatch(getallcompanyusers());
         if (Array.isArray(userResponse[0]?.users)) {
           const options = userResponse[0]?.users?.map((user) => ({
             value: user.id,
@@ -67,8 +68,9 @@ const SelfExpenseList = () => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    if (userId) {
-      dispatch(getAllSelfExpenseByUserId(userId))
+    if (userId && selectedMonth) {
+      const currentYear = new Date().getFullYear();
+      dispatch(getAllSelfExpenseByUserId(userId, selectedMonth, currentYear))
         .then((data) => {
           console.log('data: ', data);
           setselfExpense(data);
@@ -80,7 +82,7 @@ const SelfExpenseList = () => {
           console.error('Error fetching self expense data:', error);
         });
     }
-  }, [userId]);
+  }, [userId, selectedMonth]);
 
   const getAllSelfExpense = () => {
     dispatch(getallSelfExpense())
@@ -157,12 +159,24 @@ const SelfExpenseList = () => {
           Create Self Expense
         </Button>
         {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') && (
-          <div style={{ display: 'flex', width: '20%' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Select
               options={users}
               onChange={handleUserSelectChange}
               value={{ value: userId, label: username }}
               placeholder="Select User"
+            />
+            <Select
+              options={Array.from({ length: 12 }, (_, i) => ({
+                value: i + 1,
+                label: new Date(0, i).toLocaleString('default', { month: 'long' })
+              }))}
+              onChange={(selectedOption) => setSelectedMonth(selectedOption.value)}
+              value={{
+                value: selectedMonth,
+                label: new Date(0, selectedMonth - 1).toLocaleString('default', { month: 'long' })
+              }}
+              placeholder="Select Month"
             />
           </div>
         )}
