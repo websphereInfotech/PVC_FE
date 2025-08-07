@@ -1416,24 +1416,26 @@ export const getAllSelfExpenseByUserId = (id, fromDate, toDate) => {
 };
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPaymentCash = (formData, navigate, isFromExpense = false) => {
+export const createPaymentCash = (formData, navigate, isFrom = 'Expense') => {
   return async (dispatch) => {
     dispatch(createPaymentCashRequest());
     try {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/payment/C_create_paymentCash`, formData, config);
       const createdpayment = response;
-      toast.success(isFromExpense ? 'Expense Created Successfully' : response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
-        onClose: () => {
-          if (isFromExpense) {
-            navigate('/expenselist');
-          } else {
-            navigate('/paymentcashlist');
+      if(isFrom != 'employee') {
+        toast.success(isFrom === 'Expense' ? 'Expense Created Successfully' : response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000,
+          onClose: () => {
+            if (isFrom === 'Expense') {
+              navigate('/expenselist');
+            } else {
+              navigate('/paymentcashlist');
+            }
           }
-        }
-      });
+        });
+      }
       dispatch(createPaymentCashSuccess(createdpayment));
       return createdpayment;
     } catch (error) {

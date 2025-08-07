@@ -23,7 +23,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { addAdvance, createSelfExpense, deleteEmployee, fetchAllEmployee, fetchSalarySummary, getExpenseAccount } from 'store/thunk';
+import { addAdvance, createPaymentCash, deleteEmployee, fetchAllEmployee, fetchSalarySummary, getallPaymentCash, getExpenseAccount } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
@@ -48,11 +48,12 @@ const EmployeeList = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [itemtype, setItemType] = useState('Advance');
-  const [amount,setAmount] = useState(0);
-  const [advanceAmount,setAdvanceAmount] = useState(0);
-  const [paidAmount,setPaidAmount] = useState(0);
-  const [netSalary,setNetSalary] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [advanceAmount, setAdvanceAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(0);
+  const [netSalary, setNetSalary] = useState(0);
   const [accountId, setAccountId] = useState(2);
+  const [paymentNo, setPaymentNo] = useState(1);
 
   const handleaddemployee = () => {
     navigate('/employeeadd');
@@ -97,14 +98,14 @@ const EmployeeList = () => {
     setSelectedEmployeeId(null);
     setSelectedEmployee(null);
     setAmount(0);
-  }
+  };
 
   const handleItem = (e) => {
     setItemType(e.target.value);
   };
 
-  const handleAddAmount = async(employee) =>{
-    const salarySummary = await dispatch(fetchSalarySummary(employee.id))
+  const handleAddAmount = async (employee) => {
+    const salarySummary = await dispatch(fetchSalarySummary(employee.id));
     console.log('salarySummary: ', salarySummary);
     setAdvanceAmount(salarySummary.currentMonth.advanceAmount);
     setPaidAmount(salarySummary.lastMonth.paidAmount);
@@ -112,20 +113,21 @@ const EmployeeList = () => {
     setOpenDialog(true);
     setSelectedEmployeeId(employee.id);
     setSelectedEmployee(employee);
-  }
+  };
 
-  const handleSaveAdvance = async() => {
-    const payload ={
+  const handleSaveAdvance = async () => {
+    const payload = {
       employeeId: selectedEmployeeId
     };
-    const expenseData ={
+    const expenseData = {
       date: new Date(),
       amount: +amount,
       description: '',
-      employeeId: selectedEmployeeId,
-      accountId
-    }
-    if(itemtype === 'Advance') {
+      // employeeId: selectedEmployeeId,
+      accountId,
+      paymentNo
+    };
+    if (itemtype === 'Advance') {
       payload.advanceAmount = +amount;
       expenseData.description = `Advance to ${selectedEmployee.firstName}`;
       expenseData.isAdvance = true;
@@ -133,20 +135,19 @@ const EmployeeList = () => {
       payload.paidAmount = +amount;
       expenseData.description = `Paid to ${selectedEmployee.firstName}`;
       expenseData.isAdvance = false;
-    }
-    
+    } 
     try {
-      await dispatch(createSelfExpense(expenseData, navigate, false));
+      await dispatch(createPaymentCash(expenseData, navigate, 'employee'));
     } catch (e) {
       console.error("Failed to create self expense:", e);
       return; // Stop further execution
     }
     try {
       const data = await dispatch(addAdvance(payload, navigate));
-      console.log("response data: ", data);
+      console.log('response data: ', data);
       handleCloseAdvanveDialog();
     } catch (e) {
-      console.error("Failed to add advance:", e);
+      console.error('Failed to add advance:', e);
     }
   };
 
@@ -168,13 +169,35 @@ const EmployeeList = () => {
     const getExpendeAccountId = async () => {
       try {
         const response = await dispatch(getExpenseAccount());
-        const expenseId = response.find((res) => res.accountGroup.name === 'Expenses (self)')?.id;
+        const expenseId = response.find((res) => res.accountGroup.name === 'Salary')?.id;
         setAccountId(Number(expenseId));
       } catch (error) {
         console.error('Error fetching Account Id:', error);
       }
     };
     getExpendeAccountId();
+    const generateAutoPaymentcashNumber = async () => {
+      try {
+        const PaymentcashResponse = await dispatch(getallPaymentCash());
+        let nextPaymentcashNumber = 1;
+        if (PaymentcashResponse.data.length === 0) {
+          setPaymentNo(nextPaymentcashNumber);
+          return;
+        }
+        const existingPaymentcashNumbers = PaymentcashResponse.data.map((Paymentcash) => {
+          const PaymentcashNumber = Paymentcash.paymentNo;
+          return parseInt(PaymentcashNumber);
+        });
+        const maxPaymentcashNumber = Math.max(...existingPaymentcashNumbers);
+        if (!isNaN(maxPaymentcashNumber)) {
+          nextPaymentcashNumber = maxPaymentcashNumber + 1;
+        }
+        setPaymentNo(nextPaymentcashNumber);
+      } catch (error) {
+        console.error('Error generating auto Payment cash number:', error);
+      }
+    };
+    generateAutoPaymentcashNumber();
   }, [dispatch, navigate, id]);
 
   return (
@@ -319,14 +342,10 @@ const EmployeeList = () => {
               <Typography variant="subtitle1" gutterBottom>
                 Amount
               </Typography>
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-              />
+              <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </Grid>
             <Grid item xs={12}>
-              {itemtype === "Salary" ? (
+              {itemtype === 'Salary' ? (
                 <>
                   <Typography>Net Salary: ₹{netSalary}</Typography>
                   <Typography>Paid Amount: ₹{paidAmount}</Typography>
