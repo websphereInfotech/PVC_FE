@@ -643,6 +643,12 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/employeelist'
               },
+              {
+                id: 'employee salary',
+                title: 'Employee Salary',
+                type: 'item',
+                url: '/employeesalary'
+              },
               hasAllPermissionsBonus && {
                 id: 'Bonus Config',
                 title: 'Bonus Config',
@@ -661,13 +667,6 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/holidayconfig'
               }
-
-              // {
-              //   id: 'employee salary',
-              //   title: 'Employee Salary',
-              //   type: 'item',
-              //   url: '/employeesalary'
-              // }
               // {
               //   id: 'Report',
               //   title: 'Report',

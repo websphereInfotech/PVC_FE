@@ -129,18 +129,23 @@ const EmployeeList = () => {
     };
     if (itemtype === 'Advance') {
       payload.advanceAmount = +amount;
-      expenseData.description = `Advance to ${selectedEmployee.firstName}`;
+      expenseData.description = getDescription('Advance', selectedEmployee);
       expenseData.isAdvance = true;
     } else {
       payload.paidAmount = +amount;
-      expenseData.description = `Paid to ${selectedEmployee.firstName}`;
+      expenseData.description = getDescription('Paid', selectedEmployee);
       expenseData.isAdvance = false;
     } 
     try {
-      await dispatch(createPaymentCash(expenseData, navigate, 'employee'));
+      const paymentRes = await dispatch(createPaymentCash(expenseData, navigate, 'employee'));
+      if (!paymentRes || paymentRes?.status === false) {
+        console.error("Payment cash creation failed");
+        return;
+      }
+      generateAutoPaymentcashNumber();
     } catch (e) {
       console.error("Failed to create self expense:", e);
-      return; // Stop further execution
+      return;
     }
     try {
       const data = await dispatch(addAdvance(payload, navigate));
@@ -148,6 +153,42 @@ const EmployeeList = () => {
       handleCloseAdvanveDialog();
     } catch (e) {
       console.error('Failed to add advance:', e);
+    }
+  };
+
+  const getDescription = (type, employee) => {
+    let fullName = `(${employee.id}) ${employee.firstName}`;
+
+    let desc = type === "Advance" 
+      ? `Advance to ${fullName}`
+      : `Paid to ${fullName}`;
+
+    if (desc.length > 30) {
+      return desc.substring(0, 26) + "...";
+    }
+
+    return desc;
+  }
+
+  const generateAutoPaymentcashNumber = async () => {
+    try {
+      const PaymentcashResponse = await dispatch(getallPaymentCash());
+      let nextPaymentcashNumber = 1;
+      if (PaymentcashResponse.data.length === 0) {
+        setPaymentNo(nextPaymentcashNumber);
+        return;
+      }
+      const existingPaymentcashNumbers = PaymentcashResponse.data.map((Paymentcash) => {
+        const PaymentcashNumber = Paymentcash.paymentNo;
+        return parseInt(PaymentcashNumber);
+      });
+      const maxPaymentcashNumber = Math.max(...existingPaymentcashNumbers);
+      if (!isNaN(maxPaymentcashNumber)) {
+        nextPaymentcashNumber = maxPaymentcashNumber + 1;
+      }
+      setPaymentNo(nextPaymentcashNumber);
+    } catch (error) {
+      console.error('Error generating auto Payment cash number:', error);
     }
   };
 
@@ -176,27 +217,6 @@ const EmployeeList = () => {
       }
     };
     getExpendeAccountId();
-    const generateAutoPaymentcashNumber = async () => {
-      try {
-        const PaymentcashResponse = await dispatch(getallPaymentCash());
-        let nextPaymentcashNumber = 1;
-        if (PaymentcashResponse.data.length === 0) {
-          setPaymentNo(nextPaymentcashNumber);
-          return;
-        }
-        const existingPaymentcashNumbers = PaymentcashResponse.data.map((Paymentcash) => {
-          const PaymentcashNumber = Paymentcash.paymentNo;
-          return parseInt(PaymentcashNumber);
-        });
-        const maxPaymentcashNumber = Math.max(...existingPaymentcashNumbers);
-        if (!isNaN(maxPaymentcashNumber)) {
-          nextPaymentcashNumber = maxPaymentcashNumber + 1;
-        }
-        setPaymentNo(nextPaymentcashNumber);
-      } catch (error) {
-        console.error('Error generating auto Payment cash number:', error);
-      }
-    };
     generateAutoPaymentcashNumber();
   }, [dispatch, navigate, id]);
 

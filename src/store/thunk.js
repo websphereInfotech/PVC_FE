@@ -5221,6 +5221,24 @@ export const fetchSalarySummary = (employeeId) => {
     }
   };
 }
+export const deleteAdvance = (data, navigate) => {
+    return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/employee/delete_advance`, data, config);
+      const addemployeedata = response.data.data;
+      return addemployeedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+}
 export const addAdvance = (data, navigate) => {
     return async () => {
     try {

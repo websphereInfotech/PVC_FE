@@ -165,6 +165,7 @@ const BonusConfigPage = Loadable(lazy(() => import('../views/employees managemen
 const PenaltyConfigPage = Loadable(lazy(() => import('../views/employees management/penalty config/penaltyConfig')));
 const HolidayConfigPage = Loadable(lazy(() => import('../views/employees management/holiday config/holidayConfig')));
 const AddHolidayPage = Loadable(lazy(() => import('../views/employees management/holiday config/addHoliday')));
+const EmployeeSalary = Loadable(lazy(() => import('../views/employees management/employeeSalary')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
@@ -575,6 +576,10 @@ const MainRoutes = {
     {
       path: '/updateholiday/:id',
       element: <ProtectedRoute element={AddHolidayPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/employeesalary',
+      element: <ProtectedRoute element={EmployeeSalary} resource="Employee" permissionName="view_all_employee" />
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++

@@ -41,6 +41,10 @@ const ExpenseListPage = () => {
     const [openConfirmation, setOpenConfirmation] = useState(false);
 
     useEffect(() => {
+        getData();
+    }, [dispatch, navigate]);
+    
+    const getData = () => {
         dispatch(getallPaymentCash())
             .then((data) => {
                 const filterData = data.data.filter((item)=>item.accountPaymentCash.accountName === 'Expense');
@@ -52,7 +56,7 @@ const ExpenseListPage = () => {
                 }
                 console.error('Error fetching payment cash data:', error);
             });
-    }, [dispatch, navigate]);
+    };
 
     const handleMakePayment = () => {
         navigate('/expense');
@@ -81,8 +85,7 @@ const ExpenseListPage = () => {
         try {
             await dispatch(paymentCashDelete(selectedId, navigate));
             setOpenConfirmation(false);
-            const data = await dispatch(getallPaymentCash());
-            setPayments(data);
+            getData();
         } catch (error) {
             console.error('Error deleting payment cash:', error);
         }
