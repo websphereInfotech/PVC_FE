@@ -334,6 +334,14 @@ const MenuItem = () => {
     "delete_bonus"
   ]);
 
+  const hasAllPermissionsShift = checkAllPermissions('Shift', [
+    "create_shift",
+    "update_shift",
+    "view_all_shift",
+    "view_one_shift",
+    "delete_shift"
+  ]);
+
   return {
     items: [
       {
@@ -643,7 +651,7 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/employeelist'
               },
-              {
+              hasAllPermissionsEmployee && {
                 id: 'employee salary',
                 title: 'Employee Salary',
                 type: 'item',
@@ -666,6 +674,12 @@ const MenuItem = () => {
                 title: 'Holiday List',
                 type: 'item',
                 url: '/holidayconfig'
+              },
+              hasAllPermissionsShift && {
+                id: 'Shift',
+                title: 'Shift',
+                type: 'item',
+                url: '/shift'
               }
               // {
               //   id: 'Report',

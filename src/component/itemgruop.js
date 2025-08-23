@@ -91,7 +91,7 @@ const ItemGroup = ({ open, onClose, id, onnewgroupadded, onnewgroupUpdated }) =>
       >
         {id ? (
           <Grid item>
-            <Typography variant="h4">Upadate Group</Typography>
+            <Typography variant="h4">Update Group</Typography>
           </Grid>
         ) : (
           <Grid item>

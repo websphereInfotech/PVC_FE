@@ -702,6 +702,19 @@ const useCan = () => {
     return checkPermission('Employee', 'delete_employee');
   };
 
+  const canCreateShift = () => {
+    return checkPermission('Shift', 'create_shift')
+  };
+  const canViewShift = () => {
+    return checkPermission('Shift', 'view_one_shift')
+  };
+  const canUpdateShift = () => {
+    return checkPermission('Shift', 'update_shift')
+  };
+  const canDeleteShift = () => {
+    return checkPermission('Shift', 'delete_shift')
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE
 
   const canCreateMachine = () => {
@@ -1246,6 +1259,10 @@ const useCan = () => {
     canViewEmployee,
     canUpdateEmployee,
     canDeleteEmployee,
+    canCreateShift,
+    canViewShift,
+    canUpdateShift,
+    canDeleteShift,
     // MACHINE ++++++++++++++++++
     canCreateMachine,
     canViewAllMachine,

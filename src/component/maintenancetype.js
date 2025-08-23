@@ -102,7 +102,7 @@ const Maintenancetype = ({ open, onClose, id, onnewadded, onnewUpdated }) => {
       >
         {id ? (
           <Grid item>
-            <Typography variant="h4">Upadate Maintenance Type</Typography>
+            <Typography variant="h4">Update Maintenance Type</Typography>
           </Grid>
         ) : (
           <Grid item>

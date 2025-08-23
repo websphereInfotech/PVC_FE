@@ -1,10 +1,10 @@
 import { Box, Drawer, Grid, Paper, Typography } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { createShift, updateShift } from 'store/thunk';
+import { createShift, fetchShift, updateShift } from 'store/thunk';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -80,6 +80,27 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
     }
   };
 
+  React.useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        if (id) {
+          const response = await dispatch(fetchShift(id));
+          setFormData({
+            shiftName: response.shiftName,
+            shiftStartTime: new Date(`1970-01-01 ${response.shiftStartTime}`),
+            shiftEndTime: new Date(`1970-01-01 ${response.shiftEndTime}`),
+            breakStartTime: new Date(`1970-01-01 ${response.breakStartTime}`),
+            breakEndTime: new Date(`1970-01-01 ${response.breakEndTime}`),
+            maxOvertimeHours: 0
+          })
+        }
+      } catch (error) {
+        console.error('Error view item group', error);
+      }
+    };
+    fetchdata();
+  }, [id, dispatch]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Drawer anchor="right" open={open} onClose={onClose}>
@@ -93,9 +114,15 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
             width: { xs: '100%', sm: '660px' }
           }}
         >
-          <Grid item>
-            <Typography variant="h4">New Shift</Typography>
-          </Grid>
+           {id ? (
+              <Grid item>
+                <Typography variant="h4">Update Shift</Typography>
+              </Grid>
+            ) : (
+              <Grid item>
+                <Typography variant="h4">New Shift</Typography>
+              </Grid>
+            )}
           <Grid item>
             <CancelIcon onClick={onClose} />
           </Grid>

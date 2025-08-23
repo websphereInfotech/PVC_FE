@@ -5302,6 +5302,21 @@ export const fetchAllShift = () => {
     }
   };
 };
+export const fetchShift = (id) => {
+  return async () => {
+    // dispatch(fetchAllShiftRequest());
+    try {
+      let config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/shift/view_shift/${id}`, config);
+      const data = response.data.data;
+      // dispatch(fetchAllShiftSuccess(data));
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(fetchAllShiftFailure(error.message));
+    }
+  };
+};
 export const updateShift = (id, data, navigate) => {
   return async () => {
     // dispatch(updateShiftRequest());
@@ -5321,6 +5336,28 @@ export const updateShift = (id, data, navigate) => {
         navigate('/');
       } else {
         toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const deleteShift = (shiftId, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/shift/delete_shift/${shiftId}`, config);
+      const deleteemployeedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return deleteemployeedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
       }
     }
   };

@@ -166,6 +166,7 @@ const PenaltyConfigPage = Loadable(lazy(() => import('../views/employees managem
 const HolidayConfigPage = Loadable(lazy(() => import('../views/employees management/holiday config/holidayConfig')));
 const AddHolidayPage = Loadable(lazy(() => import('../views/employees management/holiday config/addHoliday')));
 const EmployeeSalary = Loadable(lazy(() => import('../views/employees management/employeeSalary')));
+const EmployeeShift = Loadable(lazy(() => import('../views/employees management/shift config/shiftlist')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
@@ -580,6 +581,10 @@ const MainRoutes = {
     {
       path: '/employeesalary',
       element: <ProtectedRoute element={EmployeeSalary} resource="Employee" permissionName="view_all_employee" />
+    },
+    {
+      path: '/shift',
+      element: <ProtectedRoute element={EmployeeShift} resource="Shift" permissionName="view_all_shift" />
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
