@@ -675,11 +675,23 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/holidayconfig'
               },
+              hasAllPermissionsBonus && {
+                id: 'Attendees Type',
+                title: 'Attendees Type',
+                type: 'item',
+                url: '/attendeestypeconfig'
+              },
               hasAllPermissionsShift && {
                 id: 'Shift',
                 title: 'Shift',
                 type: 'item',
                 url: '/shift'
+              },
+              hasAllPermissionsEmployee && {
+                id: 'Attendees',
+                title: 'Attendees',
+                type: 'item',
+                url: '/attendees'
               }
               // {
               //   id: 'Report',

@@ -165,8 +165,12 @@ const BonusConfigPage = Loadable(lazy(() => import('../views/employees managemen
 const PenaltyConfigPage = Loadable(lazy(() => import('../views/employees management/penalty config/penaltyConfig')));
 const HolidayConfigPage = Loadable(lazy(() => import('../views/employees management/holiday config/holidayConfig')));
 const AddHolidayPage = Loadable(lazy(() => import('../views/employees management/holiday config/addHoliday')));
+const AttendeesTypeConfigPage = Loadable(lazy(() => import('../views/employees management/attendees type/attendeesTypeConfig')));
+const AddAttendeesTypePage = Loadable(lazy(() => import('../views/employees management/attendees type/addAttendeesType')));
 const EmployeeSalary = Loadable(lazy(() => import('../views/employees management/employeeSalary')));
 const EmployeeShift = Loadable(lazy(() => import('../views/employees management/shift config/shiftlist')));
+const Attendees = Loadable(lazy(() => import('../views/employees management/attendees')));
+const EmployeeDetails = Loadable(lazy(() => import('../views/employees management/employeeDetails')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
@@ -579,12 +583,32 @@ const MainRoutes = {
       element: <ProtectedRoute element={AddHolidayPage} resource="Bonus Config" permissionName="view_bonus" />
     },
     {
+      path: '/attendeestypeconfig',
+      element: <ProtectedRoute element={AttendeesTypeConfigPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/addattendeestype',
+      element: <ProtectedRoute element={AddAttendeesTypePage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/updateattendeestype/:id',
+      element: <ProtectedRoute element={AddAttendeesTypePage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
       path: '/employeesalary',
       element: <ProtectedRoute element={EmployeeSalary} resource="Employee" permissionName="view_all_employee" />
     },
     {
       path: '/shift',
       element: <ProtectedRoute element={EmployeeShift} resource="Shift" permissionName="view_all_shift" />
+    },
+    {
+      path: '/attendees',
+      element: <ProtectedRoute element={Attendees} resource="Employee" permissionName="view_all_employee" />
+    },
+    {
+      path: '/employeeDetails/:employeeId',
+      element: <ProtectedRoute element={EmployeeDetails} resource="Employee" permissionName="view_one_employee" />
     },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
