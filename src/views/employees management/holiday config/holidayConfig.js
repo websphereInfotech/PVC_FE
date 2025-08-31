@@ -24,7 +24,6 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { deleteholiday, fetchAllholiday } from 'store/thunk';
 
-
 const HolidayConfigPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,8 +32,6 @@ const HolidayConfigPage = () => {
   const [selectedYear, setSelectedYear] = useState('');
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState(null);
-
-
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -89,7 +86,6 @@ const HolidayConfigPage = () => {
   const handleUpdateHoliday = (id) => {
     navigate(`/updateholiday/${id}`);
   };
-
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();

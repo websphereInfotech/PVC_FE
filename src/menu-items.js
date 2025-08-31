@@ -327,19 +327,14 @@ const MenuItem = () => {
     'delete_employee'
   ]);
 
-  const hasAllPermissionsBonus = checkAllPermissions('Bonus Config', [
-    "create_bonus",
-    "update_bonus",
-    "view_bonus",
-    "delete_bonus"
-  ]);
+  const hasAllPermissionsBonus = checkAllPermissions('Bonus Config', ['create_bonus', 'update_bonus', 'view_bonus', 'delete_bonus']);
 
   const hasAllPermissionsShift = checkAllPermissions('Shift', [
-    "create_shift",
-    "update_shift",
-    "view_all_shift",
-    "view_one_shift",
-    "delete_shift"
+    'create_shift',
+    'update_shift',
+    'view_all_shift',
+    'view_one_shift',
+    'delete_shift'
   ]);
 
   return {

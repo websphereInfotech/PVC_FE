@@ -23,7 +23,15 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { addAdvance, createPaymentCash, deleteEmployee, fetchAllEmployee, fetchSalarySummary, getallPaymentCash, getExpenseAccount } from 'store/thunk';
+import {
+  addAdvance,
+  createPaymentCash,
+  deleteEmployee,
+  fetchAllEmployee,
+  fetchSalarySummary,
+  getallPaymentCash,
+  getExpenseAccount
+} from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
@@ -135,16 +143,16 @@ const EmployeeList = () => {
       payload.paidAmount = +amount;
       expenseData.description = getDescription('Paid', selectedEmployee);
       expenseData.isAdvance = false;
-    } 
+    }
     try {
       const paymentRes = await dispatch(createPaymentCash(expenseData, navigate, 'employee'));
       if (!paymentRes || paymentRes?.status === false) {
-        console.error("Payment cash creation failed");
+        console.error('Payment cash creation failed');
         return;
       }
       generateAutoPaymentcashNumber();
     } catch (e) {
-      console.error("Failed to create self expense:", e);
+      console.error('Failed to create self expense:', e);
       return;
     }
     try {
@@ -159,16 +167,14 @@ const EmployeeList = () => {
   const getDescription = (type, employee) => {
     let fullName = `(${employee.id}) ${employee.firstName}`;
 
-    let desc = type === "Advance" 
-      ? `Advance to ${fullName}`
-      : `Paid to ${fullName}`;
+    let desc = type === 'Advance' ? `Advance to ${fullName}` : `Paid to ${fullName}`;
 
     if (desc.length > 30) {
-      return desc.substring(0, 26) + "...";
+      return desc.substring(0, 26) + '...';
     }
 
     return desc;
-  }
+  };
 
   const generateAutoPaymentcashNumber = async () => {
     try {

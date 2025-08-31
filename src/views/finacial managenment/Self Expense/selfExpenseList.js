@@ -150,12 +150,7 @@ const SelfExpenseList = () => {
         Self Expense List
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '16px 0 16px 0' }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleCreateSelfExpense}
-          disabled={!canCreateSelfExpense()}
-        >
+        <Button variant="contained" color="secondary" onClick={handleCreateSelfExpense} disabled={!canCreateSelfExpense()}>
           Create Self Expense
         </Button>
         {(createConfig1() === 'Super Admin' || createConfig1() === 'Admin') && (

@@ -703,16 +703,16 @@ const useCan = () => {
   };
 
   const canCreateShift = () => {
-    return checkPermission('Shift', 'create_shift')
+    return checkPermission('Shift', 'create_shift');
   };
   const canViewShift = () => {
-    return checkPermission('Shift', 'view_one_shift')
+    return checkPermission('Shift', 'view_one_shift');
   };
   const canUpdateShift = () => {
-    return checkPermission('Shift', 'update_shift')
+    return checkPermission('Shift', 'update_shift');
   };
   const canDeleteShift = () => {
-    return checkPermission('Shift', 'delete_shift')
+    return checkPermission('Shift', 'delete_shift');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE

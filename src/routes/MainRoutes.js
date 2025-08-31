@@ -192,9 +192,18 @@ const MainRoutes = {
     },
     { path: '/profile', element: <SamplePage /> },
     // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Self Expense +++++++++++++++++++++++++++++++++++++++++++++++++++
-    { path: '/selfExpense', element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="create_selfExpense" /> },
-    { path: '/selfExpense/:id', element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="update_selfExpense" /> },
-    { path: '/selfExpenselist', element: <ProtectedRoute element={SelfExpenseList} resource="Self Expense" permissionName="view_selfExpense" /> },
+    {
+      path: '/selfExpense',
+      element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="create_selfExpense" />
+    },
+    {
+      path: '/selfExpense/:id',
+      element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="update_selfExpense" />
+    },
+    {
+      path: '/selfExpenselist',
+      element: <ProtectedRoute element={SelfExpenseList} resource="Self Expense" permissionName="view_selfExpense" />
+    },
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
     { path: 'wallet', element: <ProtectedRoute element={Wallet} resource="Claim Cash" permissionName="view_wallet" /> },
@@ -669,18 +678,18 @@ const MainRoutes = {
     { path: '/wastagelist', element: <ProtectedRoute element={Wastagelist} resource="Wastage" permissionName="view_all_wastage" /> },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Order processing ++++++++++++++++++++++++
-    { 
-      path: '/orderprocessing', 
-      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="create_order_processing" /> 
+    {
+      path: '/orderprocessing',
+      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="create_order_processing" />
     },
-    { 
-      path: '/orderprocessing/:id', 
-      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="update_order_processing" /> 
+    {
+      path: '/orderprocessing/:id',
+      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="update_order_processing" />
     },
-    { 
-      path: '/orderprocessinglist', 
-      element: <ProtectedRoute element={Orderprocessinglist} resource="Order Processing" permissionName="view_all_order_processing" /> 
-    },
+    {
+      path: '/orderprocessinglist',
+      element: <ProtectedRoute element={Orderprocessinglist} resource="Order Processing" permissionName="view_all_order_processing" />
+    }
     // {
     //   path: '/orderprocessingview/:id',
     //   element: <ProtectedRoute element={Salesinvoiceview} resource="Sales Invoice" permissionName="view_single_salesInvoice" />

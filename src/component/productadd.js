@@ -501,7 +501,7 @@ const AnchorProductDrawer = ({ open, onClose, id, onNewProductAdded, onProductUp
         <Grid container spacing={2} sx={{ margin: '1px' }}>
           <Grid item sx={{ margin: '0px 0px' }} sm={6}>
             <Typography variant="subtitle1">Is Wastage?</Typography>
-            <RadioGroup row defaultValue="No" value={isWastage } onChange={handleWastage}>
+            <RadioGroup row defaultValue="No" value={isWastage} onChange={handleWastage}>
               <FormControlLabel value="true" control={<Radio />} label="Yes" />
               <FormControlLabel value="false" control={<Radio />} label="No" />
             </RadioGroup>

@@ -64,19 +64,17 @@ const Attendees = () => {
         const employeeData = response.employees;
 
         // Process employees based on attendance status
-        const present = employeeData.filter(emp => {
+        const present = employeeData.filter((emp) => {
           const status = emp.attendanceStatus || emp.status || emp.attendance_status;
           const code = emp.attendanceCode || emp.code;
           // Check if status exists and is not "Absent" or "A", or if code is P, M, or BM
-          return (status && status !== 'Absent' && status !== 'A') || 
-                 (code && ['P', 'M', 'BM'].includes(code));
+          return (status && status !== 'Absent' && status !== 'A') || (code && ['P', 'M', 'BM'].includes(code));
         });
-        const absent = employeeData.filter(emp => {
+        const absent = employeeData.filter((emp) => {
           const status = emp.attendanceStatus || emp.status || emp.attendance_status;
           const code = emp.attendanceCode || emp.code;
           // Check if status is "Absent", "A", or doesn't exist, and code is not P, M, or BM
-          return (!status || status === 'Absent' || status === 'A') && 
-                 (!code || !['P', 'M', 'BM'].includes(code));
+          return (!status || status === 'Absent' || status === 'A') && (!code || !['P', 'M', 'BM'].includes(code));
         });
 
         setPresentEmployees(present);
@@ -114,19 +112,17 @@ const Attendees = () => {
         const employeeData = response.employees;
 
         // Process employees based on attendance status for the selected date
-        const present = employeeData.filter(emp => {
+        const present = employeeData.filter((emp) => {
           const status = emp.attendanceStatus || emp.status || emp.attendance_status;
           const code = emp.attendanceCode || emp.code;
           // Check if status exists and is not "Absent" or "A", or if code is P, M, or BM
-          return (status && status !== 'Absent' && status !== 'A') || 
-                 (code && ['P', 'M', 'BM'].includes(code));
+          return (status && status !== 'Absent' && status !== 'A') || (code && ['P', 'M', 'BM'].includes(code));
         });
-        const absent = employeeData.filter(emp => {
+        const absent = employeeData.filter((emp) => {
           const status = emp.attendanceStatus || emp.status || emp.attendance_status;
           const code = emp.attendanceCode || emp.code;
           // Check if status is "Absent", "A", or doesn't exist, and code is not P, M, or BM
-          return (!status || status === 'Absent' || status === 'A') && 
-                 (!code || !['P', 'M', 'BM'].includes(code));
+          return (!status || status === 'Absent' || status === 'A') && (!code || !['P', 'M', 'BM'].includes(code));
         });
 
         setPresentEmployees(present);
@@ -148,7 +144,7 @@ const Attendees = () => {
     try {
       // Update attendance status via thunk
       // Note: The API expects attendanceId and attendanceTypeId
-      const attendanceId = employee.attendanceRecord.id // Fallback
+      const attendanceId = employee.attendanceRecord.id; // Fallback
       await dispatch(updateEmployeeAttendance(attendanceId, attendanceTypeId));
 
       // Refresh data to ensure consistency
@@ -183,12 +179,7 @@ const Attendees = () => {
           />
         </Grid>
         <Grid item xs={12} md={3} sm={6} alignContent={'center'} sx={{ marginTop: '10px' }}>
-          <Button
-            onClick={handleGoClick}
-            variant="contained"
-            color="secondary"
-            disabled={loading}
-          >
+          <Button onClick={handleGoClick} variant="contained" color="secondary" disabled={loading}>
             {loading ? 'Loading...' : 'GO'}
           </Button>
         </Grid>
@@ -199,23 +190,20 @@ const Attendees = () => {
         {/* Left Box - Present Employees */}
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: '20px', height: '600px' }}>
-            <Box style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '20px',
-              paddingBottom: '10px',
-              borderBottom: '2px solid #4caf50'
-            }}>
+            <Box
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px',
+                paddingBottom: '10px',
+                borderBottom: '2px solid #4caf50'
+              }}
+            >
               <Typography variant="h6" style={{ color: '#4caf50', fontWeight: 'bold' }}>
                 Present
               </Typography>
-              <Chip
-                label={presentEmployees.length}
-                color="success"
-                variant="outlined"
-                style={{ fontWeight: 'bold', fontSize: '16px' }}
-              />
+              <Chip label={presentEmployees.length} color="success" variant="outlined" style={{ fontWeight: 'bold', fontSize: '16px' }} />
             </Box>
 
             <List style={{ maxHeight: '500px', overflow: 'auto' }}>
@@ -292,23 +280,20 @@ const Attendees = () => {
         {/* Right Box - Absent Employees */}
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: '20px', height: '600px' }}>
-            <Box style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '20px',
-              paddingBottom: '10px',
-              borderBottom: '2px solid #f44336'
-            }}>
+            <Box
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px',
+                paddingBottom: '10px',
+                borderBottom: '2px solid #f44336'
+              }}
+            >
               <Typography variant="h6" style={{ color: '#f44336', fontWeight: 'bold' }}>
                 Absent
               </Typography>
-              <Chip
-                label={absentEmployees.length}
-                color="error"
-                variant="outlined"
-                style={{ fontWeight: 'bold', fontSize: '16px' }}
-              />
+              <Chip label={absentEmployees.length} color="error" variant="outlined" style={{ fontWeight: 'bold', fontSize: '16px' }} />
             </Box>
 
             <List style={{ maxHeight: '500px', overflow: 'auto' }}>
@@ -363,18 +348,20 @@ const Attendees = () => {
       </Grid>
 
       {/* Legend */}
-      <Box style={{
-        marginTop: '20px',
-        padding: '16px',
-        backgroundColor: '#f5f5f5',
-        borderRadius: '8px',
-        textAlign: 'center'
-      }}>
+      <Box
+        style={{
+          marginTop: '20px',
+          padding: '16px',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '8px',
+          textAlign: 'center'
+        }}
+      >
         <Typography variant="body2" color="textSecondary">
-          <strong>Legend:</strong> {attendanceTypes.map((type, index) => (
+          <strong>Legend:</strong>{' '}
+          {attendanceTypes.map((type, index) => (
             <span key={type.id}>
-              {type.code} = {type.description} (₹{type.salaryPerDay})
-              {index < attendanceTypes.length - 1 ? ', ' : ''}
+              {type.code} = {type.description} (₹{type.salaryPerDay}){index < attendanceTypes.length - 1 ? ', ' : ''}
             </span>
           ))}
         </Typography>

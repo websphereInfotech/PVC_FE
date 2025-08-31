@@ -57,7 +57,7 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
           shiftStartTime: format(formData.shiftStartTime, 'hh:mm:ss a'),
           shiftEndTime: format(formData.shiftEndTime, 'hh:mm:ss a'),
           breakStartTime: format(formData.breakStartTime, 'hh:mm:ss a'),
-          breakEndTime: format(formData.breakEndTime, 'hh:mm:ss a'),
+          breakEndTime: format(formData.breakEndTime, 'hh:mm:ss a')
         };
         const newdata = await dispatch(updateShift(id, data, navigate));
         onShiftUpdated(newdata.data.data);
@@ -67,7 +67,7 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
           shiftStartTime: format(formData.shiftStartTime, 'hh:mm:ss a'),
           shiftEndTime: format(formData.shiftEndTime, 'hh:mm:ss a'),
           breakStartTime: format(formData.breakStartTime, 'hh:mm:ss a'),
-          breakEndTime: format(formData.breakEndTime, 'hh:mm:ss a'),
+          breakEndTime: format(formData.breakEndTime, 'hh:mm:ss a')
         };
         const newdata = await dispatch(createShift(data, navigate));
         console.log('newdata: ', newdata);
@@ -92,7 +92,7 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
             breakStartTime: new Date(`1970-01-01 ${response.breakStartTime}`),
             breakEndTime: new Date(`1970-01-01 ${response.breakEndTime}`),
             maxOvertimeHours: 0
-          })
+          });
         }
       } catch (error) {
         console.error('Error view item group', error);
@@ -114,15 +114,15 @@ const AnchorShiftDrawer = ({ open, onClose, id, onNewShiftAdded, onShiftUpdated 
             width: { xs: '100%', sm: '660px' }
           }}
         >
-           {id ? (
-              <Grid item>
-                <Typography variant="h4">Update Shift</Typography>
-              </Grid>
-            ) : (
-              <Grid item>
-                <Typography variant="h4">New Shift</Typography>
-              </Grid>
-            )}
+          {id ? (
+            <Grid item>
+              <Typography variant="h4">Update Shift</Typography>
+            </Grid>
+          ) : (
+            <Grid item>
+              <Typography variant="h4">New Shift</Typography>
+            </Grid>
+          )}
           <Grid item>
             <CancelIcon onClick={onClose} />
           </Grid>

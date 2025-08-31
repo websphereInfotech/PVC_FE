@@ -62,34 +62,29 @@ const AddAttendeesTypePage = () => {
           <Typography variant="subtitle1">
             Code: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <input 
-            placeholder="Enter Code" 
-            id="code" 
-            value={formData.code} 
-            onChange={(e) => handleInputChange('code', e.target.value)} 
-          />
+          <input placeholder="Enter Code" id="code" value={formData.code} onChange={(e) => handleInputChange('code', e.target.value)} />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="subtitle1">
             Description: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <input 
-            placeholder="Enter Description" 
-            id="description" 
-            value={formData.description} 
-            onChange={(e) => handleInputChange('description', e.target.value)} 
+          <input
+            placeholder="Enter Description"
+            id="description"
+            value={formData.description}
+            onChange={(e) => handleInputChange('description', e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="subtitle1">
             Salary Per Day: <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
           </Typography>
-          <input 
+          <input
             type="number"
-            placeholder="Enter Salary Per Day" 
-            id="salaryPerDay" 
-            value={formData.salaryPerDay} 
-            onChange={(e) => handleInputChange('salaryPerDay', e.target.value)} 
+            placeholder="Enter Salary Per Day"
+            id="salaryPerDay"
+            value={formData.salaryPerDay}
+            onChange={(e) => handleInputChange('salaryPerDay', e.target.value)}
           />
         </Grid>
       </Grid>

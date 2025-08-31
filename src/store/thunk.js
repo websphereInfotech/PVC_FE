@@ -1406,7 +1406,10 @@ export const getAllSelfExpenseByUserId = (id, fromDate, toDate) => {
     try {
       const config = createConfig();
       const queryParams = `?fromDate=${fromDate}&toDate=${toDate}`;
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}${queryParams}`, config);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}${queryParams}`,
+        config
+      );
       const data = response.data.data;
       return data;
     } catch (error) {
@@ -1661,11 +1664,12 @@ export const getAttendanceSummary = (date = null) => {
       // If no summary in response, calculate from employees data
       if (data && data.employees) {
         const totalEmployees = data.employees.length;
-        const present = data.employees.filter(emp =>
-          emp.attendanceStatus === 'Present' ||
-          emp.attendanceStatus === 'P' ||
-          emp.attendanceStatus === 'M' ||
-          emp.attendanceStatus === 'BM'
+        const present = data.employees.filter(
+          (emp) =>
+            emp.attendanceStatus === 'Present' ||
+            emp.attendanceStatus === 'P' ||
+            emp.attendanceStatus === 'M' ||
+            emp.attendanceStatus === 'BM'
         ).length;
         const absent = totalEmployees - present;
 
@@ -5364,7 +5368,7 @@ export const fetchSalarySummary = (employeeId) => {
       toast.error(error.response.data.error);
     }
   };
-}
+};
 export const deleteAdvance = (data, navigate) => {
   return async () => {
     try {
@@ -5382,7 +5386,7 @@ export const deleteAdvance = (data, navigate) => {
       }
     }
   };
-}
+};
 export const addAdvance = (data, navigate) => {
   return async () => {
     try {
@@ -5404,7 +5408,7 @@ export const addAdvance = (data, navigate) => {
       }
     }
   };
-}
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  SHIFT  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createShift = (data, navigate) => {
   return async () => {
@@ -7417,7 +7421,7 @@ export const getExpenseAccount = () => {
       console.log('error: ', error);
     }
   };
-}
+};
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT LEDGER +++++++++++++++++++++++++++++++++++++++++++++
 export const getallAccountledger = (id, formDate, toDate) => {
@@ -8101,10 +8105,7 @@ export const getEmployeeDetails = (employeeId, month, year) => {
       if (year) queryParams.push(`year=${year}`);
       if (employeeId) queryParams.push(`employeeId=${employeeId}`);
       const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/attendance/full_month_attendance${queryString}`,
-        config
-      );
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/attendance/full_month_attendance${queryString}`, config);
       const data = response.data.data;
       return data;
     } catch (error) {

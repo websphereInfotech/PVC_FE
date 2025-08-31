@@ -17,7 +17,7 @@ const SelfExpense = () => {
     date: convertToIST(new Date()),
     amount: Number(),
     description: '',
-    accountId:2
+    accountId: 2
   });
 
   useEffect(() => {
