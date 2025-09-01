@@ -247,7 +247,7 @@ const Attendees = () => {
                     <ListItemSecondaryAction>
                       <FormControl size="small" style={{ minWidth: '80px' }}>
                         <Select
-                          value={employee.attendanceRecord.attendanceType.id}
+                          value={employee.attendanceRecord?.attendanceType?.id}
                           onChange={(e) => handleAttendanceChange(employee, e.target.value)}
                           displayEmpty
                           style={{ height: '40px' }}
