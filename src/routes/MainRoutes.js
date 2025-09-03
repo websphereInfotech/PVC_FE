@@ -28,6 +28,9 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
 const Reports = Loadable(lazy(() => import('../views/finacial managenment/Ledgers/reports')));
 const Reportcash = Loadable(lazy(() => import('../views/finacial managenment/Ledgers/reportscash')));
+// ++++++++++++++++++++++++++++++++++++++++++++ Routes of Self Expense +++++++++++++++++++++++++++++++++++++++++++++++++++
+const SelfExpenseList = Loadable(lazy(() => import('../views/finacial managenment/Self Expense/selfExpenseList')));
+const SelfExpensepage = Loadable(lazy(() => import('../views/finacial managenment/Self Expense/selfExpense')));
 // ++++++++++++++++++++++++++++++++++++++++++++ Routes of claim cash +++++++++++++++++++++++++++++++++++++++++++++++++++
 const Claimcashlist = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcashlist')));
 const Cliamcashpage = Loadable(lazy(() => import('../views/finacial managenment/Claim cash/cliamcash')));
@@ -162,6 +165,12 @@ const BonusConfigPage = Loadable(lazy(() => import('../views/employees managemen
 const PenaltyConfigPage = Loadable(lazy(() => import('../views/employees management/penalty config/penaltyConfig')));
 const HolidayConfigPage = Loadable(lazy(() => import('../views/employees management/holiday config/holidayConfig')));
 const AddHolidayPage = Loadable(lazy(() => import('../views/employees management/holiday config/addHoliday')));
+const AttendeesTypeConfigPage = Loadable(lazy(() => import('../views/employees management/attendees type/attendeesTypeConfig')));
+const AddAttendeesTypePage = Loadable(lazy(() => import('../views/employees management/attendees type/addAttendeesType')));
+const EmployeeSalary = Loadable(lazy(() => import('../views/employees management/employeeSalary')));
+const EmployeeShift = Loadable(lazy(() => import('../views/employees management/shift config/shiftlist')));
+const Attendees = Loadable(lazy(() => import('../views/employees management/attendees')));
+const EmployeeDetails = Loadable(lazy(() => import('../views/employees management/employeeDetails')));
 
 // const { canViewAllProformainvoiceQuotation } = useCan();
 // ==============================|| MAIN ROUTES ||============================== //
@@ -182,6 +191,20 @@ const MainRoutes = {
       )
     },
     { path: '/profile', element: <SamplePage /> },
+    // ++++++++++++++++++++++++++++++++++++++++++++ Routes of Self Expense +++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      path: '/selfExpense',
+      element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="create_selfExpense" />
+    },
+    {
+      path: '/selfExpense/:id',
+      element: <ProtectedRoute element={SelfExpensepage} resource="Self Expense" permissionName="update_selfExpense" />
+    },
+    {
+      path: '/selfExpenselist',
+      element: <ProtectedRoute element={SelfExpenseList} resource="Self Expense" permissionName="view_selfExpense" />
+    },
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++ Routes of Claim cash +++++++++++++++++++++++++++++++++++++++++++
     { path: 'wallet', element: <ProtectedRoute element={Wallet} resource="Claim Cash" permissionName="view_wallet" /> },
     { path: '/claimcash', element: <ProtectedRoute element={Cliamcashpage} resource="Claim Cash" permissionName="create_claim" /> },
@@ -568,6 +591,34 @@ const MainRoutes = {
       path: '/updateholiday/:id',
       element: <ProtectedRoute element={AddHolidayPage} resource="Bonus Config" permissionName="view_bonus" />
     },
+    {
+      path: '/attendeestypeconfig',
+      element: <ProtectedRoute element={AttendeesTypeConfigPage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/addattendeestype',
+      element: <ProtectedRoute element={AddAttendeesTypePage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/updateattendeestype/:id',
+      element: <ProtectedRoute element={AddAttendeesTypePage} resource="Bonus Config" permissionName="view_bonus" />
+    },
+    {
+      path: '/employeesalary',
+      element: <ProtectedRoute element={EmployeeSalary} resource="Employee" permissionName="view_all_employee" />
+    },
+    {
+      path: '/shift',
+      element: <ProtectedRoute element={EmployeeShift} resource="Shift" permissionName="view_all_shift" />
+    },
+    {
+      path: '/attendees',
+      element: <ProtectedRoute element={Attendees} resource="Employee" permissionName="view_all_employee" />
+    },
+    {
+      path: '/employeeDetails/:employeeId',
+      element: <ProtectedRoute element={EmployeeDetails} resource="Employee" permissionName="view_one_employee" />
+    },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Machine managed ++++++++++++++++++++
     { path: '/machinelist', element: <ProtectedRoute element={MachineList} resource="Machine" permissionName="view_all_machine" /> },
@@ -627,18 +678,18 @@ const MainRoutes = {
     { path: '/wastagelist', element: <ProtectedRoute element={Wastagelist} resource="Wastage" permissionName="view_all_wastage" /> },
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Order processing ++++++++++++++++++++++++
-    { 
-      path: '/orderprocessing', 
-      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="create_order_processing" /> 
+    {
+      path: '/orderprocessing',
+      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="create_order_processing" />
     },
-    { 
-      path: '/orderprocessing/:id', 
-      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="update_order_processing" /> 
+    {
+      path: '/orderprocessing/:id',
+      element: <ProtectedRoute element={Orderprocessing} resource="Order Processing" permissionName="update_order_processing" />
     },
-    { 
-      path: '/orderprocessinglist', 
-      element: <ProtectedRoute element={Orderprocessinglist} resource="Order Processing" permissionName="view_all_order_processing" /> 
-    },
+    {
+      path: '/orderprocessinglist',
+      element: <ProtectedRoute element={Orderprocessinglist} resource="Order Processing" permissionName="view_all_order_processing" />
+    }
     // {
     //   path: '/orderprocessingview/:id',
     //   element: <ProtectedRoute element={Salesinvoiceview} resource="Sales Invoice" permissionName="view_single_salesInvoice" />

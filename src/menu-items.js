@@ -327,11 +327,14 @@ const MenuItem = () => {
     'delete_employee'
   ]);
 
-  const hasAllPermissionsBonus = checkAllPermissions('Bonus Config', [
-    "create_bonus",
-    "update_bonus",
-    "view_bonus",
-    "delete_bonus"
+  const hasAllPermissionsBonus = checkAllPermissions('Bonus Config', ['create_bonus', 'update_bonus', 'view_bonus', 'delete_bonus']);
+
+  const hasAllPermissionsShift = checkAllPermissions('Shift', [
+    'create_shift',
+    'update_shift',
+    'view_all_shift',
+    'view_one_shift',
+    'delete_shift'
   ]);
 
   return {
@@ -643,6 +646,12 @@ const MenuItem = () => {
                 type: 'item',
                 url: '/employeelist'
               },
+              hasAllPermissionsEmployee && {
+                id: 'employee salary',
+                title: 'Employee Salary',
+                type: 'item',
+                url: '/employeesalary'
+              },
               hasAllPermissionsBonus && {
                 id: 'Bonus Config',
                 title: 'Bonus Config',
@@ -660,14 +669,25 @@ const MenuItem = () => {
                 title: 'Holiday List',
                 type: 'item',
                 url: '/holidayconfig'
+              },
+              hasAllPermissionsBonus && {
+                id: 'Attendees Type',
+                title: 'Attendees Type',
+                type: 'item',
+                url: '/attendeestypeconfig'
+              },
+              hasAllPermissionsShift && {
+                id: 'Shift',
+                title: 'Shift',
+                type: 'item',
+                url: '/shift'
+              },
+              hasAllPermissionsEmployee && {
+                id: 'Attendees',
+                title: 'Attendees',
+                type: 'item',
+                url: '/attendees'
               }
-
-              // {
-              //   id: 'employee salary',
-              //   title: 'Employee Salary',
-              //   type: 'item',
-              //   url: '/employeesalary'
-              // }
               // {
               //   id: 'Report',
               //   title: 'Report',

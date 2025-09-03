@@ -7,9 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  MenuItem,
   Paper,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -22,51 +20,43 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { deleteholiday, fetchAllholiday } from 'store/thunk';
+import { deleteAttendeesType, fetchAllAttendeesType } from 'store/thunk';
 
-const HolidayConfigPage = () => {
+const AttendeesTypeConfigPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [holidayList, setHolidayList] = useState([]);
-  const [yearOptions, setYearOptions] = useState([]);
-  const [selectedYear, setSelectedYear] = useState('');
+  const [attendeesTypeList, setAttendeesTypeList] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedHolidayId, setSelectedHolidayId] = useState(null);
+  const [selectedAttendeesTypeId, setSelectedAttendeesTypeId] = useState(null);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handelYearChange = (value) => {
-    setSelectedYear(value);
-    fetchHoliday(value);
-  };
-
-  const fetchHoliday = async (value) => {
+  const fetchAttendeesType = async () => {
     try {
-      const response = await dispatch(fetchAllholiday(value));
-      setHolidayList(response || []);
+      const response = await dispatch(fetchAllAttendeesType());
+      setAttendeesTypeList(response || []);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         navigate('/');
       }
-      setHolidayList([]);
-      console.error('Error fetching employee data:', error);
+      setAttendeesTypeList([]);
+      console.error('Error fetching attendees type data:', error);
     }
   };
 
   const handleDeleteConfirmation = (id) => {
     setOpenConfirmation(true);
-    setSelectedHolidayId(id);
+    setSelectedAttendeesTypeId(id);
   };
 
-  const handleDeleteHoliday = async () => {
+  const handleDeleteAttendeesType = async () => {
     try {
-      await dispatch(deleteholiday(selectedHolidayId, navigate));
+      await dispatch(deleteAttendeesType(selectedAttendeesTypeId, navigate));
       setOpenConfirmation(false);
-      const response = await dispatch(fetchHoliday());
-      setEmployeeData(response);
+      fetchAttendeesType();
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting attendees type:', error);
     }
   };
 
@@ -79,57 +69,44 @@ const HolidayConfigPage = () => {
     setPage(0);
   };
 
-  const handleAddHoliday = () => {
-    navigate(`/addholiday`);
+  const handleAddAttendeesType = () => {
+    navigate(`/addattendeestype`);
   };
 
-  const handleUpdateHoliday = (id) => {
-    navigate(`/updateholiday/${id}`);
+  const handleUpdateAttendeesType = (id) => {
+    navigate(`/updateattendeestype/${id}`);
   };
 
   useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    const yearsArray = [];
-    for (let i = currentYear - 1; i <= currentYear + 2; i++) {
-      yearsArray.push(i);
-    }
-    setYearOptions(yearsArray);
-    setSelectedYear(currentYear);
-    fetchHoliday(currentYear);
+    fetchAttendeesType();
   }, [navigate]);
 
   return (
     <Card style={{ width: '100%', padding: '20px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Holiday List
+        Attendees Type List
       </Typography>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-        <Typography variant="subtitle1">Year :</Typography>
-        <Select value={selectedYear} onChange={(e) => handelYearChange(e.target.value)} style={{ color: 'white' }}>
-          {yearOptions?.map((year, index) => (
-            <MenuItem value={year} key={index}>
-              {year}
-            </MenuItem>
-          ))}
-        </Select>
-        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddHoliday}>
-          Add Holiday
+        <Button variant="contained" color="secondary" style={{ margin: '16px' }} onClick={handleAddAttendeesType}>
+          Add Attendees Type
         </Button>
       </div>
       <TableContainer component={Paper}>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
             <TableRow>
-              <TableCell align="center">Date</TableCell>
-              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Code</TableCell>
+              <TableCell align="center">Description</TableCell>
+              <TableCell align="center">Salary Per Day</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {holidayList?.map((row, index) => (
+            {attendeesTypeList?.map((row, index) => (
               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
-                <TableCell align="center">{row.date}</TableCell>
-                <TableCell align="center">{row.name}</TableCell>
+                <TableCell align="center">{row.code}</TableCell>
+                <TableCell align="center">{row.description}</TableCell>
+                <TableCell align="center">{row.salaryPerDay}</TableCell>
                 <TableCell align="center">
                   <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                     <IconButton
@@ -139,7 +116,7 @@ const HolidayConfigPage = () => {
                         color: 'white',
                         borderRadius: 0.8
                       }}
-                      onClick={() => handleUpdateHoliday(row.id)}
+                      onClick={() => handleUpdateAttendeesType(row.id)}
                     >
                       <Edit style={{ fontSize: '16px' }} />
                     </IconButton>
@@ -151,7 +128,6 @@ const HolidayConfigPage = () => {
                         borderRadius: 0.8
                       }}
                       onClick={() => handleDeleteConfirmation(row.id)}
-                      // disabled={!canDeleteEmployee()}
                     >
                       <Delete style={{ fontSize: '16px' }} />
                     </IconButton>
@@ -165,7 +141,7 @@ const HolidayConfigPage = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={holidayList?.length || 0}
+        count={attendeesTypeList?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -174,12 +150,12 @@ const HolidayConfigPage = () => {
 
       <Dialog open={openConfirmation} onClose={() => setOpenConfirmation(false)} fullWidth maxWidth="sm">
         <DialogTitle>Confirmation</DialogTitle>
-        <DialogContent>Are you sure you want to delete this holiday?</DialogContent>
+        <DialogContent>Are you sure you want to delete this attendees type?</DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenConfirmation(false)} color="secondary">
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleDeleteHoliday} color="secondary">
+          <Button variant="contained" onClick={handleDeleteAttendeesType} color="secondary">
             Yes
           </Button>
         </DialogActions>
@@ -188,4 +164,4 @@ const HolidayConfigPage = () => {
   );
 };
 
-export default HolidayConfigPage;
+export default AttendeesTypeConfigPage;

@@ -1303,25 +1303,142 @@ export const updateProduct = (id, data, navigate) => {
   };
 };
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-export const createPaymentCash = (formData, navigate, isFromExpense = false) => {
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SELF EXPENSE ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getallSelfExpense = () => {
+  return async () => {
+    // dispatch(getallPaymentCashRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_get_all_selfExpense`, config);
+      const getallSelfExpense = response.data.data;
+      // dispatch(getallPaymentCashSuccess(getallpaymentCash));
+      return getallSelfExpense;
+    } catch (error) {
+      console.log('error: ', error);
+      toast.error(error.response.data.error);
+      // dispatch(getallPaymentCashFailure(error.message));
+    }
+  };
+};
+export const deleteSelfExpense = async (id, navigate) => {
+  try {
+    const config = createConfig();
+    const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_delete_selfExpense/${id}`, config);
+    const data = response.data.data;
+    toast.success(response.data.message, {
+      icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+      autoClose: 1000
+    });
+    return data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      navigate('/');
+    } else {
+      toast.error(error.response.data.message, {
+        autoClose: 1000
+      });
+    }
+  }
+};
+export const selfExpenseview = (id) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense/${id}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('view Self Expense Failure: ', error);
+    }
+  };
+};
+export const createSelfExpense = (formData, navigate, isNeedToNavigate = true) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_create_selfExpense`, formData, config);
+      const createdSelfExpense = response;
+      if (isNeedToNavigate) {
+        toast.success(response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000,
+          onClose: () => {
+            navigate('/selfExpenselist');
+          }
+        });
+      }
+      return createdSelfExpense;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+      throw error;
+    }
+  };
+};
+export const updateSelfExpense = (id, formData, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/selfExpense/C_update_selfExpense/${id}`, formData, config);
+      const upadteSelfExpenseData = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/selfExpenselist');
+        }
+      });
+      return upadteSelfExpenseData;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const getAllSelfExpenseByUserId = (id, fromDate, toDate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const queryParams = `?fromDate=${fromDate}&toDate=${toDate}`;
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/selfExpense/C_view_selfExpense_userid/${id}${queryParams}`,
+        config
+      );
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('view Self Expense Failure: ', error);
+    }
+  };
+};
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT CASH ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createPaymentCash = (formData, navigate, isFrom = 'Expense') => {
   return async (dispatch) => {
     dispatch(createPaymentCashRequest());
     try {
       const config = createConfig();
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/payment/C_create_paymentCash`, formData, config);
       const createdpayment = response;
-      toast.success(isFromExpense ? 'Expense Created Successfully' : response.data.message, {
-        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
-        onClose: () => {
-          if (isFromExpense) {
-            navigate('/expenselist');
-          } else {
-            navigate('/paymentcashlist');
+      if (isFrom != 'employee') {
+        toast.success(isFrom === 'Expense' ? 'Expense Created Successfully' : response.data.message, {
+          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+          autoClose: 1000,
+          onClose: () => {
+            if (isFrom === 'Expense') {
+              navigate('/expenselist');
+            } else {
+              navigate('/paymentcashlist');
+            }
           }
-        }
-      });
+        });
+      }
       dispatch(createPaymentCashSuccess(createdpayment));
       return createdpayment;
     } catch (error) {
@@ -1469,6 +1586,151 @@ export const SalesInvoiceview = (id) => {
       return data;
     } catch (error) {
       dispatch(viewSalesinvoiceFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++ Attendance Functions +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+export const getEmployeeAttendance = (date = null) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      let url = `${process.env.REACT_APP_BASE_URL}/attendance/employee_status`;
+
+      if (date) {
+        url += `?date=${date}`;
+      }
+
+      const response = await axios.get(url, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      throw error;
+    }
+  };
+};
+
+export const updateEmployeeAttendance = (attendanceId, attendanceTypeId) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/attendance/update_attendance_type/${attendanceId}`,
+        {
+          attendanceTypeId
+        },
+        config
+      );
+
+      const data = response.data.data;
+      toast.success(response.data.message || 'Attendance status updated successfully', {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return data;
+    } catch (error) {
+      if (error.response?.status === 401) {
+        // Handle unauthorized access
+        throw error;
+      } else {
+        toast.error(error.response?.data?.message || 'Failed to update attendance status', {
+          autoClose: 1000
+        });
+        throw error;
+      }
+    }
+  };
+};
+
+export const getAttendanceSummary = (date = null) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      let url = `${process.env.REACT_APP_BASE_URL}/attendance/employee_status`;
+
+      if (date) {
+        url += `?date=${date}`;
+      }
+
+      const response = await axios.get(url, config);
+      const data = response.data.data;
+
+      // Extract summary from response
+      if (data && data.summary) {
+        return data.summary;
+      }
+
+      // If no summary in response, calculate from employees data
+      if (data && data.employees) {
+        const totalEmployees = data.employees.length;
+        const present = data.employees.filter(
+          (emp) =>
+            emp.attendanceStatus === 'Present' ||
+            emp.attendanceStatus === 'P' ||
+            emp.attendanceStatus === 'M' ||
+            emp.attendanceStatus === 'BM'
+        ).length;
+        const absent = totalEmployees - present;
+
+        return {
+          totalEmployees,
+          present,
+          absent
+        };
+      }
+
+      return null;
+    } catch (error) {
+      console.log('error: ', error);
+      throw error;
+    }
+  };
+};
+
+export const getEmployeeAttendanceHistory = (employeeId, startDate, endDate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/attendance/employee_history`, {
+        ...config,
+        params: {
+          employeeId,
+          startDate,
+          endDate
+        }
+      });
+
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      throw error;
+    }
+  };
+};
+
+export const bulkUpdateAttendance = (attendanceData) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/attendance/bulk_update`, attendanceData, config);
+
+      const data = response.data.data;
+      toast.success(response.data.message || 'Bulk attendance update completed successfully', {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return data;
+    } catch (error) {
+      if (error.response?.status === 401) {
+        throw error;
+      } else {
+        toast.error(error.response?.data?.message || 'Failed to update bulk attendance', {
+          autoClose: 1000
+        });
+        throw error;
+      }
     }
   };
 };
@@ -1749,15 +2011,19 @@ export const getallOrderItems = () => {
   };
 };
 export const changeOrderStatus = (id, payload, navigate) => {
-return async (dispatch) => {
+  return async (dispatch) => {
     dispatch(updateOrderprocessingRequest());
     try {
       const config = createConfig();
-      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/orderProcessing/update_status_order_processing/${id}`, payload, config);
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/orderProcessing/update_status_order_processing/${id}`,
+        payload,
+        config
+      );
       const updateOrderStatusData = response;
       toast.success(response.data.message, {
         icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-        autoClose: 1000,
+        autoClose: 1000
       });
       dispatch(updateOrderprocessingSuccess(updateOrderStatusData));
       return updateOrderStatusData;
@@ -3352,6 +3618,20 @@ export const getallusers = (params = {}) => {
     try {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_user?{search}=`, { ...config, params: params });
+      const getallUsers = response.data.data;
+      dispatch(getallUserSuccess(getallUsers));
+      return getallUsers;
+    } catch (error) {
+      dispatch(getallUserFailure(error.message));
+    }
+  };
+};
+export const getallcompanyusers = (params = {}) => {
+  return async (dispatch) => {
+    dispatch(getallUserRequest());
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/get_all_company_user?{search}=`, { ...config, params: params });
       const getallUsers = response.data.data;
       dispatch(getallUserSuccess(getallUsers));
       return getallUsers;
@@ -5077,6 +5357,58 @@ export const deleteholiday = (holidayId, navigate) => {
     }
   };
 };
+export const fetchSalarySummary = (employeeId) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/employee/get_salary_summary/${employeeId}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
+};
+export const deleteAdvance = (data, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/employee/delete_advance`, data, config);
+      const addemployeedata = response.data.data;
+      return addemployeedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+export const addAdvance = (data, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/employee/add_advance`, data, config);
+      const addemployeedata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return addemployeedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  SHIFT  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 export const createShift = (data, navigate) => {
   return async () => {
@@ -5118,6 +5450,21 @@ export const fetchAllShift = () => {
     }
   };
 };
+export const fetchShift = (id) => {
+  return async () => {
+    // dispatch(fetchAllShiftRequest());
+    try {
+      let config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/shift/view_shift/${id}`, config);
+      const data = response.data.data;
+      // dispatch(fetchAllShiftSuccess(data));
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+      // dispatch(fetchAllShiftFailure(error.message));
+    }
+  };
+};
 export const updateShift = (id, data, navigate) => {
   return async () => {
     // dispatch(updateShiftRequest());
@@ -5137,6 +5484,28 @@ export const updateShift = (id, data, navigate) => {
         navigate('/');
       } else {
         toast.error(error.response.data.message);
+      }
+    }
+  };
+};
+export const deleteShift = (shiftId, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/shift/delete_shift/${shiftId}`, config);
+      const deleteemployeedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return deleteemployeedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
       }
     }
   };
@@ -7041,8 +7410,20 @@ export const fetchAllAccountCash = () => {
     }
   };
 };
+export const getExpenseAccount = () => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/account/C_get_expense_account`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+};
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT LEDGER +++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT LEDGER +++++++++++++++++++++++++++++++++++++++++++++
 export const getallAccountledger = (id, formDate, toDate) => {
   return async (dispatch) => {
     dispatch(getAllAccountLedgerRequest());
@@ -7659,6 +8040,123 @@ export const fetchAllAddMaintenance = (params = {}) => {
       return data;
     } catch (error) {
       dispatch(fetchAllAddMaintenanceFailure(error.message));
+    }
+  };
+};
+
+// ++++++++++++++++++++++++++++++++++++++++++++ Attendees Type Functions +++++++++++++++++++++++++++++++++++++++++++++++++++
+export const createAttendeesType = (data, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/attendanceType`, data, config);
+      const addAttendeesTypedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/attendeestypeconfig');
+      return addAttendeesTypedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+
+export const fetchAllAttendeesType = () => {
+  return async () => {
+    try {
+      let config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/attendanceType`, config);
+      const data = response.data.data.attendanceTypes;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+};
+
+export const getAttendeesType = (attendeesTypeId) => {
+  return async () => {
+    try {
+      let config = createConfig();
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/attendanceType/${attendeesTypeId}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+};
+export const getEmployeeDetails = (employeeId, month, year) => {
+  return async () => {
+    try {
+      let config = createConfig();
+      // Ensure month is two digits
+      const paddedMonth = month ? month.toString().padStart(2, '0') : '';
+      const queryParams = [];
+      if (paddedMonth) queryParams.push(`month=${paddedMonth}`);
+      if (year) queryParams.push(`year=${year}`);
+      if (employeeId) queryParams.push(`employeeId=${employeeId}`);
+      const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/attendance/full_month_attendance${queryString}`, config);
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+};
+
+export const updateAttendeesType = (attendeesTypeId, formData, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/attendanceType/${attendeesTypeId}`, formData, config);
+      const updateAttendeesTypedata = response.data.data;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      navigate('/attendeestypeconfig');
+      return updateAttendeesTypedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
+    }
+  };
+};
+
+export const deleteAttendeesType = (attendeesTypeId, navigate) => {
+  return async () => {
+    try {
+      const config = createConfig();
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/attendanceType/${attendeesTypeId}`, config);
+      const deleteAttendeesTypedata = response;
+      toast.success(response.data.message, {
+        icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
+        autoClose: 1000
+      });
+      return deleteAttendeesTypedata;
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate('/');
+      } else {
+        toast.error(error.response.data.message, {
+          autoClose: 1000
+        });
+      }
     }
   };
 };

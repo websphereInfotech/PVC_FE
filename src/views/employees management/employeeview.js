@@ -132,12 +132,14 @@ const EmployeeviewPage = () => {
   };
 
   const formatDateTime = (datetime, name) => {
-    if (!datetime) return "-";
-  
-    const date = format(new Date(datetime.replace("Z", "")), "dd-MM-yyyy");
-    const time = format(new Date(datetime.replace("Z", "")), "hh:mm a");
-  
-    return name === "date" ? date : (
+    if (!datetime) return '-';
+
+    const date = format(new Date(datetime.replace('Z', '')), 'dd-MM-yyyy');
+    const time = format(new Date(datetime.replace('Z', '')), 'hh:mm a');
+
+    return name === 'date' ? (
+      date
+    ) : (
       <>
         {date}
         <br />
@@ -208,7 +210,9 @@ const EmployeeviewPage = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Shift </Typography>
           <Typography variant="subtitle2">{data?.shift?.shiftName}</Typography>
-          <Typography variant="subtitle2">{data?.shift?.shiftStartTime} - {data?.shift?.shiftEndTime}</Typography>
+          <Typography variant="subtitle2">
+            {data?.shift?.shiftStartTime} - {data?.shift?.shiftEndTime}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="subtitle1"> Role </Typography>
@@ -366,7 +370,7 @@ const EmployeeviewPage = () => {
                   <TableRow key={row.id} sx={{ backgroundColor: index % 2 === 0 ? 'white' : 'rgba(66, 84, 102, 0.1)' }}>
                     {columns.map((column) => (
                       <TableCell key={column.id} align={column.align}>
-                        {["date", "inTime", "outTime", "breakStart", "breakEnd"].includes(column.id)
+                        {['date', 'inTime', 'outTime', 'breakStart', 'breakEnd'].includes(column.id)
                           ? formatDateTime(row[column.id], column.id)
                           : row[column.id]}
                       </TableCell>

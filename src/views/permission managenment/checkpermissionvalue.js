@@ -592,6 +592,20 @@ const useCan = () => {
   const canViewCompanyBankLedger = () => {
     return checkPermission('Company Bank Details', 'view_single_bankLedger');
   };
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SELF EXPENSE
+  const canCreateSelfExpense = () => {
+    return checkPermission('Self Expense', 'create_selfExpense');
+  };
+  const canUpdateSelfExpense = () => {
+    return checkPermission('Self Expense', 'update_selfExpense');
+  };
+  const canDeleteSelfExpense = () => {
+    return checkPermission('Self Expense', 'delete_selfExpense');
+  };
+  const canViewSelfExpense = () => {
+    return checkPermission('Self Expense', 'view_selfExpense');
+  };
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ PAYMENT RECIEVE CASH
 
   const canCreateClaimcash = () => {
@@ -686,6 +700,19 @@ const useCan = () => {
 
   const canDeleteEmployee = () => {
     return checkPermission('Employee', 'delete_employee');
+  };
+
+  const canCreateShift = () => {
+    return checkPermission('Shift', 'create_shift');
+  };
+  const canViewShift = () => {
+    return checkPermission('Shift', 'view_one_shift');
+  };
+  const canUpdateShift = () => {
+    return checkPermission('Shift', 'update_shift');
+  };
+  const canDeleteShift = () => {
+    return checkPermission('Shift', 'delete_shift');
   };
 
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ MACHINE
@@ -1166,6 +1193,11 @@ const useCan = () => {
     canDeletePaymentrecievecash,
     canViewPaymentrecievecash,
     canViwAllPaymentrecievecash,
+    // SELF EXPENSE +++++++++++
+    canCreateSelfExpense,
+    canUpdateSelfExpense,
+    canDeleteSelfExpense,
+    canViewSelfExpense,
     // CLAIM CASH +++++++++++
     canCreateClaimcash,
     canUpdateClaimcash,
@@ -1227,6 +1259,10 @@ const useCan = () => {
     canViewEmployee,
     canUpdateEmployee,
     canDeleteEmployee,
+    canCreateShift,
+    canViewShift,
+    canUpdateShift,
+    canDeleteShift,
     // MACHINE ++++++++++++++++++
     canCreateMachine,
     canViewAllMachine,

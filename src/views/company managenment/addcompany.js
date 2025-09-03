@@ -150,7 +150,7 @@ const AddCompanyForm = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Upadate Account
+            Update Account
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">

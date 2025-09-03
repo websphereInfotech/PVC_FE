@@ -24,7 +24,7 @@ const Orderprocessing = () => {
   const { canDeleteOrderProcessing, canseecreateAccount } = useCan();
   const isMobileX = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [rows, setRows] = useState([{ product: '', qty: '', unit: '', mrp: ''}]);
+  const [rows, setRows] = useState([{ product: '', qty: '', unit: '', mrp: '' }]);
   const [formData, setFormData] = useState({
     accountId: '',
     date: convertToIST(new Date()),
@@ -36,7 +36,7 @@ const Orderprocessing = () => {
   const [product, setProduct] = useState('');
   const [subtotal, setSubtotal] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
-  const [orderprocessingData, setOrderprocessingData] = useState(null)
+  const [orderprocessingData, setOrderprocessingData] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -130,7 +130,7 @@ const Orderprocessing = () => {
   useEffect(() => {
     const initialSubtotal = rows.reduce((acc, row) => acc + row.mrp, 0);
     setSubtotal(initialSubtotal);
-    const initialtotalQty = rows.reduce((acc, row) => acc +  Number(row.qty), 0);
+    const initialtotalQty = rows.reduce((acc, row) => acc + Number(row.qty), 0);
     setTotalQuantity(initialtotalQty);
   }, [rows]);
 
@@ -229,7 +229,7 @@ const Orderprocessing = () => {
             id: row.id || null,
             productId: row.productId,
             unit: row.unit,
-            qty: Number(row.qty),
+            qty: Number(row.qty)
           }))
         };
         await dispatch(updateOrderprocessing(id, payload, navigate));
@@ -241,7 +241,7 @@ const Orderprocessing = () => {
           items: rows.map((row) => ({
             productId: row.productId,
             unit: row.unit,
-            qty: Number(row.qty),
+            qty: Number(row.qty)
           }))
         };
         await dispatch(createOrderprocessing(payload, navigate));
@@ -252,20 +252,20 @@ const Orderprocessing = () => {
   };
 
   const getStock = (row) => {
-    if(row.qty == '' || product.length == 0) {
+    if (row.qty == '' || product.length == 0) {
       return '';
     }
-    const item = product.find((pro)=>pro.value === row.productId);
+    const item = product.find((pro) => pro.value === row.productId);
 
-    if(!item) {
-      return ''
+    if (!item) {
+      return '';
     }
 
     let oldQty = 0;
-    if(id && orderprocessingData) {
-      const oldItem = orderprocessingData.items.find((pro)=> pro.productId === row.productId);
+    if (id && orderprocessingData) {
+      const oldItem = orderprocessingData.items.find((pro) => pro.productId === row.productId);
       if (oldItem) {
-        oldQty = oldItem.qty
+        oldQty = oldItem.qty;
       }
     }
     const currentStock = item.currentStock || 0;
@@ -278,34 +278,26 @@ const Orderprocessing = () => {
     if (itemStock < 0) {
       color = 'red'; // insufficient stock
       message = `${itemStock}`;
-    } else if (itemStock >= 0 && currentStock - (orderedQty-oldQty) < row.qty) {
+    } else if (itemStock >= 0 && currentStock - (orderedQty - oldQty) < row.qty) {
       color = 'orange'; // alert zone: low stock
       message = `${currentStock}`;
     } else {
       color = 'green'; // sufficient stock
       message = `${currentStock}`;
     }
-    return (
-      <div style={{ color: color }}>
-        {message}
-      </div>
-    )
+    return <div style={{ color: color }}>{message}</div>;
   };
 
   const getCurrentOrder = (row) => {
-    if(row.qty == '' || product.length == 0) {
+    if (row.qty == '' || product.length == 0) {
       return '';
     }
-    const item = product.find((pro)=>pro.value === row.productId);
+    const item = product.find((pro) => pro.value === row.productId);
 
-    if(!item) {
-      return ''
+    if (!item) {
+      return '';
     }
-     return (
-      <div>
-        {item.orderedQty || 0}
-      </div>
-    )
+    return <div>{item.orderedQty || 0}</div>;
   };
 
   return (
@@ -361,7 +353,7 @@ const Orderprocessing = () => {
             {id && (
               <Grid item xs={12} sm={6} md={3}>
                 <Typography variant="subtitle1">Status :</Typography>
-                <input placeholder="Status" id="orderStatus" value={formData.status}  disabled/>
+                <input placeholder="Status" id="orderStatus" value={formData.status} disabled />
               </Grid>
             )}
           </Grid>
@@ -377,12 +369,8 @@ const Orderprocessing = () => {
                   <TableCell sx={{ fontSize: '12px' }}>
                     QTY : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
                   </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    In Stock / Out of Stock :
-                  </TableCell>
-                  <TableCell sx={{ fontSize: '12px' }}>
-                    Order
-                  </TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>In Stock / Out of Stock :</TableCell>
+                  <TableCell sx={{ fontSize: '12px' }}>Order</TableCell>
                   <TableCell sx={{ fontSize: '12px' }}>DELETE</TableCell>
                 </TableHead>
                 <TableBody>

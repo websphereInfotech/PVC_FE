@@ -41,8 +41,8 @@ const MenuList = () => {
       switch (item.type) {
         case 'group':
           return <NavGroup key={item.id} item={item} />;
-        // default:
-        //   return null;
+        default:
+          return null;
       }
     });
   };

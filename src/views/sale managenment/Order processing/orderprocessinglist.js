@@ -15,17 +15,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
+  IconButton
   // useMediaQuery,
   // useTheme
 } from '@mui/material';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
-import {
-  changeOrderStatus,
-  deleteOrderprocessing,
-  getallOrderprocessing,
-} from 'store/thunk';
+import { changeOrderStatus, deleteOrderprocessing, getallOrderprocessing } from 'store/thunk';
 import { useDispatch } from 'react-redux';
 import useCan from 'views/permission managenment/checkpermissionvalue';
 import { Delete, Edit } from '@mui/icons-material';
@@ -42,12 +38,7 @@ const columns = [
 ];
 
 const Orderprocessinglist = () => {
-  const {
-    canCreateOrderProcessing,
-    canUpdateOrderProcessing,
-    canDeleteOrderProcessing,
-    canViewOrderProcessing,
-  } = useCan();
+  const { canCreateOrderProcessing, canUpdateOrderProcessing, canDeleteOrderProcessing, canViewOrderProcessing } = useCan();
   const navigate = useNavigate();
   const [orderProcessing, setOrderProcessing] = useState([]);
   const [page, setPage] = useState(0);
@@ -118,8 +109,8 @@ const Orderprocessinglist = () => {
   };
 
   const handleDispatchOP = async () => {
-  try {
-      await dispatch(changeOrderStatus(selectedId, {"status":"Closed"}, navigate));
+    try {
+      await dispatch(changeOrderStatus(selectedId, { status: 'Closed' }, navigate));
       setOpenDispatchConfirmation(false);
       const data = await dispatch(getallOrderprocessing());
       setOrderProcessing(data.data);
@@ -185,11 +176,11 @@ const Orderprocessinglist = () => {
                             color: 'white',
                             borderRadius: 0.8,
                             ...(canUpdateOrderProcessing() && { opacity: 1 }),
-                            ...((!canUpdateOrderProcessing() || row.status === "Closed") && { opacity: 0.5 }),
-                            ...((!canUpdateOrderProcessing() || row.status === "Closed") && { backgroundColor: 'gray' })
+                            ...((!canUpdateOrderProcessing() || row.status === 'Closed') && { opacity: 0.5 }),
+                            ...((!canUpdateOrderProcessing() || row.status === 'Closed') && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleUpdateOP(row.id)}
-                          disabled={!canUpdateOrderProcessing() || row.status === "Closed"}
+                          disabled={!canUpdateOrderProcessing() || row.status === 'Closed'}
                         >
                           <Edit style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -200,11 +191,11 @@ const Orderprocessinglist = () => {
                             color: 'white',
                             borderRadius: 0.8,
                             ...(canUpdateOrderProcessing() && { opacity: 1 }),
-                            ...((!canUpdateOrderProcessing() || row.status === "Closed")&& { opacity: 0.5 }),
-                            ...((!canUpdateOrderProcessing() || row.status === "Closed")&& { backgroundColor: 'gray' })
+                            ...((!canUpdateOrderProcessing() || row.status === 'Closed') && { opacity: 0.5 }),
+                            ...((!canUpdateOrderProcessing() || row.status === 'Closed') && { backgroundColor: 'gray' })
                           }}
                           onClick={() => handleDispatchConfirmation(row.id)}
-                          disabled={!canUpdateOrderProcessing()  || row.status === "Closed"}
+                          disabled={!canUpdateOrderProcessing() || row.status === 'Closed'}
                         >
                           <LocalShippingIcon style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -235,7 +226,7 @@ const Orderprocessinglist = () => {
                     ) : column.id === 'status' ? (
                       <div
                         style={{
-                          color: row.status === 'Closed' ? 'Green' : 'Red',
+                          color: row.status === 'Closed' ? 'Green' : 'Red'
                         }}
                       >
                         {row[column.id]}

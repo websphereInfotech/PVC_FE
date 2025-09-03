@@ -135,7 +135,7 @@ const PaymentPage = () => {
       if (id) {
         await dispatch(updatePaymentCash(id, formData, navigate));
       } else {
-        await dispatch(createPaymentCash(formData, navigate));
+        await dispatch(createPaymentCash(formData, navigate, 'payment'));
       }
     } catch (error) {
       console.error('Error creating payment cash data:', error);

@@ -1,43 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import { Delete } from '@mui/icons-material';
 import {
-  Typography,
   Button,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
   Card,
-  TablePagination,
-  TableHead,
-  TableContainer,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Typography
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getallPaymentCash, paymentCashDelete, paymentCashview } from 'store/thunk';
 import { useNavigate } from 'react-router';
+import { deleteAdvance, getallPaymentCash, paymentCashDelete } from 'store/thunk';
 import useCan from 'views/permission managenment/checkpermissionvalue';
-import { Delete, Edit } from '@mui/icons-material';
 const columns = [
   { id: 'date', label: 'Date', align: 'center' },
   { id: 'amount', label: 'Amount', align: 'center' },
   { id: 'description', label: 'Description', align: 'center' },
   { id: 'createdBy', label: 'Create By', align: 'center' },
-  { id: 'updatedBy', label: 'Update By', align: 'center' },
   { id: 'action', label: 'Action', align: 'center' }
 ];
-const ExpenseListPage = () => {
+
+const EmployeeSalary = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { canCreatePaymentcash, canUpdatePaymentcash, canDeletePaymentcash } = useCan();
   const [payments, setPayments] = useState([]);
   const [page, setPage] = useState(0);
-  const [selectedId, setSelectedId] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const { canDeleteEmployee } = useCan();
 
   useEffect(() => {
     getData();
@@ -46,7 +46,7 @@ const ExpenseListPage = () => {
   const getData = () => {
     dispatch(getallPaymentCash())
       .then((data) => {
-        const filterData = data.data.filter((item) => item.accountPaymentCash.accountName === 'Expense');
+        const filterData = data.data.filter((item) => item.accountPaymentCash.accountName === 'Salary');
         setPayments(filterData);
       })
       .catch((error) => {
@@ -55,20 +55,6 @@ const ExpenseListPage = () => {
         }
         console.error('Error fetching payment cash data:', error);
       });
-  };
-
-  const handleMakePayment = () => {
-    navigate('/expense');
-  };
-
-  const handleDeleteConfirmation = (id) => {
-    setOpenConfirmation(true);
-    setSelectedId(id);
-  };
-
-  const handleUpdatePayment = (id) => {
-    dispatch(paymentCashview(id));
-    navigate(`/expense/${id}`);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -80,9 +66,28 @@ const ExpenseListPage = () => {
     setPage(0);
   };
 
+  const handleDeleteConfirmation = (payment) => {
+    setOpenConfirmation(true);
+    setSelected(payment);
+  };
+
   const handledelete = async () => {
     try {
-      await dispatch(paymentCashDelete(selectedId, navigate));
+      const obj = parseDescription(selected.description);
+      console.log('obj: ', obj);
+      if (obj.id) {
+        const payload = {
+          employeeId: obj.id
+        };
+        if (obj.type === 'Advance') {
+          payload.advanceAmount = +selected.amount;
+        } else {
+          payload.paidAmount = +selected.amount;
+        }
+        console.log('payload: ', payload);
+        await dispatch(deleteAdvance(payload, navigate));
+      }
+      await dispatch(paymentCashDelete(selected.id, navigate));
       setOpenConfirmation(false);
       getData();
     } catch (error) {
@@ -90,22 +95,44 @@ const ExpenseListPage = () => {
     }
   };
 
+  const parseDescription = (desc) => {
+    let type = desc.startsWith('Advance') ? 'Advance' : 'Paid';
+
+    let match = desc.match(/\((.*?)\)/);
+    let id = match ? match[1] : null;
+
+    return { type, id };
+  };
+
+  const canDeletePayment = (dateStr) => {
+    const paymentDate = new Date(dateStr);
+    const paymentYear = paymentDate.getFullYear();
+    const paymentMonth = paymentDate.getMonth();
+
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+
+    if (paymentYear === currentYear && paymentMonth === currentMonth) {
+      return true;
+    }
+
+    if (paymentYear === currentYear && paymentMonth === currentMonth - 1) {
+      return true;
+    }
+
+    if (currentMonth === 0 && paymentYear === currentYear - 1 && paymentMonth === 11) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <Card style={{ width: '100%', padding: '25px' }}>
       <Typography variant="h4" align="center" id="mycss">
-        Expense List
+        Employee Salary
       </Typography>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ margin: '16px' }}
-          onClick={handleMakePayment}
-          disabled={!canCreatePaymentcash()}
-        >
-          Expense
-        </Button>
-      </div>
       <TableContainer>
         <Table style={{ border: '1px solid lightgrey' }}>
           <TableHead sx={{ backgroundColor: 'rgba(66, 84, 102, 0.8)', color: 'white' }}>
@@ -127,30 +154,15 @@ const ExpenseListPage = () => {
                         <IconButton
                           sizeSmall
                           style={{
-                            backgroundColor: canUpdatePaymentcash() ? 'green' : 'gray',
-                            color: canUpdatePaymentcash() ? 'white' : 'white',
+                            backgroundColor: canDeleteEmployee() ? 'Red' : 'gray',
+                            color: canDeleteEmployee() ? 'white' : 'white',
                             borderRadius: 0.8,
-                            ...(canUpdatePaymentcash() && { opacity: 1 }),
-                            ...(!canUpdatePaymentcash() && { opacity: 0.5 }),
-                            ...(!canUpdatePaymentcash() && { backgroundColor: 'gray' })
+                            ...(canDeleteEmployee() && { opacity: 1 }),
+                            ...((!canDeleteEmployee() || !canDeletePayment(payment.date)) && { opacity: 0.5 }),
+                            ...((!canDeleteEmployee() || !canDeletePayment(payment.date)) && { backgroundColor: 'gray' })
                           }}
-                          onClick={() => handleUpdatePayment(payment.id)}
-                          disabled={!canUpdatePaymentcash()}
-                        >
-                          <Edit style={{ fontSize: '16px' }} />
-                        </IconButton>
-                        <IconButton
-                          sizeSmall
-                          style={{
-                            backgroundColor: canDeletePaymentcash() ? 'Red' : 'gray',
-                            color: canDeletePaymentcash() ? 'white' : 'white',
-                            borderRadius: 0.8,
-                            ...(canDeletePaymentcash() && { opacity: 1 }),
-                            ...(!canDeletePaymentcash() && { opacity: 0.5 }),
-                            ...(!canDeletePaymentcash() && { backgroundColor: 'gray' })
-                          }}
-                          onClick={() => handleDeleteConfirmation(payment.id)}
-                          disabled={!canDeletePaymentcash()}
+                          onClick={() => handleDeleteConfirmation(payment)}
+                          disabled={!canDeleteEmployee() || !canDeletePayment(payment.date)}
                         >
                           <Delete style={{ fontSize: '16px' }} />
                         </IconButton>
@@ -159,8 +171,6 @@ const ExpenseListPage = () => {
                       new Date(payment[column.id]).toLocaleDateString('en-GB')
                     ) : column.id === 'party' ? (
                       payment.accountPaymentCash.contactPersonName
-                    ) : column.id === 'updatedBy' ? (
-                      payment.paymentUpdate?.username
                     ) : column.id === 'createdBy' ? (
                       payment.paymentCreate?.username
                     ) : (
@@ -197,5 +207,4 @@ const ExpenseListPage = () => {
     </Card>
   );
 };
-
-export default ExpenseListPage;
+export default EmployeeSalary;

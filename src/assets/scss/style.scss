@@ -37,7 +37,8 @@
   background-color: #425466;
 }
 
-.ps__rail-y , .ps__thumb-y {
+.ps__rail-y,
+.ps__thumb-y {
   height: auto !important;
   padding-bottom: 80px !important;
 }
@@ -238,14 +239,14 @@ input {
 .css-1z0zw2q-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-1z0zw2q-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-1z0zw2q-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 8px 25px 8px 10px;
 }
-@media (max-width:'425px') {
-  .css-fzsmes{
+@media (max-width: '425px') {
+  .css-fzsmes {
     margin: 0 10px !important;
   }
-  .css-1yl2dwb-MuiInputBase-root{
+  .css-1yl2dwb-MuiInputBase-root {
     width: 100%;
   }
-  .css-1c759mf-MuiPaper-root-MuiCard-root{
+  .css-1c759mf-MuiPaper-root-MuiCard-root {
     overflow-x: auto;
   }
 }

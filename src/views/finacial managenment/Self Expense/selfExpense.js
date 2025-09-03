@@ -1,97 +1,62 @@
+import { Grid, Paper, Typography, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Typography, Paper, Grid, useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { createPaymentCash, paymentCashview, getallPaymentCash, updatePaymentCash, getExpenseAccount } from 'store/thunk';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
+import { createSelfExpense, getExpenseAccount, selfExpenseview, updateSelfExpense } from 'store/thunk';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Link } from 'react-router-dom';
 import { convertToIST } from 'component/details';
 
-const ExpensePage = () => {
-  const isMobile = useMediaQuery('(max-width:600px)');
+const SelfExpense = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery('(max-width:600px)');
   const { id } = useParams();
+
   const [formData, setFormData] = useState({
     date: convertToIST(new Date()),
     amount: Number(),
     description: '',
-    accountId: 3,
-    paymentNo: ''
+    accountId: 2
   });
 
   useEffect(() => {
     const viewData = async () => {
       try {
         if (id) {
-          const response = await dispatch(paymentCashview(id));
-          const { amount, description, paymentNo, accountPaymentCash, date } = response;
-          setFormData({ amount, description, paymentNo, accountId: accountPaymentCash.id, date });
+          const response = await dispatch(selfExpenseview(id));
+          const { amount, description, date } = response;
+          setFormData({ amount, description, date });
         }
       } catch (error) {
-        console.error('Error fetching payment cash:', error);
+        console.error('Error fetching self Expense:', error);
       }
     };
-    const generateAutoPaymentcashNumber = async () => {
-      if (!id) {
-        try {
-          const PaymentcashResponse = await dispatch(getallPaymentCash());
-          let nextPaymentcashNumber = 1;
-          if (PaymentcashResponse.data.length === 0) {
-            const PaymentcashNumber = nextPaymentcashNumber;
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              paymentNo: Number(PaymentcashNumber)
-            }));
-            return;
-          }
-          const existingPaymentcashNumbers = PaymentcashResponse.data.map((Paymentcash) => {
-            const PaymentcashNumber = Paymentcash.paymentNo;
-            return parseInt(PaymentcashNumber);
-          });
-          const maxPaymentcashNumber = Math.max(...existingPaymentcashNumbers);
-          if (!isNaN(maxPaymentcashNumber)) {
-            nextPaymentcashNumber = maxPaymentcashNumber + 1;
-          }
-
-          const PaymentcashNumber = nextPaymentcashNumber;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            paymentNo: Number(PaymentcashNumber)
-          }));
-        } catch (error) {
-          console.error('Error generating auto Payment cash number:', error);
-        }
-      }
-    };
-    generateAutoPaymentcashNumber();
     viewData();
     const getExpendeAccountId = async () => {
-      if (!id) {
-        try {
-          const response = await dispatch(getExpenseAccount());
-          const expenseId = response.find((res) => res.accountGroup.name === 'Expenses (Company)').id;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            accountId: Number(expenseId)
-          }));
-        } catch (error) {
-          console.error('Error fetching payment cash:', error);
-        }
+      try {
+        const response = await dispatch(getExpenseAccount());
+        const expenseId = response.find((res) => res.accountGroup.name === 'Expenses (self)')?.id;
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          accountId: Number(expenseId)
+        }));
+      } catch (error) {
+        console.error('Error fetching payment cash:', error);
       }
     };
     getExpendeAccountId();
   }, [dispatch, id]);
 
-  const handlecreatePaymentCash = async () => {
+  const handlecreateSelfExpense = async () => {
     try {
       if (id) {
-        await dispatch(updatePaymentCash(id, formData, navigate, true));
+        await dispatch(updateSelfExpense(id, formData, navigate));
       } else {
-        await dispatch(createPaymentCash(formData, navigate, 'Expense'));
+        await dispatch(createSelfExpense(formData, navigate));
       }
     } catch (error) {
-      console.error('Error creating payment cash data:', error);
+      console.error('Error creating self Expense data:', error);
     }
   };
 
@@ -111,15 +76,15 @@ const ExpensePage = () => {
       <div>
         {id ? (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Update Expense
+            Update Self Expense
           </Typography>
         ) : (
           <Typography variant="h4" align="center" gutterBottom id="mycss">
-            Expense
+            Self Expense
           </Typography>
         )}
         <Grid container style={{ marginBottom: '16px' }}>
-          <Grid container spacing={2} style={{ marginBottom: '16px' }}>
+          <Grid container spacing={3} style={{ marginBottom: '16px' }}>
             <Grid item xs={12} sm={6} md={3}>
               <Typography variant="subtitle1">
                 Date : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
@@ -152,14 +117,13 @@ const ExpensePage = () => {
               />
             </Grid>
           </Grid>
-
           {isMobile ? (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Link to="/expenselist" style={{ textDecoration: 'none' }}>
+                <Link to="/selfExpenselist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
-                <button id="savebtncs" onClick={handlecreatePaymentCash}>
+                <button id="savebtncs" onClick={handlecreateSelfExpense}>
                   Save
                 </button>
               </div>
@@ -167,12 +131,12 @@ const ExpensePage = () => {
           ) : (
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0px' }}>
               <div>
-                <Link to="/expenselist" style={{ textDecoration: 'none' }}>
+                <Link to="/selfExpenselist" style={{ textDecoration: 'none' }}>
                   <button id="savebtncs">Cancel</button>
                 </Link>
               </div>
               <div style={{ display: 'flex' }}>
-                <button id="savebtncs" onClick={handlecreatePaymentCash}>
+                <button id="savebtncs" onClick={handlecreateSelfExpense}>
                   Save
                 </button>
               </div>
@@ -184,4 +148,4 @@ const ExpensePage = () => {
   );
 };
 
-export default ExpensePage;
+export default SelfExpense;
