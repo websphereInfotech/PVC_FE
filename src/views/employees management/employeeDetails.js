@@ -126,7 +126,8 @@ const EmployeeDetails = () => {
       return date.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true
+        hour12: true,
+        timeZone: 'UTC',
       });
     } catch (error) {
       return '-';
@@ -145,6 +146,19 @@ const EmployeeDetails = () => {
     } catch (error) {
       return '-';
     }
+  };
+
+  const formatOvertime = (hoursString) => {
+    if (!hoursString) return '00.00';
+    
+    const hoursFloat = parseFloat(hoursString);
+    const isNegative = hoursFloat < 0;
+    
+    const totalMinutes = Math.round(Math.abs(hoursFloat) * 60);
+    const hh = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+    const mm = String(totalMinutes % 60).padStart(2, '0');
+    
+    return `${isNegative ? '-' : ''}${hh}:${mm}`;
   };
 
   // const handleMonthChange = (increment) => {
@@ -335,8 +349,7 @@ const EmployeeDetails = () => {
           Daily Attendance
         </Typography>
         <Grid container spacing={2}>
-          {/* Left Column - Days 1-15 */}
-          <Grid item xs={12} lg={6}>
+          {/* <Grid item xs={12} lg={12}> */}
             <TableContainer>
               <Table size="small">
                 <TableHead>
@@ -345,12 +358,14 @@ const EmployeeDetails = () => {
                     <TableCell sx={{ fontWeight: 'bold' }}>ATT</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>O.T Hrs</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>In Time</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Break In</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Break Out</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>Out Time</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dailyAttendance.slice(0, 15).length > 0 ? (
-                    dailyAttendance.slice(0, 15).map((day) => (
+                  {dailyAttendance.length > 0 ? (
+                    dailyAttendance.map((day) => (
                       <TableRow key={day.day}>
                         <TableCell>
                           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
@@ -362,7 +377,7 @@ const EmployeeDetails = () => {
                         </TableCell>
                         <TableCell>
                           <Typography variant="body2">
-                            {day.overtimeHours !== '0.00' && day.overtimeHours !== 0 ? day.overtimeHours : '-'}
+                            {day.overtimeHours !== '0.00' && day.overtimeHours !== 0 ? formatOvertime(day.overtimeHours) : '-'}
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -370,6 +385,12 @@ const EmployeeDetails = () => {
                             {formatTime(day.inTime)}
                             {day.latePunch && ' (Late)'}
                           </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{formatTime(day.breakIn)}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{formatTime(day.breakOut)}</Typography>
                         </TableCell>
                         <TableCell>
                           <Typography variant="body2">{formatTime(day.outTime)}</Typography>
@@ -388,62 +409,7 @@ const EmployeeDetails = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Grid>
-
-          {/* Right Column - Days 16-31 */}
-          <Grid item xs={12} lg={6}>
-            <TableContainer>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Day</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>ATT</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>O.T Hrs</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>In Time</TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Out Time</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {dailyAttendance.slice(15).length > 0 ? (
-                    dailyAttendance.slice(15).map((day) => (
-                      <TableRow key={day.day}>
-                        <TableCell>
-                          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                            {day.dayOfWeek}-{day.day}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Chip label={day.status} color={getStatusColor(day.status)} size="small" title={getStatusLabel(day.status)} />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">
-                            {day.overtimeHours !== '0.00' && day.overtimeHours !== 0 ? day.overtimeHours : '-'}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" color={day.latePunch ? 'error' : 'inherit'}>
-                            {formatTime(day.inTime)}
-                            {day.latePunch && ' (Late)'}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">{formatTime(day.outTime)}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={5} align="center">
-                        <Typography variant="body2" color="textSecondary">
-                          No attendance data for days 16-31
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
+          {/* </Grid> */}
         </Grid>
       </Paper>
 
@@ -531,7 +497,7 @@ const EmployeeDetails = () => {
               </Box>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                  TOTAL ATT
+                  Attendance
                 </Typography>
                 <Typography variant="h6" sx={{ color: '#1976d2' }}>
                   {monthlySummary.presentDays}
@@ -539,7 +505,7 @@ const EmployeeDetails = () => {
               </Box>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                  TOTAL O.T
+                  Over Time
                 </Typography>
                 <Typography variant="h6" sx={{ color: '#1976d2' }}>
                   {monthlySummary.totalOvertime}

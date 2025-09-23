@@ -612,7 +612,7 @@ const MainRoutes = {
       element: <ProtectedRoute element={EmployeeShift} resource="Shift" permissionName="view_all_shift" />
     },
     {
-      path: '/attendees',
+      path: '/Attendance',
       element: <ProtectedRoute element={Attendees} resource="Employee" permissionName="view_all_employee" />
     },
     {

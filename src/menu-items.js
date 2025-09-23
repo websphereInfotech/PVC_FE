@@ -671,8 +671,8 @@ const MenuItem = () => {
                 url: '/holidayconfig'
               },
               hasAllPermissionsBonus && {
-                id: 'Attendees Type',
-                title: 'Attendees Type',
+                id: 'Attendance Type',
+                title: 'Attendance Type',
                 type: 'item',
                 url: '/attendeestypeconfig'
               },
@@ -683,10 +683,10 @@ const MenuItem = () => {
                 url: '/shift'
               },
               hasAllPermissionsEmployee && {
-                id: 'Attendees',
-                title: 'Attendees',
+                id: 'Attendance',
+                title: 'Attendance',
                 type: 'item',
-                url: '/attendees'
+                url: '/Attendance'
               }
               // {
               //   id: 'Report',
