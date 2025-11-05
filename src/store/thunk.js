@@ -5853,36 +5853,56 @@ export const SalesCashPDF = (id, navigate, shouldDownload = true) => {
       const config = createConfig();
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/salesinvoice/C_view_salesInvoice_pdf/${id}`, config);
       const base64Data = response.data.data;
-      if (!base64Data) {
-        throw new Error('Base64 data is undefined');
-      }
-      if (shouldDownload) {
+      if (!base64Data) throw new Error('PDF data not found in response');
+
+      let blob;
+
+      // 🧩 Detect if data is Base64 or comma-separated bytes
+      if (/^[0-9,\s]+$/.test(base64Data)) {
+        // numeric CSV format
+        const byteNumbers = base64Data.split(',').map((n) => Number(n.trim()));
+        const byteArray = new Uint8Array(byteNumbers);
+        blob = new Blob([byteArray], { type: 'application/pdf' });
+      } else {
+        // proper Base64 format
         const binaryString = atob(base64Data);
         const len = binaryString.length;
         const bytes = new Uint8Array(len);
         for (let i = 0; i < len; i++) {
           bytes[i] = binaryString.charCodeAt(i);
         }
-        const blob = new Blob([bytes], { type: 'application/pdf' });
-        saveAs(blob, 'sales_cash.pdf');
+        blob = new Blob([bytes], { type: 'application/pdf' });
       }
-      dispatch(SalesCashPdfSuccess(base64Data));
+
+      // 🧾 Download if requested
       if (shouldDownload) {
-        toast.success(response.data.message, {
-          icon: <img src={require('../assets/images/images.png')} width={'24px'} height={'24px'} alt="success" />,
-          autoClose: 1000
+        saveAs(blob, `sales_cash_${id}.pdf`);
+        toast.success(response.data.message || 'PDF created successfully', {
+          icon: (
+            <img
+              src={require('../assets/images/images.png')}
+              width="24px"
+              height="24px"
+              alt="success"
+            />
+          ),
+          autoClose: 1000,
         });
       }
+
+      dispatch(SalesCashPdfSuccess(base64Data));
       return base64Data;
     } catch (error) {
       console.error('Error fetching PDF:', error);
-      if (error.response.status === 401) {
+
+      if (error?.response?.status === 401) {
         navigate('/');
       } else {
-        toast.error(error.response?.data?.error || 'An error occurred', {
-          autoClose: 1000
+        toast.error(error?.response?.data?.error || 'An error occurred while fetching PDF', {
+          autoClose: 1000,
         });
       }
+
       dispatch(SalesCashPdfFailure(error.message));
     }
   };
