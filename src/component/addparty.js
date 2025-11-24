@@ -56,6 +56,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
   const [accountgroup, setAccountgroup] = React.useState([]);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [registrationType, setregistrationType] = React.useState('Composition');
+  const [balanceType, setBalanceType] = React.useState('Credit');
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -106,6 +107,10 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
     setregistrationType(selectedOption.value);
   };
 
+  const handleBalanceTypeChange = (event) => {
+    setBalanceType(event.target.value);
+  };
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -142,6 +147,9 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
             label: response.accountGroup?.name || ''
           });
           setregistrationType(response.accountDetail?.registrationType);
+          // Calculate balance type from balance value: negative = Debit, otherwise Credit
+          const balanceValue = parseFloat(response.accountDetail?.balance || 0);
+          setBalanceType(balanceValue < 0 ? 'Debit' : 'Credit');
         } else {
           setFormData({
             accountname: '',
@@ -171,6 +179,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
           setTotalCredit('');
           setSelectedGroup(null);
           setregistrationType('Composition');
+          setBalanceType('Credit');
         }
       } catch (error) {
         console.log('Error fetching Account', error);
@@ -226,10 +235,18 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
       }
 
       if (selectedGroup?.label === 'Sundry Creditors' || selectedGroup?.label === 'Sundry Debtors') {
+        // If Debit is selected, send negative balance; otherwise send as is (Credit)
+        let balanceValue = parseFloat(sundryDetails.balance) || 0;
+        if (balanceType === 'Debit') {
+          balanceValue = -Math.abs(balanceValue);
+        } else {
+          balanceValue = Math.abs(balanceValue);
+        }
+
         payload.accountDetail = {
           ...payload.accountDetail,
           gstNumber: sundryDetails.gstnumber,
-          balance: sundryDetails.balance,
+          balance: balanceValue,
           creditPeriod: sundryDetails.creditperiod,
           creditLimit: creditlimit,
           registrationType: registrationType
@@ -288,6 +305,7 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
       setTotalCredit('');
       setSelectedGroup(null);
       setregistrationType('Composition');
+      setBalanceType('Credit');
       onClose();
     } catch (error) {
       console.error('Error saving account:', error);
@@ -447,6 +465,15 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
                       value={sundryDetails.balance}
                       onChange={handleInputSundryDetailChange}
                     />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle1">
+                      Opening Balance Type : <span style={{ color: 'red', fontWeight: 'bold', fontSize: '17px' }}>&#42;</span>
+                    </Typography>
+                    <RadioGroup row value={balanceType} onChange={handleBalanceTypeChange}>
+                      <FormControlLabel value="Credit" control={<Radio />} label="Credit" />
+                      <FormControlLabel value="Debit" control={<Radio />} label="Debit" />
+                    </RadioGroup>
                   </Grid>
                   <Grid item>
                     <Typography variant="subtitle1">
