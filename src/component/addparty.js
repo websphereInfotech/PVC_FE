@@ -355,7 +355,6 @@ const AnchorTemporaryDrawer = ({ open, onClose, id, onAccountCreate, onAccountUp
             <Select
               color="secondary"
               id="accountGroupId"
-              isDisabled={id}
               value={{ value: selectedGroup?.value, label: selectedGroup?.label }}
               options={accountgroup}
               onChange={handleGroupChange}
